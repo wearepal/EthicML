@@ -1,5 +1,9 @@
-import pandas as pd
+"""
+Split into train and test data
+"""
+
 from typing import Tuple
+import pandas as pd
 
 
 def train_test_split(data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:

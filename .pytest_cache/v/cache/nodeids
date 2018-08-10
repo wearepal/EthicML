@@ -1,8 +1,0 @@
-[
-  "tests/basic_test.py::TestClass::()::test_one",
-  "tests/basic_test.py::TestClass::()::test_two",
-  "tests/basic_test.py::TestClass::()::test_three",
-  "tests/loading_data_test.py::TestClass::()::test_can_load_test_data",
-  "tests/loading_data_test.py::TestClass::()::test_load_data",
-  "tests/preprocessing_test.py::TestClass::()::test_train_test_split"
-]
