@@ -10,29 +10,28 @@ import pandas as pd
 def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage) \
         -> Tuple[pd.DataFrame, pd.DataFrame]:
     train_test: Tuple[pd.DataFrame, pd.DataFrame] = \
-        np.split(dataframe.sample(frac=1, random_state=2).reset_index(),
+        np.split(dataframe.sample(frac=1, random_state=2).reset_index(drop=True),
                  [int(train_percentage * len(dataframe))])
 
     assert isinstance(train_test[0], pd.DataFrame)
     assert isinstance(train_test[1], pd.DataFrame)
 
-    return train_test[0], train_test[1]
+    train = train_test[0].reset_index(drop=True)
+    test = train_test[1].reset_index(drop=True)
+
+    return train, test
 
 
 def train_test_split(data: Dict[str, pd.DataFrame], train_percentage: float = 0.8) \
         -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
 
-    x_columns: List[str] = data['x'].columns
-    s_columns: List[str] = data['s'].columns
-    y_columns: List[str] = data['y'].columns
-
-    x_columns: List[str] = [col for col in x_columns]
-    s_columns: List[str] = [col for col in s_columns]
-    y_columns: List[str] = [col for col in y_columns]
+    x_columns: List[str] = [col for col in data['x'].columns]
+    s_columns: List[str] = [col for col in data['s'].columns]
+    y_columns: List[str] = [col for col in data['y'].columns]
 
     all_data: pd.DataFrame = pd.concat([data['x'], data['s'], data['y']], axis=1)
 
-    all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index()
+    all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 
     np.random.seed(0)
     all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = \
