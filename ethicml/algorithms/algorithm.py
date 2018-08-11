@@ -1,9 +1,9 @@
 """
 Abstract Base Class of all algorithms in the framework
 """
-import numpy
 
 from abc import ABC, abstractmethod
+import numpy
 
 
 class Algorithm(ABC):

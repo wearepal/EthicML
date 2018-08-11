@@ -1,4 +1,4 @@
 .idea/
 /ethicml/tests/.pytest_cache/
-/data/__pycache__/
-/__pycache__/
+ethicml/__pycache__/
+ethicml/data/__pycache__/
