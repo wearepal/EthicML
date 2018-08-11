@@ -2,9 +2,11 @@
 Test the loading data capability
 """
 
+from typing import Dict
 import pandas as pd
 
 from ethicml.common import ROOT_DIR
+from ethicml.data.test import Test
 from ethicml.data.load import load_data
 
 
@@ -15,5 +17,7 @@ def test_can_load_test_data():
 
 
 def test_load_data():
-    data: pd.DataFrame = load_data('test')
-    assert data.shape == (200, 3)
+    data: Dict[str, pd.DataFrame] = load_data(Test())
+    assert (2000, 2) == data['x'].shape
+    assert (2000, 1) == data['s'].shape
+    assert (2000, 1) == data['y'].shape

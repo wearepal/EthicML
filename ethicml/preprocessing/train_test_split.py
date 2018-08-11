@@ -1,12 +1,70 @@
 """
 Split into train and test data
 """
-
-from typing import Tuple
+from typing import Tuple, Dict, List
+import numpy as np
+from numpy.testing import assert_array_equal
 import pandas as pd
 
 
-def train_test_split(data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    data: pd.DataFrame = data.sample(frac=1, random_state=1)
-    assert isinstance(data, pd.DataFrame)
-    return data, data
+def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage) \
+        -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_test: Tuple[pd.DataFrame, pd.DataFrame] = \
+        np.split(dataframe.sample(frac=1, random_state=2).reset_index(),
+                 [int(train_percentage * len(dataframe))])
+
+    assert isinstance(train_test[0], pd.DataFrame)
+    assert isinstance(train_test[1], pd.DataFrame)
+
+    return train_test[0], train_test[1]
+
+
+def train_test_split(data: Dict[str, pd.DataFrame], train_percentage: float = 0.8) \
+        -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
+
+    x_columns: List[str] = data['x'].columns
+    s_columns: List[str] = data['s'].columns
+    y_columns: List[str] = data['y'].columns
+
+    x_columns: List[str] = [col for col in x_columns]
+    s_columns: List[str] = [col for col in s_columns]
+    y_columns: List[str] = [col for col in y_columns]
+
+    all_data: pd.DataFrame = pd.concat([data['x'], data['s'], data['y']], axis=1)
+
+    all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index()
+
+    np.random.seed(0)
+    all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = \
+        call_numpy_to_split(all_data, train_percentage)
+
+    all_data_train, all_data_test = all_data_train_test
+
+    train: Dict[str, pd.DataFrame] = {
+        'x': all_data_train[x_columns],
+        's': all_data_train[s_columns],
+        'y': all_data_train[y_columns]
+    }
+
+    test: Dict[str, pd.DataFrame] = {
+        'x': all_data_test[x_columns],
+        's': all_data_test[s_columns],
+        'y': all_data_test[y_columns]
+    }
+
+    assert isinstance(train['x'], pd.DataFrame)
+    assert isinstance(test['x'], pd.DataFrame)
+    assert_array_equal(train['x'].columns, x_columns)
+    assert_array_equal(test['x'].columns, x_columns)
+
+    assert isinstance(train['s'], pd.DataFrame)
+    assert isinstance(test['s'], pd.DataFrame)
+    assert_array_equal(train['s'].columns, s_columns)
+    assert_array_equal(test['s'].columns, s_columns)
+
+    assert isinstance(train['y'], pd.DataFrame)
+    assert isinstance(test['y'], pd.DataFrame)
+    assert_array_equal(train['y'].columns, y_columns)
+    assert_array_equal(test['y'].columns, y_columns)
+
+    return train, test
