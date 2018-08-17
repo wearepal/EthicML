@@ -41,6 +41,7 @@ def test_tpr_diff():
     model: Algorithm = SVM()
     predictions: np.array = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    assert TPR().get_name() == "TPR"
     assert tprs == {0: 0.7704918032786885, 1: 0.9312977099236641}
     tpr_diff = diff_per_sensitive_attribute(tprs)
     assert tpr_diff["0-1"] == 0.16080590664497563

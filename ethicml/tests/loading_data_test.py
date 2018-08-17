@@ -67,3 +67,19 @@ def test_race_feature_split():
     assert (48842, 99) == data['x'].shape
     assert (48842, 1) == data['s'].shape
     assert (48842, 1) == data['y'].shape
+
+
+def test_additional_columns_load_function():
+    data_loc: str = "{}/data/csvs/adult.csv".format(ROOT_DIR)
+    data_obj: Dataset = create_data_obj(data_loc,
+                                        s_columns=["race_White"],
+                                        y_columns=["salary_>50K"],
+                                        additional_to_drop=[
+                                            "race_Black",
+                                            "salary_<=50K"
+                                        ])
+    data: Dict[str, pd.DataFrame] = load_data(data_obj)
+
+    assert (48842, 102) == data['x'].shape
+    assert (48842, 1) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
