@@ -15,7 +15,10 @@ def metric_per_sensitive_attribute(
         metric: Metric) -> Dict[int, float]:
 
     predictions: pd.DataFrame = pd.DataFrame(predictions, columns=["preds"])
-    amalgamated = pd.concat([actual['x'], actual['s'], actual['y'], predictions], axis=1)
+    amalgamated = pd.concat([actual['x'],
+                             actual['s'],
+                             actual['y'],
+                             predictions], axis=1)
 
     assert amalgamated.shape[0] == actual['x'].shape[0]
 
@@ -28,7 +31,9 @@ def metric_per_sensitive_attribute(
     for y_col in y_columns:
         for s_col in s_columns:
             for unique_s in actual['s'][s_col].unique():
-                actual_y = {'y': amalgamated[actual['s'][s_col] == unique_s][y_col]}
+                actual_y = {
+                    'y': amalgamated[actual['s'][s_col] == unique_s][y_col]
+                }
                 pred_y = amalgamated[actual['s'][s_col] == unique_s]['preds']
 
                 per_sensitive_attr[unique_s] = metric.score(pred_y, actual_y)
@@ -36,7 +41,9 @@ def metric_per_sensitive_attribute(
     return per_sensitive_attr
 
 
-def diff_per_sensitive_attribute(per_sens_res: Dict[int, float]) -> Dict[str, float]:
+def diff_per_sensitive_attribute(per_sens_res: Dict[int, float]) \
+        -> Dict[str, float]:
+
     sens_values = list(per_sens_res.keys())
     diff_per_sens = {}
 

@@ -12,7 +12,9 @@ from ethicml.metrics.metric import Metric
 
 
 class Accuracy(Metric):
-    def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
+    def score(self,
+              prediction: np.array,
+              actual: Dict[str, pd.DataFrame]) -> float:
 
         actual_y = actual['y'].values.ravel()
 
