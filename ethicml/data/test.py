@@ -7,7 +7,7 @@ from ethicml.data.dataset import Dataset
 
 class Test(Dataset):
     def get_filename(self):
-        return "test"
+        return "test.csv"
 
     def get_feature_split(self):
         return {
