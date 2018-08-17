@@ -28,7 +28,9 @@ def load_data(dataset: Dataset) -> dict:
             "y": y_data}
 
 
-def create_data_obj(filepath: str, s_columns: List[str], y_columns: List[str]) -> Dataset:
+def create_data_obj(filepath: str,
+                    s_columns: List[str],
+                    y_columns: List[str]) -> Dataset:
     conf: ConfigurableDataset = ConfigurableDataset()
     conf.set_filename(os.path.basename(filepath))
 
@@ -48,3 +50,16 @@ def create_data_obj(filepath: str, s_columns: List[str], y_columns: List[str]) -
     conf.set_feature_split(feat_split)
 
     return conf
+
+
+def filter_features_by_prefixes(features: List[str], prefixes: List[str]):
+    res = []
+    for name in features:
+        filtered = False
+        for pref in prefixes:
+            if name.startswith(pref):
+                filtered = True
+                break
+        if not filtered:
+            res.append(name)
+    return res

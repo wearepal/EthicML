@@ -8,8 +8,10 @@ from ethicml.algorithms.algorithm import Algorithm
 from ethicml.algorithms.svm import SVM
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.metric import Metric
-from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
-from ethicml.evaluators.per_sensitive_attribute import diff_per_sensitive_attribute
+from ethicml.evaluators.per_sensitive_attribute \
+    import metric_per_sensitive_attribute
+from ethicml.evaluators.per_sensitive_attribute \
+    import diff_per_sensitive_attribute
 from ethicml.metrics.tpr import TPR
 from ethicml.tests.run_algorithm_test import get_train_test
 
@@ -28,7 +30,9 @@ def test_accuracy_per_sens_attr():
     train, test = get_train_test()
     model: Algorithm = SVM()
     predictions: np.array = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
+    acc_per_sens = metric_per_sensitive_attribute(predictions,
+                                                  test,
+                                                  Accuracy())
     assert acc_per_sens == {0: 0.8780487804878049, 1: 0.882051282051282}
 
 
