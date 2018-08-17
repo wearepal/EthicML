@@ -30,7 +30,12 @@ def load_data(dataset: Dataset) -> dict:
 
 def create_data_obj(filepath: str,
                     s_columns: List[str],
-                    y_columns: List[str]) -> Dataset:
+                    y_columns: List[str],
+                    additional_to_drop=None) -> Dataset:
+
+    if additional_to_drop is None:
+        additional_to_drop = []
+
     conf: ConfigurableDataset = ConfigurableDataset()
     conf.set_filename(os.path.basename(filepath))
 
@@ -41,6 +46,8 @@ def create_data_obj(filepath: str,
         columns.remove(s_col)
     for y_col in y_columns:
         columns.remove(y_col)
+    for additional in additional_to_drop:
+        columns.remove(additional)
 
     feat_split: Dict[str, List[str]] = {
         'x': columns,
