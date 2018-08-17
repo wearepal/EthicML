@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.algorithm import Algorithm
+from ethicml.algorithms.logistic_regression import LR
 from ethicml.algorithms.svm import SVM
 from ethicml.data.test import Test
 from ethicml.data.load import load_data
@@ -35,3 +36,15 @@ def test_can_make_predictions():
     predictions: np.array = model.run(train, test)
     assert sum([1 for x in predictions if x == 1]) == 194
     assert sum([1 for x in predictions if x == -1]) == 206
+
+
+def test_lr():
+    train, test = get_train_test()
+
+    model: Algorithm = LR()
+    assert model is not None
+    assert model.get_name() == "Logistic Regression"
+
+    predictions: np.array = model.run(train, test)
+    assert sum([1 for x in predictions if x == 1]) == 199
+    assert sum([1 for x in predictions if x == -1]) == 201

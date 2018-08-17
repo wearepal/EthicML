@@ -69,7 +69,7 @@ def test_race_feature_split():
     assert (48842, 1) == data['y'].shape
 
 
-def test_additional_columns_load_function():
+def test_additional_columns_load():
     data_loc: str = "{}/data/csvs/adult.csv".format(ROOT_DIR)
     data_obj: Dataset = create_data_obj(data_loc,
                                         s_columns=["race_White"],
