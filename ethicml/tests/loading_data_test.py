@@ -27,9 +27,7 @@ def test_load_data():
 
 def test_load_data_as_a_function():
     data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
-    data_obj: Dataset = create_data_obj(data_loc,
-                                        s_columns=["s"],
-                                        y_columns=["y"])
+    data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
     assert data_obj.get_feature_split()['x'] == ['a1', 'a2']
     assert data_obj.get_feature_split()['s'] == ['s']
@@ -39,9 +37,7 @@ def test_load_data_as_a_function():
 
 def test_joining_2_load_functions():
     data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
-    data_obj: Dataset = create_data_obj(data_loc,
-                                        s_columns=["s"],
-                                        y_columns=["y"])
+    data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: Dict[str, pd.DataFrame] = load_data(data_obj)
     assert (2000, 2) == data['x'].shape
     assert (2000, 1) == data['s'].shape

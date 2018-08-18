@@ -126,6 +126,9 @@ class Adult(Dataset):
                          'workclass_State-gov',
                          'workclass_Without-pay']
 
+    def get_dataset_name(self) -> str:
+        return "Adult"
+
     def get_filename(self) -> str:
         return "adult.csv"
 

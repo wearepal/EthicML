@@ -7,6 +7,10 @@ from ethicml.data.dataset import Dataset
 
 
 class Test(Dataset):
+
+    def get_dataset_name(self) -> str:
+        return "Test"
+
     def get_filename(self) -> str:
         return "test.csv"
 

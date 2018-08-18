@@ -31,18 +31,14 @@ def metric_per_sensitive_attribute(
     for y_col in y_columns:
         for s_col in s_columns:
             for unique_s in actual['s'][s_col].unique():
-                actual_y = {
-                    'y': amalgamated[actual['s'][s_col] == unique_s][y_col]
-                }
+                actual_y = {'y': amalgamated[actual['s'][s_col] == unique_s][y_col]}
                 pred_y = amalgamated[actual['s'][s_col] == unique_s]['preds']
-
                 per_sensitive_attr[unique_s] = metric.score(pred_y, actual_y)
 
     return per_sensitive_attr
 
 
-def diff_per_sensitive_attribute(per_sens_res: Dict[int, float]) \
-        -> Dict[str, float]:
+def diff_per_sensitive_attribute(per_sens_res: Dict[int, float]) -> Dict[str, float]:
 
     sens_values = list(per_sens_res.keys())
     diff_per_sens = {}

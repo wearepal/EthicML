@@ -12,9 +12,7 @@ import pandas
 class Metric(ABC):
 
     @abstractmethod
-    def score(self,
-              prediction: numpy.array,
-              actual: Dict[str, pandas.DataFrame]) -> float:
+    def score(self, prediction: numpy.array, actual: Dict[str, pandas.DataFrame]) -> float:
         pass
 
     @abstractmethod

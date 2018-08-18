@@ -8,9 +8,16 @@ from ethicml.data.dataset import Dataset
 
 class ConfigurableDataset(Dataset):
     def __init__(self):
+        self.name: str = "No name assigned."
         self.filename: str = "No filename assigned. " \
                              "Use set_filename(<filename>)"
         self.feature_split: Dict[str, List[str]] = {}
+
+    def get_dataset_name(self) -> str:
+        return self.name
+
+    def set_dataset_name(self, name: str) -> None:
+        self.name = name
 
     def get_filename(self) -> str:
         return self.filename

@@ -11,6 +11,9 @@ from ethicml.algorithms.logistic_regression import LR
 from ethicml.algorithms.svm import SVM
 from ethicml.data.test import Test
 from ethicml.data.load import load_data
+from ethicml.evaluators.evaluate_models import evaluate_models
+from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 
 
@@ -48,3 +51,13 @@ def test_lr():
     predictions: np.array = model.run(train, test)
     assert sum([1 for x in predictions if x == 1]) == 199
     assert sum([1 for x in predictions if x == -1]) == 201
+
+
+def test_run_alg_suite():
+    datasets = [Test()]
+    models = [SVM(), LR()]
+    metrics = [Accuracy()]
+    per_sens_metrics = [Accuracy(), TPR()]
+    result = evaluate_models(datasets, models, metrics, per_sens_metrics)
+
+    result.to_csv("../results/res.csv", index=False)
