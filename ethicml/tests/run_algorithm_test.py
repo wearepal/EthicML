@@ -19,7 +19,7 @@ from ethicml.preprocessing.train_test_split import train_test_split
 
 def get_train_test():
     data: Dict[str, pd.DataFrame] = load_data(Test())
-    train_test: Tuple[pd.DataFrame, pd.DataFrame] = train_test_split(data)
+    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     return train_test
 
 

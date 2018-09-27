@@ -51,6 +51,34 @@ def test_load_adult():
     assert (48842, 1) == data['y'].shape
 
 
+def test_load_adult_explicitly_sex():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Sex"))
+    assert (48842, 102) == data['x'].shape
+    assert (48842, 1) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
+
+
+def test_load_adult_race():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
+    assert (48842, 99) == data['x'].shape
+    assert (48842, 5) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
+
+
+def test_load_adult_race_sex():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race-Sex"))
+    assert (48842, 97) == data['x'].shape
+    assert (48842, 6) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
+
+
+def test_load_adult_nationality():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Nationality"))
+    assert (48842, 63) == data['x'].shape
+    assert (48842, 41) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
+
+
 def test_race_feature_split():
     adult: Adult = Adult()
     adult.set_s(["race_White"])
