@@ -155,3 +155,39 @@ def test_tpr_diff():
     assert tprs == {'s_0': 0.7704918032786885, 's_1': 0.9312977099236641}
     tpr_diff = diff_per_sensitive_attribute(tprs)
     assert tpr_diff["s_0-s_1"] == 0.16080590664497563
+
+
+def test_tpr_diff_non_binary_race():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
+    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    train, test = train_test
+    model: Algorithm = SVM()
+    predictions: np.array = model.run_test(train, test)
+    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    assert TPR().get_name() == "TPR"
+    assert tprs == {'race_Amer-Indian-Eskimo_0': 0.3243589743589744,
+                    'race_Amer-Indian-Eskimo_1': 0.5333333333333333,
+                    'race_Asian-Pac-Islander_0': 0.32316534040671974,
+                    'race_Asian-Pac-Islander_1': 0.3870967741935484,
+                    'race_Black_0': 0.3268971710821733,
+                    'race_Black_1': 0.3046875,
+                    'race_Other_0': 0.325809199318569,
+                    'race_Other_1': 0.2857142857142857,
+                    'race_White_0': 0.3497942386831276,
+                    'race_White_1': 0.3229166666666667}
+    tprs_to_check = {k: tprs[k] for k in ('race_Amer-Indian-Eskimo_1',
+                                          'race_Asian-Pac-Islander_1',
+                                          'race_Black_1',
+                                          'race_Other_1',
+                                          'race_White_1')}
+    tpr_diff = diff_per_sensitive_attribute(tprs_to_check)
+    assert tpr_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.14623655913978495,
+                        'race_Amer-Indian-Eskimo_1-race_Black_1': 0.22864583333333333,
+                        'race_Amer-Indian-Eskimo_1-race_Other_1': 0.24761904761904763,
+                        'race_Amer-Indian-Eskimo_1-race_White_1': 0.21041666666666664,
+                        'race_Asian-Pac-Islander_1-race_Black_1': 0.08240927419354838,
+                        'race_Asian-Pac-Islander_1-race_Other_1': 0.10138248847926268,
+                        'race_Asian-Pac-Islander_1-race_White_1': 0.06418010752688169,
+                        'race_Black_1-race_Other_1': 0.0189732142857143,
+                        'race_Black_1-race_White_1': 0.018229166666666685,
+                        'race_Other_1-race_White_1': 0.03720238095238099}
