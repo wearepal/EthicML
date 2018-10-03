@@ -2,15 +2,16 @@
 Test that we can get some metrics on predictions
 """
 
+from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
-from typing import Dict, Tuple
 
 from ethicml.algorithms.algorithm import Algorithm
 from ethicml.algorithms.svm import SVM
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
 from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.mean_score import MeanScore
 from ethicml.metrics.metric import Metric
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
 from ethicml.evaluators.per_sensitive_attribute import diff_per_sensitive_attribute
@@ -37,7 +38,7 @@ def test_accuracy_per_sens_attr():
     assert acc_per_sens == {'s_0': 0.8780487804878049, 's_1': 0.882051282051282}
 
 
-def test_accuracy_per_sens_attr_non_binary():
+def test_acc_per_sens_attr_non_bin():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Nationality"))
     train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     train, test = train_test
@@ -127,7 +128,7 @@ def test_accuracy_per_sens_attr_non_binary():
                             'native-country_Yugoslavia_1': 0.2857142857142857}
 
 
-def test_accuracy_per_sens_attr_non_binary_race():
+def test_acc_per_sens_attr_race():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
     train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     train, test = train_test
@@ -191,3 +192,50 @@ def test_tpr_diff_non_binary_race():
                         'race_Black_1-race_Other_1': 0.0189732142857143,
                         'race_Black_1-race_White_1': 0.018229166666666685,
                         'race_Other_1-race_White_1': 0.03720238095238099}
+
+
+def test_mean_score_diff():
+    train, test = get_train_test()
+    model: Algorithm = SVM()
+    predictions: np.array = model.run(train, test)
+    mean_scores = metric_per_sensitive_attribute(predictions, test, MeanScore())
+    assert MeanScore().get_name() == "Mean Score"
+    assert mean_scores == {'s_0': -0.43414634146341463, 's_1': 0.39487179487179486}
+    mean_score_diff = diff_per_sensitive_attribute(mean_scores)
+    assert mean_score_diff["s_0-s_1"] == 0.8290181363352095
+
+
+def test_mean_score_diff_race():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
+    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    train, test = train_test
+    model: Algorithm = SVM()
+    predictions: np.array = model.run_test(train, test)
+    mean_scores = metric_per_sensitive_attribute(predictions, test, MeanScore())
+    assert MeanScore().get_name() == "Mean Score"
+    assert mean_scores == {'race_Amer-Indian-Eskimo_0': 0.09816077702004547,
+                           'race_Amer-Indian-Eskimo_1': 0.14285714285714285,
+                           'race_Asian-Pac-Islander_0': 0.09694850603941513,
+                           'race_Asian-Pac-Islander_1': 0.14501510574018128,
+                           'race_Black_0': 0.1039671682626539,
+                           'race_Black_1': 0.05115346038114343,
+                           'race_Other_0': 0.09918464237795438,
+                           'race_Other_1': 0.025,
+                           'race_White_0': 0.07605070046697798,
+                           'race_White_1': 0.1026602176541717}
+    mean_scores_to_check = {k: mean_scores[k] for k in ('race_Amer-Indian-Eskimo_1',
+                                                        'race_Asian-Pac-Islander_1',
+                                                        'race_Black_1',
+                                                        'race_Other_1',
+                                                        'race_White_1')}
+    mean_score_diff = diff_per_sensitive_attribute(mean_scores_to_check)
+    assert mean_score_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.0021579628830384334,
+                               'race_Amer-Indian-Eskimo_1-race_Black_1': 0.09170368247599942,
+                               'race_Amer-Indian-Eskimo_1-race_Other_1': 0.11785714285714285,
+                               'race_Amer-Indian-Eskimo_1-race_White_1': 0.04019692520297115,
+                               'race_Asian-Pac-Islander_1-race_Black_1': 0.09386164535903785,
+                               'race_Asian-Pac-Islander_1-race_Other_1': 0.12001510574018129,
+                               'race_Asian-Pac-Islander_1-race_White_1': 0.04235488808600958,
+                               'race_Black_1-race_Other_1': 0.026153460381143426,
+                               'race_Black_1-race_White_1': 0.051506757273028274,
+                               'race_Other_1-race_White_1': 0.07766021765417169}
