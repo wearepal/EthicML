@@ -22,7 +22,7 @@ from ethicml.tests.run_algorithm_test import get_train_test
 def test_get_acc_of_predictions():
     train, test = get_train_test()
     model: Algorithm = SVM()
-    predictions: np.array = model.run(train, test)
+    predictions: pd.DataFrame = model.run(train, test)
     acc: Metric = Accuracy()
     assert acc.get_name() == "Accuracy"
     score = acc.score(predictions, test)
@@ -32,7 +32,7 @@ def test_get_acc_of_predictions():
 def test_accuracy_per_sens_attr():
     train, test = get_train_test()
     model: Algorithm = SVM()
-    predictions: np.array = model.run(train, test)
+    predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     assert acc_per_sens == {'s_0': 0.8780487804878049, 's_1': 0.882051282051282}
 

@@ -10,11 +10,10 @@ from ethicml.metrics.metric import Metric
 
 
 def metric_per_sensitive_attribute(
-        predictions: np.array,
+        predictions: pd.DataFrame,
         actual: Dict[str, pd.DataFrame],
         metric: Metric) -> Dict[int, float]:
 
-    predictions: pd.DataFrame = pd.DataFrame(predictions, columns=["preds"])
     amalgamated = pd.concat([actual['x'],
                              actual['s'],
                              actual['y'],
@@ -26,15 +25,17 @@ def metric_per_sensitive_attribute(
 
     s_columns: List[str] = [s_col for s_col in actual['s'].columns]
     y_columns: List[str] = [y_col for y_col in actual['y'].columns]
+    pred_column: List[str] = [p_col for p_col in predictions.columns]
     assert len(y_columns) == 1
 
     for y_col in y_columns:
         for s_col in s_columns:
             for unique_s in actual['s'][s_col].unique():
-                actual_y = {'y': amalgamated[actual['s'][s_col] == unique_s][y_col]}
-                pred_y = amalgamated[actual['s'][s_col] == unique_s]['preds']
-                key = s_col + '_' + str(unique_s)
-                per_sensitive_attr[key] = metric.score(pred_y, actual_y)
+                for p_col in pred_column:
+                    actual_y = {'y': amalgamated[actual['s'][s_col] == unique_s][y_col]}
+                    pred_y = amalgamated[actual['s'][s_col] == unique_s][p_col]
+                    key = s_col + '_' + str(unique_s)
+                    per_sensitive_attr[key] = metric.score(pred_y, actual_y)
 
     return per_sensitive_attr
 

@@ -36,9 +36,9 @@ def test_can_make_predictions():
     assert model is not None
     assert model.get_name() == "SVM"
 
-    predictions: np.array = model.run(train, test)
-    assert sum([1 for x in predictions if x == 1]) == 194
-    assert sum([1 for x in predictions if x == -1]) == 206
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values == 194
+    assert predictions[predictions.values == -1].count().values == 206
 
 
 def test_lr():
@@ -49,8 +49,8 @@ def test_lr():
     assert model.get_name() == "Logistic Regression"
 
     predictions: np.array = model.run(train, test)
-    assert sum([1 for x in predictions if x == 1]) == 199
-    assert sum([1 for x in predictions if x == -1]) == 201
+    assert predictions[predictions.values == 1].count().values == 199
+    assert predictions[predictions.values == -1].count().values == 201
 
 
 def test_run_alg_suite():

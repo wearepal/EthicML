@@ -12,7 +12,7 @@ from sklearn.metrics import confusion_matrix
 from ethicml.metrics.metric import Metric
 
 
-class TPR(Metric):
+class ProbPos(Metric):
     def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
         actual_y = actual['y'].values.ravel()
         labels: np.array = np.array([-1,1])#np.unique(actual_y)
@@ -20,9 +20,9 @@ class TPR(Metric):
                                                  y_pred=prediction,
                                                  labels=labels)
         results: Tuple[int, int, int, int] = conf_matr.ravel()
-        _, _, f_neg, t_pos = results
+        t_neg, f_pos, f_neg, t_pos = results
 
-        return t_pos/(t_pos+f_neg)
+        return (t_pos+f_pos)/prediction.size
 
     def get_name(self) -> str:
-        return "TPR"
+        return "prob_pos"
