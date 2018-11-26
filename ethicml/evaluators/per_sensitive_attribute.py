@@ -12,7 +12,7 @@ from ethicml.metrics.metric import Metric
 def metric_per_sensitive_attribute(
         predictions: pd.DataFrame,
         actual: Dict[str, pd.DataFrame],
-        metric: Metric) -> Dict[int, float]:
+        metric: Metric) -> Dict[str, float]:
 
     amalgamated = pd.concat([actual['x'],
                              actual['s'],
@@ -21,7 +21,7 @@ def metric_per_sensitive_attribute(
 
     assert amalgamated.shape[0] == actual['x'].shape[0]
 
-    per_sensitive_attr: Dict[int, float] = {}
+    per_sensitive_attr: Dict[str, float] = {}
 
     s_columns: List[str] = [s_col for s_col in actual['s'].columns]
     y_columns: List[str] = [y_col for y_col in actual['y'].columns]
