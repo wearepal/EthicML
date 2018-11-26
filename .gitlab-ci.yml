@@ -1,9 +1,20 @@
-py36_nose:
+stages:
+  - test
+  - lint
+
+py36:
   image: python:3.6
+  stage: test
   script:
     - apt-get update -q -y
-    - pip install -r requirements.txt
-    - python -m pytest tests/
+  - pip install -r requirements.txt
+  - python -m pytest tests/
+
+pylint:
+  image: python:3.6
+  stage: lint
+  script:
+    - pip install pylint
     - pylint --rcfile=.pylintrc --output-format=text ethicml/ | tee pylint.txt
     - score=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint.txt)
     - echo "Pylint score was $score"
