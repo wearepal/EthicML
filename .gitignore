@@ -9,3 +9,6 @@ ethicml/data/.DS_Store
 ethicml/data/csvs/.DS_Store
 ethicml/tests/~/
 ethicml/results/*
+.cache/
+__pycache__/
+tests/__pycache__/
