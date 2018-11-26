@@ -7,7 +7,7 @@ from typing import List, Dict, Tuple
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.algorithm import Algorithm
+from ethicml.algorithms.algorithm_base import Algorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
@@ -33,7 +33,7 @@ def evaluate_models(datasets: List[Dataset], models: List[Algorithm],
 
             predictions: np.array = model.run(train, test)
 
-            key_2 = model.get_name()
+            key_2 = model.name
             res[key_1][key_2] = {}
 
             for metric in metrics:

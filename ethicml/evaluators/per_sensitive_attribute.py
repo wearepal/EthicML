@@ -3,9 +3,7 @@ Evaluator for a metric per sensitive attribute class
 """
 
 from typing import Dict, List
-import numpy as np
 import pandas as pd
-
 from ethicml.metrics.metric import Metric
 
 
@@ -43,6 +41,7 @@ def metric_per_sensitive_attribute(
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
 
     sens_values = list(per_sens_res.keys())
+    sens_values.sort()
     diff_per_sens = {}
 
     for i, _ in enumerate(sens_values):

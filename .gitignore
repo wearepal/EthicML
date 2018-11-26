@@ -2,3 +2,10 @@
 /ethicml/tests/.pytest_cache/
 ethicml/__pycache__/
 ethicml/data/__pycache__/
+ethicml/tests/.cache/*
+.DS_Store
+ethicml/.DS_Store
+ethicml/data/.DS_Store
+ethicml/data/csvs/.DS_Store
+ethicml/tests/~/
+ethicml/results/*

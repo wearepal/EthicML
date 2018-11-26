@@ -2,20 +2,20 @@
 Wrapper for SKLearn implementation of SVM
 """
 
-from typing import Dict, Tuple
+from typing import Dict
 import pandas as pd
-import numpy as np
 
 from sklearn.svm import SVC
-from ethicml.algorithms.algorithm import Algorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
-class SVM(Algorithm):
+class SVM(InAlgorithm):
 
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
-        clf = SVC(kernel='linear')
+        clf = SVC()
         clf.fit(train['x'], train['y'].values.ravel())
         return pd.DataFrame(clf.predict(test['x']), columns=["preds"])
 
-    def get_name(self) -> str:
+    @property
+    def name(self) -> str:
         return "SVM"

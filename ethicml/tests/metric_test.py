@@ -6,15 +6,14 @@ from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from ethicml.algorithms.algorithm import Algorithm
-from ethicml.algorithms.svm import SVM
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
+from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
 from ethicml.metrics.accuracy import Accuracy
-from ethicml.metrics.mean_score import MeanScore
 from ethicml.metrics.metric import Metric
-from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
-from ethicml.evaluators.per_sensitive_attribute import diff_per_sensitive_attribute
+from ethicml.metrics.prob_pos import ProbPos
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.tests.run_algorithm_test import get_train_test
@@ -22,220 +21,182 @@ from ethicml.tests.run_algorithm_test import get_train_test
 
 def test_get_acc_of_predictions():
     train, test = get_train_test()
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     acc: Metric = Accuracy()
     assert acc.get_name() == "Accuracy"
     score = acc.score(predictions, test)
-    assert score == 0.88
+    assert score == 0.89
 
 
 def test_accuracy_per_sens_attr():
     train, test = get_train_test()
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert acc_per_sens == {'s_0': 0.8780487804878049, 's_1': 0.882051282051282}
+    assert acc_per_sens == {'s_0': 0.905, 's_1': 0.875}
 
 
-def test_acc_per_sens_attr_non_bin():
+def test_probpos_per_sens_attr():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
+    assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
+
+
+def test_acc_per_nonbinary_sens():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Nationality"))
     train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     train, test = train_test
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert acc_per_sens == {'native-country_Cambodia_0': 0.8053251408090117,
-                            'native-country_Cambodia_1': 0.75,
-                            'native-country_Canada_0': 0.8057494866529774,
-                            'native-country_Canada_1': 0.6551724137931034,
-                            'native-country_China_0': 0.805441478439425,
-                            'native-country_China_1': 0.7586206896551724,
-                            'native-country_Columbia_0': 0.8050456363449903,
-                            'native-country_Columbia_1': 0.9444444444444444,
-                            'native-country_Cuba_0': 0.8052161412876065,
+    assert acc_per_sens == {'native-country_Cambodia_0': 0.8019862803317293,
+                            'native-country_Cambodia_1': 0.5,
+                            'native-country_Canada_0': 0.8023028683047189,
+                            'native-country_Canada_1': 0.7142857142857143,
+                            'native-country_China_0': 0.8021763679293707,
+                            'native-country_China_1': 0.7142857142857143,
+                            'native-country_Columbia_0': 0.8017435897435897,
+                            'native-country_Columbia_1': 0.8947368421052632,
+                            'native-country_Cuba_0': 0.8018471010774756,
                             'native-country_Cuba_1': 0.8333333333333334,
-                            'native-country_Dominican-Republic_0': 0.8049256028732683,
-                            'native-country_Dominican-Republic_1': 0.9583333333333334,
-                            'native-country_Ecuador_0': 0.8052480524805248,
-                            'native-country_Ecuador_1': 0.8461538461538461,
-                            'native-country_El-Salvador_0': 0.8047853768741015,
-                            'native-country_El-Salvador_1': 0.967741935483871,
-                            'native-country_England_0': 0.8053732567678425,
-                            'native-country_England_1': 0.7647058823529411,
-                            'native-country_France_0': 0.8056779747873322,
-                            'native-country_France_1': 0.5,
-                            'native-country_Germany_0': 0.8056584362139918,
-                            'native-country_Germany_1': 0.7346938775510204,
-                            'native-country_Greece_0': 0.8052027857435478,
-                            'native-country_Greece_1': 1.0,
-                            'native-country_Guatemala_0': 0.8050856146826617,
-                            'native-country_Guatemala_1': 0.9375,
-                            'native-country_Haiti_0': 0.8052081197457454,
-                            'native-country_Haiti_1': 0.8666666666666667,
-                            'native-country_Holand-Netherlands_0': 0.8053024874603337,
-                            'native-country_Honduras_0': 0.8051828331455495,
+                            'native-country_Dominican-Republic_0': 0.8016003282724662,
+                            'native-country_Dominican-Republic_1': 0.9523809523809523,
+                            'native-country_Ecuador_0': 0.8018848596599057,
+                            'native-country_Ecuador_1': 0.8571428571428571,
+                            'native-country_El-Salvador_0': 0.8016215106732348,
+                            'native-country_El-Salvador_1': 0.92,
+                            'native-country_England_0': 0.8022587268993839,
+                            'native-country_England_1': 0.6896551724137931,
+                            'native-country_France_0': 0.8019670115766827,
+                            'native-country_France_1': 0.75,
+                            'native-country_Germany_0': 0.8018916418217333,
+                            'native-country_Germany_1': 0.8095238095238095,
+                            'native-country_Greece_0': 0.8021730217302173,
+                            'native-country_Greece_1': 0.6153846153846154,
+                            'native-country_Guatemala_0': 0.801742696053306,
+                            'native-country_Guatemala_1': 0.9285714285714286,
+                            'native-country_Haiti_0': 0.8018461538461539,
+                            'native-country_Haiti_1': 0.8421052631578947,
+                            'native-country_Holand-Netherlands_0': 0.8019244549083837,
+                            'native-country_Honduras_0': 0.8018230233510856,
                             'native-country_Honduras_1': 1.0,
-                            'native-country_Hong_0': 0.8052227342549924,
-                            'native-country_Hong_1': 1.0,
-                            'native-country_Hungary_0': 0.8052626190232415,
+                            'native-country_Hong_0': 0.8019872976849006,
+                            'native-country_Hong_1': 0.7142857142857143,
+                            'native-country_Hungary_0': 0.8018230233510856,
                             'native-country_Hungary_1': 1.0,
-                            'native-country_India_0': 0.8058521560574948,
-                            'native-country_India_1': 0.6206896551724138,
-                            'native-country_Iran_0': 0.8053478127241062,
-                            'native-country_Iran_1': 0.75,
-                            'native-country_Ireland_0': 0.8051828331455495,
-                            'native-country_Ireland_1': 1.0,
-                            'native-country_Italy_0': 0.8052961100277122,
-                            'native-country_Italy_1': 0.8076923076923077,
-                            'native-country_Jamaica_0': 0.8049856380796061,
-                            'native-country_Jamaica_1': 0.9523809523809523,
-                            'native-country_Japan_0': 0.8052134646962233,
-                            'native-country_Japan_1': 0.84,
-                            'native-country_Laos_0': 0.8052426786811386,
+                            'native-country_India_0': 0.8019924001232412,
+                            'native-country_India_1': 0.78125,
+                            'native-country_Iran_0': 0.8018858255611356,
+                            'native-country_Iran_1': 0.8333333333333334,
+                            'native-country_Ireland_0': 0.8020075796374065,
+                            'native-country_Ireland_1': 0.6666666666666666,
+                            'native-country_Italy_0': 0.8018867924528302,
+                            'native-country_Italy_1': 0.8235294117647058,
+                            'native-country_Jamaica_0': 0.8019080837094789,
+                            'native-country_Jamaica_1': 0.8095238095238095,
+                            'native-country_Japan_0': 0.8020512820512821,
+                            'native-country_Japan_1': 0.7368421052631579,
+                            'native-country_Laos_0': 0.801863608437436,
                             'native-country_Laos_1': 1.0,
-                            'native-country_Mexico_0': 0.8024008350730689,
-                            'native-country_Mexico_1': 0.9523809523809523,
-                            'native-country_Nicaragua_0': 0.8051828331455495,
-                            'native-country_Nicaragua_1': 1.0,
-                            'native-country_Outlying-US(Guam-USVI-etc)_0': 0.8052426786811386,
+                            'native-country_Mexico_0': 0.7986605274173294,
+                            'native-country_Mexico_1': 0.9483568075117371,
+                            'native-country_Nicaragua_0': 0.8018645630570638,
+                            'native-country_Nicaragua_1': 0.875,
+                            'native-country_Outlying-US(Guam-USVI-etc)_0': 0.8018838947476196,
                             'native-country_Outlying-US(Guam-USVI-etc)_1': 1.0,
-                            'native-country_Peru_0': 0.8051429156848684,
-                            'native-country_Peru_1': 1.0,
-                            'native-country_Philippines_0': 0.8050113425448546,
-                            'native-country_Philippines_1': 0.8450704225352113,
-                            'native-country_Poland_0': 0.8053133654733818,
-                            'native-country_Poland_1': 0.8,
-                            'native-country_Portugal_0': 0.8052707136997539,
-                            'native-country_Portugal_1': 0.8235294117647058,
-                            'native-country_Puerto-Rico_0': 0.804830421377184,
-                            'native-country_Puerto-Rico_1': 0.9230769230769231,
-                            'native-country_Scotland_0': 0.8053052027857436,
-                            'native-country_Scotland_1': 0.8,
-                            'native-country_South_0': 0.8049856380796061,
-                            'native-country_South_1': 0.9523809523809523,
-                            'native-country_Taiwan_0': 0.8053904488624718,
-                            'native-country_Taiwan_1': 0.7272727272727273,
-                            'native-country_Thailand_0': 0.8053052027857436,
-                            'native-country_Thailand_1': 0.8,
-                            'native-country_Trinadad&Tobago_0': 0.8051828331455495,
-                            'native-country_Trinadad&Tobago_1': 1.0,
-                            'native-country_United-States_0': 0.8597914252607184,
-                            'native-country_United-States_1': 0.8000224567707164,
-                            'native-country_Vietnam_0': 0.8049506984387839,
-                            'native-country_Vietnam_1': 0.9090909090909091,
-                            'native-country_Yugoslavia_0': 0.8056750665847162,
-                            'native-country_Yugoslavia_1': 0.2857142857142857}
+                            'native-country_Peru_0': 0.8019061283049805,
+                            'native-country_Peru_1': 0.8181818181818182,
+                            'native-country_Philippines_0': 0.8024716786817714,
+                            'native-country_Philippines_1': 0.711864406779661,
+                            'native-country_Poland_0': 0.8019080837094789,
+                            'native-country_Poland_1': 0.8095238095238095,
+                            'native-country_Portugal_0': 0.8019274143940948,
+                            'native-country_Portugal_1': 0.8,
+                            'native-country_Puerto-Rico_0': 0.8011719954765086,
+                            'native-country_Puerto-Rico_1': 0.9761904761904762,
+                            'native-country_Scotland_0': 0.8018433179723502,
+                            'native-country_Scotland_1': 1.0,
+                            'native-country_South_0': 0.8018258282900811,
+                            'native-country_South_1': 0.85,
+                            'native-country_Taiwan_0': 0.8018664752333095,
+                            'native-country_Taiwan_1': 0.8333333333333334,
+                            'native-country_Thailand_0': 0.8021516393442623,
+                            'native-country_Thailand_1': 0.5555555555555556,
+                            'native-country_Trinadad&Tobago_0': 0.8020278574354772,
+                            'native-country_Trinadad&Tobago_1': 0.6,
+                            'native-country_United-States_0': 0.8402298850574713,
+                            'native-country_United-States_1': 0.7981795707382852,
+                            'native-country_Vietnam_0': 0.8017232536670428,
+                            'native-country_Vietnam_1': 0.9,
+                            'native-country_Yugoslavia_0': 0.802068400573418,
+                            'native-country_Yugoslavia_1': 0.3333333333333333}
 
 
-def test_acc_per_sens_attr_race():
+def test_acc_per_race():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
     train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     train, test = train_test
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert acc_per_sens == {'race_Amer-Indian-Eskimo_0': 0.8169043190741889,
-                            'race_Amer-Indian-Eskimo_1': 0.8681318681318682,
-                            'race_Asian-Pac-Islander_0': 0.8182877728332274,
-                            'race_Asian-Pac-Islander_1': 0.7915407854984894,
-                            'race_Black_0': 0.8081395348837209,
-                            'race_Black_1': 0.8986960882647944,
-                            'race_Other_0': 0.8163897203013727,
-                            'race_Other_1': 0.9375,
-                            'race_White_0': 0.875250166777852,
-                            'race_White_1': 0.8068923821039903}
+    assert acc_per_sens == {'race_Amer-Indian-Eskimo_0': 0.806688755435908,
+                            'race_Amer-Indian-Eskimo_1': 0.8738738738738738,
+                            'race_Asian-Pac-Islander_0': 0.8074928563869193,
+                            'race_Asian-Pac-Islander_1': 0.80625,
+                            'race_Black_0': 0.797752808988764,
+                            'race_Black_1': 0.8966597077244259,
+                            'race_Other_0': 00.8066281230642164,
+                            'race_Other_1': 0.9036144578313253,
+                            'race_White_0': 0.8756793478260869,
+                            'race_White_1': 0.7953477160419429}
 
 
 def test_tpr_diff():
     train, test = get_train_test()
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: np.array = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().get_name() == "TPR"
-    assert tprs == {'s_0': 0.7704918032786885, 's_1': 0.9312977099236641}
+    assert tprs == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
     tpr_diff = diff_per_sensitive_attribute(tprs)
-    assert tpr_diff["s_0-s_1"] == 0.16080590664497563
+    print(tpr_diff)
+    assert tpr_diff["s_0-s_1"] == 0.04366767983789255
 
 
 def test_tpr_diff_non_binary_race():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
     train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
     train, test = train_test
-    model: Algorithm = SVM()
+    model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().get_name() == "TPR"
-    assert tprs == {'race_Amer-Indian-Eskimo_0': 0.3243589743589744,
-                    'race_Amer-Indian-Eskimo_1': 0.5333333333333333,
-                    'race_Asian-Pac-Islander_0': 0.32316534040671974,
-                    'race_Asian-Pac-Islander_1': 0.3870967741935484,
-                    'race_Black_0': 0.3268971710821733,
-                    'race_Black_1': 0.3046875,
-                    'race_Other_0': 0.325809199318569,
-                    'race_Other_1': 0.2857142857142857,
-                    'race_White_0': 0.3497942386831276,
-                    'race_White_1': 0.3229166666666667}
+    assert tprs == {'race_Amer-Indian-Eskimo_0': 0.2997830802603037,
+                    'race_Amer-Indian-Eskimo_1': 0.15384615384615385,
+                    'race_Asian-Pac-Islander_0': 0.2956171735241503,
+                    'race_Asian-Pac-Islander_1': 0.3902439024390244,
+                    'race_Black_0': 0.30127041742286753,
+                    'race_Black_1': 0.2543859649122807,
+                    'race_Other_0': 0.2989601386481802,
+                    'race_Other_1': 0.3,
+                    'race_White_0': 0.3013698630136986,
+                    'race_White_1': 0.29871367317770364}
     tprs_to_check = {k: tprs[k] for k in ('race_Amer-Indian-Eskimo_1',
                                           'race_Asian-Pac-Islander_1',
                                           'race_Black_1',
                                           'race_Other_1',
                                           'race_White_1')}
     tpr_diff = diff_per_sensitive_attribute(tprs_to_check)
-    assert tpr_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.14623655913978495,
-                        'race_Amer-Indian-Eskimo_1-race_Black_1': 0.22864583333333333,
-                        'race_Amer-Indian-Eskimo_1-race_Other_1': 0.24761904761904763,
-                        'race_Amer-Indian-Eskimo_1-race_White_1': 0.21041666666666664,
-                        'race_Asian-Pac-Islander_1-race_Black_1': 0.08240927419354838,
-                        'race_Asian-Pac-Islander_1-race_Other_1': 0.10138248847926268,
-                        'race_Asian-Pac-Islander_1-race_White_1': 0.06418010752688169,
-                        'race_Black_1-race_Other_1': 0.0189732142857143,
-                        'race_Black_1-race_White_1': 0.018229166666666685,
-                        'race_Other_1-race_White_1': 0.03720238095238099}
-
-
-def test_mean_score_diff():
-    train, test = get_train_test()
-    model: Algorithm = SVM()
-    predictions: np.array = model.run(train, test)
-    mean_scores = metric_per_sensitive_attribute(predictions, test, MeanScore())
-    assert MeanScore().get_name() == "Mean Score"
-    assert mean_scores == {'s_0': -0.43414634146341463, 's_1': 0.39487179487179486}
-    mean_score_diff = diff_per_sensitive_attribute(mean_scores)
-    assert mean_score_diff["s_0-s_1"] == 0.8290181363352095
-
-
-def test_mean_score_diff_race():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
-    train, test = train_test
-    model: Algorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
-    mean_scores = metric_per_sensitive_attribute(predictions, test, MeanScore())
-    assert MeanScore().get_name() == "Mean Score"
-    assert mean_scores == {'race_Amer-Indian-Eskimo_0': 0.09816077702004547,
-                           'race_Amer-Indian-Eskimo_1': 0.14285714285714285,
-                           'race_Asian-Pac-Islander_0': 0.09694850603941513,
-                           'race_Asian-Pac-Islander_1': 0.14501510574018128,
-                           'race_Black_0': 0.1039671682626539,
-                           'race_Black_1': 0.05115346038114343,
-                           'race_Other_0': 0.09918464237795438,
-                           'race_Other_1': 0.025,
-                           'race_White_0': 0.07605070046697798,
-                           'race_White_1': 0.1026602176541717}
-    mean_scores_to_check = {k: mean_scores[k] for k in ('race_Amer-Indian-Eskimo_1',
-                                                        'race_Asian-Pac-Islander_1',
-                                                        'race_Black_1',
-                                                        'race_Other_1',
-                                                        'race_White_1')}
-    mean_score_diff = diff_per_sensitive_attribute(mean_scores_to_check)
-    assert mean_score_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.0021579628830384334,
-                               'race_Amer-Indian-Eskimo_1-race_Black_1': 0.09170368247599942,
-                               'race_Amer-Indian-Eskimo_1-race_Other_1': 0.11785714285714285,
-                               'race_Amer-Indian-Eskimo_1-race_White_1': 0.04019692520297115,
-                               'race_Asian-Pac-Islander_1-race_Black_1': 0.09386164535903785,
-                               'race_Asian-Pac-Islander_1-race_Other_1': 0.12001510574018129,
-                               'race_Asian-Pac-Islander_1-race_White_1': 0.04235488808600958,
-                               'race_Black_1-race_Other_1': 0.026153460381143426,
-                               'race_Black_1-race_White_1': 0.051506757273028274,
-                               'race_Other_1-race_White_1': 0.07766021765417169}
+    assert tpr_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.23639774859287055,
+                        'race_Amer-Indian-Eskimo_1-race_Black_1': 0.10053981106612686,
+                        'race_Amer-Indian-Eskimo_1-race_Other_1': 0.14615384615384613,
+                        'race_Amer-Indian-Eskimo_1-race_White_1': 0.1448675193315498,
+                        'race_Asian-Pac-Islander_1-race_Black_1': 0.1358579375267437,
+                        'race_Asian-Pac-Islander_1-race_Other_1': 0.09024390243902441,
+                        'race_Asian-Pac-Islander_1-race_White_1': 0.09153022926132076,
+                        'race_Black_1-race_Other_1': 0.045614035087719274,
+                        'race_Black_1-race_White_1': 0.04432770826542293,
+                        'race_Other_1-race_White_1': 0.0012863268222963464}

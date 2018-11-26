@@ -6,8 +6,6 @@ from typing import Dict
 from sklearn.metrics import accuracy_score
 
 import pandas as pd
-import numpy as np
-
 from ethicml.metrics.metric import Metric
 
 

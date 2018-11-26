@@ -7,10 +7,10 @@ from numpy.testing import assert_array_equal
 import pandas as pd
 
 
-def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage, random_seed) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     train_test: Tuple[pd.DataFrame, pd.DataFrame] = \
-        np.split(dataframe.sample(frac=1, random_state=2).reset_index(drop=True),
+        np.split(dataframe.sample(frac=1, random_state=random_seed).reset_index(drop=True),
                  [int(train_percentage * len(dataframe))])
 
     assert isinstance(train_test[0], pd.DataFrame)
@@ -23,7 +23,8 @@ def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage) -> Tuple[pd.D
 
 
 def train_test_split(data: Dict[str, pd.DataFrame],
-                     train_percentage: float = 0.8) -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
+                     train_percentage: float = 0.8,
+                     random_seed: int = 0) -> Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]:
     x_columns: List[str] = [col for col in data['x'].columns]
     s_columns: List[str] = [col for col in data['s'].columns]
     y_columns: List[str] = [col for col in data['y'].columns]
@@ -33,8 +34,9 @@ def train_test_split(data: Dict[str, pd.DataFrame],
 
     all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 
-    np.random.seed(0)
-    all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = call_numpy_to_split(all_data, train_percentage)
+    all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = call_numpy_to_split(all_data,
+                                                                                 train_percentage,
+                                                                                 random_seed=random_seed)
 
     all_data_train, all_data_test = all_data_train_test
 
