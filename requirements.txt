@@ -1,0 +1,5 @@
+torch==0.4.1
+typing==3.6.2
+numpy==1.14.2
+pandas==0.22.0
+scikit_learn==0.20.1
