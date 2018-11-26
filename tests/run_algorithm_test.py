@@ -1,7 +1,7 @@
 """
 Test that an algorithm can run against some data
 """
-
+import os
 from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
@@ -96,4 +96,7 @@ def test_run_alg_suite():
     per_sens_metrics = [Accuracy(), TPR()]
     result = evaluate_models(datasets, models, metrics, per_sens_metrics)
 
+    outdir = '../results'
+    if not os.path.exists(outdir):
+        os.mkdir(outdir)
     result.to_csv("../results/res.csv", index=False)
