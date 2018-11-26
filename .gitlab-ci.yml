@@ -4,11 +4,13 @@ stages:
   - test
   - lint
 
+before_script:
+  - apt-get update -q -y
+  - pip install -r requirements.txt
+
 py36:
   stage: test
   script:
-    - apt-get update -q -y
-    - pip install -r requirements.txt
     - python -m pytest tests/
 
 pylint:
