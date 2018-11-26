@@ -1,17 +1,17 @@
+image: python:3.6
+
 stages:
   - test
   - lint
 
 py36:
-  image: python:3.6
   stage: test
   script:
     - apt-get update -q -y
-  - pip install -r requirements.txt
-  - python -m pytest tests/
+    - pip install -r requirements.txt
+    - python -m pytest tests/
 
 pylint:
-  image: python:3.6
   stage: lint
   script:
     - pip install pylint
