@@ -15,5 +15,6 @@ class ProbPos(Metric):
 
         return (t_pos+f_pos)/prediction.size
 
-    def get_name(self) -> str:
+    @property
+    def name(self) -> str:
         return "prob_pos"

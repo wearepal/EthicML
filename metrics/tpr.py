@@ -16,5 +16,6 @@ class TPR(Metric):
 
         return t_pos/(t_pos+f_neg)
 
-    def get_name(self) -> str:
+    @property
+    def name(self) -> str:
         return "TPR"

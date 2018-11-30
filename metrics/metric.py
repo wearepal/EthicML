@@ -15,6 +15,7 @@ class Metric(ABC):
     def score(self, prediction: numpy.array, actual: Dict[str, pandas.DataFrame]) -> float:
         pass
 
+    @property
     @abstractmethod
-    def get_name(self) -> str:
-        pass
+    def name(self) -> str:
+        raise NotImplementedError()
