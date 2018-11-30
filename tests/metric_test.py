@@ -13,6 +13,7 @@ from data.load import load_data
 from evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
 from metrics.accuracy import Accuracy
 from metrics.metric import Metric
+from metrics.normalized_mutual_information import NMI
 from metrics.prob_pos import ProbPos
 from metrics.tpr import TPR
 from preprocessing.train_test_split import train_test_split
@@ -24,7 +25,7 @@ def test_get_acc_of_predictions():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     acc: Metric = Accuracy()
-    assert acc.get_name() == "Accuracy"
+    assert acc.name == "Accuracy"
     score = acc.score(predictions, test)
     assert score == 0.89
 
@@ -159,11 +160,69 @@ def test_tpr_diff():
     model: InAlgorithm = SVM()
     predictions: np.array = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
-    assert TPR().get_name() == "TPR"
+    assert TPR().name == "TPR"
     assert tprs == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
     tpr_diff = diff_per_sensitive_attribute(tprs)
     print(tpr_diff)
     assert tpr_diff["s_0-s_1"] == 0.04366767983789255
+
+
+def test_get_nmi_of_predictions():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    nmi: Metric = NMI()
+    assert nmi.name == "NMI"
+    score = nmi.score(predictions, test)
+    assert score == 0.5033012517022314
+
+
+def test_nmi_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    nmis = metric_per_sensitive_attribute(predictions, test, NMI())
+    assert NMI().name == "NMI"
+    assert nmis == {'s_0': 0.5216526052290117, 's_1': 0.4172930822875038}
+    nmi_diff = diff_per_sensitive_attribute(nmis)
+    print(nmi_diff)
+    assert nmi_diff["s_0-s_1"] == 0.10435952294150791
+
+
+def test_nmi_diff_non_binary_race():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
+    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = SVM()
+    predictions: np.array = model.run_test(train, test)
+    nmis = metric_per_sensitive_attribute(predictions, test, NMI())
+    assert NMI().name == "NMI"
+    assert nmis == {'race_Amer-Indian-Eskimo_0': 0.1438747853653249,
+                    'race_Amer-Indian-Eskimo_1': 0.04870227433275973,
+                    'race_Asian-Pac-Islander_0': 0.14246092044155623,
+                    'race_Asian-Pac-Islander_1': 0.16851262040296772,
+                    'race_Black_0': 0.13991195677147597,
+                    'race_Black_1': 0.1597081623889905,
+                    'race_Other_0': 0.14295105304509806,
+                    'race_Other_1': 0.20971324033487476,
+                    'race_White_0': 0.16907143394339794,
+                    'race_White_1': 0.13865653944773082}
+    nmis_to_check = {k: nmis[k] for k in ('race_Amer-Indian-Eskimo_1',
+                                          'race_Asian-Pac-Islander_1',
+                                          'race_Black_1',
+                                          'race_Other_1',
+                                          'race_White_1')}
+    nmi_diff = diff_per_sensitive_attribute(nmis_to_check)
+    assert nmi_diff == {'race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1': 0.11981034607020799,
+                        'race_Amer-Indian-Eskimo_1-race_Black_1': 0.11100588805623077,
+                        'race_Amer-Indian-Eskimo_1-race_Other_1': 0.16101096600211504,
+                        'race_Amer-Indian-Eskimo_1-race_White_1': 0.0899542651149711,
+                        'race_Asian-Pac-Islander_1-race_Black_1': 0.008804458013977223,
+                        'race_Asian-Pac-Islander_1-race_Other_1': 0.041200619931907045,
+                        'race_Asian-Pac-Islander_1-race_White_1': 0.029856080955236897,
+                        'race_Black_1-race_Other_1': 0.05000507794588427,
+                        'race_Black_1-race_White_1': 0.021051622941259673,
+                        'race_Other_1-race_White_1': 0.07105670088714394}
 
 
 def test_tpr_diff_non_binary_race():
@@ -173,7 +232,7 @@ def test_tpr_diff_non_binary_race():
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
-    assert TPR().get_name() == "TPR"
+    assert TPR().name == "TPR"
     assert tprs == {'race_Amer-Indian-Eskimo_0': 0.2997830802603037,
                     'race_Amer-Indian-Eskimo_1': 0.15384615384615385,
                     'race_Asian-Pac-Islander_0': 0.2956171735241503,

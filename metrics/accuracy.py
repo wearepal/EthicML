@@ -13,5 +13,6 @@ class Accuracy(Metric):
         actual_y = actual['y'].values.ravel()
         return accuracy_score(actual_y, prediction)
 
-    def get_name(self) -> str:
+    @property
+    def name(self) -> str:
         return "Accuracy"

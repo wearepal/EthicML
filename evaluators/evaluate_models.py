@@ -35,9 +35,9 @@ def evaluate_models(datasets: List[Dataset], models: List[Algorithm],
             res[key_1][key_2] = {}
 
             for metric in metrics:
-                res[key_1][key_2][metric.get_name()] = metric.score(predictions, test)
+                res[key_1][key_2][metric.name] = metric.score(predictions, test)
 
             for metric in per_sens_metrics:
-                res[key_1][key_2][metric.get_name()] = metric_per_sensitive_attribute(predictions, test, metric)
+                res[key_1][key_2][metric.name] = metric_per_sensitive_attribute(predictions, test, metric)
 
     return pd.DataFrame.from_dict(res)
