@@ -5,3 +5,4 @@ pandas==0.22.0
 scikit_learn==0.20.1
 pytest==3.3.2
 pylint==1.8.2
+pytest-cov==2.6.0
