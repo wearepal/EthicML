@@ -12,3 +12,4 @@ tests/__pycache__/
 tests/.cache/*
 tests/.pytest_cache/
 tests/~/
+*.egg-info

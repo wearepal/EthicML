@@ -6,17 +6,17 @@ from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from algorithms.inprocess.in_algorithm import InAlgorithm
-from algorithms.inprocess.svm import SVM
-from data.adult import Adult
-from data.load import load_data
-from evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
-from metrics.accuracy import Accuracy
-from metrics.metric import Metric
-from metrics.normalized_mutual_information import NMI
-from metrics.prob_pos import ProbPos
-from metrics.tpr import TPR
-from preprocessing.train_test_split import train_test_split
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.data.adult import Adult
+from ethicml.data.load import load_data
+from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
+from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.metric import Metric
+from ethicml.metrics.normalized_mutual_information import NMI
+from ethicml.metrics.prob_pos import ProbPos
+from ethicml.metrics.tpr import TPR
+from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
 
