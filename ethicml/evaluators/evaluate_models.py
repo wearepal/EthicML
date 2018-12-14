@@ -5,12 +5,13 @@ Runs given metrics on given algorithms for given datasets
 from typing import List, Dict, Tuple
 import pandas as pd
 import numpy as np
+
 from algorithms.algorithm_base import Algorithm
 from data.dataset import Dataset
 from data.load import load_data
-from evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
-from metrics.metric import Metric
-from preprocessing.train_test_split import train_test_split
+from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
+from ethicml.metrics.metric import Metric
+from ethicml.preprocessing.train_test_split import train_test_split
 
 
 def evaluate_models(datasets: List[Dataset], models: List[Algorithm],

@@ -4,7 +4,8 @@ Evaluator for a metric per sensitive attribute class
 
 from typing import Dict, List
 import pandas as pd
-from metrics.metric import Metric
+
+from ethicml.metrics.metric import Metric
 
 
 def metric_per_sensitive_attribute(

@@ -5,7 +5,8 @@ For assessing accuracy
 from typing import Dict
 from sklearn.metrics import accuracy_score
 import pandas as pd
-from metrics.metric import Metric
+
+from ethicml.metrics.metric import Metric
 
 
 class Accuracy(Metric):

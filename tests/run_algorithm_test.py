@@ -6,18 +6,17 @@ from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
 
-
 from algorithms.inprocess.in_algorithm import InAlgorithm
 from algorithms.inprocess.logistic_regression import LR
 from algorithms.inprocess.svm import SVM
 from algorithms.preprocess.beutel import Beutel
 from algorithms.utils import make_dict
-from data.test import Test
 from data.load import load_data
-from evaluators.evaluate_models import evaluate_models
-from metrics.accuracy import Accuracy
-from metrics.tpr import TPR
-from preprocessing.train_test_split import train_test_split
+from data.test import Test
+from ethicml.evaluators.evaluate_models import evaluate_models
+from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.tpr import TPR
+from ethicml.preprocessing.train_test_split import train_test_split
 
 
 def get_train_test():

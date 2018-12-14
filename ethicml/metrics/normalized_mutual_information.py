@@ -6,7 +6,8 @@ from typing import Dict
 import pandas as pd
 
 from sklearn.metrics import normalized_mutual_info_score as nmis
-from metrics.metric import Metric
+
+from ethicml.metrics.metric import Metric
 
 
 class NMI(Metric):

@@ -5,6 +5,7 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from typing import Dict, Tuple
 import pandas as pd
+
 from algorithms.algorithm_base import Algorithm
 from algorithms.utils import get_subset
 
