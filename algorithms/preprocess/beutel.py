@@ -1,6 +1,10 @@
 """
 Implementation of Beute's adversarially learned fair representations
 """
+
+# Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
+# pylint: disable=arguments-differ
+
 import random
 import sys
 from typing import Dict, Tuple, List
@@ -8,8 +12,9 @@ import pandas as pd
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset
 from torch.autograd import Function
+
+from algorithms.dataloader_funcs import CustomDataset
 from algorithms.preprocess.pre_algorithm import PreAlgorithm
 
 
@@ -41,21 +46,6 @@ class Beutel(PreAlgorithm):
         torch.cuda.manual_seed_all(888)
 
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        class CustomDataset(Dataset):
-            def __init__(self, data):
-                self.features = np.array(data['x'].values, dtype=np.float32)
-                self.class_labels = np.array(data['y'].replace(-1, 0).values, dtype=np.float32)
-                self.sens_labels = np.array(data['s'].values, dtype=np.float32)
-                self.num = data['s'].count().values[0]
-                self.s_size = data['s'].shape[1]
-                self.y_size = data['y'].shape[1]
-                self.size = data['x'].shape[1]
-
-            def __getitem__(self, index):
-                return self.features[index], self.sens_labels[index], self.class_labels[index]
-
-            def __len__(self):
-                return self.num
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
