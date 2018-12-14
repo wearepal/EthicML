@@ -1,5 +1,5 @@
 """
-To stop pylint breaking the build if <100% perfect
+To stop pylint breaking the build if <85% perfect
 """
 
 import sys

@@ -23,11 +23,9 @@ class ConfigurableDataset(Dataset):
 
     def set_filename(self, filename: str) -> None:
         self.filename = filename
-        return
 
     def get_feature_split(self) -> Dict[str, List[str]]:
         return self.feature_split
 
     def set_feature_split(self, feature_split: Dict[str, List[str]]) -> None:
         self.feature_split = feature_split
-        return

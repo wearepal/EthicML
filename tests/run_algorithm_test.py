@@ -6,10 +6,12 @@ from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
 
+
 from algorithms.inprocess.in_algorithm import InAlgorithm
 from algorithms.inprocess.logistic_regression import LR
 from algorithms.inprocess.svm import SVM
 from algorithms.preprocess.beutel import Beutel
+from algorithms.utils import make_dict
 from data.test import Test
 from data.load import load_data
 from evaluators.evaluate_models import evaluate_models
@@ -62,29 +64,19 @@ def test_beutel():
     assert model.name == "Beutel"
 
     new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test)
-    new_xtrain: pd.DataFrame = new_xtrain_xtest[0]
-    new_xtest: pd.DataFrame = new_xtrain_xtest[1]
+    new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train['x'].shape[0]
     assert new_xtest.shape[0] == test['x'].shape[0]
 
-    new_train = {
-        'x': new_xtrain,
-        's': train['s'],
-        'y': train['y']
-    }
-
-    new_test = {
-        'x': new_xtest,
-        's': test['s'],
-        'y': test['y']
-    }
+    new_train = make_dict(new_xtrain, train['s'], train['y'])
+    new_test = make_dict(new_xtest, test['s'], test['y'])
 
     model: InAlgorithm = SVM()
     assert model is not None
     assert model.name == "SVM"
 
-    predictions: pd.DataFrame = model.run(new_train, new_test)
+    predictions: pd.DataFrame = model.run_test(new_train, new_test)
     assert predictions[predictions.values == 1].count().values[0] == 208
     assert predictions[predictions.values == -1].count().values[0] == 192
 

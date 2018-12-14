@@ -1,6 +1,8 @@
 __pycache__/
 .DS_Store
 .cache/
+.coverage
+.coverage*
 .idea/
 data/__pycache__/
 data/.DS_Store

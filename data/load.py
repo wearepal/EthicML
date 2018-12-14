@@ -37,7 +37,7 @@ def create_data_obj(filepath: str,
         additional_to_drop = []
 
     conf: ConfigurableDataset = ConfigurableDataset()
-    conf.set_filename(os.path.basename(filepath))
+    conf.filename = os.path.basename(filepath)
 
     dataframe: pd.DataFrame = pd.read_csv(filepath)
 
@@ -54,7 +54,7 @@ def create_data_obj(filepath: str,
         's': s_columns,
         'y': y_columns
     }
-    conf.set_feature_split(feat_split)
+    conf.feature_split = feat_split
 
     return conf
 
