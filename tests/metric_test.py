@@ -6,10 +6,10 @@ from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from algorithms.inprocess.in_algorithm import InAlgorithm
-from algorithms.inprocess.svm import SVM
-from data.adult import Adult
-from data.load import load_data
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.data.adult import Adult
+from ethicml.data.load import load_data
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.metric import Metric

@@ -3,8 +3,8 @@ Class to describe features of the Adult dataset
 """
 from typing import Dict, List
 
-from data.dataset import Dataset
-from data.load import filter_features_by_prefixes
+from .dataset import Dataset
+from .load import filter_features_by_prefixes
 
 
 class Adult(Dataset):

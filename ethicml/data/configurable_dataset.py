@@ -2,7 +2,7 @@
 Class to that can be used to create
 """
 from typing import Dict, List
-from data.dataset import Dataset
+from .dataset import Dataset
 
 
 class ConfigurableDataset(Dataset):

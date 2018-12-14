@@ -14,8 +14,8 @@ import torch
 import torch.nn as nn
 from torch.autograd import Function
 
-from algorithms.dataloader_funcs import CustomDataset
-from algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ..dataloader_funcs import CustomDataset
+from .pre_algorithm import PreAlgorithm
 
 
 class Beutel(PreAlgorithm):

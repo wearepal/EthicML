@@ -6,7 +6,7 @@ from typing import Dict
 import pandas as pd
 
 from sklearn.svm import SVC
-from algorithms.inprocess.in_algorithm import InAlgorithm
+from .in_algorithm import InAlgorithm
 
 
 class SVM(InAlgorithm):

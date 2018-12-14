@@ -6,8 +6,8 @@ from abc import abstractmethod
 from typing import Dict, Tuple
 import pandas as pd
 
-from algorithms.algorithm_base import Algorithm
-from algorithms.utils import get_subset
+from ..algorithm_base import Algorithm
+from ..utils import get_subset
 
 
 class PreAlgorithm(Algorithm):

@@ -5,7 +5,7 @@ Wrapper around Sci-Kit Learn Logistic Regression
 from typing import Dict
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from algorithms.inprocess.in_algorithm import InAlgorithm
+from .in_algorithm import InAlgorithm
 
 
 class LR(InAlgorithm):

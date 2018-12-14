@@ -6,13 +6,13 @@ from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
 
-from algorithms.inprocess.in_algorithm import InAlgorithm
-from algorithms.inprocess.logistic_regression import LR
-from algorithms.inprocess.svm import SVM
-from algorithms.preprocess.beutel import Beutel
-from algorithms.utils import make_dict
-from data.load import load_data
-from data.test import Test
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.logistic_regression import LR
+from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.preprocess.beutel import Beutel
+from ethicml.algorithms.utils import make_dict
+from ethicml.data.load import load_data
+from ethicml.data.test import Test
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.tpr import TPR

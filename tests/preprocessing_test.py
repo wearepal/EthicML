@@ -6,8 +6,8 @@ import math
 from typing import Tuple, Dict
 import pandas as pd
 
-from data.load import load_data
-from data.test import Test
+from ethicml.data.load import load_data
+from ethicml.data.test import Test
 from ethicml.preprocessing.train_test_split import train_test_split
 
 

@@ -3,7 +3,7 @@ Implementation of Heaviside Activation function
 """
 
 import numpy
-from utility import Activation
+from .activation import Activation
 
 
 class Heaviside(Activation):

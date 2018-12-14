@@ -5,11 +5,11 @@ Test the loading data capability
 from typing import Dict
 import pandas as pd
 
-from common import ROOT_DIR
-from data.adult import Adult
-from data.dataset import Dataset
-from data.load import load_data, create_data_obj
-from data.test import Test
+from ethicml.common import ROOT_DIR
+from ethicml.data.adult import Adult
+from ethicml.data.dataset import Dataset
+from ethicml.data.load import load_data, create_data_obj
+from ethicml.data.test import Test
 
 
 def test_can_load_test_data():

@@ -6,9 +6,9 @@ import os
 from typing import List, Dict
 import pandas as pd
 
-from common import ROOT_DIR
-from data.configurable_dataset import ConfigurableDataset
-from data.dataset import Dataset
+from ..common import ROOT_DIR
+from .configurable_dataset import ConfigurableDataset
+from .dataset import Dataset
 
 
 def load_data(dataset: Dataset) -> dict:

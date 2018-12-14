@@ -7,7 +7,7 @@ import pandas as pd
 
 from sklearn.metrics import normalized_mutual_info_score as nmis
 
-from ethicml.metrics.metric import Metric
+from .metric import Metric
 
 
 class NMI(Metric):

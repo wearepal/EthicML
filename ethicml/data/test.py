@@ -2,7 +2,7 @@
 Class to describe features of the Test dataset
 """
 from typing import List, Dict
-from data.dataset import Dataset
+from .dataset import Dataset
 
 
 class Test(Dataset):
