@@ -14,6 +14,7 @@ from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attr
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.normalized_mutual_information import NMI
+from ethicml.metrics.prob_neg import ProbNeg
 from ethicml.metrics.prob_pos import ProbPos
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
@@ -44,6 +45,14 @@ def test_probpos_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
+
+
+def test_probneg_per_sens_attr():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbNeg())
+    assert acc_per_sens == {'s_0': 0.665, 's_1': 0.33}
 
 
 def test_acc_per_nonbinary_sens():
