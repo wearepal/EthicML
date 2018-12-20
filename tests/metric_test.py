@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.logistic_regression import LR, LRProb
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
@@ -15,6 +16,7 @@ from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.normalized_mutual_information import NMI
 from ethicml.metrics.prob_neg import ProbNeg
+from ethicml.metrics.prob_outcome import ProbOutcome
 from ethicml.metrics.prob_pos import ProbPos
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
@@ -45,6 +47,14 @@ def test_probpos_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
+
+
+def test_proboutcome_per_sens_attr():
+    train, test = get_train_test()
+    model: InAlgorithm = LRProb()
+    predictions: pd.DataFrame = model.run(train, test)
+    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbOutcome())
+    assert acc_per_sens == {'s_0': 0.37192686620176246, 's_1': 0.661164329929575}
 
 
 def test_probneg_per_sens_attr():
