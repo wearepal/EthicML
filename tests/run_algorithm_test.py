@@ -91,7 +91,3 @@ def test_run_alg_suite():
     if not os.path.exists(outdir):
         os.mkdir(outdir)
     result.to_csv("../results/res.csv", index=False)
-
-
-def test_to_fail():
-    assert 1 == 'x'
