@@ -33,9 +33,3 @@ jobs:
 
   - script: python run_pylint.py
     displayName: 'pylint'
-
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/test-results.xml'
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
