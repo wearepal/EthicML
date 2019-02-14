@@ -1,3 +1,8 @@
+"""
+This module contains metrics which can be applied to prediction results
+"""
+
+
 from . import (
     accuracy,
     metric,

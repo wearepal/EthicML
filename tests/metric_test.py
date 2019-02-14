@@ -11,8 +11,10 @@ from ethicml.algorithms.inprocess.logistic_regression import LR, LRProb
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
-from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute
+from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute, \
+    ratio_per_sensitive_attribute
 from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.eq_opp_prob_pos import EqOppProbPos
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.normalized_mutual_information import NMI
 from ethicml.metrics.prob_neg import ProbNeg
@@ -47,6 +49,14 @@ def test_probpos_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
+
+
+def test_eqopp_per_sens_attr():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    acc_per_sens = metric_per_sensitive_attribute(predictions, test, EqOppProbPos())
+    assert acc_per_sens == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
 
 
 def test_proboutcome_per_sens_attr():
@@ -278,3 +288,39 @@ def test_tpr_diff_non_binary_race():
                         'race_Black_1-race_Other_1': 0.045614035087719274,
                         'race_Black_1-race_White_1': 0.04432770826542293,
                         'race_Other_1-race_White_1': 0.0012863268222963464}
+
+
+def test_tpr_ratio_non_binary_race():
+    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
+    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = SVM()
+    predictions: np.array = model.run_test(train, test)
+    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    assert TPR().name == "TPR"
+    assert tprs == {'race_Amer-Indian-Eskimo_0': 0.2997830802603037,
+                    'race_Amer-Indian-Eskimo_1': 0.15384615384615385,
+                    'race_Asian-Pac-Islander_0': 0.2956171735241503,
+                    'race_Asian-Pac-Islander_1': 0.3902439024390244,
+                    'race_Black_0': 0.30127041742286753,
+                    'race_Black_1': 0.2543859649122807,
+                    'race_Other_0': 0.2989601386481802,
+                    'race_Other_1': 0.3,
+                    'race_White_0': 0.3013698630136986,
+                    'race_White_1': 0.29871367317770364}
+    tprs_to_check = {k: tprs[k] for k in ('race_Amer-Indian-Eskimo_1',
+                                          'race_Asian-Pac-Islander_1',
+                                          'race_Black_1',
+                                          'race_Other_1',
+                                          'race_White_1')}
+    tpr_diff = ratio_per_sensitive_attribute(tprs_to_check)
+    assert tpr_diff == {'race_Amer-Indian-Eskimo_1/race_Asian-Pac-Islander_1': 0.3942307692307692,
+                        'race_Amer-Indian-Eskimo_1/race_Black_1': 0.6047745358090185,
+                        'race_Amer-Indian-Eskimo_1/race_Other_1': 0.5128205128205129,
+                        'race_Amer-Indian-Eskimo_1/race_White_1': 0.5150288308183045,
+                        'race_Asian-Pac-Islander_1/race_Black_1': 1.534062237174096,
+                        'race_Asian-Pac-Islander_1/race_Other_1': 1.3008130081300815,
+                        'race_Asian-Pac-Islander_1/race_White_1': 1.306414595246431,
+                        'race_Black_1/race_Other_1': 0.8479532163742691,
+                        'race_Black_1/race_White_1': 0.8516046895548282,
+                        'race_Other_1/race_White_1': 1.0043062200956938}
