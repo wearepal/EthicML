@@ -28,8 +28,9 @@ def train_test_split(data: Dict[str, pd.DataFrame],
     x_columns: List[str] = [col for col in data['x'].columns]
     s_columns: List[str] = [col for col in data['s'].columns]
     y_columns: List[str] = [col for col in data['y'].columns]
+    # ty_columns: List[str] = [col for col in data['ty'].columns]
 
-    all_data: pd.DataFrame = pd.concat([data['x'], data['s'], data['y']],
+    all_data: pd.DataFrame = pd.concat([data['x'], data['s'], data['y']],#, data['ty']],
                                        axis=1)
 
     all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
@@ -43,13 +44,15 @@ def train_test_split(data: Dict[str, pd.DataFrame],
     train: Dict[str, pd.DataFrame] = {
         'x': all_data_train[x_columns],
         's': all_data_train[s_columns],
-        'y': all_data_train[y_columns]
+        'y': all_data_train[y_columns],
+        # 'ty': all_data_train[ty_columns]
     }
 
     test: Dict[str, pd.DataFrame] = {
         'x': all_data_test[x_columns],
         's': all_data_test[s_columns],
-        'y': all_data_test[y_columns]
+        'y': all_data_test[y_columns],
+        # 'ty': all_data_test[ty_columns]
     }
 
     assert isinstance(train['x'], pd.DataFrame)

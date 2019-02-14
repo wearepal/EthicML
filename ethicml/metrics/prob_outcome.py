@@ -6,7 +6,6 @@ from typing import Dict
 import pandas as pd
 import numpy as np
 
-from .confusion_matrix import confusion_matrix
 from .metric import Metric
 
 

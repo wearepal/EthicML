@@ -11,6 +11,8 @@ from sklearn.metrics import confusion_matrix as conf_mtx
 def confusion_matrix(prediction: np.array, actual: Dict[str, pd.DataFrame]) -> Tuple[int, int, int, int]:
     actual_y = actual['y'].values.ravel()
     labels: np.array = np.unique(actual_y)
+    if labels.size == 1:
+        labels = [0, 1]
     conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction, labels=labels)
     results: Tuple[int, int, int, int] = conf_matr.ravel()
 

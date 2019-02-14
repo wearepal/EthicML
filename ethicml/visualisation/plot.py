@@ -21,8 +21,8 @@ def save_2d_plot(data: Dict[str, pd.DataFrame], filepath: str):
 
     amalgamated = pd.concat([data['x'], data['s'], data['y']], axis=1)
 
-    plot = sns.scatterplot(x=columns[0], y=columns[1], hue='y', palette="Set2",
-                           data=amalgamated, style='s', legend='full')
+    plot = sns.scatterplot(x=columns[0], y=columns[1], hue=data['y'].columns[0], palette="Set2",
+                           data=amalgamated, style=data['s'].columns[0], legend='full')
 
     if not os.path.exists(file_path.parent):
         os.mkdir(file_path. parent)

@@ -11,7 +11,7 @@ from .in_algorithm import InAlgorithm
 class LR(InAlgorithm):
 
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
-        clf = LogisticRegression()
+        clf = LogisticRegression(random_state=888)
         clf.fit(train['x'], train['y'].values.ravel())
         return pd.DataFrame(clf.predict(test['x']), columns=["preds"])
 
@@ -23,9 +23,9 @@ class LR(InAlgorithm):
 class LRProb(InAlgorithm):
 
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
-        clf = LogisticRegression()
+        clf = LogisticRegression(random_state=888)
         clf.fit(train['x'], train['y'].values.ravel())
-        return pd.DataFrame(clf.predict_proba(test['x'])[:,1], columns=["preds"])
+        return pd.DataFrame(clf.predict_proba(test['x'])[:, 1], columns=["preds"])
 
     @property
     def name(self) -> str:
