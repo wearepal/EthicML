@@ -6,7 +6,6 @@ Implementation of Beute's adversarially learned fair representations
 # pylint: disable=arguments-differ
 
 import random
-import sys
 from typing import Dict, Tuple, List
 import pandas as pd
 import numpy as np
@@ -189,23 +188,6 @@ class Beutel(PreAlgorithm):
                     optimizer_s.zero_grad()
                     s_loss.backward()
                     optimizer_s.step()
-
-            gettrace = getattr(sys, 'gettrace', None)
-
-            if gettrace is not None:
-                if i % 5 == 0:
-                    embedding, sens_label, class_label = next(iter(train_loader))
-                    embedding, s_pred, y_pred = model(embedding, class_label)
-                    y_loss = y_loss_fn(y_pred, class_label)
-                    if self.fairness == "Eq. Opp":
-                        mask = class_label.ge(0.5)
-                    elif self.fairness == "Eq. Odds":
-                        raise NotImplementedError("Not implemented Eq. Odds yet")
-                    elif self.fairness == "DI":
-                        mask = torch.ones(self.batch_size, s_size).byte()
-                    s_loss = s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
-
-                    print(i, y_loss, s_loss)
 
         train = []
         test = []

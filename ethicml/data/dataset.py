@@ -8,14 +8,27 @@ from typing import Dict, List
 
 class Dataset(ABC):
 
+    @property
     @abstractmethod
-    def get_dataset_name(self) -> str:
+    def name(self) -> str:
         pass
 
+    @property
     @abstractmethod
-    def get_filename(self) -> str:
+    def filename(self) -> str:
         pass
 
+    @property
     @abstractmethod
-    def get_feature_split(self) -> Dict[str, List[str]]:
+    def feature_split(self) -> Dict[str, List[str]]:
+        pass
+
+    @property
+    @abstractmethod
+    def continuous_features(self) -> List[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def discrete_features(self) -> List[str]:
         pass

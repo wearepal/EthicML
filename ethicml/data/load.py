@@ -12,12 +12,12 @@ from .dataset import Dataset
 
 
 def load_data(dataset: Dataset) -> dict:
-    filename = dataset.get_filename()
+    filename = dataset.filename
     data_loc: str = "{}/data/csvs/{}".format(ROOT_DIR, filename)
     dataframe: pd.DataFrame = pd.read_csv(data_loc)
     assert isinstance(dataframe, pd.DataFrame)
 
-    feature_split = dataset.get_feature_split()
+    feature_split = dataset.feature_split
 
     x_data = dataframe[feature_split['x']]
     s_data = dataframe[feature_split['s']]

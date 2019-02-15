@@ -25,14 +25,24 @@ def test_load_data():
     assert (2000, 1) == data['y'].shape
 
 
+def test_discrete_data():
+    data: Dict[str, pd.DataFrame] = load_data(Adult())
+    assert (48842, 102) == data['x'].shape
+    assert (48842, 1) == data['s'].shape
+    assert (48842, 1) == data['y'].shape
+    assert 99 == len(Adult().discrete_features)
+    assert 95 == len(Adult(split='Race').discrete_features)
+    assert 59 == len(Adult(split='Nationality').discrete_features)
+
+
 def test_load_data_as_a_function():
     data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
-    assert data_obj.get_feature_split()['x'] == ['a1', 'a2']
-    assert data_obj.get_feature_split()['s'] == ['s']
-    assert data_obj.get_feature_split()['y'] == ['y']
-    assert data_obj.get_filename() == "test.csv"
+    assert data_obj.feature_split['x'] == ['a1', 'a2']
+    assert data_obj.feature_split['s'] == ['s']
+    assert data_obj.feature_split['y'] == ['y']
+    assert data_obj.filename == "test.csv"
 
 
 def test_joining_2_load_functions():
