@@ -46,9 +46,3 @@ def quadratic_time_mmd(data_first, data_second, sigma):
             + kernel_yy.sum() / (yy_num * yy_num)
             - 2 * kernel_xy.sum() / (xx_num * yy_num))
     return mmd2
-
-
-def reparameterize(mean, logvar):
-    std = torch.exp(0.5 * logvar)
-    eps = torch.randn_like(std)
-    return eps.mul(std).add_(mean)

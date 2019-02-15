@@ -15,9 +15,9 @@ from ethicml.metrics.metric import Metric
 
 
 def pos_subset_test(preds: numpy.array, data: Dict[str, pandas.DataFrame]):
-    y_ = data['y']
+    class_label = data['y']
 
-    return preds[y_ == 1]
+    return preds[class_label == 1]
 
 
 def pos_subset_data(data: Dict[str, pandas.DataFrame]):
@@ -33,7 +33,6 @@ def pos_subset_data(data: Dict[str, pandas.DataFrame]):
 
 
 class EqOppProbPos(Metric):
-
     def score(self, prediction: numpy.array, actual: Dict[str, pandas.DataFrame]) -> float:
         pos_subset = pos_subset_data(actual)
         test_pos_subset = pos_subset_test(prediction, actual)
@@ -44,4 +43,8 @@ class EqOppProbPos(Metric):
 
     @property
     def name(self) -> str:
-        pass
+        return "ProbPos | Y=1"
+
+    @property
+    def apply_per_sensitive(self) -> bool:
+        return True
