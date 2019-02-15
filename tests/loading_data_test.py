@@ -30,9 +30,9 @@ def test_discrete_data():
     assert (48842, 102) == data['x'].shape
     assert (48842, 1) == data['s'].shape
     assert (48842, 1) == data['y'].shape
-    assert 99 == len(Adult().discrete_features)
-    assert 95 == len(Adult(split='Race').discrete_features)
-    assert 59 == len(Adult(split='Nationality').discrete_features)
+    assert 97 == len(Adult().discrete_features)
+    assert 94 == len(Adult(split='Race').discrete_features)
+    assert 58 == len(Adult(split='Nationality').discrete_features)
 
 
 def test_load_data_as_a_function():

@@ -138,10 +138,6 @@ class Adult(Dataset):
             self.s_prefix = ['sex']
             self.y_labels = ['salary_>50K']
             self.y_prefix = ['salary']
-            self._disc_features = [item for item in self.features
-                                   if item not in self._cont_features
-                                   and item not in self.sens_attrs
-                                   and item not in self.y_labels]
         elif split == "Race":
             self.sens_attrs = ['race_Amer-Indian-Eskimo',
                                'race_Asian-Pac-Islander',
@@ -151,10 +147,6 @@ class Adult(Dataset):
             self.s_prefix = ['race']
             self.y_labels = ['salary_>50K']
             self.y_prefix = ['salary']
-            self._disc_features = [item for item in self.features
-                                   if item not in self._cont_features
-                                   and item not in self.sens_attrs
-                                   and item not in self.y_labels]
         elif split == "Race-Sex":
             self.sens_attrs = ['sex_Male',
                                'race_Amer-Indian-Eskimo',
@@ -165,10 +157,6 @@ class Adult(Dataset):
             self.s_prefix = ['race', 'sex']
             self.y_labels = ['salary_>50K']
             self.y_prefix = ['salary']
-            self._disc_features = [item for item in self.features
-                                   if item not in self._cont_features
-                                   and item not in self.sens_attrs
-                                   and item not in self.y_labels]
         elif split == "Nationality":
             self.sens_attrs = ['native-country_Cambodia',
                                'native-country_Canada',
@@ -214,12 +202,11 @@ class Adult(Dataset):
             self.s_prefix = ['native-country']
             self.y_labels = ['salary_>50K']
             self.y_prefix = ['salary']
-            self._disc_features = [item for item in self.features
-                                   if item not in self._cont_features
-                                   and item not in self.sens_attrs
-                                   and item not in self.y_labels]
         else:
             raise NotImplementedError
+        self.conc_features: List[str] = self.s_prefix + self.y_prefix
+        self._disc_features = [item for item in filter_features_by_prefixes(self.features, self.conc_features)
+                               if item not in self._cont_features]
 
     @property
     def name(self) -> str:
