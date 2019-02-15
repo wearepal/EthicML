@@ -8,10 +8,17 @@ import pandas as pd
 from ..metrics.metric import Metric
 
 
+class MetricNotApplicable(Exception):
+    print("Metric Not Applicable per sensitive attribute, apply to whole dataset instead")
+
+
 def metric_per_sensitive_attribute(
         predictions: pd.DataFrame,
         actual: Dict[str, pd.DataFrame],
         metric: Metric) -> Dict[str, float]:
+
+    if not metric.apply_per_sensitive:
+        raise MetricNotApplicable()
 
     amalgamated = pd.concat([actual['x'],
                              actual['s'],

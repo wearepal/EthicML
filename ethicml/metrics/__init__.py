@@ -11,4 +11,9 @@ from . import (
     confusion_matrix,
     normalized_mutual_information,
     tpr,
+    tnr,
+    ppv,
+    npv,
+    cv,
+    bcr
 )

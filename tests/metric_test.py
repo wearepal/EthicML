@@ -5,6 +5,7 @@ Test that we can get some metrics on predictions
 from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
+import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR, LRProb
@@ -12,14 +13,19 @@ from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute, \
-    ratio_per_sensitive_attribute
+    ratio_per_sensitive_attribute, MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.bcr import BCR
+from ethicml.metrics.cv import CV
 from ethicml.metrics.eq_opp_prob_pos import EqOppProbPos
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.normalized_mutual_information import NMI
+from ethicml.metrics.ppv import PPV
+from ethicml.metrics.npv import NPV
 from ethicml.metrics.prob_neg import ProbNeg
 from ethicml.metrics.prob_outcome import ProbOutcome
 from ethicml.metrics.prob_pos import ProbPos
+from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
@@ -216,6 +222,72 @@ def test_nmi_diff():
     nmi_diff = diff_per_sensitive_attribute(nmis)
     print(nmi_diff)
     assert nmi_diff["s_0-s_1"] == 0.10435952294150791
+
+
+def test_ppv_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    results = metric_per_sensitive_attribute(predictions, test, PPV())
+    assert PPV().name == "PPV"
+    assert results == {'s_0': 0.8805970149253731, 's_1': 0.9328358208955224}
+    diff = diff_per_sensitive_attribute(results)
+    print(diff)
+    assert diff["s_0-s_1"] == 0.052238805970149294
+
+
+def test_npv_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    results = metric_per_sensitive_attribute(predictions, test, NPV())
+    assert NPV().name == "NPV"
+    assert results == {'s_0': 0.9172932330827067, 's_1': 0.7575757575757576}
+    diff = diff_per_sensitive_attribute(results)
+    print(diff)
+    assert diff["s_0-s_1"] == 0.15971747550694915
+
+
+def test_bcr_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    results = metric_per_sensitive_attribute(predictions, test, BCR())
+    assert BCR().name == "BCR"
+    assert results == {'s_0': 0.8906593406593406, 's_1': 0.8669912249068397}
+    diff = diff_per_sensitive_attribute(results)
+    print(diff)
+    assert diff["s_0-s_1"] == 0.02366811575250094
+
+
+def test_cv_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    cv = CV()
+    score = cv.score(predictions, test)
+    assert CV().name == "CV"
+    assert score == 0.665
+
+
+def test_use_appropriate_metric():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    with pytest.raises(MetricNotApplicable):
+        metric_per_sensitive_attribute(predictions, test, CV())
+
+
+def test_tnr_diff():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    nmis = metric_per_sensitive_attribute(predictions, test, TNR())
+    assert NMI().name == "NMI"
+    assert nmis == {'s_0': 0.9384615384615385, 's_1': 0.847457627118644}
+    nmi_diff = diff_per_sensitive_attribute(nmis)
+    print(nmi_diff)
+    assert nmi_diff["s_0-s_1"] == 0.09100391134289443
 
 
 def test_nmi_diff_non_binary_race():

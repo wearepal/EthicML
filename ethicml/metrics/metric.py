@@ -19,3 +19,7 @@ class Metric(ABC):
     @abstractmethod
     def name(self) -> str:
         raise NotImplementedError()
+
+    @property
+    def apply_per_sensitive(self) -> bool:
+        return True
