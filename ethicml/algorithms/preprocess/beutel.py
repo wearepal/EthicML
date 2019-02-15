@@ -30,6 +30,7 @@ class Beutel(PreAlgorithm):
                  y_loss=nn.BCELoss(),
                  s_loss=nn.BCELoss(),
                  epochs=50):
+        # pylint: disable=too-many-arguments
         self.fairness = fairness
         self.enc_size: List[int] = [40] if enc_size is None else enc_size
         self.adv_size: List[int] = [40] if adv_size is None else adv_size
@@ -46,6 +47,7 @@ class Beutel(PreAlgorithm):
         torch.cuda.manual_seed_all(888)
 
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        # pylint: disable=too-many-statements
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
