@@ -5,16 +5,20 @@ import os
 from typing import Tuple, Dict
 import pandas as pd
 import numpy as np
+import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_dict
+from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
 from ethicml.data.test import Test
 from ethicml.evaluators.evaluate_models import evaluate_models
+from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
+from ethicml.metrics.cv import CV
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 
@@ -81,13 +85,23 @@ def test_beutel():
 
 
 def test_run_alg_suite():
-    datasets = [Test()]
-    models = [SVM(), LR()]
-    metrics = [Accuracy()]
+    datasets = [Test(), Adult()]
+    preprocess_models = [Beutel()]
+    inprocess_models = [SVM(), LR()]
+    postprocess_models = []
+    metrics = [Accuracy(), CV()]
     per_sens_metrics = [Accuracy(), TPR()]
-    result = evaluate_models(datasets, models, metrics, per_sens_metrics)
+    evaluate_models(datasets, preprocess_models, inprocess_models,
+                    postprocess_models, metrics, per_sens_metrics, test_mode=True)
 
-    outdir = '../results'
-    if not os.path.exists(outdir):
-        os.mkdir(outdir)
-    result.to_csv("../results/res.csv", index=False)
+
+def test_run_alg_suite_wrong_metrics():
+    datasets = [Test(), Adult()]
+    preprocess_models = []
+    inprocess_models = [SVM(), LR()]
+    postprocess_models = []
+    metrics = [Accuracy(), CV()]
+    per_sens_metrics = [Accuracy(), TPR(), CV()]
+    with pytest.raises(MetricNotApplicable):
+        evaluate_models(datasets, preprocess_models, inprocess_models,
+                        postprocess_models, metrics, per_sens_metrics, test_mode=True)

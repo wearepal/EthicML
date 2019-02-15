@@ -181,7 +181,7 @@ class Beutel(PreAlgorithm):
                     elif self.fairness == "Eq. Odds":
                         raise NotImplementedError("Not implemented Eq. Odds yet")
                     elif self.fairness == "DI":
-                        mask = torch.ones(self.batch_size, s_size).byte()
+                        mask = torch.ones(s_pred.shape).byte()
                     s_loss = s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
 
                     optimizer_s.zero_grad()
