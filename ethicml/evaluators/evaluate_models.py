@@ -97,4 +97,4 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             outdir = '../results'
             if not os.path.exists(outdir):
                 os.mkdir(outdir)
-            results.to_csv(f"../results/{dataset.get_dataset_name()}_{transform_name}.csv", index=False)
+            results.to_csv(f"../results/{dataset.name}_{transform_name}.csv", index=False)

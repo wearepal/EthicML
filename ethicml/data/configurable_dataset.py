@@ -7,25 +7,49 @@ from .dataset import Dataset
 
 class ConfigurableDataset(Dataset):
     def __init__(self):
-        self.name: str = "No name assigned."
-        self.filename: str = "No filename assigned. " \
+        self._dataname: str = "No name assigned."
+        self._filename: str = "No filename assigned. " \
                              "Use set_filename(<filename>)"
-        self.feature_split: Dict[str, List[str]] = {}
+        self._feature_split: Dict[str, List[str]] = {}
+        self.cont_features: List[str] = []
+        self.disc_features: List[str] = []
 
-    def get_dataset_name(self) -> str:
-        return self.name
+    @property
+    def name(self) -> str:
+        return self._dataname
 
-    def set_dataset_name(self, name: str) -> None:
-        self.name = name
+    @name.setter
+    def name(self, value: str) -> None:
+        self._dataname = value
 
-    def get_filename(self) -> str:
-        return self.filename
+    @property
+    def filename(self) -> str:
+        return self._filename
 
-    def set_filename(self, filename: str) -> None:
-        self.filename = filename
+    @filename.setter
+    def filename(self, value: str) -> None:
+        self._filename = value
 
-    def get_feature_split(self) -> Dict[str, List[str]]:
-        return self.feature_split
+    @property
+    def feature_split(self) -> Dict[str, List[str]]:
+        return self._feature_split
 
-    def set_feature_split(self, feature_split: Dict[str, List[str]]) -> None:
-        self.feature_split = feature_split
+    @feature_split.setter
+    def feature_split(self, value: Dict[str, List[str]]) -> None:
+        self._feature_split = value
+
+    @property
+    def continuous_features(self) -> List[str]:
+        return self.cont_features
+
+    @continuous_features.setter
+    def continuous_features(self, value: List[str]):
+        self.cont_features = value
+
+    @property
+    def discrete_features(self) -> List[str]:
+        return self.disc_features
+
+    @discrete_features.setter
+    def discrete_features(self, value: List[str]):
+        self.disc_features = value

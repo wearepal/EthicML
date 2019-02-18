@@ -13,6 +13,8 @@ class Adult(Dataset):
     y_labels: List[str]
     s_prefix: List[str]
     sens_attrs: List[str]
+    _cont_features: List[str]
+    _disc_features: List[str]
 
     def __init__(self, split="Sex"):
         self.features = [
@@ -123,6 +125,14 @@ class Adult(Dataset):
             'workclass_State-gov',
             'workclass_Without-pay']
 
+        self._cont_features = [
+            'age',
+            'capital-gain',
+            'capital-loss',
+            'education-num',
+            'hours-per-week'
+        ]
+
         if split == "Sex":
             self.sens_attrs = ['sex_Male']
             self.s_prefix = ['sex']
@@ -194,14 +204,20 @@ class Adult(Dataset):
             self.y_prefix = ['salary']
         else:
             raise NotImplementedError
+        self.conc_features: List[str] = self.s_prefix + self.y_prefix
+        self._disc_features = [item for item in filter_features_by_prefixes(self.features, self.conc_features)
+                               if item not in self._cont_features]
 
-    def get_dataset_name(self) -> str:
+    @property
+    def name(self) -> str:
         return "Adult"
 
-    def get_filename(self) -> str:
+    @property
+    def filename(self) -> str:
         return "adult.csv"
 
-    def get_feature_split(self) -> Dict[str, List[str]]:
+    @property
+    def feature_split(self) -> Dict[str, List[str]]:
         conc_features: List[str] = self.s_prefix+self.y_prefix
         return {
             "x": filter_features_by_prefixes(self.features, conc_features),
@@ -220,3 +236,11 @@ class Adult(Dataset):
 
     def set_y_prefix(self, label_prefixs):
         self.y_prefix = label_prefixs
+
+    @property
+    def continuous_features(self) -> List[str]:
+        return self._cont_features
+
+    @property
+    def discrete_features(self) -> List[str]:
+        return self._disc_features
