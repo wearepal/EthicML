@@ -154,7 +154,7 @@ class Beutel(PreAlgorithm):
 
         enc = Encoder(self.enc_size, size, self.enc_activation)
         adv = Adversary(self.fairness, self.adv_size, self.enc_size[-1], s_size, self.adv_activation)
-        pred = Predictor(self.pred_size, self.adv_size[-1], y_size, self.adv_activation)
+        pred = Predictor(self.pred_size, self.enc_size[-1], y_size, self.adv_activation)
         model = Model(enc, adv, pred)
 
         y_loss_fn = self.y_loss

@@ -7,6 +7,13 @@ from typing import Dict, List
 
 
 class Dataset(ABC):
+    features: List[str]
+    y_prefix: List[str]
+    y_labels: List[str]
+    s_prefix: List[str]
+    sens_attrs: List[str]
+    _cont_features: List[str]
+    _disc_features: List[str]
 
     @property
     @abstractmethod

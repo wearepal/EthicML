@@ -7,6 +7,7 @@ import pandas as pd
 
 from ethicml.common import ROOT_DIR
 from ethicml.data.adult import Adult
+from ethicml.data.compas import Compas
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data.test import Test
@@ -61,11 +62,25 @@ def test_load_adult():
     assert (48842, 1) == data['y'].shape
 
 
+def test_load_compas():
+    data: Dict[str, pd.DataFrame] = load_data(Compas())
+    assert (6167, 404) == data['x'].shape
+    assert (6167, 1) == data['s'].shape
+    assert (6167, 1) == data['y'].shape
+
+
 def test_load_adult_explicitly_sex():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Sex"))
     assert (48842, 102) == data['x'].shape
     assert (48842, 1) == data['s'].shape
     assert (48842, 1) == data['y'].shape
+
+
+def test_load_compas_explicitly_sex():
+    data: Dict[str, pd.DataFrame] = load_data(Compas("Sex"))
+    assert (6167, 404) == data['x'].shape
+    assert (6167, 1) == data['s'].shape
+    assert (6167, 1) == data['y'].shape
 
 
 def test_load_adult_race():
@@ -75,11 +90,25 @@ def test_load_adult_race():
     assert (48842, 1) == data['y'].shape
 
 
+def test_load_compas_race():
+    data: Dict[str, pd.DataFrame] = load_data(Compas("Race"))
+    assert (6167, 404) == data['x'].shape
+    assert (6167, 1) == data['s'].shape
+    assert (6167, 1) == data['y'].shape
+
+
 def test_load_adult_race_sex():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Race-Sex"))
     assert (48842, 97) == data['x'].shape
     assert (48842, 6) == data['s'].shape
     assert (48842, 1) == data['y'].shape
+
+
+def test_load_compas_race_sex():
+    data: Dict[str, pd.DataFrame] = load_data(Compas("Race-Sex"))
+    assert (6167, 403) == data['x'].shape
+    assert (6167, 2) == data['s'].shape
+    assert (6167, 1) == data['y'].shape
 
 
 def test_load_adult_nationality():
