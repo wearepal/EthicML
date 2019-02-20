@@ -33,7 +33,7 @@ def train_test_split(data: Dict[str, pd.DataFrame],
     all_data: pd.DataFrame = pd.concat([data['x'], data['s'], data['y']],#, data['ty']],
                                        axis=1)
 
-    all_data: pd.DataFrame = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
+    all_data = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 
     all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = call_numpy_to_split(all_data,
                                                                                  train_percentage,

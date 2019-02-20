@@ -460,7 +460,9 @@ class Compas(Dataset):
             raise NotImplementedError
 
         self.conc_features: List[str] = self.s_prefix + self.y_prefix
-        self._disc_features = [item for item in filter_features_by_prefixes(self.features, self.conc_features)
+        self._disc_features = [item
+                               for item
+                               in filter_features_by_prefixes(self.features, self.conc_features)
                                if item not in self._cont_features]
 
     @property
@@ -473,10 +475,11 @@ class Compas(Dataset):
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-        if self.discrete_only:
-            conc_features: List[str] = self.s_prefix + self.y_prefix + self.continuous_features
-        else:
-            conc_features: List[str] = self.s_prefix + self.y_prefix
+
+        conc_features: List[str] = self.s_prefix + self.y_prefix + self.continuous_features \
+            if self.discrete_only \
+            else self.s_prefix + self.y_prefix
+
         return {
             "x": filter_features_by_prefixes(self.features, conc_features),
             "s": self.sens_attrs,
