@@ -14,8 +14,11 @@ from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_dict
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
+from ethicml.data.german import German
 from ethicml.data.load import load_data
+from ethicml.data.sqf import Sqf
 from ethicml.data.test import Test
+from ethicml.data.violent_recidivism import Violent
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
@@ -90,14 +93,14 @@ def test_beutel():
 
 
 def test_run_alg_suite():
-    datasets = [Test(), Adult(), Compas()]
-    preprocess_models = [Beutel()]
-    inprocess_models = [SVM(), LR()]
+    datasets = [Test(), Adult(), Compas(), Sqf(), German(), Violent()]
+    preprocess_models = []
+    inprocess_models = [LR()]
     postprocess_models = []
     metrics = [Accuracy(), CV()]
     per_sens_metrics = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
-                    postprocess_models, metrics, per_sens_metrics, test_mode=True)
+                    postprocess_models, metrics, per_sens_metrics, test_mode=False)
 
 
 def test_run_alg_suite_wrong_metrics():
