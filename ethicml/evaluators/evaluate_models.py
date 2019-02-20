@@ -2,7 +2,7 @@
 Runs given metrics on given algorithms for given datasets
 """
 import os
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any
 import pandas as pd
 import numpy as np
 
@@ -61,7 +61,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
         columns += [metric.name for metric in metrics]
         columns += get_sensitive_combinations(per_sens_metrics, train)
 
-        temp_res = {}
+        temp_res: Dict[str, Any] = {}
 
         for name, transform in to_operate_on.items():
             results = pd.DataFrame(columns=columns)
