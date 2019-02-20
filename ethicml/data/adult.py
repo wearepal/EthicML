@@ -6,9 +6,20 @@ from typing import Dict, List
 from .dataset import Dataset
 from .load import filter_features_by_prefixes
 
+
 # Can't disable duplicate code warning on abstract methods, so disabling all for this file (for now)
 # pylint: disable-all
+
+
 class Adult(Dataset):
+    features: List[str]
+    y_prefix: List[str]
+    y_labels: List[str]
+    s_prefix: List[str]
+    sens_attrs: List[str]
+    _cont_features: List[str]
+    _disc_features: List[str]
+
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         self.discrete_only = discrete_only
         self.features = [
