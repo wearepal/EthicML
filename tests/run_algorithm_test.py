@@ -94,18 +94,18 @@ def test_beutel():
 
 def test_run_alg_suite():
     datasets = [Test(), Adult(), Compas(), Sqf(), German(), Violent()]
-    preprocess_models = []
+    preprocess_models = [Beutel()]
     inprocess_models = [LR()]
     postprocess_models = []
     metrics = [Accuracy(), CV()]
     per_sens_metrics = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
-                    postprocess_models, metrics, per_sens_metrics, test_mode=False)
+                    postprocess_models, metrics, per_sens_metrics, test_mode=True)
 
 
 def test_run_alg_suite_wrong_metrics():
     datasets = [Test(), Adult()]
-    preprocess_models = []
+    preprocess_models = [Beutel()]
     inprocess_models = [SVM(), LR()]
     postprocess_models = []
     metrics = [Accuracy(), CV()]

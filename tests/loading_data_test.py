@@ -67,16 +67,16 @@ def test_load_adult():
 
 def test_load_compas():
     data: Dict[str, pd.DataFrame] = load_data(Compas())
-    assert (6167, 404) == data['x'].shape
+    assert (6167, 400) == data['x'].shape
     assert (6167, 1) == data['s'].shape
     assert (6167, 1) == data['y'].shape
 
 
 def test_load_sqf():
     data: Dict[str, pd.DataFrame] = load_data(Sqf())
-    assert (12344, 144) == data['x'].shape
-    assert (12344, 1) == data['s'].shape
-    assert (12344, 1) == data['y'].shape
+    assert (12347, 144) == data['x'].shape
+    assert (12347, 1) == data['s'].shape
+    assert (12347, 1) == data['y'].shape
 
 
 def test_load_german():
@@ -116,7 +116,7 @@ def test_load_adult_race():
 
 def test_load_compas_race():
     data: Dict[str, pd.DataFrame] = load_data(Compas("Race"))
-    assert (6167, 404) == data['x'].shape
+    assert (6167, 400) == data['x'].shape
     assert (6167, 1) == data['s'].shape
     assert (6167, 1) == data['y'].shape
 
@@ -130,7 +130,7 @@ def test_load_adult_race_sex():
 
 def test_load_compas_race_sex():
     data: Dict[str, pd.DataFrame] = load_data(Compas("Race-Sex"))
-    assert (6167, 403) == data['x'].shape
+    assert (6167, 399) == data['x'].shape
     assert (6167, 2) == data['s'].shape
     assert (6167, 1) == data['y'].shape
 
