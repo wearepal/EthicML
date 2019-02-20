@@ -224,9 +224,13 @@ class Adult(Dataset):
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-        conc_features: List[str] = self.s_prefix + self.y_prefix + self.continuous_features \
-            if self.discrete_only \
-            else self.s_prefix + self.y_prefix
+
+        conc_features: List[str]
+        if self.discrete_only:
+            conc_features = self.s_prefix + self.y_prefix + self.continuous_features
+        else:
+            conc_features = self.s_prefix + self.y_prefix
+
         return {
             "x": filter_features_by_prefixes(self.features, conc_features),
             "s": self.sens_attrs,

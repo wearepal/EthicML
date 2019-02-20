@@ -55,7 +55,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             else:
                 new_train, new_test = pre_process_method.run(train, test)
             to_operate_on[pre_process_method.name] = {'train': make_dict(new_train, train['s'], train['y']),
-                                  'test': make_dict(new_test, test['s'], test['y'])}
+                                                      'test': make_dict(new_test, test['s'], test['y'])}
 
         columns = ['model']
         columns += [metric.name for metric in metrics]
@@ -74,9 +74,11 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
                 temp_res['model'] = model.name
 
-                predictions = model.run_test(transformed_train, transformed_test) \
-                    if test_mode \
-                    else model.run(transformed_train, transformed_test)
+                predictions: np.array
+                if test_mode:
+                    predictions = model.run_test(transformed_train, transformed_test)
+                else:
+                    predictions = model.run(transformed_train, transformed_test)
 
                 for metric in metrics:
                     temp_res[metric.name] = metric.score(predictions, test)
