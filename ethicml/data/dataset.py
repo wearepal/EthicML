@@ -7,7 +7,6 @@ from typing import Dict, List
 
 
 class Dataset(ABC):
-
     @property
     @abstractmethod
     def name(self) -> str:

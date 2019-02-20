@@ -13,12 +13,17 @@ from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_dict
 from ethicml.data.adult import Adult
+from ethicml.data.compas import Compas
 from ethicml.data.load import load_data
 from ethicml.data.test import Test
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import CV
+from ethicml.metrics.npv import NPV
+from ethicml.metrics.ppv import PPV
+from ethicml.metrics.prob_pos import ProbPos
+from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 
@@ -85,7 +90,7 @@ def test_beutel():
 
 
 def test_run_alg_suite():
-    datasets = [Test(), Adult()]
+    datasets = [Test(), Adult(), Compas()]
     preprocess_models = [Beutel()]
     inprocess_models = [SVM(), LR()]
     postprocess_models = []
