@@ -6,7 +6,7 @@ Implementation of Beute's adversarially learned fair representations
 # pylint: disable=arguments-differ
 
 import random
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Any
 import pandas as pd
 import numpy as np
 import torch
@@ -189,8 +189,8 @@ class Beutel(PreAlgorithm):
                     s_loss.backward()
                     optimizer_s.step()
 
-        train_to_return = []
-        test_to_return = []
+        train_to_return: List[Any] = []
+        test_to_return: List[Any] = []
 
         for embedding, _, _ in train_loader:
             train_to_return += enc(embedding)[0].data.numpy().tolist()
