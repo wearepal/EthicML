@@ -2,7 +2,7 @@ imageio==2.4.1
 matplotlib==3.0.2
 numpy==1.14.2
 pandas==0.22.0
-pylint==1.8.2
+pylint>=2.0
 pytest==3.3.2
 pytest-cov==2.6.0
 scikit_learn==0.20.1
