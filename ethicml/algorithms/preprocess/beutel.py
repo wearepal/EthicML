@@ -189,16 +189,16 @@ class Beutel(PreAlgorithm):
                     s_loss.backward()
                     optimizer_s.step()
 
-        train = []
-        test = []
+        train_to_return = []
+        test_to_return = []
 
         for embedding, _, _ in train_loader:
-            train += enc(embedding)[0].data.numpy().tolist()
+            train_to_return += enc(embedding)[0].data.numpy().tolist()
 
         for embedding, _, _ in test_loader:
-            test += enc(embedding)[0].data.numpy().tolist()
+            test_to_return += enc(embedding)[0].data.numpy().tolist()
 
-        return pd.DataFrame(train), pd.DataFrame(test)
+        return pd.DataFrame(train_to_return), pd.DataFrame(test_to_return)
 
     @property
     def name(self) -> str:

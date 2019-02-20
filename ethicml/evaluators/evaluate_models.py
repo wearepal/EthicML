@@ -2,7 +2,7 @@
 Runs given metrics on given algorithms for given datasets
 """
 import os
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Any
 import pandas as pd
 import numpy as np
 
@@ -46,40 +46,39 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
         train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
         train, test = train_test
 
-        to_operate_on = [{'train': train,
-                          'test': test,
-                          'name': "no_transform"}]
+        to_operate_on = {"no_transform": {'train': train,
+                                          'test': test}}
 
-        for transform in preprocess_models:
+        for pre_process_method in preprocess_models:
             if test_mode:
-                new_train, new_test = transform.run_test(train, test)
+                new_train, new_test = pre_process_method.run_test(train, test)
             else:
-                new_train, new_test = transform.run(train, test)
-            to_operate_on.append({'train': make_dict(new_train, train['s'], train['y']),
-                                  'test': make_dict(new_test, test['s'], test['y']),
-                                  'name': transform.name})
+                new_train, new_test = pre_process_method.run(train, test)
+            to_operate_on[pre_process_method.name] = {'train': make_dict(new_train, train['s'], train['y']),
+                                                      'test': make_dict(new_test, test['s'], test['y'])}
 
         columns = ['model']
         columns += [metric.name for metric in metrics]
         columns += get_sensitive_combinations(per_sens_metrics, train)
 
-        temp_res = {}
+        temp_res: Dict[str, Any] = {}
 
-        for transform in to_operate_on:
+        for name, transform in to_operate_on.items():
             results = pd.DataFrame(columns=columns)
 
-            train = transform['train']
-            test = transform['test']
-            transform_name = transform['name']
+            transformed_train: Dict[str, pd.DataFrame] = transform['train']
+            transformed_test: Dict[str, pd.DataFrame] = transform['test']
+            transform_name: str = name
 
             for model in inprocess_models:
 
                 temp_res['model'] = model.name
 
+                predictions: np.array
                 if test_mode:
-                    predictions: np.array = model.run_test(train, test)
+                    predictions = model.run_test(transformed_train, transformed_test)
                 else:
-                    predictions: np.array = model.run(train, test)
+                    predictions = model.run(transformed_train, transformed_test)
 
                 for metric in metrics:
                     temp_res[metric.name] = metric.score(predictions, test)
