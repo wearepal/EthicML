@@ -9,3 +9,4 @@ scikit_learn==0.20.1
 seaborn==0.9.0
 torch==0.4.1
 typing==3.6.2
+mypy

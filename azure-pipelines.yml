@@ -33,3 +33,6 @@ jobs:
 
   - script: python run_pylint.py
     displayName: 'pylint'
+  - script: |
+      python -m mypy ethicml
+    displayName: 'mypy'
