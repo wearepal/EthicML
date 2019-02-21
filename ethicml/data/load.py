@@ -12,6 +12,14 @@ from .dataset import Dataset
 
 
 def load_data(dataset: Dataset) -> dict:
+    """Load dataset from its CSV file
+
+    Args:
+        dataset: dataset object
+
+    Returns:
+        Dictionary with dataframes of features, labels and sensitive attributes
+    """
     filename = dataset.filename
     data_loc: str = "{}/data/csvs/{}".format(ROOT_DIR, filename)
     dataframe: pd.DataFrame = pd.read_csv(data_loc)
@@ -32,7 +40,17 @@ def create_data_obj(filepath: str,
                     s_columns: List[str],
                     y_columns: List[str],
                     additional_to_drop=None) -> Dataset:
+    """
 
+    Args:
+        filepath:
+        s_columns:
+        y_columns:
+        additional_to_drop:
+
+    Returns:
+
+    """
     if additional_to_drop is None:
         additional_to_drop = []
 

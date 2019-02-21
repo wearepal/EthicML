@@ -16,7 +16,16 @@ def metric_per_sensitive_attribute(
         predictions: pd.DataFrame,
         actual: Dict[str, pd.DataFrame],
         metric: Metric) -> Dict[str, float]:
+    """
 
+    Args:
+        predictions:
+        actual:
+        metric:
+
+    Returns:
+
+    """
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable()
 
@@ -49,7 +58,14 @@ def metric_per_sensitive_attribute(
 
 
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
+    """
 
+    Args:
+        per_sens_res:
+
+    Returns:
+
+    """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()
     diff_per_sens = {}
@@ -65,7 +81,14 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
 
 
 def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
+    """
 
+    Args:
+        per_sens_res:
+
+    Returns:
+
+    """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()
     diff_per_sens = {}

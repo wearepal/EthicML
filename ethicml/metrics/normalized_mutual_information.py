@@ -11,6 +11,7 @@ from .metric import Metric
 
 
 class NMI(Metric):
+    """Normalized Mutual Information"""
     def score(self, prediction: pd.DataFrame, actual: Dict[str, pd.DataFrame]) -> float:
         return nmis(actual['y'].values.flatten(), prediction.values.flatten())
 

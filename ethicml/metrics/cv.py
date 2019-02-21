@@ -11,6 +11,7 @@ from .metric import Metric
 
 
 class CV(Metric):
+    """Calder-Verwer"""
     def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
         from ethicml.evaluators.per_sensitive_attribute \
             import metric_per_sensitive_attribute, diff_per_sensitive_attribute

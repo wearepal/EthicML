@@ -7,6 +7,7 @@ import numpy as np
 
 
 class CustomDataset(Dataset):
+    """Shared Dataset for pytorch models"""
     def __init__(self, data):
         self.features = np.array(data['x'].values, dtype=np.float32)
         self.class_labels = np.array(data['y'].values, dtype=np.float32)
@@ -26,4 +27,9 @@ class CustomDataset(Dataset):
         return self.num
 
     def names(self):
+        """
+
+        Returns:
+
+        """
         return self.x_names, self.s_names, self.y_names

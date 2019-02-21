@@ -10,7 +10,7 @@ from .in_algorithm import InAlgorithm
 
 
 class SVM(InAlgorithm):
-
+    """Support Vector Machine"""
     def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
         clf = SVC(random_state=888)
         clf.fit(train['x'], train['y'].values.ravel())

@@ -6,11 +6,12 @@ from .dataset import Dataset
 
 
 class ConfigurableDataset(Dataset):
+    """Dataset that is configurable"""
     def __init__(self):
         super().__init__()
         self._dataname: str = "No name assigned."
-        self._filename: str = "No filename assigned. " \
-                             "Use set_filename(<filename>)"
+        self._filename: str = ("No filename assigned. "
+                               "Use set_filename(<filename>)")
         self._feature_split: Dict[str, List[str]] = {}
         self.cont_features: List[str] = []
         self.disc_features: List[str] = []

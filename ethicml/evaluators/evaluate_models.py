@@ -18,6 +18,15 @@ from ..preprocessing.train_test_split import train_test_split
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: Dict[str, pd.DataFrame]) -> List[str]:
+    """
+
+    Args:
+        metrics:
+        train:
+
+    Returns:
+
+    """
     poss_values = []
     for col in train['s']:
         uniques = train['s'][col].unique()
@@ -28,6 +37,11 @@ def get_sensitive_combinations(metrics: List[Metric], train: Dict[str, pd.DataFr
 
 
 def per_sens_metrics_check(per_sens_metrics: List[Metric]):
+    """
+
+    Args:
+        per_sens_metrics:
+    """
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable()
@@ -35,8 +49,19 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
 
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
-                    metrics: List[Metric], per_sens_metrics: List[Metric], test_mode: bool = False) -> None:
+                    metrics: List[Metric], per_sens_metrics: List[Metric],
+                    test_mode: bool = False) -> None:
+    """
 
+    Args:
+        datasets:
+        preprocess_models:
+        inprocess_models:
+        postprocess_models:
+        metrics:
+        per_sens_metrics:
+        test_mode:
+    """
     per_sens_metrics_check(per_sens_metrics)
 
     for dataset in datasets:
@@ -54,8 +79,10 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 new_train, new_test = pre_process_method.run_test(train, test)
             else:
                 new_train, new_test = pre_process_method.run(train, test)
-            to_operate_on[pre_process_method.name] = {'train': make_dict(new_train, train['s'], train['y']),
-                                                      'test': make_dict(new_test, test['s'], test['y'])}
+            to_operate_on[pre_process_method.name] = {
+                'train': make_dict(new_train, train['s'], train['y']),
+                'test': make_dict(new_test, test['s'], test['y']),
+            }
 
         columns = ['model']
         columns += [metric.name for metric in metrics]
@@ -89,7 +116,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                         temp_res[f'{key}_{metric.name}'] = value
 
                 for postprocess in postprocess_models:
-                    # Post-processing has yet to be defined - leaving blank until we have an implementation to work with
+                    # Post-processing has yet to be defined
+                    # - leaving blank until we have an implementation to work with
                     pass
 
                 results = results.append(temp_res, ignore_index=True)
