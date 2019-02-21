@@ -13,7 +13,6 @@ from ethicml.data.german import German
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data.sqf import Sqf
 from ethicml.data.test import Test
-from ethicml.data.violent_recidivism import Violent
 
 
 def test_can_load_test_data():
@@ -86,13 +85,6 @@ def test_load_german():
     assert (1000, 1) == data['y'].shape
 
 
-def test_load_violent():
-    data: Dict[str, pd.DataFrame] = load_data(Violent())
-    assert (4010, 326) == data['x'].shape
-    assert (4010, 1) == data['s'].shape
-    assert (4010, 1) == data['y'].shape
-
-
 def test_load_adult_explicitly_sex():
     data: Dict[str, pd.DataFrame] = load_data(Adult("Sex"))
     assert (48842, 102) == data['x'].shape
@@ -143,11 +135,11 @@ def test_load_adult_nationality():
 
 
 def test_race_feature_split():
-    adult: Adult = Adult()
-    adult.set_s(["race_White"])
-    adult.set_s_prefix(["race"])
-    adult.set_y(["salary_>50K"])
-    adult.set_y_prefix(["salary"])
+    adult: Adult = Adult(split="Custom")
+    adult.sens_attrs = ["race_White"]
+    adult.s_prefix = ["race"]
+    adult.class_labels = ["salary_>50K"]
+    adult.class_label_prefix = ["salary"]
 
     data: Dict[str, pd.DataFrame] = load_data(adult)
 

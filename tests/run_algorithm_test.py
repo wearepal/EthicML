@@ -18,15 +18,10 @@ from ethicml.data.german import German
 from ethicml.data.load import load_data
 from ethicml.data.sqf import Sqf
 from ethicml.data.test import Test
-from ethicml.data.violent_recidivism import Violent
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import CV
-from ethicml.metrics.npv import NPV
-from ethicml.metrics.ppv import PPV
-from ethicml.metrics.prob_pos import ProbPos
-from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 
@@ -93,7 +88,7 @@ def test_beutel():
 
 
 def test_run_alg_suite():
-    datasets = [Test(), Adult(), Compas(), Sqf(), German(), Violent()]
+    datasets = [Test(), Adult(), Compas(), Sqf(), German()]
     preprocess_models = [Beutel()]
     inprocess_models = [LR()]
     postprocess_models = []

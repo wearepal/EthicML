@@ -57,16 +57,3 @@ def create_data_obj(filepath: str,
     conf.feature_split = feat_split
 
     return conf
-
-
-def filter_features_by_prefixes(features: List[str], prefixes: List[str]):
-    res = []
-    for name in features:
-        filtered = False
-        for pref in prefixes:
-            if name.startswith(pref):
-                filtered = True
-                break
-        if not filtered:
-            res.append(name)
-    return res

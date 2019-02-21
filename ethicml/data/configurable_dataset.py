@@ -7,6 +7,7 @@ from .dataset import Dataset
 
 class ConfigurableDataset(Dataset):
     def __init__(self):
+        super().__init__()
         self._dataname: str = "No name assigned."
         self._filename: str = "No filename assigned. " \
                              "Use set_filename(<filename>)"
@@ -37,19 +38,3 @@ class ConfigurableDataset(Dataset):
     @feature_split.setter
     def feature_split(self, value: Dict[str, List[str]]) -> None:
         self._feature_split = value
-
-    @property
-    def continuous_features(self) -> List[str]:
-        return self.cont_features
-
-    @continuous_features.setter
-    def continuous_features(self, value: List[str]):
-        self.cont_features = value
-
-    @property
-    def discrete_features(self) -> List[str]:
-        return self.disc_features
-
-    @discrete_features.setter
-    def discrete_features(self, value: List[str]):
-        self.disc_features = value
