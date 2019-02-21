@@ -8,7 +8,17 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix as conf_mtx
 
 
-def confusion_matrix(prediction: np.array, actual: Dict[str, pd.DataFrame]) -> Tuple[int, int, int, int]:
+def confusion_matrix(prediction: np.array, actual: Dict[str, pd.DataFrame]) -> (
+        Tuple[int, int, int, int]):
+    """
+
+    Args:
+        prediction:
+        actual:
+
+    Returns:
+
+    """
     actual_y = actual['y'].values.ravel()
     labels: np.array = np.unique(actual_y)
     if labels.size == 1:

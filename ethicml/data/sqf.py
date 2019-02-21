@@ -6,7 +6,7 @@ from ethicml.data.dataset import Dataset
 
 
 class Sqf(Dataset):
-
+    """Stop, question and frisk dataset"""
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
         self.discrete_only = discrete_only

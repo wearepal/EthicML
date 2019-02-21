@@ -18,6 +18,7 @@ from .pre_algorithm import PreAlgorithm
 
 
 class Beutel(PreAlgorithm):
+    """Beutel's adversarially learned fair representations"""
     def __init__(self,
                  fairness: str = "DI",
                  enc_size: List[int] = None,
@@ -45,19 +46,23 @@ class Beutel(PreAlgorithm):
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
 
-    def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> (
+            Tuple[pd.DataFrame, pd.DataFrame]):
         # pylint: disable=too-many-statements
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
         s_size = int(train_data.s_size)
         y_size = int(train_data.y_size)
-        train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=self.batch_size, shuffle=False)
+        train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=self.batch_size,
+                                                   shuffle=False)
 
         test_data = CustomDataset(test)
-        test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=self.batch_size, shuffle=False)
+        test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=self.batch_size,
+                                                  shuffle=False)
 
         class GradReverse(Function):
+            """Gradient reversal layer"""
             @staticmethod
             def forward(ctx, x):
                 return x.view_as(x)
@@ -66,10 +71,11 @@ class Beutel(PreAlgorithm):
             def backward(ctx, grad_output):
                 return grad_output.neg()
 
-        def grad_reverse(features):
+        def _grad_reverse(features):
             return GradReverse.apply(features)
 
         class Encoder(nn.Module):
+            """Encoder of the GAN"""
             def __init__(self, enc_size: List[int], init_size: int, activation):
                 super().__init__()
                 self.encoder = nn.Sequential()
@@ -86,26 +92,32 @@ class Beutel(PreAlgorithm):
 
             def forward(self, x):
                 encoded = self.encoder(x)
-                grad_reversed_encoded = grad_reverse(encoded)
+                grad_reversed_encoded = _grad_reverse(encoded)
                 return encoded, grad_reversed_encoded
 
         class Adversary(nn.Module):
-            def __init__(self, fairness: str, adv_size: List[int], init_size: int, s_size: int, activation: nn.Module):
+            """Adversary of the GAN"""
+            def __init__(self, fairness: str, adv_size: List[int], init_size: int, s_size: int,
+                         activation: nn.Module):
                 super().__init__()
                 self.fairness = fairness
                 self.init_size = init_size
                 self.adversary = nn.Sequential()
                 if not adv_size:  # In the case that encoder size [] is specified
-                    self.adversary.add_module("single adversary layer", nn.Linear(init_size, s_size))
+                    self.adversary.add_module("single adversary layer",
+                                              nn.Linear(init_size, s_size))
                     self.adversary.add_module("single layer adversary activation", activation)
                 else:
-                    self.adversary.add_module("adversary layer 0", nn.Linear(init_size, adv_size[0]))
+                    self.adversary.add_module("adversary layer 0",
+                                              nn.Linear(init_size, adv_size[0]))
                     self.adversary.add_module("adversary activation 0", activation)
                     for k in range(len(adv_size) - 1):
                         self.adversary.add_module("adversary layer {}".format(k + 1),
                                                   nn.Linear(adv_size[k], adv_size[k + 1]))
-                        self.adversary.add_module("adversary activation {}".format(k + 1), activation)
-                    self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
+                        self.adversary.add_module("adversary activation {}".format(k + 1),
+                                                  activation)
+                    self.adversary.add_module("adversary last layer",
+                                              nn.Linear(adv_size[-1], s_size))
                     self.adversary.add_module("adversary last activation", activation)
 
             def forward(self, x, y):
@@ -120,26 +132,33 @@ class Beutel(PreAlgorithm):
                 return x
 
         class Predictor(nn.Module):
-            def __init__(self, pred_size: List[int], init_size: int, class_label_size: int, activation: nn.Module):
+            """Predictor of the GAN"""
+            def __init__(self, pred_size: List[int], init_size: int, class_label_size: int,
+                         activation: nn.Module):
                 super().__init__()
                 self.predictor = nn.Sequential()
                 if not pred_size:  # In the case that encoder size [] is specified
-                    self.predictor.add_module("single adversary layer", nn.Linear(init_size, class_label_size))
+                    self.predictor.add_module("single adversary layer",
+                                              nn.Linear(init_size, class_label_size))
                     self.predictor.add_module("single layer adversary activation", activation)
                 else:
-                    self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
+                    self.predictor.add_module("adversary layer 0",
+                                              nn.Linear(init_size, pred_size[0]))
                     self.predictor.add_module("adversary activation 0", activation)
                     for k in range(len(pred_size) - 1):
                         self.predictor.add_module("adversary layer {}".format(k + 1),
                                                   nn.Linear(pred_size[k], pred_size[k + 1]))
-                        self.predictor.add_module("adversary activation {}".format(k + 1), activation)
-                    self.predictor.add_module("adversary last layer", nn.Linear(pred_size[-1], class_label_size))
+                        self.predictor.add_module("adversary activation {}".format(k + 1),
+                                                  activation)
+                    self.predictor.add_module("adversary last layer",
+                                              nn.Linear(pred_size[-1], class_label_size))
                     self.predictor.add_module("adversary last activation", activation)
 
             def forward(self, x):
                 return self.predictor(x)
 
         class Model(nn.Module):
+            """Whole GAN model"""
             def __init__(self, enc, adv, pred):
                 super().__init__()
                 self.enc = enc
@@ -153,7 +172,8 @@ class Beutel(PreAlgorithm):
                 return encoded, s_hat, y_hat
 
         enc = Encoder(self.enc_size, size, self.enc_activation)
-        adv = Adversary(self.fairness, self.adv_size, self.enc_size[-1], s_size, self.adv_activation)
+        adv = Adversary(self.fairness, self.adv_size, self.enc_size[-1], s_size,
+                        self.adv_activation)
         pred = Predictor(self.pred_size, self.enc_size[-1], y_size, self.adv_activation)
         model = Model(enc, adv, pred)
 
@@ -183,7 +203,8 @@ class Beutel(PreAlgorithm):
                         raise NotImplementedError("Not implemented Eq. Odds yet")
                     elif self.fairness == "DI":
                         mask = torch.ones(s_pred.shape).byte()
-                    s_loss = s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
+                    s_loss = s_loss_fn(s_pred,
+                                       torch.masked_select(sens_label, mask).view(-1, s_size))
 
                     optimizer_s.zero_grad()
                     s_loss.backward()

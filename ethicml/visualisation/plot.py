@@ -16,6 +16,12 @@ MARKERS = ['s', 'p', 'P', '*', '+', 'x', 'o', 'v']
 
 
 def save_2d_plot(data: Dict[str, pd.DataFrame], filepath: str):
+    """
+
+    Args:
+        data:
+        filepath:
+    """
     file_path = Path(filepath)
     columns = data['x'].columns
 
@@ -31,6 +37,13 @@ def save_2d_plot(data: Dict[str, pd.DataFrame], filepath: str):
 
 
 def save_jointplot(data: Dict[str, pd.DataFrame], filepath: str, dims: Tuple[int, int] = (0, 1)):
+    """
+
+    Args:
+        data:
+        filepath:
+        dims:
+    """
     file_path = Path(filepath)
     columns = data['x'].columns
 
@@ -45,6 +58,12 @@ def save_jointplot(data: Dict[str, pd.DataFrame], filepath: str, dims: Tuple[int
 
 
 def make_gif(files: List[str], name="movie"):
+    """
+
+    Args:
+        files:
+        name:
+    """
     images = []
     for filename in files:
         images.append(imageio.imread(filename))

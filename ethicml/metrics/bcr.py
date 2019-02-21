@@ -12,6 +12,7 @@ from .metric import Metric
 
 
 class BCR(Metric):
+    """Balanced Classification Rate"""
     def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
         tpr_metric = TPR()
         tpr = tpr_metric.score(prediction, actual)
@@ -19,7 +20,7 @@ class BCR(Metric):
         tnr_metric = TNR()
         tnr = tnr_metric.score(prediction, actual)
 
-        return (tpr + tnr)/2
+        return (tpr + tnr) / 2
 
     @property
     def name(self) -> str:

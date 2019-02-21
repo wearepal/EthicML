@@ -225,7 +225,7 @@ const-naming-style=UPPER_CASE
 
 # Minimum line length for functions/classes that require docstrings, shorter
 # ones are exempt.
-docstring-min-length=500
+docstring-min-length=3
 
 # Naming style matching correct function names
 function-naming-style=snake_case
@@ -240,7 +240,11 @@ good-names=i,
            k,
            ex,
            Run,
-           _
+           _,
+           df,
+           x,
+           y,
+           s
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no
@@ -279,11 +283,12 @@ no-docstring-rgx=^_
 property-classes=abc.abstractproperty
 
 # Naming style matching correct variable names
-variable-naming-style=snake_case
+# variable-naming-style=snake_case
 
 # Regular expression matching correct variable names. Overrides variable-
 # naming-style
 #variable-rgx=
+variable-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
 
 
 [FORMAT]
@@ -302,7 +307,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=120
+max-line-length=100
 
 # Maximum number of lines in a module
 max-module-lines=1000

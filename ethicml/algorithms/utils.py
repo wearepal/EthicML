@@ -1,5 +1,6 @@
 """
-Returns a subset of the data. Used primarily in testing so that kernel methods finish in a reasonable time
+Returns a subset of the data. Used primarily in testing so that kernel methods finish in a
+reasonable time
 """
 
 from typing import Dict
@@ -8,6 +9,14 @@ import torch
 
 
 def get_subset(train: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
+    """
+
+    Args:
+        train:
+
+    Returns:
+
+    """
     return {
         'x': train['x'][:][:500],
         's': train['s'][:][:500],
@@ -15,7 +24,18 @@ def get_subset(train: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
     }
 
 
-def make_dict(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> Dict[str, pd.DataFrame]:
+def make_dict(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> (
+        Dict[str, pd.DataFrame]):
+    """
+
+    Args:
+        x_val:
+        s_val:
+        y_val:
+
+    Returns:
+
+    """
     return {
         'x': x_val,
         's': s_val,
@@ -24,6 +44,16 @@ def make_dict(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> 
 
 
 def quadratic_time_mmd(data_first, data_second, sigma):
+    """
+
+    Args:
+        data_first:
+        data_second:
+        sigma:
+
+    Returns:
+
+    """
     xx_gm = data_first@data_first.t()
     xy_gm = data_first@data_second.t()
     yy_gm = data_second@data_second.t()

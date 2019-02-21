@@ -10,8 +10,9 @@ from .metric import Metric
 
 
 class ProbOutcome(Metric):
+    """Mean of logits"""
     def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
-        return prediction.sum()/prediction.size
+        return prediction.sum() / prediction.size
 
     @property
     def name(self) -> str:

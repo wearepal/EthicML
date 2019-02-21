@@ -7,6 +7,9 @@ from .dataset import Dataset
 
 
 class Adult(Dataset):
+    """
+    UCL Adult dataset
+    """
     _features: List[str]
     _class_label_prefix: List[str]
     _class_labels: List[str]

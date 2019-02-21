@@ -10,6 +10,7 @@ from .metric import Metric
 
 
 class Accuracy(Metric):
+    """Accruacy"""
     def score(self, prediction: pd.DataFrame, actual: Dict[str, pd.DataFrame]) -> float:
         actual_y = actual['y'].values.ravel()
         return accuracy_score(actual_y, prediction)

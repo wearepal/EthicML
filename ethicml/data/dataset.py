@@ -9,6 +9,7 @@ from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
 
 class Dataset(ABC):
+    """Base class for datasets"""
     def __init__(self):
         self._features: List[str] = []
         self._class_label_prefix: List[str] = []
@@ -23,16 +24,19 @@ class Dataset(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
-        pass
+        """Name of the dataset"""
 
     @property
     @abstractmethod
     def filename(self) -> str:
-        pass
+        """File from which to load the data"""
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-
+        """
+        Return a dictionary that has separate entries for the features, the labels and the
+        sensitive attributes.
+        """
         if self.discrete_only:
             self.features_to_remove += self.continuous_features
 
@@ -44,6 +48,7 @@ class Dataset(ABC):
 
     @property
     def continuous_features(self):
+        """List of features that are continuous"""
         return self._cont_features
 
     @continuous_features.setter
@@ -52,6 +57,7 @@ class Dataset(ABC):
 
     @property
     def features(self):
+        """List of all features"""
         return self._features
 
     @features.setter
@@ -60,6 +66,7 @@ class Dataset(ABC):
 
     @property
     def s_prefix(self):
+        """List of prefixes of the sensitive attribute"""
         return self._s_prefix
 
     @s_prefix.setter
@@ -69,6 +76,7 @@ class Dataset(ABC):
 
     @property
     def sens_attrs(self):
+        """List of sensitive attributes"""
         return self._sens_attrs
 
     @sens_attrs.setter
@@ -77,6 +85,7 @@ class Dataset(ABC):
 
     @property
     def class_labels(self):
+        """List of class labels"""
         return self._class_labels
 
     @class_labels.setter
@@ -85,6 +94,7 @@ class Dataset(ABC):
 
     @property
     def class_label_prefix(self):
+        """List of prefixes of class labels"""
         return self._class_label_prefix
 
     @class_label_prefix.setter
@@ -94,7 +104,9 @@ class Dataset(ABC):
 
     @property
     def discrete_features(self) -> List[str]:
-        return get_discrete_features(self.features, self.features_to_remove, self.continuous_features)
+        """List of features that are discrete"""
+        return get_discrete_features(self.features, self.features_to_remove,
+                                     self.continuous_features)
 
     @discrete_features.setter
     def discrete_features(self, feats: List[str]):

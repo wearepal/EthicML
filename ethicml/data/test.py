@@ -6,6 +6,7 @@ from .dataset import Dataset
 
 
 class Test(Dataset):
+    """Class to describe features of the Test dataset"""
     cont_features: List[str]
     disc_features: List[str]
 
