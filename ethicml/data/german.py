@@ -19,7 +19,7 @@ class German(Dataset):
             'age',
             'number-of-credits',
             'people-liable-for',
-            'credit',
+            'credit-label',
             'status_A11',
             'status_A12',
             'status_A13',
@@ -74,19 +74,19 @@ class German(Dataset):
 
         self.continuous_features = [
             'month',
-            'credit_amount',
-            'investment_as_income_percentage',
-            'residence_since',
+            'credit-amount',
+            'investment-as-income-percentage',
+            'residence-since',
             'age',
-            'number_of_credits',
-            'people_liable_for'
+            'number-of-credits',
+            'people-liable-for'
         ]
 
         if split == "Sex":
             self.sens_attrs = ['sex']
             self.s_prefix = ['sex']
-            self.class_labels = ['credit']
-            self.class_label_prefix = ['credit']
+            self.class_labels = ['credit-label']
+            self.class_label_prefix = ['credit-label']
         else:
             raise NotImplementedError
 
