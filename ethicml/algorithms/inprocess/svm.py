@@ -13,8 +13,8 @@ class SVM(InAlgorithm):
     """Support Vector Machine"""
     def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
         clf = SVC(random_state=888)
-        clf.fit(train['x'], train['y'].values.ravel())
-        return pd.DataFrame(clf.predict(test['x']), columns=["preds"])
+        clf.fit(train.x, train.y.values.ravel())
+        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
     @property
     def name(self) -> str:

@@ -17,41 +17,33 @@ def metric_per_sensitive_attribute(
         predictions: pd.DataFrame,
         actual: DataTuple,
         metric: Metric) -> Dict[str, float]:
-    """
-
-    Args:
-        predictions:
-        actual:
-        metric:
-
-    Returns:
-
-    """
+    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute"""
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable()
 
-    amalgamated = pd.concat([actual['x'],
-                             actual['s'],
-                             actual['y'],
+    amalgamated = pd.concat([actual.x,
+                             actual.s,
+                             actual.y,
                              predictions], axis=1)
 
-    assert amalgamated.shape[0] == actual['x'].shape[0]
+    assert amalgamated.shape[0] == actual.x.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
 
-    s_columns: List[str] = [s_col for s_col in actual['s'].columns]
-    y_columns: List[str] = [y_col for y_col in actual['y'].columns]
+    s_columns: List[str] = [s_col for s_col in actual.s.columns]
+    y_columns: List[str] = [y_col for y_col in actual.y.columns]
     pred_column: List[str] = [p_col for p_col in predictions.columns]
     assert len(y_columns) == 1
 
     for y_col in y_columns:
         for s_col in s_columns:
-            for unique_s in actual['s'][s_col].unique():
+            for unique_s in actual.s[s_col].unique():
                 for p_col in pred_column:
-                    subset = {'x': amalgamated[actual['s'][s_col] == unique_s][actual['x'].columns],
-                              's': amalgamated[actual['s'][s_col] == unique_s][s_col],
-                              'y': amalgamated[actual['s'][s_col] == unique_s][y_col]}
-                    pred_y = amalgamated[actual['s'][s_col] == unique_s][p_col]
+                    subset = DataTuple(
+                        x=amalgamated[actual.s[s_col] == unique_s][actual.x.columns],
+                        s=amalgamated[actual.s[s_col] == unique_s][s_col],
+                        y=amalgamated[actual.s[s_col] == unique_s][y_col])
+                    pred_y = amalgamated[actual.s[s_col] == unique_s][p_col]
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
 

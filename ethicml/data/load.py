@@ -7,18 +7,19 @@ from typing import List, Dict
 import pandas as pd
 
 from ..common import ROOT_DIR
+from ..algorithms.utils import DataTuple
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
 
 
-def load_data(dataset: Dataset) -> dict:
+def load_data(dataset: Dataset) -> DataTuple:
     """Load dataset from its CSV file
 
     Args:
         dataset: dataset object
 
     Returns:
-        Dictionary with dataframes of features, labels and sensitive attributes
+        DataTuple with dataframes of features, labels and sensitive attributes
     """
     filename = dataset.filename
     data_loc: str = "{}/data/csvs/{}".format(ROOT_DIR, filename)
@@ -31,9 +32,7 @@ def load_data(dataset: Dataset) -> dict:
     s_data = dataframe[feature_split['s']]
     y_data = dataframe[feature_split['y']]
 
-    return {"x": x_data,
-            "s": s_data,
-            "y": y_data}
+    return DataTuple(x=x_data, s=s_data, y=y_data)
 
 
 def create_data_obj(filepath: str,

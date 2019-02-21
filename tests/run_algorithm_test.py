@@ -10,7 +10,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
-from ethicml.algorithms.utils import make_dict, DataTuple
+from ethicml.algorithms.utils import make_data_tuple, DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
 from ethicml.data.german import German
@@ -71,11 +71,11 @@ def test_beutel():
     new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test)
     new_xtrain, new_xtest = new_xtrain_xtest
 
-    assert new_xtrain.shape[0] == train['x'].shape[0]
-    assert new_xtest.shape[0] == test['x'].shape[0]
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
 
-    new_train = make_dict(new_xtrain, train['s'], train['y'])
-    new_test = make_dict(new_xtest, test['s'], test['y'])
+    new_train = make_data_tuple(new_xtrain, train.s, train.y)
+    new_test = make_data_tuple(new_xtest, test.s, test.y)
 
     model: InAlgorithm = SVM()
     assert model is not None

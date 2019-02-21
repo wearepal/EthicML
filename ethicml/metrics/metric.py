@@ -2,18 +2,18 @@
 Abstract Base Class of all metrics in the framework
 """
 
-from ..algorithms.utils import DataTuple
 from abc import ABC, abstractmethod
 
-import numpy
-import pandas
+import numpy as np
+
+from ..algorithms.utils import DataTuple
 
 
 class Metric(ABC):
     """Base class for all metrics"""
 
     @abstractmethod
-    def score(self, prediction: numpy.array, actual: Dict[str, pandas.DataFrame]) -> float:
+    def score(self, prediction: np.array, actual: DataTuple) -> float:
         """
         Compute score
 

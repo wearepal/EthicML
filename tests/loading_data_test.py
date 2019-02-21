@@ -23,16 +23,16 @@ def test_can_load_test_data():
 
 def test_load_data():
     data: DataTuple = load_data(Test())
-    assert (2000, 2) == data['x'].shape
-    assert (2000, 1) == data['s'].shape
-    assert (2000, 1) == data['y'].shape
+    assert (2000, 2) == data.x.shape
+    assert (2000, 1) == data.s.shape
+    assert (2000, 1) == data.y.shape
 
 
 def test_discrete_data():
     data: DataTuple = load_data(Adult())
-    assert (48842, 102) == data['x'].shape
-    assert (48842, 1) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 102) == data.x.shape
+    assert (48842, 1) == data.s.shape
+    assert (48842, 1) == data.y.shape
     assert 97 == len(Adult().discrete_features)
     assert 94 == len(Adult(split='Race').discrete_features)
     assert 58 == len(Adult(split='Nationality').discrete_features)
@@ -52,86 +52,86 @@ def test_joining_2_load_functions():
     data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: DataTuple = load_data(data_obj)
-    assert (2000, 2) == data['x'].shape
-    assert (2000, 1) == data['s'].shape
-    assert (2000, 1) == data['y'].shape
+    assert (2000, 2) == data.x.shape
+    assert (2000, 1) == data.s.shape
+    assert (2000, 1) == data.y.shape
 
 
 def test_load_adult():
     data: DataTuple = load_data(Adult())
-    assert (48842, 102) == data['x'].shape
-    assert (48842, 1) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 102) == data.x.shape
+    assert (48842, 1) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_load_compas():
     data: DataTuple = load_data(Compas())
-    assert (6167, 400) == data['x'].shape
-    assert (6167, 1) == data['s'].shape
-    assert (6167, 1) == data['y'].shape
+    assert (6167, 400) == data.x.shape
+    assert (6167, 1) == data.s.shape
+    assert (6167, 1) == data.y.shape
 
 
 def test_load_sqf():
     data: DataTuple = load_data(Sqf())
-    assert (12347, 144) == data['x'].shape
-    assert (12347, 1) == data['s'].shape
-    assert (12347, 1) == data['y'].shape
+    assert (12347, 144) == data.x.shape
+    assert (12347, 1) == data.s.shape
+    assert (12347, 1) == data.y.shape
 
 
 def test_load_german():
     data: DataTuple = load_data(German())
-    assert (1000, 51) == data['x'].shape
-    assert (1000, 1) == data['s'].shape
-    assert (1000, 1) == data['y'].shape
+    assert (1000, 51) == data.x.shape
+    assert (1000, 1) == data.s.shape
+    assert (1000, 1) == data.y.shape
 
 
 def test_load_adult_explicitly_sex():
     data: DataTuple = load_data(Adult("Sex"))
-    assert (48842, 102) == data['x'].shape
-    assert (48842, 1) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 102) == data.x.shape
+    assert (48842, 1) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_load_compas_explicitly_sex():
     data: DataTuple = load_data(Compas("Sex"))
-    assert (6167, 400) == data['x'].shape
-    assert (6167, 1) == data['s'].shape
-    assert (6167, 1) == data['y'].shape
+    assert (6167, 400) == data.x.shape
+    assert (6167, 1) == data.s.shape
+    assert (6167, 1) == data.y.shape
 
 
 def test_load_adult_race():
     data: DataTuple = load_data(Adult("Race"))
-    assert (48842, 99) == data['x'].shape
-    assert (48842, 5) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 99) == data.x.shape
+    assert (48842, 5) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_load_compas_race():
     data: DataTuple = load_data(Compas("Race"))
-    assert (6167, 400) == data['x'].shape
-    assert (6167, 1) == data['s'].shape
-    assert (6167, 1) == data['y'].shape
+    assert (6167, 400) == data.x.shape
+    assert (6167, 1) == data.s.shape
+    assert (6167, 1) == data.y.shape
 
 
 def test_load_adult_race_sex():
     data: DataTuple = load_data(Adult("Race-Sex"))
-    assert (48842, 97) == data['x'].shape
-    assert (48842, 6) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 97) == data.x.shape
+    assert (48842, 6) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_load_compas_race_sex():
     data: DataTuple = load_data(Compas("Race-Sex"))
-    assert (6167, 399) == data['x'].shape
-    assert (6167, 2) == data['s'].shape
-    assert (6167, 1) == data['y'].shape
+    assert (6167, 399) == data.x.shape
+    assert (6167, 2) == data.s.shape
+    assert (6167, 1) == data.y.shape
 
 
 def test_load_adult_nationality():
     data: DataTuple = load_data(Adult("Nationality"))
-    assert (48842, 63) == data['x'].shape
-    assert (48842, 41) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 63) == data.x.shape
+    assert (48842, 41) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_race_feature_split():
@@ -143,9 +143,9 @@ def test_race_feature_split():
 
     data: DataTuple = load_data(adult)
 
-    assert (48842, 99) == data['x'].shape
-    assert (48842, 1) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 99) == data.x.shape
+    assert (48842, 1) == data.s.shape
+    assert (48842, 1) == data.y.shape
 
 
 def test_additional_columns_load():
@@ -159,6 +159,6 @@ def test_additional_columns_load():
                                         ])
     data: DataTuple = load_data(data_obj)
 
-    assert (48842, 102) == data['x'].shape
-    assert (48842, 1) == data['s'].shape
-    assert (48842, 1) == data['y'].shape
+    assert (48842, 102) == data.x.shape
+    assert (48842, 1) == data.s.shape
+    assert (48842, 1) == data.y.shape

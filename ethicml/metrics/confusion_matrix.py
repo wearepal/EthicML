@@ -11,7 +11,7 @@ from ..algorithms.utils import DataTuple
 
 def confusion_matrix(prediction: np.array, actual: DataTuple) -> Tuple[int, int, int, int]:
     """Apply sci-kit learn's confusion matrix"""
-    actual_y = actual['y'].values.ravel()
+    actual_y = actual.y.values.ravel()
     labels: np.array = np.unique(actual_y)
     if labels.size == 1:
         labels = [0, 1]
