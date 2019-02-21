@@ -27,7 +27,6 @@ jobs:
     displayName: 'Install dependencies'
 
   - script: |
-      python -m pytest tests/
       python -m pytest -vv --cov --cov-fail-under=80  tests/
     displayName: 'pytest'
 
