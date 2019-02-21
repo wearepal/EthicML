@@ -9,7 +9,7 @@ import numpy as np
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.utils import make_dict
+from ethicml.algorithms.utils import make_dict, DataTuple
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import metric_per_sensitive_attribute, MetricNotApplicable
@@ -17,7 +17,7 @@ from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import train_test_split
 
 
-def get_sensitive_combinations(metrics: List[Metric], train: Dict[str, pd.DataFrame]) -> List[str]:
+def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
     """
 
     Args:
@@ -66,9 +66,9 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
     for dataset in datasets:
 
-        data: Dict[str, pd.DataFrame] = load_data(dataset)
+        data: DataTuple = load_data(dataset)
 
-        train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+        train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
         train, test = train_test
 
         to_operate_on = {"no_transform": {'train': train,
@@ -93,8 +93,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
         for name, transform in to_operate_on.items():
             results = pd.DataFrame(columns=columns)
 
-            transformed_train: Dict[str, pd.DataFrame] = transform['train']
-            transformed_test: Dict[str, pd.DataFrame] = transform['test']
+            transformed_train: DataTuple = transform['train']
+            transformed_test: DataTuple = transform['test']
             transform_name: str = name
 
             for model in inprocess_models:

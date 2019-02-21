@@ -3,16 +3,16 @@ Abstract Base Class of all post-processing algorithms in the framework
 """
 
 from abc import abstractmethod
-from typing import Dict
 import pandas as pd
 
 from ..algorithm_base import Algorithm
+from ..utils import DataTuple
 
 
 class PostAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do post-processing"""
     @abstractmethod
-    def run(self, predictions: pd.DataFrame, test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def run(self, predictions: pd.DataFrame, test: DataTuple) -> pd.DataFrame:
         """Make predictions fair
 
         Args:
@@ -21,7 +21,7 @@ class PostAlgorithm(Algorithm):
         """
         raise NotImplementedError("Run needs to be implemented")
 
-    def run_test(self, predictions: pd.DataFrame, test: Dict[str, pd.DataFrame]) -> pd.DataFrame:
+    def run_test(self, predictions: pd.DataFrame, test: DataTuple) -> pd.DataFrame:
         """
 
         Args:

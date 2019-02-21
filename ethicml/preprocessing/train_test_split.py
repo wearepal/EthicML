@@ -1,10 +1,12 @@
 """
 Split into train and test data
 """
-from typing import Tuple, Dict, List
+from typing import Tuple, List
 import numpy as np
 from numpy.testing import assert_array_equal
 import pandas as pd
+
+from ..algorithms.utils import DataTuple
 
 
 def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage, random_seed) -> (
@@ -32,9 +34,8 @@ def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage, random_seed) 
     return train, test
 
 
-def train_test_split(data: Dict[str, pd.DataFrame], train_percentage: float = 0.8,
-                     random_seed: int = 0) -> (
-                         Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]]):
+def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0) -> (
+        Tuple[DataTuple, DataTuple]):
     """
 
     Args:
@@ -60,14 +61,14 @@ def train_test_split(data: Dict[str, pd.DataFrame], train_percentage: float = 0.
 
     all_data_train, all_data_test = all_data_train_test
 
-    train: Dict[str, pd.DataFrame] = {
+    train: DataTuple = {
         'x': all_data_train[x_columns],
         's': all_data_train[s_columns],
         'y': all_data_train[y_columns],
         # 'ty': all_data_train[ty_columns]
     }
 
-    test: Dict[str, pd.DataFrame] = {
+    test: DataTuple = {
         'x': all_data_test[x_columns],
         's': all_data_test[s_columns],
         'y': all_data_test[y_columns],

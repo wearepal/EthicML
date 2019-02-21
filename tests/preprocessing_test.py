@@ -3,17 +3,17 @@ Test preprocessing capabilities
 """
 import math
 
-from typing import Tuple, Dict
-import pandas as pd
+from typing import Tuple
 
+from ethicml.algorithms.utils import DataTuple
 from ethicml.data.load import load_data
 from ethicml.data.test import Test
 from ethicml.preprocessing.train_test_split import train_test_split
 
 
 def test_train_test_split():
-    data: Dict[str, pd.DataFrame] = load_data(Test())
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = \
+    data: DataTuple = load_data(Test())
+    train_test: Tuple[DataTuple, DataTuple] = \
         train_test_split(data)
     train, test = train_test
     assert train is not None
@@ -61,8 +61,8 @@ def test_train_test_split():
 
 
 def test_random_seed():
-    data: Dict[str, pd.DataFrame] = load_data(Test())
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = \
+    data: DataTuple = load_data(Test())
+    train_test: Tuple[DataTuple, DataTuple] = \
         train_test_split(data)
     train, test = train_test
     assert train is not None
@@ -74,7 +74,7 @@ def test_random_seed():
     assert train['x'].shape[0] == train['s'].shape[0]
     assert train['s'].shape[0] == train['y'].shape[0]
 
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = \
+    train_test: Tuple[DataTuple, DataTuple] = \
         train_test_split(data, random_seed=1)
     train, test = train_test
     assert train is not None
@@ -86,7 +86,7 @@ def test_random_seed():
     assert train['x'].shape[0] == train['s'].shape[0]
     assert train['s'].shape[0] == train['y'].shape[0]
 
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = \
+    train_test: Tuple[DataTuple, DataTuple] = \
         train_test_split(data, random_seed=2)
     train, test = train_test
     assert train is not None
@@ -98,7 +98,7 @@ def test_random_seed():
     assert train['x'].shape[0] == train['s'].shape[0]
     assert train['s'].shape[0] == train['y'].shape[0]
 
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = \
+    train_test: Tuple[DataTuple, DataTuple] = \
         train_test_split(data, random_seed=3)
     train, test = train_test
     assert train is not None

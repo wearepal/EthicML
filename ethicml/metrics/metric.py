@@ -2,7 +2,7 @@
 Abstract Base Class of all metrics in the framework
 """
 
-from typing import Dict
+from ..algorithms.utils import DataTuple
 from abc import ABC, abstractmethod
 
 import numpy

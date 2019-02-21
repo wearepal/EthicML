@@ -4,7 +4,7 @@ same as TPR per class, but does it in a different way.
 """
 
 
-from typing import Dict
+from ..algorithms.utils import DataTuple
 
 import numpy
 import pandas

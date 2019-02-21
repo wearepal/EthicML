@@ -1,8 +1,7 @@
 """
 Test that an algorithm can run against some data
 """
-import os
-from typing import Tuple, Dict
+from typing import Tuple
 import pandas as pd
 import numpy as np
 import pytest
@@ -11,7 +10,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
-from ethicml.algorithms.utils import make_dict
+from ethicml.algorithms.utils import make_dict, DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
 from ethicml.data.german import German
@@ -27,8 +26,8 @@ from ethicml.preprocessing.train_test_split import train_test_split
 
 
 def get_train_test():
-    data: Dict[str, pd.DataFrame] = load_data(Test())
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Test())
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     return train_test
 
 

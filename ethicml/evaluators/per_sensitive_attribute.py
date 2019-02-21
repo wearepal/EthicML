@@ -6,6 +6,7 @@ from typing import Dict, List
 import pandas as pd
 
 from ..metrics.metric import Metric
+from ..algorithms.utils import DataTuple
 
 
 class MetricNotApplicable(Exception):
@@ -14,7 +15,7 @@ class MetricNotApplicable(Exception):
 
 def metric_per_sensitive_attribute(
         predictions: pd.DataFrame,
-        actual: Dict[str, pd.DataFrame],
+        actual: DataTuple,
         metric: Metric) -> Dict[str, float]:
     """
 

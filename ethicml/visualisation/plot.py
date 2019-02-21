@@ -5,17 +5,19 @@ creates plots of a dataset
 
 import os
 from pathlib import Path
-from typing import Dict, Tuple, List
+from typing import Tuple, List
 
 import imageio
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from ..algorithms.utils import DataTuple
+
 MARKERS = ['s', 'p', 'P', '*', '+', 'x', 'o', 'v']
 
 
-def save_2d_plot(data: Dict[str, pd.DataFrame], filepath: str):
+def save_2d_plot(data: DataTuple, filepath: str):
     """
 
     Args:
@@ -36,7 +38,7 @@ def save_2d_plot(data: Dict[str, pd.DataFrame], filepath: str):
     plt.clf()
 
 
-def save_jointplot(data: Dict[str, pd.DataFrame], filepath: str, dims: Tuple[int, int] = (0, 1)):
+def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)):
     """
 
     Args:

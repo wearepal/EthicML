@@ -2,16 +2,15 @@
 For assessing mean of logits
 """
 
-from typing import Dict
-import pandas as pd
 import numpy as np
 
 from .metric import Metric
+from ..algorithms.utils import DataTuple
 
 
 class ProbOutcome(Metric):
     """Mean of logits"""
-    def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
+    def score(self, prediction: np.array, actual: DataTuple) -> float:
         return prediction.sum() / prediction.size
 
     @property

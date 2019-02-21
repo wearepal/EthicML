@@ -2,23 +2,15 @@
 Applies sci-kit learn's confusion matrix
 """
 
-from typing import Tuple, Dict
+from typing import Tuple
 import numpy as np
-import pandas as pd
 from sklearn.metrics import confusion_matrix as conf_mtx
 
+from ..algorithms.utils import DataTuple
 
-def confusion_matrix(prediction: np.array, actual: Dict[str, pd.DataFrame]) -> (
-        Tuple[int, int, int, int]):
-    """
 
-    Args:
-        prediction:
-        actual:
-
-    Returns:
-
-    """
+def confusion_matrix(prediction: np.array, actual: DataTuple) -> Tuple[int, int, int, int]:
+    """Apply sci-kit learn's confusion matrix"""
     actual_y = actual['y'].values.ravel()
     labels: np.array = np.unique(actual_y)
     if labels.size == 1:

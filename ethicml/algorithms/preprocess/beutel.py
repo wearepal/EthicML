@@ -6,7 +6,7 @@ Implementation of Beute's adversarially learned fair representations
 # pylint: disable=arguments-differ
 
 import random
-from typing import Dict, Tuple, List, Any
+from typing import Tuple, List, Any
 import pandas as pd
 import numpy as np
 import torch
@@ -15,6 +15,7 @@ from torch.autograd import Function
 
 from ..dataloader_funcs import CustomDataset
 from .pre_algorithm import PreAlgorithm
+from ..utils import DataTuple
 
 
 class Beutel(PreAlgorithm):
@@ -46,7 +47,7 @@ class Beutel(PreAlgorithm):
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
 
-    def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> (
+    def run(self, train: DataTuple, test: DataTuple) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         # pylint: disable=too-many-statements
 
