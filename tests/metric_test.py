@@ -2,7 +2,7 @@
 Test that we can get some metrics on predictions
 """
 
-from typing import Dict, Tuple
+from typing import Tuple
 import numpy as np
 import pandas as pd
 import pytest
@@ -10,6 +10,7 @@ import pytest
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR, LRProb
 from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.utils import DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute, \
@@ -82,8 +83,8 @@ def test_probneg_per_sens_attr():
 
 
 def test_acc_per_nonbinary_sens():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Nationality"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Adult("Nationality"))
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
@@ -172,8 +173,8 @@ def test_acc_per_nonbinary_sens():
 
 
 def test_acc_per_race():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Adult("Race"))
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
@@ -291,8 +292,8 @@ def test_tnr_diff():
 
 
 def test_nmi_diff_non_binary_race():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Adult("Race"))
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
@@ -327,8 +328,8 @@ def test_nmi_diff_non_binary_race():
 
 
 def test_tpr_diff_non_binary_race():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Adult("Race"))
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)
@@ -363,8 +364,8 @@ def test_tpr_diff_non_binary_race():
 
 
 def test_tpr_ratio_non_binary_race():
-    data: Dict[str, pd.DataFrame] = load_data(Adult("Race"))
-    train_test: Tuple[Dict[str, pd.DataFrame], Dict[str, pd.DataFrame]] = train_test_split(data)
+    data: DataTuple = load_data(Adult("Race"))
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: np.array = model.run_test(train, test)

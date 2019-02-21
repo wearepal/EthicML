@@ -2,18 +2,17 @@
 For assessing Balnced Classification Rate (BCR)
 """
 
-from typing import Dict
-import pandas as pd
 import numpy as np
 
 from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
 from .metric import Metric
+from ..algorithms.utils import DataTuple
 
 
 class BCR(Metric):
     """Balanced Classification Rate"""
-    def score(self, prediction: np.array, actual: Dict[str, pd.DataFrame]) -> float:
+    def score(self, prediction: np.array, actual: DataTuple) -> float:
         tpr_metric = TPR()
         tpr = tpr_metric.score(prediction, actual)
 

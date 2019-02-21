@@ -3,17 +3,17 @@ Abstract Base Class of all algorithms in the framework
 """
 
 from abc import abstractmethod
-from typing import Dict, Tuple
+from typing import Tuple
 import pandas as pd
 
 from ..algorithm_base import Algorithm
-from ..utils import get_subset
+from ..utils import get_subset, DataTuple
 
 
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
     @abstractmethod
-    def run(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> (
+    def run(self, train: DataTuple, test: DataTuple) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         """Generate fair features
 
@@ -23,7 +23,7 @@ class PreAlgorithm(Algorithm):
         """
         raise NotImplementedError("Run needs to be implemented")
 
-    def run_test(self, train: Dict[str, pd.DataFrame], test: Dict[str, pd.DataFrame]) -> (
+    def run_test(self, train: DataTuple, test: DataTuple) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         """
 

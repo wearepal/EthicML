@@ -2,45 +2,47 @@
 Returns a subset of the data. Used primarily in testing so that kernel methods finish in a
 reasonable time
 """
+from typing import NamedTuple
 
-from typing import Dict
 import pandas as pd
 import torch
 
 
-def get_subset(train: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
-    """
+class DataTuple(NamedTuple):
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+    x: pd.DataFrame  # features
+    s: pd.DataFrame  # senstitive attributes
+    y: pd.DataFrame  # class labels
+
+
+def get_subset(train: DataTuple) -> DataTuple:
+    """Get the first elements of the given dataset
 
     Args:
-        train:
+        train: training data
 
     Returns:
-
+        subset of training data
     """
-    return {
-        'x': train['x'][:][:500],
-        's': train['s'][:][:500],
-        'y': train['y'][:][:500]
-    }
+    return DataTuple(
+        x=train.x[:][:500],
+        s=train.s[:][:500],
+        y=train.y[:][:500]
+    )
 
 
-def make_dict(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> (
-        Dict[str, pd.DataFrame]):
-    """
+def make_data_tuple(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> DataTuple:
+    """Create a DataTuple from features, sensitive attributes and class labels
 
     Args:
-        x_val:
-        s_val:
-        y_val:
+        x_val: features
+        s_val: sensitive attributes
+        y_val: class labels
 
     Returns:
-
+        DataTuple containing the data
     """
-    return {
-        'x': x_val,
-        's': s_val,
-        'y': y_val
-    }
+    return DataTuple(x=x_val, s=s_val, y=y_val)
 
 
 def quadratic_time_mmd(data_first, data_second, sigma):

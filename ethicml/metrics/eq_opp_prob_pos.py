@@ -3,18 +3,14 @@ Used for claculating the probability of being poisitive given the class label is
 same as TPR per class, but does it in a different way.
 """
 
+import numpy as np
 
-from typing import Dict
-
-import numpy
-import pandas
-
-from ethicml.algorithms.utils import make_dict
+from ethicml.algorithms.utils import make_data_tuple, DataTuple
 from ethicml.metrics.confusion_matrix import confusion_matrix
 from ethicml.metrics.metric import Metric
 
 
-def pos_subset_test(preds: numpy.array, data: Dict[str, pandas.DataFrame]):
+def pos_subset_test(preds: np.array, data: DataTuple):
     """Subset of the predictions that have a positive label associated with them
 
     Args:
@@ -24,12 +20,12 @@ def pos_subset_test(preds: numpy.array, data: Dict[str, pandas.DataFrame]):
     Returns:
         subset of the supplied predictions
     """
-    class_label = data['y']
+    class_label = data.y
 
     return preds[class_label == 1]
 
 
-def pos_subset_data(data: Dict[str, pandas.DataFrame]):
+def pos_subset_data(data: DataTuple):
     """Subset of the data that have a positive label associated with them
 
     Args:
@@ -38,20 +34,20 @@ def pos_subset_data(data: Dict[str, pandas.DataFrame]):
     Returns:
         subset of the supplied data
     """
-    features = data['x']
-    sensitive_labels = data['s']
-    class_labels = data['y']
+    features = data.x
+    sensitive_labels = data.s
+    class_labels = data.y
 
     pos_x = features[class_labels == 1]
     pos_s = sensitive_labels[class_labels == 1]
     pos_y = class_labels[class_labels == 1]
 
-    return make_dict(pos_x, pos_s, pos_y)
+    return make_data_tuple(pos_x, pos_s, pos_y)
 
 
 class EqOppProbPos(Metric):
     """Equality of Opportunity"""
-    def score(self, prediction: numpy.array, actual: Dict[str, pandas.DataFrame]) -> float:
+    def score(self, prediction: np.array, actual: DataTuple) -> float:
         pos_subset = pos_subset_data(actual)
         test_pos_subset = pos_subset_test(prediction, actual)
 
