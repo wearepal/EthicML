@@ -10,6 +10,7 @@ class Test(Dataset):
     disc_features: List[str]
 
     def __init__(self):
+        super().__init__()
         self.cont_features = ["a1", "a2"]
         self.disc_features = []
 
@@ -28,11 +29,3 @@ class Test(Dataset):
             "s": ["s"],
             "y": ["y"]
         }
-
-    @property
-    def continuous_features(self) -> List[str]:
-        return self.cont_features
-
-    @property
-    def discrete_features(self) -> List[str]:
-        return self.disc_features

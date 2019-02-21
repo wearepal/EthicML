@@ -2,22 +2,13 @@
 Class to describe features of the SQF dataset
 """
 
-from typing import List, Dict
-
 from ethicml.data.dataset import Dataset
-from ethicml.data.load import filter_features_by_prefixes
 
 
 class Sqf(Dataset):
-    features: List[str]
-    y_prefix: List[str]
-    y_labels: List[str]
-    s_prefix: List[str]
-    sens_attrs: List[str]
-    _cont_features: List[str]
-    _disc_features: List[str]
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
+        super().__init__()
         self.discrete_only = discrete_only
         self.features = [
             'perstop',
@@ -168,32 +159,28 @@ class Sqf(Dataset):
             'build_Z'
         ]
 
-        self._cont_features = [
+        self.continuous_features = [
             'perstop', 'ht_feet', 'age', 'ht_inch', 'perobs', 'weight'
         ]
 
         if split == "Sex":
             self.sens_attrs = ['sex']
             self.s_prefix = ['sex']
-            self.y_labels = ['weapon']
-            self.y_prefix = ['weapon']
+            self.class_labels = ['weapon']
+            self.class_label_prefix = ['weapon']
         elif split == "Race":
             self.sens_attrs = ['race']
             self.s_prefix = ['race']
-            self.y_labels = ['weapon']
-            self.y_prefix = ['weapon']
+            self.class_labels = ['weapon']
+            self.class_label_prefix = ['weapon']
         elif split == "Race-Sex":
             self.sens_attrs = ['sex',
                                'race']
             self.s_prefix = ['race', 'sex']
-            self.y_labels = ['weapon']
-            self.y_prefix = ['weapon']
+            self.class_labels = ['weapon']
+            self.class_label_prefix = ['weapon']
         else:
             raise NotImplementedError
-
-        self.conc_features: List[str] = self.s_prefix + self.y_prefix
-        self._disc_features = [item for item in filter_features_by_prefixes(self.features, self.conc_features)
-                               if item not in self._cont_features]
 
     @property
     def name(self) -> str:
@@ -202,38 +189,3 @@ class Sqf(Dataset):
     @property
     def filename(self) -> str:
         return "sqf.csv"
-
-    @property
-    def feature_split(self) -> Dict[str, List[str]]:
-
-        conc_features: List[str]
-        if self.discrete_only:
-            conc_features = self.s_prefix + self.y_prefix + self.continuous_features
-        else:
-            conc_features = self.s_prefix + self.y_prefix
-
-        return {
-            "x": filter_features_by_prefixes(self.features, conc_features),
-            "s": self.sens_attrs,
-            "y": self.y_labels
-        }
-
-    def set_s(self, sens_attrs: List[str]):
-        self.sens_attrs = sens_attrs
-
-    def set_s_prefix(self, sens_attr_prefixs: List[str]):
-        self.s_prefix = sens_attr_prefixs
-
-    def set_y(self, labels: List[str]):
-        self.y_labels = labels
-
-    def set_y_prefix(self, label_prefixs):
-        self.y_prefix = label_prefixs
-
-    @property
-    def continuous_features(self) -> List[str]:
-        return self._cont_features
-
-    @property
-    def discrete_features(self) -> List[str]:
-        return self._disc_features
