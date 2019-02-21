@@ -1,12 +1,12 @@
 """
-Class to describe features of the Adult dataset
+Class to describe features of the German dataset
 """
 
 from .dataset import Dataset
 
 
 class German(Dataset):
-
+    """German credit dataset"""
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
         self.discrete_only = discrete_only
