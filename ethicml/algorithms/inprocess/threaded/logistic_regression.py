@@ -11,7 +11,7 @@ from .threaded_in_algorithm import ThreadedInAlgorithm
 
 class ThreadedLR(ThreadedInAlgorithm):
     """Threaded logistic regression"""
-    def __init__(self, python_exe: Optional[str]=None):
+    def __init__(self, python_exe: Optional[str] = None):
         if python_exe is None:
             # use the python executable that this script was called with
             python_exe = sys.executable
