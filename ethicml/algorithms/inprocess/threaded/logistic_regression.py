@@ -1,5 +1,7 @@
 """Threaded logistic regression"""
+import sys
 from subprocess import call
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -9,7 +11,10 @@ from .threaded_in_algorithm import ThreadedInAlgorithm
 
 class ThreadedLR(ThreadedInAlgorithm):
     """Threaded logistic regression"""
-    def __init__(self, python_exe="/Users/tk324/anaconda/envs/pytorch/bin/python"):
+    def __init__(self, python_exe: Optional[str]=None):
+        if python_exe is None:
+            # use the python executable that this script was called with
+            python_exe = sys.executable
         self.python_exe = python_exe
 
     def run(self, train_paths, test_paths, tmp_path):
