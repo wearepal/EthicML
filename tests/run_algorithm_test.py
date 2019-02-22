@@ -7,7 +7,9 @@ import numpy as np
 import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
+from ethicml.algorithms.inprocess.threaded.logistic_regression import ThreadedLR
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_data_tuple, DataTuple
@@ -17,7 +19,7 @@ from ethicml.data.german import German
 from ethicml.data.load import load_data
 from ethicml.data.sqf import Sqf
 from ethicml.data.test import Test
-from ethicml.evaluators.evaluate_models import evaluate_models
+from ethicml.evaluators.evaluate_models import evaluate_models, call_on_saved_data
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import CV
@@ -57,6 +59,16 @@ def test_lr():
     assert model.name == "Logistic Regression"
 
     predictions: np.array = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
+
+
+def test_threaded_lr():
+    train, test = get_train_test()
+
+    model: ThreadedInAlgorithm = ThreadedLR()
+
+    predictions: pd.DataFrame = call_on_saved_data(model, train, test)
     assert predictions[predictions.values == 1].count().values[0] == 211
     assert predictions[predictions.values == -1].count().values[0] == 189
 

@@ -2,14 +2,18 @@
 Runs given metrics on given algorithms for given datasets
 """
 import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import List, Dict, Tuple, Any
+
 import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.utils import make_data_tuple, DataTuple
+from ethicml.algorithms.utils import make_data_tuple, DataTuple, PathTuple
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import metric_per_sensitive_attribute, MetricNotApplicable
@@ -125,3 +129,33 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             if not os.path.exists(outdir):
                 os.mkdir(outdir)
             results.to_csv(f"../results/{dataset.name}_{transform_name}.csv", index=False)
+
+
+def call_on_saved_data(algorithm: ThreadedInAlgorithm, train: DataTuple, test: DataTuple) -> (
+        pd.DataFrame):
+    """
+    This function saves the given dataframes to the harddrive (in separate files) and then calls the
+    run function of the given algorithm with two path tuples of the paths to the saved files and a
+    temporary directory.
+
+    Args:
+        algorithm: algorithm that will be called with the paths to the data
+        data: Tuple of Pandas dataframe to be saved and passed as a tuple of file paths to
+              the function
+    Returns:
+        the predictions of the algorithm
+    """
+    with TemporaryDirectory() as tmpdir:
+        tmp_path = Path(tmpdir)
+        train_paths: Dict[str, Path] = {}
+        test_paths: Dict[str, Path] = {}
+        for data_tuple, data_paths, prefix in [(train, train_paths, "train"),
+                                               (test, test_paths, "test")]:
+            data_dict = data_tuple._asdict()
+            for key, data in data_dict.items():
+                data_path = tmp_path / Path(f"data_{prefix}_{key}.parquet")
+                data.to_parquet(data_path, compression=None)
+                data_paths[key] = data_path
+        # call the algorithm with the paths to the saved files and with the path to the temp dir
+        result = algorithm.run(PathTuple(**train_paths), PathTuple(**test_paths), tmp_path)
+    return result

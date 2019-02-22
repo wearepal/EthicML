@@ -2,6 +2,7 @@
 Returns a subset of the data. Used primarily in testing so that kernel methods finish in a
 reasonable time
 """
+from pathlib import Path
 from typing import NamedTuple
 
 import pandas as pd
@@ -13,6 +14,13 @@ class DataTuple(NamedTuple):
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
     y: pd.DataFrame  # class labels
+
+
+class PathTuple(NamedTuple):
+    """For algorithms that run in their own process, we pass around paths to the data"""
+    x: Path  # path to file with features
+    s: Path  # path to file with sensitive attributes
+    y: Path  # path to file with class labels
 
 
 def get_subset(train: DataTuple) -> DataTuple:
