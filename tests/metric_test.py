@@ -8,28 +8,19 @@ import pandas as pd
 import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.logistic_regression import LR, LRProb
+from ethicml.algorithms.inprocess.logistic_regression import LRProb
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.inprocess.threaded import ThreadedSVM
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
-from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute, diff_per_sensitive_attribute, \
+from ethicml.evaluators.per_sensitive_attribute import (
+    metric_per_sensitive_attribute, diff_per_sensitive_attribute,
     ratio_per_sensitive_attribute, MetricNotApplicable
+)
 from ethicml.evaluators.evaluate_models import call_on_saved_data
-from ethicml.metrics.accuracy import Accuracy
-from ethicml.metrics.bcr import BCR
-from ethicml.metrics.cv import CV
-from ethicml.metrics.eq_opp_prob_pos import EqOppProbPos
-from ethicml.metrics.metric import Metric
-from ethicml.metrics.normalized_mutual_information import NMI
-from ethicml.metrics.ppv import PPV
-from ethicml.metrics.npv import NPV
-from ethicml.metrics.prob_neg import ProbNeg
-from ethicml.metrics.prob_outcome import ProbOutcome
-from ethicml.metrics.prob_pos import ProbPos
-from ethicml.metrics.tnr import TNR
-from ethicml.metrics.tpr import TPR
+from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, NPV, ProbNeg,
+                             ProbOutcome, ProbPos, TNR, TPR)
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
