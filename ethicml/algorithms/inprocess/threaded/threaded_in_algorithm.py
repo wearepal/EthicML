@@ -46,7 +46,7 @@ class SimpleTIA(ThreadedInAlgorithm):
     def run(self, train_paths, test_paths, tmp_path):
         # path where the predictions are supposed to be stored
         pred_path = tmp_path / "predictions.npy"
-        # get the strings that are passed to the other script
+        # get the strings that are passed to the script as commandline arguments
         args = self.script_interface(train_paths, test_paths, pred_path)
         # call the script (this is blocking)
         self._call_script(self.script_path, args)

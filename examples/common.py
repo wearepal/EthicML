@@ -46,7 +46,7 @@ class CommonIn:
         test = DataTuple(
             x=load_dataframe(Path(self.args[3])),
             s=load_dataframe(Path(self.args[4])),
-            y=pd.DataFrame(),  # an empty dataframe because the training labels are not given
+            y=pd.DataFrame(),  # an empty dataframe because the test labels are not given
         )
         return train, test
 

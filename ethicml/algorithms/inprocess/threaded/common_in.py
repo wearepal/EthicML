@@ -12,7 +12,9 @@ class CommonTIA(SimpleTIA):
     """
     @staticmethod
     def script_interface(train_paths, test_paths, pred_path):
-        """Generate the commandline arguments that are expected by many of our scripts.
+        """
+        Generate the commandline arguments that are expected by the scripts that follow the
+        convention.
 
         The agreed upon order is: x (train), s (train), y (train), x (test), s (test), predictions.
         """
