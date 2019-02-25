@@ -9,7 +9,7 @@ import pytest
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.threaded import ThreadedLR
+from ethicml.algorithms.inprocess.threaded import ThreadedLR, ThreadedSVM
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_data_tuple, DataTuple
@@ -39,7 +39,7 @@ def test_can_load_test_data():
     assert test is not None
 
 
-def test_can_make_predictions():
+def test_svm():
     train, test = get_train_test()
 
     model: InAlgorithm = SVM()
@@ -47,6 +47,18 @@ def test_can_make_predictions():
     assert model.name == "SVM"
 
     predictions: pd.DataFrame = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 201
+    assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_threaded_svm():
+    train, test = get_train_test()
+
+    model: InAlgorithm = ThreadedSVM()
+    assert model is not None
+    assert model.name == "threaded_SVM"
+
+    predictions: pd.DataFrame = call_on_saved_data(model, train, test)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
 
@@ -67,6 +79,7 @@ def test_threaded_lr():
     train, test = get_train_test()
 
     model: ThreadedInAlgorithm = ThreadedLR()
+    assert model.name == "threaded_LR"
 
     predictions: pd.DataFrame = call_on_saved_data(model, train, test)
     assert predictions[predictions.values == 1].count().values[0] == 211

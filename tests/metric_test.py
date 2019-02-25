@@ -10,7 +10,6 @@ import pytest
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LRProb
 from ethicml.algorithms.inprocess.svm import SVM
-from ethicml.algorithms.inprocess.threaded import ThreadedSVM
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.load import load_data
@@ -18,7 +17,6 @@ from ethicml.evaluators.per_sensitive_attribute import (
     metric_per_sensitive_attribute, diff_per_sensitive_attribute,
     ratio_per_sensitive_attribute, MetricNotApplicable
 )
-from ethicml.evaluators.evaluate_models import call_on_saved_data
 from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, NPV, ProbNeg,
                              ProbOutcome, ProbPos, TNR, TPR)
 from ethicml.preprocessing.train_test_split import train_test_split
@@ -27,8 +25,8 @@ from tests.run_algorithm_test import get_train_test
 
 def test_get_acc_of_predictions():
     train, test = get_train_test()
-    model: InAlgorithm = ThreadedSVM()
-    predictions: pd.DataFrame = call_on_saved_data(model, train, test)
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
     acc: Metric = Accuracy()
     assert acc.name == "Accuracy"
     score = acc.score(predictions, test)
