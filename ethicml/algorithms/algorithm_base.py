@@ -18,23 +18,23 @@ class Algorithm(ABC):
 
 class ThreadedAlgorithm(ABC):
     """Base class for algorithms that run in their own thread"""
-    def __init__(self, executable: Optional[str] = None):
+    def __init__(self, name: str, executable: Optional[str] = None):
         """Constructor
 
         Args:
             executable: (optional) path to a (Python) executable. If not provided, the Python
                         executable that called this script is used.
         """
+        self._name = name
         if executable is None:
             # use the python executable that this script was called with
             executable = sys.executable
         self.executable: str = executable
 
     @property
-    @abstractmethod
     def name(self) -> str:
         """Name of the algorithm"""
-        raise NotImplementedError()
+        return self._name
 
     def _call_script(self, script: str, args: List[str], env: Optional[Dict[str, str]] = None):
         """This function calls a (Python) script as a separate process

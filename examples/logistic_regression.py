@@ -1,5 +1,5 @@
 """
-Logistic regression that doesn't import anything from ethicml (i.e. it's *standalone*)
+Logistic regression that doesn't import anything from EthicML (i.e. it's *standalone*)
 """
 import sys
 from pathlib import Path
@@ -14,11 +14,11 @@ def main(args):
     """train a logistic regression model and save the predictions in a numpy file"""
     # load data
     xtrain = load_dataframe(Path(args[1]))
-    ytrain = load_dataframe(Path(args[2]))
-    xtest = load_dataframe(Path(args[3]))
+    ytrain = load_dataframe(Path(args[3]))
+    xtest = load_dataframe(Path(args[4]))
 
     # path where the results should be stored
-    pred_path = Path(args[4])
+    pred_path = Path(args[6])
 
     clf = LogisticRegression(random_state=888)
     clf.fit(xtrain, ytrain.values.ravel())

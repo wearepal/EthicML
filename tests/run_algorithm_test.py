@@ -9,7 +9,7 @@ import pytest
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.threaded.logistic_regression import ThreadedLR
+from ethicml.algorithms.inprocess.threaded import ThreadedLR
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.utils import make_data_tuple, DataTuple

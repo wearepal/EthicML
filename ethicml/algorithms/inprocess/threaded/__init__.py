@@ -1,5 +1,8 @@
 """Module for threaded algorithms"""
 from . import (
-    logistic_regression,
     threaded_in_algorithm,
+)
+from .common_interface import (
+    CommonInterface,
+    ThreadedLR,
 )
