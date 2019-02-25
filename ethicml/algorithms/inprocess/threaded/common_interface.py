@@ -1,5 +1,8 @@
 """Threaded logistic regression"""
+from ethicml.common import ROOT_PATH
 from .threaded_in_algorithm import SimpleTIA
+
+EXAMPLES_PATH = ROOT_PATH.parent / "examples/"
 
 
 class CommonInterface(SimpleTIA):
@@ -23,4 +26,4 @@ class CommonInterface(SimpleTIA):
 class ThreadedLR(CommonInterface):
     """Threaded logistic regression"""
     def __init__(self):
-        super().__init__("threaded_LR", "examples/logistic_regression.py")
+        super().__init__("threaded_LR", EXAMPLES_PATH / "logistic_regression.py")
