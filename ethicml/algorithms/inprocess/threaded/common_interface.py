@@ -27,3 +27,9 @@ class ThreadedLR(CommonInterface):
     """Threaded logistic regression"""
     def __init__(self):
         super().__init__("threaded_LR", EXAMPLES_PATH / "logistic_regression.py")
+
+
+class ThreadedSVM(CommonInterface):
+    """Threaded SVM"""
+    def __init__(self):
+        super().__init__("threaded_SVM", EXAMPLES_PATH / "svm.py")

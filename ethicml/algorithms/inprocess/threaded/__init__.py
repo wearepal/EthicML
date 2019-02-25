@@ -5,4 +5,5 @@ from . import (
 from .common_interface import (
     CommonInterface,
     ThreadedLR,
+    ThreadedSVM,
 )
