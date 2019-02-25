@@ -2,8 +2,8 @@
 from . import (
     threaded_in_algorithm,
 )
-from .common_interface import (
-    CommonInterface,
+from .common_in import (
+    CommonTIA,
     ThreadedLR,
     ThreadedSVM,
 )

@@ -21,10 +21,10 @@ class DataTuple(NamedTuple):
     y: pd.DataFrame  # class labels
 
 
-class CommonInterface:
+class CommonIn:
     """
     The common interface is a convention for how to pass the information about where the data is to
-    the script.
+    the script. This class is for *in* algorithms.
 
     The convention is: x (train), s (train), y (train), x (test), s (test), predictions
     """
@@ -36,7 +36,7 @@ class CommonInterface:
         """
         self.args = sys.argv[1:] if args is None else args
 
-    def load(self) -> Tuple[DataTuple, DataTuple]:
+    def load_data(self) -> Tuple[DataTuple, DataTuple]:
         """Load the data from the files"""
         train = DataTuple(
             x=load_dataframe(Path(self.args[0])),
@@ -50,7 +50,7 @@ class CommonInterface:
         )
         return train, test
 
-    def save(self, predictions: np.array):
+    def save_predictions(self, predictions: np.array):
         """Save the data to the file that was specified in the commandline arguments"""
         pred_path = Path(self.args[5])
         np.save(pred_path, predictions)
