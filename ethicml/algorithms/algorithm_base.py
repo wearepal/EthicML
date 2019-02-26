@@ -2,9 +2,12 @@
 Base class for Algorithms
 """
 import sys
+from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict
 from subprocess import check_call, CalledProcessError
+
+import pandas as pd
 
 
 class Algorithm(ABC):
@@ -52,3 +55,10 @@ class ThreadedAlgorithm(ABC):
             check_call(cmd, env=env)
         except CalledProcessError:
             raise RuntimeError(f'The script "{script}" failed. Supplied arguments: {args}')
+
+    @staticmethod
+    def _load_output(file_path: Path) -> pd.DataFrame:
+        """Load a dataframe from a parquet file"""
+        with file_path.open('rb') as file_obj:
+            df = pd.read_parquet(file_obj)
+        return df
