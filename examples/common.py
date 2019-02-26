@@ -1,7 +1,7 @@
 """Functions that are common to the standalone algorithms"""
 import sys
 from pathlib import Path
-from typing import List, Tuple, NamedTuple, Optional
+from typing import List, Tuple, NamedTuple, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -46,11 +46,15 @@ class CommonIn:
         test = DataTuple(
             x=load_dataframe(Path(self.args[3])),
             s=load_dataframe(Path(self.args[4])),
-            y=pd.DataFrame(),  # an empty dataframe because the test labels are not given
+            y=load_dataframe(Path(self.args[5])),
         )
         return train, test
 
-    def save_predictions(self, predictions: np.array):
+    def save_predictions(self, predictions: Union[np.array, pd.DataFrame]):
         """Save the data to the file that was specified in the commandline arguments"""
-        pred_path = Path(self.args[5])
-        np.save(pred_path, predictions)
+        if not isinstance(predictions, pd.DataFrame):
+            df = pd.DataFrame(predictions, columns=["pred"])
+        else:
+            df = predictions
+        pred_path = Path(self.args[6])
+        df.to_parquet(pred_path, compression=None)
