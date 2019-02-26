@@ -12,6 +12,8 @@ from ethicml.algorithms.inprocess.logistic_regression import LR
 from ethicml.algorithms.inprocess.threaded import ThreadedLR, ThreadedSVM
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
+from ethicml.algorithms.preprocess.threaded import ThreadedBeutel
+from ethicml.algorithms.preprocess.threaded.threaded_pre_algorithm import ThreadedPreAlgorithm
 from ethicml.algorithms.utils import make_data_tuple, DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
@@ -107,6 +109,31 @@ def test_beutel():
     assert model.name == "SVM"
 
     predictions: pd.DataFrame = model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 208
+    assert predictions[predictions.values == -1].count().values[0] == 192
+
+
+def test_threaded_beutel():
+    train, test = get_train_test()
+
+    model: ThreadedPreAlgorithm = ThreadedBeutel()
+    assert model is not None
+    assert model.name == "Beutel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = call_on_saved_data(model, train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = make_data_tuple(new_xtrain, train.s, train.y)
+    new_test = make_data_tuple(new_xtest, test.s, test.y)
+
+    classifier: InAlgorithm = SVM()
+    assert classifier is not None
+    assert classifier.name == "SVM"
+
+    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
     assert predictions[predictions.values == 1].count().values[0] == 208
     assert predictions[predictions.values == -1].count().values[0] == 192
 
