@@ -13,7 +13,7 @@ from ..utils import DataTuple
 class LR(InAlgorithm):
     """Logistic regression with hard predictions"""
     def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
-        clf = LogisticRegression(random_state=888)
+        clf = LogisticRegression(solver='liblinear', random_state=888)
         clf.fit(train.x, train.y.values.ravel())
         return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
@@ -25,7 +25,7 @@ class LR(InAlgorithm):
 class LRProb(InAlgorithm):
     """Logistic regression with soft output"""
     def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
-        clf = LogisticRegression(random_state=888)
+        clf = LogisticRegression(solver='liblinear', random_state=888)
         clf.fit(train.x, train.y.values.ravel())
         return pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"])
 
@@ -35,6 +35,7 @@ class LRProb(InAlgorithm):
 
 
 class LRCV(InAlgorithm):
+    """Kind of a cheap hack for now, but gives a proper cross-valudeted LR"""
     def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
         folder = KFold(n_splits=3, random_state=888, shuffle=False)
         clf = LogisticRegressionCV(cv=folder, n_jobs=-1, random_state=888, solver='liblinear')

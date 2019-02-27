@@ -19,6 +19,7 @@ from ethicml.evaluators.per_sensitive_attribute import (
 )
 from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, NPV, ProbNeg,
                              ProbOutcome, ProbPos, TNR, TPR)
+from ethicml.metrics.hsic import Hsic
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
@@ -252,7 +253,7 @@ def test_bcr_diff():
     assert diff["s_0-s_1"] == 0.02366811575250094
 
 
-def test_cv_diff():
+def test_cv():
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -260,6 +261,16 @@ def test_cv_diff():
     score = cv.score(predictions, test)
     assert CV().name == "CV"
     assert score == 0.665
+
+
+def test_hsic():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    hsic = Hsic()
+    score = hsic.score(predictions['preds'], test)
+    assert Hsic().name == "HSIC"
+    assert score == 0.023969453598182592
 
 
 def test_use_appropriate_metric():

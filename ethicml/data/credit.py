@@ -1,7 +1,6 @@
 """
 Class to describe features of the Adult dataset
 """
-from typing import List
 
 from .dataset import Dataset
 
@@ -10,13 +9,6 @@ class Credit(Dataset):
     """
     UCL Credit Card dataset
     """
-    _features: List[str]
-    _class_label_prefix: List[str]
-    _class_labels: List[str]
-    _s_prefix: List[str]
-    _sens_attrs: List[str]
-    _cont_features: List[str]
-    _disc_features: List[str]
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()

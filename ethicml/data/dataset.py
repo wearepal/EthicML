@@ -10,6 +10,14 @@ from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
 class Dataset(ABC):
     """Base class for datasets"""
+    _features: List[str]
+    _class_label_prefix: List[str]
+    _class_labels: List[str]
+    _s_prefix: List[str]
+    _sens_attrs: List[str]
+    _cont_features: List[str]
+    _disc_features: List[str]
+
     def __init__(self):
         self._features: List[str] = []
         self._class_label_prefix: List[str] = []
