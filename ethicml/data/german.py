@@ -12,23 +12,23 @@ class German(Dataset):
         self.discrete_only = discrete_only
         self.features = [
             'month',
-            'credit_amount',
-            'investment_as_income_percentage',
+            'credit-amount',
+            'investment-as-income-percentage',
             'sex',
-            'residence_since',
+            'residence-since',
             'age',
-            'number_of_credits',
-            'people_liable_for',
-            'credit',
+            'number-of-credits',
+            'people-liable-for',
+            'credit-label',
             'status_A11',
             'status_A12',
             'status_A13',
             'status_A14',
-            'credit_history_A30',
-            'credit_history_A31',
-            'credit_history_A32',
-            'credit_history_A33',
-            'credit_history_A34',
+            'credit-history_A30',
+            'credit-history_A31',
+            'credit-history_A32',
+            'credit-history_A33',
+            'credit-history_A34',
             'purpose_A40',
             'purpose_A41',
             'purpose_A410',
@@ -49,44 +49,44 @@ class German(Dataset):
             'employment_A73',
             'employment_A74',
             'employment_A75',
-            'other_debtors_A101',
-            'other_debtors_A102',
-            'other_debtors_A103',
+            'other-debtors_A101',
+            'other-debtors_A102',
+            'other-debtors_A103',
             'property_A121',
             'property_A122',
             'property_A123',
             'property_A124',
-            'installment_plans_A141',
-            'installment_plans_A142',
-            'installment_plans_A143',
+            'installment-plans_A141',
+            'installment-plans_A142',
+            'installment-plans_A143',
             'housing_A151',
             'housing_A152',
             'housing_A153',
-            'skill_level_A171',
-            'skill_level_A172',
-            'skill_level_A173',
-            'skill_level_A174',
+            'skill-level_A171',
+            'skill-level_A172',
+            'skill-level_A173',
+            'skill-level_A174',
             'telephone_A191',
             'telephone_A192',
-            'foreign_worker_A201',
-            'foreign_worker_A202'
+            'foreign-worker_A201',
+            'foreign-worker_A202'
         ]
 
         self.continuous_features = [
             'month',
-            'credit_amount',
-            'investment_as_income_percentage',
-            'residence_since',
+            'credit-amount',
+            'investment-as-income-percentage',
+            'residence-since',
             'age',
-            'number_of_credits',
-            'people_liable_for'
+            'number-of-credits',
+            'people-liable-for'
         ]
 
         if split == "Sex":
             self.sens_attrs = ['sex']
             self.s_prefix = ['sex']
-            self.class_labels = ['credit']
-            self.class_label_prefix = ['credit']
+            self.class_labels = ['credit-label']
+            self.class_label_prefix = ['credit-label']
         else:
             raise NotImplementedError
 

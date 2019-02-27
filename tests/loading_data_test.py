@@ -7,6 +7,7 @@ import pandas as pd
 from ethicml.common import ROOT_DIR
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
+from ethicml.data.credit import Credit
 from ethicml.data.dataset import Dataset
 from ethicml.data.german import German
 from ethicml.data.load import load_data, create_data_obj
@@ -80,7 +81,14 @@ def test_load_sqf():
 
 def test_load_german():
     data: DataTuple = load_data(German())
-    assert (1000, 51) == data.x.shape
+    assert (1000, 57) == data.x.shape
+    assert (1000, 1) == data.s.shape
+    assert (1000, 1) == data.y.shape
+
+
+def test_load_german_ordered():
+    data: DataTuple = load_data(German(), ordered=True)
+    assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
     assert (1000, 1) == data.y.shape
 
@@ -97,6 +105,24 @@ def test_load_compas_explicitly_sex():
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
+
+
+def test_load_compas_feature_length():
+    data: DataTuple = load_data(Compas())
+    assert (400 == len(Compas().ordered_features['x']))
+    assert (395 == len(Compas().discrete_features))
+    assert (5 == len(Compas().continuous_features))
+    assert (6167, 1) == data.s.shape
+    assert (6167, 1) == data.y.shape
+
+
+def test_load_credit_feature_length():
+    data: DataTuple = load_data(Credit())
+    assert (26 == len(Credit().ordered_features['x']))
+    assert (6 == len(Credit().discrete_features))
+    assert (20 == len(Credit().continuous_features))
+    assert (30000, 1) == data.s.shape
+    assert (30000, 1) == data.y.shape
 
 
 def test_load_adult_race():
