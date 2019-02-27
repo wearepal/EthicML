@@ -12,11 +12,12 @@ from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
 
 
-def load_data(dataset: Dataset) -> DataTuple:
+def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     """Load dataset from its CSV file
 
     Args:
         dataset: dataset object
+        ordered: if True return features such that discrete come first, then continuous
 
     Returns:
         DataTuple with dataframes of features, labels and sensitive attributes
@@ -26,7 +27,7 @@ def load_data(dataset: Dataset) -> DataTuple:
     dataframe: pd.DataFrame = pd.read_csv(data_loc)
     assert isinstance(dataframe, pd.DataFrame)
 
-    feature_split = dataset.feature_split
+    feature_split = dataset.feature_split if not ordered else dataset.ordered_features
 
     x_data = dataframe[feature_split['x']]
     s_data = dataframe[feature_split['s']]

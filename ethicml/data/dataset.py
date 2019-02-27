@@ -32,6 +32,20 @@ class Dataset(ABC):
         """File from which to load the data"""
 
     @property
+    def ordered_features(self) -> Dict[str, List[str]]:
+        """
+        Return a dictionary that has separate entries for the features, the labels and the
+        sensitive attributes, but the x features are ordered so first are the discrete features,
+        then the continuous
+        """
+
+        return {
+            "x": self.discrete_features+self.continuous_features,
+            "s": self._sens_attrs,
+            "y": self._class_labels
+        }
+
+    @property
     def feature_split(self) -> Dict[str, List[str]]:
         """
         Return a dictionary that has separate entries for the features, the labels and the
