@@ -48,7 +48,8 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
     """
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
-            raise MetricNotApplicable()
+            raise MetricNotApplicable(f"Metric {metric.name} is not applicable per sensitive "
+                                      f"attribute, apply to whole dataset instead")
 
 
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],

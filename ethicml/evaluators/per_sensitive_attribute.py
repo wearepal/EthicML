@@ -10,7 +10,7 @@ from ..algorithms.utils import DataTuple
 
 
 class MetricNotApplicable(Exception):
-    print("Metric Not Applicable per sensitive attribute, apply to whole dataset instead")
+    """Metric Not Applicable per sensitive attribute, apply to whole dataset instead"""
 
 
 def metric_per_sensitive_attribute(
@@ -19,7 +19,8 @@ def metric_per_sensitive_attribute(
         metric: Metric) -> Dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute"""
     if not metric.apply_per_sensitive:
-        raise MetricNotApplicable()
+        raise MetricNotApplicable(f"Metric {metric.name} is not applicable per sensitive "
+                                  f"attribute, apply to whole dataset instead")
 
     amalgamated = pd.concat([actual.x,
                              actual.s,
