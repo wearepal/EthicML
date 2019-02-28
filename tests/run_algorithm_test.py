@@ -15,17 +15,11 @@ from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.preprocess.threaded import ThreadedBeutel
 from ethicml.algorithms.preprocess.threaded.threaded_pre_algorithm import ThreadedPreAlgorithm
 from ethicml.algorithms.utils import DataTuple
-from ethicml.data.adult import Adult
-from ethicml.data.compas import Compas
-from ethicml.data.german import German
 from ethicml.data.load import load_data
-from ethicml.data.sqf import Sqf
-from ethicml.data.test import Test
+from ethicml.data import Adult, Compas, German, Sqf, Test
 from ethicml.evaluators.evaluate_models import evaluate_models, call_on_saved_data
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
-from ethicml.metrics.accuracy import Accuracy
-from ethicml.metrics.cv import CV
-from ethicml.metrics.tpr import TPR
+from ethicml.metrics import Accuracy, CV, TPR
 from ethicml.preprocessing.train_test_split import train_test_split
 
 

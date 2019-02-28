@@ -5,14 +5,9 @@ Test the loading data capability
 import pandas as pd
 
 from ethicml.common import ROOT_DIR
-from ethicml.data.adult import Adult
-from ethicml.data.compas import Compas
-from ethicml.data.credit import Credit
 from ethicml.data.dataset import Dataset
-from ethicml.data.german import German
 from ethicml.data.load import load_data, create_data_obj
-from ethicml.data.sqf import Sqf
-from ethicml.data.test import Test
+from ethicml.data import Adult, Compas, Credit, German, Sqf, Test
 from ethicml.algorithms.utils import DataTuple
 
 
