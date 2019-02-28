@@ -14,7 +14,7 @@ from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.preprocess.threaded import ThreadedBeutel
 from ethicml.algorithms.preprocess.threaded.threaded_pre_algorithm import ThreadedPreAlgorithm
-from ethicml.algorithms.utils import make_data_tuple, DataTuple
+from ethicml.algorithms.utils import DataTuple
 from ethicml.data.adult import Adult
 from ethicml.data.compas import Compas
 from ethicml.data.german import German
@@ -101,8 +101,8 @@ def test_beutel():
     assert new_xtrain.shape[0] == train.x.shape[0]
     assert new_xtest.shape[0] == test.x.shape[0]
 
-    new_train = make_data_tuple(new_xtrain, train.s, train.y)
-    new_test = make_data_tuple(new_xtest, test.s, test.y)
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
 
     model: InAlgorithm = SVM()
     assert model is not None
@@ -126,8 +126,8 @@ def test_threaded_beutel():
     assert new_xtrain.shape[0] == train.x.shape[0]
     assert new_xtest.shape[0] == test.x.shape[0]
 
-    new_train = make_data_tuple(new_xtrain, train.s, train.y)
-    new_test = make_data_tuple(new_xtest, test.s, test.y)
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None

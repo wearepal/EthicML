@@ -39,20 +39,6 @@ def get_subset(train: DataTuple) -> DataTuple:
     )
 
 
-def make_data_tuple(x_val: pd.DataFrame, s_val: pd.DataFrame, y_val: pd.DataFrame) -> DataTuple:
-    """Create a DataTuple from features, sensitive attributes and class labels
-
-    Args:
-        x_val: features
-        s_val: sensitive attributes
-        y_val: class labels
-
-    Returns:
-        DataTuple containing the data
-    """
-    return DataTuple(x=x_val, s=s_val, y=y_val)
-
-
 def quadratic_time_mmd(data_first, data_second, sigma):
     """
 

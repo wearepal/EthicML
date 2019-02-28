@@ -5,7 +5,7 @@ same as TPR per class, but does it in a different way.
 
 import numpy as np
 
-from ethicml.algorithms.utils import make_data_tuple, DataTuple
+from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics.confusion_matrix import confusion_matrix
 from ethicml.metrics.metric import Metric
 
@@ -42,7 +42,7 @@ def pos_subset_data(data: DataTuple):
     pos_s = sensitive_labels[class_labels == 1]
     pos_y = class_labels[class_labels == 1]
 
-    return make_data_tuple(pos_x, pos_s, pos_y)
+    return DataTuple(x=pos_x, s=pos_s, y=pos_y)
 
 
 class EqOppProbPos(Metric):
