@@ -3,7 +3,7 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import NamedTuple
+from typing import NamedTuple, Dict, Tuple
 
 import pandas as pd
 import torch
@@ -21,6 +21,35 @@ class PathTuple(NamedTuple):
     x: Path  # path to file with features
     s: Path  # path to file with sensitive attributes
     y: Path  # path to file with class labels
+
+
+def write_data_tuple(train: DataTuple, test: DataTuple, data_dir: Path) -> (
+        Tuple[PathTuple, PathTuple]):
+    """Write the given DataTuple to Parquet files and return the file paths as PathTuples
+
+    Args:
+        train: tuple with training data
+        test: tuple with test data
+        data_dir: directory where the files should be stored
+    Returns:
+        tuple of tuple of paths (one tuple for training, one for test)
+    """
+    # create the directory if it doesn't already exist
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    train_paths: Dict[str, Path] = {}
+    test_paths: Dict[str, Path] = {}
+    for data_tuple, data_paths, prefix in [(train, train_paths, "train"),
+                                           (test, test_paths, "test")]:
+        # loop over all elements of the data tuple and write them to separate files
+        for key, data in data_tuple._asdict().items():
+            # SUGGESTION: maybe the file names should be completely random to avoid collisions
+            data_path = data_dir / Path(f"data_{prefix}_{key}.parquet")
+            # write the file (don't use compression because this requires an additional library)
+            data.to_parquet(data_path, compression=None)
+            data_paths[key] = data_path
+    # the paths dictionaries to construct path tuples and return them
+    return PathTuple(**train_paths), PathTuple(**test_paths)
 
 
 def get_subset(train: DataTuple) -> DataTuple:
