@@ -11,7 +11,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression import LRProb
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.utils import DataTuple
-from ethicml.data.adult import Adult
+from ethicml.data import Adult
 from ethicml.data.load import load_data
 from ethicml.evaluators.per_sensitive_attribute import (
     metric_per_sensitive_attribute, diff_per_sensitive_attribute,
