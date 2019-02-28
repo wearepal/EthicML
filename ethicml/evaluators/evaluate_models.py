@@ -13,7 +13,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.utils import make_data_tuple, DataTuple, PathTuple
+from ethicml.algorithms.utils import DataTuple, PathTuple
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import metric_per_sensitive_attribute, MetricNotApplicable
@@ -84,8 +84,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             else:
                 new_train, new_test = pre_process_method.run(train, test)
             to_operate_on[pre_process_method.name] = {
-                'train': make_data_tuple(new_train, train.s, train.y),
-                'test': make_data_tuple(new_test, test.s, test.y),
+                'train': DataTuple(x=new_train, s=train.s, y=train.y),
+                'test': DataTuple(x=new_test, s=test.s, y=test.y),
             }
 
         columns = ['model']
