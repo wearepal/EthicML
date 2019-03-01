@@ -13,6 +13,7 @@ from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data import Adult
 from ethicml.data.load import load_data
+from ethicml.evaluators.evaluate_models import run_metrics
 from ethicml.evaluators.per_sensitive_attribute import (
     metric_per_sensitive_attribute, diff_per_sensitive_attribute,
     ratio_per_sensitive_attribute, MetricNotApplicable
@@ -291,6 +292,16 @@ def test_tnr_diff():
     nmi_diff = diff_per_sensitive_attribute(nmis)
     print(nmi_diff)
     assert nmi_diff["s_0-s_1"] == 0.09100391134289443
+
+
+def test_run_metrics():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: np.array = model.run(train, test)
+    results = run_metrics(predictions, test, [CV()], [TPR()])
+    np.testing.assert_allclose(results['s_0_TPR'], 0.8428571428571429)
+    np.testing.assert_allclose(results['s_1_TPR'], 0.8865248226950354)
+    np.testing.assert_allclose(results['CV'], 0.665)
 
 
 def test_nmi_diff_non_binary_race():

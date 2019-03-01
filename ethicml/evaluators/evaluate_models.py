@@ -4,7 +4,7 @@ Runs given metrics on given algorithms for given datasets
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List, Dict, Tuple, Any
+from typing import List, Dict, Tuple, Any, Union
 
 import pandas as pd
 import numpy as np
@@ -54,6 +54,27 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
                                       f"attribute, apply to whole dataset instead")
 
 
+def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metric],
+                per_sens_metrics: List[Metric]) -> Dict[str, float]:
+    """Run all the given metrics on the given predictions and return the results
+
+    Args:
+        predictions: DataFrame with predictions
+        actual: DataTuple with the labels
+        metrics: list of metrics
+        per_sens_metrics: list of metrics that are computed per sensitive attribute
+    """
+    result: Dict[str, float] = {}
+    for metric in metrics:
+        result[metric.name] = metric.score(predictions, actual)
+
+    for metric in per_sens_metrics:
+        per_sens = metric_per_sensitive_attribute(predictions, actual, metric)
+        for key, value in per_sens.items():
+            result[f'{key}_{metric.name}'] = value
+    return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
+
+
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
                     metrics: List[Metric], per_sens_metrics: List[Metric],
@@ -95,8 +116,6 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
         columns += [metric.name for metric in metrics]
         columns += get_sensitive_combinations(per_sens_metrics, train)
 
-        temp_res: Dict[str, Any] = {}
-
         for name, transform in to_operate_on.items():
             results = pd.DataFrame(columns=columns)
 
@@ -106,7 +125,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
             for model in inprocess_models:
 
-                temp_res['model'] = model.name
+                temp_res: Dict[str, Union[str, float]] = {'model': model.name}
 
                 predictions: np.array
                 if test_mode:
@@ -114,13 +133,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 else:
                     predictions = model.run(transformed_train, transformed_test)
 
-                for metric in metrics:
-                    temp_res[metric.name] = metric.score(predictions, test)
-
-                for metric in per_sens_metrics:
-                    per_sens = metric_per_sensitive_attribute(predictions, test, metric)
-                    for key, value in per_sens.items():
-                        temp_res[f'{key}_{metric.name}'] = value
+                temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
                 for postprocess in postprocess_models:
                     # Post-processing has yet to be defined
@@ -190,8 +203,6 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Th
             columns += [metric.name for metric in metrics]
             columns += get_sensitive_combinations(per_sens_metrics, train)
 
-            temp_res: Dict[str, Any] = {}
-
             transform_name: str
             for transform_name, transform in to_operate_on.items():
                 results = pd.DataFrame(columns=columns)
@@ -205,18 +216,10 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Th
                     # separate directory for each model
                     model_dir = subdir_for_model(transform_dir, model)
 
-                    temp_res['model'] = model.name
-
                     predictions: pd.DataFrame = model.run(transformed_train, transformed_test,
                                                           model_dir)
-
-                    for metric in metrics:
-                        temp_res[metric.name] = metric.score(predictions, test)
-
-                    for metric in per_sens_metrics:
-                        per_sens = metric_per_sensitive_attribute(predictions, test, metric)
-                        for key, value in per_sens.items():
-                            temp_res[f'{key}_{metric.name}'] = value
+                    temp_res: Dict[str, Union[str, float]] = {'model': model.name}
+                    temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
                     for postprocess in postprocess_models:
                         # Post-processing has yet to be defined
