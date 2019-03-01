@@ -1,7 +1,6 @@
 """Beutel's algorithm"""
 from typing import Optional, List, Dict
 
-from ethicml.algorithms.utils import PathTuple
 from ethicml.common import ROOT_PATH
 from .threaded_pre_algorithm import BasicTPA
 
@@ -36,20 +35,13 @@ class ThreadedBeutel(BasicTPA):
             'epochs': [str(epochs)],
         }
 
-    def _script_interface(self, train_paths: PathTuple, test_paths: PathTuple, for_train_path,
-                          for_test_path):
+    def _script_interface(self, train_paths, test_paths, for_train_path, for_test_path):
         """Generate the commandline arguments that are expected by the Beutel script"""
         flags_list: List[str] = []
 
-        # paths to training data
-        for key, value in train_paths._asdict().items():
-            flags_list.append(f"--train_{key}")
-            flags_list.append(str(value))
-
-        # paths to test data
-        for key, value in test_paths._asdict().items():
-            flags_list.append(f"--test_{key}")
-            flags_list.append(str(value))
+        # paths to training and test data
+        flags_list += self._path_tuple_to_cmd_args([train_paths, test_paths],
+                                                   ['--train_', '--test_'])
 
         # paths to output files
         flags_list += ['--train_in', str(for_train_path), '--test_in', str(for_test_path)]
