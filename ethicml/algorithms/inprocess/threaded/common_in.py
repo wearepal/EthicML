@@ -1,8 +1,5 @@
 """Threaded logistic regression"""
-from ethicml.common import ROOT_PATH
 from .threaded_in_algorithm import BasicTIA
-
-EXAMPLES_PATH = ROOT_PATH.parent / "examples/"
 
 
 class CommonTIA(BasicTIA):
@@ -33,10 +30,10 @@ class CommonTIA(BasicTIA):
 class ThreadedLR(CommonTIA):
     """Threaded logistic regression"""
     def __init__(self):
-        super().__init__("threaded_LR", EXAMPLES_PATH / "logistic_regression.py")
+        super().__init__(name="threaded_LR", script_path="-m examples.logistic_regression")
 
 
 class ThreadedSVM(CommonTIA):
     """Threaded SVM"""
     def __init__(self):
-        super().__init__("threaded_SVM", EXAMPLES_PATH / "svm.py")
+        super().__init__(name="threaded_SVM", script_path="-m examples.svm")

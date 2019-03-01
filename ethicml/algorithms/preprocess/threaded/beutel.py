@@ -1,7 +1,6 @@
 """Beutel's algorithm"""
 from typing import Optional, List, Dict
 
-from ethicml.common import ROOT_PATH
 from .threaded_pre_algorithm import BasicTPA
 
 
@@ -19,7 +18,7 @@ class ThreadedBeutel(BasicTPA):
                  s_loss="BCELoss",
                  epochs=50):
         # pylint: disable=too-many-arguments
-        super().__init__("Beutel", str(ROOT_PATH.parent / "examples" / "beutel.py"))
+        super().__init__(name="Beutel", script_path="-m examples.beutel")
 
         # convert all parameter values to lists of strings
         self.flags: Dict[str, List[str]] = {

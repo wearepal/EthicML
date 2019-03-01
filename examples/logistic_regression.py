@@ -3,7 +3,7 @@ Logistic regression that doesn't import anything from EthicML (i.e. it's *standa
 """
 from sklearn.linear_model import LogisticRegression
 
-from common import CommonIn
+from .common import CommonIn
 
 
 def main():

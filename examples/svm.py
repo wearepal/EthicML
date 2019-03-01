@@ -3,7 +3,7 @@ SVM that doesn't import anything from EthicML (i.e. it's *standalone*)
 """
 from sklearn.svm import SVC
 
-from common import CommonIn
+from .common import CommonIn
 
 
 def main():

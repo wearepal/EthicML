@@ -25,6 +25,9 @@ class ThreadedInAlgorithm(ThreadedAlgorithm):
             train_paths: Tuple of paths for the training data
             test_paths: Tuple of paths for the test data
             tmp_path: a path to a directory where the algorithm can write something
+
+        Returns:
+            predictions as a dataframe
         """
 
 
@@ -43,7 +46,7 @@ class BasicTIA(ThreadedInAlgorithm):
             kwargs: arguments that are passed on to ThreadedInAlgorithm
         """
         super().__init__(name, **kwargs)
-        self.script_path = script_path
+        self.script_path = str(script_path).split(' ')
 
     def run(self, train_paths, test_paths, tmp_path):
         # path where the predictions are supposed to be stored
@@ -51,7 +54,7 @@ class BasicTIA(ThreadedInAlgorithm):
         # get the strings that are passed to the script as commandline arguments
         args = self._script_interface(train_paths, test_paths, pred_path)
         # call the script (this is blocking)
-        self._call_script(self.script_path, args)
+        self._call_script("", self.script_path + args)
         # load the results
         return self._load_output(pred_path)
 

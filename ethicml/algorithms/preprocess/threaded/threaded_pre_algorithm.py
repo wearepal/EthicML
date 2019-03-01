@@ -47,7 +47,7 @@ class BasicTPA(ThreadedPreAlgorithm):
             kwargs: arguments that are passed on to ThreadedPreAlgorithm
         """
         super().__init__(name, **kwargs)
-        self.script_path = script_path
+        self.script_path = str(script_path).split(' ')
 
     def run(self, train_paths, test_paths, tmp_path):
         # path where the pre-processed input for training and for testing should be stored
@@ -56,7 +56,7 @@ class BasicTPA(ThreadedPreAlgorithm):
         # get the strings that are passed to the script as commandline arguments
         args = self._script_interface(train_paths, test_paths, for_train_path, for_test_path)
         # call the script (this is blocking)
-        self._call_script(self.script_path, args)
+        self._call_script("", self.script_path + args)
         # load the results
         return self._load_output(for_train_path), self._load_output(for_test_path)
 

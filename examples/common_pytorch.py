@@ -2,7 +2,7 @@
 import torch
 from torch.utils.data import TensorDataset
 
-from common import DataTuple
+from .common import DataTuple
 
 
 def to_pytorch_dataset(data_tuple: DataTuple):

@@ -14,8 +14,8 @@ import torch
 import torch.nn as nn
 from torch.autograd import Function
 
-from common import load_dataframe, DataTuple
-from common_pytorch import to_pytorch_dataset
+from .common import load_dataframe, DataTuple
+from .common_pytorch import to_pytorch_dataset
 
 
 class GradReverse(Function):

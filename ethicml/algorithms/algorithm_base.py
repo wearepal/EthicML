@@ -4,7 +4,7 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
@@ -47,11 +47,13 @@ class ThreadedAlgorithm(ABC):
         An exception is thrown if the called script failed.
 
         Args:
-            script: path to the (Python) script
+            script: path to the (Python) script (if this is empty, then it is not used)
             args: list of strings that are passed as commandline arguments to the script
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
-        cmd = [self.executable, script]
+        cmd = [self.executable]
+        if script:
+            cmd.append(script)
         cmd += args
         try:
             check_call(cmd, env=env)
