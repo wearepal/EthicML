@@ -4,7 +4,7 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd

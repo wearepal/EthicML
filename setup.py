@@ -4,7 +4,7 @@ setup(
     name='EthicML',
     version='0.1.0',
     author='O. Thomas',
-    packages=['ethicml'],
+    packages=['ethicml', 'ethicml_models'],
     description='Framework for algorithmic fairness comparisons',
     python_requires=">=3.6",
     install_requires=[

@@ -246,6 +246,7 @@ def main():
         # save results
         df.to_parquet(result_path, compression=None)
 
+print("Beutel was just imported")
 
 if __name__ == "__main__":
     main()

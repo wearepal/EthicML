@@ -18,7 +18,7 @@ class ThreadedBeutel(BasicTPA):
                  s_loss="BCELoss",
                  epochs=50):
         # pylint: disable=too-many-arguments
-        super().__init__(name="Beutel", script_path="-m examples.beutel")
+        super().__init__(name="Beutel", script_path="-m ethicml_models.beutel")
 
         # convert all parameter values to lists of strings
         self.flags: Dict[str, List[str]] = {

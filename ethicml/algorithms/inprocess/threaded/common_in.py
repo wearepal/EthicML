@@ -30,10 +30,10 @@ class CommonTIA(BasicTIA):
 class ThreadedLR(CommonTIA):
     """Threaded logistic regression"""
     def __init__(self):
-        super().__init__(name="threaded_LR", script_path="-m examples.logistic_regression")
+        super().__init__(name="threaded_LR", script_path="-m ethicml_models.logistic_regression")
 
 
 class ThreadedSVM(CommonTIA):
     """Threaded SVM"""
     def __init__(self):
-        super().__init__(name="threaded_SVM", script_path="-m examples.svm")
+        super().__init__(name="threaded_SVM", script_path="-m ethicml_models.svm")
