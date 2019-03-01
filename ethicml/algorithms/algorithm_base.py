@@ -9,6 +9,8 @@ from subprocess import check_call, CalledProcessError
 
 import pandas as pd
 
+from .utils import PathTuple
+
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
@@ -62,3 +64,19 @@ class ThreadedAlgorithm(ABC):
         with file_path.open('rb') as file_obj:
             df = pd.read_parquet(file_obj)
         return df
+
+    @staticmethod
+    def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:
+        """Convert the path tuples to a list of commandline arguments
+
+        The list of prefixes must have the same length as the list of path tuples. Each path tuple
+        is associated with one prefix. If the prefix for the path tuple "pt" is "--data_", then the
+        following elements are added to the output list:
+            ['--data_x', '<content of pt.x>', '--data_s', '<content of pt.s>', '--data_y',
+             '<content of pt.y>']
+        """
+        args_list: List[str] = []
+        for path_tuple, prefix in zip(path_tuples, prefixes):
+            for key, path in path_tuple._asdict().items():
+                args_list += [f"{prefix}{key}", str(path)]
+        return args_list
