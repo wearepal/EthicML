@@ -13,7 +13,9 @@ from ..algorithms.utils import DataTuple
 class NMI(Metric):
     """Normalized Mutual Information"""
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        return nmis(actual.y.values.flatten(), prediction.values.flatten())
+        return nmis(actual.y.values.flatten(),
+                    prediction.values.flatten(),
+                    average_method='geometric')
 
     @property
     def name(self) -> str:

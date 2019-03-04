@@ -1,8 +1,8 @@
 """
-For assessing Balnced Classification Rate (BCR)
+For assessing Balanced Classification Rate (BCR)
 """
 
-import numpy as np
+import pandas as pd
 
 from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
@@ -12,7 +12,7 @@ from ..algorithms.utils import DataTuple
 
 class BCR(Metric):
     """Balanced Classification Rate"""
-    def score(self, prediction: np.array, actual: DataTuple) -> float:
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         tpr_metric = TPR()
         tpr = tpr_metric.score(prediction, actual)
 

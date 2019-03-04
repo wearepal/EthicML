@@ -12,4 +12,4 @@ from .compas import Compas
 from .credit import Credit
 from .german import German
 from .sqf import Sqf
-from .test import Test
+from .toy import Toy

@@ -80,7 +80,7 @@ def test_acc_per_nonbinary_sens():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
+    predictions: pd.DataFrame = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     assert acc_per_sens == {'native-country_Cambodia_0': 0.8019862803317293,
                             'native-country_Cambodia_1': 0.5,
@@ -170,7 +170,7 @@ def test_acc_per_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
+    predictions: pd.DataFrame = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     assert acc_per_sens == {'race_Amer-Indian-Eskimo_0': 0.806688755435908,
                             'race_Amer-Indian-Eskimo_1': 0.8738738738738738,
@@ -187,7 +187,7 @@ def test_acc_per_race():
 def test_tpr_diff():
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run(train, test)
+    predictions: pd.DataFrame = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
@@ -214,7 +214,6 @@ def test_nmi_diff():
     assert NMI().name == "NMI"
     assert nmis == {'s_0': 0.5216526052290117, 's_1': 0.4172930822875038}
     nmi_diff = diff_per_sensitive_attribute(nmis)
-    print(nmi_diff)
     assert nmi_diff["s_0-s_1"] == 0.10435952294150791
 
 
@@ -226,7 +225,6 @@ def test_ppv_diff():
     assert PPV().name == "PPV"
     assert results == {'s_0': 0.8805970149253731, 's_1': 0.9328358208955224}
     diff = diff_per_sensitive_attribute(results)
-    print(diff)
     assert diff["s_0-s_1"] == 0.052238805970149294
 
 
@@ -238,7 +236,6 @@ def test_npv_diff():
     assert NPV().name == "NPV"
     assert results == {'s_0': 0.9172932330827067, 's_1': 0.7575757575757576}
     diff = diff_per_sensitive_attribute(results)
-    print(diff)
     assert diff["s_0-s_1"] == 0.15971747550694915
 
 
@@ -250,7 +247,6 @@ def test_bcr_diff():
     assert BCR().name == "BCR"
     assert results == {'s_0': 0.8906593406593406, 's_1': 0.8669912249068397}
     diff = diff_per_sensitive_attribute(results)
-    print(diff)
     assert diff["s_0-s_1"] == 0.02366811575250094
 
 
@@ -290,14 +286,13 @@ def test_tnr_diff():
     assert NMI().name == "NMI"
     assert nmis == {'s_0': 0.9384615384615385, 's_1': 0.847457627118644}
     nmi_diff = diff_per_sensitive_attribute(nmis)
-    print(nmi_diff)
     assert nmi_diff["s_0-s_1"] == 0.09100391134289443
 
 
 def test_run_metrics():
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run(train, test)
+    predictions: pd.DataFrame = model.run(train, test)
     results = run_metrics(predictions, test, [CV()], [TPR()])
     np.testing.assert_allclose(results['s_0_TPR'], 0.8428571428571429)
     np.testing.assert_allclose(results['s_1_TPR'], 0.8865248226950354)
@@ -309,7 +304,7 @@ def test_nmi_diff_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
+    predictions: pd.DataFrame = model.run_test(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, NMI())
     assert NMI().name == "NMI"
     assert nmis == {'race_Amer-Indian-Eskimo_0': 0.1438747853653249,
@@ -345,7 +340,7 @@ def test_tpr_diff_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
+    predictions: pd.DataFrame = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {'race_Amer-Indian-Eskimo_0': 0.2997830802603037,
@@ -381,7 +376,7 @@ def test_tpr_ratio_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: np.array = model.run_test(train, test)
+    predictions: pd.DataFrame = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {'race_Amer-Indian-Eskimo_0': 0.2997830802603037,

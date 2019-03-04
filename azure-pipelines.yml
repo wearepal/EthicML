@@ -35,3 +35,6 @@ jobs:
   - script: |
       python run_mypy.py
     displayName: 'mypy'
+  - script: |
+      python run_mypy_tests.py
+    displayName: 'mypy_tests'
