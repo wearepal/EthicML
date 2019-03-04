@@ -5,7 +5,8 @@ from mypy import api as mypy
 
 MAX_ALLOWED_ERRORS = 5
 
-RESULTS = mypy.run(['./ethicml/'])
+# Also check types on the tests
+RESULTS = mypy.run(['./tests/', '--check-untyped-defs'])
 print(RESULTS[0], end='')
 print(RESULTS[1], end='')
 NUM_ERRORS = len(RESULTS[0].split('\n')) - 1
