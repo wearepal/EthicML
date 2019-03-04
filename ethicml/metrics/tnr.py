@@ -2,7 +2,7 @@
 For assessing TNR
 """
 
-import numpy as np
+import pandas as pd
 
 from .confusion_matrix import confusion_matrix
 from .metric import Metric
@@ -11,7 +11,7 @@ from ..algorithms.utils import DataTuple
 
 class TNR(Metric):
     """True negative rate"""
-    def score(self, prediction: np.array, actual: DataTuple) -> float:
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         t_neg, f_pos, _, _ = confusion_matrix(prediction, actual)
 
         return t_neg / (t_neg + f_pos)

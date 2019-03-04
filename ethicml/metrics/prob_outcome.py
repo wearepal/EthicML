@@ -2,7 +2,7 @@
 For assessing mean of logits
 """
 
-import numpy as np
+import pandas as pd
 
 from .metric import Metric
 from ..algorithms.utils import DataTuple
@@ -10,7 +10,7 @@ from ..algorithms.utils import DataTuple
 
 class ProbOutcome(Metric):
     """Mean of logits"""
-    def score(self, prediction: np.array, actual: DataTuple) -> float:
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         return prediction.sum() / prediction.size
 
     @property

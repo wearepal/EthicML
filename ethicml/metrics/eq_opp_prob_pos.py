@@ -3,14 +3,14 @@ Used for claculating the probability of being poisitive given the class label is
 same as TPR per class, but does it in a different way.
 """
 
-import numpy as np
+import pandas as pd
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics.confusion_matrix import confusion_matrix
 from ethicml.metrics.metric import Metric
 
 
-def pos_subset_test(preds: np.array, data: DataTuple):
+def pos_subset_test(preds: pd.DataFrame, data: DataTuple):
     """Subset of the predictions that have a positive label associated with them
 
     Args:
@@ -47,7 +47,7 @@ def pos_subset_data(data: DataTuple):
 
 class EqOppProbPos(Metric):
     """Equality of Opportunity"""
-    def score(self, prediction: np.array, actual: DataTuple) -> float:
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         pos_subset = pos_subset_data(actual)
         test_pos_subset = pos_subset_test(prediction, actual)
 

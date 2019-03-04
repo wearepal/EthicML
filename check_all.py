@@ -19,3 +19,10 @@ MYPY_RESULTS = mypy.run(['./ethicml/', '--warn-redundant-casts', '--show-error-c
 print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
 print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
+
+# mypy
+print("############  mypy tests  ##############")
+MYPY_RESULTS = mypy.run(['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs'])
+print(MYPY_RESULTS[0], end='')
+print(MYPY_RESULTS[1], end='')
+print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))

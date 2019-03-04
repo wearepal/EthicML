@@ -18,6 +18,7 @@ class CommonTIA(BasicTIA):
 
         The agreed upon order is:
         x (train), s (train), y (train), x (test), s (test), y (test), predictions.
+        :param **kwargs:
         """
         return [
             str(train_paths.x),
@@ -33,10 +34,10 @@ class CommonTIA(BasicTIA):
 class ThreadedLR(CommonTIA):
     """Threaded logistic regression"""
     def __init__(self):
-        super().__init__("threaded_LR", EXAMPLES_PATH / "logistic_regression.py")
+        super().__init__("threaded_LR", str(EXAMPLES_PATH / "logistic_regression.py"))
 
 
 class ThreadedSVM(CommonTIA):
     """Threaded SVM"""
     def __init__(self):
-        super().__init__("threaded_SVM", EXAMPLES_PATH / "svm.py")
+        super().__init__("threaded_SVM", str(EXAMPLES_PATH / "svm.py"))

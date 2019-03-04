@@ -2,7 +2,7 @@
 For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))
 """
 
-import numpy as np
+import pandas as pd
 
 from ethicml.metrics.prob_pos import ProbPos
 from .metric import Metric
@@ -11,7 +11,7 @@ from ..algorithms.utils import DataTuple
 
 class CV(Metric):
     """Calder-Verwer"""
-    def score(self, prediction: np.array, actual: DataTuple) -> float:
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         from ethicml.evaluators.per_sensitive_attribute \
             import metric_per_sensitive_attribute, diff_per_sensitive_attribute
         per_sens = metric_per_sensitive_attribute(prediction, actual, ProbPos())

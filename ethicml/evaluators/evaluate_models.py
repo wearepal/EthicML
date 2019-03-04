@@ -239,7 +239,7 @@ def subdir_for_model(parent_dir: Path, model: ThreadedAlgorithm) -> Path:
     return model_dir
 
 
-def call_on_saved_data(algorithm: ThreadedInAlgorithm, train: DataTuple, test: DataTuple) -> (
+def call_on_saved_data(algorithm: ThreadedAlgorithm, train: DataTuple, test: DataTuple) -> (
         pd.DataFrame):
     """
     This function saves the given dataframes to the harddrive (in separate files) and then calls the

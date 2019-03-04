@@ -4,7 +4,7 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
@@ -35,6 +35,9 @@ class ThreadedAlgorithm(ABC):
             # use the python executable that this script was called with
             executable = sys.executable
         self.executable: str = executable
+
+    def run(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> Any:
+        """cub classes must implement run, though they all have different return types"""
 
     @property
     def name(self) -> str:
