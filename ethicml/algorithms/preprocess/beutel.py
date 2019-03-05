@@ -13,9 +13,9 @@ import torch
 import torch.nn as nn
 from torch.autograd import Function
 
-from ..dataloader_funcs import CustomDataset
-from .pre_algorithm import PreAlgorithm
-from ..utils import DataTuple
+from ethicml.algorithms.dataloader_funcs import CustomDataset
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.utils import DataTuple
 
 
 class Beutel(PreAlgorithm):
@@ -32,6 +32,7 @@ class Beutel(PreAlgorithm):
                  s_loss=nn.BCELoss(),
                  epochs=50):
         # pylint: disable=too-many-arguments
+        super().__init__()
         self.fairness = fairness
         self.enc_size: List[int] = [40] if enc_size is None else enc_size
         self.adv_size: List[int] = [40] if adv_size is None else adv_size
@@ -47,9 +48,12 @@ class Beutel(PreAlgorithm):
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
 
-    def run(self, train: DataTuple, test: DataTuple) -> (
+    def run(self, train: DataTuple, test: DataTuple, sub_process=False) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         # pylint: disable=too-many-statements
+
+        if sub_process:
+            return self.run_threaded(train, test)
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
@@ -225,3 +229,14 @@ class Beutel(PreAlgorithm):
     @property
     def name(self) -> str:
         return "Beutel"
+
+
+def main():
+    """main method to run model"""
+    model = Beutel()
+    train, test = model.load_data()
+    model.save_transformations(model.run(train, test))
+
+
+if __name__ == "__main__":
+    main()

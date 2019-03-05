@@ -4,21 +4,101 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
 
-from .utils import PathTuple
+from .utils import PathTuple, DataTuple
+
+
+def load_dataframe(path: Path) -> pd.DataFrame:
+    """Load dataframe from a parquet file"""
+    with path.open('rb') as file:
+        df = pd.read_parquet(file)
+    return df
 
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
+    def __init__(self, executable: Optional[str] = None, args: Optional[List[str]] = None):
+        """Constructor
+
+        Args:
+            executable: (optional) path to a (Python) executable. If not provided, the Python
+                        executable that called this script is used.
+        """
+        # self._name = name
+        if executable is None:
+            # use the python executable that this script was called with
+            executable = sys.executable
+        self.executable: str = executable
+        self.args = sys.argv[1:] if args is None else args
+
     @property
     @abstractmethod
     def name(self) -> str:
         """Name of the algorithm"""
         raise NotImplementedError()
+
+    @staticmethod
+    def _script_interface(train_paths, test_paths, *args):
+        """
+        Generate the commandline arguments that are expected by the scripts that follow the
+        convention.
+
+        The agreed upon order is:
+        x (train), s (train), y (train), x (test), s (test), y (test), predictions.
+        :param **kwargs:
+        """
+        list_to_return = [
+            str(train_paths.x),
+            str(train_paths.s),
+            str(train_paths.y),
+            str(test_paths.x),
+            str(test_paths.s),
+            str(test_paths.y)
+        ]
+        for arg in args:
+            list_to_return.append(str(arg))
+        return list_to_return
+
+    def _call_script(self, script: str, args: List[str], env: Optional[Dict[str, str]] = None):
+        """This function calls a (Python) script as a separate process
+
+        An exception is thrown if the called script failed.
+
+        Args:
+            script: path to the (Python) script
+            args: list of strings that are passed as commandline arguments to the script
+            env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
+        """
+        cmd = [self.executable, script]
+        cmd += args
+        try:
+            check_call(cmd, env=env)
+        except CalledProcessError:
+            raise RuntimeError(f'The script "{script}" failed. Supplied arguments: {args}')
+
+
+
+    @property
+    def filename(self) -> str:
+        return f"{self.__module__.split('.')[-1]}.py"
+
+    def load_data(self) -> Tuple[DataTuple, DataTuple]:
+        """Load the data from the files"""
+        train = DataTuple(
+            x=load_dataframe(Path(self.args[0])),
+            s=load_dataframe(Path(self.args[1])),
+            y=load_dataframe(Path(self.args[2])),
+        )
+        test = DataTuple(
+            x=load_dataframe(Path(self.args[3])),
+            s=load_dataframe(Path(self.args[4])),
+            y=load_dataframe(Path(self.args[5])),
+        )
+        return train, test
 
 
 class ThreadedAlgorithm(ABC):
@@ -61,12 +141,12 @@ class ThreadedAlgorithm(ABC):
         except CalledProcessError:
             raise RuntimeError(f'The script "{script}" failed. Supplied arguments: {args}')
 
-    @staticmethod
-    def _load_output(file_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a parquet file"""
-        with file_path.open('rb') as file_obj:
-            df = pd.read_parquet(file_obj)
-        return df
+    # @staticmethod
+    # def _load_output(file_path: Path) -> pd.DataFrame:
+    #     """Load a dataframe from a parquet file"""
+    #     with file_path.open('rb') as file_obj:
+    #         df = pd.read_parquet(file_obj)
+    #     return df
 
     @staticmethod
     def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:

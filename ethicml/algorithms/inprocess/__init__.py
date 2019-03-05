@@ -2,6 +2,5 @@
 from . import (
     in_algorithm,
     logistic_regression,
-    svm,
-    threaded,
+    svm
 )

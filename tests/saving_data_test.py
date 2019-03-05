@@ -4,7 +4,7 @@ Test the saving data capability
 import pandas as pd
 import numpy as np
 
-from ethicml.evaluators.evaluate_models import call_on_saved_data
+from ethicml.evaluators.evaluate_models import run_as_threaded
 from ethicml.algorithms.utils import DataTuple
 
 
@@ -31,4 +31,4 @@ def test_simple_saving():
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
 
-    call_on_saved_data(CheckEquality(), data_tuple, data_tuple)
+    run_as_threaded(CheckEquality(), data_tuple, data_tuple)
