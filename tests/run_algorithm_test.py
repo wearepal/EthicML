@@ -182,7 +182,7 @@ def test_threaded_beutel():
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = beut_model.run(train, test)
+    new_xtrain_xtest = beut_model.run(train, test)
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]
@@ -195,7 +195,7 @@ def test_threaded_beutel():
     assert svm_model is not None
     assert svm_model.name == "SVM"
 
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    predictions = svm_model.run_test(new_train, new_test)
     assert predictions[predictions.values == 1].count().values[0] == 208
     assert predictions[predictions.values == -1].count().values[0] == 192
 

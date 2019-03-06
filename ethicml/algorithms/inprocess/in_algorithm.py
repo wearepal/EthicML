@@ -11,7 +11,6 @@ import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
 from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
-from ethicml.common import ROOT_PATH
 
 
 class InAlgorithm(Algorithm):
@@ -54,7 +53,7 @@ class InAlgorithm(Algorithm):
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(str(ROOT_PATH / "algorithms" / "inprocess" / self.filename), args)
+        self._call_script(self.__module__, args)
         return self._load_output(pred_path)
 
     @staticmethod

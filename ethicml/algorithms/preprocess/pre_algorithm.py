@@ -8,7 +8,6 @@ from tempfile import TemporaryDirectory
 from typing import Tuple
 import pandas as pd
 
-from ethicml.common import ROOT_PATH
 from ethicml.algorithms.algorithm_base import Algorithm
 from ..utils import get_subset, DataTuple, write_data_tuple
 
@@ -16,12 +15,14 @@ from ..utils import get_subset, DataTuple, write_data_tuple
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
     @abstractmethod
-    def run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> \
+        Tuple[pd.DataFrame, pd.DataFrame]:
         """Generate fair features
 
         Args:
             train:
             test:
+            sub_process: should this model run in it's own process?
         """
         raise NotImplementedError("Run needs to be implemented")
 
@@ -51,7 +52,7 @@ class PreAlgorithm(Algorithm):
         train_path = tmp_path / "transform_train.parquet"
         test_path = tmp_path / "transform_test.parquet"
         args = self._script_interface(train_paths, test_paths, train_path, test_path)
-        self._call_script(str(ROOT_PATH / "algorithms" / "preprocess" / self.filename), args)
+        self._call_script(self.__module__, args)
         return self._load_output(train_path, test_path)
 
     @staticmethod
@@ -68,12 +69,11 @@ class PreAlgorithm(Algorithm):
         transform_train, transform_test = transforms
         if not isinstance(transform_train, pd.DataFrame):
             raise AssertionError()
-        elif not isinstance(transform_test, pd.DataFrame):
+        if not isinstance(transform_test, pd.DataFrame):
             raise AssertionError()
-        else:
-            transform_train_path = Path(self.args[6])
-            transform_train.columns = transform_train.columns.astype(str)
-            transform_train.to_parquet(transform_train_path, compression=None)
-            transform_test_path = Path(self.args[7])
-            transform_test.columns = transform_test.columns.astype(str)
-            transform_test.to_parquet(transform_test_path, compression=None)
+        transform_train_path = Path(self.args[6])
+        transform_train.columns = transform_train.columns.astype(str)
+        transform_train.to_parquet(transform_train_path, compression=None)
+        transform_test_path = Path(self.args[7])
+        transform_test.columns = transform_test.columns.astype(str)
+        transform_test.to_parquet(transform_test_path, compression=None)

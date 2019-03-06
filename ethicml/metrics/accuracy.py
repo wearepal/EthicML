@@ -2,8 +2,8 @@
 For assessing accuracy
 """
 
-from sklearn.metrics import accuracy_score
 import pandas as pd
+from sklearn.metrics import accuracy_score
 
 from .metric import Metric
 from ..algorithms.utils import DataTuple

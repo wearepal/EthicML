@@ -73,18 +73,12 @@ class Algorithm(ABC):
             args: list of strings that are passed as commandline arguments to the script
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
-        cmd = [self.executable, script]
+        cmd = [self.executable, "-m", script]
         cmd += args
         try:
             check_call(cmd, env=env)
         except CalledProcessError:
             raise RuntimeError(f'The script "{script}" failed. Supplied arguments: {args}')
-
-
-
-    @property
-    def filename(self) -> str:
-        return f"{self.__module__.split('.')[-1]}.py"
 
     def load_data(self) -> Tuple[DataTuple, DataTuple]:
         """Load the data from the files"""
@@ -141,12 +135,12 @@ class ThreadedAlgorithm(ABC):
         except CalledProcessError:
             raise RuntimeError(f'The script "{script}" failed. Supplied arguments: {args}')
 
-    # @staticmethod
-    # def _load_output(file_path: Path) -> pd.DataFrame:
-    #     """Load a dataframe from a parquet file"""
-    #     with file_path.open('rb') as file_obj:
-    #         df = pd.read_parquet(file_obj)
-    #     return df
+    @staticmethod
+    def _load_output(file_path: Path) -> pd.DataFrame:
+        """Load a dataframe from a parquet file"""
+        with file_path.open('rb') as file_obj:
+            df = pd.read_parquet(file_obj)
+        return df
 
     @staticmethod
     def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:

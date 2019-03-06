@@ -6,6 +6,7 @@ import numpy as np
 
 from ethicml.evaluators.evaluate_models import run_as_threaded
 from ethicml.algorithms.utils import DataTuple
+from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 
 
 def test_simple_saving():
@@ -21,14 +22,14 @@ def test_simple_saving():
              'c3': np.array([0, 1, 0])})
     )
 
-    class CheckEquality:
+    class CheckEquality(ThreadedInAlgorithm):
         def run(self, train_paths, _, __):
             """Check if the dataframes loaded from the files are the same as the original ones"""
-            x_loaded = pd.read_parquet(train_paths.x)
-            s_loaded = pd.read_parquet(train_paths.s)
-            y_loaded = pd.read_parquet(train_paths.y)
+            x_loaded = pd.read_parquet(str(train_paths.x))
+            s_loaded = pd.read_parquet(str(train_paths.s))
+            y_loaded = pd.read_parquet(str(train_paths.y))
             pd.testing.assert_frame_equal(data_tuple.x, x_loaded)
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
 
-    run_as_threaded(CheckEquality(), data_tuple, data_tuple)
+    run_as_threaded(CheckEquality("Check equality"), data_tuple, data_tuple)

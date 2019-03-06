@@ -55,6 +55,7 @@ class BasicTIA(ThreadedInAlgorithm):
         # load the results
         return self._load_output(pred_path)
 
+
     @abstractmethod
     def _script_interface(self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
                           ) -> List[str]:
