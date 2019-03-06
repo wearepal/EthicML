@@ -15,8 +15,8 @@ from ..utils import get_subset, DataTuple, write_data_tuple
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
     @abstractmethod
-    def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> \
-        Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> (
+            Tuple[pd.DataFrame, pd.DataFrame]):
         """Generate fair features
 
         Args:
@@ -44,8 +44,8 @@ class PreAlgorithm(Algorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_data_tuple(train, test, tmp_path)
-            result = self.run_thread(train_paths, test_paths, tmp_path)
-        return result
+            train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
+            return self._load_output(train_path, test_path)
 
     def run_thread(self, train_paths, test_paths, tmp_path) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """ runs algorithm in its own thread """
@@ -53,7 +53,7 @@ class PreAlgorithm(Algorithm):
         test_path = tmp_path / "transform_test.parquet"
         args = self._script_interface(train_paths, test_paths, train_path, test_path)
         self._call_script(self.__module__, args)
-        return self._load_output(train_path, test_path)
+        return train_path, test_path
 
     @staticmethod
     def _load_output(filepath_tr: Path, filepath_te: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:

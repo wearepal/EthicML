@@ -46,15 +46,15 @@ class InAlgorithm(Algorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_data_tuple(train, test, tmp_path)
-            result = self.run_thread(train_paths, test_paths, tmp_path)
-        return result
+            pred_path = self.run_thread(train_paths, test_paths, tmp_path)
+            return self._load_output(pred_path)
 
-    def run_thread(self, train_paths, test_paths, tmp_path) -> pd.DataFrame:
+    def run_thread(self, train_paths, test_paths, tmp_path) -> Path:
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
         self._call_script(self.__module__, args)
-        return self._load_output(pred_path)
+        return pred_path
 
     @staticmethod
     def _load_output(file_path: Path) -> pd.DataFrame:
