@@ -11,3 +11,4 @@ torch==0.4.1
 typing==3.6.2
 mypy
 fastparquet
+.
