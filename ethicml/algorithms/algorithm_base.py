@@ -41,28 +41,6 @@ class Algorithm(ABC):
         """Name of the algorithm"""
         raise NotImplementedError()
 
-    @staticmethod
-    def _script_interface(train_paths, test_paths, *args):
-        """
-        Generate the commandline arguments that are expected by the scripts that follow the
-        convention.
-
-        The agreed upon order is:
-        x (train), s (train), y (train), x (test), s (test), y (test), predictions.
-        :param **kwargs:
-        """
-        list_to_return = [
-            str(train_paths.x),
-            str(train_paths.s),
-            str(train_paths.y),
-            str(test_paths.x),
-            str(test_paths.s),
-            str(test_paths.y)
-        ]
-        for arg in args:
-            list_to_return.append(str(arg))
-        return list_to_return
-
     def _call_script(self, script: str, args: List[str], env: Optional[Dict[str, str]] = None):
         """This function calls a (Python) script as a separate process
 
@@ -93,6 +71,22 @@ class Algorithm(ABC):
             y=load_dataframe(Path(self.args[5])),
         )
         return train, test
+
+    @staticmethod
+    def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:
+        """Convert the path tuples to a list of commandline arguments
+
+        The list of prefixes must have the same length as the list of path tuples. Each path tuple
+        is associated with one prefix. If the prefix for the path tuple "pt" is "--data_", then the
+        following elements are added to the output list:
+            ['--data_x', '<content of pt.x>', '--data_s', '<content of pt.s>', '--data_y',
+             '<content of pt.y>']
+        """
+        args_list: List[str] = []
+        for path_tuple, prefix in zip(path_tuples, prefixes):
+            for key, path in path_tuple._asdict().items():
+                args_list += [f"{prefix}{key}", str(path)]
+        return args_list
 
 
 class ThreadedAlgorithm(ABC):

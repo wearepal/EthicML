@@ -71,3 +71,25 @@ class InAlgorithm(Algorithm):
             df = predictions
         pred_path = Path(self.args[6])
         df.to_parquet(pred_path, compression=None)
+
+    @staticmethod
+    def _script_interface(train_paths, test_paths, *args):
+        """
+        Generate the commandline arguments that are expected by the scripts that follow the
+        convention.
+
+        The agreed upon order is:
+        x (train), s (train), y (train), x (test), s (test), y (test), predictions.
+        :param **kwargs:
+        """
+        list_to_return = [
+            str(train_paths.x),
+            str(train_paths.s),
+            str(train_paths.y),
+            str(test_paths.x),
+            str(test_paths.s),
+            str(test_paths.y)
+        ]
+        for arg in args:
+            list_to_return.append(str(arg))
+        return list_to_return

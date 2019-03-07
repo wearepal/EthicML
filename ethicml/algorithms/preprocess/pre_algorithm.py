@@ -5,7 +5,7 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Tuple
+from typing import Tuple, List
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
@@ -64,16 +64,34 @@ class PreAlgorithm(Algorithm):
             df_test = pd.read_parquet(file_obj)
         return df_train, df_test
 
-    def save_transformations(self, transforms: Tuple[pd.DataFrame, pd.DataFrame]):
+    @staticmethod
+    def save_transformations(transforms: Tuple[pd.DataFrame, pd.DataFrame], flags):
         """Save the data to the file that was specified in the commandline arguments"""
         transform_train, transform_test = transforms
         if not isinstance(transform_train, pd.DataFrame):
             raise AssertionError()
         if not isinstance(transform_test, pd.DataFrame):
             raise AssertionError()
-        transform_train_path = Path(self.args[6])
+        transform_train_path = Path(flags.train_in)
         transform_train.columns = transform_train.columns.astype(str)
         transform_train.to_parquet(transform_train_path, compression=None)
-        transform_test_path = Path(self.args[7])
+        transform_test_path = Path(flags.test_in)
         transform_test.columns = transform_test.columns.astype(str)
         transform_test.to_parquet(transform_test_path, compression=None)
+
+    def _script_interface(self, train_paths, test_paths, for_train_path, for_test_path):
+        """Generate the commandline arguments that are expected by the Beutel script"""
+        flags_list: List[str] = []
+
+        # paths to training and test data
+        flags_list += self._path_tuple_to_cmd_args([train_paths, test_paths],
+                                                   ['--train_', '--test_'])
+
+        # paths to output files
+        flags_list += ['--train_in', str(for_train_path), '--test_in', str(for_test_path)]
+
+        # model parameters
+        for key, values in self.flags.items():
+            flags_list.append(f"--{key}")
+            flags_list += values
+        return flags_list
