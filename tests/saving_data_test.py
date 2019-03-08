@@ -4,9 +4,8 @@ Test the saving data capability
 import pandas as pd
 import numpy as np
 
-from ethicml.evaluators.evaluate_models import run_as_threaded
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
 def test_simple_saving():
@@ -22,8 +21,15 @@ def test_simple_saving():
              'c3': np.array([0, 1, 0])})
     )
 
-    class CheckEquality(ThreadedInAlgorithm):
-        def run(self, train_paths, _, __):
+    class CheckEquality(InAlgorithm):
+        """Dummy algorithm class for testing whether writing and reading parquet files works"""
+        def _run(self, *_):
+            pass
+
+        def name(self):
+            return "Check equality"
+
+        def run_thread(self, train_paths, _, __):
             """Check if the dataframes loaded from the files are the same as the original ones"""
             x_loaded = pd.read_parquet(str(train_paths.x))
             s_loaded = pd.read_parquet(str(train_paths.s))
@@ -31,5 +37,7 @@ def test_simple_saving():
             pd.testing.assert_frame_equal(data_tuple.x, x_loaded)
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
+            return train_paths.x
 
-    run_as_threaded(CheckEquality("Check equality"), data_tuple, data_tuple)
+    data_x = CheckEquality().run_threaded(data_tuple, data_tuple)
+    pd.testing.assert_frame_equal(data_tuple.x, data_x)

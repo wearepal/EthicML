@@ -9,12 +9,10 @@ from typing import List, Dict, Tuple, Any, Union
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.algorithm_base import ThreadedAlgorithm
+from ethicml.algorithms.algorithm_base import Algorithm, load_dataframe
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.threaded.threaded_in_algorithm import ThreadedInAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.preprocess.threaded.threaded_pre_algorithm import ThreadedPreAlgorithm
 from ethicml.algorithms.utils import DataTuple, PathTuple, write_data_tuple, get_subset
 from ..data.dataset import Dataset
 from ..data.load import load_data
@@ -147,8 +145,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             results.to_csv(f"../results/{dataset.name}_{transform_name}.csv", index=False)
 
 
-def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[ThreadedPreAlgorithm],
-                             inprocess_models: List[ThreadedInAlgorithm],
+def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
+                             inprocess_models: List[InAlgorithm],
                              postprocess_models: List[PostAlgorithm], metrics: List[Metric],
                              per_sens_metrics: List[Metric], test_mode: bool = False):
     """Evaluate all the given models for all the given datasets and compute all the given metrics
@@ -186,14 +184,12 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Th
             for pre_process_method in preprocess_models:
                 # separate directory for each preprocessing model
                 model_dir = subdir_for_model(tmp_path, pre_process_method)
-                new_train, new_test = pre_process_method.run(train_paths, test_paths, model_dir)
+                new_train, new_test = pre_process_method.run_thread(train_paths, test_paths,
+                                                                    model_dir)
 
-                # write the returned data to a new file
-                # (this step could be avoided if the models would return the paths to the output
-                # directly instead of first reading the data themselves and then returning it here)
-                new_train_paths, new_test_paths = write_data_tuple(
-                    DataTuple(x=new_train, s=train.s, y=train.y),
-                    DataTuple(x=new_test, s=test.s, y=test.y), model_dir)
+                # construct a new path tuple with the new features
+                new_train_paths = PathTuple(x=new_train, s=train_paths.s, y=train_paths.y)
+                new_test_paths = PathTuple(x=new_test, s=test_paths.s, y=test_paths.y)
 
                 to_operate_on[pre_process_method.name] = {'train_paths': new_train_paths,
                                                           'test_paths': new_test_paths,
@@ -216,8 +212,9 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Th
                     # separate directory for each model
                     model_dir = subdir_for_model(transform_dir, model)
 
-                    predictions: pd.DataFrame = model.run(transformed_train, transformed_test,
-                                                          model_dir)
+                    pred_path: Path = model.run_thread(transformed_train, transformed_test,
+                                                       model_dir)
+                    predictions = load_dataframe(pred_path)
                     temp_res: Dict[str, Union[str, float]] = {'model': model.name}
                     temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
@@ -232,30 +229,8 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Th
                 results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
 
 
-def subdir_for_model(parent_dir: Path, model: ThreadedAlgorithm) -> Path:
+def subdir_for_model(parent_dir: Path, model: Algorithm) -> Path:
     """Create a subdirectory in `parent_dir` based on the name of the given model"""
     model_dir = parent_dir / model.name.strip().replace(' ', '_')
     model_dir.mkdir(parents=False, exist_ok=False)
     return model_dir
-
-
-def run_as_threaded(algorithm: ThreadedInAlgorithm, train: DataTuple, test: DataTuple) -> (
-        pd.DataFrame):
-    """
-    This function saves the given dataframes to the harddrive (in separate files) and then calls the
-    run function of the given algorithm with two path tuples of the paths to the saved files and a
-    temporary directory.
-
-    Args:
-        algorithm: algorithm that will be called with the paths to the data
-        data: Tuple of Pandas dataframe to be saved and passed as a tuple of file paths to
-              the function
-    Returns:
-        the predictions of the algorithm
-    """
-    with TemporaryDirectory() as tmpdir:
-        tmp_path = Path(tmpdir)
-        train_paths, test_paths = write_data_tuple(train, test, tmp_path)
-        # call the algorithm with the paths to the saved files and with the path to the temp dir
-        result = algorithm.run(train_paths, test_paths, tmp_path)
-    return result

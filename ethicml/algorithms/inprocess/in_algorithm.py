@@ -15,29 +15,25 @@ from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
 
 class InAlgorithm(Algorithm):
     """Abstract Base Class dor algorithms that run in the middle of the pipeline"""
-
-    @abstractmethod
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> pd.DataFrame:
-        """Run Algorithm
+        """Run Algorithm either in process or out of process
 
         Args:
-            train:
-            test:
+            train: training data
+            test: test data
             sub_process: indicate if the algorithm is to be run in it's own process
         """
-        raise NotImplementedError("This method needs to be implemented in all models")
+        if sub_process:
+            return self.run_threaded(train, test)
+        return self._run(train, test)
 
-    def run_test(self, train: DataTuple, test: DataTuple) -> (
-            pd.DataFrame):
-        """
+    @abstractmethod
+    def _run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+        """Run Algorithm on the given data"""
+        raise NotImplementedError("`_run` needs to be implemented")
 
-        Args:
-            train:
-            test:
-
-        Returns:
-
-        """
+    def run_test(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+        """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
 
@@ -46,22 +42,15 @@ class InAlgorithm(Algorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_data_tuple(train, test, tmp_path)
-            result = self.run_thread(train_paths, test_paths, tmp_path)
-        return result
+            pred_path = self.run_thread(train_paths, test_paths, tmp_path)
+            return self._load_output(pred_path)
 
-    def run_thread(self, train_paths, test_paths, tmp_path) -> pd.DataFrame:
+    def run_thread(self, train_paths, test_paths, tmp_path) -> Path:
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(self.__module__, args)
-        return self._load_output(pred_path)
-
-    @staticmethod
-    def _load_output(file_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a parquet file"""
-        with file_path.open('rb') as file_obj:
-            df = pd.read_parquet(file_obj)
-        return df
+        self._call_script(['-m', self.__module__] + args)
+        return pred_path
 
     def save_predictions(self, predictions: Union[numpy.array, pd.DataFrame]):
         """Save the data to the file that was specified in the commandline arguments"""
