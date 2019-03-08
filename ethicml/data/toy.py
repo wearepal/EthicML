@@ -17,11 +17,11 @@ class Toy(Dataset):
 
     @property
     def name(self) -> str:
-        return "Test"
+        return "Toy"
 
     @property
     def filename(self) -> str:
-        return "test.csv"
+        return "toy.csv"
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
