@@ -15,17 +15,22 @@ from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
 
 class InAlgorithm(Algorithm):
     """Abstract Base Class dor algorithms that run in the middle of the pipeline"""
-
-    @abstractmethod
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> pd.DataFrame:
-        """Run Algorithm
+        """Run Algorithm either in process or out of process
 
         Args:
-            train:
-            test:
+            train: training data
+            test: test data
             sub_process: indicate if the algorithm is to be run in it's own process
         """
-        raise NotImplementedError("This method needs to be implemented in all models")
+        if sub_process:
+            return self.run_threaded(train, test)
+        return self._run(train, test)
+
+    @abstractmethod
+    def _run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+        """Run Algorithm on the given data"""
+        raise NotImplementedError("`_run` needs to be implemented")
 
     def run_test(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
         """Run with reduced training set so that it finishes quicker"""

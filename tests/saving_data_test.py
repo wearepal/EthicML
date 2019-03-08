@@ -23,7 +23,7 @@ def test_simple_saving():
 
     class CheckEquality(InAlgorithm):
         """Dummy algorithm class for testing whether writing and reading parquet files works"""
-        def run(self, *_):
+        def _run(self, *_):
             pass
 
         def name(self):

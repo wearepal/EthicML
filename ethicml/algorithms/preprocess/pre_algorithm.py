@@ -14,17 +14,23 @@ from ..utils import get_subset, DataTuple, write_data_tuple, PathTuple
 
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
-    @abstractmethod
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
-        """Generate fair features
+        """Generate fair features by either running in process or out of process
 
         Args:
-            train:
-            test:
+            train: training data
+            test: test data
             sub_process: should this model run in it's own process?
         """
-        raise NotImplementedError("Run needs to be implemented")
+        if sub_process:
+            return self.run_threaded(train, test)
+        return self._run(train, test)
+
+    @abstractmethod
+    def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Generate fair features with the given data"""
+        raise NotImplementedError("`_run` needs to be implemented")
 
     def run_test(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """Run with reduced training set so that it finishes quicker"""

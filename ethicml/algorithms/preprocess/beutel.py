@@ -86,12 +86,8 @@ class Beutel(PreAlgorithmCommon):
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
 
-    def run(self, train: DataTuple, test: DataTuple, sub_process=False) -> (
-            Tuple[pd.DataFrame, pd.DataFrame]):
+    def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
         # pylint: disable=too-many-statements
-
-        if sub_process:
-            return self.run_threaded(train, test)
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
