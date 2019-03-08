@@ -14,8 +14,9 @@ import torch
 import torch.nn as nn
 from torch.autograd import Function
 
+from ethicml.algorithms.algorithm_base import load_dataframe
 from ethicml.algorithms.dataloader_funcs import CustomDataset
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmCommon
 from ethicml.algorithms.utils import DataTuple
 
 
@@ -28,7 +29,7 @@ STRING_TO_LOSS_MAP = {
 }
 
 
-class Beutel(PreAlgorithm):
+class Beutel(PreAlgorithmCommon):
     """Beutel's adversarially learned fair representations"""
     def __init__(self,
                  fairness: str = "DI",
@@ -42,7 +43,6 @@ class Beutel(PreAlgorithm):
                  s_loss=nn.BCELoss(),
                  epochs=50):
         # pylint: disable=too-many-arguments
-        super().__init__()
         self.fairness = fairness
         self.enc_size: List[int] = [40] if enc_size is None else enc_size
         self.adv_size: List[int] = [40] if adv_size is None else adv_size
@@ -67,7 +67,7 @@ class Beutel(PreAlgorithm):
         self.epochs = epochs
 
         # convert all parameter values to lists of strings
-        self.flags: Dict[str, List[str]] = {
+        flags: Dict[str, List[str]] = {
             'fairness': [fairness],
             'enc_size': ["40"] if enc_size is None else [str(i) for i in enc_size],
             'adv_size': ["40"] if adv_size is None else [str(i) for i in adv_size],
@@ -79,25 +79,12 @@ class Beutel(PreAlgorithm):
             's_loss': [str(s_loss)],
             'epochs': [str(epochs)],
         }
+        super().__init__(flags)
 
         random.seed(888)
         np.random.seed(888)
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
-
-    def load_data(self, flags):
-        """Load data from the paths specified in the flags"""
-        train = DataTuple(
-            x=load_dataframe(Path(flags.train_x)),
-            s=load_dataframe(Path(flags.train_s)),
-            y=load_dataframe(Path(flags.train_y)),
-        )
-        test = DataTuple(
-            x=load_dataframe(Path(flags.test_x)),
-            s=load_dataframe(Path(flags.test_s)),
-            y=load_dataframe(Path(flags.test_y)),
-        )
-        return train, test
 
     def run(self, train: DataTuple, test: DataTuple, sub_process=False) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
@@ -282,12 +269,19 @@ class Beutel(PreAlgorithm):
         return "Beutel"
 
 
-def load_dataframe(path: Path) -> pd.DataFrame:
-    """Load dataframe from a parquet file"""
-    with path.open('rb') as file:
-        df = pd.read_parquet(file)
-    return df
-
+def load_data(flags):
+    """Load data from the paths specified in the flags"""
+    train = DataTuple(
+        x=load_dataframe(Path(flags.train_x)),
+        s=load_dataframe(Path(flags.train_s)),
+        y=load_dataframe(Path(flags.train_y)),
+    )
+    test = DataTuple(
+        x=load_dataframe(Path(flags.test_x)),
+        s=load_dataframe(Path(flags.test_s)),
+        y=load_dataframe(Path(flags.test_y)),
+    )
+    return train, test
 
 
 def _parse_arguments():
@@ -295,56 +289,46 @@ def _parse_arguments():
     parser = argparse.ArgumentParser()
 
     # paths to the files with the data
-    parser.add_argument("--train_x", metavar='PATH', required=True)
-    parser.add_argument("--train_s", metavar='PATH', required=True)
-    parser.add_argument("--train_y", metavar='PATH', required=True)
-    parser.add_argument("--test_x", metavar='PATH', required=True)
-    parser.add_argument("--test_s", metavar='PATH', required=True)
-    parser.add_argument("--test_y", metavar='PATH', required=True)
+    parser.add_argument("--train_x", required=True)
+    parser.add_argument("--train_s", required=True)
+    parser.add_argument("--train_y", required=True)
+    parser.add_argument("--test_x", required=True)
+    parser.add_argument("--test_s", required=True)
+    parser.add_argument("--test_y", required=True)
 
     # paths to where the processed inputs should be stored
-    parser.add_argument("--train_in", metavar='PATH', required=True)
-    parser.add_argument("--test_in", metavar='PATH', required=True)
+    parser.add_argument("--train_new", required=True)
+    parser.add_argument("--test_new", required=True)
 
     # model parameters
-    parser.add_argument("--fairness", default="DI")
-    parser.add_argument("--enc_size", metavar='N', type=int, nargs='+', default=[40])
-    parser.add_argument("--adv_size", metavar='N', type=int, nargs='+', default=[40])
-    parser.add_argument("--pred_size", metavar='N', type=int, nargs='+', default=[40])
-    parser.add_argument("--enc_activation", default="Sigmoid")
-    parser.add_argument("--adv_activation", default="Sigmoid")
-    parser.add_argument("--batch_size", type=int, default=64, metavar='N')
-    parser.add_argument("--y_loss", default="BCELoss")
-    parser.add_argument("--s_loss", default="BCELoss")
-    parser.add_argument("--epochs", type=int, default=50, metavar='N')
+    parser.add_argument("--fairness", required=True)
+    parser.add_argument("--enc_size", type=int, nargs='+', required=True)
+    parser.add_argument("--adv_size", type=int, nargs='+', required=True)
+    parser.add_argument("--pred_size", type=int, nargs='+', required=True)
+    parser.add_argument("--enc_activation", required=True)
+    parser.add_argument("--adv_activation", required=True)
+    parser.add_argument("--batch_size", type=int, required=True)
+    parser.add_argument("--y_loss", required=True)
+    parser.add_argument("--s_loss", required=True)
+    parser.add_argument("--epochs", type=int, required=True)
     return parser.parse_args()
 
 
 def main():
     """main method to run model"""
     flags = _parse_arguments()
-    fairness = flags.fairness
-    enc_size = flags.enc_size
-    adv_size = flags.adv_size
-    pred_size = flags.pred_size
-    enc_activation = flags.enc_activation
-    adv_activation = flags.adv_activation
-    batch_size = flags.batch_size
-    y_loss = flags.y_loss
-    s_loss = flags.s_loss
-    epochs = flags.epochs
 
-    model = Beutel(fairness=fairness,
-                   enc_size=enc_size,
-                   adv_size=adv_size,
-                   pred_size=pred_size,
-                   enc_activation=enc_activation,
-                   adv_activation=adv_activation,
-                   batch_size=batch_size,
-                   y_loss=y_loss,
-                   s_loss=s_loss,
-                   epochs=epochs)
-    train, test = model.load_data(flags)
+    model = Beutel(fairness=flags.fairness,
+                   enc_size=flags.enc_size,
+                   adv_size=flags.adv_size,
+                   pred_size=flags.pred_size,
+                   enc_activation=flags.enc_activation,
+                   adv_activation=flags.adv_activation,
+                   batch_size=flags.batch_size,
+                   y_loss=flags.y_loss,
+                   s_loss=flags.s_loss,
+                   epochs=flags.epochs)
+    train, test = load_data(flags)
     model.save_transformations(model.run(train, test), flags)
 
 

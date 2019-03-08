@@ -27,17 +27,8 @@ class InAlgorithm(Algorithm):
         """
         raise NotImplementedError("This method needs to be implemented in all models")
 
-    def run_test(self, train: DataTuple, test: DataTuple) -> (
-            pd.DataFrame):
-        """
-
-        Args:
-            train:
-            test:
-
-        Returns:
-
-        """
+    def run_test(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+        """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
 
@@ -53,15 +44,8 @@ class InAlgorithm(Algorithm):
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(self.__module__, args)
+        self._call_script(['-m', self.__module__] + args)
         return pred_path
-
-    @staticmethod
-    def _load_output(file_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a parquet file"""
-        with file_path.open('rb') as file_obj:
-            df = pd.read_parquet(file_obj)
-        return df
 
     def save_predictions(self, predictions: Union[numpy.array, pd.DataFrame]):
         """Save the data to the file that was specified in the commandline arguments"""
