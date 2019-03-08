@@ -12,7 +12,7 @@ from ethicml.algorithms.utils import DataTuple
 
 
 def test_can_load_test_data():
-    data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
+    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
     data: pd.DataFrame = pd.read_csv(data_loc)
     assert data is not None
 
@@ -35,17 +35,17 @@ def test_discrete_data():
 
 
 def test_load_data_as_a_function():
-    data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
+    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
     assert data_obj.feature_split['x'] == ['a1', 'a2']
     assert data_obj.feature_split['s'] == ['s']
     assert data_obj.feature_split['y'] == ['y']
-    assert data_obj.filename == "test.csv"
+    assert data_obj.filename == "toy.csv"
 
 
 def test_joining_2_load_functions():
-    data_loc: str = "{}/data/csvs/test.csv".format(ROOT_DIR)
+    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: DataTuple = load_data(data_obj)
     assert (2000, 2) == data.x.shape
