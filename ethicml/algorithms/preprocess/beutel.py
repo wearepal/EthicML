@@ -15,7 +15,7 @@ import torch.nn as nn
 from torch.autograd import Function
 
 from ethicml.algorithms.algorithm_base import load_dataframe
-from ethicml.algorithms.dataloader_funcs import CustomDataset
+from ethicml.algorithms.pytorch_common import CustomDataset
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmCommon
 from ethicml.algorithms.utils import DataTuple
 
