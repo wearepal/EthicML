@@ -50,7 +50,7 @@ class PreAlgorithm(Algorithm):
         train_path = tmp_path / "transform_train.parquet"
         test_path = tmp_path / "transform_test.parquet"
         args = self._script_interface(train_paths, test_paths, train_path, test_path)
-        self._call_script(['-m', self.__module__] + args)
+        self._call_script(args)
         return train_path, test_path
 
     @staticmethod

@@ -21,12 +21,16 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
-    def __init__(self, executable: Optional[str] = None, args: Optional[List[str]] = None):
+    def __init__(self, executable: Optional[str] = None, args: Optional[List[str]] = None,
+                 call_self_module: bool = True):
         """Constructor
 
         Args:
             executable: (optional) path to a (Python) executable. If not provided, the Python
                         executable that called this script is used.
+            args: (optional) commandline args
+            call_self_module: if True, the script that is called in threaded mode is given by
+                              `self.__module__`
         """
         # self._name = name
         if executable is None:
@@ -34,6 +38,7 @@ class Algorithm(ABC):
             executable = sys.executable
         self.executable: str = executable
         self.args = sys.argv[1:] if args is None else args
+        self.call_self_module = call_self_module
 
     @property
     @abstractmethod
@@ -50,7 +55,10 @@ class Algorithm(ABC):
             cmd_args: list of strings that are passed as commandline arguments to the executable
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
-        cmd = [self.executable] + cmd_args
+        cmd = [self.executable]
+        if self.call_self_module:
+            cmd += ['-m', self.__module__]
+        cmd += cmd_args
         try:
             check_call(cmd, env=env)
         except CalledProcessError:

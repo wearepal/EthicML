@@ -49,7 +49,7 @@ class InAlgorithm(Algorithm):
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(['-m', self.__module__] + args)
+        self._call_script(args)
         return pred_path
 
     def save_predictions(self, predictions: Union[numpy.array, pd.DataFrame]):
