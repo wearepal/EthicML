@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 import pytest
 
+from exsvm.SVM import SVMEXAMPLE
+
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
 from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
@@ -47,6 +49,22 @@ def test_svm():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_svm_import():
+    train, test = get_train_test()
+
+    model: InAlgorithm = SVMEXAMPLE()
+    assert model is not None
+    assert model.name == "SVM"
+
+    predictions: pd.DataFrame = model.run(train, test, sub_process=True)
+    assert predictions[predictions.values == 1].count().values[0] == 201
+    assert predictions[predictions.values == -1].count().values[0] == 199
+
+    predictions_non_threaded: pd.DataFrame = model.run(train, test)
+    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 201
+    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 199
 
 
 def test_threaded_svm():

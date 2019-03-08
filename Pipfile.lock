@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8b0c5ff94715de3a6557bccf43d5bf4f8a646113c0224fb26a6bc3365642f507"
+            "sha256": "fbb320d86f811ad15c916b0019402cbef34c9f59c8e1ecf9f1aa5be274b77aab"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -22,6 +22,11 @@
                 "sha256:cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8"
             ],
             "version": "==0.10.0"
+        },
+        "exsvm": {
+            "editable": true,
+            "git": "https://github.com/olliethomas/test_svm_module.git",
+            "ref": "ed7e8716721a004db359f635f68e567c6cb8b870"
         },
         "fastparquet": {
             "hashes": [
