@@ -23,18 +23,20 @@ jobs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
 
-  - script: python -m pip install -r requirements.txt
+  - script: |
+        pip install pipenv
+        pipenv install --dev
     displayName: 'Install dependencies'
 
   - script: |
-      python -m pytest -vv --cov --cov-fail-under=80  tests/
+      pipenv run python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
     displayName: 'pytest'
 
-  - script: python run_pylint.py
+  - script: pipenv run python run_pylint.py
     displayName: 'pylint'
   - script: |
-      python run_mypy.py
+      pipenv run python run_mypy.py
     displayName: 'mypy'
   - script: |
-      python run_mypy_tests.py
+      pipenv run python run_mypy_tests.py
     displayName: 'mypy_tests'
