@@ -23,7 +23,9 @@ jobs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
 
-  - script: pipenv install --dev
+  - script: |
+        pip install pipenv
+        pipenv install --dev
     displayName: 'Install dependencies'
 
   - script: |
