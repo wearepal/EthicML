@@ -4,18 +4,28 @@ Implementation of Beute's adversarially learned fair representations
 
 # Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
 # pylint: disable=arguments-differ
-
+import argparse
 import random
-from typing import Tuple, List, Any
+from pathlib import Path
+from typing import Tuple, List, Any, Dict
 import pandas as pd
 import numpy as np
 import torch
 import torch.nn as nn
 from torch.autograd import Function
 
-from ..dataloader_funcs import CustomDataset
-from .pre_algorithm import PreAlgorithm
-from ..utils import DataTuple
+from ethicml.algorithms.dataloader_funcs import CustomDataset
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.utils import DataTuple
+
+
+STRING_TO_ACTIVATION_MAP = {
+    "Sigmoid()": nn.Sigmoid()
+}
+
+STRING_TO_LOSS_MAP = {
+    "BCELoss()": nn.BCELoss()
+}
 
 
 class Beutel(PreAlgorithm):
@@ -32,24 +42,69 @@ class Beutel(PreAlgorithm):
                  s_loss=nn.BCELoss(),
                  epochs=50):
         # pylint: disable=too-many-arguments
+        super().__init__()
         self.fairness = fairness
         self.enc_size: List[int] = [40] if enc_size is None else enc_size
         self.adv_size: List[int] = [40] if adv_size is None else adv_size
         self.pred_size: List[int] = [40] if pred_size is None else pred_size
-        self.enc_activation = enc_activation
-        self.adv_activation = adv_activation
+        if isinstance(enc_activation, str):
+            self.enc_activation = STRING_TO_ACTIVATION_MAP[enc_activation]
+        else:
+            self.enc_activation = enc_activation
+        if isinstance(adv_activation, str):
+            self.adv_activation = STRING_TO_ACTIVATION_MAP[adv_activation]
+        else:
+            self.adv_activation = adv_activation
         self.batch_size = batch_size
-        self.y_loss = y_loss
-        self.s_loss = s_loss
+        if isinstance(y_loss, str):
+            self.y_loss = STRING_TO_LOSS_MAP[y_loss]
+        else:
+            self.y_loss = y_loss
+        if isinstance(s_loss, str):
+            self.s_loss = STRING_TO_LOSS_MAP[s_loss]
+        else:
+            self.s_loss = s_loss
         self.epochs = epochs
+
+        # convert all parameter values to lists of strings
+        self.flags: Dict[str, List[str]] = {
+            'fairness': [fairness],
+            'enc_size': ["40"] if enc_size is None else [str(i) for i in enc_size],
+            'adv_size': ["40"] if adv_size is None else [str(i) for i in adv_size],
+            'pred_size': ["40"] if pred_size is None else [str(i) for i in pred_size],
+            'enc_activation': [str(enc_activation)],
+            'adv_activation': [str(adv_activation)],
+            'batch_size': [str(batch_size)],
+            'y_loss': [str(y_loss)],
+            's_loss': [str(s_loss)],
+            'epochs': [str(epochs)],
+        }
+
         random.seed(888)
         np.random.seed(888)
         torch.manual_seed(888)
         torch.cuda.manual_seed_all(888)
 
-    def run(self, train: DataTuple, test: DataTuple) -> (
+    def load_data(self, flags):
+        """Load data from the paths specified in the flags"""
+        train = DataTuple(
+            x=load_dataframe(Path(flags.train_x)),
+            s=load_dataframe(Path(flags.train_s)),
+            y=load_dataframe(Path(flags.train_y)),
+        )
+        test = DataTuple(
+            x=load_dataframe(Path(flags.test_x)),
+            s=load_dataframe(Path(flags.test_s)),
+            y=load_dataframe(Path(flags.test_y)),
+        )
+        return train, test
+
+    def run(self, train: DataTuple, test: DataTuple, sub_process=False) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         # pylint: disable=too-many-statements
+
+        if sub_process:
+            return self.run_threaded(train, test)
 
         train_data = CustomDataset(train)
         size = int(train_data.size)
@@ -225,3 +280,73 @@ class Beutel(PreAlgorithm):
     @property
     def name(self) -> str:
         return "Beutel"
+
+
+def load_dataframe(path: Path) -> pd.DataFrame:
+    """Load dataframe from a parquet file"""
+    with path.open('rb') as file:
+        df = pd.read_parquet(file)
+    return df
+
+
+
+def _parse_arguments():
+    """Parse commandline arguments"""
+    parser = argparse.ArgumentParser()
+
+    # paths to the files with the data
+    parser.add_argument("--train_x", metavar='PATH', required=True)
+    parser.add_argument("--train_s", metavar='PATH', required=True)
+    parser.add_argument("--train_y", metavar='PATH', required=True)
+    parser.add_argument("--test_x", metavar='PATH', required=True)
+    parser.add_argument("--test_s", metavar='PATH', required=True)
+    parser.add_argument("--test_y", metavar='PATH', required=True)
+
+    # paths to where the processed inputs should be stored
+    parser.add_argument("--train_in", metavar='PATH', required=True)
+    parser.add_argument("--test_in", metavar='PATH', required=True)
+
+    # model parameters
+    parser.add_argument("--fairness", default="DI")
+    parser.add_argument("--enc_size", metavar='N', type=int, nargs='+', default=[40])
+    parser.add_argument("--adv_size", metavar='N', type=int, nargs='+', default=[40])
+    parser.add_argument("--pred_size", metavar='N', type=int, nargs='+', default=[40])
+    parser.add_argument("--enc_activation", default="Sigmoid")
+    parser.add_argument("--adv_activation", default="Sigmoid")
+    parser.add_argument("--batch_size", type=int, default=64, metavar='N')
+    parser.add_argument("--y_loss", default="BCELoss")
+    parser.add_argument("--s_loss", default="BCELoss")
+    parser.add_argument("--epochs", type=int, default=50, metavar='N')
+    return parser.parse_args()
+
+
+def main():
+    """main method to run model"""
+    flags = _parse_arguments()
+    fairness = flags.fairness
+    enc_size = flags.enc_size
+    adv_size = flags.adv_size
+    pred_size = flags.pred_size
+    enc_activation = flags.enc_activation
+    adv_activation = flags.adv_activation
+    batch_size = flags.batch_size
+    y_loss = flags.y_loss
+    s_loss = flags.s_loss
+    epochs = flags.epochs
+
+    model = Beutel(fairness=fairness,
+                   enc_size=enc_size,
+                   adv_size=adv_size,
+                   pred_size=pred_size,
+                   enc_activation=enc_activation,
+                   adv_activation=adv_activation,
+                   batch_size=batch_size,
+                   y_loss=y_loss,
+                   s_loss=s_loss,
+                   epochs=epochs)
+    train, test = model.load_data(flags)
+    model.save_transformations(model.run(train, test), flags)
+
+
+if __name__ == "__main__":
+    main()

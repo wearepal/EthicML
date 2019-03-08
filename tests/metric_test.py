@@ -8,7 +8,7 @@ import pandas as pd
 import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.logistic_regression import LRProb
+from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
 from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data import Adult
