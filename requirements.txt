@@ -11,3 +11,5 @@ torch>=0.4.1
 typing>=3.6.2
 mypy
 pyarrow>=0.11
+pipenv
+gitpython
