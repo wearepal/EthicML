@@ -1,23 +1,20 @@
-import pdb
-import pickle
-
 import os
 import subprocess
 from pathlib import Path
 
 import git
 
-from os import listdir
-from os.path import isfile, join
-import importlib
 import shutil
-import sys
 
 
-from ethicml.algorithms.algorithm_base import Algorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
-class VenvManager:
+class VenvSVM(InAlgorithm):
+    @property
+    def name(self) -> str:
+        return "venv SVM"
+
     def clone_directory(self, name, url):
         directory = Path(f"./{name}")
         if not os.path.exists(directory):
@@ -34,23 +31,21 @@ class VenvManager:
 
         venv_directory = Path(f"./.venv")
         if not os.path.exists(venv_directory):
-            subprocess.check_call(["/Users/ot44/anaconda3/bin/pipenv", "install"])
+            subprocess.check_call(["/Users/ot44/anaconda3/envs/test_env/bin/pipenv", "install"])
 
-    def setup(self, name: str, url: str) -> Algorithm:
+    def __init__(self, name: str, url: str):
         self.clone_directory(name, url)
         self.create_venv(name)
+        super().__init__(executable="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python")
 
-        print("stop")
-        # pdb.set_trace()
-        subprocess.check_call(["/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python", "/Users/ot44/Development/EthicML/ethicml/ven_manager/module_getter.py"], cwd="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module")
-        _class = pickle.load(open( "dumped_pickle.p", "rb" ))
+    def run(self, train, test, sub_process: bool = False):
+        return self.run_threaded(train, test)
 
-        # module = importlib.import_module(f"{name}.test_svm_module.SVM")
-        # _class = getattr(module, "SVMEXAMPLE")
-
-        instance = _class()
-        instance.executable = Path(__file__).parent.parent.parent / "tests" / name / "test_svm_module" /".venv/bin/python"
-        return instance
+    def run_thread(self, train_paths, test_paths, tmp_path):
+        pred_path = tmp_path / "predictions.parquet"
+        args = self._script_interface(train_paths, test_paths, pred_path)
+        self._call_script("/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/SVMTWO.py", args)
+        return pred_path
 
     def remove(self, name):
         os.chdir(Path(f"../.."))
