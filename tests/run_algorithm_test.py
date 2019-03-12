@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
 from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
 from ethicml.algorithms.inprocess.logistic_regression import LR
@@ -23,9 +24,6 @@ from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.utility.heaviside import Heaviside
-from ethicml.ven_manager.venv_man import VenvSVM
-
-import pdb
 
 
 def get_train_test():
@@ -55,10 +53,11 @@ def test_svm():
 def test_svm_import():
     train, test = get_train_test()
 
-    model: InAlgorithm = VenvSVM(name="oliver_git_svm",
-                                 url="https://github.com/olliethomas/test_svm_module.git",
-                                 module="test_svm_module",
-                                 file_name="SVMTWO.py")
+    model: InstalledModel = InstalledModel(
+        name="oliver_git_svm",
+        url="https://github.com/olliethomas/test_svm_module.git",
+        module="test_svm_module",
+        file_name="SVMTWO.py")
 
     assert model is not None
     assert model.name == "venv SVM"
