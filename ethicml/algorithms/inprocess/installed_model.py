@@ -58,7 +58,7 @@ class InstalledModel(InAlgorithm):
         venv_directory = Path(f"./{self.repo_name}/{self.module}/.venv")
 
         if not os.path.exists(venv_directory):
-            subprocess.check_call("pipenv install",
+            subprocess.check_call("python -m pipenv install",
                                   env=environ, shell=True)
 
     def _run(self, train, test):
