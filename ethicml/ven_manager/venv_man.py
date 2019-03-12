@@ -38,13 +38,14 @@ class VenvSVM(InAlgorithm):
         self.create_venv(name)
         super().__init__(executable="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python")
 
-    def run(self, train, test, sub_process: bool = False):
-        return self.run_threaded(train, test)
+    def _run(self, train, test):
+        pass
 
     def run_thread(self, train_paths, test_paths, tmp_path):
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script("/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/SVMTWO.py", args)
+        self._call_script(
+            ["/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/SVMTWO.py"] + args)
         return pred_path
 
     def remove(self, name):
