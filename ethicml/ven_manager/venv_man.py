@@ -11,6 +11,11 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
 class VenvSVM(InAlgorithm):
+    def __init__(self, name: str, url: str):
+        self.clone_directory(name, url)
+        self.create_venv(name)
+        super().__init__(executable="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python")
+
     @property
     def name(self) -> str:
         return "venv SVM"
@@ -32,11 +37,6 @@ class VenvSVM(InAlgorithm):
         venv_directory = Path(f"./.venv")
         if not os.path.exists(venv_directory):
             subprocess.check_call(["/Users/ot44/anaconda3/envs/test_env/bin/pipenv", "install"])
-
-    def __init__(self, name: str, url: str):
-        self.clone_directory(name, url)
-        self.create_venv(name)
-        super().__init__(executable="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python")
 
     def _run(self, train, test):
         pass
