@@ -23,7 +23,7 @@ from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.utility.heaviside import Heaviside
-from ethicml.ven_manager.venv_man import VenvManager
+from ethicml.ven_manager.venv_man import VenvSVM
 
 import pdb
 
@@ -55,12 +55,10 @@ def test_svm():
 def test_svm_import():
     train, test = get_train_test()
 
-    man = VenvManager()
-
-    model: InAlgorithm = man.setup("oliver_git_svm", "https://github.com/olliethomas/test_svm_module.git")
+    model: InAlgorithm = VenvSVM("oliver_git_svm", "https://github.com/olliethomas/test_svm_module.git")
 
     assert model is not None
-    assert model.name == "SVM"
+    assert model.name == "venv SVM"
 
     # pdb.set_trace()
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
@@ -71,7 +69,7 @@ def test_svm_import():
     assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 201
     assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 199
 
-    man.remove("oliver_git_svm")
+    model.remove("oliver_git_svm")
 
 
 def test_threaded_svm():
