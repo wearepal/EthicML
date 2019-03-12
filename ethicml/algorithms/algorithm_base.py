@@ -51,6 +51,7 @@ class Algorithm(ABC):
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
         cmd = [self.executable] + cmd_args
+        print(cmd)
         try:
             check_call(cmd, env=env)
         except CalledProcessError:

@@ -14,7 +14,7 @@ class VenvSVM(InAlgorithm):
     def __init__(self, name: str, url: str):
         self.clone_directory(name, url)
         self.create_venv(name)
-        super().__init__(executable="/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/.venv/bin/python")
+        super().__init__(executable="/Users/ot44/Development/EthicML/oliver_git_svm/test_svm_module/.venv/bin/python")
 
     @property
     def name(self) -> str:
@@ -29,14 +29,18 @@ class VenvSVM(InAlgorithm):
             print("Repo found")
 
     def create_venv(self, name):
-        os.chdir(Path(f"./{name}/test_svm_module/"))
-        os.environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
-        os.environ["PIPENV_VENV_IN_PROJECT"] = "true"
-        os.environ["PIPENV_YES"] = "true"
+        environ = os.environ.copy()
+        environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
+        environ["PIPENV_VENV_IN_PROJECT"] = "true"
+        environ["PIPENV_YES"] = "true"
+        environ["LANG"] = 'en_GB.UTF-8'
+        environ["PIPENV_PIPFILE"] = '/Users/ot44/Development/EthicML/oliver_git_svm/test_svm_module/Pipfile'
 
-        venv_directory = Path(f"./.venv")
+        venv_directory = Path(f"./{name}/test_svm_module/.venv")
+
         if not os.path.exists(venv_directory):
-            subprocess.check_call(["/Users/ot44/anaconda3/envs/test_env/bin/pipenv", "install"])
+            subprocess.check_call(["/Users/ot44/anaconda3/envs/test_env/bin/pipenv", "install"],
+                                  env=environ)
 
     def _run(self, train, test):
         pass
@@ -45,11 +49,10 @@ class VenvSVM(InAlgorithm):
         pred_path = tmp_path / "predictions.parquet"
         args = self._script_interface(train_paths, test_paths, pred_path)
         self._call_script(
-            ["/Users/ot44/Development/EthicML/tests/oliver_git_svm/test_svm_module/SVMTWO.py"] + args)
+            ["/Users/ot44/Development/EthicML/oliver_git_svm/test_svm_module/SVMTWO.py"] + args)
         return pred_path
 
     def remove(self, name):
-        os.chdir(Path(f"../.."))
         directory = Path(f"./{name}")
         try:
             shutil.rmtree(directory)
