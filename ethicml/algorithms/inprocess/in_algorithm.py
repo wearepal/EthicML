@@ -47,7 +47,7 @@ class InAlgorithm(Algorithm):
 
     def run_thread(self, train_paths, test_paths, tmp_path) -> Path:
         """ runs algorithm in its own thread """
-        pred_path = tmp_path / "predictions.parquet"
+        pred_path = tmp_path / "predictions.feather"
         args = self._script_interface(train_paths, test_paths, pred_path)
         self._call_script(['-m', self.__module__] + args)
         return pred_path
@@ -59,7 +59,7 @@ class InAlgorithm(Algorithm):
         else:
             df = predictions
         pred_path = Path(self.args[6])
-        df.to_parquet(pred_path, compression=None)
+        df.to_feather(pred_path)
 
     @staticmethod
     def _script_interface(train_paths, test_paths, *args):
