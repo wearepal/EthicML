@@ -47,8 +47,8 @@ class PreAlgorithm(Algorithm):
 
     def run_thread(self, train_paths, test_paths, tmp_path) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """Run algorithm in its own thread"""
-        train_path = tmp_path / "transform_train.parquet"
-        test_path = tmp_path / "transform_test.parquet"
+        train_path = tmp_path / "transform_train.feather"
+        test_path = tmp_path / "transform_test.feather"
         args = self._script_interface(train_paths, test_paths, train_path, test_path)
         self._call_script(['-m', self.__module__] + args)
         return train_path, test_path
@@ -61,10 +61,10 @@ class PreAlgorithm(Algorithm):
         assert isinstance(transform_test, pd.DataFrame)
         transform_train_path = Path(flags.train_new)
         transform_train.columns = transform_train.columns.astype(str)
-        transform_train.to_parquet(transform_train_path, compression=None)
+        transform_train.to_feather(transform_train_path)
         transform_test_path = Path(flags.test_new)
         transform_test.columns = transform_test.columns.astype(str)
-        transform_test.to_parquet(transform_test_path, compression=None)
+        transform_test.to_feather(transform_test_path)
 
     @abstractmethod
     def _script_interface(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,

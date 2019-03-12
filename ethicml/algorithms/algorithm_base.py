@@ -13,9 +13,9 @@ from .utils import PathTuple, DataTuple
 
 
 def load_dataframe(path: Path) -> pd.DataFrame:
-    """Load dataframe from a parquet file"""
+    """Load dataframe from a feather file"""
     with path.open('rb') as file:
-        df = pd.read_parquet(file)
+        df = pd.read_feather(file)
     return df
 
 
@@ -89,7 +89,7 @@ class Algorithm(ABC):
 
     @staticmethod
     def _load_output(file_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a parquet file"""
+        """Load a dataframe from a feather file"""
         with file_path.open('rb') as file_obj:
-            df = pd.read_parquet(file_obj)
+            df = pd.read_feather(file_obj)
         return df
