@@ -8,6 +8,7 @@ pylint = ">=2.0"
 pytest = "==3.3.2"
 pytest-cov = "==2.6.0"
 mypy = "*"
+gitpython = "*"
 
 [packages]
 imageio = "==2.4.1"
@@ -19,7 +20,6 @@ seaborn = "==0.9.0"
 torch = "==0.4.1"
 typing = "==3.6.2"
 fastparquet = "*"
-exsvm = {git = "https://github.com/olliethomas/test_svm_module.git", editable = true}
 
 [requires]
-python_version = "3.6"
+python_version = ".6"
