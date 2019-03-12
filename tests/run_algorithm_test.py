@@ -60,7 +60,6 @@ def test_svm_import():
     assert model is not None
     assert model.name == "venv SVM"
 
-    # pdb.set_trace()
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
