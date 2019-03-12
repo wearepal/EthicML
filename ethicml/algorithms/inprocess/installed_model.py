@@ -53,7 +53,6 @@ class InstalledModel(InAlgorithm):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["LANG"] = 'en_GB.UTF-8'
         environ["PIPENV_PIPFILE"] = f'/{ROOT_DIR}/{self.repo_name}/{self.module}/Pipfile'
 
         venv_directory = Path(f"./{self.repo_name}/{self.module}/.venv")
