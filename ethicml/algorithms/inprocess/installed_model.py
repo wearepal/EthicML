@@ -69,7 +69,7 @@ class InstalledModel(InAlgorithm):
         Overridden from parent - see there
 
         """
-        pred_path = tmp_path / "predictions.parquet"
+        pred_path = tmp_path / "predictions.feather"
         args = self._script_interface(train_paths, test_paths, pred_path)
         self._call_script(
             [f"/{ROOT_DIR}/{self.repo_name}/{self.module}/{self.file_name}"] + args)
