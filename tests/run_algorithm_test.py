@@ -65,10 +65,6 @@ def test_svm_import():
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 201
-    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 199
-
     model.remove("oliver_git_svm")
 
 
