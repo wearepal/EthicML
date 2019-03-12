@@ -7,7 +7,6 @@ import numpy as np
 import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
 from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
 from ethicml.algorithms.inprocess.logistic_regression import LR
@@ -19,6 +18,7 @@ from ethicml.algorithms.utils import DataTuple
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.data import Adult, Compas, German, Sqf, Toy
+from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics import Accuracy, CV, TPR, Metric
@@ -46,6 +46,25 @@ def test_svm():
     assert model.name == "SVM"
 
     predictions: pd.DataFrame = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 201
+    assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_cv_svm():
+    train, test = get_train_test()
+
+    hyperparams = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
+
+    svm_cv = CrossValidator(SVM, hyperparams)
+
+    assert svm_cv is not None
+    assert isinstance(svm_cv.model(), InAlgorithm)
+
+    svm_cv.run(train)
+
+    best_model = svm_cv.best()
+
+    predictions: pd.DataFrame = best_model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
 

@@ -4,7 +4,7 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Union
+from typing import Union, Dict
 
 import numpy
 import pandas as pd
@@ -15,6 +15,11 @@ from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
 
 class InAlgorithm(Algorithm):
     """Abstract Base Class dor algorithms that run in the middle of the pipeline"""
+
+    def __init__(self, hyperparams: Dict[str, float] = None):
+        super().__init__()
+        self.hyperparams = hyperparams
+
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> pd.DataFrame:
         """Run Algorithm either in process or out of process
 
