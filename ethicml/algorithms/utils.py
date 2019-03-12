@@ -43,9 +43,9 @@ def write_data_tuple(train: DataTuple, test: DataTuple, data_dir: Path) -> (
         # loop over all elements of the data tuple and write them to separate files
         for key, data in data_tuple._asdict().items():
             # SUGGESTION: maybe the file names should be completely random to avoid collisions
-            data_path = data_dir / Path(f"data_{prefix}_{key}.parquet")
+            data_path = data_dir / Path(f"data_{prefix}_{key}.feather")
             # write the file (don't use compression because this requires an additional library)
-            data.to_parquet(data_path, compression=None)
+            data.to_feather(data_path)
             data_paths[key] = data_path
     # the paths dictionaries to construct path tuples and return them
     return PathTuple(**train_paths), PathTuple(**test_paths)

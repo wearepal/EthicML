@@ -22,7 +22,7 @@ def test_simple_saving():
     )
 
     class CheckEquality(InAlgorithm):
-        """Dummy algorithm class for testing whether writing and reading parquet files works"""
+        """Dummy algorithm class for testing whether writing and reading feather files works"""
         def _run(self, *_):
             pass
 
@@ -31,9 +31,9 @@ def test_simple_saving():
 
         def run_thread(self, train_paths, _, __):
             """Check if the dataframes loaded from the files are the same as the original ones"""
-            x_loaded = pd.read_parquet(str(train_paths.x))
-            s_loaded = pd.read_parquet(str(train_paths.s))
-            y_loaded = pd.read_parquet(str(train_paths.y))
+            x_loaded = pd.read_feather(str(train_paths.x))
+            s_loaded = pd.read_feather(str(train_paths.s))
+            y_loaded = pd.read_feather(str(train_paths.y))
             pd.testing.assert_frame_equal(data_tuple.x, x_loaded)
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
