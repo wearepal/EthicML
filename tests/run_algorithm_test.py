@@ -55,7 +55,10 @@ def test_svm():
 def test_svm_import():
     train, test = get_train_test()
 
-    model: InAlgorithm = VenvSVM("oliver_git_svm", "https://github.com/olliethomas/test_svm_module.git")
+    model: InAlgorithm = VenvSVM(name="oliver_git_svm",
+                                 url="https://github.com/olliethomas/test_svm_module.git",
+                                 module="test_svm_module",
+                                 file_name="SVMTWO.py")
 
     assert model is not None
     assert model.name == "venv SVM"
@@ -64,7 +67,7 @@ def test_svm_import():
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
 
-    model.remove("oliver_git_svm")
+    model.remove()
 
 
 def test_threaded_svm():
