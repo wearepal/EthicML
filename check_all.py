@@ -5,7 +5,7 @@ from mypy import api as mypy
 
 # pytest
 print("############### pytest #################")
-pytest.main(['-vv', '--cov', '--cov-fail-under=80', 'tests/'])
+pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
 print('')
 
 # pylint
