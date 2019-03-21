@@ -10,22 +10,19 @@ from typing import List
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
+def update_model(model, hyperparams):
+    klass = model.__class__
+    params = model.get_params()
+    for hyperparam_name, hyperparam_new_val in hyperparams.items():
+        params[hyperparam_name] = hyperparam_new_val
+    return klass(**params)
+
+
 class SVM(InAlgorithm):
     """Support Vector Machine"""
     def _run(self, train, test):
-        if self.hyperparams:
-            if self.hyperparams.get('kernel') and self.hyperparams.get('C'):
-                kernel = self.hyperparams['kernel']
-                c = self.hyperparams['C']
-                clf = SVC(C=c, kernel=kernel, gamma='auto', random_state=888)
-                print("ok")
-            elif self.hyperparams.get('kernel'):
-                print("hmm")
-            elif self.hyperparams.get('C'):
-                c = list(self.hyperparams.values())[0]
-                clf = SVC(C=c, gamma='auto', random_state=888)
-        else:
-            clf = SVC(gamma='auto', random_state=888)
+        clf = SVC(gamma='auto', random_state=888)
+        clf = update_model(clf, self.hyperparams)
         clf.fit(train.x, train.y.values.ravel())
         return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
@@ -35,7 +32,7 @@ class SVM(InAlgorithm):
 
     @property
     def tunable_params(self) -> List[str]:
-        return ['C']
+        return ['C', 'kernel']
 
 
 def main():
