@@ -1,7 +1,7 @@
 """
 Test that an algorithm can run against some data
 """
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
@@ -19,6 +19,7 @@ from ethicml.algorithms.utils import DataTuple
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.data import Adult, Compas, German, Sqf, Toy
+from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.evaluators.evaluate_models import evaluate_models
 from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
 from ethicml.metrics import Accuracy, CV, TPR, Metric
@@ -48,6 +49,44 @@ def test_svm():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_cv_svm():
+    train, test = get_train_test()
+
+    hyperparams: Dict[str, List[Any]] = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
+
+    svm_cv = CrossValidator(SVM, hyperparams, folds=3)
+
+    assert svm_cv is not None
+    assert isinstance(svm_cv.model(), InAlgorithm)
+
+    svm_cv.run(train)
+
+    best_model = svm_cv.best(Accuracy())
+
+    predictions: pd.DataFrame = best_model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 201
+    assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_cv_lr():
+    train, test = get_train_test()
+
+    hyperparams: Dict[str, List[int]] = {'C': [1, 10, 100]}
+
+    lr_cv = CrossValidator(LR, hyperparams, folds=3)
+
+    assert lr_cv is not None
+    assert isinstance(lr_cv.model(), InAlgorithm)
+
+    lr_cv.run(train)
+
+    best_model = lr_cv.best(Accuracy())
+
+    predictions: pd.DataFrame = best_model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
 
 def test_svm_import():

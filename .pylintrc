@@ -244,7 +244,8 @@ good-names=i,
            df,
            x,
            y,
-           s
+           s,
+           C
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no

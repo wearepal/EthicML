@@ -27,6 +27,8 @@ def metric_per_sensitive_attribute(
                              actual.y,
                              predictions], axis=1)
 
+    if amalgamated.shape[0] != actual.x.shape[0]:
+        print("ddf")
     assert amalgamated.shape[0] == actual.x.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
