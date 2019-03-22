@@ -4,7 +4,7 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Union, Any
+from typing import Union
 
 import numpy
 import pandas as pd
@@ -83,22 +83,3 @@ class InAlgorithm(Algorithm):
         for arg in args:
             list_to_return.append(str(arg))
         return list_to_return
-
-    def update_hyperparams(self, model: Any):
-        """
-        Takes a vanilla model and updates the hyper-parameters to user given
-        Args:
-            model: Having to mark as any type as the model may be a model written from scratch or
-            one that has been imported from sklearn / some other library
-            hyperparams:
-
-        Returns:
-
-        """
-        if self.hyperparams:
-            klass = model.__class__
-            params = model.get_params()
-            for hyperparam_name, hyperparam_new_val in self.hyperparams.items():
-                params[hyperparam_name] = hyperparam_new_val
-            return klass(**params)
-        return model

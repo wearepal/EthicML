@@ -6,7 +6,7 @@ from collections import defaultdict
 from itertools import product
 from operator import itemgetter
 from statistics import mean
-from typing import Dict, List, Tuple, Any, Optional
+from typing import Dict, List, Tuple, Any
 from typing import Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
@@ -25,7 +25,7 @@ class Results:
     def append(self, config: Dict[str, Any], fold_id: int, score_name: str, score: float) -> None:
         self.storage.append((config, fold_id, score_name, score))
 
-    def get_params_for_best(self, measure: Metric) -> Optional[Dict[str, Any]]:
+    def get_params_for_best(self, measure: Metric) -> Dict[str, Any]:
         """
         Get the hyperparameter combination for the best performance of a measure
         Args:
@@ -49,7 +49,7 @@ class Results:
 
         best_params = (max(mean_vals.items(), key=itemgetter(1)))[0]
 
-        params_for_best = None
+        params_for_best = candidates[0][0]
         for k in candidates:
             hyp_dic = k[0]
             str_hyp_dict = ', '.join("{!s}={!r}".format(key, val) for (key, val) in hyp_dic.items())
@@ -88,10 +88,10 @@ class CrossValidator:
 
         for i, (train_fold, val) in enumerate(fold_data(train, folds=3)):
             for experiment in self.experiments:
-                model = self.model(hyperparams=experiment)
+                model = self.model(**experiment)
                 preds = model.run(train_fold, val)
                 for measure in measures:
                     self.results.append(experiment, i, measure.name, measure.score(preds, val))
 
     def best(self, measure) -> InAlgorithm:
-        return self.model(hyperparams=self.results.get_params_for_best(measure))
+        return self.model(**self.results.get_params_for_best(measure))
