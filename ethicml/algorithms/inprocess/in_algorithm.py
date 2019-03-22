@@ -4,7 +4,7 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Union, Dict
+from typing import Union, Any
 
 import numpy
 import pandas as pd
@@ -15,10 +15,6 @@ from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
 
 class InAlgorithm(Algorithm):
     """Abstract Base Class dor algorithms that run in the middle of the pipeline"""
-
-    def __init__(self, hyperparams: Dict[str, float] = None):
-        super().__init__()
-        self.hyperparams = hyperparams
 
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> pd.DataFrame:
         """Run Algorithm either in process or out of process
@@ -87,3 +83,22 @@ class InAlgorithm(Algorithm):
         for arg in args:
             list_to_return.append(str(arg))
         return list_to_return
+
+    def update_hyperparams(self, model: Any):
+        """
+        Takes a vanilla model and updates the hyper-parameters to user given
+        Args:
+            model: Having to mark as any type as the model may be a model written from scratch or
+            one that has been imported from sklearn / some other library
+            hyperparams:
+
+        Returns:
+
+        """
+        if self.hyperparams:
+            klass = model.__class__
+            params = model.get_params()
+            for hyperparam_name, hyperparam_new_val in self.hyperparams.items():
+                params[hyperparam_name] = hyperparam_new_val
+            return klass(**params)
+        return model

@@ -49,10 +49,8 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
     x_columns: List[str] = [col for col in data.x.columns]
     s_columns: List[str] = [col for col in data.s.columns]
     y_columns: List[str] = [col for col in data.y.columns]
-    # ty_columns: List[str] = [col for col in data['ty'].columns]
 
-    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y],  # data['ty']],
-                                       axis=1)
+    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis=1)
 
     all_data = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 
@@ -65,14 +63,12 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
         x=all_data_train[x_columns],
         s=all_data_train[s_columns],
         y=all_data_train[y_columns],
-        # 'ty': all_data_train[ty_columns]
     )
 
     test: DataTuple = DataTuple(
         x=all_data_test[x_columns],
         s=all_data_test[s_columns],
         y=all_data_test[y_columns],
-        # 'ty': all_data_test[ty_columns]
     )
 
     assert isinstance(train.x, pd.DataFrame)
@@ -91,3 +87,46 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
     assert_array_equal(test.y.columns, y_columns)
 
     return train, test
+
+
+def fold_data(data: DataTuple, folds: int):
+    """
+    So much love to sklearn for making their source code open
+    Args:
+        data:
+        folds:
+
+    Returns:
+
+    """
+
+    indices = np.arange(data.x.shape[0])
+
+    fold_sizes = np.full(folds, data.x.shape[0] // folds, dtype=np.int)
+    fold_sizes[:data.x.shape[0] % folds] += 1
+
+    current = 0
+    for fold_size in fold_sizes:
+        start, stop = current, current + fold_size
+        val_inds = indices[start:stop]
+        train_inds = [i for i in indices if i not in val_inds] # Pretty sure this is inefficient
+
+        train_x = data.x.iloc[train_inds].reset_index(drop=True)
+        train_s = data.s.iloc[train_inds].reset_index(drop=True)
+        train_y = data.y.iloc[train_inds].reset_index(drop=True)
+
+        assert train_x.shape == (len(train_inds), data.x.shape[1])
+        assert train_s.shape == (len(train_inds), data.s.shape[1])
+        assert train_y.shape == (len(train_inds), data.y.shape[1])
+
+        val_x = data.x.iloc[val_inds].reset_index(drop=True)
+        val_s = data.s.iloc[val_inds].reset_index(drop=True)
+        val_y = data.y.iloc[val_inds].reset_index(drop=True)
+
+        assert val_x.shape == (len(val_inds), data.x.shape[1])
+        assert val_s.shape == (len(val_inds), data.s.shape[1])
+        assert val_y.shape == (len(val_inds), data.y.shape[1])
+
+        yield DataTuple(x=train_x, s=train_s, y=train_y), DataTuple(x=val_x, s=val_s, y=val_y)
+
+        current = stop

@@ -21,7 +21,9 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
-    def __init__(self, executable: Optional[str] = None, args: Optional[List[str]] = None):
+    def __init__(self, executable: Optional[str] = None,
+                 args: Optional[List[str]] = None,
+                 hyperparams: Dict[str, float] = None):
         """Constructor
 
         Args:
@@ -33,6 +35,7 @@ class Algorithm(ABC):
             # use the python executable that this script was called with
             executable = sys.executable
         self.executable: str = executable
+        self.hyperparams = hyperparams
         self.args = sys.argv[1:] if args is None else args
 
     @property

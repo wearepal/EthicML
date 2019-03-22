@@ -1,6 +1,7 @@
 """
 Wrapper around Sci-Kit Learn Logistic Regression
 """
+from typing import List
 
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -12,12 +13,17 @@ class LR(InAlgorithm):
     """Logistic regression with hard predictions"""
     def _run(self, train, test):
         clf = LogisticRegression(solver='liblinear', random_state=888)
+        clf = self.update_hyperparams(clf)
         clf.fit(train.x, train.y.values.ravel())
         return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
     @property
     def name(self) -> str:
         return "Logistic Regression"
+
+    @property
+    def tunable_params(self) -> List[str]:
+        return ['C']
 
 
 def main():

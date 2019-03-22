@@ -1,7 +1,7 @@
 """
 Test that an algorithm can run against some data
 """
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
@@ -54,7 +54,7 @@ def test_svm():
 def test_cv_svm():
     train, test = get_train_test()
 
-    hyperparams = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
+    hyperparams: Dict[str, List[Any]] = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
 
     svm_cv = CrossValidator(SVM, hyperparams, folds=3)
 
@@ -63,12 +63,30 @@ def test_cv_svm():
 
     svm_cv.run(train)
 
-
     best_model = svm_cv.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 203
-    assert predictions[predictions.values == -1].count().values[0] == 197
+    assert predictions[predictions.values == 1].count().values[0] == 201
+    assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_cv_lr():
+    train, test = get_train_test()
+
+    hyperparams: Dict[str, List[int]] = {'C': [1, 10, 100]}
+
+    lr_cv = CrossValidator(LR, hyperparams, folds=3)
+
+    assert lr_cv is not None
+    assert isinstance(lr_cv.model(), InAlgorithm)
+
+    lr_cv.run(train)
+
+    best_model = lr_cv.best(Accuracy())
+
+    predictions: pd.DataFrame = best_model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
 
 # def test_svm_import():
