@@ -4,6 +4,7 @@ Test that we can get some metrics on predictions
 
 from typing import Tuple
 import numpy as np
+from numpy.testing import assert_allclose
 import pandas as pd
 import pytest
 
@@ -23,6 +24,8 @@ from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, 
 from ethicml.metrics.hsic import Hsic
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
+
+RTOL = 1e-5  # relative tolerance when comparing two floats
 
 
 def test_get_acc_of_predictions():
@@ -294,9 +297,13 @@ def test_run_metrics():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     results = run_metrics(predictions, test, [CV()], [TPR()])
-    np.testing.assert_allclose(results['s_0_TPR'], 0.8428571428571429)
-    np.testing.assert_allclose(results['s_1_TPR'], 0.8865248226950354)
-    np.testing.assert_allclose(results['CV'], 0.665)
+    print(results)
+    assert len(results) == 5
+    assert_allclose(results['TPR_s_0'], 0.842857, RTOL)
+    assert_allclose(results['TPR_s_1'], 0.886525, RTOL)
+    assert_allclose(results['TPR_s_0-s_1'], abs(0.842857 - 0.886525), RTOL)
+    assert_allclose(results['TPR_s_0/s_1'], 0.842857 / 0.886525, RTOL)
+    assert_allclose(results['CV'], 0.665)
 
 
 def test_nmi_diff_non_binary_race():
