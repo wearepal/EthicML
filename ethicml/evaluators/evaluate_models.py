@@ -16,7 +16,8 @@ from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.utils import DataTuple, PathTuple, write_data_tuple, get_subset
 from ..data.dataset import Dataset
 from ..data.load import load_data
-from .per_sensitive_attribute import metric_per_sensitive_attribute, MetricNotApplicable
+from .per_sensitive_attribute import (metric_per_sensitive_attribute, MetricNotApplicable,
+                                      diff_per_sensitive_attribute, ratio_per_sensitive_attribute)
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import train_test_split
 
@@ -68,8 +69,12 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
 
     for metric in per_sens_metrics:
         per_sens = metric_per_sensitive_attribute(predictions, actual, metric)
+        diff_per_sens = diff_per_sensitive_attribute(per_sens)
+        ratio_per_sens = ratio_per_sensitive_attribute(per_sens)
+        per_sens.update(diff_per_sens)
+        per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
-            result[f'{key}_{metric.name}'] = value
+            result[f'{metric.name}_{key}'] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
