@@ -3,34 +3,26 @@ Wrapper around Sci-Kit Learn Logistic Regression
 """
 from typing import Optional
 
-import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.implementations import logistic_regression
 
 
 class LR(InAlgorithm):
     """Logistic regression with hard predictions"""
-    def __init__(self, C: Optional[int] = None):
+    def __init__(self, C: Optional[float] = None):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
     def _run(self, train, test):
-        clf = LogisticRegression(solver='liblinear', random_state=888, C=self.C)
-        clf.fit(train.x, train.y.values.ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return logistic_regression.train_and_predict(train, test, self.C)
+
+    def _script_command(self, train_paths, test_paths, pred_path):
+        script = ['-m', logistic_regression.train_and_predict.__module__]
+        args = self._conventional_interface(train_paths, test_paths, pred_path, str(self.C))
+        return script + args
 
     @property
     def name(self) -> str:
         return "Logistic Regression"
-
-
-def main():
-    """main method to run model"""
-    model = LR()
-    train, test = model.load_data()
-    model.save_predictions(model.run(train, test))
-
-
-if __name__ == "__main__":
-    main()

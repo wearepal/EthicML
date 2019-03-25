@@ -3,10 +3,10 @@ Logistic regaression with soft output
 """
 from typing import Optional
 
-import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.implementations import logistic_regression_probability
 
 
 class LRProb(InAlgorithm):
@@ -16,21 +16,13 @@ class LRProb(InAlgorithm):
         self.C = LogisticRegression().C if C is None else C
 
     def _run(self, train, test):
-        clf = LogisticRegression(solver='liblinear', random_state=888)
-        clf.fit(train.x, train.y.values.ravel())
-        return pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"])
+        return logistic_regression_probability.train_and_predict(train, test, self.C)
+
+    def _script_command(self, train_paths, test_paths, pred_path):
+        script = ['-m', logistic_regression_probability.train_and_predict.__module__]
+        args = self._conventional_interface(train_paths, test_paths, pred_path, str(self.C))
+        return script + args
 
     @property
     def name(self) -> str:
         return "Logistic Regression Prob"
-
-
-def main():
-    """main method to run model"""
-    model = LRProb()
-    train, test = model.load_data()
-    model.save_predictions(model.run(train, test))
-
-
-if __name__ == "__main__":
-    main()
