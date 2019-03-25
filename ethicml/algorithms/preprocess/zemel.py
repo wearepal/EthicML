@@ -15,9 +15,24 @@ from ethicml.algorithms.algorithm_base import load_dataframe
 from ethicml.algorithms.preprocess import PreAlgorithm
 from ethicml.algorithms.utils import DataTuple
 
+# Disable pylint's naming convention complaints - this code wasn't implemented by us
+# pylint: disable=invalid-name
 
 @jit
 def distances(X, v, alpha, N, P, k):
+    """
+    Calculates distances?
+    Args:
+        X:
+        v:
+        alpha:
+        N:
+        P:
+        k:
+
+    Returns:
+
+    """
     dists = np.zeros((N, P))
     for i in range(N):
         for p in range(P):
@@ -28,7 +43,17 @@ def distances(X, v, alpha, N, P, k):
 
 @jit
 def M_nk(dists, N, k):
-    M_nk = np.zeros((N, k))
+    """
+    Not a clue
+    Args:
+        dists:
+        N:
+        k:
+
+    Returns:
+
+    """
+    matrix_nk = np.zeros((N, k))
     exp = np.zeros((N, k))
     denom = np.zeros(N)
     for i in range(N):
@@ -37,50 +62,102 @@ def M_nk(dists, N, k):
             denom[i] += exp[i, j]
         for j in range(k):
             if denom[i]:
-                M_nk[i, j] = exp[i, j] / denom[i]
+                matrix_nk[i, j] = exp[i, j] / denom[i]
             else:
-                M_nk[i, j] = exp[i, j] / 1e-6
-    return M_nk
+                matrix_nk[i, j] = exp[i, j] / 1e-6
+    return matrix_nk
 
 
 @jit
-def M_k(M_nk, N, k):
-    M_k = np.zeros(k)
+def M_k(matrix_nk, N, k):
+    """
+    ???
+    Args:
+        matrix_nk:
+        N:
+        k:
+
+    Returns:
+
+    """
+    matrix_k = np.zeros(k)
     for j in range(k):
         for i in range(N):
-            M_k[j] += M_nk[i, j]
-        M_k[j] /= N
-    return M_k
+            matrix_k[j] += matrix_nk[i, j]
+        matrix_k[j] /= N
+    return matrix_k
 
 
 @jit
-def x_n_hat(X, M_nk, v, N, P, k):
-    x_n_hat = np.zeros((N, P))
+def x_n_hat(X, matrix_nk, v, N, P, k):
+    """
+    ???
+    Args:
+        X:
+        matrix_nk:
+        v:
+        N:
+        P:
+        k:
+
+    Returns:
+
+    """
+    x_n_hat_obj = np.zeros((N, P))
     L_x = 0.0
     for i in range(N):
         for p in range(P):
             for j in range(k):
-                x_n_hat[i, p] += M_nk[i, j] * v[j, p]
-            L_x += (X[i, p] - x_n_hat[i, p]) * (X[i, p] - x_n_hat[i, p])
-    return x_n_hat, L_x
+                x_n_hat_obj[i, p] += matrix_nk[i, j] * v[j, p]
+            L_x += (X[i, p] - x_n_hat_obj[i, p]) * (X[i, p] - x_n_hat_obj[i, p])
+    return x_n_hat_obj, L_x
 
 
 @jit
-def yhat(M_nk, y, w, N, k):
-    yhat = np.zeros(N)
+def yhat(matrix_nk, y, w, N, k):
+    """
+    no idea
+    Args:
+        matrix_nk:
+        y:
+        w:
+        N:
+        k:
+
+    Returns:
+
+    """
+    y_hat = np.zeros(N)
     L_y = 0.0
     for i in range(N):
         for j in range(k):
-            yhat[i] += M_nk[i, j] * w[j]
-        yhat[i] = 1e-6 if yhat[i] <= 0 else yhat[i]
-        yhat[i] = 0.999 if yhat[i] >= 1 else yhat[i]
-        L_y += -1 * y[i] * np.log(yhat[i]) - (1.0 - y[i]) * np.log(1.0 - yhat[i])
-    return yhat, L_y
+            y_hat[i] += matrix_nk[i, j] * w[j]
+        y_hat[i] = 1e-6 if y_hat[i] <= 0 else y_hat[i]
+        y_hat[i] = 0.999 if y_hat[i] >= 1 else y_hat[i]
+        L_y += -1 * y[i] * np.log(y_hat[i]) - (1.0 - y[i]) * np.log(1.0 - y_hat[i])
+    return y_hat, L_y
 
 
 @jit
 def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nonsensitive,
                   k=10, A_x=0.01, A_y=0.1, A_z=0.5, results=0):
+    """
+    The funtion to be optimized
+    Args:
+        params:
+        data_sensitive:
+        data_nonsensitive:
+        y_sensitive:
+        y_nonsensitive:
+        k:
+        A_x:
+        A_y:
+        A_z:
+        results:
+
+    Returns:
+
+    """
     LFR_optim_obj.iters += 1
     Ns, P = data_sensitive.shape
     Nns, _ = data_nonsensitive.shape
@@ -103,10 +180,8 @@ def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nons
     for j in range(k):
         L_z += abs(M_k_sensitive[j] - M_k_nonsensitive[j])
 
-    x_n_hat_sensitive, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v, Ns, P, k)
-    x_n_hat_nonsensitive, L_x2 = x_n_hat(
-        data_nonsensitive, M_nk_nonsensitive, v, Nns, P, k
-    )
+    _, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v, Ns, P, k)
+    _, L_x2 = x_n_hat(data_nonsensitive, M_nk_nonsensitive, v, Nns, P, k)
     L_x = L_x1 + L_x2
 
     yhat_sensitive, L_y1 = yhat(M_nk_sensitive, y_sensitive, w, Ns, k)
@@ -115,16 +190,17 @@ def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nons
 
     criterion = A_x * L_x + A_y * L_y + A_z * L_z
 
-    if results:
-        return yhat_sensitive, yhat_nonsensitive, M_nk_sensitive, M_nk_nonsensitive
-    else:
-        return criterion
+    return_tuple = (yhat_sensitive, yhat_nonsensitive, M_nk_sensitive, M_nk_nonsensitive)
+    return return_tuple if results else criterion
 
 
 LFR_optim_obj.iters = 0
 
 
 class Zemel(PreAlgorithm):
+    """
+    AIF360 implementation of Zemel's LFR
+    """
     def __init__(self, threshold=0.5, clusters=2, Ax=0.01, Ay=0.1, Az=0.5,
                  max_iter=5000, maxfun=5000, epsilon=1e-5):
         self.k = clusters
@@ -198,7 +274,8 @@ class Zemel(PreAlgorithm):
         ytest_nonsensitive = test.y[test.s[sens_col] == 1].to_numpy()
 
         # Mutated, fairer dataset with new labels
-        test_transformed = self.transform(testing_sensitive, testing_nonsensitive, ytest_sensitive, ytest_nonsensitive, learned_model, test)
+        test_transformed = self.transform(testing_sensitive, testing_nonsensitive,
+                                          ytest_sensitive, ytest_nonsensitive, learned_model, test)
 
         training_sensitive = train.x[train.s[sens_col] == 0].to_numpy()
         training_nonsensitive = train.x[train.s[sens_col] == 1].to_numpy()
@@ -206,8 +283,9 @@ class Zemel(PreAlgorithm):
         ytrain_nonsensitive = train.y[train.s[sens_col] == 1].to_numpy()
 
         # extract training model parameters
-        train_transformed = self.transform(training_sensitive, training_nonsensitive, ytrain_sensitive, ytrain_nonsensitive, learned_model, train)
-
+        train_transformed = self.transform(training_sensitive, training_nonsensitive,
+                                           ytrain_sensitive, ytrain_nonsensitive,
+                                           learned_model, train)
 
         return train_transformed.x, test_transformed.x
 
@@ -215,7 +293,21 @@ class Zemel(PreAlgorithm):
     def name(self) -> str:
         return "Zemel"
 
-    def transform(self, features_sens, features_nonsens, label_sens, label_nonsens, learned_model, dataset):
+    def transform(self, features_sens, features_nonsens, label_sens,
+                  label_nonsens, learned_model, dataset):
+        """
+        transform a dataset based on the
+        Args:
+            features_sens:
+            features_nonsens:
+            label_sens:
+            label_nonsens:
+            learned_model:
+            dataset:
+
+        Returns:
+
+        """
         Ns, P = features_sens.shape
         N, _ = features_nonsens.shape
         alphaoptim0 = learned_model[:P]
