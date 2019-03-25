@@ -16,7 +16,7 @@ from torch.autograd import Function
 
 from ethicml.algorithms.algorithm_base import load_dataframe
 from ethicml.algorithms.pytorch_common import CustomDataset
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmCommon
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.utils import DataTuple
 
 
@@ -29,7 +29,7 @@ STRING_TO_LOSS_MAP = {
 }
 
 
-class Beutel(PreAlgorithmCommon):
+class Beutel(PreAlgorithm):
     """Beutel's adversarially learned fair representations"""
     def __init__(self,
                  fairness: str = "DI",
