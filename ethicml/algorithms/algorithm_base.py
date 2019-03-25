@@ -4,12 +4,12 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
 
-from .utils import PathTuple, DataTuple
+from .utils import PathTuple
 
 
 def load_dataframe(path: Path) -> pd.DataFrame:
@@ -22,7 +22,6 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 class Algorithm(ABC):
     """Base class for Algorithms"""
     def __init__(self, executable: Optional[str] = None,
-                 args: Optional[List[str]] = None,
                  hyperparams: Dict[str, float] = None):
         """Constructor
 
@@ -36,7 +35,6 @@ class Algorithm(ABC):
             executable = sys.executable
         self.executable: str = executable
         self.hyperparams = hyperparams
-        self.args = sys.argv[1:] if args is None else args
 
     @property
     @abstractmethod
@@ -60,20 +58,6 @@ class Algorithm(ABC):
             check_call(cmd, env=env)
         except CalledProcessError:
             raise RuntimeError(f'The script failed. Supplied arguments: {cmd_args}')
-
-    def load_data(self) -> Tuple[DataTuple, DataTuple]:
-        """Load the data from the files"""
-        train = DataTuple(
-            x=load_dataframe(Path(self.args[0])),
-            s=load_dataframe(Path(self.args[1])),
-            y=load_dataframe(Path(self.args[2])),
-        )
-        test = DataTuple(
-            x=load_dataframe(Path(self.args[3])),
-            s=load_dataframe(Path(self.args[4])),
-            y=load_dataframe(Path(self.args[5])),
-        )
-        return train, test
 
     @staticmethod
     def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:

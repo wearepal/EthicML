@@ -4,13 +4,12 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Union
+from typing import List
 
-import numpy
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple
+from ethicml.algorithms.utils import DataTuple, get_subset, write_data_tuple, PathTuple
 
 
 class InAlgorithm(Algorithm):
@@ -46,24 +45,20 @@ class InAlgorithm(Algorithm):
             pred_path = self.run_thread(train_paths, test_paths, tmp_path)
             return self._load_output(pred_path)
 
-    def run_thread(self, train_paths, test_paths, tmp_path) -> Path:
+    def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> Path:
         """ runs algorithm in its own thread """
         pred_path = tmp_path / "predictions.feather"
-        args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(['-m', self.__module__] + args)
+        cmd = self._script_command(train_paths, test_paths, pred_path)
+        self._call_script(cmd)
         return pred_path
 
-    def save_predictions(self, predictions: Union[numpy.array, pd.DataFrame]):
-        """Save the data to the file that was specified in the commandline arguments"""
-        if not isinstance(predictions, pd.DataFrame):
-            df = pd.DataFrame(predictions, columns=["pred"])
-        else:
-            df = predictions
-        pred_path = Path(self.args[6])
-        df.to_feather(pred_path)
+    def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path) -> (
+            List[str]):
+        """The command that will run the script"""
+        raise NotImplementedError("`_script_command` is  not implemented")
 
     @staticmethod
-    def _script_interface(train_paths, test_paths, *args):
+    def _conventional_interface(train_paths: PathTuple, test_paths: PathTuple, *args) -> List[str]:
         """
         Generate the commandline arguments that are expected by the scripts that follow the
         convention.

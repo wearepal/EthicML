@@ -1,36 +1,30 @@
 """
 Wrapper for SKLearn implementation of SVM
 """
-import pandas as pd
+from typing import Optional
+
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.implementations import svm
 
 
 class SVM(InAlgorithm):
     """Support Vector Machine"""
-    def __init__(self, C=None, kernel=None):
+    def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         super().__init__()
-        self.C = C
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 
     def _run(self, train, test):
-        clf = SVC(gamma='auto', random_state=888, C=self.C, kernel=self.kernel)
-        clf.fit(train.x, train.y.values.ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return svm.train_and_predict(train, test, self.C, self.kernel)
+
+    def _script_command(self, train_paths, test_paths, pred_path):
+        script = ['-m', svm.train_and_predict.__module__]
+        args = self._conventional_interface(
+            train_paths, test_paths, pred_path, str(self.C), str(self.kernel))
+        return script + args
 
     @property
     def name(self) -> str:
         return "SVM"
-
-
-def main():
-    """main method to run model"""
-    model = SVM()
-    train, test = model.load_data()
-    model.save_predictions(model.run(train, test))
-
-
-if __name__ == "__main__":
-    main()

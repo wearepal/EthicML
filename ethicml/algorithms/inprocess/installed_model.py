@@ -64,16 +64,12 @@ class InstalledModel(InAlgorithm):
     def _run(self, train, test):
         pass
 
-    def run_thread(self, train_paths, test_paths, tmp_path):
+    def _script_command(self, train_paths, test_paths, pred_path):
         """
         Overridden from parent - see there
-
         """
-        pred_path = tmp_path / "predictions.feather"
-        args = self._script_interface(train_paths, test_paths, pred_path)
-        self._call_script(
-            [f"/{ROOT_DIR}/{self.repo_name}/{self.module}/{self.file_name}"] + args)
-        return pred_path
+        args = self._conventional_interface(train_paths, test_paths, pred_path)
+        return [f"/{ROOT_DIR}/{self.repo_name}/{self.module}/{self.file_name}"] + args
 
     def remove(self):
         """
