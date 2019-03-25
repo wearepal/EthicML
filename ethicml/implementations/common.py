@@ -41,3 +41,30 @@ class InAlgoInterface:
     def remaining_args(self):
         """Additional commandline arguments beyond the data paths and the prediction path"""
         return self.args[7:]
+
+
+def load_data_from_flags(flags):
+    """Load data from the paths specified in the flags"""
+    train = DataTuple(
+        x=load_dataframe(Path(flags['train_x'])),
+        s=load_dataframe(Path(flags['train_s'])),
+        y=load_dataframe(Path(flags['train_y'])),
+    )
+    test = DataTuple(
+        x=load_dataframe(Path(flags['test_x'])),
+        s=load_dataframe(Path(flags['test_s'])),
+        y=load_dataframe(Path(flags['test_y'])),
+    )
+    return train, test
+
+
+def save_transformations(transforms: Tuple[pd.DataFrame, pd.DataFrame],
+                         transform_paths: Tuple[str, str]):
+    """Save the data to the file that was specified in the commandline arguments"""
+    assert isinstance(transforms[0], pd.DataFrame)
+    assert isinstance(transforms[1], pd.DataFrame)
+    for transform, path in zip(transforms, transform_paths):
+        transform_path = Path(path)
+        # convert the column IDs to strings because the feather format requires that
+        transform.columns = transform.columns.astype(str)
+        transform.to_feather(transform_path)
