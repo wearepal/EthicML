@@ -9,11 +9,16 @@ from typing import Tuple, List
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ..utils import get_subset, DataTuple, write_data_tuple, PathTuple
+from ..utils import get_subset, DataTuple, write_data_tuple
 
 
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
+
+    def __init__(self, flags=None, **kwargs):
+        super().__init__(**kwargs)
+        self.flags = flags
+
     def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
         """Generate fair features by either running in process or out of process
@@ -66,21 +71,8 @@ class PreAlgorithm(Algorithm):
         transform_test.columns = transform_test.columns.astype(str)
         transform_test.to_feather(transform_test_path)
 
-    @abstractmethod
-    def _script_interface(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
-                          new_test_path: Path) -> List[str]:
-        """Generate the commandline arguments that are expected by the script"""
-
-
-class PreAlgorithmCommon(PreAlgorithm):
-    """Common functionality that many pre-algorithms will share"""
-    # pylint: disable=abstract-method
-    def __init__(self, flags, **kwargs):
-        super().__init__(**kwargs)
-        self.flags = flags
-
     def _script_interface(self, train_paths, test_paths, new_train_path, new_test_path):
-        """Generate the commandline arguments that are expected by the Beutel script"""
+        """Generate the commandline arguments that are expected"""
         flags_list: List[str] = []
 
         # paths to training and test data
