@@ -350,7 +350,7 @@ notes=FIXME,
 ignore-comments=yes
 
 # Ignore docstrings when computing similarities.
-ignore-docstrings=yes
+ignore-docstrings=no
 
 # Ignore imports when computing similarities.
 ignore-imports=yes

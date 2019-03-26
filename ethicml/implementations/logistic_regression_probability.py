@@ -6,7 +6,7 @@ from sklearn.linear_model import LogisticRegression
 import pandas as pd
 
 from ethicml.implementations.utils import instance_weight_check
-from .common_in import InAlgoInterface
+from .common import InAlgoInterface
 
 
 def train_and_predict(train, test, C):

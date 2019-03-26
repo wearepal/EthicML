@@ -23,9 +23,7 @@ class InAlgorithm(Algorithm):
             test: test data
             sub_process: indicate if the algorithm is to be run in it's own process
         """
-        if sub_process:
-            return self.run_threaded(train, test)
-        return self._run(train, test)
+        return self.run_threaded(train, test) if sub_process else self._run(train, test)
 
     @abstractmethod
     def _run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
