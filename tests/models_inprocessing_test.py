@@ -1,9 +1,11 @@
 from typing import Tuple, List, Dict, Any
 import pandas as pd
 import numpy as np
+import pytest
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
+from ethicml.algorithms.inprocess.kamishima import Kamishima
 from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
 from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
 from ethicml.algorithms.inprocess.logistic_regression import LR
@@ -64,23 +66,25 @@ def test_cv_lr():
     assert predictions[predictions.values == -1].count().values[0] == 189
 
 
-def test_svm_import():
+@pytest.fixture(scope="module")
+def kamishima():
+    kamishima_algo = Kamishima()
+    yield kamishima_algo
+    print("teardown Kamishima")
+    kamishima_algo.remove()
+
+
+def test_kamishima(kamishima):
     train, test = get_train_test()
 
-    model: InstalledModel = InstalledModel(
-        name="oliver_git_svm",
-        url="https://github.com/olliethomas/test_svm_module.git",
-        module="test_svm_module",
-        file_name="SVMTWO.py")
+    model: InAlgorithm = kamishima
 
     assert model is not None
-    assert model.name == "venv SVM"
+    assert model.name == "Kamishima"
 
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 201
-    assert predictions[predictions.values == -1].count().values[0] == 199
-
-    model.remove()
+    assert predictions[predictions.values == 1].count().values[0] == 208
+    assert predictions[predictions.values == -1].count().values[0] == 192
 
 
 def test_threaded_svm():
