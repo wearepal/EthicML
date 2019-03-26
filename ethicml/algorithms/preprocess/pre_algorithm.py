@@ -9,7 +9,7 @@ from typing import Tuple, List, Any, Dict
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ..utils import get_subset, DataTuple, write_data_tuple, PathTuple
+from ..utils import get_subset, DataTuple, PathTuple
 
 
 class PreAlgorithm(Algorithm):
@@ -39,7 +39,7 @@ class PreAlgorithm(Algorithm):
         """ orchestrator for threaded """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            train_paths, test_paths = write_data_tuple(train, test, tmp_path)
+            train_paths, test_paths = self.write_data(train, test, tmp_path)
             train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
             return self._load_output(train_path), self._load_output(test_path)
 

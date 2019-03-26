@@ -13,7 +13,7 @@ from ethicml.algorithms.algorithm_base import Algorithm, load_dataframe
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.utils import DataTuple, PathTuple, write_data_tuple, get_subset
+from ethicml.algorithms.utils import DataTuple, PathTuple, write_as_feather, get_subset
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (metric_per_sensitive_attribute, MetricNotApplicable,
@@ -182,7 +182,7 @@ def evaluate_threaded_models(datasets: List[Dataset], preprocess_models: List[Pr
             # write the files for the non-transformed data
             # we apply a scope to the paths in order to avoid name duplications (not really needed)
             no_transform_dir = tmp_path / "no_transform"
-            train_paths, test_paths = write_data_tuple(train, test, no_transform_dir)
+            train_paths, test_paths = write_as_feather(train, test, no_transform_dir)
             to_operate_on: Dict[str, Any] = {"no_transform": {
                 'train_paths': train_paths, 'test_paths': test_paths, 'tmp_path': no_transform_dir}}
 

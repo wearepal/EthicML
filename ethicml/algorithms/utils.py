@@ -22,9 +22,9 @@ class PathTuple(NamedTuple):
     y: Path  # path to file with class labels
 
 
-def write_data_tuple(train: DataTuple, test: DataTuple, data_dir: Path) -> (
+def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) -> (
         Tuple[PathTuple, PathTuple]):
-    """Write the given DataTuple to Parquet files and return the file paths as PathTuples
+    """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
     Args:
         train: tuple with training data
