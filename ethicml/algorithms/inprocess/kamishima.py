@@ -1,9 +1,6 @@
 """
 Wrapper for calling Kamishima model
 """
-
-import tempfile
-from pathlib import Path
 import numpy as np
 import pandas as pd
 
@@ -21,61 +18,46 @@ class Kamishima(InstalledModel):
                          module="kamfadm",
                          file_name="train_pr.py")
         self.eta = eta
+        self.min_class_label = None  # minimum of the class labels
 
     @staticmethod
     def create_file_in_kamishima_format(data, file_path):
-        """
-
-        Args:
-            data:
-            file_path:
-
-        Returns:
-
-        """
-        y = data.y
-        s = data.s
-        x = data.x
-
-        result = pd.concat([x, s, y], axis=1).to_numpy()
-        result = result.astype(np.float64)
-
+        """Create a text file with the data"""
+        result = pd.concat([data.x, data.s, data.y], axis=1).to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
-    def run_threaded(self, train, test):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmp_path = Path(tmpdir)
-            class_type = type(train.y.values[0].item())
+    def write_data(self, train, test, tmp_path):
+        train_name = str(tmp_path / "train.txt")
+        test_name = str(tmp_path / "test.txt")
+        self.create_file_in_kamishima_format(train, train_name)
+        self.create_file_in_kamishima_format(test, test_name)
+        self.min_class_label = train.y[train.y.columns[0]].min()
+        return train_name, test_name
 
-            model_name = str(tmp_path / "model")
-            output_name = str(tmp_path / "output.txt")
-            train_name = str(tmp_path / "train.txt")
-            test_name = str(tmp_path / "test.txt")
-            self.create_file_in_kamishima_format(train, train_name)
-            self.create_file_in_kamishima_format(test, test_name)
+    def run_thread(self, train_paths, test_paths, tmp_path):
+        model_name = str(tmp_path / "model")
+        output_name = str(tmp_path / "output.txt")
 
-            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'train_pr.py'),
-                               '-e', str(self.eta),
-                               '-i', train_name,
-                               '-o', model_name,
-                               '--quiet'])
-            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'predict_lr.py'),
-                               '-i', test_name,
-                               '-m', model_name,
-                               '-o', output_name,
-                               '--quiet'])
+        self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'train_pr.py'),
+                           '-e', str(self.eta),
+                           '-i', train_paths,
+                           '-o', model_name,
+                           '--quiet'])
+        self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'predict_lr.py'),
+                           '-i', test_paths,
+                           '-m', model_name,
+                           '-o', output_name,
+                           '--quiet'])
+        return output_name
 
-            output = np.loadtxt(output_name)
+    def load_output(self, output_path):
+        output = np.loadtxt(output_path)
 
-        predictions = output[:, 1]
-        predictions_correct = [class_type(x) for x in predictions]
+        predictions = output[:, 1].astype(np.float32)
+        to_return = pd.DataFrame(predictions, columns=["preds"])
 
-        to_return = pd.DataFrame(predictions_correct, columns=["preds"])
-
-        min_class_label = train.y[train.y.columns[0]].min()
-        to_return = to_return.replace(to_return['preds'].min(), min_class_label)
-
-
+        if self.min_class_label is not None:
+            return to_return.replace(to_return['preds'].min(), self.min_class_label)
         return to_return
 
     @property
