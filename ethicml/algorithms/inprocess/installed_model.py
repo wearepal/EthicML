@@ -32,7 +32,7 @@ class InstalledModel(InAlgorithm):
 
     @property
     def name(self) -> str:
-        return "venv SVM"
+        pass
 
     def clone_directory(self):
         """
@@ -62,7 +62,7 @@ class InstalledModel(InAlgorithm):
                                   env=environ, shell=True)
 
     def _run(self, train, test):
-        pass
+        return self.run_threaded(train, test)
 
     def _script_command(self, train_paths, test_paths, pred_path):
         """

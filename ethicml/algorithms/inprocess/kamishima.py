@@ -22,9 +22,6 @@ class Kamishima(InstalledModel):
                          file_name="train_pr.py")
         self.eta = eta
 
-    def _run(self, train, test):
-        pass
-
     @staticmethod
     def create_file_in_kamishima_format(data, file_path):
         """
