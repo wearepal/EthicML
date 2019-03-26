@@ -41,7 +41,7 @@ class PreAlgorithm(Algorithm):
             tmp_path = Path(tmpdir)
             train_paths, test_paths = self.write_data(train, test, tmp_path)
             train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
-            return self._load_output(train_path), self._load_output(test_path)
+            return self.load_output(train_path), self.load_output(test_path)
 
     def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
