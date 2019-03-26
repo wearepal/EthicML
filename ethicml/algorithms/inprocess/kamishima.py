@@ -54,12 +54,12 @@ class Kamishima(InstalledModel):
             self.create_file_in_kamishima_format(train, train_name)
             self.create_file_in_kamishima_format(test, test_name)
 
-            self._call_script([f'/{ROOT_DIR}/{self.repo_name}/{self.module}/train_pr.py',
+            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'train_pr.py'),
                                '-e', str(self.eta),
                                '-i', train_name,
                                '-o', model_name,
                                '--quiet'])
-            self._call_script([f'/{ROOT_DIR}/{self.repo_name}/{self.module}/predict_lr.py',
+            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'predict_lr.py'),
                                '-i', test_name,
                                '-m', model_name,
                                '-o', output_name,
@@ -77,7 +77,6 @@ class Kamishima(InstalledModel):
 
 
         return to_return
-
 
     @property
     def name(self):
