@@ -76,9 +76,9 @@ class Algorithm(ABC):
         return args_list
 
     @staticmethod
-    def _load_output(file_path: Path) -> pd.DataFrame:
+    def load_output(output_path: Path) -> pd.DataFrame:
         """Load a dataframe from a feather file"""
-        with file_path.open('rb') as file_obj:
+        with output_path.open('rb') as file_obj:
             df = pd.read_feather(file_obj)
         return df
 
