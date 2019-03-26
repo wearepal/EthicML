@@ -4,7 +4,7 @@ from sklearn.svm import SVC
 import pandas as pd
 
 from ethicml.implementations.utils import instance_weight_check
-from .common_in import InAlgoInterface
+from .common import InAlgoInterface
 
 
 def train_and_predict(train, test, C, kernel):
@@ -16,7 +16,7 @@ def train_and_predict(train, test, C, kernel):
 
 
 def main():
-    """main method to run model"""
+    """This function runs the SVM model as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
     C, kernel = interface.remaining_args()

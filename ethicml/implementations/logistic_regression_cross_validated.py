@@ -5,7 +5,7 @@ from sklearn.model_selection import KFold
 import pandas as pd
 
 from ethicml.implementations.utils import instance_weight_check
-from .common_in import InAlgoInterface
+from .common import InAlgoInterface
 
 
 def train_and_predict(train, test):
@@ -18,7 +18,7 @@ def train_and_predict(train, test):
 
 
 def main():
-    """main method to run model"""
+    """This function runs the cross-validated logistic regression model as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
     interface.save_predictions(train_and_predict(train, test))
