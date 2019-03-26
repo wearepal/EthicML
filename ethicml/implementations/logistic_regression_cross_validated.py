@@ -4,6 +4,7 @@ from sklearn.model_selection import KFold
 
 import pandas as pd
 
+from ethicml.implementations.utils import instance_weight_check
 from .common_in import InAlgoInterface
 
 
@@ -11,7 +12,8 @@ def train_and_predict(train, test):
     """Train a logistic regression model and compute predictions on the given test data"""
     folder = KFold(n_splits=3, random_state=888, shuffle=False)
     clf = LogisticRegressionCV(cv=folder, n_jobs=-1, random_state=888, solver='liblinear')
-    clf.fit(train.x, train.y.values.ravel())
+    train, i_w = instance_weight_check(train)
+    clf.fit(train.x, train.y.values.ravel(), sample_weight=i_w)
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
 
