@@ -1,0 +1,282 @@
+from typing import Tuple
+import pandas as pd
+
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.logistic_regression import LR
+from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
+from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.preprocess.beutel import Beutel
+from ethicml.algorithms.preprocess.kamiran import Kamiran
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.preprocess.zemel import Zemel
+from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.heaviside import Heaviside
+from tests.run_algorithm_test import get_train_test
+
+
+def test_beutel():
+    train, test = get_train_test()
+
+    beut_model: PreAlgorithm = Beutel()
+    assert beut_model is not None
+    assert beut_model.name == "Beutel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = beut_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 208
+    assert predictions[predictions.values == -1].count().values[0] == 192
+
+
+def test_zemel():
+    train, test = get_train_test()
+
+    zemel_model: PreAlgorithm = Zemel()
+    assert zemel_model is not None
+    assert zemel_model.name == "Zemel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = zemel_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 182
+    assert predictions[predictions.values == -1].count().values[0] == 218
+
+
+def test_kamiran():
+    train, test = get_train_test()
+
+    zemel_model: PreAlgorithm = Kamiran()
+    assert zemel_model is not None
+    assert zemel_model.name == "Kamiran & Calders"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = zemel_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 205
+    assert predictions[predictions.values == -1].count().values[0] == 195
+
+    lr_model: InAlgorithm = LR()
+
+    predictions = lr_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 203
+    assert predictions[predictions.values == -1].count().values[0] == 197
+
+    lrp_model: InAlgorithm = LRProb()
+
+    heavi = Heaviside()
+    predictions = lrp_model.run_test(new_train, new_test)
+    predictions = predictions.apply(heavi.apply)
+    predictions = predictions.replace(0, -1)
+    assert predictions[predictions.values == 1].count().values[0] == 203
+    assert predictions[predictions.values == -1].count().values[0] == 197
+
+
+def test_threaded_kamiran():
+    train, test = get_train_test()
+
+    zemel_model: PreAlgorithm = Kamiran()
+    assert zemel_model is not None
+    assert zemel_model.name == "Kamiran & Calders"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = zemel_model.run(train, test, sub_process=True)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 205
+    assert predictions[predictions.values == -1].count().values[0] == 195
+
+    lr_model: InAlgorithm = LR()
+
+    predictions = lr_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 203
+    assert predictions[predictions.values == -1].count().values[0] == 197
+
+    lrp_model: InAlgorithm = LRProb()
+
+    heavi = Heaviside()
+    predictions = lrp_model.run_test(new_train, new_test)
+    predictions = predictions.apply(heavi.apply)
+    predictions = predictions.replace(0, -1)
+    assert predictions[predictions.values == 1].count().values[0] == 203
+    assert predictions[predictions.values == -1].count().values[0] == 197
+
+
+def test_threaded_zemel():
+    train, test = get_train_test()
+
+    model: PreAlgorithm = Zemel()
+    assert model is not None
+    assert model.name == "Zemel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    classifier: InAlgorithm = SVM()
+    assert classifier is not None
+    assert classifier.name == "SVM"
+
+    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 182
+    assert predictions[predictions.values == -1].count().values[0] == 218
+
+    beut_model: PreAlgorithm = Zemel()
+    assert beut_model is not None
+    assert beut_model.name == "Zemel"
+
+    new_xtrain_xtest = beut_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 182
+    assert predictions[predictions.values == -1].count().values[0] == 218
+
+
+def test_threaded_beutel():
+    train, test = get_train_test()
+
+    model: PreAlgorithm = Beutel()
+    assert model is not None
+    assert model.name == "Beutel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    classifier: InAlgorithm = SVM()
+    assert classifier is not None
+    assert classifier.name == "SVM"
+
+    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 208
+    assert predictions[predictions.values == -1].count().values[0] == 192
+
+    beut_model: PreAlgorithm = Beutel()
+    assert beut_model is not None
+    assert beut_model.name == "Beutel"
+
+    new_xtrain_xtest = beut_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 208
+    assert predictions[predictions.values == -1].count().values[0] == 192
+
+
+def test_threaded_custom_beutel():
+    train, test = get_train_test()
+
+    beut_model: PreAlgorithm = Beutel(epochs=5, fairness="Eq. Opp")
+    assert beut_model is not None
+    assert beut_model.name == "Beutel"
+
+    new_xtrain_xtest_non_thread: Tuple[pd.DataFrame, pd.DataFrame] = beut_model.run(train, test)
+    new_xtrain_nt, new_xtest_nt = new_xtrain_xtest_non_thread
+
+    assert new_xtrain_nt.shape[0] == train.x.shape[0]
+    assert new_xtest_nt.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain_nt, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest_nt, s=test.s, y=test.y)
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 202
+    assert predictions[predictions.values == -1].count().values[0] == 198
+
+    model: PreAlgorithm = Beutel(epochs=5, fairness="Eq. Opp")
+    assert model is not None
+    assert model.name == "Beutel"
+
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    classifier: InAlgorithm = SVM()
+    assert classifier is not None
+    assert classifier.name == "SVM"
+
+    treaded_predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
+    assert treaded_predictions[treaded_predictions.values == 1].count().values[0] == 202
+    assert treaded_predictions[treaded_predictions.values == -1].count().values[0] == 198
