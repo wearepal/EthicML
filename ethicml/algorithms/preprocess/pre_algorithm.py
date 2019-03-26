@@ -23,9 +23,7 @@ class PreAlgorithm(Algorithm):
             test: test data
             sub_process: should this model run in it's own process?
         """
-        if sub_process:
-            return self.run_threaded(train, test)
-        return self._run(train, test)
+        return self.run_threaded(train, test) if sub_process else self._run(train, test)
 
     @abstractmethod
     def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -45,7 +43,8 @@ class PreAlgorithm(Algorithm):
             train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
             return self._load_output(train_path), self._load_output(test_path)
 
-    def run_thread(self, train_paths, test_paths, tmp_path) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> (
+            Tuple[pd.DataFrame, pd.DataFrame]):
         """Run algorithm in its own thread"""
         train_path = tmp_path / "transform_train.feather"
         test_path = tmp_path / "transform_test.feather"
