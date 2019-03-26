@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm, run_threaded
 
 
 def test_simple_saving():
@@ -39,5 +39,5 @@ def test_simple_saving():
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
             return train_paths.x
 
-    data_x = CheckEquality().run_threaded(data_tuple, data_tuple)
+    data_x = run_threaded(CheckEquality(), data_tuple, data_tuple)
     pd.testing.assert_frame_equal(data_tuple.x, data_x)

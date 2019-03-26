@@ -23,7 +23,7 @@ class InAlgorithm(Algorithm):
             test: test data
             sub_process: indicate if the algorithm is to be run in it's own process
         """
-        return self.run_threaded(train, test) if sub_process else self._run(train, test)
+        return run_threaded(self, train, test) if sub_process else self._run(train, test)
 
     @abstractmethod
     def _run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
@@ -34,14 +34,6 @@ class InAlgorithm(Algorithm):
         """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
-
-    def run_threaded(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
-        """ orchestrator for threaded """
-        with TemporaryDirectory() as tmpdir:
-            tmp_path = Path(tmpdir)
-            train_paths, test_paths = self.write_data(train, test, tmp_path)
-            pred_path = self.run_thread(train_paths, test_paths, tmp_path)
-            return self.load_output(pred_path)
 
     def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> Path:
         """ runs algorithm in its own thread """
@@ -76,3 +68,16 @@ class InAlgorithm(Algorithm):
         for arg in args:
             list_to_return.append(str(arg))
         return list_to_return
+
+
+def run_threaded(model: InAlgorithm, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    """Orchestrator for threaded
+
+    This function is not a member function of InAlgorithm so that this function can never be
+    overwritten.
+    """
+    with TemporaryDirectory() as tmpdir:
+        tmp_path = Path(tmpdir)
+        train_paths, test_paths = model.write_data(train, test, tmp_path)
+        pred_path = model.run_thread(train_paths, test_paths, tmp_path)
+        return model.load_output(pred_path)
