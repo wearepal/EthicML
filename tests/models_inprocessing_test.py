@@ -82,7 +82,7 @@ def test_kamishima(kamishima):
     assert model is not None
     assert model.name == "Kamishima"
 
-    predictions: pd.DataFrame = model.run(train, test, sub_process=True)
+    predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 208
     assert predictions[predictions.values == -1].count().values[0] == 192
 
