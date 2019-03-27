@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import pytest
 
+from ethicml.algorithms.inprocess.agarwal_reductions import Agarwal
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.algorithms.inprocess.kamishima import Kamishima
@@ -113,6 +114,37 @@ def test_lr():
     predictions: np.array = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 211
     assert predictions[predictions.values == -1].count().values[0] == 189
+
+
+def test_agarwal():
+    train, test = get_train_test()
+    model: InAlgorithm = Agarwal()
+    assert model is not None
+    assert model.name == "Agarwal"
+
+    predictions: np.array = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 145
+    assert predictions[predictions.values == -1].count().values[0] == 255
+
+    model = Agarwal(fairness="EqOd")
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 162
+    assert predictions[predictions.values == -1].count().values[0] == 238
+
+    model = Agarwal(classifier="SVM")
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 141
+    assert predictions[predictions.values == -1].count().values[0] == 259
+
+    model = Agarwal(classifier="SVM", fairness="EqOd")
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 159
+    assert predictions[predictions.values == -1].count().values[0] == 241
+
+    model = Agarwal(classifier="SVM", fairness="EqOd")
+    predictions = model.run(train, test, sub_process=True)
+    assert predictions[predictions.values == 1].count().values[0] == 159
+    assert predictions[predictions.values == -1].count().values[0] == 241
 
 
 def test_threaded_lr():

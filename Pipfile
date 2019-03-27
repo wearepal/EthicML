@@ -22,6 +22,7 @@ typing = "==3.6.2"
 pyarrow = ">=0.11"
 feather-format = '>=0.4'
 numba = "*"
+fairlearn = "*"
 
 [requires]
 python_version = "3.6"
