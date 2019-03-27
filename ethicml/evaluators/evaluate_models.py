@@ -62,7 +62,7 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
-def evaluate_models(datasets: List[Union[Dataset, DataTuple]], preprocess_models: List[PreAlgorithm],
+def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
                     metrics: List[Metric], per_sens_metrics: List[Metric],
                     test_mode: bool = False) -> None:
@@ -82,9 +82,7 @@ def evaluate_models(datasets: List[Union[Dataset, DataTuple]], preprocess_models
     for dataset in datasets:
         train: DataTuple
         test: DataTuple
-        if type(dataset) == "Dataset":
-            dataset = load_data(dataset)
-        train, test = train_test_split(dataset)
+        train, test = train_test_split(load_data(dataset))
         if test_mode:
             train = get_subset(train)  # take smaller subset of training data to speed up training
 
