@@ -14,9 +14,11 @@ from typing import Tuple
 
 import pandas as pd
 import numpy as np
+from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.implementations.utils import load_data_from_flags, save_transformations
+
+from .common import load_data_from_flags, save_transformations, InAlgoInterface
 
 
 def _obtain_conditionings(dataset: DataTuple):
@@ -37,7 +39,7 @@ def _obtain_conditionings(dataset: DataTuple):
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
-def compute_weights(train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def compute_weights(train: DataTuple) -> pd.DataFrame:
     """Compute weights for all samples"""
     np.random.seed(888)
     (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
@@ -73,25 +75,22 @@ def compute_weights(train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd
     train_instance_weights.iloc[cond_up_fav.index] *= w_up_fav
     train_instance_weights.iloc[cond_up_unfav.index] *= w_up_unfav
 
-    train_x = pd.concat((train.x, train_instance_weights), axis=1)
+    return train_instance_weights
 
-    return train_x, test.x
+
+def train_and_predict(train, test):
+    """Train a logistic regression model and compute predictions on the given test data"""
+    clf = LogisticRegression(solver='liblinear', random_state=888)
+    clf.fit(train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"])
+    return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
 
 def main():
     """This function runs the Kamiran&Calders method as a standalone program"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--train_x", required=True)
-    parser.add_argument("--train_s", required=True)
-    parser.add_argument("--train_y", required=True)
-    parser.add_argument("--test_x", required=True)
-    parser.add_argument("--test_s", required=True)
-    parser.add_argument("--test_y", required=True)
-    parser.add_argument("--train_new", required=True)
-    parser.add_argument("--test_new", required=True)
-    flags = vars(parser.parse_args())
-    save_transformations(compute_weights(*load_data_from_flags(flags)),
-                         (flags['train_new'], flags['test_new']))
+    interface = InAlgoInterface()
+    train, test = interface.load_data()
+    _ = interface.remaining_args()
+    interface.save_predictions(train_and_predict(train, test))
 
 
 if __name__ == "__main__":
