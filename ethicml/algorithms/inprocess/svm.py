@@ -6,6 +6,7 @@ from typing import Optional
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import svm
 
 
@@ -21,7 +22,7 @@ class SVM(InAlgorithm):
 
     def _script_command(self, train_paths, test_paths, pred_path):
         script = ['-m', svm.train_and_predict.__module__]
-        args = self._conventional_interface(
+        args = conventional_interface(
             train_paths, test_paths, pred_path, str(self.C), str(self.kernel))
         return script + args
 

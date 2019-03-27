@@ -6,6 +6,7 @@ from typing import Optional
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import logistic_regression_probability
 
 
@@ -20,7 +21,7 @@ class LRProb(InAlgorithm):
 
     def _script_command(self, train_paths, test_paths, pred_path):
         script = ['-m', logistic_regression_probability.train_and_predict.__module__]
-        args = self._conventional_interface(train_paths, test_paths, pred_path, str(self.C))
+        args = conventional_interface(train_paths, test_paths, pred_path, str(self.C))
         return script + args
 
     @property

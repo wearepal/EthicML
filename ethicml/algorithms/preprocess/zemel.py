@@ -3,7 +3,8 @@ Zemel's Learned Fair Representations
 """
 from typing import Dict, Union
 
-from ethicml.algorithms.preprocess import PreAlgorithm
+from .pre_algorithm import PreAlgorithm
+from .interface import flag_interface
 
 
 class Zemel(PreAlgorithm):
@@ -29,8 +30,7 @@ class Zemel(PreAlgorithm):
         return zemel.train_and_transform(train, test, self.flags)
 
     def _script_command(self, train_paths, test_paths, new_train_path, new_test_path):
-        args = self._flag_interface(train_paths, test_paths, new_train_path, new_test_path,
-                                    self.flags)
+        args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, self.flags)
         return ['-m', 'ethicml.implementations.zemel'] + args
 
     @property

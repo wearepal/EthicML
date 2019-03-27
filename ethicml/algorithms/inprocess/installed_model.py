@@ -13,6 +13,7 @@ import subprocess
 import git
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.common import ROOT_PATH
 
 
@@ -68,7 +69,7 @@ class InstalledModel(InAlgorithm):
         """
         Overridden from parent - see there
         """
-        args = self._conventional_interface(train_paths, test_paths, pred_path)
+        args = conventional_interface(train_paths, test_paths, pred_path)
         return [str(ROOT_DIR / self.repo_name / self.module / self.file_name)] + args
 
     def remove(self):
