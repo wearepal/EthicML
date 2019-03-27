@@ -65,7 +65,7 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
                     metrics: List[Metric], per_sens_metrics: List[Metric],
-                    test_mode: bool = False) -> None:
+                    test_mode: bool = False) -> List[pd.DataFrame]:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
@@ -78,6 +78,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
         test_mode: if True, only use a small subset of the data so that the models run faster
     """
     per_sens_metrics_check(per_sens_metrics)
+
+    to_return: List[pd.DataFrame] = []
 
     for dataset in datasets:
         train: DataTuple
@@ -125,3 +127,6 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
             outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
             outdir.mkdir(exist_ok=True)
             results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+            to_return.append(results)
+
+    return to_return
