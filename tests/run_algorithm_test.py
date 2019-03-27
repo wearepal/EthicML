@@ -42,7 +42,7 @@ def test_run_alg_suite():
 
 
 def test_run_alg_suite_wrong_metrics():
-    datasets: List[Dataset] = [Toy(), Adult()]
+    datasets: List[Dataset] = [Toy(), Adult(), load_data(Toy())]
     preprocess_models: List[PreAlgorithm] = [Beutel()]
     inprocess_models: List[InAlgorithm] = [SVM(), LR()]
     postprocess_models: List[PostAlgorithm] = []
