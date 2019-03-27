@@ -23,7 +23,7 @@ class PreAlgorithm(Algorithm):
             test: test data
             sub_process: should this model run in it's own process?
         """
-        return run_threaded(self, train, test) if sub_process else self._run(train, test)
+        return self.run_threaded(train, test) if sub_process else self._run(train, test)
 
     @abstractmethod
     def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -34,6 +34,14 @@ class PreAlgorithm(Algorithm):
         """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
+
+    def run_threaded(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """ orchestrator for threaded """
+        with TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            train_paths, test_paths = self.write_data(train, test, tmp_path)
+            train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
+            return self.load_output(train_path), self.load_output(test_path)
 
     def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> (
             Tuple[pd.DataFrame, pd.DataFrame]):
@@ -70,17 +78,3 @@ class PreAlgorithm(Algorithm):
             else:
                 flags_list.append(str(values))
         return flags_list
-
-
-def run_threaded(model: PreAlgorithm, train: DataTuple, test: DataTuple) -> (
-        Tuple[pd.DataFrame, pd.DataFrame]):
-    """Orchestrator for threaded
-
-    This function is not a member function of PreAlgorithm so that this function can never be
-    overwritten.
-    """
-    with TemporaryDirectory() as tmpdir:
-        tmp_path = Path(tmpdir)
-        train_paths, test_paths = model.write_data(train, test, tmp_path)
-        train_path, test_path = model.run_thread(train_paths, test_paths, tmp_path)
-        return model.load_output(train_path), model.load_output(test_path)
