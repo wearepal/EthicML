@@ -19,6 +19,8 @@ from sklearn.linear_model import LogisticRegression
 from ethicml.algorithms.utils import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
 
+from .common import load_data_from_flags, save_transformations, InAlgoInterface
+
 
 def _obtain_conditionings(dataset: DataTuple):
     """Obtain the necessary conditioning boolean vectors to compute instance level weights."""
