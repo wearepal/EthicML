@@ -3,14 +3,11 @@ Test that we can get some metrics on predictions
 """
 
 from typing import Tuple
-import numpy as np
 from numpy.testing import assert_allclose
 import pandas as pd
 import pytest
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
-from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data import Adult
 from ethicml.data.load import load_data

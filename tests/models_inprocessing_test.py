@@ -1,16 +1,9 @@
-from typing import Tuple, List, Dict, Any
+from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
 
-from ethicml.algorithms.inprocess.agarwal_reductions import Agarwal
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.algorithms.inprocess.kamishima import Kamishima
-from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
-from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
-from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.inprocess import Agarwal, InAlgorithm, Kamishima, LRCV, LRProb, LR, SVM
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
 from ethicml.utility.heaviside import Heaviside

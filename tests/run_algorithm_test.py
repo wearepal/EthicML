@@ -5,12 +5,9 @@ Test that an algorithm can run against some data
 from typing import Tuple, List
 import pytest
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.svm import SVM
+from ethicml.algorithms.inprocess import InAlgorithm, LR, SVM
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
-from ethicml.algorithms.preprocess.beutel import Beutel
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.preprocess import Beutel, PreAlgorithm
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
