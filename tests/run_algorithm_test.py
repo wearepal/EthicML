@@ -31,7 +31,9 @@ def test_can_load_test_data():
 
 
 def test_run_alg_suite():
-    datasets: List[Dataset] = [Toy(), Adult(), Compas(), Sqf(), German()]
+    dataset = Adult("Race")
+    dataset.sens_attrs = ["race_White"]
+    datasets: List[Dataset] = [dataset, Toy(), Adult(), Compas(), Sqf(), German()]
     preprocess_models: List[PreAlgorithm] = [Beutel()]
     inprocess_models: List[InAlgorithm] = [LR()]
     postprocess_models: List[PostAlgorithm] = []
@@ -42,7 +44,7 @@ def test_run_alg_suite():
 
 
 def test_run_alg_suite_wrong_metrics():
-    datasets: List[Dataset] = [Toy(), Adult(), load_data(Toy())]
+    datasets: List[Dataset] = [Toy(), Adult()]
     preprocess_models: List[PreAlgorithm] = [Beutel()]
     inprocess_models: List[InAlgorithm] = [SVM(), LR()]
     postprocess_models: List[PostAlgorithm] = []
