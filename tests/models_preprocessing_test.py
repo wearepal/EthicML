@@ -7,6 +7,7 @@ from ethicml.algorithms.preprocess.beutel import Beutel
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.preprocess.zemel import Zemel
 from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.heaviside import Heaviside
 from tests.run_algorithm_test import get_train_test
 
 
