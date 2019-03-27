@@ -20,6 +20,6 @@ setup(
         "torch >= 0.4.1",
         "typing >= 3.6.2",
         "fairlearn >= 0.2.0",
-        "gitdb2 >= 2.0.5"
+        "GitPython == 2.1.11"
     ],
 )
