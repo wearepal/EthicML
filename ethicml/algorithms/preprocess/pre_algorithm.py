@@ -40,17 +40,11 @@ class PreAlgorithm(Algorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
-            train_path, test_path = self.run_thread(train_paths, test_paths, tmp_path)
+            train_path = tmp_path / "transform_train.feather"
+            test_path = tmp_path / "transform_test.feather"
+            cmd = self._script_command(train_paths, test_paths, train_path, test_path)
+            self._call_script(cmd)
             return load_feather(train_path), load_feather(test_path)
-
-    def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> (
-            Tuple[pd.DataFrame, pd.DataFrame]):
-        """Run algorithm in its own thread"""
-        train_path = tmp_path / "transform_train.feather"
-        test_path = tmp_path / "transform_test.feather"
-        cmd = self._script_command(train_paths, test_paths, train_path, test_path)
-        self._call_script(cmd)
-        return train_path, test_path
 
     def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
                         new_test_path: Path) -> List[str]:

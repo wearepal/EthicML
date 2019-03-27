@@ -41,15 +41,10 @@ class InAlgorithm(Algorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
-            pred_path = self.run_thread(train_paths, test_paths, tmp_path)
+            pred_path = tmp_path / "predictions.feather"
+            cmd = self._script_command(train_paths, test_paths, pred_path)
+            self._call_script(cmd)
             return load_feather(pred_path)
-
-    def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> Path:
-        """ runs algorithm in its own thread """
-        pred_path = tmp_path / "predictions.feather"
-        cmd = self._script_command(train_paths, test_paths, pred_path)
-        self._call_script(cmd)
-        return pred_path
 
     def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path) -> (
             List[str]):
