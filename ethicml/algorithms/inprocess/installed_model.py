@@ -29,7 +29,7 @@ class InstalledModel(InAlgorithm):
         self.url = url
         self.clone_directory()
         self.create_venv()
-        super().__init__(executable=str(Path(".") / name / module / '.venv' / 'bin' / 'python'))
+        super().__init__(executable=str(self._module_path() / '.venv' / 'bin' / 'python'))
 
     @property
     def name(self) -> str:
@@ -52,9 +52,9 @@ class InstalledModel(InAlgorithm):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["PIPENV_PIPFILE"] = str(Path(".") / self.repo_name / self.module / 'Pipfile')
+        environ["PIPENV_PIPFILE"] = str(self._module_path() / 'Pipfile')
 
-        venv_directory = Path(".") / self.repo_name / self.module / ".venv"
+        venv_directory = self._module_path() / ".venv"
 
         if not os.path.exists(venv_directory):
             subprocess.check_call("pipenv install", env=environ, shell=True)
@@ -62,12 +62,15 @@ class InstalledModel(InAlgorithm):
     def _run(self, train, test):
         return super().run(train, test, sub_process=True)  # set sub_process always to True
 
+    def _module_path(self):
+        return Path(".") / self.repo_name / self.module
+
     def _script_command(self, train_paths, test_paths, pred_path):
         """
         Overridden from parent - see there
         """
         args = conventional_interface(train_paths, test_paths, pred_path)
-        return [str(Path(".") / self.repo_name / self.module / self.file_name)] + args
+        return [str(self._module_path() / self.file_name)] + args
 
     def remove(self):
         """
