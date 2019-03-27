@@ -19,6 +19,6 @@ setup(
         "seaborn >= 0.9.0",
         "torch >= 0.4.1",
         "typing >= 3.6.2",
-        "fairlean == 0.2.0"
+        "fairlearn == 0.2.0"
     ],
 )
