@@ -4,12 +4,10 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
-
-from .utils import PathTuple, write_as_feather, DataTuple
 
 
 def load_dataframe(path: Path) -> pd.DataFrame:
@@ -58,32 +56,3 @@ class Algorithm(ABC):
             check_call(cmd, env=env)
         except CalledProcessError:
             raise RuntimeError(f'The script failed. Supplied arguments: {cmd_args}')
-
-    @staticmethod
-    def _path_tuple_to_cmd_args(path_tuples: List[PathTuple], prefixes: List[str]) -> List[str]:
-        """Convert the path tuples to a list of commandline arguments
-
-        The list of prefixes must have the same length as the list of path tuples. Each path tuple
-        is associated with one prefix. If the prefix for the path tuple "pt" is "--data_", then the
-        following elements are added to the output list:
-            ['--data_x', '<content of pt.x>', '--data_s', '<content of pt.s>', '--data_y',
-             '<content of pt.y>']
-        """
-        args_list: List[str] = []
-        for path_tuple, prefix in zip(path_tuples, prefixes):
-            for key, path in path_tuple._asdict().items():
-                args_list += [f"{prefix}{key}", str(path)]
-        return args_list
-
-    @staticmethod
-    def load_output(output_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a feather file"""
-        with output_path.open('rb') as file_obj:
-            df = pd.read_feather(file_obj)
-        return df
-
-    @staticmethod
-    def write_data(train: DataTuple, test: DataTuple, tmp_path: Path) -> (
-            Tuple[PathTuple, PathTuple]):
-        """Write data in the correct format for `run_thread`"""
-        return write_as_feather(train, test, tmp_path)

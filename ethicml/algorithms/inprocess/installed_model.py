@@ -12,7 +12,8 @@ import subprocess
 
 import git
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm, run_threaded
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.common import ROOT_PATH
 
 
@@ -62,13 +63,13 @@ class InstalledModel(InAlgorithm):
                                   env=environ, shell=True)
 
     def _run(self, train, test):
-        return run_threaded(self, train, test)
+        return self.run_threaded(train, test)
 
     def _script_command(self, train_paths, test_paths, pred_path):
         """
         Overridden from parent - see there
         """
-        args = self._conventional_interface(train_paths, test_paths, pred_path)
+        args = conventional_interface(train_paths, test_paths, pred_path)
         return [str(ROOT_DIR / self.repo_name / self.module / self.file_name)] + args
 
     def remove(self):

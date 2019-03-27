@@ -3,6 +3,7 @@ Implementation of cross validated LR. This is a work around for now,
 long term we'll have a proper cross-validation mechanism
 """
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import logistic_regression_cross_validated
 
 
@@ -13,7 +14,7 @@ class LRCV(InAlgorithm):
 
     def _script_command(self, train_paths, test_paths, pred_path):
         script = ['-m', logistic_regression_cross_validated.train_and_predict.__module__]
-        args = self._conventional_interface(train_paths, test_paths, pred_path)
+        args = conventional_interface(train_paths, test_paths, pred_path)
         return script + args
 
     @property

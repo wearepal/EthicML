@@ -51,6 +51,13 @@ def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) -> (
     return PathTuple(**train_paths), PathTuple(**test_paths)
 
 
+def load_feather(output_path: Path) -> pd.DataFrame:
+    """Load a dataframe from a feather file"""
+    with output_path.open('rb') as file_obj:
+        df = pd.read_feather(file_obj)
+    return df
+
+
 def get_subset(train: DataTuple) -> DataTuple:
     """Get the first elements of the given dataset
 

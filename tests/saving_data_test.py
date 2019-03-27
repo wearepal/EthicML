@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm, run_threaded
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
 def test_simple_saving():
@@ -29,7 +29,7 @@ def test_simple_saving():
         def name(self):
             return "Check equality"
 
-        def run_thread(self, train_paths, _, __):
+        def _script_command(self, train_paths, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones"""
             x_loaded = pd.read_feather(str(train_paths.x))
             s_loaded = pd.read_feather(str(train_paths.s))
@@ -37,7 +37,8 @@ def test_simple_saving():
             pd.testing.assert_frame_equal(data_tuple.x, x_loaded)
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
-            return train_paths.x
+            # the following command copies the x of the training data to the pred_path location
+            return ['-c', f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
-    data_x = run_threaded(CheckEquality(), data_tuple, data_tuple)
+    data_x = CheckEquality().run_threaded(data_tuple, data_tuple)
     pd.testing.assert_frame_equal(data_tuple.x, data_x)

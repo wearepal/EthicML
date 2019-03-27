@@ -7,6 +7,7 @@ from typing import List
 import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.algorithms.utils import PathTuple, DataTuple
 from ethicml.implementations import agarwal
 
@@ -43,9 +44,9 @@ class Agarwal(InAlgorithm):
     def _script_command(self, train_paths: PathTuple,
                         test_paths: PathTuple, pred_path: Path) -> (List[str]):
         script = ['-m', agarwal.train_and_predict.__module__]
-        args = self._conventional_interface(train_paths, test_paths, pred_path,
-                                            str(self.classifier), str(self.fairness),
-                                            str(self.eps), str(self.iters))
+        args = conventional_interface(train_paths, test_paths, pred_path,
+                                      str(self.classifier), str(self.fairness),
+                                      str(self.eps), str(self.iters))
         return script + args
 
     @property

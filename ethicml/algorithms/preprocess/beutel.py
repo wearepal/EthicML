@@ -2,6 +2,7 @@
 from typing import Optional, List, Dict, Union
 
 from .pre_algorithm import PreAlgorithm
+from .interface import flag_interface
 
 
 class Beutel(PreAlgorithm):
@@ -37,8 +38,7 @@ class Beutel(PreAlgorithm):
         return beutel.train_and_transform(train, test, self.flags)
 
     def _script_command(self, train_paths, test_paths, new_train_path, new_test_path):
-        args = self._flag_interface(train_paths, test_paths, new_train_path, new_test_path,
-                                    self.flags)
+        args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, self.flags)
         return ['-m', 'ethicml.implementations.beutel'] + args
 
     @property

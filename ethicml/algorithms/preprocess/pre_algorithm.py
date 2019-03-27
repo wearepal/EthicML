@@ -5,11 +5,11 @@ Abstract Base Class of all algorithms in the framework
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Tuple, List, Any, Dict
+from typing import Tuple, List
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ..utils import get_subset, DataTuple, PathTuple
+from ..utils import get_subset, DataTuple, PathTuple, write_as_feather, load_feather
 
 
 class PreAlgorithm(Algorithm):
@@ -23,7 +23,7 @@ class PreAlgorithm(Algorithm):
             test: test data
             sub_process: should this model run in it's own process?
         """
-        return run_threaded(self, train, test) if sub_process else self._run(train, test)
+        return self.run_threaded(train, test) if sub_process else self._run(train, test)
 
     @abstractmethod
     def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -35,52 +35,18 @@ class PreAlgorithm(Algorithm):
         train_testing = get_subset(train)
         return self.run(train_testing, test)
 
-    def run_thread(self, train_paths: PathTuple, test_paths: PathTuple, tmp_path: Path) -> (
-            Tuple[pd.DataFrame, pd.DataFrame]):
-        """Run algorithm in its own thread"""
-        train_path = tmp_path / "transform_train.feather"
-        test_path = tmp_path / "transform_test.feather"
-        cmd = self._script_command(train_paths, test_paths, train_path, test_path)
-        self._call_script(cmd)
-        return train_path, test_path
+    def run_threaded(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """ orchestrator for threaded """
+        with TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            train_paths, test_paths = write_as_feather(train, test, tmp_path)
+            train_path = tmp_path / "transform_train.feather"
+            test_path = tmp_path / "transform_test.feather"
+            cmd = self._script_command(train_paths, test_paths, train_path, test_path)
+            self._call_script(cmd)
+            return load_feather(train_path), load_feather(test_path)
 
     def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
                         new_test_path: Path) -> List[str]:
         """The command that will run the script"""
         raise NotImplementedError("`_script_command` has not been implemented")
-
-    @staticmethod
-    def _flag_interface(train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
-                        new_test_path: Path, flags: Dict[str, Any]) -> List[str]:
-        """Generate the commandline arguments that are expected"""
-        flags_list: List[str] = []
-
-        # paths to training and test data
-        flags_list += Algorithm._path_tuple_to_cmd_args([train_paths, test_paths],
-                                                        ['--train_', '--test_'])
-
-        # paths to output files
-        flags_list += ['--train_new', str(new_train_path), '--test_new', str(new_test_path)]
-
-        # model parameters
-        for key, values in flags.items():
-            flags_list.append(f"--{key}")
-            if isinstance(values, list):
-                flags_list += [str(value) for value in values]
-            else:
-                flags_list.append(str(values))
-        return flags_list
-
-
-def run_threaded(model: PreAlgorithm, train: DataTuple, test: DataTuple) -> (
-        Tuple[pd.DataFrame, pd.DataFrame]):
-    """Orchestrator for threaded
-
-    This function is not a member function of PreAlgorithm so that this function can never be
-    overwritten.
-    """
-    with TemporaryDirectory() as tmpdir:
-        tmp_path = Path(tmpdir)
-        train_paths, test_paths = model.write_data(train, test, tmp_path)
-        train_path, test_path = model.run_thread(train_paths, test_paths, tmp_path)
-        return model.load_output(train_path), model.load_output(test_path)
