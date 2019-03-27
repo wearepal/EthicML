@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.utils import DataTuple
+from ethicml.implementations.utils import instance_weight_check
 from ethicml.utility.heaviside import Heaviside
 from .common import InAlgoInterface
 
@@ -15,6 +16,8 @@ def train_and_predict(train: DataTuple, test: DataTuple,
                       classifier: str, fairness: str,
                       eps: float, iters: int):
     """Train a logistic regression model and compute predictions on the given test data"""
+
+    train, _ = instance_weight_check(train)
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
     if classifier == "SVM":
