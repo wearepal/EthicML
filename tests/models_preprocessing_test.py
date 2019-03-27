@@ -1,14 +1,8 @@
 from typing import Tuple
 import pandas as pd
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
-from ethicml.algorithms.inprocess.svm import SVM
-from ethicml.algorithms.preprocess.beutel import Beutel
-from ethicml.algorithms.preprocess.kamiran import Kamiran
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.preprocess.zemel import Zemel
+from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
+from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Kamiran, Zemel
 from ethicml.algorithms.utils import DataTuple
 from ethicml.utility.heaviside import Heaviside
 from tests.run_algorithm_test import get_train_test
