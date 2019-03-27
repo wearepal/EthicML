@@ -79,7 +79,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     """
     per_sens_metrics_check(per_sens_metrics)
 
-    to_return: Dict[str, pd.DataFrame] = []
+    to_return: Dict[str, pd.DataFrame] = {}
 
     for dataset in datasets:
         train: DataTuple
