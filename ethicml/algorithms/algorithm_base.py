@@ -4,12 +4,12 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Tuple
+from typing import List, Optional, Dict
 from subprocess import check_call, CalledProcessError
 
 import pandas as pd
 
-from .utils import PathTuple, write_as_feather, DataTuple
+from .utils import PathTuple
 
 
 def load_dataframe(path: Path) -> pd.DataFrame:
@@ -74,16 +74,3 @@ class Algorithm(ABC):
             for key, path in path_tuple._asdict().items():
                 args_list += [f"{prefix}{key}", str(path)]
         return args_list
-
-    @staticmethod
-    def load_output(output_path: Path) -> pd.DataFrame:
-        """Load a dataframe from a feather file"""
-        with output_path.open('rb') as file_obj:
-            df = pd.read_feather(file_obj)
-        return df
-
-    @staticmethod
-    def write_data(train: DataTuple, test: DataTuple, tmp_path: Path) -> (
-            Tuple[PathTuple, PathTuple]):
-        """Write data in the correct format for `run_thread`"""
-        return write_as_feather(train, test, tmp_path)
