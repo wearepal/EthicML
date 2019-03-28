@@ -82,7 +82,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
     to_return: Dict[str, pd.DataFrame] = {}
 
-    total_experiments = len(datasets) * (len(preprocess_models)+1) * len(inprocess_models)
+    total_experiments = (len(datasets) * (len(preprocess_models)+1)) + \
+                        (len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
 
     with tqdm(total=total_experiments) as pbar:
         for dataset in datasets:
