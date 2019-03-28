@@ -137,6 +137,4 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
                 to_return[f"{dataset.name}_{transform_name}"] = results
 
-                pbar.update()
-
     return to_return
