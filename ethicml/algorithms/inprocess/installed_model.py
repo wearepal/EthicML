@@ -30,6 +30,7 @@ class InstalledModel(InAlgorithm):
         self.clone_directory()
         self.create_venv()
         super().__init__(executable=str(ROOT_DIR / name / module / '.venv' / 'bin' / 'python'))
+        print(ROOT_DIR, name, module)
 
     @property
     def name(self) -> str:
@@ -43,8 +44,6 @@ class InstalledModel(InAlgorithm):
         if not os.path.exists(directory):
             os.makedirs(directory)
             git.Git(directory).clone(self.url)
-        else:
-            print("Repo found")
 
     def create_venv(self):
         """
