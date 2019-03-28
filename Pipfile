@@ -24,6 +24,7 @@ feather-format = '>=0.4'
 numba = "*"
 fairlearn = "*"
 tqdm = "*"
+pipenv = "*"
 
 [requires]
 python_version = "3.6"
