@@ -82,7 +82,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
     to_return: Dict[str, pd.DataFrame] = {}
 
-    total_experiments = (len(datasets) * (len(preprocess_models)+1)) + \
+    total_experiments = 1 + (len(datasets) * (len(preprocess_models)+1)) + \
                         (len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
 
     with tqdm(total=total_experiments) as pbar:
@@ -136,5 +136,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 outdir.mkdir(exist_ok=True)
                 results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
                 to_return[f"{dataset.name}_{transform_name}"] = results
+
+                pbar.update()
 
     return to_return
