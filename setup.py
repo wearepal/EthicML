@@ -20,6 +20,7 @@ setup(
         "torch >= 0.4.1",
         "typing >= 3.6.2",
         "fairlearn >= 0.2.0",
-        "GitPython == 2.1.11"
+        "GitPython >= 2.1.11",
+        "tqdm >= 4.31.1"
     ],
 )
