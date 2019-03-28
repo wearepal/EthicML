@@ -23,7 +23,7 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     if classifier == "SVM":
         model = SVC(gamma='auto', random_state=888)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000)
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]
