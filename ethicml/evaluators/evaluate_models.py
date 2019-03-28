@@ -80,7 +80,9 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     """
     per_sens_metrics_check(per_sens_metrics)
 
-    to_return: Dict[str, pd.DataFrame] = {}
+    columns = ['dataset', 'transform', 'model']
+    columns += [metric.name for metric in metrics]
+    results = pd.DataFrame(columns=columns)
 
     total_experiments = 1 + (len(datasets) * (len(preprocess_models)+1)) + \
                         (len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
@@ -105,19 +107,17 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
                 pbar.update()
 
-            columns = ['model']
-            columns += [metric.name for metric in metrics]
-
             transform_name: str
             for transform_name, transform in to_operate_on.items():
-                results = pd.DataFrame(columns=columns)
 
                 transformed_train: DataTuple = transform['train']
                 transformed_test: DataTuple = transform['test']
 
                 for model in inprocess_models:
 
-                    temp_res: Dict[str, Union[str, float]] = {'model': model.name}
+                    temp_res: Dict[str, Union[str, float]] = {'dataset': dataset.name,
+                                                              'transform': transform_name,
+                                                              'model': model.name}
 
                     predictions: pd.DataFrame
                     predictions = model.run(transformed_train, transformed_test)
@@ -135,8 +135,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
                 outdir.mkdir(exist_ok=True)
                 results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
-                to_return[f"{dataset.name}_{transform_name}"] = results
 
                 pbar.update()
 
-    return to_return
+    results = results.set_index(['dataset', 'transform', 'model'])
+    return results
