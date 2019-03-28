@@ -142,5 +142,5 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
                     pbar.update()
 
-    results = results.set_index(['dataset', 'transform', 'repeat', 'model'])
+    results = results.set_index(['dataset', 'transform', 'model', 'repeat'])
     return results
