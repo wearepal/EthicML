@@ -37,7 +37,9 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     preds = pd.DataFrame(res['best_classifier'](test.x), columns=["preds"])
     helper = Heaviside()
     preds = preds.apply(helper.apply)
-    preds = preds.replace(0, -1)
+    min_class_label = train.y[train.y.columns[0]].min()
+    if preds['preds'].min() != preds['preds'].max():
+        preds = preds.replace(preds['preds'].min(), min_class_label)
     return preds
 
 

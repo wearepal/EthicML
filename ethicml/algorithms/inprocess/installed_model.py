@@ -29,8 +29,7 @@ class InstalledModel(InAlgorithm):
         self.url = url
         self.clone_directory()
         self.create_venv()
-        super().__init__(executable=str(ROOT_DIR / name / module / '.venv' / 'bin' / 'python'))
-        print(ROOT_DIR, name, module)
+        super().__init__(executable=str(Path(".") / name / module / '.venv' / 'bin' / 'python'))
 
     @property
     def name(self) -> str:
@@ -53,7 +52,7 @@ class InstalledModel(InAlgorithm):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["PIPENV_PIPFILE"] = str(ROOT_DIR / self.repo_name / self.module / 'Pipfile')
+        environ["PIPENV_PIPFILE"] = str(Path(".") / self.repo_name / self.module / 'Pipfile')
 
         venv_directory = Path(".") / self.repo_name / self.module / ".venv"
 
@@ -68,7 +67,7 @@ class InstalledModel(InAlgorithm):
         Overridden from parent - see there
         """
         args = conventional_interface(train_paths, test_paths, pred_path)
-        return [str(ROOT_DIR / self.repo_name / self.module / self.file_name)] + args
+        return [str(Path(".") / self.repo_name / self.module / self.file_name)] + args
 
     def remove(self):
         """

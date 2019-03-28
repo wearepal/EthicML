@@ -27,7 +27,6 @@ class Algorithm(ABC):
             executable: (optional) path to a (Python) executable. If not provided, the Python
                         executable that called this script is used.
         """
-        # self._name = name
         if executable is None:
             # use the python executable that this script was called with
             executable = sys.executable
@@ -50,9 +49,8 @@ class Algorithm(ABC):
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
         cmd = [self.executable] + cmd_args
-        print("cmd =", str(cmd))
-        print("exec =", str(self.executable))
         try:
             check_call(cmd, env=env)
         except CalledProcessError:
-            raise RuntimeError(f'The script failed. Supplied arguments: {cmd_args}')
+            raise RuntimeError(f'The script failed. Supplied arguments: {cmd_args} '
+                               f'with exec: {self.executable}')

@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel, ROOT_DIR
+from ethicml.implementations.utils import instance_weight_check
 
 
 class Kamishima(InstalledModel):
@@ -25,6 +26,9 @@ class Kamishima(InstalledModel):
     @staticmethod
     def create_file_in_kamishima_format(data, file_path):
         """Create a text file with the data"""
+
+        data, _ = instance_weight_check(data)
+
         result = pd.concat([data.x, data.s, data.y], axis=1).to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
@@ -39,23 +43,30 @@ class Kamishima(InstalledModel):
             model_path = str(tmp_path / "model")
             output_path = str(tmp_path / "output.txt")
 
-            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'train_pr.py'),
-                               '-e', str(self.eta),
-                               '-i', train_path,
-                               '-o', model_path,
-                               '--quiet'])
-            self._call_script([str(ROOT_DIR / self.repo_name / self.module / 'predict_lr.py'),
-                               '-i', test_path,
-                               '-m', model_path,
-                               '-o', output_path,
-                               '--quiet'])
+            try:
+                self._call_script([str(Path(".") / self.repo_name / self.module / 'train_pr.py'),
+                                   '-e', str(self.eta),
+                                   '-i', train_path,
+                                   '-o', model_path,
+                                   '--quiet'
+                                   ])
 
-            output = np.loadtxt(output_path)
+                self._call_script([str(Path(".") / self.repo_name / self.module / 'predict_lr.py'),
+                                   '-i', test_path,
+                                   '-m', model_path,
+                                   '-o', output_path,
+                                   '--quiet'
+                                   ])
+                output = np.loadtxt(output_path)
+                predictions = output[:, 1].astype(np.float32)
+            except RuntimeError:
+                predictions = np.ones_like(test.y.to_numpy())
 
-        predictions = output[:, 1].astype(np.float32)
         to_return = pd.DataFrame(predictions, columns=["preds"])
 
-        return to_return.replace(to_return['preds'].min(), min_class_label)
+        if to_return['preds'].min() != to_return['preds'].max():
+            to_return = to_return.replace(to_return['preds'].min(), min_class_label)
+        return to_return
 
     @property
     def name(self):
