@@ -65,7 +65,7 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
 
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
-                    metrics: List[Metric], per_sens_metrics: List[Metric],
+                    metrics: List[Metric], per_sens_metrics: List[Metric], repeats: int = 3,
                     test_mode: bool = False) -> Dict[str, pd.DataFrame]:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
@@ -80,63 +80,67 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     """
     per_sens_metrics_check(per_sens_metrics)
 
-    columns = ['dataset', 'transform', 'model']
+    columns = ['dataset', 'transform', 'model', 'repeat']
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
-    total_experiments = 1 + (len(datasets) * (len(preprocess_models)+1)) + \
-                        (len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
+    total_experiments = 1 + repeats*(len(datasets) * (len(preprocess_models)+1)) + \
+                        repeats*(len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
 
+    seed = 0
     with tqdm(total=total_experiments) as pbar:
         for dataset in datasets:
-            train: DataTuple
-            test: DataTuple
-            train, test = train_test_split(load_data(dataset))
-            if test_mode:
-                train = get_subset(train)  # take smaller subset of training data to speed up training
+            for repeat in range(repeats):
+                train: DataTuple
+                test: DataTuple
+                train, test = train_test_split(load_data(dataset), random_seed=seed)
+                seed += 2410
+                if test_mode:
+                    train = get_subset(train)  # take smaller subset of training data to speed up training
 
-            to_operate_on = {"no_transform": {'train': train,
-                                              'test': test}}
+                to_operate_on = {"no_transform": {'train': train,
+                                                  'test': test}}
 
-            for pre_process_method in preprocess_models:
-                new_train, new_test = pre_process_method.run(train, test)
-                to_operate_on[pre_process_method.name] = {
-                    'train': DataTuple(x=new_train, s=train.s, y=train.y),
-                    'test': DataTuple(x=new_test, s=test.s, y=test.y),
-                }
-
-                pbar.update()
-
-            transform_name: str
-            for transform_name, transform in to_operate_on.items():
-
-                transformed_train: DataTuple = transform['train']
-                transformed_test: DataTuple = transform['test']
-
-                for model in inprocess_models:
-
-                    temp_res: Dict[str, Union[str, float]] = {'dataset': dataset.name,
-                                                              'transform': transform_name,
-                                                              'model': model.name}
-
-                    predictions: pd.DataFrame
-                    predictions = model.run(transformed_train, transformed_test)
-
-                    temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
-
-                    for postprocess in postprocess_models:
-                        # Post-processing has yet to be defined
-                        # - leaving blank until we have an implementation to work with
-                        pass
+                for pre_process_method in preprocess_models:
+                    new_train, new_test = pre_process_method.run(train, test)
+                    to_operate_on[pre_process_method.name] = {
+                        'train': DataTuple(x=new_train, s=train.s, y=train.y),
+                        'test': DataTuple(x=new_test, s=test.s, y=test.y),
+                    }
 
                     pbar.update()
 
-                    results = results.append(temp_res, ignore_index=True)
-                outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
-                outdir.mkdir(exist_ok=True)
-                results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+                transform_name: str
+                for transform_name, transform in to_operate_on.items():
 
-                pbar.update()
+                    transformed_train: DataTuple = transform['train']
+                    transformed_test: DataTuple = transform['test']
+
+                    for model in inprocess_models:
+
+                        temp_res: Dict[str, Union[str, float]] = {'dataset': dataset.name,
+                                                                  'transform': transform_name,
+                                                                  'model': model.name,
+                                                                  'repeat': f"{repeat}-{seed}"}
+
+                        predictions: pd.DataFrame
+                        predictions = model.run(transformed_train, transformed_test)
+
+                        temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+
+                        for postprocess in postprocess_models:
+                            # Post-processing has yet to be defined
+                            # - leaving blank until we have an implementation to work with
+                            pass
+
+                        pbar.update()
+
+                        results = results.append(temp_res, ignore_index=True)
+                    outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
+                    outdir.mkdir(exist_ok=True)
+                    results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+
+                    pbar.update()
 
     results = results.set_index(['dataset', 'transform', 'model'])
     return results
