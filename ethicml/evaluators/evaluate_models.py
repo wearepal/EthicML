@@ -16,6 +16,7 @@ from .per_sensitive_attribute import (metric_per_sensitive_attribute, MetricNotA
                                       diff_per_sensitive_attribute, ratio_per_sensitive_attribute)
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import train_test_split
+from tqdm import tqdm
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -81,51 +82,60 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
     to_return: Dict[str, pd.DataFrame] = {}
 
-    for dataset in datasets:
-        train: DataTuple
-        test: DataTuple
-        train, test = train_test_split(load_data(dataset))
-        if test_mode:
-            train = get_subset(train)  # take smaller subset of training data to speed up training
+    total_experiments = len(datasets) * len(preprocess_models) * len(inprocess_models)
 
-        to_operate_on = {"no_transform": {'train': train,
-                                          'test': test}}
+    with tqdm(total=total_experiments) as pbar:
+        for dataset in datasets:
+            train: DataTuple
+            test: DataTuple
+            train, test = train_test_split(load_data(dataset))
+            if test_mode:
+                train = get_subset(train)  # take smaller subset of training data to speed up training
 
-        for pre_process_method in preprocess_models:
-            new_train, new_test = pre_process_method.run(train, test)
-            to_operate_on[pre_process_method.name] = {
-                'train': DataTuple(x=new_train, s=train.s, y=train.y),
-                'test': DataTuple(x=new_test, s=test.s, y=test.y),
-            }
+            to_operate_on = {"no_transform": {'train': train,
+                                              'test': test}}
 
-        columns = ['model']
-        columns += [metric.name for metric in metrics]
+            for pre_process_method in preprocess_models:
+                new_train, new_test = pre_process_method.run(train, test)
+                to_operate_on[pre_process_method.name] = {
+                    'train': DataTuple(x=new_train, s=train.s, y=train.y),
+                    'test': DataTuple(x=new_test, s=test.s, y=test.y),
+                }
 
-        transform_name: str
-        for transform_name, transform in to_operate_on.items():
-            results = pd.DataFrame(columns=columns)
+                pbar.update()
 
-            transformed_train: DataTuple = transform['train']
-            transformed_test: DataTuple = transform['test']
+            columns = ['model']
+            columns += [metric.name for metric in metrics]
 
-            for model in inprocess_models:
+            transform_name: str
+            for transform_name, transform in to_operate_on.items():
+                results = pd.DataFrame(columns=columns)
 
-                temp_res: Dict[str, Union[str, float]] = {'model': model.name}
+                transformed_train: DataTuple = transform['train']
+                transformed_test: DataTuple = transform['test']
 
-                predictions: pd.DataFrame
-                predictions = model.run(transformed_train, transformed_test)
+                for model in inprocess_models:
 
-                temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+                    temp_res: Dict[str, Union[str, float]] = {'model': model.name}
 
-                for postprocess in postprocess_models:
-                    # Post-processing has yet to be defined
-                    # - leaving blank until we have an implementation to work with
-                    pass
+                    predictions: pd.DataFrame
+                    predictions = model.run(transformed_train, transformed_test)
 
-                results = results.append(temp_res, ignore_index=True)
-            outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
-            outdir.mkdir(exist_ok=True)
-            results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
-            to_return[f"{dataset.name}_{transform_name}"] = results
+                    temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+
+                    for postprocess in postprocess_models:
+                        # Post-processing has yet to be defined
+                        # - leaving blank until we have an implementation to work with
+                        pass
+
+                    pbar.update()
+
+                    results = results.append(temp_res, ignore_index=True)
+                outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
+                outdir.mkdir(exist_ok=True)
+                results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+                to_return[f"{dataset.name}_{transform_name}"] = results
+
+                pbar.update()
 
     return to_return
