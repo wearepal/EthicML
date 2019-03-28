@@ -11,7 +11,7 @@ setup(
         "imageio >= 2.4.1",
         "matplotlib >= 3.0.2",
         "numpy >= 1.14.2",
-        "pandas >= 0.22.0",
+        "pandas >= 0.24.0",
         "pylint >= 1.8.2",
         "pytest >= 3.3.2",
         "pytest-cov >= 2.6.0",
