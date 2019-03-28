@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Dict, Union
 
 import pandas as pd
+from tqdm import tqdm
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
@@ -16,7 +17,6 @@ from .per_sensitive_attribute import (metric_per_sensitive_attribute, MetricNotA
                                       diff_per_sensitive_attribute, ratio_per_sensitive_attribute)
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import train_test_split
-from tqdm import tqdm
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -96,7 +96,8 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                 train, test = train_test_split(load_data(dataset), random_seed=seed)
                 seed += 2410
                 if test_mode:
-                    train = get_subset(train)  # take smaller subset of training data to speed up training
+                    # take smaller subset of training data to speed up training
+                    train = get_subset(train)
 
                 to_operate_on = {"no_transform": {'train': train,
                                                   'test': test}}

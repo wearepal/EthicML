@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 import numpy as np
 import pandas as pd
 
-from ethicml.algorithms.inprocess.installed_model import InstalledModel, ROOT_DIR
+from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.implementations.utils import instance_weight_check
 
 
