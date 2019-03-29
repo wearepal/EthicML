@@ -63,7 +63,7 @@ class InstalledModel(InAlgorithm):
                                   env=environ, shell=True)
 
     def _run(self, train, test):
-        return self.run_threaded(train, test)
+        return super().run(train, test, sub_process=True)  # set sub_process always to True
 
     def _script_command(self, train_paths, test_paths, pred_path):
         """

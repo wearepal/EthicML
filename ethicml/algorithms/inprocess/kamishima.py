@@ -28,7 +28,7 @@ class Kamishima(InstalledModel):
         result = pd.concat([data.x, data.s, data.y], axis=1).to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
-    def run_threaded(self, train, test):
+    def run(self, train, test, _=False):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")
