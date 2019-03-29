@@ -40,5 +40,5 @@ def test_simple_saving():
             # the following command copies the x of the training data to the pred_path location
             return ['-c', f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
-    data_x = CheckEquality().run_threaded(data_tuple, data_tuple)
+    data_x = CheckEquality().run(data_tuple, data_tuple, sub_process=True)
     pd.testing.assert_frame_equal(data_tuple.x, data_x)

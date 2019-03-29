@@ -2,7 +2,6 @@
 Abstract Base Class of all algorithms in the framework
 """
 
-from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Tuple, List
@@ -23,20 +22,9 @@ class PreAlgorithm(Algorithm):
             test: test data
             sub_process: should this model run in it's own process?
         """
-        return self.run_threaded(train, test) if sub_process else self._run(train, test)
+        if not sub_process:
+            return self._run(train, test)
 
-    @abstractmethod
-    def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Generate fair features with the given data"""
-        raise NotImplementedError("`_run` needs to be implemented")
-
-    def run_test(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Run with reduced training set so that it finishes quicker"""
-        train_testing = get_subset(train)
-        return self.run(train_testing, test)
-
-    def run_threaded(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """ orchestrator for threaded """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
@@ -45,6 +33,15 @@ class PreAlgorithm(Algorithm):
             cmd = self._script_command(train_paths, test_paths, train_path, test_path)
             self._call_script(cmd)
             return load_feather(train_path), load_feather(test_path)
+
+    def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Generate fair features with the given data"""
+        raise NotImplementedError("`_run` needs to be implemented")
+
+    def run_test(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Run with reduced training set so that it finishes quicker"""
+        train_testing = get_subset(train)
+        return self.run(train_testing, test)
 
     def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
                         new_test_path: Path) -> List[str]:
