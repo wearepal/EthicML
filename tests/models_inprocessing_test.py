@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import pytest
 
-from ethicml.algorithms.inprocess import Agarwal, InAlgorithm, Kamishima, LRCV, LRProb, LR, SVM
+from ethicml.algorithms.inprocess import (Agarwal, GPyT, GPyTDemPar, GPyTEqOdds, InAlgorithm,
+                                          Kamishima, LRCV, LRProb, LR, SVM)
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
 from ethicml.utility.heaviside import Heaviside
@@ -79,6 +80,39 @@ def test_kamishima(kamishima):
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 208
     assert predictions[predictions.values == -1].count().values[0] == 192
+
+
+@pytest.fixture(scope="module")
+def gpyt_models():
+    # the gpyt models are created together because they share a git repository
+    gpyt = GPyT(epochs=2, length_scale=2.4)
+    gpyt_dem_par = GPyTDemPar(epochs=2, length_scale=.05)
+    gpyt_eq_odds = GPyTEqOdds(epochs=2, tpr=1.0, length_scale=.05)
+    yield (gpyt, gpyt_dem_par, gpyt_eq_odds)
+    gpyt.remove()  # only has to be called from one of the models because they share a directory
+
+
+def test_gpyt(gpyt_models):
+    train, test = get_train_test()
+
+    baseline: InAlgorithm = gpyt_models[0]
+    dem_par: InAlgorithm = gpyt_models[1]
+    eq_odds: InAlgorithm = gpyt_models[2]
+
+    assert baseline.name == "GPyT_in_True"
+    predictions: pd.DataFrame = baseline.run(train, test)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 210, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 190, 0.02)
+
+    assert dem_par.name == "GPyT_dem_par_in_True"
+    predictions: pd.DataFrame = dem_par.run(train, test)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 182, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 218, 0.02)
+
+    assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
+    predictions: pd.DataFrame = eq_odds.run(train, test)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 179, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 221, 0.02)
 
 
 def test_threaded_svm():
