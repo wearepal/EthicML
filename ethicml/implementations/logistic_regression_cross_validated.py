@@ -4,8 +4,7 @@ from sklearn.model_selection import KFold
 
 import pandas as pd
 
-from ethicml.implementations.utils import instance_weight_check
-from .common import InAlgoInterface
+from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
 
 
 def train_and_predict(train, test):

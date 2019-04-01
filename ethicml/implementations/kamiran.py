@@ -16,8 +16,7 @@ import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
-
-from .common import load_data_from_flags, save_transformations
+from ethicml.implementations.utils import load_data_from_flags, save_transformations
 
 
 def _obtain_conditionings(dataset: DataTuple):

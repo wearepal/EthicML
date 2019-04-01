@@ -13,8 +13,8 @@ import torch
 from torch import nn
 from torch.autograd import Function
 
+from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from .pytorch_common import CustomDataset
-from .common import load_data_from_flags, save_transformations
 
 
 STRING_TO_ACTIVATION_MAP = {
