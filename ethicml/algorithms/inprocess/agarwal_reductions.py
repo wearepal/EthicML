@@ -51,4 +51,4 @@ class Agarwal(InAlgorithm):
 
     @property
     def name(self) -> str:
-        return f"Agarwal {self.classifier} "
+        return f"Agarwal {self.classifier}"
