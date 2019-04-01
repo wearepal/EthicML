@@ -7,9 +7,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.implementations.utils import instance_weight_check
+from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
 from ethicml.utility.heaviside import Heaviside
-from .common import InAlgoInterface
 
 
 def train_and_predict(train: DataTuple, test: DataTuple,
