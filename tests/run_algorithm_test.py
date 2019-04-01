@@ -31,14 +31,16 @@ def test_can_load_test_data():
 
 
 def test_run_alg_suite():
-    datasets: List[Dataset] = [Toy(), Adult(), Compas(), Sqf(), German()]
+    dataset = Adult("Race")
+    dataset.sens_attrs = ["race_White"]
+    datasets: List[Dataset] = [dataset, Toy()]
     preprocess_models: List[PreAlgorithm] = [Beutel()]
     inprocess_models: List[InAlgorithm] = [LR()]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
-                    postprocess_models, metrics, per_sens_metrics, test_mode=True)
+                    postprocess_models, metrics, per_sens_metrics, repeats=3, test_mode=True)
 
 
 def test_run_alg_suite_wrong_metrics():
