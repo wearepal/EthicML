@@ -11,8 +11,7 @@ import scipy.optimize as optim
 from numba import jit
 
 from ethicml.algorithms.utils import DataTuple
-
-from .common import load_data_from_flags, save_transformations
+from ethicml.implementations.utils import load_data_from_flags, save_transformations
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
 # pylint: disable=invalid-name
