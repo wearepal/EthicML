@@ -1,6 +1,7 @@
 """
 Runs given metrics on given algorithms for given datasets
 """
+import os
 from pathlib import Path
 from typing import List, Dict, Union
 
@@ -84,8 +85,9 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
-    total_experiments = 1 + repeats*(len(datasets) * (len(preprocess_models)+1)) + \
-                        repeats*(len(datasets) * (len(preprocess_models)+1) * len(inprocess_models))
+    total_experiments = len(datasets) * repeats * \
+                        (1 + len(preprocess_models) +
+                         ((1 + len(preprocess_models)) * len(inprocess_models)))
 
     seed = 0
     with tqdm(total=total_experiments) as pbar:
@@ -139,7 +141,12 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                         results = results.append(temp_res, ignore_index=True)
                     outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
                     outdir.mkdir(exist_ok=True)
-                    results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+                    path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
+                    exists = os.path.isfile(path_to_file)
+                    if exists:
+                        loaded_results = pd.read_csv(path_to_file)
+                        results = pd.concat([loaded_results, results])
+                    results.to_csv(path_to_file, index=False)
 
                     pbar.update()
 
