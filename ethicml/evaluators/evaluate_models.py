@@ -1,10 +1,12 @@
 """
 Runs given metrics on given algorithms for given datasets
 """
+import os
 from pathlib import Path
 from typing import List, Dict, Union
 
 import pandas as pd
+from tqdm import tqdm
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
@@ -64,8 +66,8 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
 
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
-                    metrics: List[Metric], per_sens_metrics: List[Metric],
-                    test_mode: bool = False) -> None:
+                    metrics: List[Metric], per_sens_metrics: List[Metric], repeats: int = 3,
+                    test_mode: bool = False) -> Dict[str, pd.DataFrame]:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
@@ -79,49 +81,74 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     """
     per_sens_metrics_check(per_sens_metrics)
 
-    for dataset in datasets:
-        train: DataTuple
-        test: DataTuple
-        train, test = train_test_split(load_data(dataset))
-        if test_mode:
-            train = get_subset(train)  # take smaller subset of training data to speed up training
+    columns = ['dataset', 'transform', 'model', 'repeat']
+    columns += [metric.name for metric in metrics]
+    results = pd.DataFrame(columns=columns)
 
-        to_operate_on = {"no_transform": {'train': train,
-                                          'test': test}}
+    total_experiments = len(datasets) * repeats * \
+                        (1 + len(preprocess_models) +
+                         ((1 + len(preprocess_models)) * len(inprocess_models)))
 
-        for pre_process_method in preprocess_models:
-            new_train, new_test = pre_process_method.run(train, test)
-            to_operate_on[pre_process_method.name] = {
-                'train': DataTuple(x=new_train, s=train.s, y=train.y),
-                'test': DataTuple(x=new_test, s=test.s, y=test.y),
-            }
+    seed = 0
+    with tqdm(total=total_experiments) as pbar:
+        for dataset in datasets:
+            for repeat in range(repeats):
+                train: DataTuple
+                test: DataTuple
+                train, test = train_test_split(load_data(dataset), random_seed=seed)
+                seed += 2410
+                if test_mode:
+                    # take smaller subset of training data to speed up training
+                    train = get_subset(train)
 
-        columns = ['model']
-        columns += [metric.name for metric in metrics]
-        columns += get_sensitive_combinations(per_sens_metrics, train)
+                to_operate_on = {"no_transform": {'train': train,
+                                                  'test': test}}
 
-        transform_name: str
-        for transform_name, transform in to_operate_on.items():
-            results = pd.DataFrame(columns=columns)
+                for pre_process_method in preprocess_models:
+                    new_train, new_test = pre_process_method.run(train, test)
+                    to_operate_on[pre_process_method.name] = {
+                        'train': DataTuple(x=new_train, s=train.s, y=train.y),
+                        'test': DataTuple(x=new_test, s=test.s, y=test.y),
+                    }
 
-            transformed_train: DataTuple = transform['train']
-            transformed_test: DataTuple = transform['test']
+                    pbar.update()
 
-            for model in inprocess_models:
+                transform_name: str
+                for transform_name, transform in to_operate_on.items():
 
-                temp_res: Dict[str, Union[str, float]] = {'model': model.name}
+                    transformed_train: DataTuple = transform['train']
+                    transformed_test: DataTuple = transform['test']
 
-                predictions: pd.DataFrame
-                predictions = model.run(transformed_train, transformed_test)
+                    for model in inprocess_models:
 
-                temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+                        temp_res: Dict[str, Union[str, float]] = {'dataset': dataset.name,
+                                                                  'transform': transform_name,
+                                                                  'model': model.name,
+                                                                  'repeat': f"{repeat}-{seed}"}
 
-                for postprocess in postprocess_models:
-                    # Post-processing has yet to be defined
-                    # - leaving blank until we have an implementation to work with
-                    pass
+                        predictions: pd.DataFrame
+                        predictions = model.run(transformed_train, transformed_test)
 
-                results = results.append(temp_res, ignore_index=True)
-            outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
-            outdir.mkdir(exist_ok=True)
-            results.to_csv(outdir / f"{dataset.name}_{transform_name}.csv", index=False)
+                        temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+
+                        for postprocess in postprocess_models:
+                            # Post-processing has yet to be defined
+                            # - leaving blank until we have an implementation to work with
+                            pass
+
+                        pbar.update()
+
+                        results = results.append(temp_res, ignore_index=True)
+                    outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
+                    outdir.mkdir(exist_ok=True)
+                    path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
+                    exists = os.path.isfile(path_to_file)
+                    if exists:
+                        loaded_results = pd.read_csv(path_to_file)
+                        results = pd.concat([loaded_results, results])
+                    results.to_csv(path_to_file, index=False)
+
+                    pbar.update()
+
+    results = results.set_index(['dataset', 'transform', 'model', 'repeat'])
+    return results

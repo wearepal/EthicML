@@ -29,7 +29,7 @@ class InstalledModel(InAlgorithm):
         self.url = url
         self.clone_directory()
         self.create_venv()
-        super().__init__(executable=str(ROOT_DIR / name / module / '.venv' / 'bin' / 'python'))
+        super().__init__(executable=str(Path(".") / name / module / '.venv' / 'bin' / 'python'))
 
     @property
     def name(self) -> str:
@@ -43,8 +43,6 @@ class InstalledModel(InAlgorithm):
         if not os.path.exists(directory):
             os.makedirs(directory)
             git.Git(directory).clone(self.url)
-        else:
-            print("Repo found")
 
     def create_venv(self):
         """
@@ -54,13 +52,12 @@ class InstalledModel(InAlgorithm):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["PIPENV_PIPFILE"] = str(ROOT_DIR / self.repo_name / self.module / 'Pipfile')
+        environ["PIPENV_PIPFILE"] = str(Path(".") / self.repo_name / self.module / 'Pipfile')
 
         venv_directory = Path(".") / self.repo_name / self.module / ".venv"
 
         if not os.path.exists(venv_directory):
-            subprocess.check_call("pipenv install",
-                                  env=environ, shell=True)
+            subprocess.check_call("pipenv install", env=environ, shell=True)
 
     def _run(self, train, test):
         return super().run(train, test, sub_process=True)  # set sub_process always to True
@@ -70,7 +67,7 @@ class InstalledModel(InAlgorithm):
         Overridden from parent - see there
         """
         args = conventional_interface(train_paths, test_paths, pred_path)
-        return [str(ROOT_DIR / self.repo_name / self.module / self.file_name)] + args
+        return [str(Path(".") / self.repo_name / self.module / self.file_name)] + args
 
     def remove(self):
         """

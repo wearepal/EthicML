@@ -113,7 +113,7 @@ def test_agarwal():
     train, test = get_train_test()
     model: InAlgorithm = Agarwal()
     assert model is not None
-    assert model.name == "Agarwal"
+    assert model.name == "Agarwal LR"
 
     predictions: np.array = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 145

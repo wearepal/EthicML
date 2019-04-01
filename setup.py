@@ -11,7 +11,7 @@ setup(
         "imageio >= 2.4.1",
         "matplotlib >= 3.0.2",
         "numpy >= 1.14.2",
-        "pandas >= 0.22.0",
+        "pandas >= 0.24.0",
         "pylint >= 1.8.2",
         "pytest >= 3.3.2",
         "pytest-cov >= 2.6.0",
@@ -19,5 +19,9 @@ setup(
         "seaborn >= 0.9.0",
         "torch >= 0.4.1",
         "typing >= 3.6.2",
+        "fairlearn >= 0.2.0",
+        "GitPython >= 2.1.11",
+        "tqdm >= 4.31.1",
+        "pipenv >= 2018.11.26"
     ],
 )

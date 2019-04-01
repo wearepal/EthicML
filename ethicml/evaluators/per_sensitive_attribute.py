@@ -87,13 +87,13 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
     """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()
-    diff_per_sens = {}
+    ratio_per_sens = {}
 
     for i, _ in enumerate(sens_values):
         for j in range(i+1, len(sens_values)):
             key: str = "{}/{}".format(sens_values[i], sens_values[j])
             i_value: float = per_sens_res[sens_values[i]]
             j_value: float = per_sens_res[sens_values[j]]
-            diff_per_sens[key] = i_value / j_value
+            ratio_per_sens[key] = i_value / j_value
 
-    return diff_per_sens
+    return ratio_per_sens

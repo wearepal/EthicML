@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.utils import DataTuple
+from ethicml.implementations.utils import instance_weight_check
 from ethicml.utility.heaviside import Heaviside
 from .common import InAlgoInterface
 
@@ -16,11 +17,13 @@ def train_and_predict(train: DataTuple, test: DataTuple,
                       eps: float, iters: int):
     """Train a logistic regression model and compute predictions on the given test data"""
 
+    train, _ = instance_weight_check(train)
+
     fairness_class: Moment = DP() if fairness == "DP" else EO()
     if classifier == "SVM":
         model = SVC(gamma='auto', random_state=888)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000)
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]
@@ -34,7 +37,9 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     preds = pd.DataFrame(res['best_classifier'](test.x), columns=["preds"])
     helper = Heaviside()
     preds = preds.apply(helper.apply)
-    preds = preds.replace(0, -1)
+    min_class_label = train.y[train.y.columns[0]].min()
+    if preds['preds'].min() != preds['preds'].max():
+        preds = preds.replace(preds['preds'].min(), min_class_label)
     return preds
 
 
