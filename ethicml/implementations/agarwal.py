@@ -13,16 +13,16 @@ from ethicml.utility.heaviside import Heaviside
 
 def train_and_predict(train: DataTuple, test: DataTuple,
                       classifier: str, fairness: str,
-                      eps: float, iters: int):
+                      eps: float, iters: int, hyperparams):
     """Train a logistic regression model and compute predictions on the given test data"""
 
     train, _ = instance_weight_check(train)
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
     if classifier == "SVM":
-        model = SVC(gamma='auto', random_state=888)
+        model = SVC(gamma='auto', random_state=888, **hyperparams)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, **hyperparams)
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]

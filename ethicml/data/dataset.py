@@ -5,6 +5,7 @@ Abstract Base Class for all datasets that come with the framework
 from abc import ABC, abstractmethod
 from typing import Dict, List
 
+from ethicml.common import ROOT_DIR
 from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
 
@@ -28,6 +29,7 @@ class Dataset(ABC):
         self._disc_features: List[str] = []
         self.features_to_remove: List[str] = []
         self.discrete_only: bool = False
+        self._filepath = "{}/data/csvs/{}".format(ROOT_DIR, self.filename)
 
     @property
     @abstractmethod
@@ -38,6 +40,14 @@ class Dataset(ABC):
     @abstractmethod
     def filename(self) -> str:
         """File from which to load the data"""
+
+    @property
+    def filepath(self) -> str:
+        return self._filepath
+
+    @filepath.setter
+    def filepath(self, loc: str) -> None:
+        self._filepath = loc
 
     @property
     def ordered_features(self) -> Dict[str, List[str]]:

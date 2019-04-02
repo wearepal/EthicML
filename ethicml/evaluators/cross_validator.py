@@ -13,6 +13,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics import Accuracy, Metric, CV
 from ethicml.preprocessing.train_test_split import fold_data
+from tqdm import tqdm
 
 
 class Results:
@@ -86,12 +87,17 @@ class CrossValidator:
         if measures is None:
             measures = [Accuracy(), CV()]
 
-        for i, (train_fold, val) in enumerate(fold_data(train, folds=3)):
-            for experiment in self.experiments:
-                model = self.model(**experiment)
-                preds = model.run(train_fold, val)
-                for measure in measures:
-                    self.results.append(experiment, i, measure.name, measure.score(preds, val))
+        with tqdm(total=(self.folds*len(self.experiments))) as pbar:
+            for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
+                for experiment in self.experiments:
+                    model = self.model(**experiment)
+                    preds = model.run(train_fold, val)
+                    for measure in measures:
+                        self.results.append(experiment, i, measure.name, measure.score(preds, val))
+                    pbar.update()
 
     def best(self, measure) -> InAlgorithm:
         return self.model(**self.results.get_params_for_best(measure))
+
+    def best_hyper_params(self, measure):
+        return self.results.get_params_for_best(measure)
