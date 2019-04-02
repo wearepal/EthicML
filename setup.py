@@ -1,11 +1,13 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='EthicML',
     version='0.1.0',
     author='O. Thomas',
-    packages=['ethicml'],
-    description='Framework for algorithmic fairness comparisons',
+    author_email="olliethomas86@gmail.com",
+    description="A toolkit for understanding and researching algorithmic bias",
+    url="https://github.com/predictive-analytics-lab/EthicML",
+    packages=find_packages(),
     python_requires=">=3.6",
     install_requires=[
         "imageio >= 2.4.1",
