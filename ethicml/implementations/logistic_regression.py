@@ -8,7 +8,7 @@ from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
 
 def train_and_predict(train, test, C):
     """Train a logistic regression model and compute predictions on the given test data"""
-    clf = LogisticRegression(solver='liblinear', random_state=888, C=C)
+    clf = LogisticRegression(solver='liblinear', random_state=888, C=C, verbose=1)
     train, i_w = instance_weight_check(train)
     clf.fit(train.x, train.y.values.ravel(), sample_weight=i_w)
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
