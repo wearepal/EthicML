@@ -46,7 +46,7 @@ def run_experiments(train, test, exp_name, seed):
 
     for model in models:
         temp_res = {'dataset': "Adult",
-                    'transform': exp_name,
+                    'transform': "beutel",
                     'model': model.name,
                     'repeat': f"{seed}"}
 
@@ -58,7 +58,7 @@ def run_experiments(train, test, exp_name, seed):
 
     outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
     outdir.mkdir(exist_ok=True)
-    path_to_file = outdir / f"seed_{seed}_{exp_name}_reduced.csv"
+    path_to_file = outdir / f"seed_{seed}_beutel_reduced.csv"
     exists = os.path.isfile(path_to_file)
     if exists:
         loaded_results = pd.read_csv(path_to_file)
@@ -69,19 +69,20 @@ def run_experiments(train, test, exp_name, seed):
 def main():
     SEED = int(sys.argv[1])
 
-    data_loc = Path(".") / "data" / "weight_100_decoder_1e-4" / f"seed_{SEED}"
-    train_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtrain_50000.csv'),
-                                             s_columns=["sensitive"],
-                                             y_columns=["label"])
-    train_data: DataTuple = load_data(train_dataset)
+    data_loc = Path(".") / "data" / "styling_beutel" / f"seed_{SEED}"
 
-    test_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtest_50000.csv'),
-                                            s_columns=["sensitive"],
-                                            y_columns=["label"])
-    test_data: DataTuple = load_data(test_dataset)
+    train_beutel_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtraintilde.csv'),
+                                                   s_columns=["sensitive"],
+                                                   y_columns=["label"])
+    train_beutel_data: DataTuple = load_data(train_tilde_dataset)
 
-    run_experiments(train_data, test_data, "no_transform", SEED)
-        
+    test_beutel_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtesttilde.csv'),
+                                                  s_columns=["sensitive"],
+                                                  y_columns=["label"])
+    test_beutel_data: DataTuple = load_data(test_tilde_dataset)
+
+    run_experiments(train_beutel_data, test_beutel_data, "tilde", SEED)
+
     print(f'finished seed {SEED}')
 
 

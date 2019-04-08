@@ -240,7 +240,7 @@ def test_kamiran():
 
     kamiran_model: InAlgorithm = Kamiran()
     assert kamiran_model is not None
-    assert kamiran_model.name == "Kamiran & Calders"
+    assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: pd.DataFrame = kamiran_model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 210

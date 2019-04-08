@@ -4,7 +4,7 @@ import pandas as pd
 from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
+from sklearn.svm import SVC, LinearSVC
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
@@ -13,16 +13,16 @@ from ethicml.utility.heaviside import Heaviside
 
 def train_and_predict(train: DataTuple, test: DataTuple,
                       classifier: str, fairness: str,
-                      eps: float, iters: int, hyperparams):
+                      eps: float, iters: int, C: float, kernel: str):
     """Train a logistic regression model and compute predictions on the given test data"""
 
     train, _ = instance_weight_check(train)
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
     if classifier == "SVM":
-        model = SVC(gamma='auto', random_state=888, **hyperparams)
+        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False, verbose=1)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, **hyperparams)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=float(C), verbose=1)
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]
@@ -46,10 +46,11 @@ def main():
     """This function runs the Agarwal model as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
-    classifier, fairness, eps, iters, = interface.remaining_args()
+    classifier, fairness, eps, iters, C, kernel = interface.remaining_args()
     interface.save_predictions(train_and_predict(train, test,
                                                  classifier=classifier, fairness=fairness,
-                                                 eps=float(eps), iters=int(iters)))
+                                                 eps=float(eps), iters=int(iters),
+                                                 C=float(C), kernel=kernel))
 
 
 if __name__ == "__main__":
