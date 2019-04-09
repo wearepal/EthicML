@@ -44,14 +44,14 @@ class Kamishima(InstalledModel):
             output_path = str(tmp_path / "output.txt")
 
             try:
-                self._call_script([str(Path(".") / self.repo_name / self.module / 'train_pr.py'),
+                self._call_script([str(self._module_path() / 'train_pr.py'),
                                    '-e', str(self.eta),
                                    '-i', train_path,
                                    '-o', model_path,
                                    '--quiet'
                                    ])
 
-                self._call_script([str(Path(".") / self.repo_name / self.module / 'predict_lr.py'),
+                self._call_script([str(self._module_path() / 'predict_lr.py'),
                                    '-i', test_path,
                                    '-m', model_path,
                                    '-o', output_path,
