@@ -101,18 +101,18 @@ def test_gpyt(gpyt_models):
 
     assert baseline.name == "GPyT_in_True"
     predictions: pd.DataFrame = baseline.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 210, 0.02)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 190, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 210, 0.1)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 190, 0.1)
 
     assert dem_par.name == "GPyT_dem_par_in_True"
     predictions: pd.DataFrame = dem_par.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 182, 0.02)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 218, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 182, 0.1)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 218, 0.1)
 
     assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
     predictions: pd.DataFrame = eq_odds.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 179, 0.02)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 221, 0.02)
+    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 179, 0.1)
+    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 221, 0.1)
 
 
 def test_threaded_svm():
