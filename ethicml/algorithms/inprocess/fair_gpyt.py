@@ -13,7 +13,7 @@ PRED_FNAME = 'predictions.npz'
 MAX_EPOCHS = 1000
 MAX_BATCH_SIZE = 10100  # can go up to 10000
 MAX_NUM_INDUCING = 5000  # 2500 seems to be more than enough
-SEED = 1234
+SEED = 888
 
 
 class GPyT(InstalledModel):
@@ -22,7 +22,7 @@ class GPyT(InstalledModel):
     """
     basename = "GPyT"
 
-    def __init__(self, s_as_input=True, gpu=0, epochs=70):
+    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2):
         super().__init__(name="gpyt",
                          url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
                          module="fair-gpytorch",
@@ -30,6 +30,7 @@ class GPyT(InstalledModel):
         self.s_as_input = s_as_input
         self.gpu = gpu
         self.epochs = epochs
+        self.length_scale = length_scale
 
     def run(self, train, test, _=False):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
@@ -43,7 +44,7 @@ class GPyT(InstalledModel):
             np.savez(data_path, **raw_data)
             model_name = "local"
             flags = _flags(parameters, str(data_path), tmpdir, self.s_as_input, model_name,
-                           raw_data['ytrain'].shape[0], self.gpu, self.epochs)
+                           raw_data['ytrain'].shape[0], self.gpu, self.epochs, self.length_scale)
             self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
@@ -221,7 +222,7 @@ class GPyTEqOdds(GPyT):
             data_path = tmp_path / Path("data.npz")
             model_name = "local"  # f"run{self.counter}_s_as_input_{self.s_as_input}"
             flags = _flags(parameters, str(data_path), tmpdir, self.s_as_input, model_name,
-                           len(raw_data['ytrain']), self.gpu, self.epochs)
+                           len(raw_data['ytrain']), self.gpu, self.epochs, self.length_scale)
 
             if self.odds is None:
                 # Split the training data into train and dev and save it to `data.npz`
@@ -243,7 +244,7 @@ class GPyTEqOdds(GPyT):
                 opportunity = min(odds['p_ybary1_s0'], odds['p_ybary1_s1'])
                 odds['p_ybary1_s0'] = opportunity
                 odds['p_ybary1_s1'] = opportunity
-                flags.update({'train_steps': 2 * flags['train_steps'], **odds})
+                flags.update({'epochs': 2 * flags['epochs'], **odds})
             else:
                 flags.update(self.odds)
 
@@ -259,7 +260,8 @@ class GPyTEqOdds(GPyT):
                 pred_mean = output['pred_mean']
 
         # Convert the result to the expected format
-        return label_converter((pred_mean > 0.5).astype(raw_data['ytest'].dtype)[:, 0]), []
+        predictions = label_converter((pred_mean > 0.5).astype(raw_data['ytest'].dtype)[:, 0])
+        return pd.DataFrame(predictions, columns=['preds'])
 
     @property
     def name(self):
@@ -340,7 +342,8 @@ def split_train_dev(inputs, labels, sensitive):
                 ytest=labels[test_fraction], stest=sensitive[test_fraction])
 
 
-def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train, gpu, epochs):
+def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train, gpu, epochs,
+           length_scale):
     batch_size = min(MAX_BATCH_SIZE, num_train)
     epochs = _num_epochs(num_train) if epochs is None else epochs
     return {**dict(
@@ -366,7 +369,7 @@ def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train, g
         preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
         num_samples=1000,
         optimize_inducing=True,
-        length_scale=1.2,
+        length_scale=length_scale,
         sf=1.0,
         iso=False,
         num_samples_pred=2000,
