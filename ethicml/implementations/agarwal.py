@@ -4,10 +4,10 @@ import pandas as pd
 from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC, LinearSVC
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
+from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside
 
 
@@ -17,10 +17,8 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     """Train a logistic regression model and compute predictions on the given test data"""
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
-    if classifier == "SVM" and kernel == "linear":
-        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False)
-    elif classifier == "SVM":
-        model = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
+    if classifier == "SVM":
+        model = select_svm(C, kernel)
     else:
         model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=float(C))
 

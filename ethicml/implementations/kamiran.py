@@ -13,10 +13,10 @@ https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/reweig
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC, LinearSVC
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
+from ethicml.implementations.svm import select_svm
 
 
 def _obtain_conditionings(dataset: DataTuple):
@@ -78,13 +78,12 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
 
 def train_and_predict(train, test, classifier, C: float, kernel: str):
     """Train a logistic regression model and compute predictions on the given test data"""
-    if classifier == "SVM" and kernel == "linear":
-        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False, verbose=1)
-    elif classifier == "SVM":
-        model = SVC(random_state=888, C=C, kernel=kernel, gamma='auto')
+    if classifier == "SVM":
+        model = select_svm(C, kernel)
     else:
         model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C)
-    model.fit(train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"])
+    model.fit(train.x, train.y.values.ravel(),
+              sample_weight=compute_weights(train)["instance weights"])
     return pd.DataFrame(model.predict(test.x), columns=["preds"])
 
 
