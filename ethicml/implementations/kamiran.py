@@ -17,8 +17,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.utils import DataTuple
-
-from .common import load_data_from_flags, save_transformations, InAlgoInterface
+from ethicml.implementations.utils import InAlgoInterface
 
 
 def _obtain_conditionings(dataset: DataTuple):
