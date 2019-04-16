@@ -27,8 +27,6 @@ def metric_per_sensitive_attribute(
                              actual.y,
                              predictions], axis=1)
 
-    if amalgamated.shape[0] != actual.x.shape[0]:
-        print("ddf")
     assert amalgamated.shape[0] == actual.x.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
@@ -43,10 +41,14 @@ def metric_per_sensitive_attribute(
             for unique_s in actual.s[s_col].unique():
                 for p_col in pred_column:
                     subset = DataTuple(
-                        x=amalgamated[actual.s[s_col] == unique_s][actual.x.columns],
-                        s=amalgamated[actual.s[s_col] == unique_s][s_col],
-                        y=amalgamated[actual.s[s_col] == unique_s][y_col])
-                    pred_y = amalgamated[actual.s[s_col] == unique_s][p_col]
+                        x=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][actual.x.columns],
+                                       columns=actual.x.columns),
+                        s=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][s_col],
+                                       columns=[s_col]),
+                        y=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][y_col],
+                                       columns=[y_col]))
+                    pred_y = pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][p_col],
+                                          columns=[p_col])
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
 
