@@ -78,10 +78,12 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
 
 def train_and_predict(train, test, classifier, C: float, kernel: str):
     """Train a logistic regression model and compute predictions on the given test data"""
-    if classifier == "SVM":
+    if classifier == "SVM" and kernel == "linear":
         model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False, verbose=1)
+    elif classifier == "SVM":
+        model = SVC(random_state=888, C=C, kernel=kernel, gamma='auto')
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C, verbose=1)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C)
     model.fit(train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"])
     return pd.DataFrame(model.predict(test.x), columns=["preds"])
 

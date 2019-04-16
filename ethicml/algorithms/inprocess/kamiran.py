@@ -18,7 +18,7 @@ class Kamiran(InAlgorithm):
     Kamiran and Calders 2012
     """
 
-    def __init__(self, classifier: str = "LR", C: float = None, kernel:str = None):
+    def __init__(self, classifier: str = "LR", C: float = None, kernel: str = None):
         super().__init__()
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
@@ -45,7 +45,8 @@ class Kamiran(InAlgorithm):
     def _script_command(self, train_paths: PathTuple, test_paths: PathTuple,
                         pred_path: Path) -> (List[str]):
         script = ['-m', kamiran.train_and_predict.__module__]
-        args = conventional_interface(train_paths, test_paths, pred_path, self.classifier, str(self.C), self.kernel)
+        args = conventional_interface(train_paths, test_paths, pred_path,
+                                      self.classifier, str(self.C), self.kernel)
         return script + args
 
     @property
