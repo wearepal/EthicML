@@ -47,8 +47,8 @@ def test_cv_svm():
     best_model = svm_cv.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 201
-    assert predictions[predictions.values == -1].count().values[0] == 199
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
 
 def test_cv_lr():
@@ -172,10 +172,20 @@ def test_agarwal():
     assert predictions[predictions.values == 1].count().values[0] == 141
     assert predictions[predictions.values == -1].count().values[0] == 259
 
+    model = Agarwal(classifier="SVM", kernel='linear')
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
+
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 159
     assert predictions[predictions.values == -1].count().values[0] == 241
+
+    model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test, sub_process=True)

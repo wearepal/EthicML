@@ -19,10 +19,12 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     train, _ = instance_weight_check(train)
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
-    if classifier == "SVM":
-        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False, verbose=1)
+    if classifier == "SVM" and kernel == "linear":
+        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False)
+    elif classifier == "SVM":
+        model = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=float(C), verbose=1)
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=float(C))
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]

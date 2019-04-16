@@ -8,8 +8,10 @@ from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
 
 def train_and_predict(train, test, C, kernel):
     """Train an SVM model and compute predictions on the given test data"""
-    # clf = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
-    clf = LinearSVC(tol=1e-12, dual=False, random_state=888, C=C, verbose=1)
+    if kernel == 'linear':
+        clf = LinearSVC(tol=1e-12, dual=False, random_state=888, C=C)
+    else:
+        clf = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
     train, i_w = instance_weight_check(train)
     clf.fit(train.x, train.y.values.ravel(), sample_weight=i_w)
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])

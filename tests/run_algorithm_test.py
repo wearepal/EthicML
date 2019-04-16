@@ -40,7 +40,7 @@ def test_run_alg_suite():
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
-                    postprocess_models, metrics, per_sens_metrics, repeats=3, test_mode=True)
+                    postprocess_models, metrics, per_sens_metrics, repeats=1, test_mode=True)
 
 
 def test_run_alg_suite_wrong_metrics():
@@ -52,4 +52,4 @@ def test_run_alg_suite_wrong_metrics():
     per_sens_metrics: List[Metric] = [Accuracy(), TPR(), CV()]
     with pytest.raises(MetricNotApplicable):
         evaluate_models(datasets, preprocess_models, inprocess_models,
-                        postprocess_models, metrics, per_sens_metrics, test_mode=True)
+                        postprocess_models, metrics, per_sens_metrics, repeats=1, test_mode=True)
