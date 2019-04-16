@@ -1,8 +1,17 @@
-from typing import List, Dict, Any
+from typing import Tuple, List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
 
+from ethicml.algorithms.inprocess.agarwal_reductions import Agarwal
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.installed_model import InstalledModel
+from ethicml.algorithms.inprocess.kamiran import Kamiran
+from ethicml.algorithms.inprocess.kamishima import Kamishima
+from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
+from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
+from ethicml.algorithms.inprocess.logistic_regression import LR
+from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.inprocess import (Agarwal, GPyT, GPyTDemPar, GPyTEqOdds, InAlgorithm,
                                           Kamishima, LRCV, LRProb, LR, SVM)
 from ethicml.evaluators.cross_validator import CrossValidator
@@ -224,3 +233,19 @@ def test_threaded_lr_prob():
     predictions = predictions.replace(0, -1)
     assert predictions[predictions.values == 1].count().values[0] == 211
     assert predictions[predictions.values == -1].count().values[0] == 189
+
+
+def test_kamiran():
+    train, test = get_train_test()
+
+    kamiran_model: InAlgorithm = Kamiran()
+    assert kamiran_model is not None
+    assert kamiran_model.name == "Kamiran & Calders"
+
+    predictions: pd.DataFrame = kamiran_model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 210
+    assert predictions[predictions.values == -1].count().values[0] == 190
+
+    predictions = kamiran_model.run(train, test, sub_process=True)
+    assert predictions[predictions.values == 1].count().values[0] == 210
+    assert predictions[predictions.values == -1].count().values[0] == 190

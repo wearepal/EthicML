@@ -2,9 +2,8 @@ from typing import Tuple
 import pandas as pd
 
 from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
-from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Kamiran, Zemel
+from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Zemel
 from ethicml.algorithms.utils import DataTuple
-from ethicml.utility.heaviside import Heaviside
 from tests.run_algorithm_test import get_train_test
 
 
@@ -56,86 +55,6 @@ def test_zemel():
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
     assert predictions[predictions.values == 1].count().values[0] == 182
     assert predictions[predictions.values == -1].count().values[0] == 218
-
-
-def test_kamiran():
-    train, test = get_train_test()
-
-    zemel_model: PreAlgorithm = Kamiran()
-    assert zemel_model is not None
-    assert zemel_model.name == "Kamiran & Calders"
-
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = zemel_model.run(train, test)
-    new_xtrain, new_xtest = new_xtrain_xtest
-
-    assert new_xtrain.shape[0] == train.x.shape[0]
-    assert new_xtest.shape[0] == test.x.shape[0]
-
-    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
-    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions[predictions.values == 1].count().values[0] == 205
-    assert predictions[predictions.values == -1].count().values[0] == 195
-
-    lr_model: InAlgorithm = LR()
-
-    predictions = lr_model.run_test(new_train, new_test)
-    assert predictions[predictions.values == 1].count().values[0] == 203
-    assert predictions[predictions.values == -1].count().values[0] == 197
-
-    lrp_model: InAlgorithm = LRProb()
-
-    heavi = Heaviside()
-    predictions = lrp_model.run_test(new_train, new_test)
-    predictions = predictions.apply(heavi.apply)
-    predictions = predictions.replace(0, -1)
-    assert predictions[predictions.values == 1].count().values[0] == 203
-    assert predictions[predictions.values == -1].count().values[0] == 197
-
-
-def test_threaded_kamiran():
-    train, test = get_train_test()
-
-    zemel_model: PreAlgorithm = Kamiran()
-    assert zemel_model is not None
-    assert zemel_model.name == "Kamiran & Calders"
-
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = zemel_model.run(train, test, sub_process=True)
-    new_xtrain, new_xtest = new_xtrain_xtest
-
-    assert new_xtrain.shape[0] == train.x.shape[0]
-    assert new_xtest.shape[0] == test.x.shape[0]
-
-    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
-    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions[predictions.values == 1].count().values[0] == 205
-    assert predictions[predictions.values == -1].count().values[0] == 195
-
-    lr_model: InAlgorithm = LR()
-
-    predictions = lr_model.run_test(new_train, new_test)
-    assert predictions[predictions.values == 1].count().values[0] == 203
-    assert predictions[predictions.values == -1].count().values[0] == 197
-
-    lrp_model: InAlgorithm = LRProb()
-
-    heavi = Heaviside()
-    predictions = lrp_model.run_test(new_train, new_test)
-    predictions = predictions.apply(heavi.apply)
-    predictions = predictions.replace(0, -1)
-    assert predictions[predictions.values == 1].count().values[0] == 203
-    assert predictions[predictions.values == -1].count().values[0] == 197
 
 
 def test_threaded_zemel():
