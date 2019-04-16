@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC, LinearSVC
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
+from ethicml.implementations.utils import InAlgoInterface
 from ethicml.utility.heaviside import Heaviside
 
 
