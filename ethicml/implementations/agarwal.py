@@ -16,8 +16,6 @@ def train_and_predict(train: DataTuple, test: DataTuple,
                       eps: float, iters: int, C: float, kernel: str):
     """Train a logistic regression model and compute predictions on the given test data"""
 
-    train, _ = instance_weight_check(train)
-
     fairness_class: Moment = DP() if fairness == "DP" else EO()
     if classifier == "SVM" and kernel == "linear":
         model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False)

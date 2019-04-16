@@ -70,17 +70,3 @@ def save_transformations(transforms: Tuple[pd.DataFrame, pd.DataFrame],
         # convert the column IDs to strings because the feather format requires that
         transform.columns = transform.columns.astype(str)
         transform.to_feather(transform_path)
-
-
-def instance_weight_check(dataset: DataTuple) -> Tuple[DataTuple, pd.Series]:
-    """
-    Checks if there's an 'instance weight' field in the training features.
-    If so, separate it out
-    """
-    i_w = None
-    if 'instance weights' in dataset.x.columns:
-        i_w = dataset.x['instance weights']
-        dataset = DataTuple(x=dataset.x.drop(['instance weights'], axis=1),
-                            s=dataset.s,
-                            y=dataset.y)
-    return dataset, i_w

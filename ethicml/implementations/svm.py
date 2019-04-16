@@ -12,8 +12,7 @@ def train_and_predict(train, test, C, kernel):
         clf = LinearSVC(tol=1e-12, dual=False, random_state=888, C=C)
     else:
         clf = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
-    train, i_w = instance_weight_check(train)
-    clf.fit(train.x, train.y.values.ravel(), sample_weight=i_w)
+    clf.fit(train.x, train.y.values.ravel())
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
 
