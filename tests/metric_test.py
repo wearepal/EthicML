@@ -16,7 +16,7 @@ from ethicml.evaluators.per_sensitive_attribute import (
     metric_per_sensitive_attribute, diff_per_sensitive_attribute,
     ratio_per_sensitive_attribute, MetricNotApplicable
 )
-from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, NPV, ProbNeg,
+from ethicml.metrics import (Accuracy, BCR, CV, Metric, NMI, PPV, NPV, ProbNeg,
                              ProbOutcome, ProbPos, TNR, TPR)
 from ethicml.metrics.hsic import Hsic
 from ethicml.metrics.theil import Theil
@@ -50,14 +50,6 @@ def test_probpos_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
-
-
-def test_eqopp_per_sens_attr():
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, EqOppProbPos())
-    assert acc_per_sens == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
 
 
 def test_proboutcome_per_sens_attr():
