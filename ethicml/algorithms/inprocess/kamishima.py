@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.implementations.utils import instance_weight_check
 
 
 class Kamishima(InstalledModel):
@@ -26,8 +25,6 @@ class Kamishima(InstalledModel):
     @staticmethod
     def create_file_in_kamishima_format(data, file_path):
         """Create a text file with the data"""
-
-        data, _ = instance_weight_check(data)
 
         result = pd.concat([data.x, data.s, data.y], axis=1).to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
