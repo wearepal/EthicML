@@ -6,12 +6,16 @@ import pandas as pd
 from ethicml.implementations.utils import InAlgoInterface
 
 
+def select_svm(C, kernel):
+    """Select the appropriate SVM model for the given parameters"""
+    if kernel == 'linear':
+        return LinearSVC(C=C, dual=False, tol=1e-12, random_state=888)
+    return SVC(C=C, kernel=kernel, gamma='auto', random_state=888)
+
+
 def train_and_predict(train, test, C, kernel):
     """Train an SVM model and compute predictions on the given test data"""
-    if kernel == 'linear':
-        clf = LinearSVC(tol=1e-12, dual=False, random_state=888, C=C)
-    else:
-        clf = SVC(gamma='auto', random_state=888, C=C, kernel=kernel)
+    clf = select_svm(C, kernel)
     clf.fit(train.x, train.y.values.ravel())
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
