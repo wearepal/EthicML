@@ -42,13 +42,13 @@ def metric_per_sensitive_attribute(
                 for p_col in pred_column:
                     subset = DataTuple(
                         x=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][actual.x.columns],
-                                       columns=actual.x.columns).reset_index(),
+                                       columns=actual.x.columns).reset_index(drop=True),
                         s=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][s_col],
-                                       columns=[s_col]).reset_index(),
+                                       columns=[s_col]).reset_index(drop=True),
                         y=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][y_col],
-                                       columns=[y_col]).reset_index())
+                                       columns=[y_col]).reset_index(drop=True))
                     pred_y = pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][p_col],
-                                          columns=[p_col]).reset_index()
+                                          columns=[p_col]).reset_index(drop=True)
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
 
