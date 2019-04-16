@@ -4,6 +4,7 @@ import pandas as pd
 from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Zemel
 from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.heaviside import Heaviside
 from tests.run_algorithm_test import get_train_test
 
 

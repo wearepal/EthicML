@@ -9,12 +9,11 @@ https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/reweig
            Classification without Discrimination," Knowledge and Information
            Systems, 2012.
 """
-import argparse
-from typing import Tuple
 
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC, LinearSVC
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
@@ -77,19 +76,24 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     return train_instance_weights
 
 
-def train_and_predict(train, test):
+def train_and_predict(train, test, classifier, C: float, kernel: str):
     """Train a logistic regression model and compute predictions on the given test data"""
-    clf = LogisticRegression(solver='liblinear', random_state=888)
-    clf.fit(train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"])
-    return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+    if classifier == "SVM" and kernel == "linear":
+        model = LinearSVC(random_state=888, C=C, tol=1e-12, dual=False, verbose=1)
+    elif classifier == "SVM":
+        model = SVC(random_state=888, C=C, kernel=kernel, gamma='auto')
+    else:
+        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C)
+    model.fit(train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"])
+    return pd.DataFrame(model.predict(test.x), columns=["preds"])
 
 
 def main():
     """This function runs the Kamiran&Calders method as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
-    _ = interface.remaining_args()
-    interface.save_predictions(train_and_predict(train, test))
+    classifier, C, kernel = interface.remaining_args()
+    interface.save_predictions(train_and_predict(train, test, classifier, float(C), kernel))
 
 
 if __name__ == "__main__":

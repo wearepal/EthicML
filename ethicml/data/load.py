@@ -6,7 +6,6 @@ import os
 from typing import List, Dict
 import pandas as pd
 
-from ..common import ROOT_DIR
 from ..algorithms.utils import DataTuple
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
@@ -22,9 +21,7 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     Returns:
         DataTuple with dataframes of features, labels and sensitive attributes
     """
-    filename = dataset.filename
-    data_loc: str = "{}/data/csvs/{}".format(ROOT_DIR, filename)
-    dataframe: pd.DataFrame = pd.read_csv(data_loc)
+    dataframe: pd.DataFrame = pd.read_csv(dataset.filepath)
     assert isinstance(dataframe, pd.DataFrame)
 
     feature_split = dataset.feature_split if not ordered else dataset.ordered_features
@@ -56,6 +53,7 @@ def create_data_obj(filepath: str,
 
     conf: ConfigurableDataset = ConfigurableDataset()
     conf.filename = os.path.basename(filepath)
+    conf.filepath = filepath
 
     dataframe: pd.DataFrame = pd.read_csv(filepath)
 

@@ -86,12 +86,16 @@ class CrossValidator:
         if measures is None:
             measures = [Accuracy(), CV()]
 
-        for i, (train_fold, val) in enumerate(fold_data(train, folds=3)):
+        for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
             for experiment in self.experiments:
                 model = self.model(**experiment)
                 preds = model.run(train_fold, val)
                 for measure in measures:
                     self.results.append(experiment, i, measure.name, measure.score(preds, val))
+                print(f"fold_{i}_model_{model.name}_completed")
 
     def best(self, measure) -> InAlgorithm:
         return self.model(**self.results.get_params_for_best(measure))
+
+    def best_hyper_params(self, measure):
+        return self.results.get_params_for_best(measure)

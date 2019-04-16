@@ -5,16 +5,14 @@ from sklearn.linear_model import LogisticRegression
 
 import pandas as pd
 
-from ethicml.implementations.utils import instance_weight_check, InAlgoInterface
+from ethicml.implementations.utils import InAlgoInterface
 
 
 def train_and_predict(train, test, C):
     """Train a logistic regression model and compute predictions on the given test data"""
     clf = LogisticRegression(solver='liblinear', random_state=888, C=C)
 
-    train, i_w = instance_weight_check(train)
-
-    clf.fit(train.x, train.y.values.ravel(), sample_weight=i_w)
+    clf.fit(train.x, train.y.values.ravel())
     return pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"])
 
 

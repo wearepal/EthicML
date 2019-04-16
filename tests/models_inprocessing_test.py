@@ -1,4 +1,4 @@
-from typing import Tuple, List, Dict, Any
+from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
@@ -47,8 +47,8 @@ def test_cv_svm():
     best_model = svm_cv.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 201
-    assert predictions[predictions.values == -1].count().values[0] == 199
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
 
 def test_cv_lr():
@@ -114,12 +114,12 @@ def test_gpyt(gpyt_models):
     np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 190, 0.1)
 
     assert dem_par.name == "GPyT_dem_par_in_True"
-    predictions: pd.DataFrame = dem_par.run(train, test)
+    predictions = dem_par.run(train, test)
     np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 182, 0.1)
     np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 218, 0.1)
 
     assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
-    predictions: pd.DataFrame = eq_odds.run(train, test)
+    predictions = eq_odds.run(train, test)
     np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 179, 0.1)
     np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 221, 0.1)
 
@@ -172,10 +172,20 @@ def test_agarwal():
     assert predictions[predictions.values == 1].count().values[0] == 141
     assert predictions[predictions.values == -1].count().values[0] == 259
 
+    model = Agarwal(classifier="SVM", kernel='linear')
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
+
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 159
     assert predictions[predictions.values == -1].count().values[0] == 241
+
+    model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
+    predictions = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 211
+    assert predictions[predictions.values == -1].count().values[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test, sub_process=True)
@@ -240,7 +250,7 @@ def test_kamiran():
 
     kamiran_model: InAlgorithm = Kamiran()
     assert kamiran_model is not None
-    assert kamiran_model.name == "Kamiran & Calders"
+    assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: pd.DataFrame = kamiran_model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 210
