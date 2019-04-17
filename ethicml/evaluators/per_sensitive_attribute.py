@@ -22,12 +22,8 @@ def metric_per_sensitive_attribute(
         raise MetricNotApplicable(f"Metric {metric.name} is not applicable per sensitive "
                                   f"attribute, apply to whole dataset instead")
 
-    amalgamated = pd.concat([actual.x,
-                             actual.s,
-                             actual.y,
-                             predictions], axis=1)
-
-    assert amalgamated.shape[0] == actual.x.shape[0]
+    assert actual.s.shape[0] == actual.x.shape[0]
+    assert actual.s.shape[0] == actual.y.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
 
@@ -41,13 +37,13 @@ def metric_per_sensitive_attribute(
             for unique_s in actual.s[s_col].unique():
                 for p_col in pred_column:
                     subset = DataTuple(
-                        x=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][actual.x.columns],
+                        x=pd.DataFrame(actual.x[actual.s[s_col] == unique_s][actual.x.columns],
                                        columns=actual.x.columns).reset_index(drop=True),
-                        s=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][s_col],
+                        s=pd.DataFrame(actual.s[actual.s[s_col] == unique_s][s_col],
                                        columns=[s_col]).reset_index(drop=True),
-                        y=pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][y_col],
+                        y=pd.DataFrame(actual.y[actual.s[s_col] == unique_s][y_col],
                                        columns=[y_col]).reset_index(drop=True))
-                    pred_y = pd.DataFrame(amalgamated[actual.s[s_col] == unique_s][p_col],
+                    pred_y = pd.DataFrame(predictions[actual.s[s_col] == unique_s][p_col],
                                           columns=[p_col]).reset_index(drop=True)
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
