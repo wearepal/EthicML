@@ -13,4 +13,5 @@ from .ppv import PPV
 from .npv import NPV
 from .cv import CV
 from .bcr import BCR
+from .theil import Theil
 from .prob_outcome import ProbOutcome
