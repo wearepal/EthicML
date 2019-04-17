@@ -29,4 +29,4 @@ class Theil(Metric):
 
     @property
     def name(self) -> str:
-        return "Theil Index"
+        return "Theil_Index"

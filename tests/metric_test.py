@@ -259,7 +259,7 @@ def test_theil():
     predictions: pd.DataFrame = model.run(train, test)
     theil = Theil()
     score = theil.score(predictions, test)
-    assert Theil().name == "Theil Index"
+    assert Theil().name == "Theil_Index"
     assert score == 0.08574602372541343
 
     model = LR()
