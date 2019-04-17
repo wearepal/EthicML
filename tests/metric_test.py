@@ -7,7 +7,7 @@ from numpy.testing import assert_allclose
 import pandas as pd
 import pytest
 
-from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM
+from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
 from ethicml.algorithms.utils import DataTuple
 from ethicml.data import Adult
 from ethicml.data.load import load_data
@@ -16,9 +16,10 @@ from ethicml.evaluators.per_sensitive_attribute import (
     metric_per_sensitive_attribute, diff_per_sensitive_attribute,
     ratio_per_sensitive_attribute, MetricNotApplicable
 )
-from ethicml.metrics import (Accuracy, BCR, CV, EqOppProbPos, Metric, NMI, PPV, NPV, ProbNeg,
+from ethicml.metrics import (Accuracy, BCR, CV, Metric, NMI, PPV, NPV, ProbNeg,
                              ProbOutcome, ProbPos, TNR, TPR)
 from ethicml.metrics.hsic import Hsic
+from ethicml.metrics.theil import Theil
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
@@ -49,14 +50,6 @@ def test_probpos_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {'s_0': 0.335, 's_1': 0.67}
-
-
-def test_eqopp_per_sens_attr():
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, EqOppProbPos())
-    assert acc_per_sens == {'s_0': 0.8428571428571429, 's_1': 0.8865248226950354}
 
 
 def test_proboutcome_per_sens_attr():
@@ -258,6 +251,36 @@ def test_cv():
     score = cv.score(predictions, test)
     assert CV().name == "CV"
     assert score == 0.665
+
+
+def test_theil():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    theil = Theil()
+    score = theil.score(predictions, test)
+    assert Theil().name == "Theil Index"
+    assert score == 0.08574602372541343
+
+    model = LR()
+    predictions = model.run(train, test)
+    theil = Theil()
+    score = theil.score(predictions, test)
+    assert score == 0.0797119257643937
+
+    model = Kamiran()
+    predictions = model.run(train, test)
+    theil = Theil()
+    score = theil.score(predictions, test)
+    assert score == 0.08588925720277356
+
+
+def test_theil_per_sens_attr():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    theil_per_sens = metric_per_sensitive_attribute(predictions, test, Theil())
+    assert theil_per_sens == {'s_0': 0.07140985552050053, 's_1': 0.10027302867983008}
 
 
 def test_hsic():

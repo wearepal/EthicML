@@ -13,5 +13,4 @@ from .ppv import PPV
 from .npv import NPV
 from .cv import CV
 from .bcr import BCR
-from .eq_opp_prob_pos import EqOppProbPos
 from .prob_outcome import ProbOutcome

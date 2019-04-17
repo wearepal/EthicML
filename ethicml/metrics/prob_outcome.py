@@ -11,7 +11,7 @@ from ..algorithms.utils import DataTuple
 class ProbOutcome(Metric):
     """Mean of logits"""
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        return prediction.sum() / prediction.size
+        return prediction.values.sum() / prediction.size
 
     @property
     def name(self) -> str:
