@@ -288,7 +288,7 @@ def test_hsic():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     hsic = Hsic()
-    score = hsic.score(predictions['preds'], test)
+    score = hsic.score(predictions, test)
     assert Hsic().name == "HSIC"
     assert score == 0.023969453598182592
 
