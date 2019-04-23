@@ -55,11 +55,11 @@ class Hsic(Metric):
         """
 
         s_cols = actual.s.columns
-        sens_labels = np.array(actual.s[s_cols]).ravel()
+        sens_labels = np.array(actual.s[s_cols])
 
         batchs_size = 5000
 
-        together = np.vstack((prediction, sens_labels))
+        together = np.hstack((prediction, sens_labels)).transpose()
 
         np.random.seed(888)
         col_idx = np.random.permutation(together.shape[1])
