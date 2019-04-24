@@ -7,7 +7,7 @@ import pandas as pd
 from ethicml.common import ROOT_DIR
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
-from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy
+from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
 from ethicml.algorithms.utils import DataTuple
 
 
@@ -22,6 +22,13 @@ def test_load_data():
     assert (2000, 2) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
+
+
+def test_load_non_binary_data():
+    data: DataTuple = load_data(NonBinaryToy())
+    assert (100, 2) == data.x.shape
+    assert (100, 1) == data.s.shape
+    assert (100, 1) == data.y.shape
 
 
 def test_discrete_data():

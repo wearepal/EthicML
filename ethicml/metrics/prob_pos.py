@@ -12,7 +12,7 @@ from ..algorithms.utils import DataTuple
 class ProbPos(Metric):
     """Probability of positive prediction"""
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        _, f_pos, _, t_pos = confusion_matrix(prediction, actual)
+        _, f_pos, _, t_pos = confusion_matrix(prediction, actual, pos_cls=self.positive_class)
 
         return (t_pos + f_pos) / prediction.size
 
