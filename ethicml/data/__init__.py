@@ -13,3 +13,4 @@ from .credit import Credit
 from .german import German
 from .sqf import Sqf
 from .toy import Toy
+from .non_binary_toy import NonBinaryToy

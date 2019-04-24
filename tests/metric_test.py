@@ -9,7 +9,7 @@ import pytest
 
 from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
 from ethicml.algorithms.utils import DataTuple
-from ethicml.data import Adult
+from ethicml.data import Adult, NonBinaryToy
 from ethicml.data.load import load_data
 from ethicml.evaluators.evaluate_models import run_metrics
 from ethicml.evaluators.per_sensitive_attribute import (
@@ -18,6 +18,7 @@ from ethicml.evaluators.per_sensitive_attribute import (
 )
 from ethicml.metrics import (Accuracy, BCR, CV, Metric, NMI, PPV, NPV, ProbNeg,
                              ProbOutcome, ProbPos, TNR, TPR)
+from ethicml.metrics.confusion_matrix import LabelOutOfBounds
 from ethicml.metrics.hsic import Hsic
 from ethicml.metrics.theil import Theil
 from ethicml.preprocessing.train_test_split import train_test_split
@@ -432,3 +433,113 @@ def test_tpr_ratio_non_binary_race():
                         'race_Black_1/race_Other_1': 0.8479532163742691,
                         'race_Black_1/race_White_1': 0.8516046895548282,
                         'race_Other_1/race_White_1': 1.0043062200956938}
+
+
+def test_nb_acc():
+    data: DataTuple = load_data(NonBinaryToy())
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run_test(train, test)
+    acc_score = Accuracy().score(predictions, test)
+    assert acc_score == 0.1
+    accs = metric_per_sensitive_attribute(predictions, test, Accuracy())
+    assert accs == {'sens_0': pytest.approx(0.09, abs=0.1), 'sens_1': pytest.approx(0.11, abs=0.1)}
+    model = LR()
+    predictions = model.run_test(train, test)
+    acc_score = Accuracy().score(predictions, test)
+    assert acc_score == 0.7
+    accs = metric_per_sensitive_attribute(predictions, test, Accuracy())
+    assert accs == {'sens_0': pytest.approx(0.72, abs=0.1), 'sens_1': pytest.approx(0.66, abs=0.1)}
+
+
+def test_nb_tpr():
+    data: DataTuple = load_data(NonBinaryToy())
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run_test(train, test)
+    tpr_score = TPR(pos_class=1).score(predictions, test)
+    assert tpr_score == 0.0
+    tpr_score = TPR(pos_class=2).score(predictions, test)
+    assert tpr_score == 0.0
+    tpr_score = TPR(pos_class=3).score(predictions, test)
+    assert tpr_score == 1.0
+    tpr_score = TPR(pos_class=4).score(predictions, test)
+    assert tpr_score == 0.0
+    tpr_score = TPR(pos_class=5).score(predictions, test)
+    assert tpr_score == 0.0
+
+    with pytest.raises(LabelOutOfBounds):
+        tpr_score = TPR(pos_class=0).score(predictions, test)
+
+    accs = metric_per_sensitive_attribute(predictions, test, TPR())
+    assert accs == {'sens_0': pytest.approx(0.0, abs=0.1), 'sens_1': pytest.approx(0.0, abs=0.1)}
+
+    model = LR()
+    predictions = model.run_test(train, test)
+
+    print(list([(k,z) for k,z in zip(predictions.values, test.y.values) if k != z]))
+
+    tpr_score = TPR(pos_class=1).score(predictions, test)
+    assert tpr_score == 1.0
+    tpr_score = TPR(pos_class=2).score(predictions, test)
+    assert tpr_score == 0.0
+    tpr_score = TPR(pos_class=3).score(predictions, test)
+    assert tpr_score == 0.0
+    tpr_score = TPR(pos_class=4).score(predictions, test)
+    assert tpr_score == 1.0
+    tpr_score = TPR(pos_class=5).score(predictions, test)
+    assert tpr_score == 1.0
+
+    with pytest.raises(LabelOutOfBounds):
+        tpr_score = TPR(pos_class=0).score(predictions, test)
+
+    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    assert tprs == {'sens_0': pytest.approx(1.0, abs=0.1), 'sens_1': pytest.approx(1.0, abs=0.1)}
+
+
+def test_nb_tnr():
+    data: DataTuple = load_data(NonBinaryToy())
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run_test(train, test)
+    tnr_score = TNR(pos_class=1).score(predictions, test)
+    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=2).score(predictions, test)
+    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=3).score(predictions, test)
+    assert tnr_score == 0.0
+    tnr_score = TNR(pos_class=4).score(predictions, test)
+    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=5).score(predictions, test)
+    assert tnr_score == 1.0
+
+    with pytest.raises(LabelOutOfBounds):
+        tnr_score = TNR(pos_class=0).score(predictions, test)
+
+    accs = metric_per_sensitive_attribute(predictions, test, TNR())
+    assert accs == {'sens_0': pytest.approx(1.0, abs=0.1), 'sens_1': pytest.approx(1.0, abs=0.1)}
+
+    model = LR()
+    predictions = model.run_test(train, test)
+
+    print(list([(k,z) for k,z in zip(predictions.values, test.y.values) if k != z]))
+
+    tnr_score = TNR(pos_class=1).score(predictions, test)
+    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=2).score(predictions, test)
+    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=3).score(predictions, test)
+    assert tnr_score == pytest.approx(0.7, abs=0.1)
+    tnr_score = TNR(pos_class=4).score(predictions, test)
+    assert tnr_score == pytest.approx(0.85, abs=0.1)
+    tnr_score = TNR(pos_class=5).score(predictions, test)
+    assert tnr_score == 1.0
+
+    with pytest.raises(LabelOutOfBounds):
+        tnr_score = TNR(pos_class=0).score(predictions, test)
+
+    tnrs = metric_per_sensitive_attribute(predictions, test, TNR())
+    assert tnrs == {'sens_0': pytest.approx(1.0, abs=0.1), 'sens_1': pytest.approx(1.0, abs=0.1)}

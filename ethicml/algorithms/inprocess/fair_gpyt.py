@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 
 import numpy as np
 import pandas as pd
+from typing import List
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
 
@@ -322,8 +323,8 @@ def split_train_dev(inputs, labels, sensitive):
     idx_s1_y0 = np.where((sensitive == 1) & (labels == 0))[0]
     idx_s1_y1 = np.where((sensitive == 1) & (labels == 1))[0]
 
-    train_fraction = []
-    test_fraction = []
+    train_fraction: List[int] = []
+    test_fraction: List[int] = []
     for idx in [idx_s0_y0, idx_s0_y1, idx_s1_y0, idx_s1_y1]:
         np.random.shuffle(idx)
 

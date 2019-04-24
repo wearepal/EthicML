@@ -11,6 +11,8 @@ from ..algorithms.utils import DataTuple
 
 class Metric(ABC):
     """Base class for all metrics"""
+    def __init__(self, pos_class: int = 1):
+        self.positive_class = pos_class
 
     @abstractmethod
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
