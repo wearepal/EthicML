@@ -113,7 +113,6 @@ class Adult(Dataset):
             'sex_Male',
             'workclass_Federal-gov',
             'workclass_Local-gov',
-            'workclass_Never-worked',
             'workclass_Private',
             'workclass_Self-emp-inc',
             'workclass_Self-emp-not-inc',
