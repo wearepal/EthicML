@@ -9,6 +9,7 @@ from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
 from ethicml.algorithms.utils import DataTuple
+from ethicml.preprocessing.domain_adaptation import domain_split
 
 
 def test_can_load_test_data():
@@ -190,3 +191,41 @@ def test_additional_columns_load():
     assert (48842, 102) == data.x.shape
     assert (48842, 1) == data.s.shape
     assert (48842, 1) == data.y.shape
+
+
+def test_domain_adapt_adult():
+    data: DataTuple = load_data(Adult())
+    train, test = domain_split(datatup=data,
+                               tr_cond='education_Masters == 0. & education_Doctorate == 0.',
+                               te_cond='education_Masters == 1. | education_Doctorate == 1.')
+    assert (42340, 102) == train.x.shape
+    assert (42340, 1) == train.s.shape
+    assert (42340, 1) == train.y.shape
+
+    assert (6502, 102) == test.x.shape
+    assert (6502, 1) == test.s.shape
+    assert (6502, 1) == test.y.shape
+
+    data = load_data(Adult())
+    train, test = domain_split(datatup=data,
+                               tr_cond='education_Masters == 0.',
+                               te_cond='education_Masters == 1.')
+    assert (43528, 102) == train.x.shape
+    assert (43528, 1) == train.s.shape
+    assert (43528, 1) == train.y.shape
+
+    assert (5314, 102) == test.x.shape
+    assert (5314, 1) == test.s.shape
+    assert (5314, 1) == test.y.shape
+
+    data = load_data(Adult())
+    train, test = domain_split(datatup=data,
+                               tr_cond='education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.',
+                               te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.')
+    assert (26290, 102) == train.x.shape
+    assert (26290, 1) == train.s.shape
+    assert (26290, 1) == train.y.shape
+
+    assert (22552, 102) == test.x.shape
+    assert (22552, 1) == test.s.shape
+    assert (22552, 1) == test.y.shape
