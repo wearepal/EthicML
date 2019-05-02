@@ -4,9 +4,9 @@ Wrapper for calling the fair GP model
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from typing import List
 import numpy as np
 import pandas as pd
-from typing import List
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
 
