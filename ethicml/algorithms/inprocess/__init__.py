@@ -8,3 +8,4 @@ from .logistic_regression import LR
 from .logistic_regression_cross_validated import LRCV
 from .logistic_regression_probability import LRProb
 from .svm import SVM
+from .majority import Majority

@@ -3,17 +3,8 @@ import pandas as pd
 import numpy as np
 import pytest
 
-from ethicml.algorithms.inprocess.agarwal_reductions import Agarwal
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.algorithms.inprocess.kamiran import Kamiran
-from ethicml.algorithms.inprocess.kamishima import Kamishima
-from ethicml.algorithms.inprocess.logistic_regression_cross_validated import LRCV
-from ethicml.algorithms.inprocess.logistic_regression_probability import LRProb
-from ethicml.algorithms.inprocess.logistic_regression import LR
-from ethicml.algorithms.inprocess.svm import SVM
 from ethicml.algorithms.inprocess import (Agarwal, GPyT, GPyTDemPar, GPyTEqOdds, InAlgorithm,
-                                          Kamishima, LRCV, LRProb, LR, SVM)
+                                          Kamishima, LRCV, LRProb, LR, SVM, Kamiran, Majority)
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
 from ethicml.utility.heaviside import Heaviside
@@ -30,6 +21,18 @@ def test_svm():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 201
     assert predictions[predictions.values == -1].count().values[0] == 199
+
+
+def test_majority():
+    train, test = get_train_test()
+
+    model: InAlgorithm = Majority()
+    assert model is not None
+    assert model.name == "Majority"
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 0
+    assert predictions[predictions.values == -1].count().values[0] == 400
 
 
 def test_cv_svm():

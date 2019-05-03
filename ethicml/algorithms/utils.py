@@ -22,8 +22,8 @@ class PathTuple(NamedTuple):
     y: Path  # path to file with class labels
 
 
-def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) -> (
-        Tuple[PathTuple, PathTuple]):
+def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) \
+    -> (Tuple[PathTuple, PathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
     Args:
@@ -58,7 +58,7 @@ def load_feather(output_path: Path) -> pd.DataFrame:
     return df
 
 
-def get_subset(train: DataTuple) -> DataTuple:
+def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
     """Get the first elements of the given dataset
 
     Args:
@@ -68,7 +68,7 @@ def get_subset(train: DataTuple) -> DataTuple:
         subset of training data
     """
     return DataTuple(
-        x=train.x[:][:500],
-        s=train.s[:][:500],
-        y=train.y[:][:500]
+        x=train.x[:][:num],
+        s=train.s[:][:num],
+        y=train.y[:][:num]
     )
