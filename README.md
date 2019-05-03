@@ -20,9 +20,9 @@ Given that we're considering fairness, the base of the toolbox is the triplet {x
 
 All methods must assume S and Y are multi-class.
 
-We use a dictionary to contain the triplet of type Dict\[str, pandas.DataFrame]
+We use a named tuple to contain the triplet
 
-    triplet = { 'x': dataframe, 's': dataframe, 'y': dataframe }
+    triplet = DataTuple(x=dataframe, s=dataframe, y=dataframe)
 
 The dataframe may be a little innefficient, but given the amount of splicing on conditions that we're doing it feels worth it.
 
@@ -30,11 +30,11 @@ The dataframe may be a little innefficient, but given the amount of splicing on 
 
 We purposefully keep pre, during and post algorithm methods separate. This is because they have different return types.
 
-    pre-algorithm.run(train, test) -> Tuple[pandas.DataFrame, pandas.DataFrame]
-    in-algorithm.run(train, test) -> pandas.DataFrame
-    post-algorithm.run(preds, test) -> pandas.DataFrame
+    pre-algorithm.run(train: DataTuple, test: DataTuple) -> Tuple[pandas.DataFrame, pandas.DataFrame]
+    in-algorithm.run(train: DataTuple, test: DataTuple) -> pandas.DataFrame
+    post-algorithm.run(preds: DataTuple, test: DataTuple) -> pandas.DataFrame
 
-where train and test are triplets as discussed in the previous section and preds is a one column dataframe with the column name 'preds'.
+where preds is a one column dataframe with the column name 'preds'.
 
 ## General Rules of Thumb
 
