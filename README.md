@@ -32,7 +32,7 @@ We purposefully keep pre, during and post algorithm methods separate. This is be
 
     pre-algorithm.run(train: DataTuple, test: DataTuple) -> Tuple[pandas.DataFrame, pandas.DataFrame]
     in-algorithm.run(train: DataTuple, test: DataTuple) -> pandas.DataFrame
-    post-algorithm.run(preds: DataTuple, test: DataTuple) -> pandas.DataFrame
+    post-algorithm.run(preds: DataFrame, test: DataTuple) -> pandas.DataFrame
 
 where preds is a one column dataframe with the column name 'preds'.
 
