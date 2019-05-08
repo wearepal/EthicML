@@ -1,7 +1,9 @@
 import torch
 from torch import nn
-import torch.nn.functional as F
+from typing import List
 
+from ethicml.data.dataset import Dataset
+from ethicml.implementations.vfae_modules.encoder import Encoder
 from ethicml.implementations.vfae_modules.decoder import Decoder
 
 
@@ -15,42 +17,25 @@ class VFAENetwork(nn.Module):
     with q(z1 | x, s) q(z2 | z1, y) q(y | z1) being the variational posteriors.
     """
 
-    def __init__(self, dataset, input_size):
+    def __init__(self, dataset: Dataset, input_size: int, latent_dims: int,
+                 z1_enc_size: List[int], z2_enc_size: List[int], z1_dec_size: List[int]):
         super(VFAENetwork, self).__init__()
         torch.manual_seed(888)
 
-        l_d = 50
-
-        self.z1_enc_hl = nn.Linear(input_size+1, 100)
-        self.z1_enc_bn = nn.BatchNorm1d(100)
-        self.z1_enc_mu = nn.Linear(100, l_d)
-        self.z1_enc_logvar = nn.Linear(100, l_d)
-
-        self.z2_enc_hl = nn.Linear(l_d+1, 100)
-        self.z2_enc_bn = nn.BatchNorm1d(100)
-        self.z2_enc_mu = nn.Linear(100, l_d)
-        self.z2_enc_logvar = nn.Linear(100, l_d)
-
-        self.z1_dec_hl = nn.Linear(l_d+1, 100)
-        self.z1_dec_bn = nn.BatchNorm1d(100)
-        self.z1_dec_mu = nn.Linear(100, l_d)
-        self.z1_dec_logvar = nn.Linear(100, l_d)
-
+        self.z1_encoder = Encoder(z1_enc_size, input_size+1, latent_dims)
+        self.z2_encoder = Encoder(z2_enc_size, latent_dims+1, latent_dims)
+        self.z1_decoder = Encoder(z1_dec_size, latent_dims+1, latent_dims)
         self.x_dec = Decoder(dataset)
-
-        self.ypred = nn.Linear(l_d, 1)
+        self.ypred = nn.Linear(latent_dims, 1)
 
     def encode_z1(self, x, s):
-        z1_h1 = self.z1_enc_bn(F.relu(self.z1_enc_hl(torch.cat((x, s), 1))))
-        return self.z1_enc_mu(z1_h1), self.z1_enc_logvar(z1_h1)
+        return self.z1_encoder(torch.cat((x, s), 1))
 
     def encode_z2(self, z1, y):
-        z2_h1 = self.z2_enc_bn(F.relu(self.z2_enc_hl(torch.cat((z1, y), 1))))
-        return self.z2_enc_mu(z2_h1), self.z2_enc_logvar(z2_h1)
+        return self.z2_encoder(torch.cat((z1, y), 1))
 
     def decode_z1(self, z2, y):
-        hl = self.z1_dec_bn(F.relu(self.z1_dec_hl(torch.cat((z2, y), 1))))
-        return self.z1_dec_mu(hl), self.z1_dec_logvar(hl)
+        return self.z1_decoder(torch.cat((z2, y), 1))
 
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5 * logvar)

@@ -33,10 +33,10 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
         "Toy": Toy()
     }
 
-    if name in lookup:
-        return lookup[name]
-    else:
+    if name not in lookup:
         raise NotImplementedError("That dataset doesn't exist")
+    else:
+        return lookup[name]
 
 
 def train_and_transform(train, test, flags):
@@ -59,7 +59,10 @@ def train_and_transform(train, test, flags):
     test_loader = DataLoader(test_data, batch_size=flags['batch_size'])
 
     # Build Network
-    model = VFAENetwork(dataset, train_data.size).to("cpu")
+    model = VFAENetwork(dataset, train_data.size, latent_dims=50,
+                        z1_enc_size=flags['z1_enc_size'],
+                        z2_enc_size=flags['z2_enc_size'],
+                        z1_dec_size=flags['z1_dec_size']).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Run Network
@@ -109,7 +112,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
 
         data_trip = (data_x, data_s, data_y)
 
-        loss_tuple = loss_function(z1_trip, z2_trip, z1_d_trip, data_trip, x_dec, y_pred)
+        loss_tuple = loss_function(flags, z1_trip, z2_trip, z1_d_trip, data_trip, x_dec, y_pred)
         prediction_loss, reconsruction_loss, kld_loss, mmd_loss = loss_tuple
         loss = kld_loss + reconsruction_loss + prediction_loss + mmd_loss
         loss.backward()

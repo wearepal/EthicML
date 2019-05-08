@@ -16,14 +16,18 @@ class VFAE(PreAlgorithm):
     """
     VFAE Object - see implementation file for details
     """
-    def __init__(self, epochs: int, batch_size: int, fairness: str, dataset: str):
+    def __init__(self, epochs: int, batch_size: int, fairness: str, dataset: str,
+                 z1_enc_size=[100], z2_enc_size=[100], z1_dec_size=[100]):
         # pylint: disable=too-many-arguments
         super().__init__()
         self.flags: Dict[str, Union[int, str, List[int]]] = {
             'fairness': fairness,
             'batch_size': batch_size,
             'epochs': epochs,
-            'dataset': dataset
+            'dataset': dataset,
+            'z1_enc_size': z1_enc_size,
+            'z2_enc_size': z2_enc_size,
+            'z1_dec_size': z1_dec_size
         }
 
     def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:

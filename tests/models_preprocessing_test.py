@@ -5,7 +5,6 @@ from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Zemel
 from ethicml.algorithms.preprocess.vfae import VFAE
 from ethicml.algorithms.utils import DataTuple
-from ethicml.utility.heaviside import Heaviside
 from tests.run_algorithm_test import get_train_test
 
 
@@ -55,6 +54,23 @@ def test_vfae():
     assert svm_model.name == "SVM"
 
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+    assert predictions[predictions.values == 1].count().values[0] == 215
+    assert predictions[predictions.values == -1].count().values[0] == 185
+
+    vfae_model = VFAE(epochs=10, fairness="Eq. Opp", batch_size=100, dataset="Toy")
+    assert vfae_model is not None
+    assert vfae_model.name == "VFAE"
+
+    new_xtrain_xtest = vfae_model.run(train, test)
+    new_xtrain, new_xtest = new_xtrain_xtest
+
+    assert new_xtrain.shape[0] == train.x.shape[0]
+    assert new_xtest.shape[0] == test.x.shape[0]
+
+    new_train = DataTuple(x=new_xtrain, s=train.s, y=train.y)
+    new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
+
+    predictions = svm_model.run_test(new_train, new_test)
     assert predictions[predictions.values == 1].count().values[0] == 215
     assert predictions[predictions.values == -1].count().values[0] == 185
 
