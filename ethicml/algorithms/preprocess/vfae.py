@@ -17,9 +17,17 @@ class VFAE(PreAlgorithm):
     VFAE Object - see implementation file for details
     """
     def __init__(self, epochs: int, batch_size: int, fairness: str, dataset: str,
-                 z1_enc_size=[100], z2_enc_size=[100], z1_dec_size=[100]):
+                 z1_enc_size=None, z2_enc_size=None, z1_dec_size=None):
         # pylint: disable=too-many-arguments
         super().__init__()
+
+        if z1_enc_size is None:
+            z1_enc_size: List[int] = [100]
+        if z2_enc_size is None:
+            z2_enc_size: List[int] = [100]
+        if z1_dec_size is None:
+            z1_dec_size: List[int] = [100]
+
         self.flags: Dict[str, Union[int, str, List[int]]] = {
             'fairness': fairness,
             'batch_size': batch_size,
