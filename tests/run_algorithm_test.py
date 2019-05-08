@@ -18,7 +18,7 @@ from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.preprocessing.train_test_split import train_test_split
 
 
-def get_train_test():
+def get_train_test() -> Tuple[DataTuple, DataTuple]:
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     return train_test
