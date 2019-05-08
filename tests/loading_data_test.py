@@ -1,15 +1,15 @@
 """
 Test the loading data capability
 """
-
+from functools import partial
 import pandas as pd
 
 from ethicml.common import ROOT_DIR
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
-from ethicml.algorithms.utils import DataTuple
-from ethicml.preprocessing.domain_adaptation import domain_split
+from ethicml.algorithms.utils import DataTuple, apply_to_joined_tuple
+from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_cond
 
 
 def test_can_load_test_data():
@@ -195,9 +195,10 @@ def test_additional_columns_load():
 
 def test_domain_adapt_adult():
     data: DataTuple = load_data(Adult())
-    train, test = domain_split(datatup=data,
-                               tr_cond='education_Masters == 0. & education_Doctorate == 0.',
-                               te_cond='education_Masters == 1. | education_Doctorate == 1.')
+    train, test = domain_split(
+        datatup=data,
+        tr_cond='education_Masters == 0. & education_Doctorate == 0.',
+        te_cond='education_Masters == 1. | education_Doctorate == 1.')
     assert (39106, 101) == train.x.shape
     assert (39106, 1) == train.s.shape
     assert (39106, 1) == train.y.shape
@@ -207,9 +208,10 @@ def test_domain_adapt_adult():
     assert (6116, 1) == test.y.shape
 
     data = load_data(Adult())
-    train, test = domain_split(datatup=data,
-                               tr_cond='education_Masters == 0.',
-                               te_cond='education_Masters == 1.')
+    train, test = domain_split(
+        datatup=data,
+        tr_cond='education_Masters == 0.',
+        te_cond='education_Masters == 1.')
     assert (40194, 101) == train.x.shape
     assert (40194, 1) == train.s.shape
     assert (40194, 1) == train.y.shape
@@ -219,9 +221,10 @@ def test_domain_adapt_adult():
     assert (5028, 1) == test.y.shape
 
     data = load_data(Adult())
-    train, test = domain_split(datatup=data,
-                               tr_cond='education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.',
-                               te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.')
+    train, test = domain_split(
+        datatup=data,
+        tr_cond='education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.',
+        te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.')
     assert (23966, 101) == train.x.shape
     assert (23966, 1) == train.s.shape
     assert (23966, 1) == train.y.shape
@@ -229,3 +232,24 @@ def test_domain_adapt_adult():
     assert (21256, 101) == test.x.shape
     assert (21256, 1) == test.s.shape
     assert (21256, 1) == test.y.shape
+
+
+def test_query():
+    x: pd.DataFrame = pd.DataFrame(columns=['0a', 'b'],
+                                   data=[[0, 1],
+                                         [2, 3],
+                                         [4, 5]])
+    s: pd.DataFrame = pd.DataFrame(columns=['c='],
+                                   data=[[6],
+                                         [7],
+                                         [8]])
+    y: pd.DataFrame = pd.DataFrame(columns=['d'],
+                                   data=[[9],
+                                         [10],
+                                         [11]])
+    data = DataTuple(x=x, s=s, y=y)
+    select = partial(dataset_from_cond, cond='_0a == 0 & c_eq_ == 6 & d == 9')
+    selected = apply_to_joined_tuple(select, data)
+    pd.testing.assert_frame_equal(selected.x, x.head(1))
+    pd.testing.assert_frame_equal(selected.s, s.head(1))
+    pd.testing.assert_frame_equal(selected.y, y.head(1))

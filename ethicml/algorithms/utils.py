@@ -23,7 +23,7 @@ class PathTuple(NamedTuple):
 
 
 def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) \
-    -> (Tuple[PathTuple, PathTuple]):
+        -> (Tuple[PathTuple, PathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
     Args:
@@ -49,6 +49,16 @@ def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) \
             data_paths[key] = data_path
     # the paths dictionaries to construct path tuples and return them
     return PathTuple(**train_paths), PathTuple(**test_paths)
+
+
+def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
+    """Concatenate the dataframes in a DataTuple and apply a function to it"""
+    cols_x = datatup.x.columns
+    cols_s = datatup.s.columns
+    cols_y = datatup.y.columns
+    joined = pd.concat([datatup.x, datatup.s, datatup.y], axis='columns', sort=False)
+    joined = mapper(joined)
+    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
