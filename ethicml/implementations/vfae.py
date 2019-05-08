@@ -59,7 +59,7 @@ def train_and_transform(train, test, flags):
     test_loader = DataLoader(test_data, batch_size=flags['batch_size'])
 
     # Build Network
-    model = VFAENetwork(dataset, train_data.size, latent_dims=50,
+    model = VFAENetwork(dataset, flags['supervised'], train_data.size, latent_dims=50,
                         z1_enc_size=flags['z1_enc_size'],
                         z2_enc_size=flags['z2_enc_size'],
                         z1_dec_size=flags['z1_dec_size']).to("cpu")
@@ -120,12 +120,19 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         train_loss += loss.item()
         optimizer.step()
         if batch_idx % 100 == 0:
-            print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)} '
+            if flags['supervised']:
+                print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
                   f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
                   f'Loss: {loss.item() / len(data_x):.6f}\t'
                   f'pred_loss: {prediction_loss.item():.6f}\t'
                   f'recon_loss: {reconsruction_loss.item():.6f}\t'
                   f'kld_loss: {kld_loss.item():.6f}\t'
                   f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
+            else:
+                print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
+                      f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+                      f'Loss: {loss.item() / len(data_x):.6f}\t'
+                      f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                      f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')

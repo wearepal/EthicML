@@ -16,7 +16,7 @@ class VFAE(PreAlgorithm):
     """
     VFAE Object - see implementation file for details
     """
-    def __init__(self, epochs: int, batch_size: int, fairness: str, dataset: str,
+    def __init__(self, dataset: str, supervised: bool=True, epochs: int = 10, batch_size: int = 32, fairness: str = "DI",
                  z1_enc_size=None, z2_enc_size=None, z1_dec_size=None):
         # pylint: disable=too-many-arguments
         super().__init__()
@@ -29,6 +29,7 @@ class VFAE(PreAlgorithm):
             z1_dec_size: List[int] = [100]
 
         self.flags: Dict[str, Union[int, str, List[int]]] = {
+            'supervised': supervised,
             'fairness': fairness,
             'batch_size': batch_size,
             'epochs': epochs,

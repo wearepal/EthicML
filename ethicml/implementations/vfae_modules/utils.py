@@ -11,11 +11,11 @@ def KL(mu1,logvar1,mu2=torch.Tensor([0.]),logvar2=torch.Tensor([0.])):
 
 def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_dec, y_pred):
     z1, z1_mu, z1_logvar = z1_triplet
-    z2, z2_mu, z2_logvar = z2_triplet
-    z1_dec, z1_dec_mu, z1_dec_logvar = z1_d_triplet
+    if flags['supervised']:
+        z2, z2_mu, z2_logvar = z2_triplet
+        z1_dec, z1_dec_mu, z1_dec_logvar = z1_d_triplet
     x, s, y = data_triplet
 
-    prediction_loss = F.binary_cross_entropy(y_pred, y, reduction='sum')
     reconstruction_loss = F.mse_loss(x_dec, x, reduction='sum')
 
     if flags['fairness'] == "DI":
@@ -36,10 +36,16 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
 
     mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)
 
-    first_kl = KL(z2_mu, z2_logvar)
-    second_kl = KL(z1_dec_mu, z1_dec_logvar, z1_mu, z1_logvar)
-    # second_kl = F.kl_div(z1_dec, z1, reduction='sum')
-    # second_kl = (z1_dec.sum()+1e-10).log() - (z1.sum()+1e-10).log()
-    KLD = first_kl + second_kl
+    if flags['supervised']:
+        first_kl = KL(z2_mu, z2_logvar)
+        second_kl = KL(z1_dec_mu, z1_dec_logvar, z1_mu, z1_logvar)
+        # second_kl = F.kl_div(z1_dec, z1, reduction='sum')
+        # second_kl = (z1_dec.sum()+1e-10).log() - (z1.sum()+1e-10).log()
+        KLD = first_kl + second_kl
+        prediction_loss = F.binary_cross_entropy(y_pred, y, reduction='sum')
+    else:
+        KLD = 0
+        prediction_loss = 0
+
 
     return prediction_loss, reconstruction_loss, KLD, 100*mmd_loss
