@@ -8,7 +8,7 @@ setup(
     description="A toolkit for understanding and researching algorithmic bias",
     url="https://github.com/predictive-analytics-lab/EthicML",
     packages=find_packages(),
-    package_data={'data': ['csvs/*.csv']},
+    package_data={'ethicml.data': ['csvs/*.csv']},
     python_requires=">=3.6",
     install_requires=[
         "imageio >= 2.4.1",
