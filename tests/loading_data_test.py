@@ -8,7 +8,7 @@ from ethicml.common import ROOT_DIR
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
-from ethicml.algorithms.utils import DataTuple, apply_to_joined_tuple
+from ethicml.algorithms.utils import DataTuple, apply_to_joined_tuple, concat_dt
 from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_cond
 
 
@@ -253,3 +253,18 @@ def test_query():
     pd.testing.assert_frame_equal(selected.x, x.head(1))
     pd.testing.assert_frame_equal(selected.s, s.head(1))
     pd.testing.assert_frame_equal(selected.y, y.head(1))
+
+
+def test_concat():
+    x: pd.DataFrame = pd.DataFrame(columns=['a'], data=[[1]])
+    s: pd.DataFrame = pd.DataFrame(columns=['b'], data=[[2]])
+    y: pd.DataFrame = pd.DataFrame(columns=['c'], data=[[3]])
+    data1 = DataTuple(x=x, s=s, y=y)
+    x = pd.DataFrame(columns=['a'], data=[[4]])
+    s = pd.DataFrame(columns=['b'], data=[[5]])
+    y = pd.DataFrame(columns=['c'], data=[[6]])
+    data2 = DataTuple(x=x, s=s, y=y)
+    data3 = concat_dt([data1, data2], axis='index', ignore_index=True)
+    pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=['a'], data=[[1], [4]]))
+    pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=['b'], data=[[2], [5]]))
+    pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=['c'], data=[[3], [6]]))

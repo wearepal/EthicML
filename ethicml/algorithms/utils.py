@@ -61,6 +61,13 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
 
+def concat_dt(datatup_list: DataTuple, axis: str = 'index', ignore_index: bool = False):
+    """Concatenate the data tuples in the given list"""
+    return DataTuple(*[pd.concat([datatup[i] for datatup in datatup_list],
+                                 axis=axis, sort=False, ignore_index=ignore_index)
+                       for i, _ in enumerate(datatup_list[0])])
+
+
 def load_feather(output_path: Path) -> pd.DataFrame:
     """Load a dataframe from a feather file"""
     with output_path.open('rb') as file_obj:
