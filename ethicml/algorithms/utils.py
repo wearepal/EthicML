@@ -3,7 +3,7 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import NamedTuple, Dict, Tuple
+from typing import NamedTuple, Dict, Tuple, List
 
 import pandas as pd
 
@@ -59,6 +59,13 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     joined = pd.concat([datatup.x, datatup.s, datatup.y], axis='columns', sort=False)
     joined = mapper(joined)
     return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+
+
+def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: bool = False):
+    """Concatenate the data tuples in the given list"""
+    return DataTuple(*[pd.concat([datatup[i] for datatup in datatup_list],
+                                 axis=axis, sort=False, ignore_index=ignore_index)
+                       for i, _ in enumerate(datatup_list[0])])
 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
