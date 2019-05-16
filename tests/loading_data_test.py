@@ -1,15 +1,14 @@
 """
 Test the loading data capability
 """
-from functools import partial
 import pandas as pd
 
 from ethicml.common import ROOT_DIR
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
-from ethicml.algorithms.utils import DataTuple, apply_to_joined_tuple, concat_dt
-from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_cond
+from ethicml.algorithms.utils import DataTuple, concat_dt
+from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_cond, query_dt
 
 
 def test_can_load_test_data():
@@ -248,8 +247,7 @@ def test_query():
                                          [10],
                                          [11]])
     data = DataTuple(x=x, s=s, y=y)
-    select = partial(dataset_from_cond, cond='_0a == 0 & c_eq_ == 6 & d == 9')
-    selected = apply_to_joined_tuple(select, data)
+    selected = query_dt(data, '_0a == 0 & c_eq_ == 6 & d == 9')
     pd.testing.assert_frame_equal(selected.x, x.head(1))
     pd.testing.assert_frame_equal(selected.s, s.head(1))
     pd.testing.assert_frame_equal(selected.y, y.head(1))
