@@ -35,8 +35,8 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
 
     if name not in lookup:
         raise NotImplementedError("That dataset doesn't exist")
-    else:
-        return lookup[name]
+
+    return lookup[name]
 
 
 def train_and_transform(train, test, flags):
@@ -122,12 +122,12 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         if batch_idx % 100 == 0:
             if flags['supervised']:
                 print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
-                  f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
-                  f'Loss: {loss.item() / len(data_x):.6f}\t'
-                  f'pred_loss: {prediction_loss.item():.6f}\t'
-                  f'recon_loss: {reconsruction_loss.item():.6f}\t'
-                  f'kld_loss: {kld_loss.item():.6f}\t'
-                  f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
+                      f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+                      f'Loss: {loss.item() / len(data_x):.6f}\t'
+                      f'pred_loss: {prediction_loss.item():.6f}\t'
+                      f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                      f'kld_loss: {kld_loss.item():.6f}\t'
+                      f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
             else:
                 print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
                       f'({100. * batch_idx / len(train_loader):.0f}%)]\t'

@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from ethicml.algorithms.inprocess import (Agarwal, GPyT, GPyTDemPar, GPyTEqOdds, InAlgorithm,
-                                          Kamishima, LRCV, LRProb, LR, SVM, Kamiran, Majority)
+                                          Kamishima, LRCV, LRProb, LR, SVM, Kamiran, Majority, MLP)
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
 from ethicml.utility.heaviside import Heaviside
@@ -33,6 +33,18 @@ def test_majority():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 0
     assert predictions[predictions.values == -1].count().values[0] == 400
+
+
+def test_mlp():
+    train, test = get_train_test()
+
+    model: InAlgorithm = MLP()
+    assert model is not None
+    assert model.name == "MLP"
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions[predictions.values == 1].count().values[0] == 200
+    assert predictions[predictions.values == -1].count().values[0] == 200
 
 
 def test_cv_svm():
