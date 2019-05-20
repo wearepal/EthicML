@@ -33,7 +33,7 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
         "Toy": Toy()
     }
 
-    if name in lookup:
+    if name not in lookup:
         raise NotImplementedError("That dataset doesn't exist")
 
     return lookup[name]
