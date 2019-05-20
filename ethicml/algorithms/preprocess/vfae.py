@@ -16,17 +16,18 @@ class VFAE(PreAlgorithm):
     """
     VFAE Object - see implementation file for details
     """
-    def __init__(self, dataset: str, supervised: bool=True, epochs: int = 10, batch_size: int = 32, fairness: str = "DI",
-                 z1_enc_size=None, z2_enc_size=None, z1_dec_size=None):
+    def __init__(self, dataset: str, supervised: bool = True, epochs: int = 10,
+                 batch_size: int = 32, fairness: str = "DI", z1_enc_size: List[int] = None,
+                 z2_enc_size: List[int] = None, z1_dec_size: List[int] = None):
         # pylint: disable=too-many-arguments
         super().__init__()
 
         if z1_enc_size is None:
-            z1_enc_size: List[int] = [100]
+            z1_enc_size = [100]
         if z2_enc_size is None:
-            z2_enc_size: List[int] = [100]
+            z2_enc_size = [100]
         if z1_dec_size is None:
-            z1_dec_size: List[int] = [100]
+            z1_dec_size = [100]
 
         self.flags: Dict[str, Union[int, str, List[int]]] = {
             'supervised': supervised,
