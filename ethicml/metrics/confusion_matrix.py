@@ -21,7 +21,7 @@ def confusion_matrix(prediction: pd.DataFrame,
     actual_y = actual.y.values
     labels: np.array = np.unique(actual_y)
     if labels.size == 1:
-        labels = [0, 1]
+        labels = np.array([0, 1])
     conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction, labels=labels)
 
     if not pos_cls in labels:
