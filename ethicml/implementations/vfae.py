@@ -4,9 +4,11 @@ Implementation of VFAE
 from typing import Dict, List
 
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 from torch import optim
 from torch.utils.data import DataLoader
 
+from ethicml.algorithms.utils import DataTuple
 from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.pytorch_common import CustomDataset
@@ -50,6 +52,18 @@ def train_and_transform(train, test, flags):
     Returns:
     """
     dataset = get_dataset_obj_by_name(flags['dataset'])
+
+    # Order dataset and minmax cont feats
+    cont_feats = dataset.continuous_features
+
+    scaler = MinMaxScaler()
+    train_df = train.x
+    train_df[cont_feats] = scaler.fit_transform(train_df[cont_feats])
+    train = DataTuple(x=train_df, s=train.s, y=train.y)
+
+    test_df = test.x
+    test_df[cont_feats] = scaler.transform(test_df[cont_feats])
+    test = DataTuple(x=test_df, s=test.s, y=test.y)
 
     # Set up the data
     train_data = CustomDataset(train)

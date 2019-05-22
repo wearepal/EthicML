@@ -32,7 +32,7 @@ class Decoder(nn.Module):
             if categorical:
                 layer = Categorical(in_features, n_dims)
             else:
-                layer = nn.Sequential(nn.Linear(in_features, n_dims))  # , nn.Sigmoid())
+                layer = nn.Sequential(nn.Linear(in_features, n_dims), nn.Sigmoid())
 
             return layer
 

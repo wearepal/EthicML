@@ -16,7 +16,7 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         z1_dec, z1_dec_mu, z1_dec_logvar = z1_d_triplet
     x, s, y = data_triplet
 
-    reconstruction_loss = F.mse_loss(x_dec, x, reduction='sum')
+    reconstruction_loss = F.binary_cross_entropy(x_dec, x, reduction='sum')
 
     if flags['fairness'] == "DI":
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
