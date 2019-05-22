@@ -448,14 +448,14 @@ def test_tpr_ratio_non_binary_race():
                                           'race_Other_1',
                                           'race_White_1')}
     tpr_diff = ratio_per_sensitive_attribute(tprs_to_check)
-    test_dict = {'race_Amer-Indian-Eskimo_1/race_Asian-Pac-Islander_1': pytest.approx(3.08, abs=0.1),
-                 'race_Amer-Indian-Eskimo_1/race_Black_1': pytest.approx(2.73, abs=0.1),
-                 'race_Amer-Indian-Eskimo_1/race_Other_1': pytest.approx(3.00, abs=0.1),
-                 'race_Amer-Indian-Eskimo_1/race_White_1': pytest.approx(2.23, abs=0.1),
+    test_dict = {'race_Amer-Indian-Eskimo_1/race_Asian-Pac-Islander_1': pytest.approx(0.32, abs=0.1),
+                 'race_Amer-Indian-Eskimo_1/race_Black_1': pytest.approx(0.37, abs=0.1),
+                 'race_Amer-Indian-Eskimo_1/race_Other_1': pytest.approx(0.33, abs=0.1),
+                 'race_Amer-Indian-Eskimo_1/race_White_1': pytest.approx(0.44, abs=0.1),
                  'race_Asian-Pac-Islander_1/race_Black_1': pytest.approx(0.88, abs=0.1),
                  'race_Asian-Pac-Islander_1/race_Other_1': pytest.approx(0.97, abs=0.1),
                  'race_Asian-Pac-Islander_1/race_White_1': pytest.approx(0.72, abs=0.1),
-                 'race_Black_1/race_Other_1': pytest.approx(1.09, abs=0.1),
+                 'race_Black_1/race_Other_1': pytest.approx(0.91, abs=0.1),
                  'race_Black_1/race_White_1': pytest.approx(0.74, abs=0.1),
                  'race_Other_1/race_White_1': pytest.approx(0.74, abs=0.1)}
 
