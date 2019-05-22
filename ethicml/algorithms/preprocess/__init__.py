@@ -2,3 +2,4 @@
 from .beutel import Beutel
 from .pre_algorithm import PreAlgorithm
 from .zemel import Zemel
+from .vfae import VFAE
