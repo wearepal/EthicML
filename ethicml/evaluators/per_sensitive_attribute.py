@@ -92,6 +92,10 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
             key: str = "{}/{}".format(sens_values[i], sens_values[j])
             i_value: float = per_sens_res[sens_values[i]]
             j_value: float = per_sens_res[sens_values[j]]
-            ratio_per_sens[key] = i_value / j_value
+
+            min_val = min(i_value, j_value)
+            max_val = max(i_value, j_value)
+
+            ratio_per_sens[key] = min_val / max_val
 
     return ratio_per_sens
