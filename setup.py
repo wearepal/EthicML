@@ -16,14 +16,14 @@ setup(
         "numpy >= 1.14.2",
         "pandas >= 0.24.0",
         "scikit_learn >= 0.20.1",
-        "seaborn >= 0.9.0",
+        "seaborn",
         "torch >= 0.4.1",
         "pyarrow >= 0.11",
         "numba",
         "fairlearn >= 0.2.0",
-        "GitPython >= 2.1.11",
-        "tqdm >= 4.31.1",
-        "pipenv >= 2018.11.26"
+        "GitPython",
+        "tqdm",
+        "pipenv"
     ],
     extras_require={
         'dev': [  # use `pip install ethicml[dev]` to install development packages
