@@ -1,6 +1,9 @@
+import random
+
 import torch
 from torch import nn
 from typing import List
+import numpy as np
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.encoder import Encoder
@@ -17,10 +20,20 @@ class VFAENetwork(nn.Module):
     with q(z1 | x, s) q(z2 | z1, y) q(y | z1) being the variational posteriors.
     """
 
+    def random_seed(self, seed_value, use_cuda=False):
+        np.random.seed(seed_value)  # cpu vars
+        torch.manual_seed(seed_value)  # cpu  vars
+        random.seed(seed_value)  # Python
+        if use_cuda:
+            torch.cuda.manual_seed(seed_value)
+            torch.cuda.manual_seed_all(seed_value)  # gpu vars
+            torch.backends.cudnn.deterministic = True  # needed
+            torch.backends.cudnn.benchmark = False
+
     def __init__(self, dataset: Dataset, supervised: bool, input_size: int, latent_dims: int,
                  z1_enc_size: List[int], z2_enc_size: List[int], z1_dec_size: List[int]):
         super(VFAENetwork, self).__init__()
-        torch.manual_seed(888)
+        self.random_seed(888)
 
         self.supervised = supervised
 

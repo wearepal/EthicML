@@ -1,9 +1,12 @@
 """
 Implementation of VFAE
 """
+import random
 from typing import Dict, List
 
+import numpy as np
 import pandas as pd
+import torch
 from sklearn.preprocessing import MinMaxScaler
 from torch import optim
 from torch.utils.data import DataLoader
@@ -41,6 +44,17 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
     return lookup[name]
 
 
+def random_seed(seed_value, use_cuda=False):
+    np.random.seed(seed_value) # cpu vars
+    torch.manual_seed(seed_value) # cpu  vars
+    random.seed(seed_value) # Python
+    if use_cuda:
+        torch.cuda.manual_seed(seed_value)
+        torch.cuda.manual_seed_all(seed_value) # gpu vars
+        torch.backends.cudnn.deterministic = True  #needed
+        torch.backends.cudnn.benchmark = False
+
+
 def train_and_transform(train, test, flags):
     """
     train the model and transform the dataset
@@ -51,19 +65,22 @@ def train_and_transform(train, test, flags):
 
     Returns:
     """
+    random_seed(888)
+
     dataset = get_dataset_obj_by_name(flags['dataset'])
 
     # Order dataset and minmax cont feats
     cont_feats = dataset.continuous_features
 
-    scaler = MinMaxScaler()
-    train_df = train.x
-    train_df[cont_feats] = scaler.fit_transform(train_df[cont_feats])
-    train = DataTuple(x=train_df, s=train.s, y=train.y)
+    if cont_feats:
+        scaler = MinMaxScaler()
+        train_df = train.x
+        train_df[cont_feats] = scaler.fit_transform(train_df[cont_feats])
+        train = DataTuple(x=train_df, s=train.s, y=train.y)
 
-    test_df = test.x
-    test_df[cont_feats] = scaler.transform(test_df[cont_feats])
-    test = DataTuple(x=test_df, s=test.s, y=test.y)
+        test_df = test.x
+        test_df[cont_feats] = scaler.transform(test_df[cont_feats])
+        test = DataTuple(x=test_df, s=test.s, y=test.y)
 
     # Set up the data
     train_data = CustomDataset(train)
@@ -77,7 +94,7 @@ def train_and_transform(train, test, flags):
                         z1_enc_size=flags['z1_enc_size'],
                         z2_enc_size=flags['z2_enc_size'],
                         z1_dec_size=flags['z1_dec_size']).to("cpu")
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=1e-2)
 
     # Run Network
     for epoch in range(flags['epochs']):
@@ -97,8 +114,13 @@ def train_and_transform(train, test, flags):
         # test += scaler.inverse_transform(x_dec.data).tolist()
         post_test += x_dec.data.tolist()
 
-    return pd.DataFrame(post_train, columns=train.x.columns), \
-           pd.DataFrame(post_test, columns=test.x.columns)
+    post_train = pd.DataFrame(post_train, columns=train.x.columns)
+    post_test = pd.DataFrame(post_test, columns=test.x.columns)
+
+    post_train[cont_feats] = scaler.inverse_transform(post_train[cont_feats])
+    post_test[cont_feats] = scaler.inverse_transform(post_test[cont_feats])
+
+    return post_train, post_test
 
 
 def train_model(epoch, model, train_loader, optimizer, flags):

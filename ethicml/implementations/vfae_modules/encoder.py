@@ -1,10 +1,26 @@
+import random
+
+import torch
 from torch import nn
+import numpy as np
 
 
 class Encoder(nn.Module):
 
+    def random_seed(self, seed_value, use_cuda=False):
+        np.random.seed(seed_value)  # cpu vars
+        torch.manual_seed(seed_value)  # cpu  vars
+        random.seed(seed_value)  # Python
+        if use_cuda:
+            torch.cuda.manual_seed(seed_value)
+            torch.cuda.manual_seed_all(seed_value)  # gpu vars
+            torch.backends.cudnn.deterministic = True  # needed
+            torch.backends.cudnn.benchmark = False
+
+
     def __init__(self, enc_size, init_size, ld, activation=nn.ReLU()):
         super().__init__()
+        self.random_seed(888)
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
             self.z1_enc_mu = nn.Linear(init_size, ld)

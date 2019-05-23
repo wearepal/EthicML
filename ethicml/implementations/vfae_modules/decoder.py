@@ -1,16 +1,30 @@
+import random
 from itertools import groupby
 
 import torch
 from torch import nn
 from typing import List
+import numpy as np
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.categorical import Categorical
 
 
 class Decoder(nn.Module):
+
+    def random_seed(self, seed_value, use_cuda=False):
+        np.random.seed(seed_value)  # cpu vars
+        torch.manual_seed(seed_value)  # cpu  vars
+        random.seed(seed_value)  # Python
+        if use_cuda:
+            torch.cuda.manual_seed(seed_value)
+            torch.cuda.manual_seed_all(seed_value)  # gpu vars
+            torch.backends.cudnn.deterministic = True  # needed
+            torch.backends.cudnn.benchmark = False
+
     def __init__(self, dataset: Dataset, deploy=False):
         super().__init__()
+        self.random_seed(888)
         self._deploy = deploy
         self.features: List[str] = dataset.feature_split['x']
 
