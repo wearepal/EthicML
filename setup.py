@@ -11,7 +11,7 @@ setup(
     package_data={'ethicml.data': ['csvs/*.csv']},
     python_requires=">=3.6",
     install_requires=[
-        "imageio >= 2.4.1",
+        "imageio",
         "matplotlib >= 3.0.2",
         "numpy >= 1.14.2",
         "pandas >= 0.24.0",
