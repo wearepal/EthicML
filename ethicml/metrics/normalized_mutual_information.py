@@ -20,3 +20,15 @@ class NMI(Metric):
     @property
     def name(self) -> str:
         return "NMI"
+
+
+class NMIinS(Metric):
+    """Normalized Mutual Information"""
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        return nmis(actual.s.values.flatten(),
+                    prediction.values.flatten(),
+                    average_method='geometric')
+
+    @property
+    def name(self) -> str:
+        return "NMIinS"

@@ -7,6 +7,7 @@ from .prob_pos import ProbPos
 from .prob_neg import ProbNeg
 from .confusion_matrix import confusion_matrix
 from .normalized_mutual_information import NMI
+from .normalized_mutual_information import NMIinS
 from .tpr import TPR
 from .tnr import TNR
 from .ppv import PPV

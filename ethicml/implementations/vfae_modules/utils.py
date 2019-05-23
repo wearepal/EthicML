@@ -16,7 +16,7 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         z1_dec, z1_dec_mu, z1_dec_logvar = z1_d_triplet
     x, s, y = data_triplet
 
-    reconstruction_loss = F.binary_cross_entropy(x_dec, x, reduction='sum')
+    reconstruction_loss = F.binary_cross_entropy_with_logits(x_dec, x, reduction='elementwise_mean')
 
     if flags['fairness'] == "DI":
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
@@ -32,9 +32,9 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         z1_s0 = z1_s0_y1
         z1_s1 = z1_s1_y1
     else:
-        raise NotImplementedError("Only DI and Eq.Opp implementesd so far")
+        raise NotImplementedError("Only DI and Eq.Opp implemented so far")
 
-    mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)
+    mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)/z1.size(1)
 
     if flags['supervised']:
         first_kl = KL(z2_mu, z2_logvar)
@@ -42,7 +42,7 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         # second_kl = F.kl_div(z1_dec, z1, reduction='sum')
         # second_kl = (z1_dec.sum()+1e-10).log() - (z1.sum()+1e-10).log()
         KLD = first_kl + second_kl
-        prediction_loss = F.binary_cross_entropy(y_pred, y, reduction='sum')
+        prediction_loss = F.binary_cross_entropy(y_pred, y, reduction='elementwise_mean')
     else:
         KLD = 0
         prediction_loss = 0
