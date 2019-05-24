@@ -58,7 +58,7 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     cols_y = datatup.y.columns
     joined = pd.concat([datatup.x, datatup.s, datatup.y], axis='columns', sort=False)
     joined = mapper(joined)
-    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+    return DataTuple(x=joined.get(cols_x), s=joined.get(cols_s), y=joined.get(cols_y))
 
 
 def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: bool = False):
@@ -85,7 +85,7 @@ def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
         subset of training data
     """
     return DataTuple(
-        x=train.x[:][:num],
-        s=train.s[:][:num],
-        y=train.y[:][:num]
+        x=train.x.iloc[:num],
+        s=train.s.iloc[:num],
+        y=train.y.iloc[:num]
     )

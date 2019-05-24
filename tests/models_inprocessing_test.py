@@ -162,7 +162,7 @@ def test_lr():
     assert model is not None
     assert model.name == "Logistic Regression"
 
-    predictions: np.array = model.run(train, test)
+    predictions: np.ndarray = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 211
     assert predictions[predictions.values == -1].count().values[0] == 189
 
@@ -173,7 +173,7 @@ def test_agarwal():
     assert model is not None
     assert model.name == "Agarwal LR"
 
-    predictions: np.array = model.run(train, test)
+    predictions: np.ndarray = model.run(train, test)
     assert predictions[predictions.values == 1].count().values[0] == 145
     assert predictions[predictions.values == -1].count().values[0] == 255
 

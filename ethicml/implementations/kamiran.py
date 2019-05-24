@@ -29,10 +29,10 @@ def _obtain_conditionings(dataset: DataTuple):
     s_neg = dataset.s[s_col].min()
 
     # combination of label and privileged/unpriv. groups
-    cond_p_fav = dataset.x[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_pos)]
-    cond_p_unfav = dataset.x[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_pos)]
-    cond_up_fav = dataset.x[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_neg)]
-    cond_up_unfav = dataset.x[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_neg)]
+    cond_p_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_pos)]
+    cond_p_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_pos)]
+    cond_up_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_neg)]
+    cond_up_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_neg)]
 
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
@@ -50,10 +50,10 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     s_neg = train.s[s_col].min()
 
     num_samples = train.x.shape[0]
-    n_p = train.s[train.s[s_col] == s_pos].shape[0]
-    n_up = train.s[train.s[s_col] == s_neg].shape[0]
-    n_fav = train.y[train.y[y_col] == y_pos].shape[0]
-    n_unfav = train.y[train.y[y_col] == y_neg].shape[0]
+    n_p = train.s.loc[train.s[s_col] == s_pos].shape[0]
+    n_up = train.s.loc[train.s[s_col] == s_neg].shape[0]
+    n_fav = train.y.loc[train.y[y_col] == y_pos].shape[0]
+    n_unfav = train.y.loc[train.y[y_col] == y_neg].shape[0]
 
     n_p_fav = cond_p_fav.shape[0]
     n_p_unfav = cond_p_unfav.shape[0]
@@ -65,7 +65,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     w_up_fav = n_fav * n_up / (num_samples * n_up_fav)
     w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav)
 
-    train_instance_weights = pd.DataFrame(1, index=np.arange(train.x.shape[0]),
+    train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]),
                                           columns=["instance weights"])
 
     train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav

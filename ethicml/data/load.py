@@ -2,7 +2,7 @@
 Loads Data from .csv files
 """
 
-import os
+from pathlib import Path
 from typing import List, Dict
 import pandas as pd
 
@@ -26,14 +26,14 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
     feature_split = dataset.feature_split if not ordered else dataset.ordered_features
 
-    x_data = dataframe[feature_split['x']]
-    s_data = dataframe[feature_split['s']]
-    y_data = dataframe[feature_split['y']]
+    x_data = dataframe.get(feature_split['x'])
+    s_data = dataframe.get(feature_split['s'])
+    y_data = dataframe.get(feature_split['y'])
 
     return DataTuple(x=x_data, s=s_data, y=y_data)
 
 
-def create_data_obj(filepath: str,
+def create_data_obj(filepath: Path,
                     s_columns: List[str],
                     y_columns: List[str],
                     additional_to_drop=None) -> Dataset:
@@ -52,7 +52,7 @@ def create_data_obj(filepath: str,
         additional_to_drop = []
 
     conf: ConfigurableDataset = ConfigurableDataset()
-    conf.filename = os.path.basename(filepath)
+    conf.filename = filepath.name
     conf.filepath = filepath
 
     dataframe: pd.DataFrame = pd.read_csv(filepath)
