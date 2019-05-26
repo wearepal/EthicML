@@ -203,13 +203,13 @@ def train_and_transform(train: DataTuple, test: DataTuple, flags: Dict[str, Unio
     features_dim = train.x.shape[1]
 
     sens_col = train.s.columns[0]
-    training_sensitive = train.x[train.s[sens_col] == 0].to_numpy()
-    training_nonsensitive = train.x[train.s[sens_col] == 1].to_numpy()
-    ytrain_sensitive = train.y[train.s[sens_col] == 0].to_numpy()
-    ytrain_nonsensitive = train.y[train.s[sens_col] == 1].to_numpy()
+    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
+    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+    ytrain_sensitive = train.y.loc[train.s[sens_col] == 0].to_numpy()
+    ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
 
     model_inits = np.random.uniform(
-        size=features_dim * 2 + flags['clusters'] + features_dim * flags['clusters']
+        size=int(features_dim * 2 + flags['clusters'] + features_dim * flags['clusters'])
     )
     bnd: List[Tuple[Optional[int], Optional[int]]] = []
     for i, _ in enumerate(model_inits):
@@ -240,19 +240,19 @@ def train_and_transform(train: DataTuple, test: DataTuple, flags: Dict[str, Unio
         disp=False,
     )[0]
 
-    testing_sensitive = test.x[test.s[sens_col] == 0].to_numpy()
-    testing_nonsensitive = test.x[test.s[sens_col] == 1].to_numpy()
-    ytest_sensitive = test.y[test.s[sens_col] == 0].to_numpy()
-    ytest_nonsensitive = test.y[test.s[sens_col] == 1].to_numpy()
+    testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
+    testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
+    ytest_sensitive = test.y.loc[test.s[sens_col] == 0].to_numpy()
+    ytest_nonsensitive = test.y.loc[test.s[sens_col] == 1].to_numpy()
 
     # Mutated, fairer dataset with new labels
     test_transformed = transform(testing_sensitive, testing_nonsensitive, ytest_sensitive,
                                  ytest_nonsensitive, learned_model, test, flags)
 
-    training_sensitive = train.x[train.s[sens_col] == 0].to_numpy()
-    training_nonsensitive = train.x[train.s[sens_col] == 1].to_numpy()
-    ytrain_sensitive = train.y[train.s[sens_col] == 0].to_numpy()
-    ytrain_nonsensitive = train.y[train.s[sens_col] == 1].to_numpy()
+    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
+    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+    ytrain_sensitive = train.y.loc[train.s[sens_col] == 0].to_numpy()
+    ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
 
     # extract training model parameters
     train_transformed = transform(training_sensitive, training_nonsensitive, ytrain_sensitive,
@@ -319,8 +319,8 @@ def transform(features_sens, features_nonsens, label_sens, label_nonsens, learne
     sensitive_idx = dataset.x[dataset.s[sens_col] == 0].index
     nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
 
-    transformed_features = np.zeros(shape=np.shape(dataset.x))
-    transformed_labels = np.zeros(shape=np.shape(dataset.y))
+    transformed_features = np.zeros_like(dataset.x.values)
+    transformed_labels = np.zeros_like(dataset.y.values)
     transformed_features[sensitive_idx] = x_n_hat_sensitive
     transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
     transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])

@@ -8,7 +8,7 @@ MAX_ALLOWED_ERRORS = 5
 RESULTS = mypy.run(['./ethicml/'])
 print(RESULTS[0], end='')
 print(RESULTS[1], end='')
-NUM_ERRORS = len(RESULTS[0].split('\n')) - 1
+NUM_ERRORS = len([line for line in RESULTS[0].split('\n') if ": error: " in line])
 print("There are {} errors. {} are allowed.".format(NUM_ERRORS, MAX_ALLOWED_ERRORS))
 
 if NUM_ERRORS <= MAX_ALLOWED_ERRORS:

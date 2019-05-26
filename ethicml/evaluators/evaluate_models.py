@@ -23,7 +23,7 @@ from ..preprocessing.train_test_split import train_test_split
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
     """Get all possible combinations of sensitive attribute and metrics"""
     poss_values = []
-    for col in train.s:
+    for col in train.s.columns:
         uniques = train.s[col].unique()
         for unique in uniques:
             poss_values.append(f"{col}_{unique}")
@@ -67,7 +67,7 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
 def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
                     inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
                     metrics: List[Metric], per_sens_metrics: List[Metric], repeats: int = 3,
-                    test_mode: bool = False) -> Dict[str, pd.DataFrame]:
+                    test_mode: bool = False) -> pd.DataFrame:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:

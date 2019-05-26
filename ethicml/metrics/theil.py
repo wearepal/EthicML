@@ -14,12 +14,12 @@ from ..algorithms.utils import DataTuple
 class Theil(Metric):
     """Theil Index"""
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        y_true = actual.y
-        act_col = y_true.columns[0]
-        y_pos_label = y_true[act_col].max()
+        y_true_df = actual.y
+        act_col = y_true_df.columns[0]
+        y_pos_label = y_true_df[act_col].max()
 
         y_pred = prediction['preds'].values.ravel()
-        y_true = y_true.values.ravel()
+        y_true = y_true_df.values.ravel()
         y_pred = (y_pred == y_pos_label).astype(np.float64)
         y_true = (y_true == y_pos_label).astype(np.float64)
         var_b = 1 + y_pred - y_true

@@ -4,12 +4,13 @@ Method for calculating the HSIC - an independence criterion. a score of 0 denote
 
 import pandas as pd
 import numpy as np
+import math
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics.metric import Metric
 
 
-def hsic(prediction: pd.DataFrame, label: np.array,
+def hsic(prediction: np.ndarray, label: np.ndarray,
          sigma_first: float, sigma_second: float) -> float:
     """Calculate the HSIC value"""
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1),
@@ -55,11 +56,11 @@ class Hsic(Metric):
         """
 
         s_cols = actual.s.columns
-        sens_labels = np.array(actual.s[s_cols])
+        sens_labels = np.array(actual.s.get(s_cols).values)
 
         batchs_size = 5000
 
-        together = np.hstack((prediction, sens_labels)).transpose()
+        together = np.hstack((prediction.values, sens_labels)).transpose()
 
         np.random.seed(888)
         col_idx = np.random.permutation(together.shape[1])
@@ -69,8 +70,8 @@ class Hsic(Metric):
         prediction_shuffled = together[0]
         label_shuffled = together[1]
 
-        num_batches = prediction.shape[0] / batchs_size
-        num_batches = np.ceil(num_batches).astype(int)
+        num_batches_float = prediction.shape[0] / batchs_size
+        num_batches: int = int(math.ceil(num_batches_float))
 
         batches = []
 
@@ -87,7 +88,7 @@ class Hsic(Metric):
 
             start += batchs_size
 
-        return float(np.mean(batches))
+        return np.mean(np.array(batches)).item()
 
     @property
     def name(self) -> str:
