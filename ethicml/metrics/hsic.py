@@ -56,7 +56,7 @@ class Hsic(Metric):
         """
 
         s_cols = actual.s.columns
-        sens_labels = np.array(actual.s.get(s_cols))
+        sens_labels = np.array(actual.s.get(s_cols).values)
 
         batchs_size = 5000
 

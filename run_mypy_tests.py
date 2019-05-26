@@ -6,7 +6,7 @@ from mypy import api as mypy
 MAX_ALLOWED_ERRORS = 5
 
 # Also check types on the tests
-RESULTS = mypy.run(['./tests/', '--check-untyped-defs'])
+RESULTS = mypy.run(['./tests/'])
 print(RESULTS[0], end='')
 print(RESULTS[1], end='')
 NUM_ERRORS = len([line for line in RESULTS[0].split('\n') if ": error: " in line])
