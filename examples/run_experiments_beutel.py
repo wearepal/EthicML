@@ -71,12 +71,12 @@ def main():
 
     data_loc = Path(".") / "data" / "styling_beutel" / f"seed_{SEED}"
 
-    train_beutel_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtraintilde.csv'),
+    train_beutel_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtraintilde.csv',
                                                    s_columns=["sensitive"],
                                                    y_columns=["label"])
     train_beutel_data: DataTuple = load_data(train_tilde_dataset)
 
-    test_beutel_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtesttilde.csv'),
+    test_beutel_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtesttilde.csv',
                                                   s_columns=["sensitive"],
                                                   y_columns=["label"])
     test_beutel_data: DataTuple = load_data(test_tilde_dataset)

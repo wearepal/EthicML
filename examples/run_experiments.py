@@ -70,12 +70,12 @@ def main():
     SEED = int(sys.argv[1])
 
     data_loc = Path(".") / "data" / "weight_100_decoder_1e-4" / f"seed_{SEED}"
-    train_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtrain_50000.csv'),
+    train_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtrain_50000.csv',
                                              s_columns=["sensitive"],
                                              y_columns=["label"])
     train_data: DataTuple = load_data(train_dataset)
 
-    test_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtest_50000.csv'),
+    test_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtest_50000.csv',
                                             s_columns=["sensitive"],
                                             y_columns=["label"])
     test_data: DataTuple = load_data(test_dataset)

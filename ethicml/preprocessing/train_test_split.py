@@ -104,15 +104,15 @@ def fold_data(data: DataTuple, folds: int):
 
     """
 
-    indices = np.arange(data.x.shape[0])
+    indices: np.ndarray[int] = np.arange(data.x.shape[0])
 
-    fold_sizes = np.full(folds, data.x.shape[0] // folds, dtype=np.int_)
+    fold_sizes: np.ndarray[int] = np.full(folds, data.x.shape[0] // folds, dtype=int)
     fold_sizes[:data.x.shape[0] % folds] += 1
 
     current = 0
     for fold_size in fold_sizes:
         start, stop = current, current + fold_size
-        val_inds = indices[start:stop]
+        val_inds: np.ndarray[int] = indices[start:stop]
         train_inds = [i for i in indices if i not in val_inds] # Pretty sure this is inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)

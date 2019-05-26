@@ -1,9 +1,10 @@
 """
 Test the loading data capability
 """
+from pathlib import Path
 import pandas as pd
 
-from ethicml.common import ROOT_DIR
+from ethicml.common import ROOT_PATH
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
@@ -12,7 +13,7 @@ from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_c
 
 
 def test_can_load_test_data():
-    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
+    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data: pd.DataFrame = pd.read_csv(data_loc)
     assert data is not None
 
@@ -42,7 +43,7 @@ def test_discrete_data():
 
 
 def test_load_data_as_a_function():
-    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
+    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
     assert data_obj.feature_split['x'] == ['a1', 'a2']
@@ -52,7 +53,7 @@ def test_load_data_as_a_function():
 
 
 def test_joining_2_load_functions():
-    data_loc: str = "{}/data/csvs/toy.csv".format(ROOT_DIR)
+    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: DataTuple = load_data(data_obj)
     assert (2000, 2) == data.x.shape
@@ -177,7 +178,7 @@ def test_race_feature_split():
 
 
 def test_additional_columns_load():
-    data_loc: str = "{}/data/csvs/adult.csv".format(ROOT_DIR)
+    data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv"
     data_obj: Dataset = create_data_obj(data_loc,
                                         s_columns=["race_White"],
                                         y_columns=["salary_>50K"],

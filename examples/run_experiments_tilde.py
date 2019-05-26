@@ -70,12 +70,12 @@ def main():
     SEED = int(sys.argv[1])
 
     data_loc = Path(".") / "data" / "weight_100_decoder_1e-4" / f"seed_{SEED}"
-    train_tilde_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtraintilde_50000.csv'),
+    train_tilde_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtraintilde_50000.csv',
                                                    s_columns=["sensitive"],
                                                    y_columns=["label"])
     train_tilde_data: DataTuple = load_data(train_tilde_dataset)
 
-    test_tilde_dataset: Dataset = create_data_obj(str(data_loc / f'seed_{SEED}_stylingtesttilde_50000.csv'),
+    test_tilde_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtesttilde_50000.csv',
                                                   s_columns=["sensitive"],
                                                   y_columns=["label"])
     test_tilde_data: DataTuple = load_data(test_tilde_dataset)

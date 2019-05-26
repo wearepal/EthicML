@@ -284,10 +284,10 @@ def compute_bias(labels, sensitive):
 def compute_odds(labels, predictions, sensitive):
     """Compute the bias in the predictions with respect to the sensitive attr. and the labels"""
     return dict(
-        p_ybary0_s0=np.mean(predictions[np.logical_and(labels == 0, sensitive == 0)] == 0),
-        p_ybary1_s0=np.mean(predictions[np.logical_and(labels == 1, sensitive == 0)] == 1),
-        p_ybary0_s1=np.mean(predictions[np.logical_and(labels == 0, sensitive == 1)] == 0),
-        p_ybary1_s1=np.mean(predictions[np.logical_and(labels == 1, sensitive == 1)] == 1),
+        p_ybary0_s0=np.mean(predictions[(labels == 0) & (sensitive == 0)] == 0),
+        p_ybary1_s0=np.mean(predictions[(labels == 1) & (sensitive == 0)] == 1),
+        p_ybary0_s1=np.mean(predictions[(labels == 0) & (sensitive == 1)] == 0),
+        p_ybary1_s1=np.mean(predictions[(labels == 1) & (sensitive == 1)] == 1),
     )
 
 

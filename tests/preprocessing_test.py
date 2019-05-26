@@ -19,8 +19,8 @@ def test_train_test_split():
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
-    assert train.x['a1'].iloc[0] == 2.7839204628851526
-    assert train.x['a2'].iloc[0] == 6.083679468491366
+    assert train.x['a1'].values[0] == 2.7839204628851526
+    assert train.x['a2'].values[0] == 6.083679468491366
 
     assert train.x.shape[0] == train.s.shape[0]
     assert train.s.shape[0] == train.y.shape[0]
@@ -67,8 +67,8 @@ def test_random_seed():
     assert train_0 is not None
     assert test_0 is not None
     assert train_0.x.shape[0] > test_0.x.shape[0]
-    assert train_0.x['a1'].iloc[0] == 2.7839204628851526
-    assert train_0.x['a2'].iloc[0] == 6.083679468491366
+    assert train_0.x['a1'].values[0] == 2.7839204628851526
+    assert train_0.x['a2'].values[0] == 6.083679468491366
 
     assert train_0.x.shape[0] == train_0.s.shape[0]
     assert train_0.s.shape[0] == train_0.y.shape[0]
@@ -78,8 +78,8 @@ def test_random_seed():
     assert train_1 is not None
     assert test_1 is not None
     assert train_1.x.shape[0] > test_1.x.shape[0]
-    assert train_1.x['a1'].iloc[0] == 2.6158100167119773
-    assert train_1.x['a2'].iloc[0] == -2.026281606912103
+    assert train_1.x['a1'].values[0] == 2.6158100167119773
+    assert train_1.x['a2'].values[0] == -2.026281606912103
 
     assert train_1.x.shape[0] == train_1.s.shape[0]
     assert train_1.s.shape[0] == train_1.y.shape[0]
@@ -89,8 +89,8 @@ def test_random_seed():
     assert train_2 is not None
     assert test_2 is not None
     assert train_2.x.shape[0] > test_2.x.shape[0]
-    assert train_2.x['a1'].iloc[0] == 0.6431486026206228
-    assert train_2.x['a2'].iloc[0] == -0.09879806963941018
+    assert train_2.x['a1'].values[0] == 0.6431486026206228
+    assert train_2.x['a2'].values[0] == -0.09879806963941018
 
     assert train_2.x.shape[0] == train_2.s.shape[0]
     assert train_2.s.shape[0] == train_2.y.shape[0]
@@ -100,8 +100,8 @@ def test_random_seed():
     assert train_3 is not None
     assert test_3 is not None
     assert train_3.x.shape[0] > test_3.x.shape[0]
-    assert train_3.x['a1'].iloc[0] == 0.8165458710908045
-    assert train_3.x['a2'].iloc[0] == -5.456548268244318
+    assert train_3.x['a1'].values[0] == 0.8165458710908045
+    assert train_3.x['a2'].values[0] == -5.456548268244318
 
     assert train_3.x.shape[0] == train_3.s.shape[0]
     assert train_3.s.shape[0] == train_3.y.shape[0]

@@ -3,6 +3,9 @@ from pathlib import Path
 import numpy as np
 
 
+ListLike = Union[np.ndarray, Series, DataFrame, List, Dict[str, np.ndarray]]
+
+
 class Index:
     @property
     def values(self) -> np.ndarray: ...
@@ -35,7 +38,7 @@ class Series:
 
 
 class DataFrame:
-    def __init__(self, data: Union[np.ndarray, Series, DataFrame] = None,
+    def __init__(self, data: ListLike = None,
                  columns: Union[List[str], Index] = None,
                  index: Union[np.ndarray, Index] = None): ...
 
@@ -91,6 +94,8 @@ class DataFrame:
 
     def query(self, expr: str) -> DataFrame: ...
 
+    def head(self, n: int) -> DataFrame: ...
+
 
 class iLocIndexer:
     def __getitem__(self, idx: Any) -> DataFrame: ...
@@ -110,3 +115,8 @@ def concat(dataframes: List[DataFrame], axis: str = 'index', sort: bool = None,
            ignore_index: bool = False) -> DataFrame: ...
 
 def read_csv(p: Path) -> DataFrame: ...
+
+
+class testing:
+    @staticmethod
+    def assert_frame_equal(left: DataFrame, right: DataFrame) -> None: ...
