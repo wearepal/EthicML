@@ -20,8 +20,8 @@ DtypeType = Union[dtype, type]
 # all the python types that an ndarray can have
 AnyNum = Union[int, float, bool]
 # generic types that are only allowed to take on values from AnyNum
-Num = TypeVar('Num', bound=AnyNum)
-Num2 = TypeVar('Num2', bound=AnyNum)
+Num = TypeVar('Num', int, float, bool)
+Num2 = TypeVar('Num2', int, float, bool)
 
 T = TypeVar('T')
 NestedList = Union[List[T], List[List[T]], List[List[List[T]]], List[List[List[List[T]]]]]
