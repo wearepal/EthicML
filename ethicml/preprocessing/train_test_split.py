@@ -1,9 +1,9 @@
 """
 Split into train and test data
 """
-from typing import Tuple, List
+from typing import Tuple
 import numpy as np
-from numpy.testing import assert_array_equal
+from pandas.testing import assert_index_equal
 import pandas as pd
 
 from ..algorithms.utils import DataTuple
@@ -50,9 +50,9 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
     Returns:
 
     """
-    x_columns: List[str] = [col for col in data.x.columns]
-    s_columns: List[str] = [col for col in data.s.columns]
-    y_columns: List[str] = [col for col in data.y.columns]
+    x_columns: pd.Index = data.x.columns
+    s_columns: pd.Index = data.s.columns
+    y_columns: pd.Index = data.y.columns
 
     all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis='columns')
 
@@ -77,18 +77,18 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
 
     assert isinstance(train.x, pd.DataFrame)
     assert isinstance(test.x, pd.DataFrame)
-    assert_array_equal(train.x.columns, x_columns)
-    assert_array_equal(test.x.columns, x_columns)
+    assert_index_equal(train.x.columns, x_columns)
+    assert_index_equal(test.x.columns, x_columns)
 
     assert isinstance(train.s, pd.DataFrame)
     assert isinstance(test.s, pd.DataFrame)
-    assert_array_equal(train.s.columns, s_columns)
-    assert_array_equal(test.s.columns, s_columns)
+    assert_index_equal(train.s.columns, s_columns)
+    assert_index_equal(test.s.columns, s_columns)
 
     assert isinstance(train.y, pd.DataFrame)
     assert isinstance(test.y, pd.DataFrame)
-    assert_array_equal(train.y.columns, y_columns)
-    assert_array_equal(test.y.columns, y_columns)
+    assert_index_equal(train.y.columns, y_columns)
+    assert_index_equal(test.y.columns, y_columns)
 
     return train, test
 
