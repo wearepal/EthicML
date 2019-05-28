@@ -105,20 +105,24 @@ def train_and_transform(train, test, flags):
     post_test: List[List[float]] = []
     for embedding, _s, _y in train_loader:
         model.eval()
-        _, _, _, x_dec, _ = model(embedding, _s, _y)
+        z1_trip, _, _, x_dec, _ = model(embedding, _s, _y)
         # train += scaler.inverse_transform(x_dec.data).tolist()
-        post_train += x_dec.data.tolist()
+        # post_train += x_dec.data.tolist()
+        post_train += z1_trip[0].data.tolist()
     for embedding, _s, _y in test_loader:
         model.eval()
-        _, _, _, x_dec, _ = model(embedding, _s, _y)
+        z1_trip, _, _, x_dec, _ = model(embedding, _s, _y)
         # test += scaler.inverse_transform(x_dec.data).tolist()
-        post_test += x_dec.data.tolist()
+        # post_test += x_dec.data.tolist()
+        post_test += z1_trip[0].data.tolist()
 
-    post_train = pd.DataFrame(post_train, columns=train.x.columns)
-    post_test = pd.DataFrame(post_test, columns=test.x.columns)
+    # post_train = pd.DataFrame(post_train, columns=train.x.columns)
+    post_train = pd.DataFrame(post_train)
+    # post_test = pd.DataFrame(post_test, columns=test.x.columns)
+    post_test = pd.DataFrame(post_test)
 
-    post_train[cont_feats] = scaler.inverse_transform(post_train[cont_feats])
-    post_test[cont_feats] = scaler.inverse_transform(post_test[cont_feats])
+    # post_train[cont_feats] = scaler.inverse_transform(post_train[cont_feats])
+    # post_test[cont_feats] = scaler.inverse_transform(post_test[cont_feats])
 
     return post_train, post_test
 
@@ -155,7 +159,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         # KLD_loss = KLD1 + KLD2
         train_loss += loss.item()
         optimizer.step()
-        if batch_idx % 100 == 0:
+        if epoch % 20 == 0 and batch_idx == 0:
             if flags['supervised']:
                 print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
                       f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
@@ -171,4 +175,4 @@ def train_model(epoch, model, train_loader, optimizer, flags):
                       f'recon_loss: {reconsruction_loss.item():.6f}\t'
                       f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
 
-    print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
+            print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
