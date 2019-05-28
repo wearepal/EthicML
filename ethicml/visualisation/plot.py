@@ -29,11 +29,18 @@ def save_2d_plot(data: DataTuple, filepath: str):
 
     amalgamated = pd.concat([data.x, data.s, data.y], axis='columns')
 
-    plot = sns.scatterplot(x=columns[0], y=columns[1], hue=data.y.columns[0], palette="Set2",
-                           data=amalgamated, style=data.s.columns[0], legend='full')
+    plot = sns.scatterplot(
+        x=columns[0],
+        y=columns[1],
+        hue=data.y.columns[0],
+        palette="Set2",
+        data=amalgamated,
+        style=data.s.columns[0],
+        legend='full',
+    )
 
     if not os.path.exists(file_path.parent):
-        os.mkdir(file_path. parent)
+        os.mkdir(file_path.parent)
     plot.figure.savefig(file_path)
     plt.clf()
 

@@ -9,11 +9,11 @@ from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics.metric import Metric
 
 
-def hsic(prediction: np.ndarray, label: np.ndarray,
-         sigma_first: float, sigma_second: float) -> float:
+def hsic(
+    prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
+) -> float:
     """Calculate the HSIC value"""
-    xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1),
-                                 np.expand_dims(prediction, 1).T))
+    xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 
     x_sqnorms = np.diag(xx_gram)
@@ -22,8 +22,8 @@ def hsic(prediction: np.ndarray, label: np.ndarray,
     exp_r = lambda x: np.expand_dims(x, 0)
     exp_c = lambda x: np.expand_dims(x, 1)
 
-    gamma_first = 1. / (2 * sigma_first**2)
-    gamma_second = 1. / (2 * sigma_second**2)
+    gamma_first = 1.0 / (2 * sigma_first ** 2)
+    gamma_second = 1.0 / (2 * sigma_second ** 2)
     # use the second binomial formula
     kernel_xx = np.exp(-gamma_first * (-2 * xx_gram + exp_c(x_sqnorms) + exp_r(x_sqnorms)))
     kernel_yy = np.exp(-gamma_second * (-2 * yy_gram + exp_c(y_sqnorms) + exp_r(y_sqnorms)))
@@ -55,7 +55,7 @@ class Hsic(Metric):
         """
 
         s_cols = actual.s.columns
-        sens_labels = np.array(actual.s.get(s_cols).values)
+        sens_labels = np.array(actual.s[s_cols].values)
 
         batchs_size = 5000
 

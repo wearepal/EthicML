@@ -9,6 +9,7 @@ from ethicml.implementations import majority
 
 class Majority(InAlgorithm):
     """Support Vector Machine"""
+
     def __init__(self):
         super().__init__()
 

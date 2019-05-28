@@ -11,6 +11,7 @@ from ..algorithms.utils import DataTuple
 
 class NPV(Metric):
     """Negative predictive value"""
+
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         t_neg, _, f_neg, _ = confusion_matrix(prediction, actual, self.positive_class)
 

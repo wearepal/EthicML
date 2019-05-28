@@ -19,8 +19,8 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
-    def __init__(self, executable: Optional[str] = None,
-                 hyperparams: Dict[str, float] = None):
+
+    def __init__(self, executable: Optional[str] = None, hyperparams: Dict[str, float] = None):
         """Constructor
 
         Args:
@@ -52,5 +52,7 @@ class Algorithm(ABC):
         try:
             check_call(cmd, env=env)
         except CalledProcessError:
-            raise RuntimeError(f'The script failed. Supplied arguments: {cmd_args} '
-                               f'with exec: {self.executable}')
+            raise RuntimeError(
+                f'The script failed. Supplied arguments: {cmd_args} '
+                f'with exec: {self.executable}'
+            )

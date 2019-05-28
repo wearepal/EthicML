@@ -9,8 +9,9 @@ import pandas as pd
 from ..algorithms.utils import DataTuple
 
 
-def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage, random_seed) -> (
-        Tuple[pd.DataFrame, pd.DataFrame]):
+def call_numpy_to_split(
+    dataframe: pd.DataFrame, train_percentage, random_seed
+) -> (Tuple[pd.DataFrame, pd.DataFrame]):
     """
 
     Args:
@@ -38,8 +39,9 @@ def call_numpy_to_split(dataframe: pd.DataFrame, train_percentage, random_seed) 
     return train, test
 
 
-def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0) -> (
-        Tuple[DataTuple, DataTuple]):
+def train_test_split(
+    data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0
+) -> (Tuple[DataTuple, DataTuple]):
     """
 
     Args:
@@ -59,20 +61,17 @@ def train_test_split(data: DataTuple, train_percentage: float = 0.8, random_seed
     all_data = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 
     all_data_train_test: Tuple[pd.DataFrame, pd.DataFrame] = call_numpy_to_split(
-        all_data, train_percentage, random_seed=random_seed)
+        all_data, train_percentage, random_seed=random_seed
+    )
 
     all_data_train, all_data_test = all_data_train_test
 
     train: DataTuple = DataTuple(
-        x=all_data_train.get(x_columns),
-        s=all_data_train.get(s_columns),
-        y=all_data_train.get(y_columns),
+        x=all_data_train[x_columns], s=all_data_train[s_columns], y=all_data_train[y_columns]
     )
 
     test: DataTuple = DataTuple(
-        x=all_data_test.get(x_columns),
-        s=all_data_test.get(s_columns),
-        y=all_data_test.get(y_columns),
+        x=all_data_test[x_columns], s=all_data_test[s_columns], y=all_data_test[y_columns]
     )
 
     assert isinstance(train.x, pd.DataFrame)
@@ -107,13 +106,13 @@ def fold_data(data: DataTuple, folds: int):
     indices: np.ndarray[int] = np.arange(data.x.shape[0])
 
     fold_sizes: np.ndarray[int] = np.full(folds, data.x.shape[0] // folds, dtype=int)
-    fold_sizes[:data.x.shape[0] % folds] += 1
+    fold_sizes[: data.x.shape[0] % folds] += 1
 
     current = 0
     for fold_size in fold_sizes:
         start, stop = current, current + fold_size
         val_inds: np.ndarray[int] = indices[start:stop]
-        train_inds = [i for i in indices if i not in val_inds] # Pretty sure this is inefficient
+        train_inds = [i for i in indices if i not in val_inds]  # Pretty sure this is inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)
         train_s = data.s.iloc[train_inds].reset_index(drop=True)

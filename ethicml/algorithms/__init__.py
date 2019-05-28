@@ -1,7 +1,2 @@
 """Definitions of algorithms"""
-from . import (
-    algorithm_base,
-    inprocess,
-    preprocess,
-    utils,
-)
+from . import algorithm_base, inprocess, preprocess, utils

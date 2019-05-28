@@ -14,13 +14,14 @@ class MetricNotApplicable(Exception):
 
 
 def metric_per_sensitive_attribute(
-        predictions: pd.DataFrame,
-        actual: DataTuple,
-        metric: Metric) -> Dict[str, float]:
+    predictions: pd.DataFrame, actual: DataTuple, metric: Metric
+) -> Dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute"""
     if not metric.apply_per_sensitive:
-        raise MetricNotApplicable(f"Metric {metric.name} is not applicable per sensitive "
-                                  f"attribute, apply to whole dataset instead")
+        raise MetricNotApplicable(
+            f"Metric {metric.name} is not applicable per sensitive "
+            f"attribute, apply to whole dataset instead"
+        )
 
     assert actual.s.shape[0] == actual.x.shape[0]
     assert actual.s.shape[0] == actual.y.shape[0]
@@ -38,14 +39,19 @@ def metric_per_sensitive_attribute(
                 for p_col in pred_column:
                     mask: pd.Series = (actual.s[s_col] == unique_s)
                     subset = DataTuple(
-                        x=pd.DataFrame(actual.x.loc[mask].get(actual.x.columns),
-                                       columns=actual.x.columns).reset_index(drop=True),
-                        s=pd.DataFrame(actual.s.loc[mask][s_col],
-                                       columns=[s_col]).reset_index(drop=True),
-                        y=pd.DataFrame(actual.y.loc[mask][y_col],
-                                       columns=[y_col]).reset_index(drop=True))
-                    pred_y = pd.DataFrame(predictions.loc[mask][p_col],
-                                          columns=[p_col]).reset_index(drop=True)
+                        x=pd.DataFrame(
+                            actual.x.loc[mask][actual.x.columns], columns=actual.x.columns
+                        ).reset_index(drop=True),
+                        s=pd.DataFrame(actual.s.loc[mask][s_col], columns=[s_col]).reset_index(
+                            drop=True
+                        ),
+                        y=pd.DataFrame(actual.y.loc[mask][y_col], columns=[y_col]).reset_index(
+                            drop=True
+                        ),
+                    )
+                    pred_y = pd.DataFrame(
+                        predictions.loc[mask][p_col], columns=[p_col]
+                    ).reset_index(drop=True)
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
 
@@ -66,7 +72,7 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
     diff_per_sens = {}
 
     for i, _ in enumerate(sens_values):
-        for j in range(i+1, len(sens_values)):
+        for j in range(i + 1, len(sens_values)):
             key: str = "{}-{}".format(sens_values[i], sens_values[j])
             i_value: float = per_sens_res[sens_values[i]]
             j_value: float = per_sens_res[sens_values[j]]
@@ -89,7 +95,7 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
     ratio_per_sens = {}
 
     for i, _ in enumerate(sens_values):
-        for j in range(i+1, len(sens_values)):
+        for j in range(i + 1, len(sens_values)):
             key: str = "{}/{}".format(sens_values[i], sens_values[j])
             i_value: float = per_sens_res[sens_values[i]]
             j_value: float = per_sens_res[sens_values[j]]

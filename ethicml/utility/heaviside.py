@@ -12,6 +12,7 @@ class Heaviside(Activation):
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
         def _heavi(x):
             return 1 if x >= 0.5 else 0
+
         return numpy.array([_heavi(x) for x in soft_output])
 
     def get_name(self) -> str:

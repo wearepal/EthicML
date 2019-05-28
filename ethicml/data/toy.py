@@ -7,6 +7,7 @@ from .dataset import Dataset
 
 class Toy(Dataset):
     """Class to describe features of the Test dataset"""
+
     cont_features: List[str]
     disc_features: List[str]
 
@@ -25,8 +26,4 @@ class Toy(Dataset):
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-        return {
-            "x": ["a1", "a2"],
-            "s": ["s"],
-            "y": ["y"]
-        }
+        return {"x": ["a1", "a2"], "s": ["s"], "y": ["y"]}

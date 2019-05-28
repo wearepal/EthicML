@@ -14,9 +14,9 @@ class LabelOutOfBounds(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead"""
 
 
-def confusion_matrix(prediction: pd.DataFrame,
-                     actual: DataTuple,
-                     pos_cls: int) -> Tuple[int, int, int, int]:
+def confusion_matrix(
+    prediction: pd.DataFrame, actual: DataTuple, pos_cls: int
+) -> Tuple[int, int, int, int]:
     """Apply sci-kit learn's confusion matrix"""
     actual_y: np.ndarray[int] = actual.y.values
     labels: np.ndarray[int] = np.unique(actual_y)

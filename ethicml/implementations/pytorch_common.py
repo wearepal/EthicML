@@ -6,6 +6,7 @@ from torch.utils.data import Dataset
 
 class CustomDataset(Dataset):
     """Shared Dataset for pytorch models"""
+
     def __init__(self, data):
         self.features = np.array(data.x.values, dtype=np.float32)
         self.class_labels = np.array(data.y.values, dtype=np.float32)
@@ -44,9 +45,9 @@ def quadratic_time_mmd(data_first, data_second, sigma):
     Returns:
 
     """
-    xx_gm = data_first@data_first.t()
-    xy_gm = data_first@data_second.t()
-    yy_gm = data_second@data_second.t()
+    xx_gm = data_first @ data_first.t()
+    xy_gm = data_first @ data_second.t()
+    yy_gm = data_second @ data_second.t()
     x_sqnorms = torch.diagonal(xx_gm)
     y_sqnorms = torch.diagonal(yy_gm)
 
@@ -62,7 +63,9 @@ def quadratic_time_mmd(data_first, data_second, sigma):
     xx_num = float(kernel_xx.shape[0])
     yy_num = float(kernel_yy.shape[0])
 
-    mmd2 = (kernel_xx.sum() / (xx_num * xx_num)
-            + kernel_yy.sum() / (yy_num * yy_num)
-            - 2 * kernel_xy.sum() / (xx_num * yy_num))
+    mmd2 = (
+        kernel_xx.sum() / (xx_num * xx_num)
+        + kernel_yy.sum() / (yy_num * yy_num)
+        - 2 * kernel_xy.sum() / (xx_num * yy_num)
+    )
     return mmd2

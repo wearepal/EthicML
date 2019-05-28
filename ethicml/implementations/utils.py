@@ -14,6 +14,7 @@ from ethicml.algorithms.algorithm_base import load_dataframe
 
 class InAlgoInterface:
     """Commandline "interface" for in-process algorithms"""
+
     def __init__(self, args: Optional[List[str]] = None):
         self.args: List[str] = sys.argv[1:] if args is None else args
 
@@ -60,8 +61,9 @@ def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, DataTuple]:
     return train, test
 
 
-def save_transformations(transforms: Tuple[pd.DataFrame, pd.DataFrame],
-                         transform_paths: Tuple[str, str]):
+def save_transformations(
+    transforms: Tuple[pd.DataFrame, pd.DataFrame], transform_paths: Tuple[str, str]
+):
     """Save the data to the file that was specified in the commandline arguments"""
     assert isinstance(transforms[0], pd.DataFrame)
     assert isinstance(transforms[1], pd.DataFrame)

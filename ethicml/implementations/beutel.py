@@ -17,13 +17,9 @@ from ethicml.implementations.utils import load_data_from_flags, save_transformat
 from .pytorch_common import CustomDataset
 
 
-STRING_TO_ACTIVATION_MAP = {
-    "Sigmoid()": nn.Sigmoid()
-}
+STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
-STRING_TO_LOSS_MAP = {
-    "BCELoss()": nn.BCELoss()
-}
+STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
 def train_and_transform(train, test, flags):
@@ -37,12 +33,14 @@ def train_and_transform(train, test, flags):
     size = int(train_data.size)
     s_size = int(train_data.s_size)
     y_size = int(train_data.y_size)
-    train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=flags['batch_size'],
-                                               shuffle=False)
+    train_loader = torch.utils.data.DataLoader(
+        dataset=train_data, batch_size=flags['batch_size'], shuffle=False
+    )
 
     test_data = CustomDataset(test)
-    test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=flags['batch_size'],
-                                              shuffle=False)
+    test_loader = torch.utils.data.DataLoader(
+        dataset=test_data, batch_size=flags['batch_size'], shuffle=False
+    )
 
     # convert flags to Python objects
     enc_activation = STRING_TO_ACTIVATION_MAP[flags['enc_activation']]
@@ -51,8 +49,9 @@ def train_and_transform(train, test, flags):
     s_loss_fn = STRING_TO_LOSS_MAP[flags['s_loss']]
 
     enc = Encoder(flags['enc_size'], size, enc_activation)
-    adv = Adversary(flags['fairness'], flags['adv_size'], flags['enc_size'][-1], s_size,
-                    adv_activation)
+    adv = Adversary(
+        flags['fairness'], flags['adv_size'], flags['enc_size'][-1], s_size, adv_activation
+    )
     pred = Predictor(flags['pred_size'], flags['enc_size'][-1], y_size, adv_activation)
     model = Model(enc, adv, pred)
 
@@ -99,6 +98,7 @@ def train_and_transform(train, test, flags):
 
 class GradReverse(Function):
     """Gradient reversal layer"""
+
     @staticmethod
     def forward(ctx, x):
         return x.view_as(x)
@@ -114,6 +114,7 @@ def _grad_reverse(features):
 
 class Encoder(nn.Module):
     """Encoder of the GAN"""
+
     def __init__(self, enc_size: List[int], init_size: int, activation):
         super().__init__()
         self.encoder = nn.Sequential()
@@ -124,8 +125,9 @@ class Encoder(nn.Module):
             self.encoder.add_module("encoder layer 0", nn.Linear(init_size, enc_size[0]))
             self.encoder.add_module("encoder activation 0", activation)
             for k in range(len(enc_size) - 1):
-                self.encoder.add_module("encoder layer {}".format(k + 1),
-                                        nn.Linear(enc_size[k], enc_size[k + 1]))
+                self.encoder.add_module(
+                    "encoder layer {}".format(k + 1), nn.Linear(enc_size[k], enc_size[k + 1])
+                )
                 self.encoder.add_module("encoder activation {}".format(k + 1), activation)
 
     def forward(self, x):
@@ -136,8 +138,10 @@ class Encoder(nn.Module):
 
 class Adversary(nn.Module):
     """Adversary of the GAN"""
-    def __init__(self, fairness: str, adv_size: List[int], init_size: int, s_size: int,
-                 activation: nn.Module):
+
+    def __init__(
+        self, fairness: str, adv_size: List[int], init_size: int, s_size: int, activation: nn.Module
+    ):
         super().__init__()
         self.fairness = fairness
         self.init_size = init_size
@@ -149,8 +153,9 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary layer 0", nn.Linear(init_size, adv_size[0]))
             self.adversary.add_module("adversary activation 0", activation)
             for k in range(len(adv_size) - 1):
-                self.adversary.add_module("adversary layer {}".format(k + 1),
-                                          nn.Linear(adv_size[k], adv_size[k + 1]))
+                self.adversary.add_module(
+                    "adversary layer {}".format(k + 1), nn.Linear(adv_size[k], adv_size[k + 1])
+                )
                 self.adversary.add_module("adversary activation {}".format(k + 1), activation)
             self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
             self.adversary.add_module("adversary last activation", activation)
@@ -169,23 +174,28 @@ class Adversary(nn.Module):
 
 class Predictor(nn.Module):
     """Predictor of the GAN"""
-    def __init__(self, pred_size: List[int], init_size: int, class_label_size: int,
-                 activation: nn.Module):
+
+    def __init__(
+        self, pred_size: List[int], init_size: int, class_label_size: int, activation: nn.Module
+    ):
         super().__init__()
         self.predictor = nn.Sequential()
         if not pred_size:  # In the case that encoder size [] is specified
-            self.predictor.add_module("single adversary layer",
-                                      nn.Linear(init_size, class_label_size))
+            self.predictor.add_module(
+                "single adversary layer", nn.Linear(init_size, class_label_size)
+            )
             self.predictor.add_module("single layer adversary activation", activation)
         else:
             self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
             self.predictor.add_module("adversary activation 0", activation)
             for k in range(len(pred_size) - 1):
-                self.predictor.add_module("adversary layer {}".format(k + 1),
-                                          nn.Linear(pred_size[k], pred_size[k + 1]))
+                self.predictor.add_module(
+                    "adversary layer {}".format(k + 1), nn.Linear(pred_size[k], pred_size[k + 1])
+                )
                 self.predictor.add_module("adversary activation {}".format(k + 1), activation)
-            self.predictor.add_module("adversary last layer",
-                                      nn.Linear(pred_size[-1], class_label_size))
+            self.predictor.add_module(
+                "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
+            )
             self.predictor.add_module("adversary last activation", activation)
 
     def forward(self, x):
@@ -194,6 +204,7 @@ class Predictor(nn.Module):
 
 class Model(nn.Module):
     """Whole GAN model"""
+
     def __init__(self, enc, adv, pred):
         super().__init__()
         self.enc = enc
@@ -238,8 +249,9 @@ def main():
     flags = vars(args)  # convert args object to a dictionary
 
     train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags),
-                         (flags['train_new'], flags['test_new']))
+    save_transformations(
+        train_and_transform(train, test, flags), (flags['train_new'], flags['test_new'])
+    )
 
 
 if __name__ == "__main__":

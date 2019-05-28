@@ -12,6 +12,7 @@ from ..algorithms.utils import DataTuple
 
 class BCR(Metric):
     """Balanced Classification Rate"""
+
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         tpr_metric = TPR()
         tpr = tpr_metric.score(prediction, actual)

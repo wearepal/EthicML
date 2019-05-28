@@ -14,8 +14,12 @@ from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.utils import DataTuple, get_subset
 from ..data.dataset import Dataset
 from ..data.load import load_data
-from .per_sensitive_attribute import (metric_per_sensitive_attribute, MetricNotApplicable,
-                                      diff_per_sensitive_attribute, ratio_per_sensitive_attribute)
+from .per_sensitive_attribute import (
+    metric_per_sensitive_attribute,
+    MetricNotApplicable,
+    diff_per_sensitive_attribute,
+    ratio_per_sensitive_attribute,
+)
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import train_test_split
 
@@ -35,12 +39,18 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
     """Check if the given metrics allow application per sensitive attribute"""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
-            raise MetricNotApplicable(f"Metric {metric.name} is not applicable per sensitive "
-                                      f"attribute, apply to whole dataset instead")
+            raise MetricNotApplicable(
+                f"Metric {metric.name} is not applicable per sensitive "
+                f"attribute, apply to whole dataset instead"
+            )
 
 
-def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metric],
-                per_sens_metrics: List[Metric]) -> Dict[str, float]:
+def run_metrics(
+    predictions: pd.DataFrame,
+    actual: DataTuple,
+    metrics: List[Metric],
+    per_sens_metrics: List[Metric],
+) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results
 
     Args:
@@ -64,10 +74,16 @@ def run_metrics(predictions: pd.DataFrame, actual: DataTuple, metrics: List[Metr
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
-def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorithm],
-                    inprocess_models: List[InAlgorithm], postprocess_models: List[PostAlgorithm],
-                    metrics: List[Metric], per_sens_metrics: List[Metric], repeats: int = 3,
-                    test_mode: bool = False) -> pd.DataFrame:
+def evaluate_models(
+    datasets: List[Dataset],
+    preprocess_models: List[PreAlgorithm],
+    inprocess_models: List[InAlgorithm],
+    postprocess_models: List[PostAlgorithm],
+    metrics: List[Metric],
+    per_sens_metrics: List[Metric],
+    repeats: int = 3,
+    test_mode: bool = False,
+) -> pd.DataFrame:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
@@ -85,9 +101,11 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
-    total_experiments = len(datasets) * repeats * \
-                        (1 + len(preprocess_models) +
-                         ((1 + len(preprocess_models)) * len(inprocess_models)))
+    total_experiments = (
+        len(datasets)
+        * repeats
+        * (1 + len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
+    )
 
     seed = 0
     with tqdm(total=total_experiments) as pbar:
@@ -101,8 +119,7 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
                     # take smaller subset of training data to speed up training
                     train = get_subset(train)
 
-                to_operate_on = {"no_transform": {'train': train,
-                                                  'test': test}}
+                to_operate_on = {"no_transform": {'train': train, 'test': test}}
 
                 for pre_process_method in preprocess_models:
                     new_train, new_test = pre_process_method.run(train, test)
@@ -121,10 +138,12 @@ def evaluate_models(datasets: List[Dataset], preprocess_models: List[PreAlgorith
 
                     for model in inprocess_models:
 
-                        temp_res: Dict[str, Union[str, float]] = {'dataset': dataset.name,
-                                                                  'transform': transform_name,
-                                                                  'model': model.name,
-                                                                  'repeat': f"{repeat}-{seed}"}
+                        temp_res: Dict[str, Union[str, float]] = {
+                            'dataset': dataset.name,
+                            'transform': transform_name,
+                            'model': model.name,
+                            'repeat': f"{repeat}-{seed}",
+                        }
 
                         predictions: pd.DataFrame
                         predictions = model.run(transformed_train, transformed_test)

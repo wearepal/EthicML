@@ -7,6 +7,7 @@ from ethicml.data.dataset import Dataset
 
 class Sqf(Dataset):
     """Stop, question and frisk dataset"""
+
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
         self.discrete_only = discrete_only
@@ -156,12 +157,10 @@ class Sqf(Dataset):
             'build_M',
             'build_T',
             'build_U',
-            'build_Z'
+            'build_Z',
         ]
 
-        self.continuous_features = [
-            'perstop', 'ht_feet', 'age', 'ht_inch', 'perobs', 'weight'
-        ]
+        self.continuous_features = ['perstop', 'ht_feet', 'age', 'ht_inch', 'perobs', 'weight']
 
         if split == "Sex":
             self.sens_attrs = ['sex']
@@ -174,8 +173,7 @@ class Sqf(Dataset):
             self.class_labels = ['weapon']
             self.class_label_prefix = ['weapon']
         elif split == "Race-Sex":
-            self.sens_attrs = ['sex',
-                               'race']
+            self.sens_attrs = ['sex', 'race']
             self.s_prefix = ['race', 'sex']
             self.class_labels = ['weapon']
             self.class_label_prefix = ['weapon']

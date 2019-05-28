@@ -5,8 +5,13 @@ from typing import List, Any, Dict
 from ..utils import PathTuple
 
 
-def flag_interface(train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
-                   new_test_path: Path, flags: Dict[str, Any]) -> List[str]:
+def flag_interface(
+    train_paths: PathTuple,
+    test_paths: PathTuple,
+    new_train_path: Path,
+    new_test_path: Path,
+    flags: Dict[str, Any],
+) -> List[str]:
     """Generate the commandline arguments that are expected"""
     flags_list: List[str] = []
 

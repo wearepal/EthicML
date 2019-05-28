@@ -19,6 +19,7 @@ class Results:
     """
     Stores the results of the experiments
     """
+
     def __init__(self):
         self.storage: List[Tuple[Dict[str, Any], int, str, float]] = []
 
