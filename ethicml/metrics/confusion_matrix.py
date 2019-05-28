@@ -27,7 +27,7 @@ def confusion_matrix(
     if not pos_cls in labels:
         raise LabelOutOfBounds("Positive class specified must exist in the test set")
 
-    tp_idx = np.where(labels == pos_cls)
+    tp_idx: int = (labels == pos_cls).nonzero()[0].item()
 
     true_pos = conf_matr[tp_idx, tp_idx]
     false_pos = conf_matr[:, tp_idx].sum() - true_pos
