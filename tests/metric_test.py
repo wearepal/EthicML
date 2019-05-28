@@ -37,6 +37,16 @@ def test_get_acc_of_predictions():
     assert score == 0.89
 
 
+def test_mni_preds_and_s():
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    acc: Metric = NMI(base='s')
+    assert acc.name == "NMI preds and s"
+    score = acc.score(predictions, test)
+    assert score == pytest.approx(0.083, abs=0.001)
+
+
 def test_accuracy_per_sens_attr():
     train, test = get_train_test()
     model: InAlgorithm = SVM()
@@ -58,7 +68,8 @@ def test_proboutcome_per_sens_attr():
     model: InAlgorithm = LRProb()
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbOutcome())
-    assert acc_per_sens == {'s_0': 0.37192686620176246, 's_1': 0.661164329929575}
+    assert acc_per_sens == {'s_0': pytest.approx(0.372, abs=0.001),
+                            's_1': pytest.approx(0.661, abs=0.001)}
 
 
 def test_probneg_per_sens_attr():
@@ -77,87 +88,87 @@ def test_acc_per_nonbinary_sens():
     predictions: pd.DataFrame = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
 
-    test_dict = {'native-country_Cambodia_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Cambodia_1':    pytest.approx(0.50, abs=0.01),
-                 'native-country_Canada_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_Canada_1':      pytest.approx(0.59, abs=0.01),
-                 'native-country_China_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_China_1':       pytest.approx(0.80, abs=0.01),
-                 'native-country_Columbia_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Columbia_1':    pytest.approx(1.00, abs=0.01),
-                 'native-country_Cuba_0':        pytest.approx(0.77, abs=0.01),
-                 'native-country_Cuba_1':        pytest.approx(0.83, abs=0.01),
-                 'native-country_Dominican-Republic_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Dominican-Republic_1': pytest.approx(0.93, abs=0.01),
-                 'native-country_Ecuador_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Ecuador_1':     pytest.approx(0.80, abs=0.01),
-                 'native-country_El-Salvador_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_El-Salvador_1': pytest.approx(1.00, abs=0.01),
-                 'native-country_England_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_England_1':     pytest.approx(0.60, abs=0.01),
-                 'native-country_France_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_France_1':      pytest.approx(0.50, abs=0.01),
-                 'native-country_Germany_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Germany_1':     pytest.approx(0.67, abs=0.01),
-                 'native-country_Greece_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_Greece_1':      pytest.approx(0.63, abs=0.01),
-                 'native-country_Guatemala_0':   pytest.approx(0.77, abs=0.01),
-                 'native-country_Guatemala_1':   pytest.approx(0.95, abs=0.01),
-                 'native-country_Haiti_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_Haiti_1':       pytest.approx(0.92, abs=0.01),
-                 'native-country_Holand-Netherlands_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Honduras_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Honduras_1':    pytest.approx(1.00, abs=0.01),
-                 'native-country_Hong_0':        pytest.approx(0.77, abs=0.01),
-                 'native-country_Hong_1':        pytest.approx(0.66, abs=0.01),
-                 'native-country_Hungary_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Hungary_1':     pytest.approx(1.00, abs=0.01),
-                 'native-country_India_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_India_1':       pytest.approx(0.58, abs=0.01),
-                 'native-country_Iran_0':        pytest.approx(0.77, abs=0.01),
-                 'native-country_Iran_1':        pytest.approx(0.36, abs=0.01),
-                 'native-country_Ireland_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Ireland_1':     pytest.approx(0.81, abs=0.01),
-                 'native-country_Italy_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_Italy_1':       pytest.approx(0.56, abs=0.01),
-                 'native-country_Jamaica_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Jamaica_1':     pytest.approx(0.80, abs=0.01),
-                 'native-country_Japan_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_Japan_1':       pytest.approx(0.76, abs=0.01),
-                 'native-country_Laos_0':        pytest.approx(0.77, abs=0.01),
-                 'native-country_Laos_1':        pytest.approx(1.00, abs=0.01),
-                 'native-country_Mexico_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_Mexico_1':      pytest.approx(0.96, abs=0.01),
-                 'native-country_Nicaragua_0':   pytest.approx(0.77, abs=0.01),
-                 'native-country_Nicaragua_1':   pytest.approx(0.87, abs=0.01),
-                 'native-country_Outlying-US(Guam-USVI-etc)_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Outlying-US(Guam-USVI-etc)_1': pytest.approx(0.80, abs=0.01),
-                 'native-country_Peru_0':        pytest.approx(0.77, abs=0.01),
-                 'native-country_Peru_1':        pytest.approx(0.92, abs=0.01),
-                 'native-country_Philippines_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Philippines_1': pytest.approx(0.71, abs=0.01),
-                 'native-country_Poland_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_Poland_1':      pytest.approx(0.81, abs=0.01),
-                 'native-country_Portugal_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Portugal_1':    pytest.approx(0.80, abs=0.01),
-                 'native-country_Puerto-Rico_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Puerto-Rico_1': pytest.approx(0.92, abs=0.01),
-                 'native-country_Scotland_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Scotland_1':    pytest.approx(1.00, abs=0.01),
-                 'native-country_South_0':       pytest.approx(0.77, abs=0.01),
-                 'native-country_South_1':       pytest.approx(0.71, abs=0.01),
-                 'native-country_Taiwan_0':      pytest.approx(0.77, abs=0.01),
-                 'native-country_Taiwan_1':      pytest.approx(0.42, abs=0.01),
-                 'native-country_Thailand_0':    pytest.approx(0.77, abs=0.01),
-                 'native-country_Thailand_1':    pytest.approx(0.75, abs=0.01),
-                 'native-country_Trinadad&Tobago_0': pytest.approx(0.77, abs=0.01),
-                 'native-country_Trinadad&Tobago_1': pytest.approx(1.00, abs=0.01),
-                 'native-country_United-States_0': pytest.approx(0.80, abs=0.01),
-                 'native-country_United-States_1': pytest.approx(0.77, abs=0.01),
-                 'native-country_Vietnam_0':     pytest.approx(0.77, abs=0.01),
-                 'native-country_Vietnam_1':     pytest.approx(0.92, abs=0.01),
-                 'native-country_Yugoslavia_0':  pytest.approx(0.77, abs=0.01),
-                 'native-country_Yugoslavia_1':  pytest.approx(0.71, abs=0.01)}
+    test_dict = {'native-country_Cambodia_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Cambodia_1':    pytest.approx(0.500, abs=0.001),
+                 'native-country_Canada_0':      pytest.approx(0.779, abs=0.001),
+                 'native-country_Canada_1':      pytest.approx(0.595, abs=0.001),
+                 'native-country_China_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_China_1':       pytest.approx(0.800, abs=0.001),
+                 'native-country_Columbia_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Columbia_1':    pytest.approx(1.000, abs=0.001),
+                 'native-country_Cuba_0':        pytest.approx(0.778, abs=0.001),
+                 'native-country_Cuba_1':        pytest.approx(0.826, abs=0.001),
+                 'native-country_Dominican-Republic_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Dominican-Republic_1': pytest.approx(0.933, abs=0.001),
+                 'native-country_Ecuador_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Ecuador_1':     pytest.approx(0.800, abs=0.001),
+                 'native-country_El-Salvador_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_El-Salvador_1': pytest.approx(1.000, abs=0.001),
+                 'native-country_England_0':     pytest.approx(0.779, abs=0.001),
+                 'native-country_England_1':     pytest.approx(0.600, abs=0.001),
+                 'native-country_France_0':      pytest.approx(0.778, abs=0.001),
+                 'native-country_France_1':      pytest.approx(0.500, abs=0.001),
+                 'native-country_Germany_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Germany_1':     pytest.approx(0.679, abs=0.001),
+                 'native-country_Greece_0':      pytest.approx(0.778, abs=0.001),
+                 'native-country_Greece_1':      pytest.approx(0.636, abs=0.001),
+                 'native-country_Guatemala_0':   pytest.approx(0.778, abs=0.001),
+                 'native-country_Guatemala_1':   pytest.approx(0.952, abs=0.001),
+                 'native-country_Haiti_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_Haiti_1':       pytest.approx(0.929, abs=0.001),
+                 'native-country_Holand-Netherlands_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Honduras_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Honduras_1':    pytest.approx(1.000, abs=0.001),
+                 'native-country_Hong_0':        pytest.approx(0.778, abs=0.001),
+                 'native-country_Hong_1':        pytest.approx(0.667, abs=0.001),
+                 'native-country_Hungary_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Hungary_1':     pytest.approx(1.000, abs=0.001),
+                 'native-country_India_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_India_1':       pytest.approx(0.589, abs=0.001),
+                 'native-country_Iran_0':        pytest.approx(0.778, abs=0.001),
+                 'native-country_Iran_1':        pytest.approx(0.364, abs=0.001),
+                 'native-country_Ireland_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Ireland_1':     pytest.approx(0.818, abs=0.001),
+                 'native-country_Italy_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_Italy_1':       pytest.approx(0.565, abs=0.001),
+                 'native-country_Jamaica_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Jamaica_1':     pytest.approx(0.800, abs=0.001),
+                 'native-country_Japan_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_Japan_1':       pytest.approx(0.760, abs=0.001),
+                 'native-country_Laos_0':        pytest.approx(0.778, abs=0.001),
+                 'native-country_Laos_1':        pytest.approx(1.000, abs=0.001),
+                 'native-country_Mexico_0':      pytest.approx(0.774, abs=0.001),
+                 'native-country_Mexico_1':      pytest.approx(0.963, abs=0.001),
+                 'native-country_Nicaragua_0':   pytest.approx(0.778, abs=0.001),
+                 'native-country_Nicaragua_1':   pytest.approx(0.875, abs=0.001),
+                 'native-country_Outlying-US(Guam-USVI-etc)_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Outlying-US(Guam-USVI-etc)_1': pytest.approx(0.800, abs=0.001),
+                 'native-country_Peru_0':        pytest.approx(0.778, abs=0.001),
+                 'native-country_Peru_1':        pytest.approx(0.923, abs=0.001),
+                 'native-country_Philippines_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Philippines_1': pytest.approx(0.717, abs=0.001),
+                 'native-country_Poland_0':      pytest.approx(0.778, abs=0.001),
+                 'native-country_Poland_1':      pytest.approx(0.813, abs=0.001),
+                 'native-country_Portugal_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Portugal_1':    pytest.approx(0.800, abs=0.001),
+                 'native-country_Puerto-Rico_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Puerto-Rico_1': pytest.approx(0.921, abs=0.001),
+                 'native-country_Scotland_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Scotland_1':    pytest.approx(1.000, abs=0.001),
+                 'native-country_South_0':       pytest.approx(0.778, abs=0.001),
+                 'native-country_South_1':       pytest.approx(0.714, abs=0.001),
+                 'native-country_Taiwan_0':      pytest.approx(0.778, abs=0.001),
+                 'native-country_Taiwan_1':      pytest.approx(0.429, abs=0.001),
+                 'native-country_Thailand_0':    pytest.approx(0.778, abs=0.001),
+                 'native-country_Thailand_1':    pytest.approx(0.750, abs=0.001),
+                 'native-country_Trinadad&Tobago_0': pytest.approx(0.778, abs=0.001),
+                 'native-country_Trinadad&Tobago_1': pytest.approx(1.000, abs=0.001),
+                 'native-country_United-States_0': pytest.approx(0.806, abs=0.001),
+                 'native-country_United-States_1': pytest.approx(0.776, abs=0.001),
+                 'native-country_Vietnam_0':     pytest.approx(0.778, abs=0.001),
+                 'native-country_Vietnam_1':     pytest.approx(0.929, abs=0.001),
+                 'native-country_Yugoslavia_0':  pytest.approx(0.778, abs=0.001),
+                 'native-country_Yugoslavia_1':  pytest.approx(0.714, abs=0.001)}
 
     for k, v in acc_per_sens.items():
         assert acc_per_sens[k] == test_dict[k]
@@ -202,7 +213,7 @@ def test_get_nmi_of_predictions():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     nmi: Metric = NMI()
-    assert nmi.name == "NMI"
+    assert nmi.name == "NMI preds and y"
     score = nmi.score(predictions, test)
     assert score == pytest.approx(0.50, abs=0.01)
 
@@ -212,8 +223,8 @@ def test_nmi_diff():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, NMI())
-    assert NMI().name == "NMI"
-    assert nmis == {'s_0': pytest.approx(0.52, abs=0.01), 's_1': pytest.approx(0.4172930822875038, abs=0.01)}
+    assert NMI().name == "NMI preds and y"
+    assert nmis == {'s_0': pytest.approx(0.52, abs=0.01), 's_1': pytest.approx(0.42, abs=0.01)}
     nmi_diff = diff_per_sensitive_attribute(nmis)
     assert nmi_diff["s_0-s_1"] == pytest.approx(0.10, abs=0.01)
 
@@ -314,7 +325,7 @@ def test_tnr_diff():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, TNR())
-    assert NMI().name == "NMI"
+    assert NMI().name == "NMI preds and y"
     assert nmis == {'s_0': pytest.approx(0.93, abs=0.01), 's_1': pytest.approx(0.84, abs=0.01)}
     nmi_diff = diff_per_sensitive_attribute(nmis)
     assert nmi_diff["s_0-s_1"] == pytest.approx(0.09, abs=0.01)
@@ -341,7 +352,7 @@ def test_nmi_diff_non_binary_race():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run_test(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, NMI())
-    assert NMI().name == "NMI"
+    assert NMI().name == "NMI preds and y"
     test_dict = {'race_Amer-Indian-Eskimo_0': pytest.approx(0.14, abs=0.01),
                  'race_Amer-Indian-Eskimo_1': pytest.approx(0.41, abs=0.01),
                  'race_Asian-Pac-Islander_0': pytest.approx(0.14, abs=0.01),
