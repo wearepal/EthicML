@@ -1,10 +1,9 @@
 """
 Method for calculating the HSIC - an independence criterion. a score of 0 denotes independence
 """
-
+import math
 import pandas as pd
 import numpy as np
-import math
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.metrics.metric import Metric
