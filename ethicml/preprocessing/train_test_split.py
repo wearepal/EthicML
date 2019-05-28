@@ -12,16 +12,7 @@ from ..algorithms.utils import DataTuple
 def call_numpy_to_split(
     dataframe: pd.DataFrame, train_percentage, random_seed
 ) -> (Tuple[pd.DataFrame, pd.DataFrame]):
-    """
-
-    Args:
-        dataframe:
-        train_percentage:
-        random_seed:
-
-    Returns:
-
-    """
+    """Split a DataFrame along the rows"""
     # permute
     dataframe = dataframe.sample(frac=1, random_state=random_seed).reset_index(drop=True)
 
@@ -42,16 +33,7 @@ def call_numpy_to_split(
 def train_test_split(
     data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0
 ) -> (Tuple[DataTuple, DataTuple]):
-    """
-
-    Args:
-        data:
-        train_percentage:
-        random_seed:
-
-    Returns:
-
-    """
+    """Split a data tuple into two datatuple along the rows of the DataFrames"""
     x_columns: pd.Index = data.x.columns
     s_columns: pd.Index = data.s.columns
     y_columns: pd.Index = data.y.columns
@@ -95,12 +77,6 @@ def train_test_split(
 def fold_data(data: DataTuple, folds: int):
     """
     So much love to sklearn for making their source code open
-    Args:
-        data:
-        folds:
-
-    Returns:
-
     """
 
     indices: np.ndarray[int] = np.arange(data.x.shape[0])
