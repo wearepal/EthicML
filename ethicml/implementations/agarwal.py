@@ -11,9 +11,16 @@ from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside
 
 
-def train_and_predict(train: DataTuple, test: DataTuple,
-                      classifier: str, fairness: str,
-                      eps: float, iters: int, C: float, kernel: str):
+def train_and_predict(
+    train: DataTuple,
+    test: DataTuple,
+    classifier: str,
+    fairness: str,
+    eps: float,
+    iters: int,
+    C: float,
+    kernel: str,
+):
     """Train a logistic regression model and compute predictions on the given test data"""
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
@@ -26,8 +33,15 @@ def train_and_predict(train: DataTuple, test: DataTuple,
     data_y = train.y[train.y.columns[0]]
     data_a = train.s[train.s.columns[0]]
 
-    res_tuple = expgrad(dataX=data_x, dataA=data_a, dataY=data_y,
-                        learner=model, cons=fairness_class, eps=eps, T=iters)
+    res_tuple = expgrad(
+        dataX=data_x,
+        dataA=data_a,
+        dataY=data_y,
+        learner=model,
+        cons=fairness_class,
+        eps=eps,
+        T=iters,
+    )
 
     res = res_tuple._asdict()
 
@@ -45,10 +59,18 @@ def main():
     interface = InAlgoInterface()
     train, test = interface.load_data()
     classifier, fairness, eps, iters, C, kernel = interface.remaining_args()
-    interface.save_predictions(train_and_predict(train, test,
-                                                 classifier=classifier, fairness=fairness,
-                                                 eps=float(eps), iters=int(iters),
-                                                 C=float(C), kernel=kernel))
+    interface.save_predictions(
+        train_and_predict(
+            train,
+            test,
+            classifier=classifier,
+            fairness=fairness,
+            eps=float(eps),
+            iters=int(iters),
+            C=float(C),
+            kernel=kernel,
+        )
+    )
 
 
 if __name__ == "__main__":

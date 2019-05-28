@@ -13,6 +13,7 @@ from ..algorithms.utils import DataTuple
 
 class Theil(Metric):
     """Theil Index"""
+
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         y_true_df = actual.y
         act_col = y_true_df.columns[0]

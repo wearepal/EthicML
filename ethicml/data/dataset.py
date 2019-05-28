@@ -12,6 +12,7 @@ from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
 class Dataset(ABC):
     """Base class for datasets"""
+
     _features: List[str]
     _class_label_prefix: List[str]
     _class_labels: List[str]
@@ -59,9 +60,9 @@ class Dataset(ABC):
         """
 
         return {
-            "x": self.discrete_features+self.continuous_features,
+            "x": self.discrete_features + self.continuous_features,
             "s": self._sens_attrs,
-            "y": self._class_labels
+            "y": self._class_labels,
         }
 
     @property
@@ -76,7 +77,7 @@ class Dataset(ABC):
         return {
             "x": filter_features_by_prefixes(self.features, self.features_to_remove),
             "s": self._sens_attrs,
-            "y": self._class_labels
+            "y": self._class_labels,
         }
 
     @property
@@ -138,8 +139,9 @@ class Dataset(ABC):
     @property
     def discrete_features(self) -> List[str]:
         """List of features that are discrete"""
-        return get_discrete_features(self.features, self.features_to_remove,
-                                     self.continuous_features)
+        return get_discrete_features(
+            self.features, self.features_to_remove, self.continuous_features
+        )
 
     @discrete_features.setter
     def discrete_features(self, feats: List[str]):

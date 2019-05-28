@@ -39,9 +39,15 @@ jobs:
 
   - script: python run_pylint.py
     displayName: 'pylint'
+
   - script: |
       python run_mypy.py
-    displayName: 'mypy'
+    displayName: 'mypy type check'
+
   - script: |
       python run_mypy_tests.py
-    displayName: 'mypy_tests'
+    displayName: 'mypy type check (tests)'
+
+  - script: |
+      python -m black --check -l 100 -t py36 -S ethicml/
+    displayName: 'formatting with black'

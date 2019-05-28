@@ -76,9 +76,11 @@ def _make_valid_variable_name(name: str) -> str:
     name = str(name)
 
     # Python variable names may only contain digits, letters and underscores
-    explicit_substitutions = {'-': '_',  # Replace hyphens with underscores
-                              '+': '_plus_',
-                              '=': '_eq_'}
+    explicit_substitutions = {
+        '-': '_',  # Replace hyphens with underscores
+        '+': '_plus_',
+        '=': '_eq_',
+    }
     for original, replacement in explicit_substitutions.items():
         name = name.replace(original, replacement)
 

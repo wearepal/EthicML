@@ -21,13 +21,16 @@ class GPyT(InstalledModel):
     """
     Normal GP model
     """
+
     basename = "GPyT"
 
     def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2):
-        super().__init__(name="gpyt",
-                         url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
-                         module="fair-gpytorch",
-                         file_name="run.py")
+        super().__init__(
+            name="gpyt",
+            url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
+            module="fair-gpytorch",
+            file_name="run.py",
+        )
         self.s_as_input = s_as_input
         self.gpu = gpu
         self.epochs = epochs
@@ -35,8 +38,14 @@ class GPyT(InstalledModel):
 
     def run(self, train, test, _=False):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
-        raw_data = dict(xtrain=train.x.to_numpy(), strain=train.s.to_numpy(), ytrain=ytrain,
-                        xtest=test.x.to_numpy(), stest=test.s.to_numpy(), ytest=ytest)
+        raw_data = dict(
+            xtrain=train.x.to_numpy(),
+            strain=train.s.to_numpy(),
+            ytrain=ytrain,
+            xtest=test.x.to_numpy(),
+            stest=test.s.to_numpy(),
+            ytest=ytest,
+        )
         parameters = self._additional_parameters(raw_data)
 
         with TemporaryDirectory() as tmpdir:
@@ -44,8 +53,17 @@ class GPyT(InstalledModel):
             data_path = tmp_path / "data.npz"
             np.savez(data_path, **raw_data)
             model_name = "local"
-            flags = _flags(parameters, str(data_path), tmpdir, self.s_as_input, model_name,
-                           raw_data['ytrain'].shape[0], self.gpu, self.epochs, self.length_scale)
+            flags = _flags(
+                parameters,
+                str(data_path),
+                tmpdir,
+                self.s_as_input,
+                model_name,
+                raw_data['ytrain'].shape[0],
+                self.gpu,
+                self.epochs,
+                self.length_scale,
+            )
             self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
@@ -65,9 +83,7 @@ class GPyT(InstalledModel):
 
     @staticmethod
     def _additional_parameters(_):
-        return dict(
-            lik='BaselineLikelihood',
-        )
+        return dict(lik='BaselineLikelihood')
 
     @property
     def name(self):
@@ -76,12 +92,20 @@ class GPyT(InstalledModel):
 
 class GPyTDemPar(GPyT):
     """GP algorithm which enforces demographic parity"""
+
     MEAN = 2
     MIN = 3
     MAX = 4
 
-    def __init__(self, target_acceptance=None, average_prediction=False, target_mode=MEAN,
-                 marginal=False, precision_target=1.0, **kwargs):
+    def __init__(
+        self,
+        target_acceptance=None,
+        average_prediction=False,
+        target_mode=MEAN,
+        marginal=False,
+        precision_target=1.0,
+        **kwargs,
+    ):
         """
         Args:
             s_as_input: should the sensitive attribute be part of the input?
@@ -121,7 +145,7 @@ class GPyTDemPar(GPyT):
 
         if self.target_acceptance is None:
             if self.target_mode == self.MEAN:
-                target_rate = .5 * (biased_acceptance[0] + biased_acceptance[1])
+                target_rate = 0.5 * (biased_acceptance[0] + biased_acceptance[1])
             elif self.target_mode == self.MIN:
                 target_rate = min(biased_acceptance[0], biased_acceptance[1])
             elif self.target_mode == self.MAX:
@@ -159,8 +183,18 @@ class GPyTDemPar(GPyT):
 
 class GPyTEqOdds(GPyT):
     """GP algorithm which enforces equality of opportunity"""
-    def __init__(self, average_prediction=False, tpr=None, marginal=False, tnr0=None, tnr1=None,
-                 tpr0=None, tpr1=None, **kwargs):
+
+    def __init__(
+        self,
+        average_prediction=False,
+        tpr=None,
+        marginal=False,
+        tnr0=None,
+        tnr1=None,
+        tpr0=None,
+        tpr1=None,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
         if self.s_as_input and average_prediction:
             self.__name = "{self.basename}_eq_odds_av_True"
@@ -172,20 +206,19 @@ class GPyTEqOdds(GPyT):
         self.odds = None
         if any(x is not None for x in [tnr0, tnr1, tpr0, tpr1]):  # if any of them is not `None`
             self.odds = {}
-            for val, name, target in [(tnr0, '0tnr', 'p_ybary0_s0'), (tnr1, '1tnr', 'p_ybary0_s1'),
-                                      (tpr0, '0tpr', 'p_ybary1_s0'), (tpr1, '1tpr', 'p_ybary1_s1')]:
+            for val, name, target in [
+                (tnr0, '0tnr', 'p_ybary0_s0'),
+                (tnr1, '1tnr', 'p_ybary0_s1'),
+                (tpr0, '0tpr', 'p_ybary1_s0'),
+                (tpr1, '1tpr', 'p_ybary1_s1'),
+            ]:
                 if val is not None:
                     self.odds[target] = val
                     self.__name += f"_{name}_{val}"  # add to name
                 else:
                     self.odds[target] = 1.0  # default value
         elif tpr is not None:
-            self.odds = dict(
-                p_ybary0_s0=1.0,
-                p_ybary0_s1=1.0,
-                p_ybary1_s0=tpr,
-                p_ybary1_s1=tpr,
-            )
+            self.odds = dict(p_ybary0_s0=1.0, p_ybary0_s1=1.0, p_ybary1_s0=tpr, p_ybary1_s1=tpr)
             self.__name += f"_tpr_{tpr}"
 
         self.average_prediction = average_prediction
@@ -214,21 +247,37 @@ class GPyTEqOdds(GPyT):
 
     def run(self, train, test, _=False):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
-        raw_data = dict(xtrain=train.x.to_numpy(), strain=train.s.to_numpy(), ytrain=ytrain,
-                        xtest=test.x.to_numpy(), stest=test.s.to_numpy(), ytest=ytest)
+        raw_data = dict(
+            xtrain=train.x.to_numpy(),
+            strain=train.s.to_numpy(),
+            ytrain=ytrain,
+            xtest=test.x.to_numpy(),
+            stest=test.s.to_numpy(),
+            ytest=ytest,
+        )
         parameters = self._additional_parameters(raw_data)
 
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             data_path = tmp_path / Path("data.npz")
             model_name = "local"  # f"run{self.counter}_s_as_input_{self.s_as_input}"
-            flags = _flags(parameters, str(data_path), tmpdir, self.s_as_input, model_name,
-                           len(raw_data['ytrain']), self.gpu, self.epochs, self.length_scale)
+            flags = _flags(
+                parameters,
+                str(data_path),
+                tmpdir,
+                self.s_as_input,
+                model_name,
+                len(raw_data['ytrain']),
+                self.gpu,
+                self.epochs,
+                self.length_scale,
+            )
 
             if self.odds is None:
                 # Split the training data into train and dev and save it to `data.npz`
                 train_dev_data = split_train_dev(
-                    raw_data['xtrain'], raw_data['ytrain'], raw_data['strain'])
+                    raw_data['xtrain'], raw_data['ytrain'], raw_data['strain']
+                )
                 np.savez(data_path, **train_dev_data)
 
                 # First run
@@ -306,11 +355,13 @@ def _fix_labels(labels):
 
         def _do_nothing(inp):
             return inp
+
         return labels, _do_nothing
     if label_values == [-1, 1]:
 
         def _converter(label):
             return (2 * label) - 1
+
         return [(y + 1) / 2 for y in labels], _converter
     raise ValueError("Labels have unknown structure")
 
@@ -333,54 +384,67 @@ def split_train_dev(inputs, labels, sensitive):
         test_fraction_a = idx[split_idx:]
         train_fraction += list(train_fraction_a)
         test_fraction += list(test_fraction_a)
-    xtrain, ytrain, strain = (inputs[train_fraction], labels[train_fraction],
-                              sensitive[train_fraction])
+    xtrain, ytrain, strain = (
+        inputs[train_fraction],
+        labels[train_fraction],
+        sensitive[train_fraction],
+    )
     # ensure that the train set has exactly the same size as the given set
     # (otherwise inducing inputs has wrong shape)
-    return dict(xtrain=np.concatenate((xtrain, xtrain))[:n_total],
-                ytrain=np.concatenate((ytrain, ytrain))[:n_total],
-                strain=np.concatenate((strain, strain))[:n_total], xtest=inputs[test_fraction],
-                ytest=labels[test_fraction], stest=sensitive[test_fraction])
+    return dict(
+        xtrain=np.concatenate((xtrain, xtrain))[:n_total],
+        ytrain=np.concatenate((ytrain, ytrain))[:n_total],
+        strain=np.concatenate((strain, strain))[:n_total],
+        xtest=inputs[test_fraction],
+        ytest=labels[test_fraction],
+        stest=sensitive[test_fraction],
+    )
 
 
-def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train, gpu, epochs,
-           length_scale):
+def _flags(
+    parameters, data_path, save_dir, s_as_input, model_name, num_train, gpu, epochs, length_scale
+):
     batch_size = min(MAX_BATCH_SIZE, num_train)
     epochs = _num_epochs(num_train) if epochs is None else epochs
-    return {**dict(
-        inf='Variational',
-        data='sensitive_from_numpy',
-        dataset_path=data_path,
-        cov='RBFKernel',
-        mean='ZeroMean',
-        optimizer="Adam",
-        lr=0.05,
-        # lr=0.1,
-        model_name=model_name,
-        batch_size=batch_size,
-        # epochs=min(MAX_EPOCHS, _num_epochs(num_train)),
-        epochs=min(epochs, MAX_EPOCHS),
-        eval_epochs=5,
-        summary_steps=100000,
-        chkpt_epochs=100000,
-        save_dir=save_dir,  # "/home/ubuntu/out2/",
-        plot='',
-        logging_steps=1,
-        gpus=str(gpu),
-        preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
-        num_samples=1000,
-        optimize_inducing=True,
-        length_scale=length_scale,
-        sf=1.0,
-        iso=False,
-        num_samples_pred=2000,
-        s_as_input=s_as_input,
-        # num_inducing=MAX_NUM_INDUCING,
-        num_inducing=_num_inducing(num_train),
-        manual_seed=SEED,
-        metrics=("binary_accuracy,pred_rate_y1_s0,pred_rate_y1_s1,base_rate_y1_s0,base_rate_y1_s1,"
-                 "pred_odds_yhaty1_s0,pred_odds_yhaty1_s1,pred_odds_yhaty0_s0,pred_odds_yhaty0_s1")
-    ), **parameters}
+    return {
+        **dict(
+            inf='Variational',
+            data='sensitive_from_numpy',
+            dataset_path=data_path,
+            cov='RBFKernel',
+            mean='ZeroMean',
+            optimizer="Adam",
+            lr=0.05,
+            # lr=0.1,
+            model_name=model_name,
+            batch_size=batch_size,
+            # epochs=min(MAX_EPOCHS, _num_epochs(num_train)),
+            epochs=min(epochs, MAX_EPOCHS),
+            eval_epochs=5,
+            summary_steps=100000,
+            chkpt_epochs=100000,
+            save_dir=save_dir,  # "/home/ubuntu/out2/",
+            plot='',
+            logging_steps=1,
+            gpus=str(gpu),
+            preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
+            num_samples=1000,
+            optimize_inducing=True,
+            length_scale=length_scale,
+            sf=1.0,
+            iso=False,
+            num_samples_pred=2000,
+            s_as_input=s_as_input,
+            # num_inducing=MAX_NUM_INDUCING,
+            num_inducing=_num_inducing(num_train),
+            manual_seed=SEED,
+            metrics=(
+                "binary_accuracy,pred_rate_y1_s0,pred_rate_y1_s1,base_rate_y1_s0,base_rate_y1_s1,"
+                "pred_odds_yhaty1_s0,pred_odds_yhaty1_s1,pred_odds_yhaty0_s0,pred_odds_yhaty0_s1"
+            ),
+        ),
+        **parameters,
+    }
 
 
 def _num_inducing(num_train):

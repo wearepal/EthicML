@@ -22,6 +22,7 @@ ROOT_DIR = ROOT_PATH.parent
 
 class InstalledModel(InAlgorithm):
     """ the model that does the magic"""
+
     def __init__(self, name: str, url: str, module: str, file_name: str):
         self.repo_name = name
         self.module = module

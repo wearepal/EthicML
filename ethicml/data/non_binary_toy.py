@@ -7,6 +7,7 @@ from .dataset import Dataset
 
 class NonBinaryToy(Dataset):
     """Class to describe features of the Non-Binary toy dataset"""
+
     cont_features: List[str]
     disc_features: List[str]
 
@@ -25,8 +26,4 @@ class NonBinaryToy(Dataset):
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-        return {
-            "x": ["x1", "x2"],
-            "s": ["sens"],
-            "y": ["label"]
-        }
+        return {"x": ["x1", "x2"], "s": ["sens"], "y": ["label"]}

@@ -138,8 +138,18 @@ def yhat(matrix_nk, y, w, N, k):
 
 
 @jit
-def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nonsensitive,
-                  k=10, A_x=0.01, A_y=0.1, A_z=0.5, results=0):
+def LFR_optim_obj(
+    params,
+    data_sensitive,
+    data_nonsensitive,
+    y_sensitive,
+    y_nonsensitive,
+    k=10,
+    A_x=0.01,
+    A_y=0.1,
+    A_z=0.5,
+    results=0,
+):
     """
     The funtion to be optimized
     Args:
@@ -162,9 +172,9 @@ def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nons
     Nns, _ = data_nonsensitive.shape
 
     alpha0 = params[:P]
-    alpha1 = params[P:2 * P]
-    w = params[2 * P:(2 * P) + k]
-    v = np.matrix(params[(2 * P) + k:]).reshape((k, P))
+    alpha1 = params[P : 2 * P]
+    w = params[2 * P : (2 * P) + k]
+    v = np.matrix(params[(2 * P) + k :]).reshape((k, P))
 
     dists_sensitive = distances(data_sensitive, v, alpha1, Ns, P, k)
     dists_nonsensitive = distances(data_nonsensitive, v, alpha0, Nns, P, k)
@@ -196,8 +206,9 @@ def LFR_optim_obj(params, data_sensitive, data_nonsensitive, y_sensitive, y_nons
 LFR_optim_obj.iters = 0
 
 
-def train_and_transform(train: DataTuple, test: DataTuple, flags: Dict[str, Union[int, float]]) -> (
-        Tuple[pd.DataFrame, pd.DataFrame]):
+def train_and_transform(
+    train: DataTuple, test: DataTuple, flags: Dict[str, Union[int, float]]
+) -> (Tuple[pd.DataFrame, pd.DataFrame]):
     """Train the Zemel model and return the transformed features of the train and test sets"""
     np.random.seed(888)
     features_dim = train.x.shape[1]
@@ -246,8 +257,15 @@ def train_and_transform(train: DataTuple, test: DataTuple, flags: Dict[str, Unio
     ytest_nonsensitive = test.y.loc[test.s[sens_col] == 1].to_numpy()
 
     # Mutated, fairer dataset with new labels
-    test_transformed = transform(testing_sensitive, testing_nonsensitive, ytest_sensitive,
-                                 ytest_nonsensitive, learned_model, test, flags)
+    test_transformed = transform(
+        testing_sensitive,
+        testing_nonsensitive,
+        ytest_sensitive,
+        ytest_nonsensitive,
+        learned_model,
+        test,
+        flags,
+    )
 
     training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
     training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
@@ -255,14 +273,22 @@ def train_and_transform(train: DataTuple, test: DataTuple, flags: Dict[str, Unio
     ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
 
     # extract training model parameters
-    train_transformed = transform(training_sensitive, training_nonsensitive, ytrain_sensitive,
-                                  ytrain_nonsensitive, learned_model, train, flags)
+    train_transformed = transform(
+        training_sensitive,
+        training_nonsensitive,
+        ytrain_sensitive,
+        ytrain_nonsensitive,
+        learned_model,
+        train,
+        flags,
+    )
 
     return train_transformed.x, test_transformed.x
 
 
-def transform(features_sens, features_nonsens, label_sens, label_nonsens, learned_model, dataset,
-              flags):
+def transform(
+    features_sens, features_nonsens, label_sens, label_nonsens, learned_model, dataset, flags
+):
     """
     transform a dataset based on the
     Args:
@@ -280,38 +306,28 @@ def transform(features_sens, features_nonsens, label_sens, label_nonsens, learne
     Ns, P = features_sens.shape
     N, _ = features_nonsens.shape
     alphaoptim0 = learned_model[:P]
-    alphaoptim1 = learned_model[P: 2 * P]
-    woptim = learned_model[2 * P: (2 * P) + k]
-    voptim = np.matrix(learned_model[(2 * P) + k:]).reshape((k, P))
+    alphaoptim1 = learned_model[P : 2 * P]
+    woptim = learned_model[2 * P : (2 * P) + k]
+    voptim = np.matrix(learned_model[(2 * P) + k :]).reshape((k, P))
 
     # compute distances on the test dataset using train model params
-    dist_sensitive = distances(
-        features_sens, voptim, alphaoptim1, Ns, P, k
-    )
-    dist_nonsensitive = distances(
-        features_nonsens, voptim, alphaoptim0, N, P, k
-    )
+    dist_sensitive = distances(features_sens, voptim, alphaoptim1, Ns, P, k)
+    dist_nonsensitive = distances(features_nonsens, voptim, alphaoptim0, N, P, k)
 
     # compute cluster probabilities for test instances
     M_nk_sensitive = M_nk(dist_sensitive, Ns, k)
     M_nk_nonsensitive = M_nk(dist_nonsensitive, N, k)
 
     # learned mappings for test instances
-    res_sensitive = x_n_hat(
-        features_sens, M_nk_sensitive, voptim, Ns, P, k
-    )
+    res_sensitive = x_n_hat(features_sens, M_nk_sensitive, voptim, Ns, P, k)
     x_n_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = x_n_hat(
-        features_nonsens, M_nk_nonsensitive, voptim, N, P, k
-    )
+    res_nonsensitive = x_n_hat(features_nonsens, M_nk_nonsensitive, voptim, N, P, k)
     x_n_hat_nonsensitive = res_nonsensitive[0]
 
     # compute predictions for test instances
     res_sensitive = yhat(M_nk_sensitive, label_sens, woptim, Ns, k)
     y_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = yhat(
-        M_nk_nonsensitive, label_nonsens, woptim, N, k
-    )
+    res_nonsensitive = yhat(M_nk_nonsensitive, label_nonsens, woptim, N, k)
     y_hat_nonsensitive = res_nonsensitive[0]
 
     sens_col = dataset.s.columns[0]
@@ -325,9 +341,7 @@ def transform(features_sens, features_nonsens, label_sens, label_nonsens, learne
     transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
     transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])
     transformed_labels[nonsensitive_idx] = np.reshape(y_hat_nonsensitive, [-1, 1])
-    transformed_labels = (np.array(transformed_labels) > flags['threshold']).astype(
-        np.float64
-    )
+    transformed_labels = (np.array(transformed_labels) > flags['threshold']).astype(np.float64)
 
     train_transformed = DataTuple(
         x=pd.DataFrame(transformed_features, columns=dataset.x.columns),
@@ -365,8 +379,9 @@ def main():
     flags = vars(parser.parse_args())
 
     train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags),
-                         (flags['train_new'], flags['test_new']))
+    save_transformations(
+        train_and_transform(train, test, flags), (flags['train_new'], flags['test_new'])
+    )
 
 
 if __name__ == "__main__":

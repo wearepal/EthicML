@@ -10,6 +10,7 @@ import pandas as pd
 
 class DataTuple(NamedTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
     y: pd.DataFrame  # class labels
@@ -17,13 +18,15 @@ class DataTuple(NamedTuple):
 
 class PathTuple(NamedTuple):
     """For algorithms that run in their own process, we pass around paths to the data"""
+
     x: Path  # path to file with features
     s: Path  # path to file with sensitive attributes
     y: Path  # path to file with class labels
 
 
-def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) \
-        -> (Tuple[PathTuple, PathTuple]):
+def write_as_feather(
+    train: DataTuple, test: DataTuple, data_dir: Path
+) -> (Tuple[PathTuple, PathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
     Args:
@@ -38,8 +41,10 @@ def write_as_feather(train: DataTuple, test: DataTuple, data_dir: Path) \
 
     train_paths: Dict[str, Path] = {}
     test_paths: Dict[str, Path] = {}
-    for data_tuple, data_paths, prefix in [(train, train_paths, "train"),
-                                           (test, test_paths, "test")]:
+    for data_tuple, data_paths, prefix in [
+        (train, train_paths, "train"),
+        (test, test_paths, "test"),
+    ]:
         # loop over all elements of the data tuple and write them to separate files
         for key, data in data_tuple._asdict().items():
             # SUGGESTION: maybe the file names should be completely random to avoid collisions
@@ -58,14 +63,22 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     cols_y = datatup.y.columns
     joined = pd.concat([datatup.x, datatup.s, datatup.y], axis='columns', sort=False)
     joined = mapper(joined)
-    return DataTuple(x=joined.get(cols_x), s=joined.get(cols_s), y=joined.get(cols_y))
+    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
 
 def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: bool = False):
     """Concatenate the data tuples in the given list"""
-    return DataTuple(*[pd.concat([datatup[i] for datatup in datatup_list],
-                                 axis=axis, sort=False, ignore_index=ignore_index)
-                       for i, _ in enumerate(datatup_list[0])])
+    return DataTuple(
+        *[
+            pd.concat(
+                [datatup[i] for datatup in datatup_list],
+                axis=axis,
+                sort=False,
+                ignore_index=ignore_index,
+            )
+            for i, _ in enumerate(datatup_list[0])
+        ]
+    )
 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
@@ -84,8 +97,4 @@ def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
     Returns:
         subset of training data
     """
-    return DataTuple(
-        x=train.x.iloc[:num],
-        s=train.s.iloc[:num],
-        y=train.y.iloc[:num]
-    )
+    return DataTuple(x=train.x.iloc[:num], s=train.s.iloc[:num], y=train.y.iloc[:num])

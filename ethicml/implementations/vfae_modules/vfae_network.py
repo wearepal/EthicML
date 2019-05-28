@@ -17,17 +17,25 @@ class VFAENetwork(nn.Module):
     with q(z1 | x, s) q(z2 | z1, y) q(y | z1) being the variational posteriors.
     """
 
-    def __init__(self, dataset: Dataset, supervised: bool, input_size: int, latent_dims: int,
-                 z1_enc_size: List[int], z2_enc_size: List[int], z1_dec_size: List[int]):
+    def __init__(
+        self,
+        dataset: Dataset,
+        supervised: bool,
+        input_size: int,
+        latent_dims: int,
+        z1_enc_size: List[int],
+        z2_enc_size: List[int],
+        z1_dec_size: List[int],
+    ):
         super(VFAENetwork, self).__init__()
         torch.manual_seed(888)
 
         self.supervised = supervised
 
-        self.z1_encoder = Encoder(z1_enc_size, input_size+1, latent_dims)
+        self.z1_encoder = Encoder(z1_enc_size, input_size + 1, latent_dims)
         if self.supervised:
-            self.z2_encoder = Encoder(z2_enc_size, latent_dims+1, latent_dims)
-            self.z1_decoder = Encoder(z1_dec_size, latent_dims+1, latent_dims)
+            self.z2_encoder = Encoder(z2_enc_size, latent_dims + 1, latent_dims)
+            self.z1_decoder = Encoder(z1_dec_size, latent_dims + 1, latent_dims)
         self.x_dec = Decoder(dataset)
         self.ypred = nn.Linear(latent_dims, 1)
 

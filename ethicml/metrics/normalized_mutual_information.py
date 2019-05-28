@@ -18,6 +18,7 @@ class NMI(Metric):
         self.base = base
 
     """Normalized Mutual Information"""
+
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         if self.base == 'y':
             base_values = actual.y.values.flatten()

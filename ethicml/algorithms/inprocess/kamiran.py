@@ -39,14 +39,17 @@ class Kamiran(InAlgorithm):
                 self.kernel = ""
 
     def _run(self, train, test):
-        return kamiran.train_and_predict(train, test,
-                                         classifier=self.classifier, C=self.C, kernel=self.kernel)
+        return kamiran.train_and_predict(
+            train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
+        )
 
-    def _script_command(self, train_paths: PathTuple, test_paths: PathTuple,
-                        pred_path: Path) -> (List[str]):
+    def _script_command(
+        self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
+    ) -> (List[str]):
         script = ['-m', kamiran.train_and_predict.__module__]
-        args = conventional_interface(train_paths, test_paths, pred_path,
-                                      self.classifier, str(self.C), self.kernel)
+        args = conventional_interface(
+            train_paths, test_paths, pred_path, self.classifier, str(self.C), self.kernel
+        )
         return script + args
 
     @property

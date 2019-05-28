@@ -14,8 +14,9 @@ def select_mlp(hidden_layer_sizes: Tuple[int], activation: str):
 
     assert activation in ['identity', 'logistic', 'tanh', 'relu']
 
-    return MLPClassifier(hidden_layer_sizes=hidden_layer_sizes,
-                         activation=activation, random_state=888)
+    return MLPClassifier(
+        hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=888
+    )
 
 
 def train_and_predict(train, test, hid_layers, activation):
@@ -30,8 +31,9 @@ def main():
     interface = InAlgoInterface()
     train, test = interface.load_data()
     hid_layers, activation = interface.remaining_args()
-    interface.save_predictions(train_and_predict(train, test, hid_layers=make_tuple(hid_layers),
-                                                 activation=activation))
+    interface.save_predictions(
+        train_and_predict(train, test, hid_layers=make_tuple(hid_layers), activation=activation)
+    )
 
 
 if __name__ == "__main__":

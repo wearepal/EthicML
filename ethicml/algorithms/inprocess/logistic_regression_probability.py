@@ -12,6 +12,7 @@ from ethicml.implementations import logistic_regression_probability
 
 class LRProb(InAlgorithm):
     """Logistic regression with soft output"""
+
     def __init__(self, C: Optional[int] = None):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C

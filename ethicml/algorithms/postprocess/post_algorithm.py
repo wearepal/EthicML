@@ -11,6 +11,7 @@ from ..utils import DataTuple
 
 class PostAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do post-processing"""
+
     @abstractmethod
     def run(self, predictions: pd.DataFrame, test: DataTuple) -> pd.DataFrame:
         """Make predictions fair

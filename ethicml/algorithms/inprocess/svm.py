@@ -12,6 +12,7 @@ from ethicml.implementations import svm
 
 class SVM(InAlgorithm):
     """Support Vector Machine"""
+
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         super().__init__()
         self.C = SVC().C if C is None else C
@@ -23,7 +24,8 @@ class SVM(InAlgorithm):
     def _script_command(self, train_paths, test_paths, pred_path):
         script = ['-m', svm.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, pred_path, str(self.C), str(self.kernel))
+            train_paths, test_paths, pred_path, str(self.C), str(self.kernel)
+        )
         return script + args
 
     @property

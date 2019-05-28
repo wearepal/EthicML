@@ -12,8 +12,10 @@ from ethicml.implementations import mlp
 
 class MLP(InAlgorithm):
     """MLP"""
-    def __init__(self, hidden_layer_sizes: Optional[Tuple[int]] = None,
-                 activation: Optional[str] = None):
+
+    def __init__(
+        self, hidden_layer_sizes: Optional[Tuple[int]] = None, activation: Optional[str] = None
+    ):
         super().__init__()
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
@@ -27,7 +29,8 @@ class MLP(InAlgorithm):
     def _script_command(self, train_paths, test_paths, pred_path):
         script = ['-m', mlp.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, pred_path, str(self.hidden_layer_sizes), str(self.activation))
+            train_paths, test_paths, pred_path, str(self.hidden_layer_sizes), str(self.activation)
+        )
         return script + args
 
     @property

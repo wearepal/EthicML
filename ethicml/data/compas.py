@@ -7,6 +7,7 @@ from ethicml.data.dataset import Dataset
 
 class Compas(Dataset):
     """Compas (or ProPublica) dataset"""
+
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
         self.discrete_only = discrete_only
@@ -412,14 +413,15 @@ class Compas(Dataset):
             'c-charge-desc_Violation Of Boater Safety Id',
             'c-charge-desc_Violation of Injunction Order/Stalking/Cyberstalking',
             'c-charge-desc_Voyeurism',
-            'c-charge-desc_arrest case no charge']
+            'c-charge-desc_arrest case no charge',
+        ]
 
         self.continuous_features = [
             'age-num',
             'juv-fel-count',
             'juv-misd-count',
             'juv-other-count',
-            'priors-count'
+            'priors-count',
         ]
 
         if split == "Sex":

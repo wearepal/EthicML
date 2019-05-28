@@ -7,6 +7,7 @@ from .dataset import Dataset
 
 class German(Dataset):
     """German credit dataset"""
+
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
         self.discrete_only = discrete_only
@@ -69,7 +70,7 @@ class German(Dataset):
             'telephone_A191',
             'telephone_A192',
             'foreign-worker_A201',
-            'foreign-worker_A202'
+            'foreign-worker_A202',
         ]
 
         self.continuous_features = [
@@ -79,7 +80,7 @@ class German(Dataset):
             'residence-since',
             'age',
             'number-of-credits',
-            'people-liable-for'
+            'people-liable-for',
         ]
 
         if split == "Sex":

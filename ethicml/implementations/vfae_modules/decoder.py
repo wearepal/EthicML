@@ -36,11 +36,17 @@ class Decoder(nn.Module):
 
             return layer
 
-        self.grouped_features = [list(group) for key, group in groupby(self.features, lambda x: x.split('_')[0])]
-        self.output_layers = nn.ModuleList([_add_output_layer(feature) for feature in self.grouped_features])
+        self.grouped_features = [
+            list(group) for key, group in groupby(self.features, lambda x: x.split('_')[0])
+        ]
+        self.output_layers = nn.ModuleList(
+            [_add_output_layer(feature) for feature in self.grouped_features]
+        )
 
     def forward(self, x, s):
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s), 1))
-        decoded = torch.cat([layer(decoded).view(batch_size, -1) for layer in self.output_layers], dim=1)
+        decoded = torch.cat(
+            [layer(decoded).view(batch_size, -1) for layer in self.output_layers], dim=1
+        )
         return decoded

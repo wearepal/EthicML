@@ -30,7 +30,7 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
         "German": German(),
         "NonBinaryToy": NonBinaryToy(),
         "SQF": Sqf(),
-        "Toy": Toy()
+        "Toy": Toy(),
     }
 
     if name not in lookup:
@@ -59,10 +59,15 @@ def train_and_transform(train, test, flags):
     test_loader = DataLoader(test_data, batch_size=flags['batch_size'])
 
     # Build Network
-    model = VFAENetwork(dataset, flags['supervised'], train_data.size, latent_dims=50,
-                        z1_enc_size=flags['z1_enc_size'],
-                        z2_enc_size=flags['z2_enc_size'],
-                        z1_dec_size=flags['z1_dec_size']).to("cpu")
+    model = VFAENetwork(
+        dataset,
+        flags['supervised'],
+        train_data.size,
+        latent_dims=50,
+        z1_enc_size=flags['z1_enc_size'],
+        z2_enc_size=flags['z2_enc_size'],
+        z1_dec_size=flags['z1_dec_size'],
+    ).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Run Network
@@ -83,8 +88,10 @@ def train_and_transform(train, test, flags):
         # test += scaler.inverse_transform(x_dec.data).tolist()
         post_test += x_dec.data.tolist()
 
-    return pd.DataFrame(post_train, columns=train.x.columns), \
-           pd.DataFrame(post_test, columns=test.x.columns)
+    return (
+        pd.DataFrame(post_train, columns=train.x.columns),
+        pd.DataFrame(post_test, columns=test.x.columns),
+    )
 
 
 def train_model(epoch, model, train_loader, optimizer, flags):
@@ -121,18 +128,22 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         optimizer.step()
         if batch_idx % 100 == 0:
             if flags['supervised']:
-                print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
-                      f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
-                      f'Loss: {loss.item() / len(data_x):.6f}\t'
-                      f'pred_loss: {prediction_loss.item():.6f}\t'
-                      f'recon_loss: {reconsruction_loss.item():.6f}\t'
-                      f'kld_loss: {kld_loss.item():.6f}\t'
-                      f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
+                print(
+                    f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
+                    f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+                    f'Loss: {loss.item() / len(data_x):.6f}\t'
+                    f'pred_loss: {prediction_loss.item():.6f}\t'
+                    f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                    f'kld_loss: {kld_loss.item():.6f}\t'
+                    f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}'
+                )
             else:
-                print(f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
-                      f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
-                      f'Loss: {loss.item() / len(data_x):.6f}\t'
-                      f'recon_loss: {reconsruction_loss.item():.6f}\t'
-                      f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}')
+                print(
+                    f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
+                    f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+                    f'Loss: {loss.item() / len(data_x):.6f}\t'
+                    f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                    f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}'
+                )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')

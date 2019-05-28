@@ -8,8 +8,13 @@ from typing import List
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.algorithms.utils import (DataTuple, get_subset, PathTuple, write_as_feather,
-                                      load_feather)
+from ethicml.algorithms.utils import (
+    DataTuple,
+    get_subset,
+    PathTuple,
+    write_as_feather,
+    load_feather,
+)
 
 
 class InAlgorithm(Algorithm):
@@ -43,7 +48,8 @@ class InAlgorithm(Algorithm):
         train_testing = get_subset(train)
         return self.run(train_testing, test)
 
-    def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path) -> (
-            List[str]):
+    def _script_command(
+        self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
+    ) -> (List[str]):
         """The command that will run the script"""
         raise NotImplementedError("`_script_command` is  not implemented")

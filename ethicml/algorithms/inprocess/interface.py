@@ -17,7 +17,7 @@ def conventional_interface(train_paths: PathTuple, test_paths: PathTuple, *args)
         str(train_paths.y),
         str(test_paths.x),
         str(test_paths.s),
-        str(test_paths.y)
+        str(test_paths.y),
     ]
     for arg in args:
         list_to_return.append(str(arg))

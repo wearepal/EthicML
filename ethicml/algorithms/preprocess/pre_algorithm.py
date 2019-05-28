@@ -13,8 +13,10 @@ from ..utils import get_subset, DataTuple, PathTuple, write_as_feather, load_fea
 
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
-    def run(self, train: DataTuple, test: DataTuple, sub_process: bool = False) -> (
-            Tuple[pd.DataFrame, pd.DataFrame]):
+
+    def run(
+        self, train: DataTuple, test: DataTuple, sub_process: bool = False
+    ) -> (Tuple[pd.DataFrame, pd.DataFrame]):
         """Generate fair features by either running in process or out of process
 
         Args:
@@ -43,7 +45,12 @@ class PreAlgorithm(Algorithm):
         train_testing = get_subset(train)
         return self.run(train_testing, test)
 
-    def _script_command(self, train_paths: PathTuple, test_paths: PathTuple, new_train_path: Path,
-                        new_test_path: Path) -> List[str]:
+    def _script_command(
+        self,
+        train_paths: PathTuple,
+        test_paths: PathTuple,
+        new_train_path: Path,
+        new_test_path: Path,
+    ) -> List[str]:
         """The command that will run the script"""
         raise NotImplementedError("`_script_command` has not been implemented")

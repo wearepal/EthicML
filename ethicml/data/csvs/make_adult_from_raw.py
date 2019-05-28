@@ -8,13 +8,23 @@ def run_generate_adult():
     test = pd.read_csv("./raw/adult.test", skiprows=[0], header=-1)
 
     # Give data column names
-    columns = ['age', 'workclass', 'fnlwgt',
-               'education', 'education-num',
-               'marital-status', 'occupation',
-               'relationship', 'race', 'sex',
-               'capital-gain', 'capital-loss',
-               'hours-per-week', 'native-country',
-               'salary']
+    columns = [
+        'age',
+        'workclass',
+        'fnlwgt',
+        'education',
+        'education-num',
+        'marital-status',
+        'occupation',
+        'relationship',
+        'race',
+        'sex',
+        'capital-gain',
+        'capital-loss',
+        'hours-per-week',
+        'native-country',
+        'salary',
+    ]
 
     train.columns = columns
     test.columns = columns
@@ -43,5 +53,5 @@ def run_generate_adult():
     all_data.to_csv("./adult.csv", index=False)
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     run_generate_adult()

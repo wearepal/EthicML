@@ -65,8 +65,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     w_up_fav = n_fav * n_up / (num_samples * n_up_fav)
     w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav)
 
-    train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]),
-                                          columns=["instance weights"])
+    train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]), columns=["instance weights"])
 
     train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav
     train_instance_weights.iloc[cond_p_unfav.index] *= w_p_unfav
@@ -82,8 +81,9 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
         model = select_svm(C, kernel)
     else:
         model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C)
-    model.fit(train.x, train.y.values.ravel(),
-              sample_weight=compute_weights(train)["instance weights"])
+    model.fit(
+        train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
+    )
     return pd.DataFrame(model.predict(test.x), columns=["preds"])
 
 

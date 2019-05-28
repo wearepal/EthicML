@@ -12,6 +12,7 @@ from ethicml.implementations import logistic_regression
 
 class LR(InAlgorithm):
     """Logistic regression with hard predictions"""
+
     def __init__(self, C: Optional[float] = None):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C

@@ -8,6 +8,7 @@ import numpy
 
 class Activation(ABC):
     """Base class for decision functions"""
+
     @abstractmethod
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
         """Apply the decision function to a soft prediction
