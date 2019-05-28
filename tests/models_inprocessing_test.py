@@ -2,6 +2,7 @@ from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
 import pytest
+from pytest import approx
 
 from ethicml.algorithms.inprocess import (Agarwal, GPyT, GPyTDemPar, GPyTEqOdds, InAlgorithm,
                                           Kamishima, LRCV, LRProb, LR, SVM, Kamiran, Majority, MLP)
@@ -19,8 +20,8 @@ def test_svm():
     assert model.name == "SVM"
 
     predictions: pd.DataFrame = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 201
-    assert predictions[predictions.values == -1].count().values[0] == 199
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_majority():
@@ -31,8 +32,8 @@ def test_majority():
     assert model.name == "Majority"
 
     predictions: pd.DataFrame = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 0
-    assert predictions[predictions.values == -1].count().values[0] == 400
+    assert predictions.values[predictions.values == 1].shape[0] == 0
+    assert predictions.values[predictions.values == -1].shape[0] == 400
 
 
 def test_mlp():
@@ -43,8 +44,8 @@ def test_mlp():
     assert model.name == "MLP"
 
     predictions: pd.DataFrame = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 200
-    assert predictions[predictions.values == -1].count().values[0] == 200
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
 
 def test_cv_svm():
@@ -62,8 +63,8 @@ def test_cv_svm():
     best_model = svm_cv.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
 def test_cv_lr():
@@ -81,8 +82,8 @@ def test_cv_lr():
     best_model = lr_cv.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
 @pytest.fixture(scope="module")
@@ -102,8 +103,8 @@ def test_kamishima(kamishima):
     assert model.name == "Kamishima"
 
     predictions: pd.DataFrame = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 208
-    assert predictions[predictions.values == -1].count().values[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 208
+    assert predictions.values[predictions.values == -1].shape[0] == 192
 
 
 @pytest.fixture(scope="module")
@@ -125,18 +126,18 @@ def test_gpyt(gpyt_models):
 
     assert baseline.name == "GPyT_in_True"
     predictions: pd.DataFrame = baseline.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 210, 0.1)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 190, 0.1)
+    predictions.values[predictions.values == 1].shape[0] == approx(210, rel=0.1)
+    predictions.values[predictions.values == -1].shape[0] == approx(190, rel=0.1)
 
     assert dem_par.name == "GPyT_dem_par_in_True"
     predictions = dem_par.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 182, 0.1)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 218, 0.1)
+    predictions.values[predictions.values == 1].shape[0] == approx(182, rel=0.1)
+    predictions.values[predictions.values == -1].shape[0] == approx(218, rel=0.1)
 
     assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
     predictions = eq_odds.run(train, test)
-    np.testing.assert_allclose(predictions[predictions.values == 1].count().values[0], 179, 0.1)
-    np.testing.assert_allclose(predictions[predictions.values == -1].count().values[0], 221, 0.1)
+    predictions.values[predictions.values == 1].shape[0] == approx(179, rel=0.1)
+    predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
 
 
 def test_threaded_svm():
@@ -147,12 +148,12 @@ def test_threaded_svm():
     assert model.name == "SVM"
 
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 201
-    assert predictions[predictions.values == -1].count().values[0] == 199
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
     predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 201
-    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 199
+    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 201
+    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 199
 
 
 def test_lr():
@@ -162,9 +163,9 @@ def test_lr():
     assert model is not None
     assert model.name == "Logistic Regression"
 
-    predictions: np.array = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
 def test_agarwal():
@@ -173,39 +174,39 @@ def test_agarwal():
     assert model is not None
     assert model.name == "Agarwal LR"
 
-    predictions: np.array = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 145
-    assert predictions[predictions.values == -1].count().values[0] == 255
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 145
+    assert predictions.values[predictions.values == -1].shape[0] == 255
 
     model = Agarwal(fairness="EqOd")
     predictions = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 162
-    assert predictions[predictions.values == -1].count().values[0] == 238
+    assert predictions.values[predictions.values == 1].shape[0] == 162
+    assert predictions.values[predictions.values == -1].shape[0] == 238
 
     model = Agarwal(classifier="SVM")
     predictions = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 141
-    assert predictions[predictions.values == -1].count().values[0] == 259
+    assert predictions.values[predictions.values == 1].shape[0] == 141
+    assert predictions.values[predictions.values == -1].shape[0] == 259
 
     model = Agarwal(classifier="SVM", kernel='linear')
     predictions = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 159
-    assert predictions[predictions.values == -1].count().values[0] == 241
+    assert predictions.values[predictions.values == 1].shape[0] == 159
+    assert predictions.values[predictions.values == -1].shape[0] == 241
 
     model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
     predictions = model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 159
-    assert predictions[predictions.values == -1].count().values[0] == 241
+    assert predictions.values[predictions.values == 1].shape[0] == 159
+    assert predictions.values[predictions.values == -1].shape[0] == 241
 
 
 def test_threaded_lr():
@@ -215,12 +216,12 @@ def test_threaded_lr():
     assert model.name == "Logistic Regression"
 
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
     predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 211
-    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 189
+    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
+    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
 
 
 def test_threaded_lr_cross_validated():
@@ -230,12 +231,12 @@ def test_threaded_lr_cross_validated():
     assert model.name == "LRCV"
 
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
     predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 211
-    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 189
+    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
+    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
 
 
 def test_threaded_lr_prob():
@@ -250,14 +251,14 @@ def test_threaded_lr_prob():
     predictions_non_threaded = predictions_non_threaded.apply(heavi.apply)
     predictions_non_threaded = predictions_non_threaded.replace(0, -1)
 
-    assert predictions_non_threaded[predictions_non_threaded.values == 1].count().values[0] == 211
-    assert predictions_non_threaded[predictions_non_threaded.values == -1].count().values[0] == 189
+    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
+    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
 
     predictions: pd.DataFrame = model.run(train, test, sub_process=True)
     predictions = predictions.apply(heavi.apply)
     predictions = predictions.replace(0, -1)
-    assert predictions[predictions.values == 1].count().values[0] == 211
-    assert predictions[predictions.values == -1].count().values[0] == 189
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
 def test_kamiran():
@@ -268,9 +269,9 @@ def test_kamiran():
     assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: pd.DataFrame = kamiran_model.run(train, test)
-    assert predictions[predictions.values == 1].count().values[0] == 210
-    assert predictions[predictions.values == -1].count().values[0] == 190
+    assert predictions.values[predictions.values == 1].shape[0] == 210
+    assert predictions.values[predictions.values == -1].shape[0] == 190
 
     predictions = kamiran_model.run(train, test, sub_process=True)
-    assert predictions[predictions.values == 1].count().values[0] == 210
-    assert predictions[predictions.values == -1].count().values[0] == 190
+    assert predictions.values[predictions.values == 1].shape[0] == 210
+    assert predictions.values[predictions.values == -1].shape[0] == 190

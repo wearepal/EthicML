@@ -7,7 +7,7 @@ from typing import List, Tuple, Dict, Union
 
 import pandas as pd
 
-from ethicml.algorithms.preprocess import PreAlgorithm
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.algorithms.utils import PathTuple, DataTuple
 

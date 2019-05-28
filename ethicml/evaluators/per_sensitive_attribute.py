@@ -36,14 +36,15 @@ def metric_per_sensitive_attribute(
         for s_col in s_columns:
             for unique_s in actual.s[s_col].unique():
                 for p_col in pred_column:
+                    mask: pd.Series = (actual.s[s_col] == unique_s)
                     subset = DataTuple(
-                        x=pd.DataFrame(actual.x[actual.s[s_col] == unique_s][actual.x.columns],
+                        x=pd.DataFrame(actual.x.loc[mask].get(actual.x.columns),
                                        columns=actual.x.columns).reset_index(drop=True),
-                        s=pd.DataFrame(actual.s[actual.s[s_col] == unique_s][s_col],
+                        s=pd.DataFrame(actual.s.loc[mask][s_col],
                                        columns=[s_col]).reset_index(drop=True),
-                        y=pd.DataFrame(actual.y[actual.s[s_col] == unique_s][y_col],
+                        y=pd.DataFrame(actual.y.loc[mask][y_col],
                                        columns=[y_col]).reset_index(drop=True))
-                    pred_y = pd.DataFrame(predictions[actual.s[s_col] == unique_s][p_col],
+                    pred_y = pd.DataFrame(predictions.loc[mask][p_col],
                                           columns=[p_col]).reset_index(drop=True)
                     key = s_col + '_' + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)

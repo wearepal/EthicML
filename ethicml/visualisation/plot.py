@@ -27,7 +27,7 @@ def save_2d_plot(data: DataTuple, filepath: str):
     file_path = Path(filepath)
     columns = data.x.columns
 
-    amalgamated = pd.concat([data.x, data.s, data.y], axis=1)
+    amalgamated = pd.concat([data.x, data.s, data.y], axis='columns')
 
     plot = sns.scatterplot(x=columns[0], y=columns[1], hue=data.y.columns[0], palette="Set2",
                            data=amalgamated, style=data.s.columns[0], legend='full')
@@ -49,7 +49,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
     file_path = Path(filepath)
     columns = data.x.columns
 
-    amalgamated = pd.concat([data.x, data.y], axis=1)
+    amalgamated = pd.concat([data.x, data.y], axis='columns')
 
     plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind='kde')
 

@@ -26,7 +26,7 @@ class Kamishima(InstalledModel):
     def create_file_in_kamishima_format(data, file_path):
         """Create a text file with the data"""
 
-        result = pd.concat([data.x, data.s, data.y], axis=1).to_numpy().astype(np.float64)
+        result = pd.concat([data.x, data.s, data.y], axis='columns').to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
     def run(self, train, test, _=False):

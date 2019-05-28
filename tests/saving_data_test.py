@@ -31,9 +31,9 @@ def test_simple_saving():
 
         def _script_command(self, train_paths, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones"""
-            x_loaded = pd.read_feather(str(train_paths.x))
-            s_loaded = pd.read_feather(str(train_paths.s))
-            y_loaded = pd.read_feather(str(train_paths.y))
+            x_loaded = pd.read_feather(train_paths.x)
+            s_loaded = pd.read_feather(train_paths.s)
+            y_loaded = pd.read_feather(train_paths.y)
             pd.testing.assert_frame_equal(data_tuple.x, x_loaded)
             pd.testing.assert_frame_equal(data_tuple.s, s_loaded)
             pd.testing.assert_frame_equal(data_tuple.y, y_loaded)
