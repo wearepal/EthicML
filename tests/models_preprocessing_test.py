@@ -1,7 +1,8 @@
 from typing import Tuple
 import pandas as pd
 
-from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
+from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms.inprocess import InAlgorithm, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Zemel
 from ethicml.algorithms.preprocess.vfae import VFAE
 from ethicml.algorithms.utils import DataTuple
@@ -125,7 +126,9 @@ def test_threaded_zemel():
     assert model is not None
     assert model.name == "Zemel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]
@@ -171,7 +174,9 @@ def test_threaded_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]
@@ -238,7 +243,9 @@ def test_threaded_custom_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]

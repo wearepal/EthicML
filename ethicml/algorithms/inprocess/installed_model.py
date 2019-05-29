@@ -30,11 +30,15 @@ class InstalledModel(InAlgorithm):
         self.url = url
         self.clone_directory()
         self.create_venv()
-        super().__init__(executable=str(self._module_path() / '.venv' / 'bin' / 'python'))
+        super().__init__()
+
+    @property
+    def _executable(self) -> str:
+        return str(self._module_path() / '.venv' / 'bin' / 'python')
 
     @property
     def name(self) -> str:
-        pass
+        return self.module
 
     def clone_directory(self):
         """
@@ -59,9 +63,6 @@ class InstalledModel(InAlgorithm):
 
         if not os.path.exists(venv_directory):
             subprocess.check_call("pipenv install", env=environ, shell=True)
-
-    def _run(self, train, test):
-        return super().run(train, test, sub_process=True)  # set sub_process always to True
 
     def _module_path(self):
         return Path(".") / self.repo_name / self.module

@@ -56,7 +56,7 @@ class Agarwal(InAlgorithm):
             else:
                 self.kernel = ""
 
-    def _run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
         return agarwal.train_and_predict(
             train=train,
             test=test,

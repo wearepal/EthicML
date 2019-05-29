@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms.inprocess import InAlgorithm
 
 
 def test_simple_saving():
@@ -23,8 +24,6 @@ def test_simple_saving():
 
     class CheckEquality(InAlgorithm):
         """Dummy algorithm class for testing whether writing and reading feather files works"""
-        def _run(self, *_):
-            pass
 
         def name(self):
             return "Check equality"
@@ -40,5 +39,5 @@ def test_simple_saving():
             # the following command copies the x of the training data to the pred_path location
             return ['-c', f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
-    data_x = CheckEquality().run(data_tuple, data_tuple, sub_process=True)
+    data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_frame_equal(data_tuple.x, data_x)

@@ -18,7 +18,7 @@ class SVM(InAlgorithm):
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 
-    def _run(self, train, test):
+    def run(self, train, test):
         return svm.train_and_predict(train, test, self.C, self.kernel)
 
     def _script_command(self, train_paths, test_paths, pred_path):

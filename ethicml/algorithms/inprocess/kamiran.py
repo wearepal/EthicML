@@ -40,7 +40,7 @@ class Kamiran(InAlgorithm):
             else:
                 self.kernel = ""
 
-    def _run(self, train, test):
+    def run(self, train, test):
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )

@@ -13,8 +13,7 @@ from ethicml.preprocessing.train_test_split import train_test_split
 
 def test_train_test_split():
     data: DataTuple = load_data(Toy())
-    train_test: Tuple[DataTuple, DataTuple] = \
-        train_test_split(data)
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     assert train is not None
     assert test is not None
@@ -25,11 +24,11 @@ def test_train_test_split():
     assert train.x.shape[0] == train.s.shape[0]
     assert train.s.shape[0] == train.y.shape[0]
 
-    len_default = math.floor((2000/100)*80)
+    len_default = math.floor((2000 / 100) * 80)
     assert train.s.shape[0] == len_default
     assert test.s.shape[0] == 2000 - len_default
 
-    len_0_9 = math.floor((2000/100)*90)
+    len_0_9 = math.floor((2000 / 100) * 90)
     train, test = train_test_split(data, train_percentage=0.9)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == 2000 - len_0_9

@@ -36,7 +36,7 @@ class Beutel(PreAlgorithm):
             'epochs': epochs,
         }
 
-    def _run(self, train, test):
+    def run(self, train, test):
         from ...implementations import beutel  # only import this on demand
 
         return beutel.train_and_transform(train, test, self.flags)

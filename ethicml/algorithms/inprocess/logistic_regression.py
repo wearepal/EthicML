@@ -17,7 +17,7 @@ class LR(InAlgorithm):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
-    def _run(self, train, test):
+    def run(self, train, test):
         return logistic_regression.train_and_predict(train, test, self.C)
 
     def _script_command(self, train_paths, test_paths, pred_path):

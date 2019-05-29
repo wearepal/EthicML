@@ -5,28 +5,41 @@ Abstract Base Class of all algorithms in the framework
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Tuple, List
+from abc import abstractmethod
 import pandas as pd
 
-from ethicml.algorithms.algorithm_base import Algorithm
+from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ..utils import get_subset, DataTuple, PathTuple, write_as_feather, load_feather
 
 
-class PreAlgorithm(Algorithm):
+class PreAlgorithmSync(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
 
-    def run(
-        self, train: DataTuple, test: DataTuple, sub_process: bool = False
-    ) -> (Tuple[pd.DataFrame, pd.DataFrame]):
-        """Generate fair features by either running in process or out of process
+    @abstractmethod
+    def run(self, train: DataTuple, test: DataTuple) -> (Tuple[pd.DataFrame, pd.DataFrame]):
+        """Generate fair features with the given data
 
         Args:
             train: training data
             test: test data
-            sub_process: should this model run in it's own process?
         """
-        if not sub_process:
-            return self._run(train, test)
 
+    def run_test(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Run with reduced training set so that it finishes quicker"""
+        train_testing = get_subset(train)
+        return self.run(train_testing, test)
+
+
+class PreAlgorithm(PreAlgorithmSync, AlgorithmAsync):
+    """Pre-Algorithm that can be run blocking and asynchronously"""
+
+    def run(self, train, test):
+        return run_blocking(self.run_async(train, test))
+
+    async def run_async(
+        self, train: DataTuple, test: DataTuple
+    ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Generate fair features with the given data asynchronously"""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
@@ -36,15 +49,7 @@ class PreAlgorithm(Algorithm):
             self._call_script(cmd)
             return load_feather(train_path), load_feather(test_path)
 
-    def _run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Generate fair features with the given data"""
-        raise NotImplementedError("`_run` needs to be implemented")
-
-    def run_test(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        """Run with reduced training set so that it finishes quicker"""
-        train_testing = get_subset(train)
-        return self.run(train_testing, test)
-
+    @abstractmethod
     def _script_command(
         self,
         train_paths: PathTuple,
@@ -53,4 +58,3 @@ class PreAlgorithm(Algorithm):
         new_test_path: Path,
     ) -> List[str]:
         """The command that will run the script"""
-        raise NotImplementedError("`_script_command` has not been implemented")
