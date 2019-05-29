@@ -1,12 +1,12 @@
 """
 Test the saving data capability
 """
-import asyncio
 import pandas as pd
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
+from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms.inprocess import InAlgorithm
 
 
 def test_simple_saving():
@@ -22,7 +22,7 @@ def test_simple_saving():
              'c3': np.array([0, 1, 0])})
     )
 
-    class CheckEquality(InAlgorithmAsync):
+    class CheckEquality(InAlgorithm):
         """Dummy algorithm class for testing whether writing and reading feather files works"""
 
         def _script_command(self, train_paths, _, pred_path):
@@ -36,6 +36,8 @@ def test_simple_saving():
             # the following command copies the x of the training data to the pred_path location
             return ['-c', f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
-    loop = asyncio.get_event_loop()
-    data_x = loop.run_until_complete(CheckEquality().run_async(data_tuple, data_tuple))
+        def name(self):
+            return "Check equality"
+
+    data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_frame_equal(data_tuple.x, data_x)

@@ -12,8 +12,7 @@ import subprocess
 
 import git
 
-from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.common import ROOT_PATH
 
@@ -21,7 +20,7 @@ from ethicml.common import ROOT_PATH
 ROOT_DIR = ROOT_PATH.parent
 
 
-class InstalledModel(Algorithm, InAlgorithmAsync):
+class InstalledModel(InAlgorithm):
     """ the model that does the magic"""
 
     def __init__(self, name: str, url: str, module: str, file_name: str):
@@ -39,7 +38,7 @@ class InstalledModel(Algorithm, InAlgorithmAsync):
 
     @property
     def name(self) -> str:
-        pass
+        return self.module
 
     def clone_directory(self):
         """

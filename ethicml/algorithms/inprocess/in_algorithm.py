@@ -8,7 +8,7 @@ from abc import abstractmethod
 
 import pandas as pd
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
+from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.algorithms.utils import (
     DataTuple,
     get_subset,
@@ -36,8 +36,11 @@ class InAlgorithmSync(Algorithm):
         return self.run(train_testing, test)
 
 
-class InAlgorithmAsync(AlgorithmAsync):
-    """Abstract Base Class for algorithms that run asynchronously in the middle of the pipeline"""
+class InAlgorithm(InAlgorithmSync, AlgorithmAsync):
+    """In-Algorithm that can be run blocking and asynchronously"""
+
+    def run(self, train, test):
+        return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
         """Run Algorithm on the given data asynchronously"""
@@ -54,11 +57,3 @@ class InAlgorithmAsync(AlgorithmAsync):
         self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
     ) -> (List[str]):
         """The command that will run the script"""
-
-
-class InAlgorithm(InAlgorithmSync, InAlgorithmAsync):
-    """In-Algorithm that can be run blocking and asynchronously"""
-
-    @abstractmethod
-    def run(self, train, test):
-        pass

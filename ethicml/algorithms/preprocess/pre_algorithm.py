@@ -8,7 +8,7 @@ from typing import Tuple, List
 from abc import abstractmethod
 import pandas as pd
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
+from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ..utils import get_subset, DataTuple, PathTuple, write_as_feather, load_feather
 
 
@@ -30,8 +30,11 @@ class PreAlgorithmSync(Algorithm):
         return self.run(train_testing, test)
 
 
-class PreAlgorithmAsync(AlgorithmAsync):
-    """Abstract Base Class for all algorithms that do pre-processing asynchronously"""
+class PreAlgorithm(PreAlgorithmSync, AlgorithmAsync):
+    """Pre-Algorithm that can be run blocking and asynchronously"""
+
+    def run(self, train, test):
+        return run_blocking(self.run_async(train, test))
 
     async def run_async(
         self, train: DataTuple, test: DataTuple
@@ -55,11 +58,3 @@ class PreAlgorithmAsync(AlgorithmAsync):
         new_test_path: Path,
     ) -> List[str]:
         """The command that will run the script"""
-
-
-class PreAlgorithm(PreAlgorithmSync, PreAlgorithmAsync):
-    """Pre-Algorithm that can be run blocking and asynchronously"""
-
-    @abstractmethod
-    def run(self, train, test):
-        pass

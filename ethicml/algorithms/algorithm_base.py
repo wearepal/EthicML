@@ -4,8 +4,9 @@ Base class for Algorithms
 import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 from subprocess import check_call, CalledProcessError
+import asyncio
 
 import pandas as pd
 
@@ -19,6 +20,9 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 
 class Algorithm(ABC):
     """Base class for Algorithms"""
+
+    def __init__(self, *args, **kwargs):  # this seems really pointless but it makes mypy happy
+        pass
 
     @property
     @abstractmethod
@@ -54,3 +58,14 @@ class AlgorithmAsync(ABC):
             raise RuntimeError(
                 f'The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}'
             )
+
+
+_T = TypeVar('_T')
+
+
+def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:
+    """Run an asynchronous process as a blocking process"""
+    loop = asyncio.get_event_loop()
+    ret = loop.run_until_complete(promise)
+    loop.close()
+    return ret

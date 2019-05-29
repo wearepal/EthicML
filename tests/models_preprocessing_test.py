@@ -1,8 +1,8 @@
-import asyncio
 from typing import Tuple
 import pandas as pd
 
-from ethicml.algorithms.inprocess import InAlgorithm, LR, LRProb, SVM
+from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms.inprocess import InAlgorithm, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, Beutel, Zemel
 from ethicml.algorithms.preprocess.vfae import VFAE
 from ethicml.algorithms.utils import DataTuple
@@ -126,8 +126,7 @@ def test_threaded_zemel():
     assert model is not None
     assert model.name == "Zemel"
 
-    loop = asyncio.get_event_loop()
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
         model.run_async(train, test)
     )
     new_xtrain, new_xtest = new_xtrain_xtest
@@ -175,8 +174,7 @@ def test_threaded_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    loop = asyncio.get_event_loop()
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
         model.run_async(train, test)
     )
     new_xtrain, new_xtest = new_xtrain_xtest
@@ -245,8 +243,7 @@ def test_threaded_custom_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    loop = asyncio.get_event_loop()
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = run_blocking(
         model.run_async(train, test)
     )
     new_xtrain, new_xtest = new_xtrain_xtest

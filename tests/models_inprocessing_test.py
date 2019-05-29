@@ -1,17 +1,15 @@
 from typing import List, Dict, Any
-import asyncio
 import pandas as pd
-import numpy as np
 import pytest
 from pytest import approx
 
+from ethicml.algorithms.algorithm_base import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
     GPyT,
     GPyTDemPar,
     GPyTEqOdds,
     InAlgorithm,
-    InAlgorithmAsync,
     InAlgorithmSync,
     Kamishima,
     LRCV,
@@ -113,12 +111,11 @@ def kamishima():
 def test_kamishima(kamishima):
     train, test = get_train_test()
 
-    model: InAlgorithmAsync = kamishima
+    model: InAlgorithm = kamishima
 
     assert model is not None
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 208
     assert predictions.values[predictions.values == -1].shape[0] == 192
 
@@ -135,24 +132,23 @@ def gpyt_models():
 
 def test_gpyt(gpyt_models):
     train, test = get_train_test()
-    loop = asyncio.get_event_loop()
 
-    baseline: InAlgorithmAsync = gpyt_models[0]
-    dem_par: InAlgorithmAsync = gpyt_models[1]
-    eq_odds: InAlgorithmAsync = gpyt_models[2]
+    baseline: InAlgorithm = gpyt_models[0]
+    dem_par: InAlgorithm = gpyt_models[1]
+    eq_odds: InAlgorithm = gpyt_models[2]
 
-    # assert baseline.name == "GPyT_in_True"
-    predictions: pd.DataFrame = loop.run_until_complete(baseline.run_async(train, test))
+    assert baseline.name == "GPyT_in_True"
+    predictions: pd.DataFrame = run_blocking(baseline.run_async(train, test))
     predictions.values[predictions.values == 1].shape[0] == approx(210, rel=0.1)
     predictions.values[predictions.values == -1].shape[0] == approx(190, rel=0.1)
 
-    # assert dem_par.name == "GPyT_dem_par_in_True"
-    predictions = loop.run_until_complete(dem_par.run_async(train, test))
+    assert dem_par.name == "GPyT_dem_par_in_True"
+    predictions = run_blocking(dem_par.run_async(train, test))
     predictions.values[predictions.values == 1].shape[0] == approx(182, rel=0.1)
     predictions.values[predictions.values == -1].shape[0] == approx(218, rel=0.1)
 
-    # assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
-    predictions = loop.run_until_complete(eq_odds.run_async(train, test))
+    assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
+    predictions = run_blocking(eq_odds.run_async(train, test))
     predictions.values[predictions.values == 1].shape[0] == approx(179, rel=0.1)
     predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
 
@@ -164,8 +160,7 @@ def test_threaded_svm():
     assert model is not None
     assert model.name == "SVM"
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 201
     assert predictions.values[predictions.values == -1].shape[0] == 199
 
@@ -222,7 +217,7 @@ def test_agarwal():
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
-    predictions = asyncio.get_event_loop().run_until_complete(model.run_async(train, test))
+    predictions = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 159
     assert predictions.values[predictions.values == -1].shape[0] == 241
 
@@ -233,8 +228,7 @@ def test_threaded_lr():
     model: InAlgorithm = LR()
     assert model.name == "Logistic Regression"
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
@@ -249,8 +243,7 @@ def test_threaded_lr_cross_validated():
     model: InAlgorithm = LRCV()
     assert model.name == "LRCV"
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
@@ -274,8 +267,7 @@ def test_threaded_lr_prob():
     assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
     assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     predictions = predictions.apply(heavi.apply)
     predictions = predictions.replace(0, -1)
     assert predictions.values[predictions.values == 1].shape[0] == 211
@@ -293,7 +285,6 @@ def test_kamiran():
     assert predictions.values[predictions.values == 1].shape[0] == 210
     assert predictions.values[predictions.values == -1].shape[0] == 190
 
-    loop = asyncio.get_event_loop()
-    predictions: pd.DataFrame = loop.run_until_complete(kamiran_model.run_async(train, test))
+    predictions: pd.DataFrame = run_blocking(kamiran_model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 210
     assert predictions.values[predictions.values == -1].shape[0] == 190
