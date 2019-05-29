@@ -133,7 +133,9 @@ disable=print-statement,
         xreadlines-attribute,
         deprecated-sys-function,
         exception-escape,
-        comprehension-escape
+        comprehension-escape,
+        bad-continuation,
+        arguments-differ
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -245,7 +247,10 @@ good-names=i,
            x,
            y,
            s,
-           C
+           C,
+           z1,
+           z2,
+           mu
 
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=no

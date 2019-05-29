@@ -1,8 +1,17 @@
+"""
+Implementation for Louizos et al Variational Fair Autoencoder
+"""
+
+
 import torch
 from torch import nn
 
 
 class _OneHotEncoder(nn.Module):
+    """
+    One Hot Encode the output based on feature groups
+    """
+
     def __init__(self, n_dims, index_dim=1):
         super().__init__()
         self.n_dims = n_dims
@@ -18,6 +27,10 @@ class _OneHotEncoder(nn.Module):
 
 
 class Categorical(nn.Module):
+    """
+    Group a category together
+    """
+
     def __init__(self, in_feat, dims):
         super().__init__()
         self.layer = nn.Sequential(nn.Linear(in_feat, dims), nn.Softmax(dim=-1))
