@@ -1,26 +1,33 @@
+"""
+Implementation for Louizos et al Variational Fair Autoencoder
+"""
+
 from itertools import groupby
+from typing import List
 
 import torch
 from torch import nn
-from typing import List
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.categorical import Categorical
 
 
 class Decoder(nn.Module):
+    """
+    Decoder for VFAE
+    """
     def __init__(self, dataset: Dataset, deploy=False):
         super().__init__()
         self._deploy = deploy
         self.features: List[str] = dataset.feature_split['x']
 
-        L_D = 50
-        HID_SIZE = 100
+        latent_dims = 50
+        hidden_size = 100
 
         self.shared_net = nn.Sequential()
-        in_features = L_D + 1
+        in_features = latent_dims + 1
         # add hidden layers according to the number of units specified in "hidden_sizes"
-        for depth, num_units in enumerate([HID_SIZE]):
+        for depth, num_units in enumerate([hidden_size]):
             self.shared_net.add_module("hidden_layer_%d" % depth, nn.Linear(in_features, num_units))
             self.shared_net.add_module("ReLu %d" % depth, nn.ReLU())
             in_features = num_units  # update input size to next layer

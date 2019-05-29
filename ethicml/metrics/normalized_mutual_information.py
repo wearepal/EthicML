@@ -11,13 +11,12 @@ from ..algorithms.utils import DataTuple
 
 
 class NMI(Metric):
+    """Normalized Mutual Information"""
     def __init__(self, pos_class: int = 1, base: str = 'y'):
         super().__init__(pos_class=pos_class)
         if base not in ['s', 'y']:
             raise NotImplementedError("Can only calculate NMI of predictions with regard to y or s")
         self.base = base
-
-    """Normalized Mutual Information"""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         if self.base == 'y':
