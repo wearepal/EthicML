@@ -23,7 +23,7 @@ class MLP(InAlgorithm):
             self.hidden_layer_sizes = hidden_layer_sizes
         self.activation = MLPClassifier().activation if activation is None else activation
 
-    def _run(self, train, test):
+    def run(self, train, test):
         return mlp.train_and_predict(train, test, self.hidden_layer_sizes, self.activation)
 
     def _script_command(self, train_paths, test_paths, pred_path):

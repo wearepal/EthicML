@@ -32,7 +32,7 @@ class Kamishima(InstalledModel):
         result = pd.concat([data.x, data.s, data.y], axis='columns').to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
-    def run(self, train, test, _=False):
+    async def run_async(self, train, test):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")

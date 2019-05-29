@@ -35,7 +35,7 @@ class Zemel(PreAlgorithm):
             'threshold': threshold,
         }
 
-    def _run(self, train, test):
+    def run(self, train, test):
         from ...implementations import zemel
 
         return zemel.train_and_transform(train, test, self.flags)

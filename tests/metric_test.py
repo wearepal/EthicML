@@ -518,7 +518,7 @@ def test_nb_tpr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k,z) for k,z in zip(predictions.values, test.y.values) if k != z]))
+    print(list([(k, z) for k, z in zip(predictions.values, test.y.values) if k != z]))
 
     tpr_score = TPR(pos_class=1).score(predictions, test)
     assert tpr_score == 1.0
@@ -564,7 +564,7 @@ def test_nb_tnr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k,z) for k,z in zip(predictions.values, test.y.values) if k != z]))
+    print(list([(k, z) for k, z in zip(predictions.values, test.y.values) if k != z]))
 
     tnr_score = TNR(pos_class=1).score(predictions, test)
     assert tnr_score == 1.0

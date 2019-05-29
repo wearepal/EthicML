@@ -36,7 +36,7 @@ class GPyT(InstalledModel):
         self.epochs = epochs
         self.length_scale = length_scale
 
-    def run(self, train, test, _=False):
+    async def run_async(self, train, test):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -245,7 +245,7 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    def run(self, train, test, _=False):
+    async def run(self, train, test):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),

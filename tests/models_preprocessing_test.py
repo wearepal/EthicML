@@ -1,3 +1,4 @@
+import asyncio
 from typing import Tuple
 import pandas as pd
 
@@ -125,7 +126,10 @@ def test_threaded_zemel():
     assert model is not None
     assert model.name == "Zemel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    loop = asyncio.get_event_loop()
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]
@@ -171,7 +175,10 @@ def test_threaded_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    loop = asyncio.get_event_loop()
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]
@@ -238,7 +245,10 @@ def test_threaded_custom_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = model.run(train, test, sub_process=True)
+    loop = asyncio.get_event_loop()
+    new_xtrain_xtest: Tuple[pd.DataFrame, pd.DataFrame] = loop.run_until_complete(
+        model.run_async(train, test)
+    )
     new_xtrain, new_xtest = new_xtrain_xtest
 
     assert new_xtrain.shape[0] == train.x.shape[0]

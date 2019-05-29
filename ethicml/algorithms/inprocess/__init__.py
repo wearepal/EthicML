@@ -1,6 +1,6 @@
 """In-process algorithms take training data and make predictions"""
 from .agarwal_reductions import Agarwal
-from .in_algorithm import InAlgorithm
+from .in_algorithm import InAlgorithm, InAlgorithmAsync, InAlgorithmSync
 from .fair_gpyt import GPyT, GPyTDemPar, GPyTEqOdds
 from .kamishima import Kamishima
 from .kamiran import Kamiran

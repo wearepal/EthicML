@@ -20,26 +20,23 @@ def load_dataframe(path: Path) -> pd.DataFrame:
 class Algorithm(ABC):
     """Base class for Algorithms"""
 
-    def __init__(
-        self, executable: Optional[str] = None, hyperparams: Optional[Dict[str, float]] = None
-    ):
-        """Constructor
-
-        Args:
-            executable: (optional) path to a (Python) executable. If not provided, the Python
-                        executable that called this script is used.
-        """
-        if executable is None:
-            # use the python executable that this script was called with
-            executable = sys.executable
-        self.executable: str = executable
-        self.hyperparams = hyperparams
-
     @property
     @abstractmethod
     def name(self) -> str:
         """Name of the algorithm"""
-        raise NotImplementedError()
+
+
+class AlgorithmAsync(ABC):
+    """Base class of async methods. This class is meant to be used in conjuction with `Algorithm`"""
+
+    @property
+    def _executable(self) -> str:
+        """
+        Path to a (Python) executable
+
+        By default, the Python executable that called this script is used.
+        """
+        return sys.executable
 
     def _call_script(self, cmd_args: List[str], env: Optional[Dict[str, str]] = None):
         """This function calls a (Python) script as a separate process
@@ -50,11 +47,10 @@ class Algorithm(ABC):
             cmd_args: list of strings that are passed as commandline arguments to the executable
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
-        cmd = [self.executable] + cmd_args
+        cmd = [self._executable] + cmd_args
         try:
             check_call(cmd, env=env)
         except CalledProcessError:
             raise RuntimeError(
-                f'The script failed. Supplied arguments: {cmd_args} '
-                f'with exec: {self.executable}'
+                f'The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}'
             )

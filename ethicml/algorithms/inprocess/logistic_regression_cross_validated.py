@@ -10,7 +10,7 @@ from ethicml.implementations import logistic_regression_cross_validated
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR"""
 
-    def _run(self, train, test):
+    def run(self, train, test):
         return logistic_regression_cross_validated.train_and_predict(train, test)
 
     def _script_command(self, train_paths, test_paths, pred_path):
