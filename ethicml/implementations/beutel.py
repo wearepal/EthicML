@@ -27,7 +27,7 @@ def train_and_transform(train, test, flags):
     random.seed(888)
     np.random.seed(888)
     torch.manual_seed(888)
-    torch.cuda.manual_seed_all(888)
+    torch.cuda.manual_seed_all(888)  # type: ignore  # mypy claims manual_seed_all doesn't exist
 
     train_data = CustomDataset(train)
     size = int(train_data.size)
@@ -109,7 +109,7 @@ class GradReverse(Function):
 
 
 def _grad_reverse(features):
-    return GradReverse.apply(features)
+    return GradReverse.apply(features)  # type: ignore  # mypy was claiming that apply doesn't exist
 
 
 class Encoder(nn.Module):

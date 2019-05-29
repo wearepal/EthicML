@@ -8,7 +8,7 @@ class _OneHotEncoder(nn.Module):
         self.n_dims = n_dims
         self.index_dim = index_dim
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x):
         indexes = x.argmax(dim=self.index_dim)
         indexes = indexes.type(torch.int64).view(-1, 1)
         n_dims = self.n_dims  # if self.n_dims is not None else int(torch.max(indexes)) + 1

@@ -51,7 +51,7 @@ class VFAENetwork(nn.Module):
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
-        return eps.mul(std).add_(mu)
+        return eps.mul(std).add_(mu)  # type: ignore  # mypy was claming "mul" doesn't exist
 
     def forward(self, x, s, y):
         z1_mu, z1_logvar = self.encode_z1(x, s)
@@ -60,6 +60,7 @@ class VFAENetwork(nn.Module):
 
         z2_triplet: Optional[Tuple[Any, Any, Any]]
         z1_d_triplet: Optional[Tuple[Any, Any, Any]]
+        y_pred: Optional[torch.Tensor]
         if self.supervised:
             z2_mu, z2_logvar = self.encode_z2(z1, y)
             # z2 = F.sigmoid(reparameterize(z2_mu, z2_logvar))
