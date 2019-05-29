@@ -30,7 +30,7 @@ setup(
             "pylint >= 2.0",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
-            "mypy",
+            "mypy >= 0.700",
             "black",
         ],
     },

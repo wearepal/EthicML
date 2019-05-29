@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from typing import List
+from typing import List, Optional, Any, Tuple
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.encoder import Encoder
@@ -58,6 +58,8 @@ class VFAENetwork(nn.Module):
         # z1 = F.sigmoid(reparameterize(z1_mu, z1_logvar))
         z1 = self.reparameterize(z1_mu, z1_logvar)
 
+        z2_triplet: Optional[Tuple[Any, Any, Any]]
+        z1_d_triplet: Optional[Tuple[Any, Any, Any]]
         if self.supervised:
             z2_mu, z2_logvar = self.encode_z2(z1, y)
             # z2 = F.sigmoid(reparameterize(z2_mu, z2_logvar))

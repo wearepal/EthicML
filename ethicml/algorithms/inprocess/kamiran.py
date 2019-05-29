@@ -1,6 +1,6 @@
 """Kamiran and Calders 2012"""
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -18,7 +18,9 @@ class Kamiran(InAlgorithm):
     Kamiran and Calders 2012
     """
 
-    def __init__(self, classifier: str = "LR", C: float = None, kernel: str = None):
+    def __init__(
+        self, classifier: str = "LR", C: Optional[float] = None, kernel: Optional[str] = None
+    ):
         super().__init__()
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)

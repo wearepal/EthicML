@@ -3,7 +3,7 @@ Variational Fair Auto-Encoder by Louizos et al
 """
 
 from pathlib import Path
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Dict, Union, Optional
 
 import pandas as pd
 
@@ -24,9 +24,9 @@ class VFAE(PreAlgorithm):
         epochs: int = 10,
         batch_size: int = 32,
         fairness: str = "DI",
-        z1_enc_size: List[int] = None,
-        z2_enc_size: List[int] = None,
-        z1_dec_size: List[int] = None,
+        z1_enc_size: Optional[List[int]] = None,
+        z2_enc_size: Optional[List[int]] = None,
+        z1_dec_size: Optional[List[int]] = None,
     ):
         # pylint: disable=too-many-arguments
         super().__init__()
