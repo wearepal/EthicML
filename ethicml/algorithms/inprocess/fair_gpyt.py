@@ -245,7 +245,7 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    async def run(self, train, test):
+    async def run_async(self, train, test):
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
