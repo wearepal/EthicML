@@ -2,6 +2,7 @@
 import pytest
 from pylint import lint as pylint
 from mypy import api as mypy
+import black
 
 # pytest
 print("############### pytest #################")
@@ -26,3 +27,8 @@ MYPY_RESULTS = mypy.run(['./tests/', '--warn-redundant-casts', '--show-error-con
 print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
 print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
+
+# black
+print("############  black ##############")
+black.main(['--check', '-l', '100', '-t', 'py36', '-S', 'ethicml/'])
+print('')

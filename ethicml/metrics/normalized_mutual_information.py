@@ -12,6 +12,7 @@ from ..algorithms.utils import DataTuple
 
 class NMI(Metric):
     """Normalized Mutual Information"""
+
     def __init__(self, pos_class: int = 1, base: str = 'y'):
         super().__init__(pos_class=pos_class)
         if base not in ['s', 'y']:

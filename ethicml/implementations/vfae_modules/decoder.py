@@ -16,6 +16,7 @@ class Decoder(nn.Module):
     """
     Decoder for VFAE
     """
+
     def __init__(self, dataset: Dataset, deploy=False):
         super().__init__()
         self._deploy = deploy

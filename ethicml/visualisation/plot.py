@@ -59,9 +59,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(
-        x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde"
-    )
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
 
     if not os.path.exists(file_path.parent):
         os.mkdir(file_path)
@@ -103,12 +101,10 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     y_col = data.y.columns[0]
     y_s0 = (
-        data.y[y_col][data.s[s_col] == 0].value_counts()
-        / data.y[y_col][data.s[s_col] == 0].count()
+        data.y[y_col][data.s[s_col] == 0].value_counts() / data.y[y_col][data.s[s_col] == 0].count()
     )
     y_s1 = (
-        data.y[y_col][data.s[s_col] == 1].value_counts()
-        / data.y[y_col][data.s[s_col] == 1].count()
+        data.y[y_col][data.s[s_col] == 1].value_counts() / data.y[y_col][data.s[s_col] == 1].count()
     )
 
     y_0_label = y_s0.index[0]
