@@ -6,6 +6,7 @@ from typing import Tuple
 from numpy.testing import assert_allclose
 import pandas as pd
 import pytest
+from pytest import approx
 
 from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
 from ethicml.algorithms.utils import DataTuple
@@ -336,13 +337,12 @@ def test_run_metrics():
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
     results = run_metrics(predictions, test, [CV()], [TPR()])
-    print(results)
     assert len(results) == 5
-    assert_allclose(results['TPR_s_0'], 0.842857, RTOL)
-    assert_allclose(results['TPR_s_1'], 0.886525, RTOL)
-    assert_allclose(results['TPR_s_0-s_1'], abs(0.842857 - 0.886525), RTOL)
-    assert_allclose(results['TPR_s_0/s_1'], 0.842857 / 0.886525, RTOL)
-    assert_allclose(results['CV'], 0.665)
+    assert results['TPR_s_0'] == approx(0.842857, RTOL)
+    assert results['TPR_s_1'] == approx(0.886525, RTOL)
+    assert results['TPR_s_0-s_1'] == approx(abs(0.842857 - 0.886525), RTOL)
+    assert results['TPR_s_0/s_1'] == approx(0.842857 / 0.886525, RTOL)
+    assert results['CV'] == approx(0.665)
 
 
 def test_nmi_diff_non_binary_race():

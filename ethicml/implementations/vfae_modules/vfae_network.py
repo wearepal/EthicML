@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from typing import List
+from typing import List, Optional, Any, Tuple
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.encoder import Encoder
@@ -51,13 +51,16 @@ class VFAENetwork(nn.Module):
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
-        return eps.mul(std).add_(mu)
+        return eps.mul(std).add_(mu)  # type: ignore  # mypy was claming "mul" doesn't exist
 
     def forward(self, x, s, y):
         z1_mu, z1_logvar = self.encode_z1(x, s)
         # z1 = F.sigmoid(reparameterize(z1_mu, z1_logvar))
         z1 = self.reparameterize(z1_mu, z1_logvar)
 
+        z2_triplet: Optional[Tuple[Any, Any, Any]]
+        z1_d_triplet: Optional[Tuple[Any, Any, Any]]
+        y_pred: Optional[torch.Tensor]
         if self.supervised:
             z2_mu, z2_logvar = self.encode_z2(z1, y)
             # z2 = F.sigmoid(reparameterize(z2_mu, z2_logvar))

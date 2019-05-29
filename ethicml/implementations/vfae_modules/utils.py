@@ -4,7 +4,9 @@ import torch.nn.functional as F
 from ethicml.implementations.pytorch_common import quadratic_time_mmd
 
 
-def KL(mu1, logvar1, mu2=torch.Tensor([0.0]), logvar2=torch.Tensor([0.0])):
+def KL(mu1, logvar1, mu2=None, logvar2=None):
+    mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
+    logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
     # return -0.5 * torch.sum(1 + (logvar1-logvar2) - (mu1-mu2).pow(2) - (logvar1-logvar2).exp())
     return (
         0.5

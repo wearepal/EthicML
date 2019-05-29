@@ -25,10 +25,11 @@ class Decoder(nn.Module):
             self.shared_net.add_module("ReLu %d" % depth, nn.ReLU())
             in_features = num_units  # update input size to next layer
 
-        def _add_output_layer(feature_group: List) -> nn.Sequential:
+        def _add_output_layer(feature_group: List) -> nn.Module:
             n_dims = len(feature_group)
             categorical = n_dims > 1  # feature is categorical if it has more than 1 possible output
 
+            layer: nn.Module
             if categorical:
                 layer = Categorical(in_features, n_dims)
             else:

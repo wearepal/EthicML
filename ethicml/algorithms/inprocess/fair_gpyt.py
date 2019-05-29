@@ -369,10 +369,10 @@ def _fix_labels(labels):
 def split_train_dev(inputs, labels, sensitive):
     """Split the given data into train and dev set with the proportion of labels being preserved"""
     n_total = inputs.shape[0]
-    idx_s0_y0 = np.where((sensitive == 0) & (labels == 0))[0]
-    idx_s0_y1 = np.where((sensitive == 0) & (labels == 1))[0]
-    idx_s1_y0 = np.where((sensitive == 1) & (labels == 0))[0]
-    idx_s1_y1 = np.where((sensitive == 1) & (labels == 1))[0]
+    idx_s0_y0 = ((sensitive == 0) & (labels == 0)).nonzero()[0]
+    idx_s0_y1 = ((sensitive == 0) & (labels == 1)).nonzero()[0]
+    idx_s1_y0 = ((sensitive == 1) & (labels == 0)).nonzero()[0]
+    idx_s1_y1 = ((sensitive == 1) & (labels == 1)).nonzero()[0]
 
     train_fraction: List[int] = []
     test_fraction: List[int] = []
