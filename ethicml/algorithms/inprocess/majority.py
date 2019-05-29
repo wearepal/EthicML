@@ -8,7 +8,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmSync
 
 
 class Majority(InAlgorithmSync):
-    """Support Vector Machine"""
+    """Simply returns the majority label from the train set"""
 
     def run(self, train, test):
         maj = train.y.mode().values

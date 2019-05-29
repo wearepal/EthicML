@@ -66,6 +66,4 @@ _T = TypeVar('_T')
 def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:
     """Run an asynchronous process as a blocking process"""
     loop = asyncio.get_event_loop()
-    ret = loop.run_until_complete(promise)
-    loop.close()
-    return ret
+    return loop.run_until_complete(promise)

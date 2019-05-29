@@ -112,6 +112,7 @@ def test_kamishima(kamishima):
     train, test = get_train_test()
 
     model: InAlgorithm = kamishima
+    assert model.name == "Kamishima"
 
     assert model is not None
 
