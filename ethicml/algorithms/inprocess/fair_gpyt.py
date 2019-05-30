@@ -64,7 +64,7 @@ class GPyT(InstalledModel):
                 self.epochs,
                 self.length_scale,
             )
-            self._run_gpyt(flags)
+            await self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
             with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:
@@ -74,12 +74,12 @@ class GPyT(InstalledModel):
         predictions = label_converter((pred_mean > 0.5).astype(raw_data['ytest'].dtype)[:, 0])
         return pd.DataFrame(predictions, columns=['preds'])
 
-    def _run_gpyt(self, flags):
+    async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
         cmd = [str(self._module_path() / self.file_name)]
         for key, value in flags.items():
             cmd += [f"--{key}", str(value)]
-        self._call_script(cmd)
+        await self._call_script(cmd)
 
     @staticmethod
     def _additional_parameters(_):
@@ -281,7 +281,7 @@ class GPyTEqOdds(GPyT):
                 np.savez(data_path, **train_dev_data)
 
                 # First run
-                self._run_gpyt(flags)
+                await self._run_gpyt(flags)
 
                 # Read the results from the numpy file 'predictions.npz'
                 with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:
@@ -302,7 +302,7 @@ class GPyTEqOdds(GPyT):
             np.savez(data_path, **raw_data)
 
             # Second run
-            self._run_gpyt(flags)
+            await self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
             with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:

@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
-from subprocess import check_call, CalledProcessError
 import asyncio
 
 import pandas as pd
@@ -42,7 +41,7 @@ class AlgorithmAsync(ABC):
         """
         return sys.executable
 
-    def _call_script(self, cmd_args: List[str], env: Optional[Dict[str, str]] = None):
+    async def _call_script(self, cmd_args: List[str], env: Optional[Dict[str, str]] = None):
         """This function calls a (Python) script as a separate process
 
         An exception is thrown if the called script failed.
@@ -51,10 +50,26 @@ class AlgorithmAsync(ABC):
             cmd_args: list of strings that are passed as commandline arguments to the executable
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
         """
-        cmd = [self._executable] + cmd_args
-        try:
-            check_call(cmd, env=env)
-        except CalledProcessError:
+        process = await asyncio.create_subprocess_exec(  # wait for process creation to finish
+            self._executable,
+            *cmd_args,
+            stderr=asyncio.subprocess.PIPE,  # we capture the stderr for errors
+            env=env,
+        )
+        print(f'Started: {cmd_args!r} (pid = {process.pid})')
+
+        try:  # wait for process itself to finish
+            one_hour = 3600
+            _, stderr = await asyncio.wait_for(process.communicate(), one_hour)
+        except asyncio.TimeoutError as error:
+            raise RuntimeError('The script timed out.') from error
+
+        if process.returncode == 0:
+            print(f'Success: {cmd_args!r} (pid = {process.pid})')
+        else:
+            print(f'Failure: {cmd_args!r} (pid = {process.pid})')
+            if stderr:
+                print(stderr.decode().strip())
             raise RuntimeError(
                 f'The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}'
             )

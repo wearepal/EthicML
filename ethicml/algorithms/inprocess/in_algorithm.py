@@ -49,7 +49,7 @@ class InAlgorithm(InAlgorithmSync, AlgorithmAsync):
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
             pred_path = tmp_path / "predictions.feather"
             cmd = self._script_command(train_paths, test_paths, pred_path)
-            self._call_script(cmd)
+            await self._call_script(cmd)  # wait for scrip to run
             return load_feather(pred_path)
 
     @abstractmethod
