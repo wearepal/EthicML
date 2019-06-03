@@ -77,7 +77,7 @@ def make_gif(files: List[str], name="movie"):
     images = []
     for filename in files:
         images.append(imageio.imread(filename))
-    imageio.mimsave(f"results/{name}.gif", images)
+    imageio.mimsave(f"{name}.gif", images)
 
 
 def save_label_plot(data: DataTuple, filename: str) -> None:
