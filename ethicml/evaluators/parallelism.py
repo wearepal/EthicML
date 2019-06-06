@@ -30,7 +30,9 @@ async def arrange_in_parallel(
         assert len(data) == len(algos)
         coroutines = [algo.run_async(train, test) for algo, (train, test) in zip(algos, data)]
     else:
-        assert isinstance(data, tuple)
+        assert len(data) == 2
+        assert isinstance(data[0], DataTuple)
+        assert isinstance(data[1], DataTuple)
         train, test = data
         coroutines = [algo.run_async(train, test) for algo in algos]
     return await asyncio.gather(*coroutines)
