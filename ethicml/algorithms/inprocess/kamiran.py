@@ -5,7 +5,7 @@ from typing import List, Optional
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.algorithms.utils import PathTuple
 from ethicml.implementations import kamiran
@@ -13,7 +13,7 @@ from ethicml.implementations import kamiran
 VALID_MODELS = {"LR", "SVM"}
 
 
-class Kamiran(InAlgorithm):
+class Kamiran(InAlgorithmAsync):
     """
     Kamiran and Calders 2012
     """

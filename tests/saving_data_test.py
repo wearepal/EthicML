@@ -6,7 +6,7 @@ import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
 from ethicml.algorithms.algorithm_base import run_blocking
-from ethicml.algorithms.inprocess import InAlgorithm
+from ethicml.algorithms.inprocess import InAlgorithmAsync
 
 
 def test_simple_saving():
@@ -22,7 +22,7 @@ def test_simple_saving():
              'c3': np.array([0, 1, 0])})
     )
 
-    class CheckEquality(InAlgorithm):
+    class CheckEquality(InAlgorithmAsync):
         """Dummy algorithm class for testing whether writing and reading feather files works"""
 
         def name(self):

@@ -2,12 +2,12 @@
 Implementation of cross validated LR. This is a work around for now,
 long term we'll have a proper cross-validation mechanism
 """
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import logistic_regression_cross_validated
 
 
-class LRCV(InAlgorithm):
+class LRCV(InAlgorithmAsync):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR"""
 
     def run(self, train, test):

@@ -7,14 +7,14 @@ from typing import List, Tuple, Dict
 import pandas as pd
 
 from ethicml.algorithms.utils import DataTuple
-from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmSync
+from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 
 Data = Tuple[DataTuple, DataTuple]
 
 
 async def arrange_in_parallel(
-    algos: List[InAlgorithm], data: List[Data], max_parallel: int = -1
+    algos: List[InAlgorithmAsync], data: List[Data], max_parallel: int = -1
 ) -> List[List[pd.DataFrame]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
@@ -31,7 +31,7 @@ async def arrange_in_parallel(
     assert isinstance(data[0][0], DataTuple)
     assert isinstance(data[0][1], DataTuple)
     # create queue of tasks
-    task_queue: asyncio.Queue[Tuple[int, int, InAlgorithm, Data]] = asyncio.Queue()
+    task_queue: asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]] = asyncio.Queue()
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for i, algo in enumerate(algos):
         for j, data_item in enumerate(data):
@@ -49,7 +49,7 @@ async def arrange_in_parallel(
 
 async def _eval_worker(
     worker_id: int,
-    task_queue: 'asyncio.Queue[Tuple[int, int, InAlgorithm, Data]]',
+    task_queue: 'asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]]',
     result_dict: Dict[Tuple[int, int], pd.DataFrame],
 ) -> None:
     while not task_queue.empty():
@@ -65,7 +65,7 @@ async def _eval_worker(
 
 
 def run_in_parallel(
-    algos: List[InAlgorithmSync], data: List[Data], max_parallel: int = -1
+    algos: List[InAlgorithm], data: List[Data], max_parallel: int = -1
 ) -> List[List[pd.DataFrame]]:
     """Run the given algorithms (embarrassingly) parallel
 
@@ -80,13 +80,12 @@ def run_in_parallel(
     # Filter out those algorithms that actually can run in their own process.
     # This is unfortunately really complicated because we have to keep track of the indices
     # in order to reassemble the returned list correctly.
-    async_algos: List[InAlgorithm] = []
+    async_algos: List[InAlgorithmAsync] = []
     async_idx: List[int] = []
-    blocking_algos: List[InAlgorithmSync] = []
+    blocking_algos: List[InAlgorithm] = []
     blocking_idx: List[int] = []
     for i, algo in enumerate(algos):
-        # naming is a bit unfortunate right now: InAlgorithmSync is the parent class of InAlgorithm
-        if isinstance(algo, InAlgorithm):
+        if isinstance(algo, InAlgorithmAsync):
             async_algos.append(algo)
             async_idx.append(i)
         else:

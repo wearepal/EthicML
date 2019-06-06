@@ -1,11 +1,11 @@
 """Beutel's algorithm"""
 from typing import Optional, List, Dict, Union
 
-from .pre_algorithm import PreAlgorithm
+from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
 
 
-class Beutel(PreAlgorithm):
+class Beutel(PreAlgorithmAsync):
     """Beutel's adversarially learned fair representations"""
 
     def __init__(

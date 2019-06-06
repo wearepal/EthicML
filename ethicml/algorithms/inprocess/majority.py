@@ -4,10 +4,10 @@ Simply returns the majority label from the train set
 
 import pandas as pd
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmSync
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 
-class Majority(InAlgorithmSync):
+class Majority(InAlgorithm):
     """Simply returns the majority label from the train set"""
 
     def run(self, train, test):

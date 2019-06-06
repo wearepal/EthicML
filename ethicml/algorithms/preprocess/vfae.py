@@ -7,12 +7,12 @@ from typing import List, Tuple, Dict, Union, Optional
 
 import pandas as pd
 
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.algorithms.utils import PathTuple, DataTuple
 
 
-class VFAE(PreAlgorithm):
+class VFAE(PreAlgorithmAsync):
     """
     VFAE Object - see implementation file for details
     """

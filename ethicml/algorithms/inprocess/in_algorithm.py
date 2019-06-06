@@ -18,7 +18,7 @@ from ethicml.algorithms.utils import (
 )
 
 
-class InAlgorithmSync(Algorithm):
+class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline"""
 
     @abstractmethod
@@ -36,7 +36,7 @@ class InAlgorithmSync(Algorithm):
         return self.run(train_testing, test)
 
 
-class InAlgorithm(InAlgorithmSync, AlgorithmAsync):
+class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously"""
 
     def run(self, train, test):
