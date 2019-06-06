@@ -44,7 +44,7 @@ class Kamishima(InstalledModel):
             output_path = str(tmp_path / "output.txt")
 
             try:
-                self._call_script(
+                await self._call_script(
                     [
                         str(self._module_path() / 'train_pr.py'),
                         '-e',
@@ -57,7 +57,7 @@ class Kamishima(InstalledModel):
                     ]
                 )
 
-                self._call_script(
+                await self._call_script(
                     [
                         str(self._module_path() / 'predict_lr.py'),
                         '-i',

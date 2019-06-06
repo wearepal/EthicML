@@ -46,7 +46,7 @@ class PreAlgorithm(PreAlgorithmSync, AlgorithmAsync):
             train_path = tmp_path / "transform_train.feather"
             test_path = tmp_path / "transform_test.feather"
             cmd = self._script_command(train_paths, test_paths, train_path, test_path)
-            self._call_script(cmd)
+            await self._call_script(cmd)
             return load_feather(train_path), load_feather(test_path)
 
     @abstractmethod
