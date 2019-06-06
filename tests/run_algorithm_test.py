@@ -38,27 +38,24 @@ def test_can_load_test_data():
 
 
 def test_run_parallel():
-    data = get_train_test()
-    result = run_in_parallel([LR(), SVM(), Majority()], data)
-    assert count_true(result[0].values == 1) == 211
-    assert count_true(result[0].values == -1) == 189
-    assert count_true(result[1].values == 1) == 201
-    assert count_true(result[1].values == -1) == 199
-    assert count_true(result[2].values == 1) == 0
-    assert count_true(result[2].values == -1) == 400
-
-
-def test_run_parallel_multi_data():
     data0 = get_train_test()
     data1 = get_train_test()
-    data2 = get_train_test()
-    result = run_in_parallel([LR(), SVM(), Majority()], [data0, data1, data2])
-    assert count_true(result[0].values == 1) == 211
-    assert count_true(result[0].values == -1) == 189
-    assert count_true(result[1].values == 1) == 201
-    assert count_true(result[1].values == -1) == 199
-    assert count_true(result[2].values == 1) == 0
-    assert count_true(result[2].values == -1) == 400
+    result = run_in_parallel([LR(), SVM(), Majority()], [data0, data1], max_parallel=2)
+    # LR
+    assert count_true(result[0][0].values == 1) == 211
+    assert count_true(result[0][0].values == -1) == 189
+    assert count_true(result[0][1].values == 1) == 211
+    assert count_true(result[0][1].values == -1) == 189
+    # SVM
+    assert count_true(result[1][0].values == 1) == 201
+    assert count_true(result[1][0].values == -1) == 199
+    assert count_true(result[1][1].values == 1) == 201
+    assert count_true(result[1][1].values == -1) == 199
+    # Majority
+    assert count_true(result[2][0].values == 1) == 0
+    assert count_true(result[2][0].values == -1) == 400
+    assert count_true(result[2][1].values == 1) == 0
+    assert count_true(result[2][1].values == -1) == 400
 
 
 # def test_run_alg_suite():
