@@ -8,7 +8,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.algorithms.utils import PathTuple, DataTuple
 from ethicml.implementations import agarwal
@@ -18,7 +18,7 @@ VALID_FAIRNESS = {"DP", "EqOd"}
 VALID_MODELS = {"LR", "SVM"}
 
 
-class Agarwal(InAlgorithm):
+class Agarwal(InAlgorithmAsync):
     """
     Agarwal class
     """

@@ -12,7 +12,7 @@ from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blo
 from ..utils import get_subset, DataTuple, PathTuple, write_as_feather, load_feather
 
 
-class PreAlgorithmSync(Algorithm):
+class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
 
     @abstractmethod
@@ -30,7 +30,7 @@ class PreAlgorithmSync(Algorithm):
         return self.run(train_testing, test)
 
 
-class PreAlgorithm(PreAlgorithmSync, AlgorithmAsync):
+class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
     """Pre-Algorithm that can be run blocking and asynchronously"""
 
     def run(self, train, test):

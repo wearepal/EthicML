@@ -3,11 +3,11 @@ Zemel's Learned Fair Representations
 """
 from typing import Dict, Union
 
-from .pre_algorithm import PreAlgorithm
+from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
 
 
-class Zemel(PreAlgorithm):
+class Zemel(PreAlgorithmAsync):
     """
     AIF360 implementation of Zemel's LFR
     """

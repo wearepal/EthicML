@@ -10,7 +10,7 @@ from ethicml.algorithms.inprocess import (
     GPyTDemPar,
     GPyTEqOdds,
     InAlgorithm,
-    InAlgorithmSync,
+    InAlgorithmAsync,
     Kamishima,
     LRCV,
     LRProb,
@@ -41,7 +41,7 @@ def test_svm():
 def test_majority():
     train, test = get_train_test()
 
-    model: InAlgorithmSync = Majority()
+    model: InAlgorithm = Majority()
     assert model is not None
     assert model.name == "Majority"
 
@@ -111,7 +111,7 @@ def kamishima():
 def test_kamishima(kamishima):
     train, test = get_train_test()
 
-    model: InAlgorithm = kamishima
+    model: InAlgorithmAsync = kamishima
     assert model.name == "Kamishima"
 
     assert model is not None
@@ -135,8 +135,8 @@ def test_gpyt(gpyt_models):
     train, test = get_train_test()
 
     baseline: InAlgorithm = gpyt_models[0]
-    dem_par: InAlgorithm = gpyt_models[1]
-    eq_odds: InAlgorithm = gpyt_models[2]
+    dem_par: InAlgorithmAsync = gpyt_models[1]
+    eq_odds: InAlgorithmAsync = gpyt_models[2]
 
     assert baseline.name == "GPyT_in_True"
     predictions: pd.DataFrame = run_blocking(baseline.run_async(train, test))
@@ -157,7 +157,7 @@ def test_gpyt(gpyt_models):
 def test_threaded_svm():
     train, test = get_train_test()
 
-    model: InAlgorithm = SVM()
+    model: InAlgorithmAsync = SVM()
     assert model is not None
     assert model.name == "SVM"
 
@@ -226,7 +226,7 @@ def test_agarwal():
 def test_threaded_lr():
     train, test = get_train_test()
 
-    model: InAlgorithm = LR()
+    model: InAlgorithmAsync = LR()
     assert model.name == "Logistic Regression"
 
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
@@ -241,7 +241,7 @@ def test_threaded_lr():
 def test_threaded_lr_cross_validated():
     train, test = get_train_test()
 
-    model: InAlgorithm = LRCV()
+    model: InAlgorithmAsync = LRCV()
     assert model.name == "LRCV"
 
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
@@ -256,7 +256,7 @@ def test_threaded_lr_cross_validated():
 def test_threaded_lr_prob():
     train, test = get_train_test()
 
-    model: InAlgorithm = LRProb()
+    model: InAlgorithmAsync = LRProb()
     assert model.name == "Logistic Regression Prob"
 
     heavi = Heaviside()

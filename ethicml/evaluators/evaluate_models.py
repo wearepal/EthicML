@@ -8,7 +8,7 @@ from typing import List, Dict, Union
 import pandas as pd
 from tqdm import tqdm
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmSync
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.algorithms.utils import DataTuple, get_subset
@@ -77,7 +77,7 @@ def run_metrics(
 def evaluate_models(
     datasets: List[Dataset],
     preprocess_models: List[PreAlgorithm],
-    inprocess_models: List[InAlgorithmSync],
+    inprocess_models: List[InAlgorithm],
     postprocess_models: List[PostAlgorithm],
     metrics: List[Metric],
     per_sens_metrics: List[Metric],

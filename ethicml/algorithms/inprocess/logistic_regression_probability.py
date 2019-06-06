@@ -5,12 +5,12 @@ from typing import Optional
 
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import logistic_regression_probability
 
 
-class LRProb(InAlgorithm):
+class LRProb(InAlgorithmAsync):
     """Logistic regression with soft output"""
 
     def __init__(self, C: Optional[int] = None):
