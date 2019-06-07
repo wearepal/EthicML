@@ -12,10 +12,13 @@ import numpy as np
 import torch
 from torch import nn
 from torch.autograd import Function
+from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
-from .pytorch_common import CustomDataset, TestDataset
+from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.preprocessing.adjust_labels import assert_binary_labels, Processor
+from .pytorch_common import CustomDataset
 
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
@@ -32,12 +35,31 @@ def train_and_transform(
     torch.manual_seed(888)
     torch.cuda.manual_seed_all(888)  # type: ignore  # mypy claims manual_seed_all doesn't exist
 
-    train_data = CustomDataset(train)
+    if flags['y_loss'] == "BCELoss()":
+        try:
+            assert_binary_labels(train, test)
+        except:
+            processor = Processor()
+            train = processor.pre(train)
+            test = processor.pre(test)
+
+    # By default we use 10% of the training data for validation
+    train_, validation = train_test_split(train, train_percentage=1-flags['validation_pcnt'])
+
+    train_data = CustomDataset(train_)
+    validation_data = CustomDataset(validation)
+    all_train_data = CustomDataset(train)
     size = int(train_data.size)
     s_size = int(train_data.s_size)
     y_size = int(train_data.y_size)
     train_loader = torch.utils.data.DataLoader(
         dataset=train_data, batch_size=flags['batch_size'], shuffle=False
+    )
+    validation_loader = torch.utils.data.DataLoader(
+        dataset=validation_data, batch_size=flags['batch_size'], shuffle=False
+    )
+    all_train_data_loader = torch.utils.data.DataLoader(
+        dataset=all_train_data, batch_size=flags['batch_size'], shuffle=False
     )
 
     test_data = TestDataset(test)
@@ -53,27 +75,45 @@ def train_and_transform(
 
     enc = Encoder(flags['enc_size'], size, enc_activation)
     adv = Adversary(
-        flags['fairness'], flags['adv_size'], flags['enc_size'][-1], s_size, adv_activation
+        flags['fairness'], flags['adv_size'], flags['enc_size'][-1], s_size, adv_activation, flags['adv_weight']
     )
     pred = Predictor(flags['pred_size'], flags['enc_size'][-1], y_size, adv_activation)
     model = Model(enc, adv, pred)
 
-    optimizer_y = torch.optim.Adam(model.parameters())
-    optimizer_s = torch.optim.Adam(model.parameters())
+    optimizer = torch.optim.Adam(model.parameters())
+    scheduler = ExponentialLR(optimizer, gamma=0.95)
 
-    for i in range(flags['epochs']):
-        if i % 4 == 0:
-            for embedding, sens_label, class_label in train_loader:
+    best_val_loss = np.inf
+    best_enc = None
+
+    for i in range(1, flags['epochs']+1):
+        model.train()
+        for embedding, sens_label, class_label in train_loader:
+            _, s_pred, y_pred = model(embedding, class_label)
+
+            loss = y_loss_fn(y_pred, class_label)
+
+            if flags['fairness'] == "Eq. Opp":
+                mask = class_label.ge(0.5)
+            elif flags['fairness'] == "Eq. Odds":
+                raise NotImplementedError("Not implemented Eq. Odds yet")
+            elif flags['fairness'] == "DI":
+                mask = torch.ones(s_pred.shape).byte()
+            loss += s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            scheduler.step(i)
+
+        if i % 5 == 0 or i == flags['epochs']:
+            model.eval()
+            val_y_loss = 0
+            val_s_loss = 0
+            for embedding, sens_label, class_label in validation_loader:
                 _, s_pred, y_pred = model(embedding, class_label)
 
-                y_loss = y_loss_fn(y_pred, class_label)
-
-                optimizer_y.zero_grad()
-                y_loss.backward()
-                optimizer_y.step()
-        else:
-            for embedding, sens_label, class_label in train_loader:
-                _, s_pred, y_pred = model(embedding, class_label)
+                val_y_loss += y_loss_fn(y_pred, class_label)
 
                 if flags['fairness'] == "Eq. Opp":
                     mask = class_label.ge(0.5)
@@ -81,20 +121,26 @@ def train_and_transform(
                     raise NotImplementedError("Not implemented Eq. Odds yet")
                 elif flags['fairness'] == "DI":
                     mask = torch.ones(s_pred.shape).byte()
-                s_loss = s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
+                val_s_loss -= s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
 
-                optimizer_s.zero_grad()
-                s_loss.backward()
-                optimizer_s.step()
+            val_y_loss /= len(validation_loader)
+            val_s_loss /= len(validation_loader)
+            val_loss = val_y_loss + val_s_loss
+
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                best_enc = enc.state_dict()
+
+    enc.load_state_dict(best_enc)
 
     train_to_return: List[Any] = []
     test_to_return: List[Any] = []
 
-    for embedding, _, _ in train_loader:
-        train_to_return += enc(embedding)[0].data.numpy().tolist()
+    for embedding, _, _ in all_train_data_loader:
+        train_to_return += enc(embedding).data.numpy().tolist()
 
-    for embedding, _ in test_loader:
-        test_to_return += enc(embedding)[0].data.numpy().tolist()
+    for embedding, _, _ in test_loader:
+        test_to_return += enc(embedding).data.numpy().tolist()
 
     return pd.DataFrame(train_to_return), pd.DataFrame(test_to_return)
 
@@ -103,16 +149,17 @@ class GradReverse(Function):
     """Gradient reversal layer"""
 
     @staticmethod
-    def forward(ctx, x):
+    def forward(ctx, x, lambda_):
+        ctx.lambda_ = lambda_
         return x.view_as(x)
 
     @staticmethod
     def backward(ctx, grad_output):
-        return grad_output.neg()
+        return grad_output.neg().mul(ctx.lambda_), None
 
 
-def _grad_reverse(features):
-    return GradReverse.apply(features)  # type: ignore  # mypy was claiming that apply doesn't exist
+def _grad_reverse(features, lambda_):
+    return GradReverse.apply(features, lambda_) # type: ignore  # mypy was claiming that apply doesn't exist
 
 
 class Encoder(nn.Module):
@@ -135,19 +182,19 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         encoded = self.encoder(x)
-        grad_reversed_encoded = _grad_reverse(encoded)
-        return encoded, grad_reversed_encoded
+        return encoded
 
 
 class Adversary(nn.Module):
     """Adversary of the GAN"""
 
     def __init__(
-        self, fairness: str, adv_size: List[int], init_size: int, s_size: int, activation: nn.Module
+        self, fairness: str, adv_size: List[int], init_size: int, s_size: int, activation: nn.Module, adv_weight: float
     ):
         super().__init__()
         self.fairness = fairness
         self.init_size = init_size
+        self.adv_weight = adv_weight
         self.adversary = nn.Sequential()
         if not adv_size:  # In the case that encoder size [] is specified
             self.adversary.add_module("single adversary layer", nn.Linear(init_size, s_size))
@@ -164,6 +211,9 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last activation", activation)
 
     def forward(self, x, y):
+
+        x = _grad_reverse(x, lambda_ = self.adv_weight)
+
         if self.fairness == "Eq. Opp":
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
@@ -216,8 +266,8 @@ class Model(nn.Module):
 
     def forward(self, x, y):
         encoded = self.enc(x)
-        s_hat = self.adv(encoded[1], y)
-        y_hat = self.pred(encoded[0])
+        s_hat = self.adv(encoded, y)
+        y_hat = self.pred(encoded)
         return encoded, s_hat, y_hat
 
 
@@ -247,6 +297,7 @@ def main():
     parser.add_argument("--y_loss", required=True)
     parser.add_argument("--s_loss", required=True)
     parser.add_argument("--epochs", type=int, required=True)
+    parser.add_argument("--adv_weight", type=float, required=True)
     args = parser.parse_args()
     flags = vars(args)  # convert args object to a dictionary
 

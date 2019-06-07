@@ -20,6 +20,8 @@ class Beutel(PreAlgorithmAsync):
         y_loss: str = "BCELoss()",
         s_loss: str = "BCELoss()",
         epochs: int = 50,
+        adv_weight: float = 1.,
+        validation_pcnt: float = 0.1,
     ):
         # pylint: disable=too-many-arguments
         super().__init__()
@@ -34,6 +36,8 @@ class Beutel(PreAlgorithmAsync):
             'y_loss': y_loss,
             's_loss': s_loss,
             'epochs': epochs,
+            'adv_weight': adv_weight,
+            'validation_pcnt': validation_pcnt,
         }
 
     def run(self, train, test):

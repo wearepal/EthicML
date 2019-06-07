@@ -12,7 +12,7 @@ from tests.run_algorithm_test import get_train_test
 def test_beutel():
     train, test = get_train_test()
 
-    beut_model: PreAlgorithm = Beutel()
+    beut_model: PreAlgorithm = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
