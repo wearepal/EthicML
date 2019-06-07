@@ -22,6 +22,7 @@ from ethicml.metrics import (Accuracy, BCR, CV, Metric, NMI, PPV, NPV, ProbNeg,
 from ethicml.metrics.confusion_matrix import LabelOutOfBounds
 from ethicml.metrics.hsic import Hsic
 from ethicml.metrics.theil import Theil
+from ethicml.metrics.tv import TV
 from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
@@ -36,6 +37,16 @@ def test_get_acc_of_predictions():
     assert acc.name == "Accuracy"
     score = acc.score(predictions, test)
     assert score == 0.89
+
+
+def test_get_tv_of_predictions():
+    train, test = get_train_test()
+    model: InAlgorithm = LRProb()
+    predictions: pd.DataFrame = model.run(train, test)
+    tv: Metric = TV()
+    assert tv.name == "TV"
+    score = tv.score(predictions, test)
+    assert score == pytest.approx(0.048, abs=0.001)
 
 
 def test_mni_preds_and_s():
