@@ -260,7 +260,7 @@ def train_and_transform(
         training_sensitive, training_nonsensitive, learned_model, train, flags
     )
 
-    return train_transformed.x, test_transformed.x
+    return train_transformed, test_transformed
 
 
 def transform(features_sens, features_nonsens, learned_model, dataset, flags):
@@ -282,7 +282,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     N, _ = features_nonsens.shape
     alphaoptim0 = learned_model[:P]
     alphaoptim1 = learned_model[P : 2 * P]
-    woptim = learned_model[2 * P : (2 * P) + k]
+    # woptim = learned_model[2 * P : (2 * P) + k]
     voptim = np.matrix(learned_model[(2 * P) + k :]).reshape((k, P))
 
     # compute distances on the test dataset using train model params
@@ -300,8 +300,8 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     x_n_hat_nonsensitive = res_nonsensitive[0]
 
     # compute predictions for test instances
-    y_hat_sensitive = yhat_without_loss(M_nk_sensitive, woptim, Ns, k)
-    y_hat_nonsensitive = yhat_without_loss(M_nk_nonsensitive, woptim, N, k)
+    # y_hat_sensitive = yhat_without_loss(M_nk_sensitive, woptim, Ns, k)
+    # y_hat_nonsensitive = yhat_without_loss(M_nk_nonsensitive, woptim, N, k)
 
     sens_col = dataset.s.columns[0]
 
@@ -309,20 +309,20 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
 
     transformed_features = np.zeros_like(dataset.x.values)
-    transformed_labels = np.zeros_like(dataset.y.values)
+    # transformed_labels = np.zeros_like(dataset.y.values)
     transformed_features[sensitive_idx] = x_n_hat_sensitive
     transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
-    transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])
-    transformed_labels[nonsensitive_idx] = np.reshape(y_hat_nonsensitive, [-1, 1])
-    transformed_labels = (np.array(transformed_labels) > flags['threshold']).astype(np.float64)
+    # transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])
+    # transformed_labels[nonsensitive_idx] = np.reshape(y_hat_nonsensitive, [-1, 1])
+    # transformed_labels = (np.array(transformed_labels) > flags['threshold']).astype(np.float64)
 
-    train_transformed = DataTuple(
-        x=pd.DataFrame(transformed_features, columns=dataset.x.columns),
-        s=pd.DataFrame(dataset.s, columns=dataset.s.columns),
-        y=pd.DataFrame(transformed_labels, columns=dataset.y.columns),
-    )
+    # return DataTuple(
+    #     x=pd.DataFrame(transformed_features, columns=dataset.x.columns),
+    #     s=pd.DataFrame(dataset.s, columns=dataset.s.columns),
+    #     y=pd.DataFrame(transformed_labels, columns=dataset.y.columns),
+    # )
 
-    return train_transformed
+    return pd.DataFrame(transformed_features, columns=dataset.x.columns)
 
 
 def main():

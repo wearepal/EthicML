@@ -1,17 +1,19 @@
 """
 Implementation of VFAE
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import pandas as pd
+import torch
 from torch import optim
 from torch.utils.data import DataLoader
 
 from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy
 from ethicml.data.dataset import Dataset
-from ethicml.implementations.pytorch_common import CustomDataset
+from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.vfae_modules.utils import loss_function
 from ethicml.implementations.vfae_modules.vfae_network import VFAENetwork
+from ethicml.algorithms.utils import DataTuple, TestTuple
 
 
 def get_dataset_obj_by_name(name: str) -> Dataset:
@@ -39,7 +41,7 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
     return lookup[name]
 
 
-def train_and_transform(train, test, flags):
+def train_and_transform(train: DataTuple, test: TestTuple, flags: Any):
     """
     train the model and transform the dataset
     Args:
@@ -55,7 +57,7 @@ def train_and_transform(train, test, flags):
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=flags['batch_size'])
 
-    test_data = CustomDataset(test)
+    test_data = TestDataset(test)
     test_loader = DataLoader(test_data, batch_size=flags['batch_size'])
 
     # Build Network
@@ -71,27 +73,28 @@ def train_and_transform(train, test, flags):
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Run Network
-    for epoch in range(flags['epochs']):
+    for epoch in range(int(flags['epochs'])):
         train_model(epoch, model, train_loader, optimizer, flags)
 
     # Transform output
     post_train: List[List[float]] = []
     post_test: List[List[float]] = []
-    for embedding, _s, _y in train_loader:
-        model.eval()
-        _, _, _, x_dec, _ = model(embedding, _s, _y)
-        # train += scaler.inverse_transform(x_dec.data).tolist()
-        post_train += x_dec.data.tolist()
-    for embedding, _s, _y in test_loader:
-        model.eval()
-        _, _, _, x_dec, _ = model(embedding, _s, _y)
-        # test += scaler.inverse_transform(x_dec.data).tolist()
-        post_test += x_dec.data.tolist()
+    model.eval()
+    with torch.no_grad():
+        for _x, _s, _ in train_loader:
+            z1_mu, _ = model.encode_z1(_x, _s)
+            # train += scaler.inverse_transform(x_dec.data).tolist()
+            post_train += z1_mu.data.tolist()
+        for _x, _s in test_loader:
+            z1_mu, _ = model.encode_z1(_x, _s)
+            # test += scaler.inverse_transform(x_dec.data).tolist()
+            post_test += z1_mu.data.tolist()
 
-    return (
-        pd.DataFrame(post_train, columns=train.x.columns),
-        pd.DataFrame(post_test, columns=test.x.columns),
-    )
+    # return (
+    #     pd.DataFrame(post_train, columns=train.x.columns),
+    #     pd.DataFrame(post_test, columns=test.x.columns),
+    # )
+    return pd.DataFrame(post_train), pd.DataFrame(post_test)
 
 
 def train_model(epoch, model, train_loader, optimizer, flags):
