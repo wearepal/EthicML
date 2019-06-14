@@ -6,113 +6,278 @@ Implementation of Beutel's adversarially learned fair representations
 
 import random
 import argparse
-from typing import List, Any, Tuple
+from typing import List, Any, Tuple, Dict, Union
 import pandas as pd
 import numpy as np
 import torch
 from torch import nn
 from torch.autograd import Function
+from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
+from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
 from .pytorch_common import CustomDataset, TestDataset
-
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
+def set_seed(seed: int):
+    """
+    Set the seeds for numpy torch etc
+    Args:
+        seed:
+
+    Returns:
+
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)  # type: ignore  # mypy claims manual_seed_all doesn't exist
+
+
+def build_networks(flags, train_data, enc_activation, adv_activation):
+    """
+    build teh networks we use - pulled into a separate function to make the code a bit neater
+    Args:
+        flags:
+        train_data:
+        enc_activation:
+        adv_activation:
+
+    Returns:
+
+    """
+    enc = Encoder(
+        enc_size=flags["enc_size"], init_size=int(train_data.size), activation=enc_activation
+    )
+    adv = Adversary(
+        fairness=flags["fairness"],
+        adv_size=flags["adv_size"],
+        init_size=flags["enc_size"][-1],
+        s_size=int(train_data.s_size),
+        activation=adv_activation,
+        adv_weight=flags["adv_weight"],
+    )
+    pred = Predictor(
+        pred_size=flags["pred_size"],
+        init_size=flags["enc_size"][-1],
+        class_label_size=int(train_data.y_size),
+        activation=adv_activation,
+    )
+
+    model = Model(enc, adv, pred)
+
+    return enc, model
+
+
+def make_dataset_and_loader(
+    data: DataTuple, flags: Dict[str, Union[int, str, float, List[int]]]
+) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
+    """
+    given a datatuple, create a dataset and a corresponding dataloader
+    Args:
+        data:
+        flags:
+
+    Returns:
+
+    """
+    dataset = CustomDataset(data)
+    dataloader = torch.utils.data.DataLoader(
+        dataset=dataset, batch_size=int(str(flags['batch_size'])), shuffle=False
+    )
+    return dataset, dataloader
+
+
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: Any
+    train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, str, float, List[int]]]
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
-    random.seed(888)
-    np.random.seed(888)
-    torch.manual_seed(888)
-    torch.cuda.manual_seed_all(888)  # type: ignore  # mypy claims manual_seed_all doesn't exist
 
-    train_data = CustomDataset(train)
-    size = int(train_data.size)
-    s_size = int(train_data.s_size)
-    y_size = int(train_data.y_size)
-    train_loader = torch.utils.data.DataLoader(
-        dataset=train_data, batch_size=flags['batch_size'], shuffle=False
+    set_seed(888)
+
+    if flags["y_loss"] == "BCELoss()":
+        try:
+            assert_binary_labels(train)
+        except AssertionError:
+            processor = LabelBinarizer()
+            train = processor.adjust(train)
+
+    # By default we use 10% of the training data for validation
+    train_, validation = train_test_split(
+        train, train_percentage=1 - float(str(flags["validation_pcnt"]))
     )
+
+    train_data, train_loader = make_dataset_and_loader(train_, flags)
+    _, validation_loader = make_dataset_and_loader(validation, flags)
+    _, all_train_data_loader = make_dataset_and_loader(train, flags)
 
     test_data = TestDataset(test)
     test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=flags['batch_size'], shuffle=False
+        dataset=test_data, batch_size=int(str(flags["batch_size"])), shuffle=False
     )
 
     # convert flags to Python objects
-    enc_activation = STRING_TO_ACTIVATION_MAP[flags['enc_activation']]
-    adv_activation = STRING_TO_ACTIVATION_MAP[flags['adv_activation']]
-    y_loss_fn = STRING_TO_LOSS_MAP[flags['y_loss']]
-    s_loss_fn = STRING_TO_LOSS_MAP[flags['s_loss']]
+    enc_activation = STRING_TO_ACTIVATION_MAP[str(flags["enc_activation"])]
+    adv_activation = STRING_TO_ACTIVATION_MAP[str(flags["adv_activation"])]
+    y_loss_fn = STRING_TO_LOSS_MAP[str(flags["y_loss"])]
+    s_loss_fn = STRING_TO_LOSS_MAP[str(flags["s_loss"])]
 
-    enc = Encoder(flags['enc_size'], size, enc_activation)
-    adv = Adversary(
-        flags['fairness'], flags['adv_size'], flags['enc_size'][-1], s_size, adv_activation
+    enc, model = build_networks(
+        flags=flags,
+        train_data=train_data,
+        enc_activation=enc_activation,
+        adv_activation=adv_activation,
     )
-    pred = Predictor(flags['pred_size'], flags['enc_size'][-1], y_size, adv_activation)
-    model = Model(enc, adv, pred)
 
-    optimizer_y = torch.optim.Adam(model.parameters())
-    optimizer_s = torch.optim.Adam(model.parameters())
+    optimizer = torch.optim.Adam(model.parameters())
+    scheduler = ExponentialLR(optimizer, gamma=0.95)
 
-    for i in range(flags['epochs']):
-        if i % 4 == 0:
-            for embedding, sens_label, class_label in train_loader:
+    best_val_loss = np.inf
+    best_enc = None
+
+    for i in range(1, int(str(flags["epochs"])) + 1):
+        model.train()
+        for embedding, sens_label, class_label in train_loader:
+            _, s_pred, y_pred = model(embedding, class_label)
+
+            loss = y_loss_fn(y_pred, class_label)
+
+            if flags["fairness"] == "Eq. Opp":
+                mask = class_label.ge(0.5)
+            elif flags["fairness"] == "Eq. Odds":
+                raise NotImplementedError("Not implemented Eq. Odds yet")
+            elif flags["fairness"] == "DI":
+                mask = torch.ones(s_pred.shape).byte()
+            loss += s_loss_fn(
+                s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
+            )
+
+            step(i, loss, optimizer, scheduler)
+
+        if i % 5 == 0 or i == flags["epochs"]:
+            model.eval()
+            val_y_loss = 0.0
+            val_s_loss = 0.0
+            for embedding, sens_label, class_label in validation_loader:
                 _, s_pred, y_pred = model(embedding, class_label)
 
-                y_loss = y_loss_fn(y_pred, class_label)
+                val_y_loss += y_loss_fn(y_pred, class_label)
 
-                optimizer_y.zero_grad()
-                y_loss.backward()
-                optimizer_y.step()
-        else:
-            for embedding, sens_label, class_label in train_loader:
-                _, s_pred, y_pred = model(embedding, class_label)
+                mask = get_mask(flags, s_pred, class_label)
 
-                if flags['fairness'] == "Eq. Opp":
-                    mask = class_label.ge(0.5)
-                elif flags['fairness'] == "Eq. Odds":
-                    raise NotImplementedError("Not implemented Eq. Odds yet")
-                elif flags['fairness'] == "DI":
-                    mask = torch.ones(s_pred.shape).byte()
-                s_loss = s_loss_fn(s_pred, torch.masked_select(sens_label, mask).view(-1, s_size))
+                val_s_loss -= s_loss_fn(
+                    s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
+                )
 
-                optimizer_s.zero_grad()
-                s_loss.backward()
-                optimizer_s.step()
+            val_loss = (val_y_loss / len(validation_loader)) + (val_s_loss / len(validation_loader))
 
-    train_to_return: List[Any] = []
-    test_to_return: List[Any] = []
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                best_enc = enc.state_dict()
 
-    for embedding, _, _ in train_loader:
-        train_to_return += enc(embedding)[0].data.numpy().tolist()
+    enc.load_state_dict(best_enc)
 
-    for embedding, _ in test_loader:
-        test_to_return += enc(embedding)[0].data.numpy().tolist()
+    return encode_dataset(enc, all_train_data_loader), encode_testset(enc, test_loader)
 
-    return pd.DataFrame(train_to_return), pd.DataFrame(test_to_return)
+
+def step(iteration, loss, optimizer, scheduler):
+    """
+
+    Args:
+        iteration:
+        loss:
+        optimizer:
+        scheduler:
+
+    Returns:
+
+    """
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    scheduler.step(iteration)
+
+
+def get_mask(flags, s_pred, class_label):
+    """
+    Get a mask to enforce different fairness types
+    Args:
+        flags:
+        s_pred:
+        class_label:
+
+    Returns:
+
+    """
+    if flags["fairness"] == "Eq. Opp":
+        mask = class_label.ge(0.5)
+    elif flags["fairness"] == "Eq. Odds":
+        raise NotImplementedError("Not implemented Eq. Odds yet")
+    elif flags["fairness"] == "DI":
+        mask = torch.ones(s_pred.shape).byte()
+
+    return mask
+
+
+def encode_dataset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> pd.DataFrame:
+    """
+    Encode a dataset
+    Args:
+        enc:
+        dataloader:
+
+    Returns:
+
+    """
+    data_to_return: List[Any] = []
+
+    for embedding, _, _ in dataloader:
+        data_to_return += enc(embedding).data.numpy().tolist()
+
+    return pd.DataFrame(data_to_return)
+
+
+def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> pd.DataFrame:
+    """
+    Encode a dataset
+    Args:
+        enc:
+        dataloader:
+
+    Returns:
+
+    """
+    data_to_return: List[Any] = []
+
+    for embedding, _ in dataloader:
+        data_to_return += enc(embedding).data.numpy().tolist()
+
+    return pd.DataFrame(data_to_return)
 
 
 class GradReverse(Function):
     """Gradient reversal layer"""
 
     @staticmethod
-    def forward(ctx, x):
+    def forward(ctx, x, lambda_):
+        ctx.lambda_ = lambda_
         return x.view_as(x)
 
     @staticmethod
     def backward(ctx, grad_output):
-        return grad_output.neg()
+        return grad_output.neg().mul(ctx.lambda_), None
 
 
-def _grad_reverse(features):
-    return GradReverse.apply(features)  # type: ignore  # mypy was claiming that apply doesn't exist
+def _grad_reverse(features, lambda_):
+    return GradReverse.apply(  # type: ignore  # mypy was claiming that apply doesn't exist
+        features, lambda_
+    )
 
 
 class Encoder(nn.Module):
@@ -135,19 +300,25 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         encoded = self.encoder(x)
-        grad_reversed_encoded = _grad_reverse(encoded)
-        return encoded, grad_reversed_encoded
+        return encoded
 
 
 class Adversary(nn.Module):
     """Adversary of the GAN"""
 
     def __init__(
-        self, fairness: str, adv_size: List[int], init_size: int, s_size: int, activation: nn.Module
+        self,
+        fairness: str,
+        adv_size: List[int],
+        init_size: int,
+        s_size: int,
+        activation: nn.Module,
+        adv_weight: float,
     ):
         super().__init__()
         self.fairness = fairness
         self.init_size = init_size
+        self.adv_weight = adv_weight
         self.adversary = nn.Sequential()
         if not adv_size:  # In the case that encoder size [] is specified
             self.adversary.add_module("single adversary layer", nn.Linear(init_size, s_size))
@@ -164,6 +335,9 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last activation", activation)
 
     def forward(self, x, y):
+
+        x = _grad_reverse(x, lambda_=self.adv_weight)
+
         if self.fairness == "Eq. Opp":
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
@@ -216,8 +390,8 @@ class Model(nn.Module):
 
     def forward(self, x, y):
         encoded = self.enc(x)
-        s_hat = self.adv(encoded[1], y)
-        y_hat = self.pred(encoded[0])
+        s_hat = self.adv(encoded, y)
+        y_hat = self.pred(encoded)
         return encoded, s_hat, y_hat
 
 
@@ -238,21 +412,23 @@ def main():
 
     # model parameters
     parser.add_argument("--fairness", required=True)
-    parser.add_argument("--enc_size", type=int, nargs='+', required=True)
-    parser.add_argument("--adv_size", type=int, nargs='+', required=True)
-    parser.add_argument("--pred_size", type=int, nargs='+', required=True)
+    parser.add_argument("--enc_size", type=int, nargs="+", required=True)
+    parser.add_argument("--adv_size", type=int, nargs="+", required=True)
+    parser.add_argument("--pred_size", type=int, nargs="+", required=True)
     parser.add_argument("--enc_activation", required=True)
     parser.add_argument("--adv_activation", required=True)
     parser.add_argument("--batch_size", type=int, required=True)
     parser.add_argument("--y_loss", required=True)
     parser.add_argument("--s_loss", required=True)
     parser.add_argument("--epochs", type=int, required=True)
+    parser.add_argument("--adv_weight", type=float, required=True)
+    parser.add_argument("--validation_pcnt", type=float, required=True)
     args = parser.parse_args()
     flags = vars(args)  # convert args object to a dictionary
 
     train, test = load_data_from_flags(flags)
     save_transformations(
-        train_and_transform(train, test, flags), (flags['train_new'], flags['test_new'])
+        train_and_transform(train, test, flags), (flags["train_new"], flags["test_new"])
     )
 
 

@@ -3,7 +3,7 @@ Base class for Algorithms
 """
 import sys
 from pathlib import Path
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 import asyncio
 
@@ -12,7 +12,7 @@ import pandas as pd
 
 def load_dataframe(path: Path) -> pd.DataFrame:
     """Load dataframe from a feather file"""
-    with path.open('rb') as file:
+    with path.open("rb") as file:
         df = pd.read_feather(file)
     return df
 
@@ -29,8 +29,13 @@ class Algorithm(ABC):
         """Name of the algorithm"""
 
 
-class AlgorithmAsync(ABC):
+class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
     """Base class of async methods. This class is meant to be used in conjuction with `Algorithm`"""
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Name of the algorithm"""
 
     @property
     def _executable(self) -> str:
@@ -56,26 +61,26 @@ class AlgorithmAsync(ABC):
             stderr=asyncio.subprocess.PIPE,  # we capture the stderr for errors
             env=env,
         )
-        print(f'Started: {cmd_args!r} (pid = {process.pid})')
+        print(f"Started: {cmd_args!r} (pid = {process.pid})")
 
         try:  # wait for process itself to finish
             one_hour = 3600
             _, stderr = await asyncio.wait_for(process.communicate(), one_hour)
         except asyncio.TimeoutError as error:
-            raise RuntimeError('The script timed out.') from error
+            raise RuntimeError("The script timed out.") from error
 
         if process.returncode == 0:
-            print(f'Success: {cmd_args!r} (pid = {process.pid})')
+            print(f"Success: {cmd_args!r} (pid = {process.pid})")
         else:
-            print(f'Failure: {cmd_args!r} (pid = {process.pid})')
+            print(f"Failure: {cmd_args!r} (pid = {process.pid})")
             if stderr:
                 print(stderr.decode().strip())
             raise RuntimeError(
-                f'The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}'
+                f"The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}"
             )
 
 
-_T = TypeVar('_T')
+_T = TypeVar("_T")
 
 
 def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:

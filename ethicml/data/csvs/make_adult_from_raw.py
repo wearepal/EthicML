@@ -9,21 +9,21 @@ def run_generate_adult():
 
     # Give data column names
     columns = [
-        'age',
-        'workclass',
-        'fnlwgt',
-        'education',
-        'education-num',
-        'marital-status',
-        'occupation',
-        'relationship',
-        'race',
-        'sex',
-        'capital-gain',
-        'capital-loss',
-        'hours-per-week',
-        'native-country',
-        'salary',
+        "age",
+        "workclass",
+        "fnlwgt",
+        "education",
+        "education-num",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "capital-gain",
+        "capital-loss",
+        "hours-per-week",
+        "native-country",
+        "salary",
     ]
 
     train.columns = columns
@@ -41,7 +41,7 @@ def run_generate_adult():
     all_data = all_data.replace(">50K.", ">50K")
 
     # Drop NaNs
-    all_data = all_data.replace(r'^\s*\?+\s*$', np.nan, regex=True).dropna()
+    all_data = all_data.replace(r"^\s*\?+\s*$", np.nan, regex=True).dropna()
 
     # OHE
     all_data = pd.get_dummies(all_data)

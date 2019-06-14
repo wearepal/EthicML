@@ -17,7 +17,7 @@ setup(
         "pandas >= 0.24.0",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
-        "torch >= 0.4.1",
+        "torch >= 1.1.0",
         "pyarrow >= 0.11",
         "numba",
         "fairlearn >= 0.2.0",

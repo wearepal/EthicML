@@ -72,7 +72,7 @@ class Agarwal(InAlgorithmAsync):
     def _script_command(
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
-        script = ['-m', agarwal.train_and_predict.__module__]
+        script = ["-m", agarwal.train_and_predict.__module__]
         args = conventional_interface(
             train_paths,
             test_paths,

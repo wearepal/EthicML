@@ -32,7 +32,7 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
         for unique in uniques:
             poss_values.append(f"{col}_{unique}")
 
-    return [f'{s}_{m.name}' for s in poss_values for m in metrics]
+    return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
 def per_sens_metrics_check(per_sens_metrics: List[Metric]):
@@ -70,7 +70,7 @@ def run_metrics(
         per_sens.update(diff_per_sens)
         per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
-            result[f'{metric.name}_{key}'] = value
+            result[f"{metric.name}_{key}"] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
@@ -97,7 +97,7 @@ def evaluate_models(
     """
     per_sens_metrics_check(per_sens_metrics)
 
-    columns = ['dataset', 'transform', 'model', 'repeat']
+    columns = ["dataset", "transform", "model", "repeat"]
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
@@ -119,13 +119,13 @@ def evaluate_models(
                     # take smaller subset of training data to speed up training
                     train = get_subset(train)
 
-                to_operate_on = {"no_transform": {'train': train, 'test': test}}
+                to_operate_on = {"no_transform": {"train": train, "test": test}}
 
                 for pre_process_method in preprocess_models:
                     new_train, new_test = pre_process_method.run(train, test)
                     to_operate_on[pre_process_method.name] = {
-                        'train': DataTuple(x=new_train, s=train.s, y=train.y),
-                        'test': DataTuple(x=new_test, s=test.s, y=test.y),
+                        "train": DataTuple(x=new_train, s=train.s, y=train.y),
+                        "test": DataTuple(x=new_test, s=test.s, y=test.y),
                     }
 
                     pbar.update()
@@ -133,16 +133,16 @@ def evaluate_models(
                 transform_name: str
                 for transform_name, transform in to_operate_on.items():
 
-                    transformed_train: DataTuple = transform['train']
-                    transformed_test: DataTuple = transform['test']
+                    transformed_train: DataTuple = transform["train"]
+                    transformed_test: DataTuple = transform["test"]
 
                     for model in inprocess_models:
 
                         temp_res: Dict[str, Union[str, float]] = {
-                            'dataset': dataset.name,
-                            'transform': transform_name,
-                            'model': model.name,
-                            'repeat': f"{repeat}-{seed}",
+                            "dataset": dataset.name,
+                            "transform": transform_name,
+                            "model": model.name,
+                            "repeat": f"{repeat}-{seed}",
                         }
 
                         predictions: pd.DataFrame
@@ -158,7 +158,7 @@ def evaluate_models(
                         pbar.update()
 
                         results = results.append(temp_res, ignore_index=True)
-                    outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
+                    outdir = Path("..") / "results"  # OS-independent way of saying '../results'
                     outdir.mkdir(exist_ok=True)
                     path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
                     exists = os.path.isfile(path_to_file)
@@ -169,5 +169,5 @@ def evaluate_models(
 
                     pbar.update()
 
-    results = results.set_index(['dataset', 'transform', 'model', 'repeat'])
+    results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results

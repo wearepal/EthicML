@@ -52,7 +52,7 @@ def metric_per_sensitive_attribute(
                     pred_y = pd.DataFrame(
                         predictions.loc[mask][p_col], columns=[p_col]
                     ).reset_index(drop=True)
-                    key = s_col + '_' + str(unique_s)
+                    key = s_col + "_" + str(unique_s)
                     per_sensitive_attr[key] = metric.score(pred_y, subset)
 
     return per_sensitive_attr

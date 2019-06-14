@@ -80,7 +80,7 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=C)
+        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=C)
     model.fit(
         train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
     )

@@ -38,7 +38,7 @@ def train_test_split(
     s_columns: pd.Index = data.s.columns
     y_columns: pd.Index = data.y.columns
 
-    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis='columns')
+    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis="columns")
 
     all_data = all_data.sample(frac=1, random_state=1).reset_index(drop=True)
 

@@ -31,7 +31,7 @@ async def arrange_in_parallel(
     assert isinstance(data[0][0], DataTuple)
     assert isinstance(data[0][1], DataTuple)
     # create queue of tasks
-    task_queue: asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]] = asyncio.Queue()
+    task_queue: asyncio.Queue = asyncio.Queue()
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for i, algo in enumerate(algos):
         for j, data_item in enumerate(data):
@@ -49,7 +49,7 @@ async def arrange_in_parallel(
 
 async def _eval_worker(
     worker_id: int,
-    task_queue: 'asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]]',
+    task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]]",
     result_dict: Dict[Tuple[int, int], pd.DataFrame],
 ) -> None:
     while not task_queue.empty():

@@ -30,8 +30,8 @@ def test_beutel():
     assert svm_model.name == "SVM"
 
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_vfae():
@@ -190,8 +190,8 @@ def test_threaded_beutel():
     assert classifier.name == "SVM"
 
     predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
@@ -211,8 +211,8 @@ def test_threaded_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_threaded_custom_beutel():

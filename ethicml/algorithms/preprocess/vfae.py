@@ -39,14 +39,14 @@ class VFAE(PreAlgorithmAsync):
             z1_dec_size = [100]
 
         self.flags: Dict[str, Union[int, str, List[int]]] = {
-            'supervised': supervised,
-            'fairness': fairness,
-            'batch_size': batch_size,
-            'epochs': epochs,
-            'dataset': dataset,
-            'z1_enc_size': z1_enc_size,
-            'z2_enc_size': z2_enc_size,
-            'z1_dec_size': z1_dec_size,
+            "supervised": supervised,
+            "fairness": fairness,
+            "batch_size": batch_size,
+            "epochs": epochs,
+            "dataset": dataset,
+            "z1_enc_size": z1_enc_size,
+            "z2_enc_size": z2_enc_size,
+            "z1_dec_size": z1_dec_size,
         }
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -62,7 +62,7 @@ class VFAE(PreAlgorithmAsync):
         new_test_path: Path,
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, self.flags)
-        return ['-m', 'ethicml.implementations.vfae'] + args
+        return ["-m", "ethicml.implementations.vfae"] + args
 
     @property
     def name(self) -> str:

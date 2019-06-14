@@ -6,6 +6,10 @@ from torch import nn
 
 
 class Encoder(nn.Module):
+    """
+    Encoder for VFAE
+    """
+
     def __init__(self, enc_size, init_size, ld, activation=nn.ReLU()):
         super().__init__()
         self.encoder = nn.Sequential()
