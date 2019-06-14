@@ -90,15 +90,30 @@ def make_dataset_and_loader(
     """
     dataset = CustomDataset(data)
     dataloader = torch.utils.data.DataLoader(
-        dataset=dataset, batch_size=flags['batch_size'], shuffle=False
+        dataset=dataset, batch_size=int(str(flags['batch_size'])), shuffle=False
     )
     return dataset, dataloader
+
+
+def set_seed(seed: int):
+    """
+    Set the seeds for numpy torch etc
+    Args:
+        seed:
+
+    Returns:
+
+    """
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
 
 
 def train_and_transform(
     train: DataTuple, test: DataTuple, flags: Dict[str, Union[int, str, float, List[int]]]
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
+
     set_seed(888)
 
     if flags["y_loss"] == "BCELoss()":
@@ -133,6 +148,14 @@ def train_and_transform(
         enc_activation=enc_activation,
         adv_activation=adv_activation,
     )
+    pred = Predictor(
+        pred_size=flags["pred_size"],
+        init_size=flags["enc_size"][-1],
+        class_label_size=int(train_data.y_size),
+        activation=adv_activation,
+    )
+
+    model = Model(enc, adv, pred)
 
     optimizer = torch.optim.Adam(model.parameters())
     scheduler = ExponentialLR(optimizer, gamma=0.95)
@@ -256,9 +279,9 @@ class GradReverse(Function):
 
 
 def _grad_reverse(features, lambda_):
-    return GradReverse.apply(
+    return GradReverse.apply(  # type: ignore  # mypy was claiming that apply doesn't exist
         features, lambda_
-    )  # type: ignore  # mypy was claiming that apply doesn't exist
+    )
 
 
 class Encoder(nn.Module):

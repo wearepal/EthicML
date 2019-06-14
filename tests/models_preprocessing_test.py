@@ -12,7 +12,7 @@ from tests.run_algorithm_test import get_train_test
 def test_beutel():
     train, test = get_train_test()
 
-    beut_model: PreAlgorithm = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
+    beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
@@ -30,8 +30,8 @@ def test_beutel():
     assert svm_model.name == "SVM"
 
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_vfae():
@@ -170,7 +170,7 @@ def test_threaded_zemel():
 def test_threaded_beutel():
     train, test = get_train_test()
 
-    model: PreAlgorithmAsync = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
+    model: PreAlgorithmAsync = Beutel()
     assert model is not None
     assert model.name == "Beutel"
 
@@ -190,10 +190,10 @@ def test_threaded_beutel():
     assert classifier.name == "SVM"
 
     predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
-    beut_model: PreAlgorithm = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
+    beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
@@ -211,8 +211,8 @@ def test_threaded_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    assert predictions.values[predictions.values == 1].shape[0] == 201
+    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_threaded_custom_beutel():
