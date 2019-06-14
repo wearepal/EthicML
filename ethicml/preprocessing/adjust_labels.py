@@ -23,8 +23,8 @@ def assert_binary_labels(train: DataTuple, test: DataTuple):
     assert train.y[y_col].nunique() == 2
     assert test.y[y_col].nunique() == 2
 
-    assert np.unique(train.y[y_col].values) == [0, 1]
-    assert np.unique(test.y[y_col].values) == [0, 1]
+    assert (np.unique(train.y[y_col].values) == [0, 1]).all()
+    assert (np.unique(test.y[y_col].values) == [0, 1]).all()
 
 
 class LabelBinarizer:

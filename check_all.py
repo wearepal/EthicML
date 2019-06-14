@@ -5,9 +5,9 @@ from mypy import api as mypy
 import black
 
 # pytest
-# print("############### pytest #################")
-# pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
-# print('')
+print("############### pytest #################")
+pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
+print('')
 
 # pylint
 print("############### pylint #################")
