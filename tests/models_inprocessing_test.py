@@ -140,18 +140,18 @@ def test_gpyt(gpyt_models):
 
     assert baseline.name == "GPyT_in_True"
     predictions: pd.DataFrame = run_blocking(baseline.run_async(train, test))
-    predictions.values[predictions.values == 1].shape[0] == approx(210, rel=0.1)
-    predictions.values[predictions.values == -1].shape[0] == approx(190, rel=0.1)
+    assert predictions.values[predictions.values == 1].shape[0] == approx(210, rel=0.1)
+    assert predictions.values[predictions.values == -1].shape[0] == approx(190, rel=0.1)
 
     assert dem_par.name == "GPyT_dem_par_in_True"
     predictions = run_blocking(dem_par.run_async(train, test))
-    predictions.values[predictions.values == 1].shape[0] == approx(182, rel=0.1)
-    predictions.values[predictions.values == -1].shape[0] == approx(218, rel=0.1)
+    assert predictions.values[predictions.values == 1].shape[0] == approx(182, rel=0.1)
+    assert predictions.values[predictions.values == -1].shape[0] == approx(218, rel=0.1)
 
     assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
     predictions = run_blocking(eq_odds.run_async(train, test))
-    predictions.values[predictions.values == 1].shape[0] == approx(179, rel=0.1)
-    predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
+    assert predictions.values[predictions.values == 1].shape[0] == approx(179, rel=0.1)
+    assert predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
 
 
 def test_threaded_svm():
