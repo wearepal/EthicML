@@ -6,7 +6,7 @@ Implementation of Beutel's adversarially learned fair representations
 
 import random
 import argparse
-from typing import List, Any, Tuple
+from typing import List, Any, Tuple, Dict, Union
 import pandas as pd
 import numpy as np
 import torch
@@ -18,8 +18,7 @@ from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
-from .pytorch_common import CustomDataset
-
+from .pytorch_common import CustomDataset, TestDataset
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -95,22 +94,8 @@ def make_dataset_and_loader(
     return dataset, dataloader
 
 
-def set_seed(seed: int):
-    """
-    Set the seeds for numpy torch etc
-    Args:
-        seed:
-
-    Returns:
-
-    """
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-
-
 def train_and_transform(
-    train: DataTuple, test: DataTuple, flags: Dict[str, Union[int, str, float, List[int]]]
+    train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, str, float, List[int]]]
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
 
@@ -118,14 +103,15 @@ def train_and_transform(
 
     if flags["y_loss"] == "BCELoss()":
         try:
-            assert_binary_labels(train, test)
+            assert_binary_labels(train)
         except AssertionError:
             processor = LabelBinarizer()
             train = processor.adjust(train)
-            test = processor.adjust(test)
 
     # By default we use 10% of the training data for validation
-    train_, validation = train_test_split(train, train_percentage=1 - float(str(flags["validation_pcnt"])))
+    train_, validation = train_test_split(
+        train, train_percentage=1 - float(str(flags["validation_pcnt"]))
+    )
 
     train_data, train_loader = make_dataset_and_loader(train_, flags)
     _, validation_loader = make_dataset_and_loader(validation, flags)
@@ -133,7 +119,7 @@ def train_and_transform(
 
     test_data = TestDataset(test)
     test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=flags["batch_size"], shuffle=False
+        dataset=test_data, batch_size=int(str(flags["batch_size"])), shuffle=False
     )
 
     # convert flags to Python objects
@@ -148,14 +134,6 @@ def train_and_transform(
         enc_activation=enc_activation,
         adv_activation=adv_activation,
     )
-    pred = Predictor(
-        pred_size=flags["pred_size"],
-        init_size=flags["enc_size"][-1],
-        class_label_size=int(train_data.y_size),
-        activation=adv_activation,
-    )
-
-    model = Model(enc, adv, pred)
 
     optimizer = torch.optim.Adam(model.parameters())
     scheduler = ExponentialLR(optimizer, gamma=0.95)
@@ -205,7 +183,7 @@ def train_and_transform(
 
     enc.load_state_dict(best_enc)
 
-    return encode_dataset(enc, all_train_data_loader), encode_dataset(enc, test_loader)
+    return encode_dataset(enc, all_train_data_loader), encode_testset(enc, test_loader)
 
 
 def step(iteration, loss, optimizer, scheduler):
@@ -260,6 +238,24 @@ def encode_dataset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> p
     data_to_return: List[Any] = []
 
     for embedding, _, _ in dataloader:
+        data_to_return += enc(embedding).data.numpy().tolist()
+
+    return pd.DataFrame(data_to_return)
+
+
+def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> pd.DataFrame:
+    """
+    Encode a dataset
+    Args:
+        enc:
+        dataloader:
+
+    Returns:
+
+    """
+    data_to_return: List[Any] = []
+
+    for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
     return pd.DataFrame(data_to_return)

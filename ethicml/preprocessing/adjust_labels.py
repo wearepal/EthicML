@@ -1,19 +1,17 @@
 """
 Simplae class to make class labels binary. Useful if a network uses BCELoss for example
 """
-from typing import Optional
 
 import numpy as np
 
 from ethicml.algorithms.utils import DataTuple
 
 
-def assert_binary_labels(train: DataTuple, test: DataTuple):
+def assert_binary_labels(train: DataTuple):
     """
     Assert that datasets only include binary labels
     Args:
         train:
-        test:
 
     Returns:
 
@@ -21,10 +19,7 @@ def assert_binary_labels(train: DataTuple, test: DataTuple):
 
     y_col = train.y.columns[0]
     assert train.y[y_col].nunique() == 2
-    assert test.y[y_col].nunique() == 2
-
     assert (np.unique(train.y[y_col].values) == [0, 1]).all()
-    assert (np.unique(test.y[y_col].values) == [0, 1]).all()
 
 
 class LabelBinarizer:
