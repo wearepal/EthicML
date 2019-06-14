@@ -1,15 +1,15 @@
 """Methods that define commandline interfaces"""
 from typing import List
 
-from ..utils import PathTuple
+from ..utils import PathTuple, TestPathTuple
 
 
-def conventional_interface(train_paths: PathTuple, test_paths: PathTuple, *args) -> List[str]:
+def conventional_interface(train_paths: PathTuple, test_paths: TestPathTuple, *args) -> List[str]:
     """
     Generate the commandline arguments that are expected by the scripts that follow the convention.
 
     The agreed upon order is:
-    x (train), s (train), y (train), x (test), s (test), y (test), predictions.
+    x (train), s (train), y (train), x (test), s (test), predictions.
     """
     list_to_return = [
         str(train_paths.x),
@@ -17,7 +17,6 @@ def conventional_interface(train_paths: PathTuple, test_paths: PathTuple, *args)
         str(train_paths.y),
         str(test_paths.x),
         str(test_paths.s),
-        str(test_paths.y),
     ]
     for arg in args:
         list_to_return.append(str(arg))

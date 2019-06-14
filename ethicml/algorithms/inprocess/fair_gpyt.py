@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
+from ethicml.algorithms.utils import DataTuple, TestTuple
 
 PRED_FNAME = 'predictions.npz'
 MAX_EPOCHS = 1000
@@ -36,7 +37,7 @@ class GPyT(InstalledModel):
         self.epochs = epochs
         self.length_scale = length_scale
 
-    async def run_async(self, train, test):
+    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),

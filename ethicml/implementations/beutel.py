@@ -228,7 +228,6 @@ def main():
     parser.add_argument("--train_y", required=True)
     parser.add_argument("--test_x", required=True)
     parser.add_argument("--test_s", required=True)
-    parser.add_argument("--test_y", required=True)
 
     # paths to where the processed inputs should be stored
     parser.add_argument("--train_new", required=True)

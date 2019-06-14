@@ -9,7 +9,7 @@ import pandas as pd
 
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
-from ethicml.algorithms.utils import PathTuple, DataTuple
+from ethicml.algorithms.utils import PathTuple, TestPathTuple, DataTuple, TestTuple
 
 
 class VFAE(PreAlgorithmAsync):
@@ -49,7 +49,7 @@ class VFAE(PreAlgorithmAsync):
             'z1_dec_size': z1_dec_size,
         }
 
-    def run(self, train: DataTuple, test: DataTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
         from ...implementations.vfae import train_and_transform
 
         return train_and_transform(train, test, self.flags)
@@ -57,7 +57,7 @@ class VFAE(PreAlgorithmAsync):
     def _script_command(
         self,
         train_paths: PathTuple,
-        test_paths: PathTuple,
+        test_paths: TestPathTuple,
         new_train_path: Path,
         new_test_path: Path,
     ) -> List[str]:

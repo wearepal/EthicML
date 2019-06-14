@@ -11,8 +11,10 @@ import pandas as pd
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.algorithms.utils import (
     DataTuple,
+    TestTuple,
     get_subset,
     PathTuple,
+    TestPathTuple,
     write_as_feather,
     load_feather,
 )
@@ -22,7 +24,7 @@ class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline"""
 
     @abstractmethod
-    def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         """Run Algorithm on the given data
 
         Args:
@@ -30,7 +32,7 @@ class InAlgorithm(Algorithm):
             test: test data
         """
 
-    def run_test(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    def run_test(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
@@ -42,7 +44,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     def run(self, train, test):
         return run_blocking(self.run_async(train, test))
 
-    async def run_async(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         """Run Algorithm on the given data asynchronously"""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -54,6 +56,6 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
 
     @abstractmethod
     def _script_command(
-        self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
+        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         """The command that will run the script"""

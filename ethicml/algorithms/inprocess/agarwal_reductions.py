@@ -5,12 +5,13 @@ from pathlib import Path
 from typing import List
 
 import pandas as pd
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
-from ethicml.algorithms.utils import PathTuple, DataTuple
+from ethicml.algorithms.utils import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import agarwal
 
 
@@ -56,7 +57,7 @@ class Agarwal(InAlgorithmAsync):
             else:
                 self.kernel = ""
 
-    def run(self, train: DataTuple, test: DataTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return agarwal.train_and_predict(
             train=train,
             test=test,
@@ -69,7 +70,7 @@ class Agarwal(InAlgorithmAsync):
         )
 
     def _script_command(
-        self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
+        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         script = ['-m', agarwal.train_and_predict.__module__]
         args = conventional_interface(

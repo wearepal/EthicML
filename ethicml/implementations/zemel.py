@@ -10,7 +10,7 @@ import numpy as np
 import scipy.optimize as optim
 from numba import jit
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
@@ -89,19 +89,7 @@ def M_k(matrix_nk, N, k):
 
 @jit
 def x_n_hat(X, matrix_nk, v, N, P, k):
-    """
-    ???
-    Args:
-        X:
-        matrix_nk:
-        v:
-        N:
-        P:
-        k:
-
-    Returns:
-
-    """
+    """???"""
     x_n_hat_obj = np.zeros((N, P))
     L_x = 0.0
     for i in range(N):
@@ -114,18 +102,7 @@ def x_n_hat(X, matrix_nk, v, N, P, k):
 
 @jit
 def yhat(matrix_nk, y, w, N, k):
-    """
-    no idea
-    Args:
-        matrix_nk:
-        y:
-        w:
-        N:
-        k:
-
-    Returns:
-
-    """
+    """no idea"""
     y_hat = np.zeros(N)
     L_y = 0.0
     for i in range(N):
@@ -135,6 +112,18 @@ def yhat(matrix_nk, y, w, N, k):
         y_hat[i] = 0.999 if y_hat[i] >= 1 else y_hat[i]
         L_y += -1 * y[i] * np.log(y_hat[i]) - (1.0 - y[i]) * np.log(1.0 - y_hat[i])
     return y_hat, L_y
+
+
+@jit
+def yhat_without_loss(matrix_nk, w, N, k):
+    """no idea without loss"""
+    y_hat = np.zeros(N)
+    for i in range(N):
+        for j in range(k):
+            y_hat[i] += matrix_nk[i, j] * w[j]
+        y_hat[i] = 1e-6 if y_hat[i] <= 0 else y_hat[i]
+        y_hat[i] = 0.999 if y_hat[i] >= 1 else y_hat[i]
+    return y_hat
 
 
 @jit
@@ -207,7 +196,7 @@ LFR_optim_obj.iters = 0
 
 
 def train_and_transform(
-    train: DataTuple, test: DataTuple, flags: Dict[str, Union[int, float]]
+    train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, float]]
 ) -> (Tuple[pd.DataFrame, pd.DataFrame]):
     """Train the Zemel model and return the transformed features of the train and test sets"""
     np.random.seed(888)
@@ -253,18 +242,12 @@ def train_and_transform(
 
     testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
     testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
-    ytest_sensitive = test.y.loc[test.s[sens_col] == 0].to_numpy()
-    ytest_nonsensitive = test.y.loc[test.s[sens_col] == 1].to_numpy()
+    # ytest_sensitive = test.y.loc[test.s[sens_col] == 0].to_numpy()
+    # ytest_nonsensitive = test.y.loc[test.s[sens_col] == 1].to_numpy()
 
     # Mutated, fairer dataset with new labels
     test_transformed = transform(
-        testing_sensitive,
-        testing_nonsensitive,
-        ytest_sensitive,
-        ytest_nonsensitive,
-        learned_model,
-        test,
-        flags,
+        testing_sensitive, testing_nonsensitive, learned_model, test, flags
     )
 
     training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
@@ -274,21 +257,13 @@ def train_and_transform(
 
     # extract training model parameters
     train_transformed = transform(
-        training_sensitive,
-        training_nonsensitive,
-        ytrain_sensitive,
-        ytrain_nonsensitive,
-        learned_model,
-        train,
-        flags,
+        training_sensitive, training_nonsensitive, learned_model, train, flags
     )
 
     return train_transformed.x, test_transformed.x
 
 
-def transform(
-    features_sens, features_nonsens, label_sens, label_nonsens, learned_model, dataset, flags
-):
+def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     """
     transform a dataset based on the
     Args:
@@ -325,10 +300,8 @@ def transform(
     x_n_hat_nonsensitive = res_nonsensitive[0]
 
     # compute predictions for test instances
-    res_sensitive = yhat(M_nk_sensitive, label_sens, woptim, Ns, k)
-    y_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = yhat(M_nk_nonsensitive, label_nonsens, woptim, N, k)
-    y_hat_nonsensitive = res_nonsensitive[0]
+    y_hat_sensitive = yhat_without_loss(M_nk_sensitive, woptim, Ns, k)
+    y_hat_nonsensitive = yhat_without_loss(M_nk_nonsensitive, woptim, N, k)
 
     sens_col = dataset.s.columns[0]
 
@@ -362,7 +335,6 @@ def main():
     parser.add_argument("--train_y", required=True)
     parser.add_argument("--test_x", required=True)
     parser.add_argument("--test_s", required=True)
-    parser.add_argument("--test_y", required=True)
 
     # paths to where the processed inputs should be stored
     parser.add_argument("--train_new", required=True)
