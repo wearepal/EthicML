@@ -163,7 +163,7 @@ def LFR_optim_obj(
     alpha0 = params[:P]
     alpha1 = params[P : 2 * P]
     w = params[2 * P : (2 * P) + k]
-    v = np.matrix(params[(2 * P) + k :]).reshape((k, P))
+    v = np.array(params[(2 * P) + k :]).reshape((k, P))
 
     dists_sensitive = distances(data_sensitive, v, alpha1, Ns, P, k)
     dists_nonsensitive = distances(data_nonsensitive, v, alpha0, Nns, P, k)
@@ -283,7 +283,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     alphaoptim0 = learned_model[:P]
     alphaoptim1 = learned_model[P : 2 * P]
     # woptim = learned_model[2 * P : (2 * P) + k]
-    voptim = np.matrix(learned_model[(2 * P) + k :]).reshape((k, P))
+    voptim = np.array(learned_model[(2 * P) + k :]).reshape((k, P))
 
     # compute distances on the test dataset using train model params
     dist_sensitive = distances(features_sens, voptim, alphaoptim1, Ns, P, k)
