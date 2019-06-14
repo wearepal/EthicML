@@ -8,7 +8,7 @@ from typing import Tuple, Union, List, Optional, Dict, Any
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.algorithms.algorithm_base import load_dataframe
 
 
@@ -18,18 +18,14 @@ class InAlgoInterface:
     def __init__(self, args: Optional[List[str]] = None):
         self.args: List[str] = sys.argv[1:] if args is None else args
 
-    def load_data(self) -> Tuple[DataTuple, DataTuple]:
+    def load_data(self) -> Tuple[DataTuple, TestTuple]:
         """Load the data from the files"""
         train = DataTuple(
             x=load_dataframe(Path(self.args[0])),
             s=load_dataframe(Path(self.args[1])),
             y=load_dataframe(Path(self.args[2])),
         )
-        test = DataTuple(
-            x=load_dataframe(Path(self.args[3])),
-            s=load_dataframe(Path(self.args[4])),
-            y=load_dataframe(Path(self.args[5])),
-        )
+        test = TestTuple(x=load_dataframe(Path(self.args[3])), s=load_dataframe(Path(self.args[4])))
         return train, test
 
     def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
@@ -38,25 +34,23 @@ class InAlgoInterface:
             df = pd.DataFrame(predictions, columns=["pred"])
         else:
             df = predictions
-        pred_path = Path(self.args[6])
+        pred_path = Path(self.args[5])
         df.to_feather(pred_path)
 
     def remaining_args(self) -> List[str]:
         """Additional commandline arguments beyond the data paths and the prediction path"""
-        return self.args[7:]
+        return self.args[6:]
 
 
-def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, DataTuple]:
+def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags"""
     train = DataTuple(
         x=load_dataframe(Path(flags['train_x'])),
         s=load_dataframe(Path(flags['train_s'])),
         y=load_dataframe(Path(flags['train_y'])),
     )
-    test = DataTuple(
-        x=load_dataframe(Path(flags['test_x'])),
-        s=load_dataframe(Path(flags['test_s'])),
-        y=load_dataframe(Path(flags['test_y'])),
+    test = TestTuple(
+        x=load_dataframe(Path(flags['test_x'])), s=load_dataframe(Path(flags['test_s']))
     )
     return train, test
 

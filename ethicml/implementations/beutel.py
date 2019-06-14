@@ -6,15 +6,16 @@ Implementation of Beutel's adversarially learned fair representations
 
 import random
 import argparse
-from typing import List, Any
+from typing import List, Any, Tuple
 import pandas as pd
 import numpy as np
 import torch
 from torch import nn
 from torch.autograd import Function
 
+from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
-from .pytorch_common import CustomDataset
+from .pytorch_common import CustomDataset, TestDataset
 
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
@@ -22,7 +23,9 @@ STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
-def train_and_transform(train, test, flags):
+def train_and_transform(
+    train: DataTuple, test: TestTuple, flags: Any
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
     random.seed(888)
     np.random.seed(888)
@@ -37,7 +40,7 @@ def train_and_transform(train, test, flags):
         dataset=train_data, batch_size=flags['batch_size'], shuffle=False
     )
 
-    test_data = CustomDataset(test)
+    test_data = TestDataset(test)
     test_loader = torch.utils.data.DataLoader(
         dataset=test_data, batch_size=flags['batch_size'], shuffle=False
     )
@@ -90,7 +93,7 @@ def train_and_transform(train, test, flags):
     for embedding, _, _ in train_loader:
         train_to_return += enc(embedding)[0].data.numpy().tolist()
 
-    for embedding, _, _ in test_loader:
+    for embedding, _ in test_loader:
         test_to_return += enc(embedding)[0].data.numpy().tolist()
 
     return pd.DataFrame(train_to_return), pd.DataFrame(test_to_return)
@@ -228,7 +231,6 @@ def main():
     parser.add_argument("--train_y", required=True)
     parser.add_argument("--test_x", required=True)
     parser.add_argument("--test_s", required=True)
-    parser.add_argument("--test_y", required=True)
 
     # paths to where the processed inputs should be stored
     parser.add_argument("--train_new", required=True)

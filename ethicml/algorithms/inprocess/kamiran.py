@@ -2,12 +2,13 @@
 from pathlib import Path
 from typing import List, Optional
 
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
-from ethicml.algorithms.utils import PathTuple
+from ethicml.algorithms.utils import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import kamiran
 
 VALID_MODELS = {"LR", "SVM"}
@@ -25,28 +26,30 @@ class Kamiran(InAlgorithmAsync):
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
         self.classifier = classifier
-        self.C = C
-        if self.C is None:
+        if C is None:
             if self.classifier == "LR":
                 self.C = LogisticRegression().C
             elif self.classifier == "SVM":
                 self.C = SVC().C
             else:
                 raise NotImplementedError("Sever problem: this point should not be reached")
-        self.kernel = kernel
-        if self.kernel is None:
+        else:
+            self.C = C
+        if kernel is None:
             if self.classifier == "SVM":
                 self.kernel = SVC().kernel
             else:
                 self.kernel = ""
+        else:
+            self.kernel = kernel
 
-    def run(self, train, test):
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
 
     def _script_command(
-        self, train_paths: PathTuple, test_paths: PathTuple, pred_path: Path
+        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         script = ['-m', kamiran.train_and_predict.__module__]
         args = conventional_interface(

@@ -1,13 +1,14 @@
 """Methods that define commandline interfaces"""
 from pathlib import Path
 from typing import List, Any, Dict
+from dataclasses import asdict
 
-from ..utils import PathTuple
+from ..utils import PathTuple, TestPathTuple
 
 
 def flag_interface(
     train_paths: PathTuple,
-    test_paths: PathTuple,
+    test_paths: TestPathTuple,
     new_train_path: Path,
     new_test_path: Path,
     flags: Dict[str, Any],
@@ -19,7 +20,7 @@ def flag_interface(
     path_tuples = [train_paths, test_paths]
     prefixes = ['--train_', '--test_']
     for path_tuple, prefix in zip(path_tuples, prefixes):
-        for key, path in path_tuple._asdict().items():
+        for key, path in asdict(path_tuple).items():
             flags_list += [f"{prefix}{key}", str(path)]
 
     # paths to output files

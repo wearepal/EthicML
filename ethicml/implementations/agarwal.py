@@ -5,7 +5,7 @@ from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.algorithms.utils import DataTuple, TestTuple
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside
@@ -13,7 +13,7 @@ from ethicml.utility.heaviside import Heaviside
 
 def train_and_predict(
     train: DataTuple,
-    test: DataTuple,
+    test: TestTuple,
     classifier: str,
     fairness: str,
     eps: float,

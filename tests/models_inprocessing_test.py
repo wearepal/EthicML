@@ -134,7 +134,7 @@ def gpyt_models():
 def test_gpyt(gpyt_models):
     train, test = get_train_test()
 
-    baseline: InAlgorithm = gpyt_models[0]
+    baseline: InAlgorithmAsync = gpyt_models[0]
     dem_par: InAlgorithmAsync = gpyt_models[1]
     eq_odds: InAlgorithmAsync = gpyt_models[2]
 
@@ -278,7 +278,7 @@ def test_threaded_lr_prob():
 def test_kamiran():
     train, test = get_train_test()
 
-    kamiran_model: InAlgorithm = Kamiran()
+    kamiran_model: InAlgorithmAsync = Kamiran()
     assert kamiran_model is not None
     assert kamiran_model.name == "Kamiran & Calders LR"
 

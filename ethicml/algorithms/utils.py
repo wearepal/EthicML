@@ -3,30 +3,45 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import NamedTuple, Dict, Tuple, List
+from typing import Tuple, List
+from dataclasses import dataclass, astuple
 
 import pandas as pd
 
 
-class DataTuple(NamedTuple):
-    """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+@dataclass(frozen=True)  # "frozen" means the objects are immutable
+class TestTuple:
+    """A tuple of dataframes for the features and the sensitive attribute"""
 
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
+
+
+@dataclass(frozen=True)  # "frozen" means the objects are immutable
+class DataTuple(TestTuple):
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+
     y: pd.DataFrame  # class labels
 
 
-class PathTuple(NamedTuple):
+@dataclass(frozen=True)  # "frozen" means the objects are immutable
+class TestPathTuple:
     """For algorithms that run in their own process, we pass around paths to the data"""
 
     x: Path  # path to file with features
     s: Path  # path to file with sensitive attributes
+
+
+@dataclass(frozen=True)  # "frozen" means the objects are immutable
+class PathTuple(TestPathTuple):
+    """For algorithms that run in their own process, we pass around paths to the data"""
+
     y: Path  # path to file with class labels
 
 
 def write_as_feather(
-    train: DataTuple, test: DataTuple, data_dir: Path
-) -> (Tuple[PathTuple, PathTuple]):
+    train: DataTuple, test: TestTuple, data_dir: Path
+) -> (Tuple[PathTuple, TestPathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
     Args:
@@ -39,21 +54,20 @@ def write_as_feather(
     # create the directory if it doesn't already exist
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    train_paths: Dict[str, Path] = {}
-    test_paths: Dict[str, Path] = {}
-    for data_tuple, data_paths, prefix in [
-        (train, train_paths, "train"),
-        (test, test_paths, "test"),
-    ]:
-        # loop over all elements of the data tuple and write them to separate files
-        for key, data in data_tuple._asdict().items():
-            # SUGGESTION: maybe the file names should be completely random to avoid collisions
-            data_path = data_dir / Path(f"data_{prefix}_{key}.feather")
-            # write the file (don't use compression because this requires an additional library)
-            data.to_feather(data_path)
-            data_paths[key] = data_path
-    # the paths dictionaries to construct path tuples and return them
-    return PathTuple(**train_paths), PathTuple(**test_paths)
+    def _save(data: pd.DataFrame, prefix: str, key: str) -> Path:
+        # SUGGESTION: maybe the file names should be completely random to avoid collisions
+        data_path = data_dir / f"data_{prefix}_{key}.feather"
+        # write the file
+        data.to_feather(data_path)
+        return data_path
+
+    train_paths = PathTuple(
+        x=_save(train.x, "train", "x"),
+        s=_save(train.s, "train", "s"),
+        y=_save(train.y, "train", "y"),
+    )
+    test_paths = TestPathTuple(x=_save(test.x, "test", "x"), s=_save(test.s, "test", "s"))
+    return train_paths, test_paths
 
 
 def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
@@ -71,12 +85,12 @@ def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: 
     return DataTuple(
         *[
             pd.concat(
-                [datatup[i] for datatup in datatup_list],
+                [astuple(datatup)[i] for datatup in datatup_list],
                 axis=axis,
                 sort=False,
                 ignore_index=ignore_index,
             )
-            for i, _ in enumerate(datatup_list[0])
+            for i, _ in enumerate(astuple(datatup_list[0]))
         ]
     )
 

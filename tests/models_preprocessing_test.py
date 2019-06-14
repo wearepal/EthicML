@@ -55,8 +55,8 @@ def test_vfae():
     assert svm_model.name == "SVM"
 
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 215
-    assert predictions.values[predictions.values == -1].shape[0] == 185
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
     vfae_model = VFAE(dataset="Toy", epochs=10, fairness="Eq. Opp", batch_size=100)
     assert vfae_model is not None
@@ -72,8 +72,8 @@ def test_vfae():
     new_test = DataTuple(x=new_xtest, s=test.s, y=test.y)
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 215
-    assert predictions.values[predictions.values == -1].shape[0] == 185
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
     vfae_model = VFAE(dataset="Toy", supervised=False, epochs=10,
                       fairness="Eq. Opp", batch_size=100)
