@@ -29,7 +29,7 @@ class Kamishima(InstalledModel):
     def create_file_in_kamishima_format(data, file_path):
         """Create a text file with the data"""
 
-        result = pd.concat([data.x, data.s, data.y], axis='columns').to_numpy().astype(np.float64)
+        result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
     async def run_async(self, train, test):
@@ -46,27 +46,27 @@ class Kamishima(InstalledModel):
             try:
                 await self._call_script(
                     [
-                        str(self._module_path() / 'train_pr.py'),
-                        '-e',
+                        str(self._module_path() / "train_pr.py"),
+                        "-e",
                         str(self.eta),
-                        '-i',
+                        "-i",
                         train_path,
-                        '-o',
+                        "-o",
                         model_path,
-                        '--quiet',
+                        "--quiet",
                     ]
                 )
 
                 await self._call_script(
                     [
-                        str(self._module_path() / 'predict_lr.py'),
-                        '-i',
+                        str(self._module_path() / "predict_lr.py"),
+                        "-i",
                         test_path,
-                        '-m',
+                        "-m",
                         model_path,
-                        '-o',
+                        "-o",
                         output_path,
-                        '--quiet',
+                        "--quiet",
                     ]
                 )
                 output = np.loadtxt(output_path)
@@ -76,8 +76,8 @@ class Kamishima(InstalledModel):
 
         to_return = pd.DataFrame(predictions, columns=["preds"])
 
-        if to_return['preds'].min() != to_return['preds'].max():
-            to_return = to_return.replace(to_return['preds'].min(), min_class_label)
+        if to_return["preds"].min() != to_return["preds"].max():
+            to_return = to_return.replace(to_return["preds"].min(), min_class_label)
         return to_return
 
     @property

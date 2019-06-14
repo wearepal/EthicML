@@ -40,7 +40,7 @@ class Results:
         grouped: Dict[str, List[Any]] = defaultdict(list)
         for tup in candidates:
             hyp_dic: Dict[str, Any] = tup[0]
-            str_hyp_dict = ', '.join("{!s}={!r}".format(key, val) for (key, val) in hyp_dic.items())
+            str_hyp_dict = ", ".join("{!s}={!r}".format(key, val) for (key, val) in hyp_dic.items())
             grouped[str_hyp_dict].append(tup[1:])
 
         mean_vals: Dict[str, float] = defaultdict(float)
@@ -53,7 +53,7 @@ class Results:
         params_for_best = candidates[0][0]
         for k in candidates:
             hyp_dic = k[0]
-            str_hyp_dict = ', '.join("{!s}={!r}".format(key, val) for (key, val) in hyp_dic.items())
+            str_hyp_dict = ", ".join("{!s}={!r}".format(key, val) for (key, val) in hyp_dic.items())
             if str_hyp_dict == best_params:
                 params_for_best = hyp_dic
                 break

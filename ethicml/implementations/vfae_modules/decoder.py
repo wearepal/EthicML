@@ -20,7 +20,7 @@ class Decoder(nn.Module):
     def __init__(self, dataset: Dataset, deploy=False):
         super().__init__()
         self._deploy = deploy
-        self.features: List[str] = dataset.feature_split['x']
+        self.features: List[str] = dataset.feature_split["x"]
 
         latent_dims = 50
         hidden_size = 100
@@ -46,7 +46,7 @@ class Decoder(nn.Module):
             return layer
 
         self.grouped_features = [
-            list(group) for key, group in groupby(self.features, lambda x: x.split('_')[0])
+            list(group) for key, group in groupby(self.features, lambda x: x.split("_")[0])
         ]
         self.output_layers = nn.ModuleList(
             [_add_output_layer(feature) for feature in self.grouped_features]

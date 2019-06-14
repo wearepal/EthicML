@@ -45,9 +45,9 @@ class InAlgoInterface:
 def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags"""
     train = DataTuple(
-        x=load_dataframe(Path(flags['train_x'])),
-        s=load_dataframe(Path(flags['train_s'])),
-        y=load_dataframe(Path(flags['train_y'])),
+        x=load_dataframe(Path(flags["train_x"])),
+        s=load_dataframe(Path(flags["train_s"])),
+        y=load_dataframe(Path(flags["train_y"])),
     )
     test = TestTuple(
         x=load_dataframe(Path(flags['test_x'])), s=load_dataframe(Path(flags['test_s']))

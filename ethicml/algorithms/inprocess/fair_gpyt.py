@@ -11,7 +11,7 @@ import pandas as pd
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.algorithms.utils import DataTuple, TestTuple
 
-PRED_FNAME = 'predictions.npz'
+PRED_FNAME = "predictions.npz"
 MAX_EPOCHS = 1000
 MAX_BATCH_SIZE = 10100  # can go up to 10000
 MAX_NUM_INDUCING = 5000  # 2500 seems to be more than enough
@@ -60,7 +60,7 @@ class GPyT(InstalledModel):
                 tmpdir,
                 self.s_as_input,
                 model_name,
-                raw_data['ytrain'].shape[0],
+                raw_data["ytrain"].shape[0],
                 self.gpu,
                 self.epochs,
                 self.length_scale,
@@ -68,12 +68,12 @@ class GPyT(InstalledModel):
             await self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
-            with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:
+            with (tmp_path / model_name / PRED_FNAME).open("rb") as file_obj:
                 output = np.load(file_obj)
-                pred_mean = output['pred_mean']
+                pred_mean = output["pred_mean"]
 
-        predictions = label_converter((pred_mean > 0.5).astype(raw_data['ytest'].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=['preds'])
+        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytest"].dtype)[:, 0])
+        return pd.DataFrame(predictions, columns=["preds"])
 
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
@@ -84,7 +84,7 @@ class GPyT(InstalledModel):
 
     @staticmethod
     def _additional_parameters(_):
-        return dict(lik='BaselineLikelihood')
+        return dict(lik="BaselineLikelihood")
 
     @property
     def name(self):
@@ -142,7 +142,7 @@ class GPyTDemPar(GPyT):
         self.precision_target = precision_target
 
     def _additional_parameters(self, raw_data):
-        biased_acceptance = compute_bias(raw_data['ytrain'], raw_data['strain'])
+        biased_acceptance = compute_bias(raw_data["ytrain"], raw_data["strain"])
 
         if self.target_acceptance is None:
             if self.target_mode == self.MEAN:
@@ -159,12 +159,12 @@ class GPyTDemPar(GPyT):
             target_rate = self.target_acceptance
 
         if self.marginal:
-            p_s = prior_s(raw_data['strain'])
+            p_s = prior_s(raw_data["strain"])
         else:
             p_s = [0.5] * 2
 
         return dict(
-            lik='TunePrLikelihood',
+            lik="TunePrLikelihood",
             target_rate1=target_rate[0] if isinstance(target_rate, tuple) else target_rate,
             target_rate2=target_rate[1] if isinstance(target_rate, tuple) else target_rate,
             biased_acceptance1=biased_acceptance[0],
@@ -208,10 +208,10 @@ class GPyTEqOdds(GPyT):
         if any(x is not None for x in [tnr0, tnr1, tpr0, tpr1]):  # if any of them is not `None`
             self.odds = {}
             for val, name, target in [
-                (tnr0, '0tnr', 'p_ybary0_s0'),
-                (tnr1, '1tnr', 'p_ybary0_s1'),
-                (tpr0, '0tpr', 'p_ybary1_s0'),
-                (tpr1, '1tpr', 'p_ybary1_s1'),
+                (tnr0, "0tnr", "p_ybary0_s0"),
+                (tnr1, "1tnr", "p_ybary0_s1"),
+                (tpr0, "0tpr", "p_ybary1_s0"),
+                (tpr1, "1tpr", "p_ybary1_s1"),
             ]:
                 if val is not None:
                     self.odds[target] = val
@@ -226,15 +226,15 @@ class GPyTEqOdds(GPyT):
         self.marginal = marginal
 
     def _additional_parameters(self, raw_data):
-        biased_acceptance = compute_bias(raw_data['ytrain'], raw_data['strain'])
+        biased_acceptance = compute_bias(raw_data["ytrain"], raw_data["strain"])
 
         if self.marginal:
-            p_s = prior_s(raw_data['strain'])
+            p_s = prior_s(raw_data["strain"])
         else:
             p_s = [0.5] * 2
 
         return dict(
-            lik='TuneTprLikelihood',
+            lik="TuneTprLikelihood",
             p_ybary0_s0=1.0,
             p_ybary0_s1=1.0,
             p_ybary1_s0=1.0,
@@ -268,7 +268,7 @@ class GPyTEqOdds(GPyT):
                 tmpdir,
                 self.s_as_input,
                 model_name,
-                len(raw_data['ytrain']),
+                len(raw_data["ytrain"]),
                 self.gpu,
                 self.epochs,
                 self.length_scale,
@@ -277,7 +277,7 @@ class GPyTEqOdds(GPyT):
             if self.odds is None:
                 # Split the training data into train and dev and save it to `data.npz`
                 train_dev_data = split_train_dev(
-                    raw_data['xtrain'], raw_data['ytrain'], raw_data['strain']
+                    raw_data["xtrain"], raw_data["ytrain"], raw_data["strain"]
                 )
                 np.savez(data_path, **train_dev_data)
 
@@ -285,17 +285,17 @@ class GPyTEqOdds(GPyT):
                 await self._run_gpyt(flags)
 
                 # Read the results from the numpy file 'predictions.npz'
-                with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:
+                with (tmp_path / model_name / PRED_FNAME).open("rb") as file_obj:
                     output = np.load(file_obj)
-                    prediction_on_train = output['pred_mean']
+                    prediction_on_train = output["pred_mean"]
                 preds = (prediction_on_train > 0.5).astype(int)
-                odds = compute_odds(train_dev_data['ytest'], preds, train_dev_data['stest'])
+                odds = compute_odds(train_dev_data["ytest"], preds, train_dev_data["stest"])
 
                 # Enforce equality of opportunity
-                opportunity = min(odds['p_ybary1_s0'], odds['p_ybary1_s1'])
-                odds['p_ybary1_s0'] = opportunity
-                odds['p_ybary1_s1'] = opportunity
-                flags.update({'epochs': 2 * flags['epochs'], **odds})
+                opportunity = min(odds["p_ybary1_s0"], odds["p_ybary1_s1"])
+                odds["p_ybary1_s0"] = opportunity
+                odds["p_ybary1_s1"] = opportunity
+                flags.update({"epochs": 2 * flags["epochs"], **odds})
             else:
                 flags.update(self.odds)
 
@@ -306,13 +306,13 @@ class GPyTEqOdds(GPyT):
             await self._run_gpyt(flags)
 
             # Read the results from the numpy file 'predictions.npz'
-            with (tmp_path / model_name / PRED_FNAME).open('rb') as file_obj:
+            with (tmp_path / model_name / PRED_FNAME).open("rb") as file_obj:
                 output = np.load(file_obj)
-                pred_mean = output['pred_mean']
+                pred_mean = output["pred_mean"]
 
         # Convert the result to the expected format
-        predictions = label_converter((pred_mean > 0.5).astype(raw_data['ytest'].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=['preds'])
+        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytest"].dtype)[:, 0])
+        return pd.DataFrame(predictions, columns=["preds"])
 
     @property
     def name(self):
@@ -321,7 +321,7 @@ class GPyTEqOdds(GPyT):
 
 def prior_s(sensitive):
     """Compute the bias in the labels with respect to the sensitive attributes"""
-    return np.sum(sensitive == 0) / len(sensitive), np.sum(sensitive == 1) / len(sensitive)
+    return (np.sum(sensitive == 0) / len(sensitive), np.sum(sensitive == 1) / len(sensitive))
 
 
 def compute_bias(labels, sensitive):
@@ -409,11 +409,11 @@ def _flags(
     epochs = _num_epochs(num_train) if epochs is None else epochs
     return {
         **dict(
-            inf='Variational',
-            data='sensitive_from_numpy',
+            inf="Variational",
+            data="sensitive_from_numpy",
             dataset_path=data_path,
-            cov='RBFKernel',
-            mean='ZeroMean',
+            cov="RBFKernel",
+            mean="ZeroMean",
             optimizer="Adam",
             lr=0.05,
             # lr=0.1,
@@ -425,7 +425,7 @@ def _flags(
             summary_steps=100000,
             chkpt_epochs=100000,
             save_dir=save_dir,  # "/home/ubuntu/out2/",
-            plot='',
+            plot="",
             logging_steps=1,
             gpus=str(gpu),
             preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`

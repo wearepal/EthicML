@@ -12,7 +12,7 @@ from ethicml.implementations.utils import InAlgoInterface
 def select_mlp(hidden_layer_sizes: Tuple[int], activation: str):
     """Create MLP model for the given parameters"""
 
-    assert activation in ['identity', 'logistic', 'tanh', 'relu']
+    assert activation in ["identity", "logistic", "tanh", "relu"]
 
     return MLPClassifier(
         hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=888

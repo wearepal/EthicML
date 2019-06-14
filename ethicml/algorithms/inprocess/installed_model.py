@@ -34,7 +34,7 @@ class InstalledModel(InAlgorithmAsync):
 
     @property
     def _executable(self) -> str:
-        return str(self._module_path() / '.venv' / 'bin' / 'python')
+        return str(self._module_path() / ".venv" / "bin" / "python")
 
     @property
     def name(self) -> str:
@@ -57,7 +57,7 @@ class InstalledModel(InAlgorithmAsync):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["PIPENV_PIPFILE"] = str(self._module_path() / 'Pipfile')
+        environ["PIPENV_PIPFILE"] = str(self._module_path() / "Pipfile")
 
         venv_directory = self._module_path() / ".venv"
 

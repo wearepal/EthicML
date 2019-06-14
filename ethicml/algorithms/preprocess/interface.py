@@ -18,13 +18,13 @@ def flag_interface(
 
     # paths to training and test data
     path_tuples = [train_paths, test_paths]
-    prefixes = ['--train_', '--test_']
+    prefixes = ["--train_", "--test_"]
     for path_tuple, prefix in zip(path_tuples, prefixes):
         for key, path in asdict(path_tuple).items():
             flags_list += [f"{prefix}{key}", str(path)]
 
     # paths to output files
-    flags_list += ['--train_new', str(new_train_path), '--test_new', str(new_test_path)]
+    flags_list += ["--train_new", str(new_train_path), "--test_new", str(new_test_path)]
 
     # model parameters
     for key, values in flags.items():

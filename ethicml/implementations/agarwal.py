@@ -27,7 +27,7 @@ def train_and_predict(
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
-        model = LogisticRegression(solver='liblinear', random_state=888, max_iter=5000, C=float(C))
+        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=float(C))
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]
@@ -45,12 +45,12 @@ def train_and_predict(
 
     res = res_tuple._asdict()
 
-    preds = pd.DataFrame(res['best_classifier'](test.x), columns=["preds"])
+    preds = pd.DataFrame(res["best_classifier"](test.x), columns=["preds"])
     helper = Heaviside()
     preds = preds.apply(helper.apply)
     min_class_label = train.y[train.y.columns[0]].min()
-    if preds['preds'].min() != preds['preds'].max():
-        preds = preds.replace(preds['preds'].min(), min_class_label)
+    if preds["preds"].min() != preds["preds"].max():
+        preds = preds.replace(preds["preds"].min(), min_class_label)
     return preds
 
 

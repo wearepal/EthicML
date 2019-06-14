@@ -75,12 +75,12 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     cols_x = datatup.x.columns
     cols_s = datatup.s.columns
     cols_y = datatup.y.columns
-    joined = pd.concat([datatup.x, datatup.s, datatup.y], axis='columns', sort=False)
+    joined = pd.concat([datatup.x, datatup.s, datatup.y], axis="columns", sort=False)
     joined = mapper(joined)
     return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
 
-def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: bool = False):
+def concat_dt(datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False):
     """Concatenate the data tuples in the given list"""
     return DataTuple(
         *[
@@ -97,7 +97,7 @@ def concat_dt(datatup_list: List[DataTuple], axis: str = 'index', ignore_index: 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
     """Load a dataframe from a feather file"""
-    with output_path.open('rb') as file_obj:
+    with output_path.open("rb") as file_obj:
         df = pd.read_feather(file_obj)
     return df
 

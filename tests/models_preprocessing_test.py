@@ -170,7 +170,7 @@ def test_threaded_zemel():
 def test_threaded_beutel():
     train, test = get_train_test()
 
-    model: PreAlgorithmAsync = Beutel()
+    model: PreAlgorithmAsync = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
     assert model is not None
     assert model.name == "Beutel"
 
@@ -193,7 +193,7 @@ def test_threaded_beutel():
     assert predictions.values[predictions.values == 1].shape[0] == 208
     assert predictions.values[predictions.values == -1].shape[0] == 192
 
-    beut_model: PreAlgorithm = Beutel()
+    beut_model: PreAlgorithm = Beutel(adv_weight=2.3, validation_pcnt=0.1, epochs=50)
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 

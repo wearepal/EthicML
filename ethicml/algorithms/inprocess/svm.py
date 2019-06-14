@@ -22,7 +22,7 @@ class SVM(InAlgorithmAsync):
         return svm.train_and_predict(train, test, self.C, self.kernel)
 
     def _script_command(self, train_paths, test_paths, pred_path):
-        script = ['-m', svm.train_and_predict.__module__]
+        script = ["-m", svm.train_and_predict.__module__]
         args = conventional_interface(
             train_paths, test_paths, pred_path, str(self.C), str(self.kernel)
         )

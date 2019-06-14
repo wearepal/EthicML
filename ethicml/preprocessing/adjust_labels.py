@@ -1,10 +1,23 @@
+"""
+Simplae class to make class labels binary. Useful if a network uses BCELoss for example
+"""
+from typing import Optional
+
 import numpy as np
-import pandas as pd
 
 from ethicml.algorithms.utils import DataTuple
 
 
 def assert_binary_labels(train: DataTuple, test: DataTuple):
+    """
+    Assert that datasets only include binary labels
+    Args:
+        train:
+        test:
+
+    Returns:
+
+    """
 
     y_col = train.y.columns[0]
     assert train.y[y_col].nunique() == 2
@@ -14,12 +27,26 @@ def assert_binary_labels(train: DataTuple, test: DataTuple):
     assert np.unique(test.y[y_col].values) == [0, 1]
 
 
-class Processor():
-    def __init__(self):
-        self.min_val = None
-        self.max_val = None
+class LabelBinarizer:
+    """
+    If a dataset has labels [-1,1], then this will make it so the labels = [0,1]
+    """
 
-    def pre(self, dataset: DataTuple) -> DataTuple:
+    def __init__(self):
+        self.min_val: int
+        self.max_val: int
+
+    def adjust(self, dataset: DataTuple) -> DataTuple:
+        """
+        Take a datatuple and make the labels [0,1]
+        Args:
+            dataset:
+
+        Returns:
+
+        """
+        y_col = dataset.y.columns[0]
+        assert dataset.y[y_col].nunique() == 2
 
         # make copy of dataset
         dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy())
@@ -32,8 +59,4 @@ class Processor():
         dataset.y[y_col].replace(self.min_val, 0, inplace=True)
         dataset.y[y_col].replace(self.max_val, 1, inplace=True)
 
-        return DataTuple(
-            x=dataset.x,
-            s=dataset.s,
-            y=dataset.y
-        )
+        return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y)

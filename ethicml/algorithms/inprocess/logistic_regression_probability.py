@@ -21,7 +21,7 @@ class LRProb(InAlgorithmAsync):
         return logistic_regression_probability.train_and_predict(train, test, self.C)
 
     def _script_command(self, train_paths, test_paths, pred_path):
-        script = ['-m', logistic_regression_probability.train_and_predict.__module__]
+        script = ["-m", logistic_regression_probability.train_and_predict.__module__]
         args = conventional_interface(train_paths, test_paths, pred_path, str(self.C))
         return script + args
 

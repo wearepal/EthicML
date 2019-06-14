@@ -26,9 +26,9 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
     feature_split = dataset.feature_split if not ordered else dataset.ordered_features
 
-    x_data = dataframe[feature_split['x']]
-    s_data = dataframe[feature_split['s']]
-    y_data = dataframe[feature_split['y']]
+    x_data = dataframe[feature_split["x"]]
+    s_data = dataframe[feature_split["s"]]
+    y_data = dataframe[feature_split["y"]]
 
     return DataTuple(x=x_data, s=s_data, y=y_data)
 
@@ -64,7 +64,7 @@ def create_data_obj(
     for additional in additional_to_drop:
         columns.remove(additional)
 
-    feat_split: Dict[str, List[str]] = {'x': columns, 's': s_columns, 'y': y_columns}
+    feat_split: Dict[str, List[str]] = {"x": columns, "s": s_columns, "y": y_columns}
     conf.feature_split = feat_split
 
     return conf

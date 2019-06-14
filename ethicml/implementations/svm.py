@@ -9,9 +9,9 @@ from ethicml.implementations.utils import InAlgoInterface
 
 def select_svm(C: float, kernel: str):
     """Select the appropriate SVM model for the given parameters"""
-    if kernel == 'linear':
+    if kernel == "linear":
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=888)
-    return SVC(C=C, kernel=kernel, gamma='auto', random_state=888)
+    return SVC(C=C, kernel=kernel, gamma="auto", random_state=888)
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, C: float, kernel: str) -> pd.DataFrame:

@@ -25,14 +25,14 @@ class Zemel(PreAlgorithmAsync):
     ):
         super().__init__()
         self.flags: Dict[str, Union[int, float]] = {
-            'clusters': clusters,
-            'Ax': Ax,
-            'Ay': Ay,
-            'Az': Az,
-            'max_iter': max_iter,
-            'maxfun': maxfun,
-            'epsilon': epsilon,
-            'threshold': threshold,
+            "clusters": clusters,
+            "Ax": Ax,
+            "Ay": Ay,
+            "Az": Az,
+            "max_iter": max_iter,
+            "maxfun": maxfun,
+            "epsilon": epsilon,
+            "threshold": threshold,
         }
 
     def run(self, train, test):
@@ -42,7 +42,7 @@ class Zemel(PreAlgorithmAsync):
 
     def _script_command(self, train_paths, test_paths, new_train_path, new_test_path):
         args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, self.flags)
-        return ['-m', 'ethicml.implementations.zemel'] + args
+        return ["-m", "ethicml.implementations.zemel"] + args
 
     @property
     def name(self) -> str:
