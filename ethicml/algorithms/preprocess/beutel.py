@@ -43,24 +43,24 @@ class Beutel(PreAlgorithmAsync):
         self.validation_pcnt = validation_pcnt
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
-        from ...implementations import beutel  # only import this on demand
+        from ...implementations import beutel  # only import this on demand because of pytorch
 
-        return beutel.train_and_transform(
-            train,
-            test,
-            self.fairness,
-            self.enc_size,
-            self.adv_size,
-            self.pred_size,
-            self.enc_activation,
-            self.adv_activation,
-            self.batch_size,
-            self.y_loss,
-            self.s_loss,
-            self.epochs,
-            self.adv_weight,
-            self.validation_pcnt,
+        # SUGGESTION: it would be great if BeutelSettings could already be created in the init
+        flags = beutel.BeutelSettings(
+            fairness=self.fairness,
+            enc_size=self.enc_size,
+            adv_size=self.adv_size,
+            pred_size=self.pred_size,
+            enc_activation=self.enc_activation,
+            adv_activation=self.adv_activation,
+            batch_size=self.batch_size,
+            y_loss=self.y_loss,
+            s_loss=self.s_loss,
+            epochs=self.epochs,
+            adv_weight=self.adv_weight,
+            validation_pcnt=self.validation_pcnt,
         )
+        return beutel.train_and_transform(train, test, flags)
 
     def _script_command(
         self,

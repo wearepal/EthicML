@@ -31,7 +31,7 @@ STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
 class BeutelSettings:
-    """Settings (with default values) for the Beutel algorithm"""
+    """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
 
     fairness: str
     enc_size: Sequence[int]
@@ -100,41 +100,6 @@ def make_dataset_and_loader(
 
 
 def train_and_transform(
-    train: DataTuple,
-    test: TestTuple,
-    fairness: str,
-    enc_size: Sequence[int],
-    adv_size: Sequence[int],
-    pred_size: Sequence[int],
-    enc_activation: str,
-    adv_activation: str,
-    batch_size: int,
-    y_loss: str,
-    s_loss: str,
-    epochs: int,
-    adv_weight: float,
-    validation_pcnt: float,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Wrapper for _train_and_transform. This function basically just exists to make pylint happy"""
-    # pylint: disable=too-many-arguments
-    flags = BeutelSettings(
-        fairness=fairness,
-        enc_size=enc_size,
-        adv_size=adv_size,
-        pred_size=pred_size,
-        enc_activation=enc_activation,
-        adv_activation=adv_activation,
-        batch_size=batch_size,
-        y_loss=y_loss,
-        s_loss=s_loss,
-        epochs=epochs,
-        adv_weight=adv_weight,
-        validation_pcnt=validation_pcnt,
-    )
-    return _train_and_transform(train, test, flags)
-
-
-def _train_and_transform(
     train: DataTuple, test: TestTuple, flags: BeutelSettings
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
@@ -469,8 +434,7 @@ def main():
         adv_weight=args.adv_weight,
         validation_pcnt=args.validation_pcnt,
     )
-
-    save_transformations(_train_and_transform(train, test, flags), (args.train_new, args.test_new))
+    save_transformations(train_and_transform(train, test, flags), (args.train_new, args.test_new))
 
 
 if __name__ == "__main__":
