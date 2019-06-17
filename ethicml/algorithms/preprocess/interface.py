@@ -29,7 +29,7 @@ def flag_interface(
     # model parameters
     for key, values in flags.items():
         flags_list.append(f"--{key}")
-        if isinstance(values, list):
+        if isinstance(values, (list, tuple)):
             flags_list += [str(value) for value in values]
         else:
             flags_list.append(str(values))
