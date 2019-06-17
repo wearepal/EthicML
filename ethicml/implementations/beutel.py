@@ -5,8 +5,8 @@ Implementation of Beutel's adversarially learned fair representations
 # pylint: disable=arguments-differ
 
 import random
-import argparse
-from typing import List, Any, Tuple, Dict, Union
+from typing import List, Any, Tuple, Sequence
+from dataclasses import dataclass
 import pandas as pd
 import numpy as np
 import torch
@@ -15,7 +15,11 @@ from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.algorithms.utils import DataTuple, TestTuple
-from ethicml.implementations.utils import load_data_from_flags, save_transformations
+from ethicml.implementations.utils import (
+    load_data_from_flags,
+    save_transformations,
+    pre_algo_argparser,
+)
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
 from .pytorch_common import CustomDataset, TestDataset
@@ -25,15 +29,26 @@ STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
+@dataclass(frozen=True)  # "frozen" makes it immutable
+class BeutelSettings:
+    """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
+
+    fairness: str
+    enc_size: Sequence[int]
+    adv_size: Sequence[int]
+    pred_size: Sequence[int]
+    enc_activation: str
+    adv_activation: str
+    batch_size: int
+    y_loss: str
+    s_loss: str
+    epochs: int
+    adv_weight: float
+    validation_pcnt: float
+
+
 def set_seed(seed: int):
-    """
-    Set the seeds for numpy torch etc
-    Args:
-        seed:
-
-    Returns:
-
-    """
+    """Set the seeds for numpy torch etc"""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -41,31 +56,21 @@ def set_seed(seed: int):
 
 
 def build_networks(flags, train_data, enc_activation, adv_activation):
-    """
-    build teh networks we use - pulled into a separate function to make the code a bit neater
-    Args:
-        flags:
-        train_data:
-        enc_activation:
-        adv_activation:
-
-    Returns:
-
-    """
+    """build teh networks we use - pulled into a separate function to make the code a bit neater"""
     enc = Encoder(
-        enc_size=flags["enc_size"], init_size=int(train_data.size), activation=enc_activation
+        enc_size=flags.enc_size, init_size=int(train_data.size), activation=enc_activation
     )
     adv = Adversary(
-        fairness=flags["fairness"],
-        adv_size=flags["adv_size"],
-        init_size=flags["enc_size"][-1],
+        fairness=flags.fairness,
+        adv_size=flags.adv_size,
+        init_size=flags.enc_size[-1],
         s_size=int(train_data.s_size),
         activation=adv_activation,
-        adv_weight=flags["adv_weight"],
+        adv_weight=flags.adv_weight,
     )
     pred = Predictor(
-        pred_size=flags["pred_size"],
-        init_size=flags["enc_size"][-1],
+        pred_size=flags.pred_size,
+        init_size=flags.enc_size[-1],
         class_label_size=int(train_data.y_size),
         activation=adv_activation,
     )
@@ -76,7 +81,7 @@ def build_networks(flags, train_data, enc_activation, adv_activation):
 
 
 def make_dataset_and_loader(
-    data: DataTuple, flags: Dict[str, Union[int, str, float, List[int]]]
+    data: DataTuple, flags: BeutelSettings
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
     """
     given a datatuple, create a dataset and a corresponding dataloader
@@ -89,19 +94,19 @@ def make_dataset_and_loader(
     """
     dataset = CustomDataset(data)
     dataloader = torch.utils.data.DataLoader(
-        dataset=dataset, batch_size=int(str(flags['batch_size'])), shuffle=False
+        dataset=dataset, batch_size=flags.batch_size, shuffle=False
     )
     return dataset, dataloader
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, str, float, List[int]]]
+    train: DataTuple, test: TestTuple, flags: BeutelSettings
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
 
     set_seed(888)
 
-    if flags["y_loss"] == "BCELoss()":
+    if flags.y_loss == "BCELoss()":
         try:
             assert_binary_labels(train)
         except AssertionError:
@@ -109,9 +114,7 @@ def train_and_transform(
             train = processor.adjust(train)
 
     # By default we use 10% of the training data for validation
-    train_, validation = train_test_split(
-        train, train_percentage=1 - float(str(flags["validation_pcnt"]))
-    )
+    train_, validation = train_test_split(train, train_percentage=1 - flags.validation_pcnt)
 
     train_data, train_loader = make_dataset_and_loader(train_, flags)
     _, validation_loader = make_dataset_and_loader(validation, flags)
@@ -119,14 +122,14 @@ def train_and_transform(
 
     test_data = TestDataset(test)
     test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=int(str(flags["batch_size"])), shuffle=False
+        dataset=test_data, batch_size=flags.batch_size, shuffle=False
     )
 
     # convert flags to Python objects
-    enc_activation = STRING_TO_ACTIVATION_MAP[str(flags["enc_activation"])]
-    adv_activation = STRING_TO_ACTIVATION_MAP[str(flags["adv_activation"])]
-    y_loss_fn = STRING_TO_LOSS_MAP[str(flags["y_loss"])]
-    s_loss_fn = STRING_TO_LOSS_MAP[str(flags["s_loss"])]
+    enc_activation = STRING_TO_ACTIVATION_MAP[flags.enc_activation]
+    adv_activation = STRING_TO_ACTIVATION_MAP[flags.adv_activation]
+    y_loss_fn = STRING_TO_LOSS_MAP[flags.y_loss]
+    s_loss_fn = STRING_TO_LOSS_MAP[flags.s_loss]
 
     enc, model = build_networks(
         flags=flags,
@@ -141,18 +144,18 @@ def train_and_transform(
     best_val_loss = np.inf
     best_enc = None
 
-    for i in range(1, int(str(flags["epochs"])) + 1):
+    for i in range(1, flags.epochs + 1):
         model.train()
         for embedding, sens_label, class_label in train_loader:
             _, s_pred, y_pred = model(embedding, class_label)
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags["fairness"] == "Eq. Opp":
+            if flags.fairness == "Eq. Opp":
                 mask = class_label.ge(0.5)
-            elif flags["fairness"] == "Eq. Odds":
+            elif flags.fairness == "Eq. Odds":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags["fairness"] == "DI":
+            elif flags.fairness == "DI":
                 mask = torch.ones(s_pred.shape).byte()
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
@@ -160,7 +163,7 @@ def train_and_transform(
 
             step(i, loss, optimizer, scheduler)
 
-        if i % 5 == 0 or i == flags["epochs"]:
+        if i % 5 == 0 or i == flags.epochs:
             model.eval()
             val_y_loss = 0.0
             val_s_loss = 0.0
@@ -215,11 +218,11 @@ def get_mask(flags, s_pred, class_label):
     Returns:
 
     """
-    if flags["fairness"] == "Eq. Opp":
+    if flags.fairness == "Eq. Opp":
         mask = class_label.ge(0.5)
-    elif flags["fairness"] == "Eq. Odds":
+    elif flags.fairness == "Eq. Odds":
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags["fairness"] == "DI":
+    elif flags.fairness == "DI":
         mask = torch.ones(s_pred.shape).byte()
 
     return mask
@@ -397,18 +400,7 @@ class Model(nn.Module):
 
 def main():
     """Load data from feather files, pass it to `train_and_transform` and then save the result"""
-    parser = argparse.ArgumentParser()
-
-    # paths to the files with the data
-    parser.add_argument("--train_x", required=True)
-    parser.add_argument("--train_s", required=True)
-    parser.add_argument("--train_y", required=True)
-    parser.add_argument("--test_x", required=True)
-    parser.add_argument("--test_s", required=True)
-
-    # paths to where the processed inputs should be stored
-    parser.add_argument("--train_new", required=True)
-    parser.add_argument("--test_new", required=True)
+    parser = pre_algo_argparser()
 
     # model parameters
     parser.add_argument("--fairness", required=True)
@@ -424,12 +416,25 @@ def main():
     parser.add_argument("--adv_weight", type=float, required=True)
     parser.add_argument("--validation_pcnt", type=float, required=True)
     args = parser.parse_args()
-    flags = vars(args)  # convert args object to a dictionary
+    # convert args object to a dictionary and load the feather files from the paths
+    train, test = load_data_from_flags(vars(args))
 
-    train, test = load_data_from_flags(flags)
-    save_transformations(
-        train_and_transform(train, test, flags), (flags["train_new"], flags["test_new"])
+    # make the argparse object type-safe (is there an easier way to do this?)
+    flags = BeutelSettings(
+        fairness=args.fairness,
+        enc_size=args.enc_size,
+        adv_size=args.adv_size,
+        pred_size=args.pred_size,
+        enc_activation=args.enc_activation,
+        adv_activation=args.adv_activation,
+        batch_size=args.batch_size,
+        y_loss=args.y_loss,
+        s_loss=args.s_loss,
+        epochs=args.epochs,
+        adv_weight=args.adv_weight,
+        validation_pcnt=args.validation_pcnt,
     )
+    save_transformations(train_and_transform(train, test, flags), (args.train_new, args.test_new))
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 Useful functions used in implementations
 """
 import sys
+import argparse
 from pathlib import Path
 from typing import Tuple, Union, List, Optional, Dict, Any
 
@@ -66,3 +67,24 @@ def save_transformations(
         # convert the column IDs to strings because the feather format requires that
         transform.columns = transform.columns.astype(str)
         transform.to_feather(transform_path)
+
+
+def pre_algo_argparser() -> argparse.ArgumentParser:
+    """ArgumentParser that already has arguments for the paths
+
+    This is a quick way to create a parser that can parse the filenames for the data. This function
+    can be used by pre-algorithms to implement a commandline interface.
+    """
+    parser = argparse.ArgumentParser()
+
+    # paths to the files with the data
+    parser.add_argument("--train_x", required=True)
+    parser.add_argument("--train_s", required=True)
+    parser.add_argument("--train_y", required=True)
+    parser.add_argument("--test_x", required=True)
+    parser.add_argument("--test_s", required=True)
+
+    # paths to where the processed inputs should be stored
+    parser.add_argument("--train_new", required=True)
+    parser.add_argument("--test_new", required=True)
+    return parser

@@ -52,16 +52,9 @@ class VFAENetwork(nn.Module):
     def decode_z1(self, z2, y):
         return self.z1_decoder(torch.cat((z2, y), 1))
 
-    def reparameterize(self, mean, logvar):
-        """
-        reparametrization trick - Leaving as a method to try and control reproducability
-        Args:
-            mean:
-            logvar:
-
-        Returns:
-
-        """
+    @staticmethod
+    def reparameterize(mean, logvar):
+        """reparametrization trick - Leaving as a method to try and control reproducability"""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps.mul(std).add_(mean)  # type: ignore  # mypy was claming "mul" doesn't exist

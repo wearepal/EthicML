@@ -2,7 +2,6 @@
 Implementation fo Zemel's Learned Fair Representations lifted from AIF360
 https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
 """
-import argparse
 from typing import List, Tuple, Dict, Optional, Union
 
 import pandas as pd
@@ -11,7 +10,11 @@ import scipy.optimize as optim
 from numba import jit
 
 from ethicml.algorithms.utils import DataTuple, TestTuple
-from ethicml.implementations.utils import load_data_from_flags, save_transformations
+from ethicml.implementations.utils import (
+    load_data_from_flags,
+    save_transformations,
+    pre_algo_argparser,
+)
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
 # pylint: disable=invalid-name
@@ -327,19 +330,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
 
 def main():
     """main method to run model"""
-    parser = argparse.ArgumentParser()
-
-    # paths to the files with the data
-    parser.add_argument("--train_x", required=True)
-    parser.add_argument("--train_s", required=True)
-    parser.add_argument("--train_y", required=True)
-    parser.add_argument("--test_x", required=True)
-    parser.add_argument("--test_s", required=True)
-
-    # paths to where the processed inputs should be stored
-    parser.add_argument("--train_new", required=True)
-    parser.add_argument("--test_new", required=True)
-
+    parser = pre_algo_argparser()
     parser.add_argument("--clusters", type=int, required=True)
     parser.add_argument("--Ax", type=float, required=True)
     parser.add_argument("--Ay", type=float, required=True)
