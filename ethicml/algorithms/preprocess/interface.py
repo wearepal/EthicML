@@ -2,6 +2,7 @@
 from pathlib import Path
 from typing import List, Any, Dict
 from dataclasses import asdict
+from enum import Enum
 
 from ..utils import PathTuple, TestPathTuple
 
@@ -31,6 +32,8 @@ def flag_interface(
         flags_list.append(f"--{key}")
         if isinstance(values, (list, tuple)):
             flags_list += [str(value) for value in values]
+        elif isinstance(values, Enum):
+            flags_list.append(str(values.value))
         else:
             flags_list.append(str(values))
     return flags_list

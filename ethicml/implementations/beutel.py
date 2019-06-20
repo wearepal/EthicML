@@ -14,7 +14,7 @@ from torch import nn
 from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.algorithms.utils import DataTuple, TestTuple, FairType
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
@@ -33,7 +33,7 @@ STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 class BeutelSettings:
     """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
 
-    fairness: str
+    fairness: FairType
     enc_size: Sequence[int]
     adv_size: Sequence[int]
     pred_size: Sequence[int]
@@ -151,11 +151,11 @@ def train_and_transform(
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags.fairness == "Eq. Opp":
+            if flags.fairness == FairType.EOPP:
                 mask = class_label.ge(0.5)
-            elif flags.fairness == "Eq. Odds":
+            elif flags.fairness == FairType.EODDS:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags.fairness == "DI":
+            elif flags.fairness == FairType.DI:
                 mask = torch.ones(s_pred.shape).byte()
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
@@ -207,7 +207,7 @@ def step(iteration, loss, optimizer, scheduler):
     scheduler.step(iteration)
 
 
-def get_mask(flags, s_pred, class_label):
+def get_mask(flags: BeutelSettings, s_pred, class_label):
     """
     Get a mask to enforce different fairness types
     Args:
@@ -218,11 +218,11 @@ def get_mask(flags, s_pred, class_label):
     Returns:
 
     """
-    if flags.fairness == "Eq. Opp":
+    if flags.fairness == FairType.EOPP:
         mask = class_label.ge(0.5)
-    elif flags.fairness == "Eq. Odds":
+    elif flags.fairness == FairType.EODDS:
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags.fairness == "DI":
+    elif flags.fairness == FairType.DI:
         mask = torch.ones(s_pred.shape).byte()
 
     return mask
@@ -403,7 +403,7 @@ def main():
     parser = pre_algo_argparser()
 
     # model parameters
-    parser.add_argument("--fairness", required=True)
+    parser.add_argument("--fairness", required=True, choices=['DI', 'Eq. Opp', 'Eq. Odds'])
     parser.add_argument("--enc_size", type=int, nargs="+", required=True)
     parser.add_argument("--adv_size", type=int, nargs="+", required=True)
     parser.add_argument("--pred_size", type=int, nargs="+", required=True)
@@ -421,7 +421,7 @@ def main():
 
     # make the argparse object type-safe (is there an easier way to do this?)
     flags = BeutelSettings(
-        fairness=args.fairness,
+        fairness=FairType(args.fairness),  # convert string to FairType
         enc_size=args.enc_size,
         adv_size=args.adv_size,
         pred_size=args.pred_size,

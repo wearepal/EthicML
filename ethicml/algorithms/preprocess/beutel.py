@@ -6,7 +6,7 @@ import pandas as pd
 
 from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
-from ..utils import DataTuple, TestTuple, PathTuple, TestPathTuple
+from ..utils import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
 
 
 class Beutel(PreAlgorithmAsync):
@@ -14,7 +14,7 @@ class Beutel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        fairness: str = "DI",
+        fairness: FairType = FairType.DI,
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),

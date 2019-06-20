@@ -5,6 +5,7 @@ reasonable time
 from pathlib import Path
 from typing import Tuple, List
 from dataclasses import dataclass, astuple
+from enum import Enum
 
 import pandas as pd
 
@@ -112,3 +113,15 @@ def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
         subset of training data
     """
     return DataTuple(x=train.x.iloc[:num], s=train.s.iloc[:num], y=train.y.iloc[:num])
+
+
+class FairType(Enum):
+    """
+    This is an enum that can be used to specify the type of fairness
+
+    It basically works like the enums in C, but we can also give it values that are not integers.
+    """
+    DI = "DI"
+    DP = "DI"  # alias for DI (for "demographic parity")
+    EOPP = "Eq. Opp"
+    EODDS = "Eq. Odds"
