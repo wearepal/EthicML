@@ -125,3 +125,7 @@ class FairType(Enum):
     DP = "DI"  # alias for DI (for "demographic parity")
     EOPP = "Eq. Opp"
     EODDS = "Eq. Odds"
+
+    def __str__(self) -> str:
+        """This function is needed so that, for example, str(FairType.DI) returns 'DI'."""
+        return self.value

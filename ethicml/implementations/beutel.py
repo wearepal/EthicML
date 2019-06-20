@@ -403,7 +403,7 @@ def main():
     parser = pre_algo_argparser()
 
     # model parameters
-    parser.add_argument("--fairness", required=True, choices=['DI', 'Eq. Opp', 'Eq. Odds'])
+    parser.add_argument("--fairness", type=FairType, choices=list(FairType), required=True)
     parser.add_argument("--enc_size", type=int, nargs="+", required=True)
     parser.add_argument("--adv_size", type=int, nargs="+", required=True)
     parser.add_argument("--pred_size", type=int, nargs="+", required=True)
@@ -421,7 +421,7 @@ def main():
 
     # make the argparse object type-safe (is there an easier way to do this?)
     flags = BeutelSettings(
-        fairness=FairType(args.fairness),  # convert string to FairType
+        fairness=args.fairness,
         enc_size=args.enc_size,
         adv_size=args.adv_size,
         pred_size=args.pred_size,
