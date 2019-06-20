@@ -55,7 +55,9 @@ def set_seed(seed: int):
     torch.cuda.manual_seed_all(seed)  # type: ignore  # mypy claims manual_seed_all doesn't exist
 
 
-def build_networks(flags, train_data, enc_activation, adv_activation):
+def build_networks(
+    flags: BeutelSettings, train_data: CustomDataset, enc_activation, adv_activation
+):
     """build teh networks we use - pulled into a separate function to make the code a bit neater"""
     enc = Encoder(
         enc_size=flags.enc_size, init_size=int(train_data.size), activation=enc_activation
@@ -286,7 +288,7 @@ def _grad_reverse(features, lambda_):
 class Encoder(nn.Module):
     """Encoder of the GAN"""
 
-    def __init__(self, enc_size: List[int], init_size: int, activation):
+    def __init__(self, enc_size: Sequence[int], init_size: int, activation):
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -311,8 +313,8 @@ class Adversary(nn.Module):
 
     def __init__(
         self,
-        fairness: str,
-        adv_size: List[int],
+        fairness: FairType,
+        adv_size: Sequence[int],
         init_size: int,
         s_size: int,
         activation: nn.Module,
@@ -341,13 +343,13 @@ class Adversary(nn.Module):
 
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness == "Eq. Opp":
+        if self.fairness == FairType.EOPP:
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness == "Eq. Odds":
+        elif self.fairness == FairType.EODDS:
             raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness == "DI":
+        elif self.fairness == FairType.DI:
             x = self.adversary(x)
         return x
 
@@ -356,7 +358,7 @@ class Predictor(nn.Module):
     """Predictor of the GAN"""
 
     def __init__(
-        self, pred_size: List[int], init_size: int, class_label_size: int, activation: nn.Module
+        self, pred_size: Sequence[int], init_size: int, class_label_size: int, activation: nn.Module
     ):
         super().__init__()
         self.predictor = nn.Sequential()

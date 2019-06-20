@@ -121,6 +121,7 @@ class FairType(Enum):
 
     It basically works like the enums in C, but we can also give it values that are not integers.
     """
+
     DI = "DI"
     DP = "DI"  # alias for DI (for "demographic parity")
     EOPP = "Eq. Opp"
