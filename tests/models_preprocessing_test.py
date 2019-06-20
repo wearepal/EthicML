@@ -5,7 +5,7 @@ from ethicml.algorithms.algorithm_base import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync, Beutel, Zemel
 from ethicml.algorithms.preprocess.vfae import VFAE
-from ethicml.algorithms.utils import DataTuple
+from ethicml.algorithms.utils import DataTuple, FairType
 from tests.run_algorithm_test import get_train_test
 
 
@@ -218,7 +218,7 @@ def test_threaded_beutel():
 def test_threaded_custom_beutel():
     train, test = get_train_test()
 
-    beut_model: PreAlgorithm = Beutel(epochs=5, fairness="Eq. Opp")
+    beut_model: PreAlgorithm = Beutel(epochs=5, fairness=FairType.EOPP)
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
@@ -239,7 +239,7 @@ def test_threaded_custom_beutel():
     assert predictions.values[predictions.values == 1].shape[0] == 202
     assert predictions.values[predictions.values == -1].shape[0] == 198
 
-    model: PreAlgorithmAsync = Beutel(epochs=5, fairness="Eq. Opp")
+    model: PreAlgorithmAsync = Beutel(epochs=5, fairness=FairType.EOPP)
     assert model is not None
     assert model.name == "Beutel"
 

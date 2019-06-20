@@ -14,7 +14,7 @@ from torch import nn
 from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.algorithms.utils import DataTuple, TestTuple, FairType
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
@@ -33,7 +33,7 @@ STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 class BeutelSettings:
     """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
 
-    fairness: str
+    fairness: FairType
     enc_size: Sequence[int]
     adv_size: Sequence[int]
     pred_size: Sequence[int]
@@ -55,7 +55,9 @@ def set_seed(seed: int):
     torch.cuda.manual_seed_all(seed)  # type: ignore  # mypy claims manual_seed_all doesn't exist
 
 
-def build_networks(flags, train_data, enc_activation, adv_activation):
+def build_networks(
+    flags: BeutelSettings, train_data: CustomDataset, enc_activation, adv_activation
+):
     """build teh networks we use - pulled into a separate function to make the code a bit neater"""
     enc = Encoder(
         enc_size=flags.enc_size, init_size=int(train_data.size), activation=enc_activation
@@ -151,11 +153,11 @@ def train_and_transform(
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags.fairness == "Eq. Opp":
+            if flags.fairness == FairType.EOPP:
                 mask = class_label.ge(0.5)
-            elif flags.fairness == "Eq. Odds":
+            elif flags.fairness == FairType.EODDS:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags.fairness == "DI":
+            elif flags.fairness == FairType.DI:
                 mask = torch.ones(s_pred.shape).byte()
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
@@ -207,7 +209,7 @@ def step(iteration, loss, optimizer, scheduler):
     scheduler.step(iteration)
 
 
-def get_mask(flags, s_pred, class_label):
+def get_mask(flags: BeutelSettings, s_pred, class_label):
     """
     Get a mask to enforce different fairness types
     Args:
@@ -218,11 +220,11 @@ def get_mask(flags, s_pred, class_label):
     Returns:
 
     """
-    if flags.fairness == "Eq. Opp":
+    if flags.fairness == FairType.EOPP:
         mask = class_label.ge(0.5)
-    elif flags.fairness == "Eq. Odds":
+    elif flags.fairness == FairType.EODDS:
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags.fairness == "DI":
+    elif flags.fairness == FairType.DI:
         mask = torch.ones(s_pred.shape).byte()
 
     return mask
@@ -286,7 +288,7 @@ def _grad_reverse(features, lambda_):
 class Encoder(nn.Module):
     """Encoder of the GAN"""
 
-    def __init__(self, enc_size: List[int], init_size: int, activation):
+    def __init__(self, enc_size: Sequence[int], init_size: int, activation):
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -311,8 +313,8 @@ class Adversary(nn.Module):
 
     def __init__(
         self,
-        fairness: str,
-        adv_size: List[int],
+        fairness: FairType,
+        adv_size: Sequence[int],
         init_size: int,
         s_size: int,
         activation: nn.Module,
@@ -341,13 +343,13 @@ class Adversary(nn.Module):
 
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness == "Eq. Opp":
+        if self.fairness == FairType.EOPP:
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness == "Eq. Odds":
+        elif self.fairness == FairType.EODDS:
             raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness == "DI":
+        elif self.fairness == FairType.DI:
             x = self.adversary(x)
         return x
 
@@ -356,7 +358,7 @@ class Predictor(nn.Module):
     """Predictor of the GAN"""
 
     def __init__(
-        self, pred_size: List[int], init_size: int, class_label_size: int, activation: nn.Module
+        self, pred_size: Sequence[int], init_size: int, class_label_size: int, activation: nn.Module
     ):
         super().__init__()
         self.predictor = nn.Sequential()
@@ -403,7 +405,7 @@ def main():
     parser = pre_algo_argparser()
 
     # model parameters
-    parser.add_argument("--fairness", required=True)
+    parser.add_argument("--fairness", type=FairType, choices=list(FairType), required=True)
     parser.add_argument("--enc_size", type=int, nargs="+", required=True)
     parser.add_argument("--adv_size", type=int, nargs="+", required=True)
     parser.add_argument("--pred_size", type=int, nargs="+", required=True)
