@@ -38,14 +38,14 @@ class GPyT(InstalledModel):
         self.length_scale = length_scale
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
+        (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
             strain=train.s.to_numpy(),
             ytrain=ytrain,
             xtest=test.x.to_numpy(),
             stest=test.s.to_numpy(),
-            ytest=ytest,
+            # ytest=ytest,
         )
         parameters = self._additional_parameters(raw_data)
 
@@ -72,7 +72,7 @@ class GPyT(InstalledModel):
                 output = np.load(file_obj)
                 pred_mean = output["pred_mean"]
 
-        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytest"].dtype)[:, 0])
+        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
         return pd.DataFrame(predictions, columns=["preds"])
 
     async def _run_gpyt(self, flags):
@@ -246,15 +246,15 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    async def run_async(self, train, test):
-        (ytrain, ytest), label_converter = _fix_labels([train.y.to_numpy(), test.y.to_numpy()])
+    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        (ytrain, ), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
             strain=train.s.to_numpy(),
             ytrain=ytrain,
             xtest=test.x.to_numpy(),
             stest=test.s.to_numpy(),
-            ytest=ytest,
+            # ytest=ytest,
         )
         parameters = self._additional_parameters(raw_data)
 
@@ -289,7 +289,7 @@ class GPyTEqOdds(GPyT):
                     output = np.load(file_obj)
                     prediction_on_train = output["pred_mean"]
                 preds = (prediction_on_train > 0.5).astype(int)
-                odds = compute_odds(train_dev_data["ytest"], preds, train_dev_data["stest"])
+                odds = compute_odds(train_dev_data["ytrain"], preds, train_dev_data["stest"])
 
                 # Enforce equality of opportunity
                 opportunity = min(odds["p_ybary1_s0"], odds["p_ybary1_s1"])
@@ -311,7 +311,7 @@ class GPyTEqOdds(GPyT):
                 pred_mean = output["pred_mean"]
 
         # Convert the result to the expected format
-        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytest"].dtype)[:, 0])
+        predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
         return pd.DataFrame(predictions, columns=["preds"])
 
     @property
@@ -421,7 +421,7 @@ def _flags(
             batch_size=batch_size,
             # epochs=min(MAX_EPOCHS, _num_epochs(num_train)),
             epochs=min(epochs, MAX_EPOCHS),
-            eval_epochs=5,
+            eval_epochs=100000,  # we can unfortunately not run evaluations because of no y_test
             summary_steps=100000,
             chkpt_epochs=100000,
             save_dir=save_dir,  # "/home/ubuntu/out2/",
@@ -439,10 +439,10 @@ def _flags(
             # num_inducing=MAX_NUM_INDUCING,
             num_inducing=_num_inducing(num_train),
             manual_seed=SEED,
-            metrics=(
-                "binary_accuracy,pred_rate_y1_s0,pred_rate_y1_s1,base_rate_y1_s0,base_rate_y1_s1,"
-                "pred_odds_yhaty1_s0,pred_odds_yhaty1_s1,pred_odds_yhaty0_s0,pred_odds_yhaty0_s1"
-            ),
+            # metrics=(
+            #     "binary_accuracy,pred_rate_y1_s0,pred_rate_y1_s1,base_rate_y1_s0,base_rate_y1_s1,"
+            #     "pred_odds_yhaty1_s0,pred_odds_yhaty1_s1,pred_odds_yhaty0_s0,pred_odds_yhaty0_s1"
+            # ),
         ),
         **parameters,
     }
