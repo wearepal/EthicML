@@ -247,7 +247,7 @@ class GPyTEqOdds(GPyT):
         )
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        (ytrain, ), label_converter = _fix_labels([train.y.to_numpy()])
+        (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
             strain=train.s.to_numpy(),
