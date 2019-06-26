@@ -1,6 +1,7 @@
 """
 Collection of functions that enable parallelism
 """
+import os
 import asyncio
 from typing import List, Tuple, Dict
 
@@ -14,15 +15,15 @@ Data = Tuple[DataTuple, DataTuple]
 
 
 async def arrange_in_parallel(
-    algos: List[InAlgorithmAsync], data: List[Data], max_parallel: int = -1
+    algos: List[InAlgorithmAsync], data: List[Data], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
     Args:
         algos: list of algorithms that implement the `run_async` function
         data: list of pairs of data tuples (train and test)
-        max_parallel: how many processes can run in parallel at most. if negative, then there is no
-                      maximum
+        max_parallel: how many processes can run in parallel at most. if zero (or negative), then
+                      there is no maximum
     Returns:
         list of the results
     """
@@ -37,7 +38,9 @@ async def arrange_in_parallel(
         for j, data_item in enumerate(data):
             task_queue.put_nowait((i, j, algo, data_item))
     # create workers
-    num_workers = max_parallel if max_parallel > 0 else (len(algos) * len(data))
+    num_cpus = os.cpu_count()
+    default_num_workers: int = num_cpus if num_cpus is not None else 1
+    num_workers = max_parallel if max_parallel > 0 else default_num_workers
     result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
     workers = [_eval_worker(worker_id, task_queue, result_dict) for worker_id in range(num_workers)]
     # run workers and confirm that the queue is empty
