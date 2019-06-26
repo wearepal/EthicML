@@ -289,7 +289,7 @@ class GPyTEqOdds(GPyT):
                     output = np.load(file_obj)
                     prediction_on_train = output["pred_mean"]
                 preds = (prediction_on_train > 0.5).astype(int)
-                odds = compute_odds(train_dev_data["ytrain"], preds, train_dev_data["stest"])
+                odds = compute_odds(train_dev_data["ytest"], preds, train_dev_data["stest"])
 
                 # Enforce equality of opportunity
                 opportunity = min(odds["p_ybary1_s0"], odds["p_ybary1_s1"])
