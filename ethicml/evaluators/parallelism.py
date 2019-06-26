@@ -38,7 +38,8 @@ async def arrange_in_parallel(
         for j, data_item in enumerate(data):
             task_queue.put_nowait((i, j, algo, data_item))
     # create workers
-    num_cpus: int = os.cpu_count() if os.cpu_count() is not None else 1
+    num_cpus = os.cpu_count()
+    default_num_workers: int = num_cpus if num_cpus is not None else 1
     num_workers = max_parallel if max_parallel > 0 else num_cpus
     result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
     workers = [_eval_worker(worker_id, task_queue, result_dict) for worker_id in range(num_workers)]
