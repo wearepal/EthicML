@@ -40,7 +40,7 @@ async def arrange_in_parallel(
     # create workers
     num_cpus = os.cpu_count()
     default_num_workers: int = num_cpus if num_cpus is not None else 1
-    num_workers = max_parallel if max_parallel > 0 else num_cpus
+    num_workers = max_parallel if max_parallel > 0 else default_num_workers
     result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
     workers = [_eval_worker(worker_id, task_queue, result_dict) for worker_id in range(num_workers)]
     # run workers and confirm that the queue is empty
