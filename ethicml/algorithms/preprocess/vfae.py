@@ -5,11 +5,9 @@ Variational Fair Auto-Encoder by Louizos et al
 from pathlib import Path
 from typing import List, Tuple, Dict, Union, Optional
 
-import pandas as pd
-
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
-from ethicml.algorithms.utils import PathTuple, TestPathTuple, DataTuple, TestTuple
+from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 
 
 class VFAE(PreAlgorithmAsync):
@@ -49,7 +47,7 @@ class VFAE(PreAlgorithmAsync):
             "z1_dec_size": z1_dec_size,
         }
 
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations.vfae import train_and_transform
 
         return train_and_transform(train, test, self.flags)
@@ -58,10 +56,26 @@ class VFAE(PreAlgorithmAsync):
         self,
         train_paths: PathTuple,
         test_paths: TestPathTuple,
-        new_train_path: Path,
-        new_test_path: Path,
+        new_train_x_path: Path,
+        new_train_s_path: Path,
+        new_train_y_path: Path,
+        new_train_name_path: Path,
+        new_test_x_path: Path,
+        new_test_s_path: Path,
+        new_test_name_path: Path,
     ) -> List[str]:
-        args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, self.flags)
+        args = flag_interface(
+            train_paths,
+            test_paths,
+            new_train_x_path,
+            new_train_s_path,
+            new_train_y_path,
+            new_train_name_path,
+            new_test_x_path,
+            new_test_s_path,
+            new_test_name_path,
+            self.flags,
+        )
         return ["-m", "ethicml.implementations.vfae"] + args
 
     @property

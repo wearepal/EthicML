@@ -6,7 +6,7 @@ import numpy as np
 from pandas.testing import assert_index_equal
 import pandas as pd
 
-from ..algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 
 
 def call_numpy_to_split(
@@ -49,11 +49,17 @@ def train_test_split(
     all_data_train, all_data_test = all_data_train_test
 
     train: DataTuple = DataTuple(
-        x=all_data_train[x_columns], s=all_data_train[s_columns], y=all_data_train[y_columns]
+        x=all_data_train[x_columns],
+        s=all_data_train[s_columns],
+        y=all_data_train[y_columns],
+        name=f"{data.name} - Train",
     )
 
     test: DataTuple = DataTuple(
-        x=all_data_test[x_columns], s=all_data_test[s_columns], y=all_data_test[y_columns]
+        x=all_data_test[x_columns],
+        s=all_data_test[s_columns],
+        y=all_data_test[y_columns],
+        name=f"{data.name} - Test",
     )
 
     assert isinstance(train.x, pd.DataFrame)
@@ -85,7 +91,7 @@ def fold_data(data: DataTuple, folds: int):
     fold_sizes[: data.x.shape[0] % folds] += 1
 
     current = 0
-    for fold_size in fold_sizes:
+    for i, fold_size in enumerate(fold_sizes):
         start, stop = current, current + fold_size
         val_inds: np.ndarray[int] = indices[start:stop]
         train_inds = [i for i in indices if i not in val_inds]  # Pretty sure this is inefficient
@@ -106,6 +112,8 @@ def fold_data(data: DataTuple, folds: int):
         assert val_s.shape == (len(val_inds), data.s.shape[1])
         assert val_y.shape == (len(val_inds), data.y.shape[1])
 
-        yield DataTuple(x=train_x, s=train_s, y=train_y), DataTuple(x=val_x, s=val_s, y=val_y)
+        yield DataTuple(
+            x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"
+        ), DataTuple(x=val_x, s=val_s, y=val_y, name=f"{data.name} - test fold {i}")
 
         current = stop

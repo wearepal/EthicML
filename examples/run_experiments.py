@@ -1,12 +1,11 @@
 import os
 from pathlib import Path
 import pandas as pd
-from tqdm import tqdm
 import sys
 
 from ethicml.algorithms.inprocess import SVM, Kamishima, Agarwal, LR
 from ethicml.algorithms.inprocess.kamiran import Kamiran
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import create_data_obj, load_data
 from ethicml.evaluators.cross_validator import CrossValidator

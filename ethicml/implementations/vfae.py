@@ -1,7 +1,7 @@
 """
 Implementation of VFAE
 """
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import torch
@@ -11,9 +11,14 @@ from torch.utils.data import DataLoader
 from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
+from ethicml.implementations.utils import (
+    pre_algo_argparser,
+    load_data_from_flags,
+    save_transformations,
+)
 from ethicml.implementations.vfae_modules.utils import loss_function
 from ethicml.implementations.vfae_modules.vfae_network import VFAENetwork
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 def get_dataset_obj_by_name(name: str) -> Dataset:
@@ -41,7 +46,9 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
     return lookup[name]
 
 
-def train_and_transform(train: DataTuple, test: TestTuple, flags: Any):
+def train_and_transform(
+    train: DataTuple, test: TestTuple, flags: Any
+) -> Tuple[DataTuple, TestTuple]:
     """
     train the model and transform the dataset
     Args:
@@ -82,19 +89,18 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: Any):
     model.eval()
     with torch.no_grad():
         for _x, _s, _ in train_loader:
-            z1_mu, _ = model.encode_z1(_x, _s)
-            # train += scaler.inverse_transform(x_dec.data).tolist()
-            post_train += z1_mu.data.tolist()
+            z1_mu, z1_logvar = model.encode_z1(_x, _s)
+            z1 = model.reparameterize(z1_mu, z1_logvar)
+            post_train += z1.data.tolist()
         for _x, _s in test_loader:
-            z1_mu, _ = model.encode_z1(_x, _s)
-            # test += scaler.inverse_transform(x_dec.data).tolist()
-            post_test += z1_mu.data.tolist()
+            z1_mu, z1_logvar = model.encode_z1(_x, _s)
+            z1 = model.reparameterize(z1_mu, z1_logvar)
+            post_test += z1.data.tolist()
 
-    # return (
-    #     pd.DataFrame(post_train, columns=train.x.columns),
-    #     pd.DataFrame(post_test, columns=test.x.columns),
-    # )
-    return pd.DataFrame(post_train), pd.DataFrame(post_test)
+    return (
+        DataTuple(x=pd.DataFrame(post_train), s=train.s, y=train.y, name=f"VFAE: {train.name}"),
+        TestTuple(x=pd.DataFrame(post_test), s=test.s, name=f"VFAE: {test.name}"),
+    )
 
 
 def train_model(epoch, model, train_loader, optimizer, flags):
@@ -150,3 +156,27 @@ def train_model(epoch, model, train_loader, optimizer, flags):
                 )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
+
+
+def main():
+    """main method to run model"""
+    parser = pre_algo_argparser()
+
+    parser.add_argument("--supervised", type=bool, required=True)
+    parser.add_argument("--fairness", type=str, required=True)
+    parser.add_argument("--batch_size", type=int, required=True)
+    parser.add_argument("--epochs", type=int, required=True)
+    parser.add_argument("--dataset", type=str, required=True)
+    parser.add_argument("--z1_enc_size", type=int, nargs="+", required=True)
+    parser.add_argument("--z2_enc_size", type=int, nargs="+", required=True)
+    parser.add_argument("--z1_dec_size", type=int, nargs="+", required=True)
+    args = parser.parse_args()
+
+    flags = vars(parser.parse_args())
+
+    train, test = load_data_from_flags(flags)
+    save_transformations(train_and_transform(train, test, flags), args)
+
+
+if __name__ == "__main__":
+    main()

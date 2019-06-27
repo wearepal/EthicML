@@ -1,7 +1,7 @@
 """Methods that define commandline interfaces"""
 from typing import List
 
-from ..utils import PathTuple, TestPathTuple
+from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 def conventional_interface(train_paths: PathTuple, test_paths: TestPathTuple, *args) -> List[str]:
@@ -15,8 +15,10 @@ def conventional_interface(train_paths: PathTuple, test_paths: TestPathTuple, *a
         str(train_paths.x),
         str(train_paths.s),
         str(train_paths.y),
+        str(train_paths.name),
         str(test_paths.x),
         str(test_paths.s),
+        str(test_paths.name),
     ]
     for arg in args:
         list_to_return.append(str(arg))

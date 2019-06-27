@@ -5,7 +5,7 @@ import math
 
 from typing import Tuple
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.data.load import load_data
 from ethicml.data.toy import Toy
 from ethicml.preprocessing.train_test_split import train_test_split
@@ -56,7 +56,9 @@ def test_train_test_split():
     len_0_0 = math.floor((2000 / 100) * 0)
     train, test = train_test_split(data, train_percentage=0.0)
     assert train.s.shape[0] == len_0_0
+    assert "Toy - Train" == train.name
     assert test.s.shape[0] == 2000 - len_0_0
+    assert "Toy - Test" == test.name
 
 
 def test_random_seed():

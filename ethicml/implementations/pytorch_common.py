@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class TestDataset(Dataset):

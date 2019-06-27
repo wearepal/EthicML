@@ -5,8 +5,8 @@ For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))
 import pandas as pd
 
 from ethicml.metrics.prob_pos import ProbPos
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class CV(Metric):

@@ -5,7 +5,7 @@ from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside

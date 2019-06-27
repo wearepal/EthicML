@@ -8,8 +8,8 @@ from ethicml.common import ROOT_PATH
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data, create_data_obj
 from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
-from ethicml.algorithms.utils import DataTuple, concat_dt
-from ethicml.preprocessing.domain_adaptation import domain_split, dataset_from_cond, query_dt
+from ethicml.utility.data_structures import DataTuple, concat_dt
+from ethicml.preprocessing.domain_adaptation import domain_split, query_dt
 
 
 def test_can_load_test_data():
@@ -23,6 +23,7 @@ def test_load_data():
     assert (2000, 2) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
+    assert "Toy" == data.name
 
 
 def test_load_non_binary_data():
@@ -66,6 +67,7 @@ def test_load_adult():
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
+    assert "Adult" == data.name
 
 
 def test_load_compas():
@@ -73,6 +75,7 @@ def test_load_compas():
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
+    assert "Compas" == data.name
 
 
 def test_load_sqf():
@@ -80,6 +83,7 @@ def test_load_sqf():
     assert (12347, 144) == data.x.shape
     assert (12347, 1) == data.s.shape
     assert (12347, 1) == data.y.shape
+    assert "SQF" == data.name
 
 
 def test_load_german():
@@ -87,6 +91,7 @@ def test_load_german():
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
     assert (1000, 1) == data.y.shape
+    assert "German" == data.name
 
 
 def test_load_german_ordered():
@@ -247,7 +252,7 @@ def test_query():
                                    data=[[9],
                                          [10],
                                          [11]])
-    data = DataTuple(x=x, s=s, y=y)
+    data = DataTuple(x=x, s=s, y=y, name='test_data')
     selected = query_dt(data, '_0a == 0 & c_eq_ == 6 & d == 9')
     pd.testing.assert_frame_equal(selected.x, x.head(1))
     pd.testing.assert_frame_equal(selected.s, s.head(1))
@@ -258,11 +263,11 @@ def test_concat():
     x: pd.DataFrame = pd.DataFrame(columns=['a'], data=[[1]])
     s: pd.DataFrame = pd.DataFrame(columns=['b'], data=[[2]])
     y: pd.DataFrame = pd.DataFrame(columns=['c'], data=[[3]])
-    data1 = DataTuple(x=x, s=s, y=y)
+    data1 = DataTuple(x=x, s=s, y=y, name='test_data')
     x = pd.DataFrame(columns=['a'], data=[[4]])
     s = pd.DataFrame(columns=['b'], data=[[5]])
     y = pd.DataFrame(columns=['c'], data=[[6]])
-    data2 = DataTuple(x=x, s=s, y=y)
+    data2 = DataTuple(x=x, s=s, y=y, name='test_tuple')
     data3 = concat_dt([data1, data2], axis='index', ignore_index=True)
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=['a'], data=[[1], [4]]))
     pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=['b'], data=[[2], [5]]))

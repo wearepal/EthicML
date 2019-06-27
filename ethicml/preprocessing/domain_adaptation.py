@@ -6,7 +6,7 @@ import re
 from typing import Tuple
 from functools import partial
 import pandas as pd
-from ethicml.algorithms.utils import DataTuple, apply_to_joined_tuple
+from ethicml.utility.data_structures import DataTuple, apply_to_joined_tuple
 
 
 def dataset_from_cond(dataset: pd.DataFrame, cond: str):
@@ -59,13 +59,13 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
     train_s = datatup.s.loc[train_train.index].reset_index(drop=True)
     train_y = datatup.y.loc[train_train.index].reset_index(drop=True)
 
-    train_datatup = DataTuple(x=train_x, s=train_s, y=train_y)
+    train_datatup = DataTuple(x=train_x, s=train_s, y=train_y, name=datatup.name)
 
     test_x = datatup.x.loc[test.index].reset_index(drop=True)
     test_s = datatup.s.loc[test.index].reset_index(drop=True)
     test_y = datatup.y.loc[test.index].reset_index(drop=True)
 
-    test_datatup = DataTuple(x=test_x, s=test_s, y=test_y)
+    test_datatup = DataTuple(x=test_x, s=test_s, y=test_y, name=datatup.name)
 
     return train_datatup, test_datatup
 

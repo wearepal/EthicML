@@ -3,7 +3,7 @@ from sklearn.svm import SVC, LinearSVC
 
 import pandas as pd
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.implementations.utils import InAlgoInterface
 
 

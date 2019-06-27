@@ -4,7 +4,7 @@ reasonable time
 """
 from pathlib import Path
 from typing import Tuple, List
-from dataclasses import dataclass, astuple
+from dataclasses import dataclass
 from enum import Enum
 
 import pandas as pd
@@ -14,6 +14,7 @@ import pandas as pd
 class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute"""
 
+    name: str  # name of the dataset
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
 
@@ -31,6 +32,7 @@ class TestPathTuple:
 
     x: Path  # path to file with features
     s: Path  # path to file with sensitive attributes
+    name: Path  # name of the dataset
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -66,8 +68,13 @@ def write_as_feather(
         x=_save(train.x, "train", "x"),
         s=_save(train.s, "train", "s"),
         y=_save(train.y, "train", "y"),
+        name=_save(pd.DataFrame([train.name], columns=['0']), "train", "name"),
     )
-    test_paths = TestPathTuple(x=_save(test.x, "test", "x"), s=_save(test.s, "test", "s"))
+    test_paths = TestPathTuple(
+        x=_save(test.x, "test", "x"),
+        s=_save(test.s, "test", "s"),
+        name=_save(pd.DataFrame([test.name], columns=['0']), "test", "name"),
+    )
     return train_paths, test_paths
 
 
@@ -78,22 +85,29 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     cols_y = datatup.y.columns
     joined = pd.concat([datatup.x, datatup.s, datatup.y], axis="columns", sort=False)
     joined = mapper(joined)
-    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y], name=datatup.name)
 
 
 def concat_dt(datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False):
     """Concatenate the data tuples in the given list"""
-    return DataTuple(
-        *[
-            pd.concat(
-                [astuple(datatup)[i] for datatup in datatup_list],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
-            )
-            for i, _ in enumerate(astuple(datatup_list[0]))
-        ]
+
+    to_return = DataTuple(
+        x=datatup_list[0].x, s=datatup_list[0].s, y=datatup_list[0].y, name=datatup_list[0].name
     )
+    for i in range(1, len(datatup_list)):
+        to_return = DataTuple(
+            x=pd.concat(
+                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
+            ),
+            s=pd.concat(
+                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
+            ),
+            y=pd.concat(
+                [to_return.y, datatup_list[i].y], axis=axis, sort=False, ignore_index=ignore_index
+            ),
+            name=to_return.name,
+        )
+    return to_return
 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
@@ -112,7 +126,9 @@ def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
     Returns:
         subset of training data
     """
-    return DataTuple(x=train.x.iloc[:num], s=train.s.iloc[:num], y=train.y.iloc[:num])
+    return DataTuple(
+        x=train.x.iloc[:num], s=train.s.iloc[:num], y=train.y.iloc[:num], name=train.name
+    )
 
 
 class FairType(Enum):

@@ -4,7 +4,7 @@ Simplae class to make class labels binary. Useful if a network uses BCELoss for 
 
 import numpy as np
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 
 
 def assert_binary_labels(train: DataTuple):
@@ -44,7 +44,7 @@ class LabelBinarizer:
         assert dataset.y[y_col].nunique() == 2
 
         # make copy of dataset
-        dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy())
+        dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy(), name=dataset.name)
 
         self.min_val = dataset.y.values.min()
         self.max_val = dataset.y.values.max()
@@ -54,4 +54,26 @@ class LabelBinarizer:
         dataset.y[y_col].replace(self.min_val, 0, inplace=True)
         dataset.y[y_col].replace(self.max_val, 1, inplace=True)
 
-        return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y)
+        return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
+
+    def post(self, dataset: DataTuple) -> DataTuple:
+        """
+        Inverse of adjust
+        Args:
+            dataset:
+
+        Returns:
+
+        """
+        y_col = dataset.y.columns[0]
+        assert dataset.y[y_col].nunique() == 2
+
+        # make copy of dataset
+        dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy(), name=dataset.name)
+
+        y_col = dataset.y.columns[0]
+
+        dataset.y[y_col].replace(0, self.min_val, inplace=True)
+        dataset.y[y_col].replace(1, self.max_val, inplace=True)
+
+        return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)

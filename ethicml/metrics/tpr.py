@@ -4,9 +4,9 @@ For assessing TPR
 
 import pandas as pd
 
+from ethicml.utility.data_structures import DataTuple
 from .confusion_matrix import confusion_matrix
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class TPR(Metric):

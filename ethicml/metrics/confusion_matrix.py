@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix as conf_mtx
 
-from ..algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 
 
 class LabelOutOfBounds(Exception):

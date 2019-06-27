@@ -13,7 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-from ..algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 

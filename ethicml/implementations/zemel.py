@@ -9,7 +9,7 @@ import numpy as np
 import scipy.optimize as optim
 from numba import jit
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
@@ -200,7 +200,7 @@ LFR_optim_obj.iters = 0
 
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, float]]
-) -> (Tuple[pd.DataFrame, pd.DataFrame]):
+) -> (Tuple[DataTuple, TestTuple]):
     """Train the Zemel model and return the transformed features of the train and test sets"""
     np.random.seed(888)
     features_dim = train.x.shape[1]
@@ -263,7 +263,10 @@ def train_and_transform(
         training_sensitive, training_nonsensitive, learned_model, train, flags
     )
 
-    return train_transformed, test_transformed
+    return (
+        DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name),
+        TestTuple(x=test_transformed, s=test.s, name=test.name),
+    )
 
 
 def transform(features_sens, features_nonsens, learned_model, dataset, flags):
@@ -339,12 +342,11 @@ def main():
     parser.add_argument("--maxfun", type=int, required=True)
     parser.add_argument("--epsilon", type=float, required=True)
     parser.add_argument("--threshold", type=float, required=True)
+    args = parser.parse_args()
     flags = vars(parser.parse_args())
 
     train, test = load_data_from_flags(flags)
-    save_transformations(
-        train_and_transform(train, test, flags), (flags['train_new'], flags['test_new'])
-    )
+    save_transformations(train_and_transform(train, test, flags), args)
 
 
 if __name__ == "__main__":
