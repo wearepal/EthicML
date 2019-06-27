@@ -5,7 +5,7 @@ import math
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.metrics.metric import Metric
 
 

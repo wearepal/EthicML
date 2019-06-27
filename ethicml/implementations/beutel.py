@@ -14,7 +14,7 @@ from torch import nn
 from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 
-from ethicml.algorithms.utils import DataTuple, TestTuple, FairType
+from ethicml.utility.data_structures import DataTuple, TestTuple, FairType
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
@@ -103,17 +103,19 @@ def make_dataset_and_loader(
 
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: BeutelSettings
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[DataTuple, TestTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test"""
 
     set_seed(888)
 
+    post_process = False
     if flags.y_loss == "BCELoss()":
         try:
             assert_binary_labels(train)
         except AssertionError:
             processor = LabelBinarizer()
             train = processor.adjust(train)
+            post_process = True
 
     # By default we use 10% of the training data for validation
     train_, validation = train_test_split(train, train_percentage=1 - flags.validation_pcnt)
@@ -188,7 +190,10 @@ def train_and_transform(
 
     enc.load_state_dict(best_enc)
 
-    return encode_dataset(enc, all_train_data_loader), encode_testset(enc, test_loader)
+    transformed_train = encode_dataset(enc, all_train_data_loader, train)
+    if post_process:
+        transformed_train = processor.post(encode_dataset(enc, all_train_data_loader, train))
+    return transformed_train, encode_testset(enc, test_loader, test)
 
 
 def step(iteration, loss, optimizer, scheduler):
@@ -230,7 +235,9 @@ def get_mask(flags: BeutelSettings, s_pred, class_label):
     return mask
 
 
-def encode_dataset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> pd.DataFrame:
+def encode_dataset(
+    enc: nn.Module, dataloader: torch.utils.data.DataLoader, datatuple: DataTuple
+) -> DataTuple:
     """
     Encode a dataset
     Args:
@@ -245,10 +252,17 @@ def encode_dataset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> p
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return pd.DataFrame(data_to_return)
+    return DataTuple(
+        x=pd.DataFrame(data_to_return),
+        s=datatuple.s,
+        y=datatuple.y,
+        name=f"Beutel: {datatuple.name}",
+    )
 
 
-def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> pd.DataFrame:
+def encode_testset(
+    enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: TestTuple
+) -> TestTuple:
     """
     Encode a dataset
     Args:
@@ -263,7 +277,7 @@ def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader) -> p
     for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return pd.DataFrame(data_to_return)
+    return TestTuple(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
 
 
 class GradReverse(Function):
@@ -436,7 +450,7 @@ def main():
         adv_weight=args.adv_weight,
         validation_pcnt=args.validation_pcnt,
     )
-    save_transformations(train_and_transform(train, test, flags), (args.train_new, args.test_new))
+    save_transformations(train_and_transform(train, test, flags), args)
 
 
 if __name__ == "__main__":

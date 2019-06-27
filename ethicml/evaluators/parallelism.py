@@ -7,7 +7,7 @@ from typing import List, Tuple, Dict
 
 import pandas as pd
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 

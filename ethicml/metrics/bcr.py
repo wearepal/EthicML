@@ -6,8 +6,8 @@ import pandas as pd
 
 from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class BCR(Metric):

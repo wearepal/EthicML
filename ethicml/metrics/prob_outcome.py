@@ -4,8 +4,8 @@ For assessing mean of logits
 
 import pandas as pd
 
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class ProbOutcome(Metric):

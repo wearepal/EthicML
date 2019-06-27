@@ -9,7 +9,7 @@ from typing import Tuple, Union, List, Optional, Dict, Any
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.algorithms.algorithm_base import load_dataframe
 
 
@@ -25,8 +25,13 @@ class InAlgoInterface:
             x=load_dataframe(Path(self.args[0])),
             s=load_dataframe(Path(self.args[1])),
             y=load_dataframe(Path(self.args[2])),
+            name=str(load_dataframe(Path(self.args[3]))['0'][0]),
         )
-        test = TestTuple(x=load_dataframe(Path(self.args[3])), s=load_dataframe(Path(self.args[4])))
+        test = TestTuple(
+            x=load_dataframe(Path(self.args[4])),
+            s=load_dataframe(Path(self.args[5])),
+            name=str(load_dataframe(Path(self.args[6]))['0'][0]),
+        )
         return train, test
 
     def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
@@ -35,12 +40,12 @@ class InAlgoInterface:
             df = pd.DataFrame(predictions, columns=["pred"])
         else:
             df = predictions
-        pred_path = Path(self.args[5])
+        pred_path = Path(self.args[7])
         df.to_feather(pred_path)
 
     def remaining_args(self) -> List[str]:
         """Additional commandline arguments beyond the data paths and the prediction path"""
-        return self.args[6:]
+        return self.args[8:]
 
 
 def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
@@ -49,24 +54,37 @@ def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
         x=load_dataframe(Path(flags["train_x"])),
         s=load_dataframe(Path(flags["train_s"])),
         y=load_dataframe(Path(flags["train_y"])),
+        name=str(load_dataframe(Path(flags["train_name"]))['0'][0]),
     )
     test = TestTuple(
-        x=load_dataframe(Path(flags['test_x'])), s=load_dataframe(Path(flags['test_s']))
+        x=load_dataframe(Path(flags['test_x'])),
+        s=load_dataframe(Path(flags['test_s'])),
+        name=str(load_dataframe(Path(flags["test_name"]))['0'][0]),
     )
     return train, test
 
 
-def save_transformations(
-    transforms: Tuple[pd.DataFrame, pd.DataFrame], transform_paths: Tuple[str, str]
-):
+def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: argparse.Namespace):
     """Save the data to the file that was specified in the commandline arguments"""
-    assert isinstance(transforms[0], pd.DataFrame)
-    assert isinstance(transforms[1], pd.DataFrame)
-    for transform, path in zip(transforms, transform_paths):
-        transform_path = Path(path)
-        # convert the column IDs to strings because the feather format requires that
-        transform.columns = transform.columns.astype(str)
-        transform.to_feather(transform_path)
+    assert isinstance(transforms[0], DataTuple)
+    assert isinstance(transforms[1], TestTuple)
+
+    train, test = transforms
+
+    def _save(data: pd.DataFrame, path: str) -> None:
+        # SUGGESTION: maybe the file names should be completely random to avoid collisions
+        data_path = Path(path)
+        # write the file
+        data.columns = data.columns.astype(str)
+        data.to_feather(data_path)
+
+    _save(train.x, args.new_train_x)
+    _save(train.s, args.new_train_s)
+    _save(train.y, args.new_train_y)
+    _save(pd.DataFrame([train.name], columns=['0']), args.new_train_name)
+    _save(test.x, args.new_test_x)
+    _save(test.s, args.new_test_s)
+    _save(pd.DataFrame([test.name], columns=['0']), args.new_test_name)
 
 
 def pre_algo_argparser() -> argparse.ArgumentParser:
@@ -81,10 +99,17 @@ def pre_algo_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--train_x", required=True)
     parser.add_argument("--train_s", required=True)
     parser.add_argument("--train_y", required=True)
+    parser.add_argument("--train_name", required=True)
     parser.add_argument("--test_x", required=True)
     parser.add_argument("--test_s", required=True)
+    parser.add_argument("--test_name", required=True)
 
     # paths to where the processed inputs should be stored
-    parser.add_argument("--train_new", required=True)
-    parser.add_argument("--test_new", required=True)
+    parser.add_argument("--new_train_x", required=True)
+    parser.add_argument("--new_train_s", required=True)
+    parser.add_argument("--new_train_y", required=True)
+    parser.add_argument("--new_train_name", required=True)
+    parser.add_argument("--new_test_x", required=True)
+    parser.add_argument("--new_test_s", required=True)
+    parser.add_argument("--new_test_name", required=True)
     return parser

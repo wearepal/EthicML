@@ -5,8 +5,8 @@ For assessing accuracy
 import pandas as pd
 from sklearn.metrics import accuracy_score
 
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class Accuracy(Metric):

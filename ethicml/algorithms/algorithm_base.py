@@ -61,7 +61,7 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
             stderr=asyncio.subprocess.PIPE,  # we capture the stderr for errors
             env=env,
         )
-        print(f"Started: {cmd_args!r} (pid = {process.pid})")
+        # print(f"Started: {cmd_args!r} (pid = {process.pid})")
 
         try:  # wait for process itself to finish
             one_hour = 3600

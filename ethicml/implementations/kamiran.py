@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 

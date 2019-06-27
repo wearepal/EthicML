@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from ..algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 
 
 class Metric(ABC):

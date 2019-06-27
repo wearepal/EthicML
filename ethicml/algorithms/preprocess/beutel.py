@@ -2,11 +2,9 @@
 from pathlib import Path
 from typing import List, Sequence, Tuple
 
-import pandas as pd
-
+from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
 from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
-from ..utils import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
 
 
 class Beutel(PreAlgorithmAsync):
@@ -42,7 +40,7 @@ class Beutel(PreAlgorithmAsync):
         self.adv_weight = adv_weight
         self.validation_pcnt = validation_pcnt
 
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import beutel  # only import this on demand because of pytorch
 
         # SUGGESTION: it would be great if BeutelSettings could already be created in the init
@@ -66,10 +64,26 @@ class Beutel(PreAlgorithmAsync):
         self,
         train_paths: PathTuple,
         test_paths: TestPathTuple,
-        new_train_path: Path,
-        new_test_path: Path,
+        new_train_x_path: Path,
+        new_train_s_path: Path,
+        new_train_y_path: Path,
+        new_train_name_path: Path,
+        new_test_x_path: Path,
+        new_test_s_path: Path,
+        new_test_name_path: Path,
     ) -> List[str]:
-        args = flag_interface(train_paths, test_paths, new_train_path, new_test_path, vars(self))
+        args = flag_interface(
+            train_paths,
+            test_paths,
+            new_train_x_path,
+            new_train_s_path,
+            new_train_y_path,
+            new_train_name_path,
+            new_test_x_path,
+            new_test_s_path,
+            new_test_name_path,
+            vars(self),
+        )
         return ["-m", "ethicml.implementations.beutel"] + args
 
     @property

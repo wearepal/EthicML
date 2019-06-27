@@ -3,13 +3,12 @@ Test that we can get some metrics on predictions
 """
 
 from typing import Tuple
-from numpy.testing import assert_allclose
 import pandas as pd
 import pytest
 from pytest import approx
 
 from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.data import Adult, NonBinaryToy
 from ethicml.data.load import load_data
 from ethicml.evaluators.evaluate_models import run_metrics

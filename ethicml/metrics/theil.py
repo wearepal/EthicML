@@ -7,8 +7,8 @@ in turn based on the paper https://arxiv.org/abs/1807.00787
 import numpy as np
 import pandas as pd
 
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class Theil(Metric):
