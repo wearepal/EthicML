@@ -11,7 +11,7 @@ from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
-from ethicml.algorithms.utils import PathTuple, TestPathTuple, DataTuple, TestTuple
+from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import agarwal
 
 

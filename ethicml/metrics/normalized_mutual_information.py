@@ -6,8 +6,8 @@ import pandas as pd
 
 from sklearn.metrics import normalized_mutual_info_score as nmis
 
+from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class NMI(Metric):

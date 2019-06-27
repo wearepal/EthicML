@@ -5,8 +5,8 @@ Abstract Base Class of all post-processing algorithms in the framework
 from abc import abstractmethod
 import pandas as pd
 
+from ethicml.utility.data_structures import DataTuple
 from ..algorithm_base import Algorithm
-from ..utils import DataTuple
 
 
 class PostAlgorithm(Algorithm):

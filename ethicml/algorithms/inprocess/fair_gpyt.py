@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.algorithms.utils import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple
 
 PRED_FNAME = "predictions.npz"
 MAX_EPOCHS = 1000

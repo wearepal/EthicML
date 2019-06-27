@@ -5,8 +5,8 @@ Evaluator for a metric per sensitive attribute class
 from typing import Dict, List
 import pandas as pd
 
+from ethicml.utility.data_structures import DataTuple
 from ..metrics.metric import Metric
-from ..algorithms.utils import DataTuple
 
 
 class MetricNotApplicable(Exception):
@@ -48,6 +48,7 @@ def metric_per_sensitive_attribute(
                         y=pd.DataFrame(actual.y.loc[mask][y_col], columns=[y_col]).reset_index(
                             drop=True
                         ),
+                        name=actual.name,
                     )
                     pred_y = pd.DataFrame(
                         predictions.loc[mask][p_col], columns=[p_col]

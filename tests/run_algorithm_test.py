@@ -2,21 +2,14 @@
 Test that an algorithm can run against some data
 """
 
-from typing import Tuple, List
-import pytest
+from typing import Tuple
 import numpy as np
 
-from ethicml.algorithms.inprocess import InAlgorithm, LR, SVM, Majority
-from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
-from ethicml.algorithms.preprocess import Beutel, PreAlgorithm
-from ethicml.algorithms.utils import DataTuple
-from ethicml.data.dataset import Dataset
+from ethicml.algorithms.inprocess import LR, SVM, Majority
+from ethicml.utility.data_structures import DataTuple
 from ethicml.data.load import load_data
-from ethicml.data import Adult, Compas, German, Sqf, Toy
+from ethicml.data import Toy
 from ethicml.evaluators import run_in_parallel
-from ethicml.evaluators.evaluate_models import evaluate_models
-from ethicml.evaluators.per_sensitive_attribute import MetricNotApplicable
-from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.preprocessing.train_test_split import train_test_split
 
 

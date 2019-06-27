@@ -4,7 +4,7 @@ Test the saving data capability
 import pandas as pd
 import numpy as np
 
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.algorithms.algorithm_base import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
 
@@ -19,7 +19,8 @@ def test_simple_saving():
              'b3': np.array([0, 1, 0])}),
         y=pd.DataFrame(
             {'c1': np.array([-2, -3, np.nan]),
-             'c3': np.array([0, 1, 0])})
+             'c3': np.array([0, 1, 0])}),
+        name='test_data'
     )
 
     class CheckEquality(InAlgorithmAsync):

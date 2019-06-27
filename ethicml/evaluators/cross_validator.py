@@ -10,7 +10,7 @@ from typing import Dict, List, Tuple, Any
 from typing import Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.metrics import Accuracy, Metric, CV
 from ethicml.preprocessing.train_test_split import fold_data
 

@@ -9,7 +9,7 @@ from abc import abstractmethod
 import pandas as pd
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
-from ethicml.algorithms.utils import (
+from ethicml.utility.data_structures import (
     DataTuple,
     TestTuple,
     get_subset,

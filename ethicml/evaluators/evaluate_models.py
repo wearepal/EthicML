@@ -11,7 +11,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.algorithms.utils import DataTuple, get_subset
+from ethicml.utility.data_structures import DataTuple, get_subset, TestTuple
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (
@@ -119,14 +119,13 @@ def evaluate_models(
                     # take smaller subset of training data to speed up training
                     train = get_subset(train)
 
-                to_operate_on = {"no_transform": {"train": train, "test": test}}
+                to_operate_on: Dict[str, Dict[str, Union[DataTuple, TestTuple]]] = {
+                    "no_transform": {"train": train, "test": test}
+                }
 
                 for pre_process_method in preprocess_models:
                     new_train, new_test = pre_process_method.run(train, test)
-                    to_operate_on[pre_process_method.name] = {
-                        "train": DataTuple(x=new_train, s=train.s, y=train.y),
-                        "test": DataTuple(x=new_test, s=test.s, y=test.y),
-                    }
+                    to_operate_on[pre_process_method.name] = {"train": new_train, "test": new_test}
 
                     pbar.update()
 

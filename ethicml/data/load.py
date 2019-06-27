@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List, Dict
 import pandas as pd
 
-from ..algorithms.utils import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
 
@@ -30,7 +30,7 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     s_data = dataframe[feature_split["s"]]
     y_data = dataframe[feature_split["y"]]
 
-    return DataTuple(x=x_data, s=s_data, y=y_data)
+    return DataTuple(x=x_data, s=s_data, y=y_data, name=dataset.name)
 
 
 def create_data_obj(
