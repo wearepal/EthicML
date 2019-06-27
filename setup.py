@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='EthicML',
-    version='0.1.0',
+    version='0.1.0-alpha',
     author='O. Thomas',
     author_email="olliethomas86@gmail.com",
     description="A toolkit for understanding and researching algorithmic bias",
