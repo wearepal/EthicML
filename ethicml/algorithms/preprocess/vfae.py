@@ -47,8 +47,12 @@ class VFAE(PreAlgorithmAsync):
             "z1_dec_size": z1_dec_size,
         }
 
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(
+        self, train: DataTuple, test: Union[DataTuple, TestTuple]
+    ) -> Tuple[DataTuple, TestTuple]:
         from ...implementations.vfae import train_and_transform
+
+        test = TestTuple(x=test.s, s=test.s, name=test.name)
 
         return train_and_transform(train, test, self.flags)
 
