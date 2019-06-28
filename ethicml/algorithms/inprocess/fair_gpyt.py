@@ -4,7 +4,7 @@ Wrapper for calling the fair GP model
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from typing import List
+from typing import List, Union
 import numpy as np
 import pandas as pd
 
@@ -37,7 +37,7 @@ class GPyT(InstalledModel):
         self.epochs = epochs
         self.length_scale = length_scale
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -246,7 +246,7 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),

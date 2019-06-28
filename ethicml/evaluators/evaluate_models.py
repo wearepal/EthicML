@@ -11,7 +11,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, get_subset, TestTuple
+from ethicml.utility.data_structures import DataTuple, get_subset, TestTuple, TrainTestPair
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (
@@ -119,21 +119,23 @@ def evaluate_models(
                     # take smaller subset of training data to speed up training
                     train = get_subset(train)
 
-                to_operate_on: Dict[str, Dict[str, Union[DataTuple, TestTuple]]] = {
-                    "no_transform": {"train": train, "test": test}
+                to_operate_on: Dict[str, TrainTestPair] = {
+                    "no_transform": TrainTestPair(train=train, test=test)
                 }
 
                 for pre_process_method in preprocess_models:
                     new_train, new_test = pre_process_method.run(train, test)
-                    to_operate_on[pre_process_method.name] = {"train": new_train, "test": new_test}
+                    to_operate_on[pre_process_method.name] = TrainTestPair(
+                        train=new_train, test=new_test
+                    )
 
                     pbar.update()
 
                 transform_name: str
                 for transform_name, transform in to_operate_on.items():
 
-                    transformed_train: DataTuple = transform["train"]
-                    transformed_test: DataTuple = transform["test"]
+                    transformed_train: DataTuple = transform.train
+                    transformed_test: Union[DataTuple, TestTuple] = transform.test
 
                     for model in inprocess_models:
 

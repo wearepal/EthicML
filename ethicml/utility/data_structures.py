@@ -3,7 +3,7 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Optional, NamedTuple, Union
 from dataclasses import dataclass
 from enum import Enum
 
@@ -11,19 +11,33 @@ import pandas as pd
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
-class TestTuple:
+class TestTupleValues:
     """A tuple of dataframes for the features and the sensitive attribute"""
 
-    name: str  # name of the dataset
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
 
 
+@dataclass(frozen=True)
+class TestTupleDefaults:
+    name: Optional[str] = None  # name of the dataset
+
+
+@dataclass(frozen=True)
+class TestTuple(TestTupleDefaults, TestTupleValues):
+    pass
+
+
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
-class DataTuple(TestTuple):
+class DataTupleValues:
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
 
     y: pd.DataFrame  # class labels
+
+
+@dataclass(frozen=True)
+class DataTuple(TestTupleDefaults, TestTupleValues, DataTupleValues):
+    pass
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -43,7 +57,7 @@ class PathTuple(TestPathTuple):
 
 
 def write_as_feather(
-    train: DataTuple, test: TestTuple, data_dir: Path
+    train: DataTuple, test: Union[DataTuple, TestTuple], data_dir: Path
 ) -> (Tuple[PathTuple, TestPathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
@@ -146,3 +160,8 @@ class FairType(Enum):
     def __str__(self) -> str:
         """This function is needed so that, for example, str(FairType.DI) returns 'DI'."""
         return self.value
+
+
+class TrainTestPair(NamedTuple):
+    train: DataTuple
+    test: Union[DataTuple, TestTuple]

@@ -32,7 +32,7 @@ class CustomDataset(TestDataset):
     """Shared Dataset for pytorch models"""
 
     def __init__(self, data: DataTuple):
-        super().__init__(data)
+        super().__init__(TestTuple(x=data.x, s=data.s, name=data.name))
         self.class_labels = np.array(data.y.values, dtype=np.float32)
         self.y_size = data.y.shape[1]
         self.y_names = data.y.columns

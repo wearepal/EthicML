@@ -1,6 +1,6 @@
 """Beutel's algorithm"""
 from pathlib import Path
-from typing import List, Sequence, Tuple
+from typing import List, Sequence, Tuple, Union
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
 from .pre_algorithm import PreAlgorithmAsync
@@ -40,8 +40,12 @@ class Beutel(PreAlgorithmAsync):
         self.adv_weight = adv_weight
         self.validation_pcnt = validation_pcnt
 
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(
+        self, train: DataTuple, test: Union[DataTuple, TestTuple]
+    ) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import beutel  # only import this on demand because of pytorch
+
+        test = TestTuple(x=test.x, s=test.s, name=test.name)
 
         # SUGGESTION: it would be great if BeutelSettings could already be created in the init
         flags = beutel.BeutelSettings(
