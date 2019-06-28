@@ -52,7 +52,7 @@ class VFAE(PreAlgorithmAsync):
     ) -> Tuple[DataTuple, TestTuple]:
         from ...implementations.vfae import train_and_transform
 
-        test = TestTuple(x=test.s, s=test.s, name=test.name)
+        test = TestTuple(x=test.x, s=test.s, name=test.name)
 
         return train_and_transform(train, test, self.flags)
 
