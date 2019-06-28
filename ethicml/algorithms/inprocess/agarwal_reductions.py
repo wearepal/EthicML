@@ -2,7 +2,7 @@
 implementation of Agarwal model
 """
 from pathlib import Path
-from typing import List, Union
+from typing import List
 
 import pandas as pd
 
@@ -57,10 +57,10 @@ class Agarwal(InAlgorithmAsync):
             else:
                 self.kernel = ""
 
-    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return agarwal.train_and_predict(
             train=train,
-            test=TestTuple(x=test.x, s=test.s, name=test.name),
+            test=test,
             classifier=self.classifier,
             fairness=self.fairness,
             eps=self.eps,
