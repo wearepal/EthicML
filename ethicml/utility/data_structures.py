@@ -11,33 +11,22 @@ import pandas as pd
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
-class TestTupleValues:
+class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute"""
 
     x: pd.DataFrame  # features
     s: pd.DataFrame  # senstitive attributes
-
-
-@dataclass(frozen=True)
-class TestTupleDefaults:
     name: Optional[str] = None  # name of the dataset
 
 
 @dataclass(frozen=True)
-class TestTuple(TestTupleDefaults, TestTupleValues):
-    pass
-
-
-@dataclass(frozen=True)  # "frozen" means the objects are immutable
 class DataTupleValues:
-    """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
-
     y: pd.DataFrame  # class labels
 
 
 @dataclass(frozen=True)
-class DataTuple(TestTupleDefaults, TestTupleValues, DataTupleValues):
-    pass
+class DataTuple(TestTuple, DataTupleValues):
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
