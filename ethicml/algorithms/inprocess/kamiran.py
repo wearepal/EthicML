@@ -1,6 +1,6 @@
 """Kamiran and Calders 2012"""
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -43,7 +43,7 @@ class Kamiran(InAlgorithmAsync):
         else:
             self.kernel = kernel
 
-    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )

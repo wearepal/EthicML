@@ -3,7 +3,7 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import Tuple, List, Optional, NamedTuple, Union
+from typing import Tuple, List, Optional, NamedTuple
 from dataclasses import dataclass
 from enum import Enum
 
@@ -50,7 +50,7 @@ class PathTuple(TestPathTuple):
 
 
 def write_as_feather(
-    train: DataTuple, test: Union[DataTuple, TestTuple], data_dir: Path
+    train: DataTuple, test: TestTuple, data_dir: Path
 ) -> (Tuple[PathTuple, TestPathTuple]):
     """Write the given DataTuple to Feather files and return the file paths as PathTuples
 
@@ -157,4 +157,4 @@ class FairType(Enum):
 
 class TrainTestPair(NamedTuple):
     train: DataTuple
-    test: Union[DataTuple, TestTuple]
+    test: TestTuple

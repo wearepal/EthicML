@@ -4,7 +4,7 @@ Abstract Base Class of all algorithms in the framework
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Tuple, List, Union
+from typing import Tuple, List
 from abc import abstractmethod
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
@@ -23,9 +23,7 @@ class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
 
     @abstractmethod
-    def run(
-        self, train: DataTuple, test: Union[DataTuple, TestTuple]
-    ) -> (Tuple[DataTuple, TestTuple]):
+    def run(self, train: DataTuple, test: TestTuple) -> (Tuple[DataTuple, TestTuple]):
         """Generate fair features with the given data
 
         Args:
@@ -33,9 +31,7 @@ class PreAlgorithm(Algorithm):
             test: test data
         """
 
-    def run_test(
-        self, train: DataTuple, test: Union[DataTuple, TestTuple]
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker"""
         train_testing = get_subset(train)
         return self.run(train_testing, test)
@@ -44,12 +40,10 @@ class PreAlgorithm(Algorithm):
 class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
     """Pre-Algorithm that can be run blocking and asynchronously"""
 
-    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]):
+    def run(self, train: DataTuple, test: TestTuple):
         return run_blocking(self.run_async(train, test))
 
-    async def run_async(
-        self, train: DataTuple, test: Union[DataTuple, TestTuple]
-    ) -> Tuple[DataTuple, TestTuple]:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data asynchronously"""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
