@@ -28,6 +28,10 @@ class DataTupleValues:
 class DataTuple(TestTuple, DataTupleValues):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
 
+    def remove_y(self) -> TestTuple:
+        """Convert the DataTuple instance to a TestTuple instance"""
+        return TestTuple(x=self.x, s=self.s, name=self.name)
+
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
 class TestPathTuple:
