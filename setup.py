@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='EthicML',
-    version='0.1.0-alpha',
-    author='O. Thomas',
+    version='0.1.0-alpha.1',
+    author='Predictive Analytics Lab - University of Sussex',
     author_email="olliethomas86@gmail.com",
     description="A toolkit for understanding and researching algorithmic bias",
     url="https://github.com/predictive-analytics-lab/EthicML",
