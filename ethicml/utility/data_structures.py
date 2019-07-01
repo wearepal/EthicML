@@ -18,6 +18,9 @@ class TestTuple:
     s: pd.DataFrame  # senstitive attributes
     name: Optional[str] = None  # name of the dataset
 
+    def __iter__(self):
+        return iter([self.x, self.s])
+
 
 @dataclass(frozen=True)
 class DataTupleValues:
@@ -27,6 +30,9 @@ class DataTupleValues:
 @dataclass(frozen=True)
 class DataTuple(TestTuple, DataTupleValues):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+
+    def __iter__(self):
+        return iter([self.x, self.s, self.y])
 
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance"""
