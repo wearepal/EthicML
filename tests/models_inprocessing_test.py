@@ -22,7 +22,7 @@ from ethicml.algorithms.inprocess import (
 )
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
-from ethicml.utility.heaviside import Heaviside
+from ethicml.utility.data_structures import Predictions
 from tests.run_algorithm_test import get_train_test
 
 
@@ -33,9 +33,11 @@ def test_svm():
     assert model is not None
     assert model.name == "SVM"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    predictions: Predictions = model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.soft.values[predictions.soft.values < 0].shape[0] == 199
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
 
 def test_majority():
@@ -45,9 +47,11 @@ def test_majority():
     assert model is not None
     assert model.name == "Majority"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 0
-    assert predictions.values[predictions.values == -1].shape[0] == 400
+    predictions: Predictions = model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 0
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 0
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 400
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 400
 
 
 def test_mlp():
@@ -57,9 +61,11 @@ def test_mlp():
     assert model is not None
     assert model.name == "MLP"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 200
-    assert predictions.values[predictions.values == -1].shape[0] == 200
+    predictions: Predictions = model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 200
+    assert predictions.hard is None
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 200
+    assert predictions.hard is None
 
 
 def test_cv_svm():
@@ -72,13 +78,16 @@ def test_cv_svm():
     assert svm_cv is not None
     assert isinstance(svm_cv.model(), InAlgorithm)
 
+    # In the new predictions setup, this should have the hard values set before being called
     svm_cv.run(train)
 
     best_model = svm_cv.best(Accuracy())
 
-    predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = best_model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
 
 def test_cv_lr():
@@ -95,9 +104,11 @@ def test_cv_lr():
 
     best_model = lr_cv.best(Accuracy())
 
-    predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = best_model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
 
 @pytest.fixture(scope="module")
@@ -116,9 +127,11 @@ def test_kamishima(kamishima):
 
     assert model is not None
 
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+    predictions: Predictions = run_blocking(model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 208
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 192
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
 
 
 # @pytest.fixture(scope="module")
@@ -161,13 +174,17 @@ def test_threaded_svm():
     assert model is not None
     assert model.name == "SVM"
 
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    predictions: Predictions = run_blocking(model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 199
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 201
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 199
+    predictions_non_threaded: Predictions = model.run(train, test)
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values >= 0.5].shape[0] == 201
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == 1].shape[0] == 201
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values < 0.5].shape[0] == 199
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == -1].shape[0] == 199
 
 
 def test_lr():
@@ -177,9 +194,11 @@ def test_lr():
     assert model is not None
     assert model.name == "Logistic Regression"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
 
 def test_agarwal():
@@ -188,39 +207,53 @@ def test_agarwal():
     assert model is not None
     assert model.name == "Agarwal LR"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 145
-    assert predictions.values[predictions.values == -1].shape[0] == 255
+    predictions: Predictions = model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 145
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 145
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 255
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 255
 
     model = Agarwal(fairness="EqOd")
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 162
-    assert predictions.values[predictions.values == -1].shape[0] == 238
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 162
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 162
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 238
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 238
 
     model = Agarwal(classifier="SVM")
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 141
-    assert predictions.values[predictions.values == -1].shape[0] == 259
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 141
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 141
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 259
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 259
 
     model = Agarwal(classifier="SVM", kernel='linear')
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 159
-    assert predictions.values[predictions.values == -1].shape[0] == 241
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 159
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 159
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 241
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 241
 
     model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 159
-    assert predictions.values[predictions.values == -1].shape[0] == 241
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 159
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 159
+    assert predictions.soft.values[predictions.hard.values < 0.5].shape[0] == 241
+    assert predictions.soft.values[predictions.hard.values == -1].shape[0] == 241
 
 
 def test_threaded_lr():
@@ -229,13 +262,17 @@ def test_threaded_lr():
     model: InAlgorithmAsync = LR()
     assert model.name == "Logistic Regression"
 
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = run_blocking(model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
+    predictions_non_threaded: Predictions = model.run(train, test)
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values >= 0.5].shape[0] == 211
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == 1].shape[0] == 211
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values < 0.5].shape[0] == 189
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == -1].shape[0] == 189
 
 
 def test_threaded_lr_cross_validated():
@@ -244,13 +281,17 @@ def test_threaded_lr_cross_validated():
     model: InAlgorithmAsync = LRCV()
     assert model.name == "LRCV"
 
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = run_blocking(model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.51].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
+    predictions_non_threaded: Predictions = model.run(train, test)
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values >= 0.5].shape[0] == 211
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == 1].shape[0] == 211
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values < 0.5].shape[0] == 189
+    assert predictions_non_threaded.hard.values[predictions_non_threaded.hard.values == -1].shape[0] == 189
 
 
 def test_threaded_lr_prob():
@@ -259,20 +300,16 @@ def test_threaded_lr_prob():
     model: InAlgorithmAsync = LRProb()
     assert model.name == "Logistic Regression Prob"
 
-    heavi = Heaviside()
+    predictions_non_threaded: Predictions = model.run(train, test)
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    predictions_non_threaded = predictions_non_threaded.apply(heavi.apply)
-    predictions_non_threaded = predictions_non_threaded.replace(0, -1)
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values >= 0.5].shape[0] == 211
+    assert predictions_non_threaded.soft.values[predictions_non_threaded.soft.values < 0.5].shape[0] == 189
+    assert predictions_non_threaded.hard is None
 
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
-
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    predictions = predictions.apply(heavi.apply)
-    predictions = predictions.replace(0, -1)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Predictions = run_blocking(model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 211
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 189
+    assert predictions.hard is None
 
 
 def test_kamiran():
@@ -282,10 +319,14 @@ def test_kamiran():
     assert kamiran_model is not None
     assert kamiran_model.name == "Kamiran & Calders LR"
 
-    predictions: pd.DataFrame = kamiran_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 210
-    assert predictions.values[predictions.values == -1].shape[0] == 190
+    predictions: Predictions = kamiran_model.run(train, test)
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 210
+    assert predictions.hard is None
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 190
+    assert predictions.hard is None
 
-    predictions: pd.DataFrame = run_blocking(kamiran_model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 210
-    assert predictions.values[predictions.values == -1].shape[0] == 190
+    predictions: Predictions = run_blocking(kamiran_model.run_async(train, test))
+    assert predictions.soft.values[predictions.soft.values >= 0.5].shape[0] == 210
+    assert predictions.hard is None
+    assert predictions.soft.values[predictions.soft.values < 0.5].shape[0] == 190
+    assert predictions.hard is None

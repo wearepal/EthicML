@@ -92,7 +92,7 @@ class CrossValidator:
                 model = self.model(**experiment)
                 preds = model.run(train_fold, val)
                 for measure in measures:
-                    self.results.append(experiment, i, measure.name, measure.score(preds, val))
+                    self.results.append(experiment, i, measure.name, measure.score(preds.hard, val))
                 print(f"fold_{i}_model_{model.name}_completed")
 
     def best(self, measure) -> InAlgorithm:

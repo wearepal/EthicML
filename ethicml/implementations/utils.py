@@ -9,7 +9,7 @@ from typing import Tuple, Union, List, Optional, Dict, Any
 import pandas as pd
 import numpy as np
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 from ethicml.algorithms.algorithm_base import load_dataframe
 
 
@@ -34,18 +34,20 @@ class InAlgoInterface:
         )
         return train, test
 
-    def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
+    def save_predictions(self, predictions: Predictions):
         """Save the data to the file that was specified in the commandline arguments"""
-        if not isinstance(predictions, pd.DataFrame):
-            df = pd.DataFrame(predictions, columns=["pred"])
-        else:
-            df = predictions
-        pred_path = Path(self.args[7])
-        df.to_feather(pred_path)
+        soft_pred_path = Path(self.args[7])
+        hard_pred_path = Path(self.args[8])
+
+        if predictions.hard is None:
+            predictions = Predictions(soft=predictions.soft, hard=pd.DataFrame([-1], columns=['None']))
+
+        predictions.soft.to_feather(soft_pred_path)
+        predictions.hard.to_feather(hard_pred_path)
 
     def remaining_args(self) -> List[str]:
         """Additional commandline arguments beyond the data paths and the prediction path"""
-        return self.args[8:]
+        return self.args[9:]
 
 
 def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:

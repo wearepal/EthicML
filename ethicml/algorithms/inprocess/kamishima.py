@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
+from ethicml.utility.data_structures import Predictions
 
 
 class Kamishima(InstalledModel):
@@ -78,7 +79,7 @@ class Kamishima(InstalledModel):
 
         if to_return["preds"].min() != to_return["preds"].max():
             to_return = to_return.replace(to_return["preds"].min(), min_class_label)
-        return to_return
+        return Predictions(soft=to_return, hard=to_return)
 
     @property
     def name(self):

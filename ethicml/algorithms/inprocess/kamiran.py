@@ -49,11 +49,12 @@ class Kamiran(InAlgorithmAsync):
         )
 
     def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
+        self, train_paths: PathTuple, test_paths: TestPathTuple,
+        soft_pred_path: Path, hard_pred_path: Path
     ) -> (List[str]):
         script = ["-m", kamiran.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, pred_path, self.classifier, str(self.C), self.kernel
+            train_paths, test_paths, soft_pred_path, hard_pred_path, self.classifier, str(self.C), self.kernel
         )
         return script + args
 

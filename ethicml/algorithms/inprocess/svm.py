@@ -21,10 +21,10 @@ class SVM(InAlgorithmAsync):
     def run(self, train, test):
         return svm.train_and_predict(train, test, self.C, self.kernel)
 
-    def _script_command(self, train_paths, test_paths, pred_path):
+    def _script_command(self, train_paths, test_paths, soft_pred_path, hard_pred_path):
         script = ["-m", svm.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, pred_path, str(self.C), str(self.kernel)
+            train_paths, test_paths, soft_pred_path, hard_pred_path, str(self.C), str(self.kernel)
         )
         return script + args
 

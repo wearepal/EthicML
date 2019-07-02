@@ -3,7 +3,7 @@ from sklearn.svm import SVC, LinearSVC
 
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 from ethicml.implementations.utils import InAlgoInterface
 
 
@@ -14,11 +14,12 @@ def select_svm(C: float, kernel: str):
     return SVC(C=C, kernel=kernel, gamma="auto", random_state=888)
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, C: float, kernel: str) -> pd.DataFrame:
+def train_and_predict(train: DataTuple, test: TestTuple, C: float, kernel: str) -> Predictions:
     """Train an SVM model and compute predictions on the given test data"""
     clf = select_svm(C, kernel)
     clf.fit(train.x, train.y.to_numpy().ravel())
-    return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+    labels = pd.DataFrame(clf.predict(test.x), columns=["preds"])
+    return Predictions(soft=labels, hard=labels)
 
 
 def main():

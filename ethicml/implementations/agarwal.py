@@ -5,7 +5,7 @@ from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside
@@ -51,7 +51,7 @@ def train_and_predict(
     min_class_label = train.y[train.y.columns[0]].min()
     if preds["preds"].min() != preds["preds"].max():
         preds = preds.replace(preds["preds"].min(), min_class_label)
-    return preds
+    return Predictions(soft=preds, hard=preds)
 
 
 def main():

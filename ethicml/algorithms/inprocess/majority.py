@@ -5,6 +5,7 @@ Simply returns the majority label from the train set
 import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.utility.data_structures import Predictions
 
 
 class Majority(InAlgorithm):
@@ -12,7 +13,8 @@ class Majority(InAlgorithm):
 
     def run(self, train, test):
         maj = train.y.mode().values
-        return pd.DataFrame(maj.repeat(len(test.x)), columns=["preds"])
+        labels = pd.DataFrame(maj.repeat(len(test.x)), columns=["preds"])
+        return Predictions(soft=labels, hard=labels)
 
     @property
     def name(self) -> str:

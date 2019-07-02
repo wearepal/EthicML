@@ -39,6 +39,16 @@ class DataTuple(TestTuple, DataTupleValues):
         return TestTuple(x=self.x, s=self.s, name=self.name)
 
 
+@dataclass(frozen=True)
+class Predictions():
+    """
+    A dataclass to store the results from the inprocess methods
+    """
+
+    soft: pd.DataFrame
+    hard: Optional[pd.DataFrame] = None
+
+
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
 class TestPathTuple:
     """For algorithms that run in their own process, we pass around paths to the data"""

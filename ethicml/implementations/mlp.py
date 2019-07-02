@@ -7,6 +7,7 @@ from sklearn.neural_network import MLPClassifier
 import pandas as pd
 
 from ethicml.implementations.utils import InAlgoInterface
+from ethicml.utility.data_structures import Predictions
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int], activation: str):
@@ -23,7 +24,7 @@ def train_and_predict(train, test, hid_layers, activation):
     """Train an SVM model and compute predictions on the given test data"""
     clf = select_mlp(hid_layers, activation)
     clf.fit(train.x, train.y.values.ravel())
-    return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+    return Predictions(soft=pd.DataFrame(clf.predict_proba(test.x)[:,1], columns=["preds"]))
 
 
 def main():

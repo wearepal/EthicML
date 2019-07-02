@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Predictions
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 
@@ -84,7 +84,7 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     model.fit(
         train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
     )
-    return pd.DataFrame(model.predict(test.x), columns=["preds"])
+    return Predictions(soft=pd.DataFrame(model.predict(test.x), columns=["preds"]))
 
 
 def main():

@@ -24,9 +24,9 @@ class LR(InAlgorithmAsync):
     def run(self, train, test):
         return logistic_regression.train_and_predict(train, test, self.C)
 
-    def _script_command(self, train_paths, test_paths, pred_path):
+    def _script_command(self, train_paths, test_paths, soft_pred_path, hard_pred_path):
         script = ["-m", logistic_regression.train_and_predict.__module__]
-        args = conventional_interface(train_paths, test_paths, pred_path, str(self.C))
+        args = conventional_interface(train_paths, test_paths, soft_pred_path, hard_pred_path, str(self.C))
         return script + args
 
     @property
@@ -44,9 +44,9 @@ class LRProb(InAlgorithmAsync):
     def run(self, train, test):
         return logistic_regression_probability.train_and_predict(train, test, self.C)
 
-    def _script_command(self, train_paths, test_paths, pred_path):
+    def _script_command(self, train_paths, test_paths, soft_pred_path, hard_pred_path):
         script = ["-m", logistic_regression_probability.train_and_predict.__module__]
-        args = conventional_interface(train_paths, test_paths, pred_path, str(self.C))
+        args = conventional_interface(train_paths, test_paths, soft_pred_path, hard_pred_path, str(self.C))
         return script + args
 
     @property
@@ -60,9 +60,9 @@ class LRCV(InAlgorithmAsync):
     def run(self, train, test):
         return logistic_regression_cross_validated.train_and_predict(train, test)
 
-    def _script_command(self, train_paths, test_paths, pred_path):
+    def _script_command(self, train_paths, test_paths, soft_pred_path, hard_pred_path):
         script = ["-m", logistic_regression_cross_validated.train_and_predict.__module__]
-        args = conventional_interface(train_paths, test_paths, pred_path)
+        args = conventional_interface(train_paths, test_paths, soft_pred_path, hard_pred_path)
         return script + args
 
     @property
