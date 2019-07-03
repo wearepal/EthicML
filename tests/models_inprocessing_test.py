@@ -6,23 +6,28 @@ from pytest import approx
 from ethicml.algorithms.algorithm_base import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
+    Corels,
     GPyT,
     GPyTDemPar,
     GPyTEqOdds,
     InAlgorithm,
     InAlgorithmAsync,
+    Kamiran,
     Kamishima,
+    LR,
     LRCV,
     LRProb,
-    LR,
-    SVM,
-    Kamiran,
     Majority,
     MLP,
+    SVM,
 )
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.metrics import Accuracy
 from ethicml.utility.heaviside import Heaviside
+from ethicml.data import Compas
+from ethicml.data.load import load_data
+from ethicml.utility.data_structures import DataTuple
+from ethicml.preprocessing.train_test_split import train_test_split
 from tests.run_algorithm_test import get_train_test
 
 
@@ -48,6 +53,23 @@ def test_majority():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 0
     assert predictions.values[predictions.values == -1].shape[0] == 400
+
+
+def test_corels(toy_train_test):
+    model: InAlgorithm = Corels()
+    assert model is not None
+    assert model.name == "CORELS"
+
+    train_toy, test_toy = toy_train_test
+    with pytest.raises(RuntimeError):
+        model.run(train_toy, test_toy)
+
+    data: DataTuple = load_data(Compas())
+    train, test = train_test_split(data)
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 428
+    assert predictions.values[predictions.values == 0].shape[0] == 806
 
 
 def test_mlp():

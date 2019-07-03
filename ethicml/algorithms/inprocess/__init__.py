@@ -8,3 +8,4 @@ from .logistic_regression import LR, LRCV, LRProb
 from .svm import SVM
 from .majority import Majority
 from .mlp import MLP
+from .manual import Corels
