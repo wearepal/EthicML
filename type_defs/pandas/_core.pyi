@@ -13,7 +13,7 @@ from typing import (
     Sequence,
     Generic,
     TypeVar,
-)
+    Iterable)
 from pathlib import Path as _Path
 import numpy as _np
 
@@ -48,6 +48,7 @@ class Series:
     @property
     def index(self) -> Index[int]: ...
     def replace(self, to_replace: int, value: int, inplace: bool): ...
+    def __iter__(self) -> Iterator: ...
 
 _ListLike = Union[_np.ndarray, Series, List, Dict[str, _np.ndarray]]
 

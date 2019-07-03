@@ -24,7 +24,7 @@ def train_and_predict(train, test, hid_layers, activation):
     """Train an SVM model and compute predictions on the given test data"""
     clf = select_mlp(hid_layers, activation)
     clf.fit(train.x, train.y.values.ravel())
-    return Predictions(soft=pd.DataFrame(clf.predict_proba(test.x)[:,1], columns=["preds"]))
+    return Predictions(soft=pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"]))
 
 
 def main():

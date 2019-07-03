@@ -62,7 +62,7 @@ class Results:
 
 class CrossValidator:
     """
-    Object used to run cross-validatioon on a model
+    Object used to run cross-validation on a model
     """
 
     def __init__(self, model: Type[InAlgorithm], hyperparams: Dict[str, List[Any]], folds: int = 3):
@@ -92,7 +92,7 @@ class CrossValidator:
                 model = self.model(**experiment)
                 preds = model.run(train_fold, val)
                 for measure in measures:
-                    self.results.append(experiment, i, measure.name, measure.score(preds.hard, val))
+                    self.results.append(experiment, i, measure.name, measure.score(preds, val))
                 print(f"fold_{i}_model_{model.name}_completed")
 
     def best(self, measure) -> InAlgorithm:

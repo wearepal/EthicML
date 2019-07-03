@@ -4,9 +4,7 @@ Abstract Base Class of all metrics in the framework
 
 from abc import ABC, abstractmethod
 
-import pandas as pd
-
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Predictions
 
 
 class Metric(ABC):
@@ -16,7 +14,7 @@ class Metric(ABC):
         self.positive_class = pos_class
 
     @abstractmethod
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Predictions, actual: DataTuple) -> float:
         """
         Compute score
 

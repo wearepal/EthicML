@@ -117,18 +117,18 @@ def test_load_compas_explicitly_sex():
 
 def test_load_compas_feature_length():
     data: DataTuple = load_data(Compas())
-    assert (400 == len(Compas().ordered_features['x']))
-    assert (395 == len(Compas().discrete_features))
-    assert (5 == len(Compas().continuous_features))
+    assert 400 == len(Compas().ordered_features['x'])
+    assert 395 == len(Compas().discrete_features)
+    assert 5 == len(Compas().continuous_features)
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
 
 
 def test_load_credit_feature_length():
     data: DataTuple = load_data(Credit())
-    assert (26 == len(Credit().ordered_features['x']))
-    assert (6 == len(Credit().discrete_features))
-    assert (20 == len(Credit().continuous_features))
+    assert 26 == len(Credit().ordered_features['x'])
+    assert 6 == len(Credit().discrete_features)
+    assert 20 == len(Credit().continuous_features)
     assert (30000, 1) == data.s.shape
     assert (30000, 1) == data.y.shape
 
@@ -184,13 +184,12 @@ def test_race_feature_split():
 
 def test_additional_columns_load():
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv"
-    data_obj: Dataset = create_data_obj(data_loc,
-                                        s_columns=["race_White"],
-                                        y_columns=["salary_>50K"],
-                                        additional_to_drop=[
-                                            "race_Black",
-                                            "salary_<=50K"
-                                        ])
+    data_obj: Dataset = create_data_obj(
+        data_loc,
+        s_columns=["race_White"],
+        y_columns=["salary_>50K"],
+        additional_to_drop=["race_Black", "salary_<=50K"],
+    )
     data: DataTuple = load_data(data_obj)
 
     assert (45222, 102) == data.x.shape
@@ -203,7 +202,8 @@ def test_domain_adapt_adult():
     train, test = domain_split(
         datatup=data,
         tr_cond='education_Masters == 0. & education_Doctorate == 0.',
-        te_cond='education_Masters == 1. | education_Doctorate == 1.')
+        te_cond='education_Masters == 1. | education_Doctorate == 1.',
+    )
     assert (39106, 101) == train.x.shape
     assert (39106, 1) == train.s.shape
     assert (39106, 1) == train.y.shape
@@ -214,9 +214,8 @@ def test_domain_adapt_adult():
 
     data = load_data(Adult())
     train, test = domain_split(
-        datatup=data,
-        tr_cond='education_Masters == 0.',
-        te_cond='education_Masters == 1.')
+        datatup=data, tr_cond='education_Masters == 0.', te_cond='education_Masters == 1.'
+    )
     assert (40194, 101) == train.x.shape
     assert (40194, 1) == train.s.shape
     assert (40194, 1) == train.y.shape
@@ -229,7 +228,8 @@ def test_domain_adapt_adult():
     train, test = domain_split(
         datatup=data,
         tr_cond='education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.',
-        te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.')
+        te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.',
+    )
     assert (23966, 101) == train.x.shape
     assert (23966, 1) == train.s.shape
     assert (23966, 1) == train.y.shape
@@ -240,18 +240,9 @@ def test_domain_adapt_adult():
 
 
 def test_query():
-    x: pd.DataFrame = pd.DataFrame(columns=['0a', 'b'],
-                                   data=[[0, 1],
-                                         [2, 3],
-                                         [4, 5]])
-    s: pd.DataFrame = pd.DataFrame(columns=['c='],
-                                   data=[[6],
-                                         [7],
-                                         [8]])
-    y: pd.DataFrame = pd.DataFrame(columns=['d'],
-                                   data=[[9],
-                                         [10],
-                                         [11]])
+    x: pd.DataFrame = pd.DataFrame(columns=['0a', 'b'], data=[[0, 1], [2, 3], [4, 5]])
+    s: pd.DataFrame = pd.DataFrame(columns=['c='], data=[[6], [7], [8]])
+    y: pd.DataFrame = pd.DataFrame(columns=['d'], data=[[9], [10], [11]])
     data = DataTuple(x=x, s=s, y=y, name='test_data')
     selected = query_dt(data, '_0a == 0 & c_eq_ == 6 & d == 9')
     pd.testing.assert_frame_equal(selected.x, x.head(1))

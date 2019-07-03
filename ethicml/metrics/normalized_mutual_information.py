@@ -1,12 +1,10 @@
 """
 For assessing Nomralized Mutual Information
 """
-
 import pandas as pd
-
 from sklearn.metrics import normalized_mutual_info_score as nmis
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Predictions
 from .metric import Metric
 
 
@@ -19,12 +17,13 @@ class NMI(Metric):
             raise NotImplementedError("Can only calculate NMI of predictions with regard to y or s")
         self.base = base
 
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Predictions, actual: DataTuple) -> float:
+        assert isinstance(prediction.hard, pd.DataFrame)
         if self.base == "y":
             base_values = actual.y.values.flatten()
         else:
             base_values = actual.s.values.flatten()
-        return nmis(base_values, prediction.values.flatten(), average_method="geometric")
+        return nmis(base_values, prediction.hard.values.flatten(), average_method="geometric")
 
     @property
     def name(self) -> str:

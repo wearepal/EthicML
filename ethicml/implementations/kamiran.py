@@ -75,7 +75,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     return train_instance_weights
 
 
-def train_and_predict(train, test, classifier, C: float, kernel: str):
+def train_and_predict(train, test, classifier, C: float, kernel: str) -> Predictions:
     """Train a logistic regression model and compute predictions on the given test data"""
     if classifier == "SVM":
         model = select_svm(C, kernel)

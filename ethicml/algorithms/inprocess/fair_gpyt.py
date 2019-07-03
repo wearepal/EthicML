@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 
 PRED_FNAME = "predictions.npz"
 MAX_EPOCHS = 1000
@@ -37,7 +37,7 @@ class GPyT(InstalledModel):
         self.epochs = epochs
         self.length_scale = length_scale
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Predictions:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -73,7 +73,8 @@ class GPyT(InstalledModel):
                 pred_mean = output["pred_mean"]
 
         predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=["preds"])
+        preds = pd.DataFrame(predictions, columns=["preds"])
+        return Predictions(soft=preds, hard=preds)
 
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
@@ -246,7 +247,7 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Predictions:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -312,7 +313,8 @@ class GPyTEqOdds(GPyT):
 
         # Convert the result to the expected format
         predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=["preds"])
+        prediction_df: pd.DataFrame = pd.DataFrame(predictions, columns=["preds"])
+        return Predictions(soft=prediction_df, hard=prediction_df)
 
     @property
     def name(self):

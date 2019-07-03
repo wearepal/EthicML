@@ -4,10 +4,9 @@ Useful functions used in implementations
 import sys
 import argparse
 from pathlib import Path
-from typing import Tuple, Union, List, Optional, Dict, Any
+from typing import Tuple, List, Optional, Dict, Any
 
 import pandas as pd
-import numpy as np
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 from ethicml.algorithms.algorithm_base import load_dataframe
@@ -40,9 +39,12 @@ class InAlgoInterface:
         hard_pred_path = Path(self.args[8])
 
         if predictions.hard is None:
-            predictions = Predictions(soft=predictions.soft, hard=pd.DataFrame([-1], columns=['None']))
+            predictions = Predictions(
+                soft=predictions.soft, hard=pd.DataFrame([-1], columns=['None'])
+            )
 
         predictions.soft.to_feather(soft_pred_path)
+        assert isinstance(predictions.hard, pd.DataFrame)
         predictions.hard.to_feather(hard_pred_path)
 
     def remaining_args(self) -> List[str]:

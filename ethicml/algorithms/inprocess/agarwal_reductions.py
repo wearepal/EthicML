@@ -11,7 +11,13 @@ from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
+from ethicml.utility.data_structures import (
+    PathTuple,
+    TestPathTuple,
+    DataTuple,
+    TestTuple,
+    Predictions,
+)
 from ethicml.implementations import agarwal
 
 
@@ -57,7 +63,7 @@ class Agarwal(InAlgorithmAsync):
             else:
                 self.kernel = ""
 
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Predictions:
         return agarwal.train_and_predict(
             train=train,
             test=test,
@@ -70,8 +76,11 @@ class Agarwal(InAlgorithmAsync):
         )
 
     def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple,
-        soft_pred_path: Path, hard_pred_path: Path
+        self,
+        train_paths: PathTuple,
+        test_paths: TestPathTuple,
+        soft_pred_path: Path,
+        hard_pred_path: Path,
     ) -> (List[str]):
         script = ["-m", agarwal.train_and_predict.__module__]
         args = conventional_interface(

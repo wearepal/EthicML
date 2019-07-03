@@ -29,7 +29,12 @@ class MLP(InAlgorithmAsync):
     def _script_command(self, train_paths, test_paths, soft_pred_path, hard_pred_path):
         script = ["-m", mlp.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, soft_pred_path, hard_pred_path, str(self.hidden_layer_sizes), str(self.activation)
+            train_paths,
+            test_paths,
+            soft_pred_path,
+            hard_pred_path,
+            str(self.hidden_layer_sizes),
+            str(self.activation),
         )
         return script + args
 

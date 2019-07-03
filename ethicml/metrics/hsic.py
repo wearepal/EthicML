@@ -2,10 +2,10 @@
 Method for calculating the HSIC - an independence criterion. a score of 0 denotes independence
 """
 import math
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Predictions
 from ethicml.metrics.metric import Metric
 
 
@@ -48,18 +48,19 @@ class Hsic(Metric):
     see module string
     """
 
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Predictions, actual: DataTuple) -> float:
         """
-        We add the ability to take the average of hsic sscore as for
+        We add the ability to take the average of hsic score as for
         larger datasets it will kill your machine
         """
+        assert isinstance(prediction.hard, pd.DataFrame)
 
         s_cols = actual.s.columns
         sens_labels = np.array(actual.s[s_cols].values)
 
         batchs_size = 5000
 
-        together = np.hstack((prediction.values, sens_labels)).transpose()
+        together = np.hstack((prediction.hard.values, sens_labels)).transpose()
 
         np.random.seed(888)
         col_idx = np.random.permutation(together.shape[1])
@@ -69,7 +70,7 @@ class Hsic(Metric):
         prediction_shuffled = together[0]
         label_shuffled = together[1]
 
-        num_batches_float = prediction.shape[0] / batchs_size
+        num_batches_float = prediction.hard.shape[0] / batchs_size
         num_batches: int = int(math.ceil(num_batches_float))
 
         batches = []

@@ -40,7 +40,7 @@ class DataTuple(TestTuple, DataTupleValues):
 
 
 @dataclass(frozen=True)
-class Predictions():
+class Predictions:
     """
     A dataclass to store the results from the inprocess methods
     """

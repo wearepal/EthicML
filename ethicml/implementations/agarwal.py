@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from ethicml.utility.data_structures import DataTuple, TestTuple, Predictions
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
-from ethicml.utility.heaviside import Heaviside
+from ethicml.utility.threshold import threshold
 
 
 def train_and_predict(
@@ -20,7 +20,7 @@ def train_and_predict(
     iters: int,
     C: float,
     kernel: str,
-):
+) -> Predictions:
     """Train a logistic regression model and compute predictions on the given test data"""
 
     fairness_class: Moment = DP() if fairness == "DP" else EO()
@@ -45,13 +45,15 @@ def train_and_predict(
 
     res = res_tuple._asdict()
 
-    preds = pd.DataFrame(res["best_classifier"](test.x), columns=["preds"])
-    helper = Heaviside()
-    preds = preds.apply(helper.apply)
+    preds = Predictions(soft=pd.DataFrame(res["best_classifier"](test.x), columns=["preds"]))
+    preds = threshold(preds, 0.5)
     min_class_label = train.y[train.y.columns[0]].min()
-    if preds["preds"].min() != preds["preds"].max():
-        preds = preds.replace(preds["preds"].min(), min_class_label)
-    return Predictions(soft=preds, hard=preds)
+    assert isinstance(preds.hard, pd.DataFrame)
+    if preds.hard["preds"].min() != preds.hard["preds"].max():
+        preds = Predictions(
+            soft=preds.soft, hard=preds.hard.replace(preds.hard["preds"].min(), min_class_label)
+        )
+    return preds
 
 
 def main():

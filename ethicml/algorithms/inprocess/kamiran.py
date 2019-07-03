@@ -2,13 +2,18 @@
 from pathlib import Path
 from typing import List, Optional
 
-import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
+from ethicml.utility.data_structures import (
+    PathTuple,
+    TestPathTuple,
+    DataTuple,
+    TestTuple,
+    Predictions,
+)
 from ethicml.implementations import kamiran
 
 VALID_MODELS = {"LR", "SVM"}
@@ -43,18 +48,27 @@ class Kamiran(InAlgorithmAsync):
         else:
             self.kernel = kernel
 
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Predictions:
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
 
     def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple,
-        soft_pred_path: Path, hard_pred_path: Path
+        self,
+        train_paths: PathTuple,
+        test_paths: TestPathTuple,
+        soft_pred_path: Path,
+        hard_pred_path: Path,
     ) -> (List[str]):
         script = ["-m", kamiran.train_and_predict.__module__]
         args = conventional_interface(
-            train_paths, test_paths, soft_pred_path, hard_pred_path, self.classifier, str(self.C), self.kernel
+            train_paths,
+            test_paths,
+            soft_pred_path,
+            hard_pred_path,
+            self.classifier,
+            str(self.C),
+            self.kernel,
         )
         return script + args
 

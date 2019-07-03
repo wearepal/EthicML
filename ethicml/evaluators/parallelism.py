@@ -5,9 +5,7 @@ import os
 import asyncio
 from typing import List, Tuple, Dict
 
-import pandas as pd
-
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Predictions
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 
@@ -16,7 +14,7 @@ Data = Tuple[DataTuple, DataTuple]
 
 async def arrange_in_parallel(
     algos: List[InAlgorithmAsync], data: List[Data], max_parallel: int = 0
-) -> List[List[pd.DataFrame]]:
+) -> List[List[Predictions]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
     Args:
@@ -41,7 +39,7 @@ async def arrange_in_parallel(
     num_cpus = os.cpu_count()
     default_num_workers: int = num_cpus if num_cpus is not None else 1
     num_workers = max_parallel if max_parallel > 0 else default_num_workers
-    result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
+    result_dict: Dict[Tuple[int, int], Predictions] = {}
     workers = [_eval_worker(worker_id, task_queue, result_dict) for worker_id in range(num_workers)]
     # run workers and confirm that the queue is empty
     await asyncio.gather(*workers)
@@ -53,7 +51,7 @@ async def arrange_in_parallel(
 async def _eval_worker(
     worker_id: int,
     task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]]",
-    result_dict: Dict[Tuple[int, int], pd.DataFrame],
+    result_dict: Dict[Tuple[int, int], Predictions],
 ) -> None:
     while not task_queue.empty():
         # get a work item out of the queue
@@ -69,7 +67,7 @@ async def _eval_worker(
 
 def run_in_parallel(
     algos: List[InAlgorithm], data: List[Data], max_parallel: int = -1
-) -> List[List[pd.DataFrame]]:
+) -> List[List[Predictions]]:
     """Run the given algorithms (embarrassingly) parallel
 
     Args:
@@ -107,7 +105,7 @@ def run_in_parallel(
     async_results = event_loop.run_until_complete(async_coroutines)
 
     # now reassemble everything in the right order
-    results: List[List[pd.DataFrame]] = []
+    results: List[List[Predictions]] = []
     async_counter = 0
     blocking_counter = 0
     for i in range(len(algos)):

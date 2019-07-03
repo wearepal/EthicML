@@ -4,6 +4,7 @@ Test that an algorithm can run against some data
 
 from typing import Tuple
 import numpy as np
+import pandas as pd
 
 from ethicml.algorithms.inprocess import LR, SVM, Majority
 from ethicml.utility.data_structures import DataTuple
@@ -35,20 +36,26 @@ def test_run_parallel():
     data1 = get_train_test()
     result = run_in_parallel([LR(), SVM(), Majority()], [data0, data1], max_parallel=2)
     # LR
-    assert count_true(result[0][0].values == 1) == 211
-    assert count_true(result[0][0].values == -1) == 189
-    assert count_true(result[0][1].values == 1) == 211
-    assert count_true(result[0][1].values == -1) == 189
+    assert isinstance(result[0][0].hard, pd.DataFrame)
+    assert isinstance(result[0][1].hard, pd.DataFrame)
+    assert count_true(result[0][0].hard.values == 1) == 211
+    assert count_true(result[0][0].hard.values == -1) == 189
+    assert count_true(result[0][1].hard.values == 1) == 211
+    assert count_true(result[0][1].hard.values == -1) == 189
     # SVM
-    assert count_true(result[1][0].values == 1) == 201
-    assert count_true(result[1][0].values == -1) == 199
-    assert count_true(result[1][1].values == 1) == 201
-    assert count_true(result[1][1].values == -1) == 199
+    assert isinstance(result[1][0].hard, pd.DataFrame)
+    assert isinstance(result[1][1].hard, pd.DataFrame)
+    assert count_true(result[1][0].hard.values == 1) == 201
+    assert count_true(result[1][0].hard.values == -1) == 199
+    assert count_true(result[1][1].hard.values == 1) == 201
+    assert count_true(result[1][1].hard.values == -1) == 199
     # Majority
-    assert count_true(result[2][0].values == 1) == 0
-    assert count_true(result[2][0].values == -1) == 400
-    assert count_true(result[2][1].values == 1) == 0
-    assert count_true(result[2][1].values == -1) == 400
+    assert isinstance(result[2][0].hard, pd.DataFrame)
+    assert isinstance(result[2][1].hard, pd.DataFrame)
+    assert count_true(result[2][0].hard.values == 1) == 0
+    assert count_true(result[2][0].hard.values == -1) == 400
+    assert count_true(result[2][1].hard.values == 1) == 0
+    assert count_true(result[2][1].hard.values == -1) == 400
 
 
 # def test_run_alg_suite():

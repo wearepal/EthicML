@@ -3,7 +3,7 @@ Abstract Base Class of all algorithms in the framework
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List
+from typing import List, Optional
 from abc import abstractmethod
 
 import pandas as pd
@@ -17,7 +17,8 @@ from ethicml.utility.data_structures import (
     TestPathTuple,
     write_as_feather,
     load_feather,
-    Predictions)
+    Predictions,
+)
 
 
 class InAlgorithm(Algorithm):
@@ -41,7 +42,7 @@ class InAlgorithm(Algorithm):
 class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously"""
 
-    def run(self, train: DataTuple, test: TestTuple):
+    def run(self, train: DataTuple, test: TestTuple) -> Predictions:
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Predictions:
@@ -54,7 +55,8 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
             cmd = self._script_command(train_paths, test_paths, soft_pred_path, hard_pred_path)
             await self._call_script(cmd)  # wait for scrip to run
             soft_labels = load_feather(soft_pred_path)
-            hard_labels = load_feather(hard_pred_path)
+            hard_labels: Optional[pd.DataFrame] = load_feather(hard_pred_path)
+            assert isinstance(hard_labels, pd.DataFrame)
             if hard_labels.columns[0] == "None":
                 hard_labels = None
 
@@ -62,7 +64,10 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
 
     @abstractmethod
     def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple,
-        soft_pred_path: Path, hard_pred_path: Path
+        self,
+        train_paths: PathTuple,
+        test_paths: TestPathTuple,
+        soft_pred_path: Path,
+        hard_pred_path: Path,
     ) -> (List[str]):
         """The command that will run the script"""

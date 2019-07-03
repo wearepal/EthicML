@@ -11,7 +11,13 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, get_subset, TestTuple, TrainTestPair
+from ethicml.utility.data_structures import (
+    DataTuple,
+    get_subset,
+    TestTuple,
+    TrainTestPair,
+    Predictions,
+)
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (
@@ -46,7 +52,7 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
 
 
 def run_metrics(
-    predictions: pd.DataFrame,
+    predictions: Predictions,
     actual: DataTuple,
     metrics: List[Metric],
     per_sens_metrics: List[Metric],
@@ -146,8 +152,7 @@ def evaluate_models(
                             "repeat": f"{repeat}-{seed}",
                         }
 
-                        predictions: pd.DataFrame
-                        predictions = model.run(transformed_train, transformed_test)
+                        predictions: Predictions = model.run(transformed_train, transformed_test)
 
                         temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
