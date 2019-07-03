@@ -3,7 +3,7 @@ Test that an algorithm can run against some data
 """
 
 from typing import Tuple
-import numpy as np
+import numpy as np  # import needed for mypy
 
 from ethicml.algorithms.inprocess import LR, SVM, Majority
 from ethicml.utility.data_structures import DataTuple
