@@ -14,7 +14,7 @@ version = '.'.join([
     _PATCH_VERSION,
 ])
 if _VERSION_SUFFIX:
-    version = '{}-{}'.format(version, _VERSION_SUFFIX)
+    version = f'{version}-{_VERSION_SUFFIX}'
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
