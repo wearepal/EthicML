@@ -1,11 +1,32 @@
 from setuptools import setup, find_packages
 
+# We follow Semantic Versioning (https://semver.org/)
+_MAJOR_VERSION = '0'
+_MINOR_VERSION = '1'
+_PATCH_VERSION = '0'
+
+_VERSION_SUFFIX = 'alpha.1'
+
+# Example, '0.4.0-rc1'
+version = '.'.join([
+    _MAJOR_VERSION,
+    _MINOR_VERSION,
+    _PATCH_VERSION,
+])
+if _VERSION_SUFFIX:
+    version = f'{version}-{_VERSION_SUFFIX}'
+
+with open('README.md', 'r') as fh:
+    long_description = fh.read()
+
 setup(
     name='EthicML',
-    version='0.1.0-alpha.1',
+    version=version,
     author='Predictive Analytics Lab - University of Sussex',
     author_email="olliethomas86@gmail.com",
     description="A toolkit for understanding and researching algorithmic bias",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url="https://github.com/predictive-analytics-lab/EthicML",
     packages=find_packages(),
     package_data={'ethicml.data': ['csvs/*.csv']},
@@ -27,7 +48,8 @@ setup(
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
     ],
     extras_require={
-        'dev': [  # use `pip install ethicml[dev]` to install development packages
+        # use `pip install ethicml[dev]` to install development packages
+        'dev': [
             "pylint >= 2.0",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
