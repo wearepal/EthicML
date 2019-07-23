@@ -1,11 +1,10 @@
 from typing import Tuple
 import pandas as pd
 
-from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM
-from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync, Beutel, Zemel
-from ethicml.algorithms.preprocess.vfae import VFAE
-from ethicml.utility.data_structures import DataTuple, FairType, TestTuple
+from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync, Beutel, Zemel, VFAE
+from ethicml.utility import DataTuple, FairType, TestTuple
 from tests.run_algorithm_test import get_train_test
 
 

@@ -8,20 +8,18 @@ import pytest
 from pytest import approx
 
 from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
-from ethicml.utility.data_structures import DataTuple
-from ethicml.data import Adult, NonBinaryToy
-from ethicml.data.load import load_data
-from ethicml.evaluators.evaluate_models import run_metrics
-from ethicml.evaluators.per_sensitive_attribute import (
-    metric_per_sensitive_attribute, diff_per_sensitive_attribute,
-    ratio_per_sensitive_attribute, MetricNotApplicable
+from ethicml.utility import DataTuple
+from ethicml.data import Adult, NonBinaryToy, load_data
+from ethicml.evaluators import (
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+    ratio_per_sensitive_attribute,
+    run_metrics,
+    MetricNotApplicable,
 )
 from ethicml.metrics import (Accuracy, BCR, CV, Metric, NMI, PPV, NPV, ProbNeg,
-                             ProbOutcome, ProbPos, TNR, TPR)
-from ethicml.metrics.confusion_matrix import LabelOutOfBounds
-from ethicml.metrics.hsic import Hsic
-from ethicml.metrics.theil import Theil
-from ethicml.preprocessing.train_test_split import train_test_split
+                             ProbOutcome, ProbPos, TNR, TPR, Theil, Hsic, LabelOutOfBounds)
+from ethicml.preprocessing import train_test_split
 from tests.run_algorithm_test import get_train_test
 
 RTOL = 1e-5  # relative tolerance when comparing two floats

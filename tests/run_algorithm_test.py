@@ -6,11 +6,10 @@ from typing import Tuple
 import numpy as np  # import needed for mypy
 
 from ethicml.algorithms.inprocess import LR, SVM, Majority
-from ethicml.utility.data_structures import DataTuple
-from ethicml.data.load import load_data
-from ethicml.data import Toy
+from ethicml.utility import DataTuple
+from ethicml.data import load_data, Toy
 from ethicml.evaluators import run_in_parallel
-from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.preprocessing import train_test_split
 
 
 def get_train_test() -> Tuple[DataTuple, DataTuple]:

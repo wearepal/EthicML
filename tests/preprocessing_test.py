@@ -5,10 +5,9 @@ import math
 
 from typing import Tuple
 
-from ethicml.utility.data_structures import DataTuple
-from ethicml.data.load import load_data
-from ethicml.data.toy import Toy
-from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.utility import DataTuple
+from ethicml.data import load_data, Toy
+from ethicml.preprocessing import train_test_split
 
 
 def test_train_test_split():

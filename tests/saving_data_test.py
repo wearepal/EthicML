@@ -4,8 +4,8 @@ Test the saving data capability
 import pandas as pd
 import numpy as np
 
-from ethicml.utility.data_structures import DataTuple
-from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.utility import DataTuple
+from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
 
 

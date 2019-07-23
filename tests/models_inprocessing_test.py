@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.algorithm_base import run_blocking
+from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
     Corels,
@@ -21,13 +21,11 @@ from ethicml.algorithms.inprocess import (
     MLP,
     SVM,
 )
-from ethicml.evaluators.cross_validator import CrossValidator
+from ethicml.evaluators import CrossValidator
 from ethicml.metrics import Accuracy
-from ethicml.utility.heaviside import Heaviside
-from ethicml.data import Compas
-from ethicml.data.load import load_data
-from ethicml.utility.data_structures import DataTuple
-from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.utility import Heaviside, DataTuple
+from ethicml.data import load_data, Compas
+from ethicml.preprocessing import train_test_split
 from tests.run_algorithm_test import get_train_test
 
 

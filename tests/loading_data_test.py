@@ -5,11 +5,10 @@ from pathlib import Path
 import pandas as pd
 
 from ethicml.common import ROOT_PATH
-from ethicml.data.dataset import Dataset
-from ethicml.data.load import load_data, create_data_obj
-from ethicml.data import Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy
-from ethicml.utility.data_structures import DataTuple, concat_dt
-from ethicml.preprocessing.domain_adaptation import domain_split, query_dt
+from ethicml.data import (
+    Dataset, load_data, create_data_obj, Adult, Compas, Credit, German, Sqf, Toy, NonBinaryToy)
+from ethicml.utility import DataTuple, concat_dt
+from ethicml.preprocessing import domain_split, query_dt
 
 
 def test_can_load_test_data():
