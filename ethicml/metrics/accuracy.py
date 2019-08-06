@@ -10,7 +10,7 @@ from .metric import Metric
 
 
 class Accuracy(Metric):
-    """Accruacy"""
+    """Computes the classification accuracy"""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         actual_y = actual.y.values
