@@ -25,12 +25,14 @@ class GPyT(InstalledModel):
 
     basename = "GPyT"
 
-    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2):
-        super().__init__(
+    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, **kwargs):
+        if 'file_name' not in kwargs:
+            kwargs['file_name'] = "run.py"
+        super().__init__(  # type: ignore
             name="gpyt",
             url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
             module="fair-gpytorch",
-            file_name="run.py",
+            **kwargs,
         )
         self.s_as_input = s_as_input
         self.gpu = gpu
@@ -77,7 +79,7 @@ class GPyT(InstalledModel):
 
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
-        cmd = [str(self._module_path() / self.file_name)]
+        cmd = [str(self.script_path)]
         for key, value in flags.items():
             cmd += [f"--{key}", str(value)]
         await self._call_script(cmd)
@@ -429,7 +431,7 @@ def _flags(
             logging_steps=1,
             gpus=str(gpu),
             preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
-            num_samples=1000,
+            num_samples=20,
             optimize_inducing=True,
             length_scale=length_scale,
             sf=1.0,
