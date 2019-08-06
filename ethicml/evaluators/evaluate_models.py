@@ -104,7 +104,7 @@ def evaluate_models(
     total_experiments = (
         len(datasets)
         * repeats
-        * (1 + len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
+        * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
     seed = 0
@@ -156,9 +156,9 @@ def evaluate_models(
                             # - leaving blank until we have an implementation to work with
                             pass
 
+                        results = results.append(temp_res, ignore_index=True)
                         pbar.update()
 
-                        results = results.append(temp_res, ignore_index=True)
                     outdir = Path("..") / "results"  # OS-independent way of saying '../results'
                     outdir.mkdir(exist_ok=True)
                     path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
@@ -167,8 +167,6 @@ def evaluate_models(
                         loaded_results = pd.read_csv(path_to_file)
                         results = pd.concat([loaded_results, results])
                     results.to_csv(path_to_file, index=False)
-
-                    pbar.update()
 
     results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results
