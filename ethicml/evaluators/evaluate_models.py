@@ -3,7 +3,7 @@ Runs given metrics on given algorithms for given datasets
 """
 import os
 from pathlib import Path
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Sequence
 
 import pandas as pd
 from tqdm import tqdm
@@ -35,7 +35,7 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
-def per_sens_metrics_check(per_sens_metrics: List[Metric]):
+def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]):
     """Check if the given metrics allow application per sensitive attribute"""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
@@ -48,8 +48,8 @@ def per_sens_metrics_check(per_sens_metrics: List[Metric]):
 def run_metrics(
     predictions: pd.DataFrame,
     actual: DataTuple,
-    metrics: List[Metric],
-    per_sens_metrics: List[Metric],
+    metrics: Sequence[Metric] = (),
+    per_sens_metrics: Sequence[Metric] = (),
 ) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results
 
@@ -76,11 +76,11 @@ def run_metrics(
 
 def evaluate_models(
     datasets: List[Dataset],
-    preprocess_models: List[PreAlgorithm],
-    inprocess_models: List[InAlgorithm],
-    postprocess_models: List[PostAlgorithm],
-    metrics: List[Metric],
-    per_sens_metrics: List[Metric],
+    preprocess_models: Sequence[PreAlgorithm] = (),
+    inprocess_models: Sequence[InAlgorithm] = (),
+    postprocess_models: Sequence[PostAlgorithm] = (),
+    metrics: Sequence[Metric] = (),
+    per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 3,
     test_mode: bool = False,
 ) -> pd.DataFrame:
