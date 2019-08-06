@@ -41,7 +41,7 @@ class InAlgorithm(Algorithm):
 class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously"""
 
-    def run(self, train: DataTuple, test: TestTuple):
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:

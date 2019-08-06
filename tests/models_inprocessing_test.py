@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List, Dict, Any
 import pandas as pd
 import pytest
@@ -139,6 +140,12 @@ def test_kamishima(kamishima):
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 208
     assert predictions.values[predictions.values == -1].shape[0] == 192
+
+
+def test_gpyt_exception():
+    # test succeeds if the specified exception is thrown
+    with pytest.raises(ValueError, match="an executable has to be given"):
+        GPyT(file_name=Path("non existing path"))
 
 
 # @pytest.fixture(scope="module")
