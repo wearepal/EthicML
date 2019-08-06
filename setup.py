@@ -5,7 +5,7 @@ _MAJOR_VERSION = '0'
 _MINOR_VERSION = '1'
 _PATCH_VERSION = '0'
 
-_VERSION_SUFFIX = 'alpha.1'
+_VERSION_SUFFIX = 'dev'
 
 # Example, '0.4.0-rc1'
 version = '.'.join([
