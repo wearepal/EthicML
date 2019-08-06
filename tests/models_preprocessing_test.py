@@ -4,6 +4,7 @@ import pandas as pd
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync, Beutel, Zemel, VFAE
+from ethicml.algorithms.preprocess.upsampler import Upsampler
 from ethicml.utility import DataTuple, FairType, TestTuple
 from tests.run_algorithm_test import get_train_test
 
@@ -251,3 +252,49 @@ def test_threaded_custom_beutel():
     treaded_predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
     assert treaded_predictions.values[treaded_predictions.values == 1].shape[0] == 202
     assert treaded_predictions.values[treaded_predictions.values == -1].shape[0] == 198
+
+
+def test_upsampler():
+    train, test = get_train_test()
+
+    upsampler: PreAlgorithm = Upsampler()
+    assert upsampler is not None
+    assert upsampler.name == "Upsample"
+
+    new_train: DataTuple
+    new_test: TestTuple
+    new_train, new_test = upsampler.run(train, test)
+
+    assert new_test.x.shape[0] == test.x.shape[0]
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions = svm_model.run_test(new_train, new_test)
+    assert predictions.values[predictions.values == 1].shape[0] == 218
+    assert predictions.values[predictions.values == -1].shape[0] == 182
+
+
+def test_async_upsampler():
+    train, test = get_train_test()
+
+    upsampler: PreAlgorithmAsync = Upsampler()
+    assert upsampler is not None
+    assert upsampler.name == "Upsample"
+
+    new_train: DataTuple
+    new_test: TestTuple
+    new_train, new_test = run_blocking(
+        upsampler.run_async(train, test)
+    )
+
+    assert new_test.x.shape[0] == test.x.shape[0]
+
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
+
+    predictions = svm_model.run_test(new_train, new_test)
+    assert predictions.values[predictions.values == 1].shape[0] == 218
+    assert predictions.values[predictions.values == -1].shape[0] == 182
