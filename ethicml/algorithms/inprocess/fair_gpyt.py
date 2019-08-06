@@ -26,11 +26,12 @@ class GPyT(InstalledModel):
     basename = "GPyT"
 
     def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, **kwargs):
+        if 'file_name' not in kwargs:
+            kwargs['file_name'] = "run.py"
         super().__init__(  # type: ignore
             name="gpyt",
             url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
             module="fair-gpytorch",
-            file_name="run.py",
             **kwargs,
         )
         self.s_as_input = s_as_input
