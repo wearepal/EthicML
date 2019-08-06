@@ -4,11 +4,12 @@ Test that an algorithm can run against some data
 
 from typing import Tuple
 import numpy as np  # import needed for mypy
+import pandas as pd
 
 from ethicml.algorithms.inprocess import LR, SVM, Majority
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy
-from ethicml.evaluators import run_in_parallel
+from ethicml.evaluators import run_in_parallel, evaluate_models
 from ethicml.preprocessing import train_test_split
 
 
@@ -48,6 +49,13 @@ def test_run_parallel():
     assert count_true(result[2][0].values == -1) == 400
     assert count_true(result[2][1].values == 1) == 0
     assert count_true(result[2][1].values == -1) == 400
+
+
+def test_empty_evaluate():
+    empty_result = evaluate_models([Toy()])
+    exptected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
+    exptected_result = exptected_result.set_index(["dataset", "transform", "model", "repeat"])
+    pd.testing.assert_frame_equal(empty_result, exptected_result)
 
 
 # def test_run_alg_suite():
