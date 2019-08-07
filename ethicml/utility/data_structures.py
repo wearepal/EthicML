@@ -116,6 +116,10 @@ def write_as_feather(
     Returns:
         tuple of tuple of paths (one tuple for training, one for test)
     """
+    if isinstance(test, DataTuple):
+        # because of polymorphism it can happen that `test` is a DataTuple posing as a TestTuple
+        # this causes problems though because it will write an additional file (the one with y)
+        test = test.remove_y()
     return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
 
 
