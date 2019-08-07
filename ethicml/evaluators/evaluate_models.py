@@ -1,9 +1,9 @@
 """
 Runs given metrics on given algorithms for given datasets
 """
-import os
 from pathlib import Path
 from typing import List, Dict, Union, Sequence
+from collections import OrderedDict
 
 import pandas as pd
 from tqdm import tqdm
@@ -124,6 +124,12 @@ def evaluate_models(
                 }
 
                 for pre_process_method in preprocess_models:
+                    logging: 'OrderedDict[str, str]' = OrderedDict()
+                    logging['model'] = pre_process_method.name
+                    logging['dataset'] = dataset.name
+                    logging['repeat'] = str(repeat)
+                    pbar.set_postfix(ordered_dict=logging)
+
                     new_train, new_test = pre_process_method.run(train, test)
                     to_operate_on[pre_process_method.name] = TrainTestPair(
                         train=new_train, test=new_test
@@ -138,6 +144,12 @@ def evaluate_models(
                     transformed_test: Union[DataTuple, TestTuple] = transform.test
 
                     for model in inprocess_models:
+                        logging = OrderedDict()
+                        logging['model'] = model.name
+                        logging['dataset'] = dataset.name
+                        logging['transform'] = transform_name
+                        logging['repeat'] = str(repeat)
+                        pbar.set_postfix(ordered_dict=logging)
 
                         temp_res: Dict[str, Union[str, float]] = {
                             "dataset": dataset.name,
@@ -161,8 +173,8 @@ def evaluate_models(
 
                     outdir = Path("..") / "results"  # OS-independent way of saying '../results'
                     outdir.mkdir(exist_ok=True)
-                    path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
-                    exists = os.path.isfile(path_to_file)
+                    path_to_file: Path = outdir / f"{dataset.name}_{transform_name}.csv"
+                    exists = path_to_file.is_file()
                     if exists:
                         loaded_results = pd.read_csv(path_to_file)
                         results = pd.concat([loaded_results, results])
