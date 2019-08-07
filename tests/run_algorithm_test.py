@@ -2,14 +2,18 @@
 Test that an algorithm can run against some data
 """
 
-from typing import Tuple
+from typing import Tuple, List
 import numpy as np  # import needed for mypy
 import pandas as pd
+import pytest
 
-from ethicml.algorithms.inprocess import LR, SVM, Majority
+from ethicml.algorithms.inprocess import LR, SVM, Majority, InAlgorithm
+from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
+from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
+from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.utility import DataTuple
-from ethicml.data import load_data, Toy
-from ethicml.evaluators import run_in_parallel, evaluate_models
+from ethicml.data import load_data, Toy, Adult, Dataset
+from ethicml.evaluators import run_in_parallel, evaluate_models, MetricNotApplicable
 from ethicml.preprocessing import train_test_split
 
 
@@ -58,26 +62,27 @@ def test_empty_evaluate():
     pd.testing.assert_frame_equal(empty_result, exptected_result)
 
 
-# def test_run_alg_suite():
-#     dataset = Adult("Race")
-#     dataset.sens_attrs = ["race_White"]
-#     datasets: List[Dataset] = [dataset, Toy()]
-#     preprocess_models: List[PreAlgorithm] = [Beutel()]
-#     inprocess_models: List[InAlgorithm] = [LR()]
-#     postprocess_models: List[PostAlgorithm] = []
-#     metrics: List[Metric] = [Accuracy(), CV()]
-#     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
-#     evaluate_models(datasets, preprocess_models, inprocess_models,
-#                     postprocess_models, metrics, per_sens_metrics, repeats=1, test_mode=True)
-#
-#
-# def test_run_alg_suite_wrong_metrics():
-#     datasets: List[Dataset] = [Toy(), Adult()]
-#     preprocess_models: List[PreAlgorithm] = [Beutel()]
-#     inprocess_models: List[InAlgorithm] = [SVM(), LR()]
-#     postprocess_models: List[PostAlgorithm] = []
-#     metrics: List[Metric] = [Accuracy(), CV()]
-#     per_sens_metrics: List[Metric] = [Accuracy(), TPR(), CV()]
-#     with pytest.raises(MetricNotApplicable):
-#         evaluate_models(datasets, preprocess_models, inprocess_models,
-#                         postprocess_models, metrics, per_sens_metrics, repeats=1, test_mode=True)
+def test_run_alg_suite():
+    dataset = Adult("Race")
+    dataset.sens_attrs = ["race_White"]
+    datasets: List[Dataset] = [dataset, Toy()]
+    preprocess_models: List[PreAlgorithm] = [Upsampler()]
+    inprocess_models: List[InAlgorithm] = [LR()]
+    postprocess_models: List[PostAlgorithm] = []
+    metrics: List[Metric] = [Accuracy(), CV()]
+    per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
+    evaluate_models(datasets, preprocess_models, inprocess_models,
+                    postprocess_models, metrics, per_sens_metrics,
+                    repeats=1, test_mode=True, delete_prev=True)
+
+
+def test_run_alg_suite_wrong_metrics():
+    datasets: List[Dataset] = [Toy(), Adult()]
+    preprocess_models: List[PreAlgorithm] = [Upsampler()]
+    inprocess_models: List[InAlgorithm] = [SVM(kernel='linear'), LR()]
+    postprocess_models: List[PostAlgorithm] = []
+    metrics: List[Metric] = [Accuracy(), CV()]
+    per_sens_metrics: List[Metric] = [Accuracy(), TPR(), CV()]
+    with pytest.raises(MetricNotApplicable):
+        evaluate_models(datasets, preprocess_models, inprocess_models,
+                        postprocess_models, metrics, per_sens_metrics, repeats=1, test_mode=True)

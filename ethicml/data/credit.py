@@ -12,6 +12,7 @@ class Credit(Dataset):
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
+        self.split = split
         self.discrete_only = discrete_only
         self.features = [
             "LIMIT_BAL",
@@ -79,7 +80,7 @@ class Credit(Dataset):
 
     @property
     def name(self) -> str:
-        return "Credit"
+        return f"Credit {self.split}"
 
     @property
     def filename(self) -> str:

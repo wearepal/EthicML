@@ -3,6 +3,7 @@ Wrapper for calling Kamishima model
 """
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -27,10 +28,15 @@ class Kamishima(InstalledModel):
         self.eta = eta
 
     @staticmethod
-    def create_file_in_kamishima_format(data: DataTuple, file_path: str):
+    def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str):
         """Create a text file with the data"""
 
-        result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
+        if isinstance(data, DataTuple):
+            result = (
+                pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
+            )
+        else:
+            result = pd.concat([data.x, data.s], axis="columns").to_numpy().astype(np.float64)
         np.savetxt(file_path, result)
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
@@ -39,7 +45,6 @@ class Kamishima(InstalledModel):
             train_path = str(tmp_path / "train.txt")
             test_path = str(tmp_path / "test.txt")
             self.create_file_in_kamishima_format(train, train_path)
-            # TODO: we should fill the y column with dummy values for the test data
             self.create_file_in_kamishima_format(test, test_path)
             min_class_label = train.y[train.y.columns[0]].min()
             model_path = str(tmp_path / "model")

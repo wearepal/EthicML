@@ -10,6 +10,7 @@ class Sqf(Dataset):
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
+        self.split = split
         self.discrete_only = discrete_only
         self.features = [
             "perstop",
@@ -182,7 +183,7 @@ class Sqf(Dataset):
 
     @property
     def name(self) -> str:
-        return "SQF"
+        return f"SQF {self.split}"
 
     @property
     def filename(self) -> str:
