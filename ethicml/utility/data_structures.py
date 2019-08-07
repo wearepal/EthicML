@@ -21,6 +21,26 @@ class TestTuple:
     def __iter__(self):
         return iter([self.x, self.s])
 
+    def write_as_feather(self, data_dir: Path, identifier: str) -> "TestPathTuple":
+        """Write the TestTuple to Feather files and return the file paths as a TestPathTuple
+
+        Args:
+            data_dir: directory where the files should be stored
+            identifier: a string that ideally identifies the file uniquely, can be a UUID
+        Returns:
+            tuple of paths
+        """
+        # create the directory if it doesn't already exist
+        data_dir.mkdir(parents=True, exist_ok=True)
+
+        return TestPathTuple(
+            x=_save_helper(data_dir, self.x, identifier, "x"),
+            s=_save_helper(data_dir, self.s, identifier, "s"),
+            name=_save_helper(
+                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
+            ),
+        )
+
 
 @dataclass(frozen=True)
 class DataTupleValues:
@@ -37,6 +57,27 @@ class DataTuple(TestTuple, DataTupleValues):
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance"""
         return TestTuple(x=self.x, s=self.s, name=self.name)
+
+    def write_as_feather(self, data_dir: Path, identifier: str) -> "PathTuple":
+        """Write the DataTuple to Feather files and return the file paths as a PathTuple
+
+        Args:
+            data_dir: directory where the files should be stored
+            identifier: a string that ideally identifies the file uniquely, can be a UUID
+        Returns:
+            tuple of paths
+        """
+        # create the directory if it doesn't already exist
+        data_dir.mkdir(parents=True, exist_ok=True)
+
+        return PathTuple(
+            x=_save_helper(data_dir, self.x, identifier, "x"),
+            s=_save_helper(data_dir, self.s, identifier, "s"),
+            y=_save_helper(data_dir, self.y, identifier, "y"),
+            name=_save_helper(
+                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
+            ),
+        )
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -55,6 +96,14 @@ class PathTuple(TestPathTuple):
     y: Path  # path to file with class labels
 
 
+def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
+    # SUGGESTION: maybe the file names should be completely random to avoid collisions
+    data_path = data_dir / f"data_{prefix}_{key}.feather"
+    # write the file
+    data.to_feather(data_path)
+    return data_path
+
+
 def write_as_feather(
     train: DataTuple, test: TestTuple, data_dir: Path
 ) -> (Tuple[PathTuple, TestPathTuple]):
@@ -67,28 +116,12 @@ def write_as_feather(
     Returns:
         tuple of tuple of paths (one tuple for training, one for test)
     """
-    # create the directory if it doesn't already exist
-    data_dir.mkdir(parents=True, exist_ok=True)
-
-    def _save(data: pd.DataFrame, prefix: str, key: str) -> Path:
-        # SUGGESTION: maybe the file names should be completely random to avoid collisions
-        data_path = data_dir / f"data_{prefix}_{key}.feather"
-        # write the file
-        data.to_feather(data_path)
-        return data_path
-
-    train_paths = PathTuple(
-        x=_save(train.x, "train", "x"),
-        s=_save(train.s, "train", "s"),
-        y=_save(train.y, "train", "y"),
-        name=_save(pd.DataFrame([train.name], columns=['0']), "train", "name"),
-    )
-    test_paths = TestPathTuple(
-        x=_save(test.x, "test", "x"),
-        s=_save(test.s, "test", "s"),
-        name=_save(pd.DataFrame([test.name], columns=['0']), "test", "name"),
-    )
-    return train_paths, test_paths
+    # TODO: this should be an assert instead (requires changing code that calls this function)
+    if isinstance(test, DataTuple):
+        # because of polymorphism it can happen that `test` is a DataTuple posing as a TestTuple
+        # this causes problems though because it will write an additional file (the one with y)
+        test = test.remove_y()
+    return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
 
 
 def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
