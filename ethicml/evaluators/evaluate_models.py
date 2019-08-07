@@ -190,8 +190,17 @@ def evaluate_models(
                     exists = path_to_file.is_file()
                     if exists:
                         loaded_results = pd.read_csv(path_to_file)
-                        results = pd.concat([loaded_results, results])
+                        results = pd.concat([loaded_results, results], sort=True)
                     results.to_csv(path_to_file, index=False)
+                    results = pd.DataFrame(columns=columns)
 
+    results = pd.DataFrame(columns=columns)
+    for dataset in datasets:
+        for transform_name, transform in to_operate_on.items():
+            path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
+            exists = path_to_file.is_file()
+            if exists:
+                loaded_results = pd.read_csv(path_to_file)
+                results = pd.concat([loaded_results, results], sort=True)
     results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results

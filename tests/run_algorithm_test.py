@@ -1,7 +1,8 @@
 """
 Test that an algorithm can run against some data
 """
-
+import os
+from pathlib import Path
 from typing import Tuple, List
 import numpy as np  # import needed for mypy
 import pandas as pd
@@ -67,13 +68,22 @@ def test_run_alg_suite():
     dataset.sens_attrs = ["race_White"]
     datasets: List[Dataset] = [dataset, Toy()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [LR()]
+    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear')]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
                     postprocess_models, metrics, per_sens_metrics,
                     repeats=1, test_mode=True, delete_prev=True)
+    files = os.listdir(Path("../results"))
+
+    file_names = ['Adult Race_Upsample.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample.csv', 'Toy_no_transform.csv']
+    assert len(files) == 4
+    assert sorted(files) == file_names
+
+    for file in file_names:
+        written_file = pd.read_csv(Path(f"../results/{file}"))
+        assert written_file.shape == (2,14)
 
 
 def test_run_alg_suite_wrong_metrics():
