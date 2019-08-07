@@ -83,10 +83,12 @@ def evaluate_models(
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 3,
     test_mode: bool = False,
+    delete_prev: bool = False,
 ) -> pd.DataFrame:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
+        repeats: number of repeats to perform for the experiments
         datasets: list of dataset objects
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
@@ -94,6 +96,7 @@ def evaluate_models(
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         test_mode: if True, only use a small subset of the data so that the models run faster
+        delete_prev:  False by default. If True, delete saved results in directory
     """
     per_sens_metrics_check(per_sens_metrics)
 
@@ -106,6 +109,19 @@ def evaluate_models(
         * repeats
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
+
+    outdir = Path("..") / "results"  # OS-independent way of saying '../results'
+    outdir.mkdir(exist_ok=True)
+
+    if delete_prev:
+        for dataset in datasets:
+            transform_list = ["no_transform"]
+            for preprocess_model in preprocess_models:
+                transform_list.append(preprocess_model.name)
+            for transform_name in transform_list:
+                path_to_file: Path = outdir / f"{dataset.name}_{transform_name}.csv"
+                if path_to_file.is_file():  # Check the file exists
+                    path_to_file.unlink()
 
     seed = 0
     with tqdm(total=total_experiments) as pbar:
@@ -137,7 +153,6 @@ def evaluate_models(
 
                     pbar.update()
 
-                transform_name: str
                 for transform_name, transform in to_operate_on.items():
 
                     transformed_train: DataTuple = transform.train
@@ -171,9 +186,7 @@ def evaluate_models(
                         results = results.append(temp_res, ignore_index=True)
                         pbar.update()
 
-                    outdir = Path("..") / "results"  # OS-independent way of saying '../results'
-                    outdir.mkdir(exist_ok=True)
-                    path_to_file: Path = outdir / f"{dataset.name}_{transform_name}.csv"
+                    path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
                     exists = path_to_file.is_file()
                     if exists:
                         loaded_results = pd.read_csv(path_to_file)

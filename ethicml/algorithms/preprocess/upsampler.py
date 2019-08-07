@@ -5,7 +5,7 @@ Simple upsampler that makes subgroups the same size as the majority group
 from pathlib import Path
 from typing import List, Tuple, Dict
 
-from ethicml.algorithms.preprocess import PreAlgorithmAsync
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.utility import PathTuple, TestPathTuple, TestTuple, DataTuple
 

@@ -10,6 +10,7 @@ class German(Dataset):
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
         super().__init__()
+        self.split = split
         self.discrete_only = discrete_only
         self.features = [
             "month",
@@ -93,7 +94,7 @@ class German(Dataset):
 
     @property
     def name(self) -> str:
-        return "German"
+        return f"German {self.split}"
 
     @property
     def filename(self) -> str:
