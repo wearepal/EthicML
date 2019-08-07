@@ -15,7 +15,6 @@ from ethicml.utility.data_structures import (
     PathTuple,
     TestPathTuple,
     write_as_feather,
-    load_feather,
 )
 
 
@@ -48,50 +47,31 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
-            train_x_path = tmp_path / "transform_train_x.feather"
-            train_s_path = tmp_path / "transform_train_s.feather"
-            train_y_path = tmp_path / "transform_train_y.feather"
-            train_name_path = tmp_path / "transform_train_name.feather"
-            test_x_path = tmp_path / "transform_test_x.feather"
-            test_s_path = tmp_path / "transform_test_s.feather"
-            test_name_path = tmp_path / "transform_test_name.feather"
+            transformed_train_paths = PathTuple(
+                x=tmp_path / "transform_train_x.feather",
+                s=tmp_path / "transform_train_s.feather",
+                y=tmp_path / "transform_train_y.feather",
+                name=train.name if train.name is not None else "",
+            )
+            transformed_test_paths = TestPathTuple(
+                x=tmp_path / "transform_test_x.feather",
+                s=tmp_path / "transform_test_s.feather",
+                name=test.name if test.name is not None else "",
+            )
             cmd = self._script_command(
-                train_paths,
-                test_paths,
-                train_x_path,
-                train_s_path,
-                train_y_path,
-                train_name_path,
-                test_x_path,
-                test_s_path,
-                test_name_path,
+                train_paths, test_paths, transformed_train_paths, transformed_test_paths
             )
             await self._call_script(cmd)
-            return (
-                DataTuple(
-                    x=load_feather(train_x_path),
-                    s=load_feather(train_s_path),
-                    y=load_feather(train_y_path),
-                    name=str(load_feather(train_name_path)['0'][0]),
-                ),
-                TestTuple(
-                    x=load_feather(test_x_path),
-                    s=load_feather(test_s_path),
-                    name=str(load_feather(test_name_path)['0'][0]),
-                ),
-            )
+            transformed_train = transformed_train_paths.load_from_feather()
+            transformed_test = transformed_test_paths.load_from_feather()
+            return transformed_train, transformed_test
 
     @abstractmethod
     def _script_command(
         self,
         train_paths: PathTuple,
         test_paths: TestPathTuple,
-        new_train_x_path: Path,
-        new_train_s_path: Path,
-        new_train_y_path: Path,
-        new_train_name_path: Path,
-        new_test_x_path: Path,
-        new_test_s_path: Path,
-        new_test_name_path: Path,
+        new_train_paths: PathTuple,
+        new_test_paths: TestPathTuple,
     ) -> List[str]:
         """The command that will run the script"""

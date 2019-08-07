@@ -1,7 +1,6 @@
 """
 Zemel's Learned Fair Representations
 """
-from pathlib import Path
 from typing import Dict, Union, Tuple, List
 
 from ethicml.utility.data_structures import TestTuple, DataTuple, PathTuple, TestPathTuple
@@ -46,26 +45,10 @@ class Zemel(PreAlgorithmAsync):
         self,
         train_paths: PathTuple,
         test_paths: TestPathTuple,
-        new_train_x_path: Path,
-        new_train_s_path: Path,
-        new_train_y_path: Path,
-        new_train_name_path: Path,
-        new_test_x_path: Path,
-        new_test_s_path: Path,
-        new_test_name_path: Path,
+        new_train_paths: PathTuple,
+        new_test_paths: TestPathTuple,
     ) -> List[str]:
-        args = flag_interface(
-            train_paths,
-            test_paths,
-            new_train_x_path,
-            new_train_s_path,
-            new_train_y_path,
-            new_train_name_path,
-            new_test_x_path,
-            new_test_s_path,
-            new_test_name_path,
-            self.flags,
-        )
+        args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.zemel"] + args
 
     @property

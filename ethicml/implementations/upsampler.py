@@ -65,6 +65,7 @@ def upsample(dataset):
             x=dataset.x[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
             s=dataset.s[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
             y=dataset.y[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
+            name=dataset.name,
         )
 
     percentages = {}
@@ -87,7 +88,7 @@ def upsample(dataset):
             drop=True
         )
         upsampled[key] = DataTuple(
-            x=all_data[x_columns], s=all_data[s_columns], y=all_data[y_columns]
+            x=all_data[x_columns], s=all_data[s_columns], y=all_data[y_columns], name=dataset.name
         )
 
     upsampled_datatuple = None
@@ -112,7 +113,7 @@ def train_and_transform(train, test):
     """
     upsampled_train = upsample(train)
 
-    return upsampled_train, TestTuple(x=test.x, s=test.s)
+    return upsampled_train, test
 
 
 def main():

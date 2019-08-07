@@ -2,19 +2,9 @@
 Base class for Algorithms
 """
 import sys
-from pathlib import Path
 from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 import asyncio
-
-import pandas as pd
-
-
-def load_dataframe(path: Path) -> pd.DataFrame:
-    """Load dataframe from a feather file"""
-    with path.open("rb") as file:
-        df = pd.read_feather(file)
-    return df
 
 
 class Algorithm(ABC):
@@ -69,9 +59,7 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
         except asyncio.TimeoutError as error:
             raise RuntimeError("The script timed out.") from error
 
-        if process.returncode == 0:
-            print(f"Success: {cmd_args!r} (pid = {process.pid})")
-        else:
+        if process.returncode != 0:
             print(f"Failure: {cmd_args!r} (pid = {process.pid})")
             if stderr:
                 print(stderr.decode().strip())
