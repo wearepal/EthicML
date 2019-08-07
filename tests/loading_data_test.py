@@ -66,7 +66,7 @@ def test_load_adult():
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
-    assert "Adult" == data.name
+    assert "Adult Sex" == data.name
 
 
 def test_load_compas():
@@ -74,7 +74,7 @@ def test_load_compas():
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
-    assert "Compas" == data.name
+    assert "Compas Sex" == data.name
 
 
 def test_load_sqf():
@@ -82,7 +82,7 @@ def test_load_sqf():
     assert (12347, 144) == data.x.shape
     assert (12347, 1) == data.s.shape
     assert (12347, 1) == data.y.shape
-    assert "SQF" == data.name
+    assert "SQF Sex" == data.name
 
 
 def test_load_german():
@@ -90,7 +90,7 @@ def test_load_german():
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
     assert (1000, 1) == data.y.shape
-    assert "German" == data.name
+    assert "German Sex" == data.name
 
 
 def test_load_german_ordered():

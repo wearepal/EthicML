@@ -3,8 +3,8 @@ import pandas as pd
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM
-from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync, Beutel, Zemel, VFAE
-from ethicml.algorithms.preprocess.upsampler import Upsampler
+from ethicml.algorithms.preprocess import (PreAlgorithm, PreAlgorithmAsync, Beutel,
+                                           Zemel, VFAE, Upsampler)
 from ethicml.utility import DataTuple, FairType, TestTuple
 from tests.run_algorithm_test import get_train_test
 

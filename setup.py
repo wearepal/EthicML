@@ -45,10 +45,11 @@ setup(
         "GitPython >= 2.1.11",
         "tqdm >= 4.31.1",
         "pipenv >= 2018.11.26",
+        "tornado == 4.5.3",
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
     ],
     extras_require={
-        # use `pip install ethicml[dev]` to install development packages
+        # use `pip install EthicML[dev]` to install development packages
         'dev': [
             "pylint >= 2.0",
             "pytest >= 3.3.2",
