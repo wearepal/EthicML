@@ -2,19 +2,9 @@
 Base class for Algorithms
 """
 import sys
-from pathlib import Path
 from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 import asyncio
-
-import pandas as pd
-
-
-def load_dataframe(path: Path) -> pd.DataFrame:
-    """Load dataframe from a feather file"""
-    with path.open("rb") as file:
-        df = pd.read_feather(file)
-    return df
 
 
 class Algorithm(ABC):

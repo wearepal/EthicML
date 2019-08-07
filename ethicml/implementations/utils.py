@@ -9,8 +9,7 @@ from typing import Tuple, Union, List, Optional, Dict, Any
 import pandas as pd
 import numpy as np
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
-from ethicml.algorithms.algorithm_base import load_dataframe
+from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
 
 
 class InAlgoInterface:
@@ -21,18 +20,11 @@ class InAlgoInterface:
 
     def load_data(self) -> Tuple[DataTuple, TestTuple]:
         """Load the data from the files"""
-        train = DataTuple(
-            x=load_dataframe(Path(self.args[0])),
-            s=load_dataframe(Path(self.args[1])),
-            y=load_dataframe(Path(self.args[2])),
-            name=str(load_dataframe(Path(self.args[3]))['0'][0]),
+        train_paths = PathTuple(
+            x=Path(self.args[0]), s=Path(self.args[1]), y=Path(self.args[2]), name=self.args[3]
         )
-        test = TestTuple(
-            x=load_dataframe(Path(self.args[4])),
-            s=load_dataframe(Path(self.args[5])),
-            name=str(load_dataframe(Path(self.args[6]))['0'][0]),
-        )
-        return train, test
+        test_paths = TestPathTuple(x=Path(self.args[4]), s=Path(self.args[5]), name=self.args[6])
+        return train_paths.load_from_feather(), test_paths.load_from_feather()
 
     def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
         """Save the data to the file that was specified in the commandline arguments"""
@@ -50,18 +42,16 @@ class InAlgoInterface:
 
 def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags"""
-    train = DataTuple(
-        x=load_dataframe(Path(flags["train_x"])),
-        s=load_dataframe(Path(flags["train_s"])),
-        y=load_dataframe(Path(flags["train_y"])),
-        name=str(load_dataframe(Path(flags["train_name"]))['0'][0]),
+    train_paths = PathTuple(
+        x=Path(flags["train_x"]),
+        s=Path(flags["train_s"]),
+        y=Path(flags["train_y"]),
+        name=flags["train_name"],
     )
-    test = TestTuple(
-        x=load_dataframe(Path(flags['test_x'])),
-        s=load_dataframe(Path(flags['test_s'])),
-        name=str(load_dataframe(Path(flags["test_name"]))['0'][0]),
+    test_paths = TestPathTuple(
+        x=Path(flags['test_x']), s=Path(flags['test_s']), name=flags["test_name"]
     )
-    return train, test
+    return train_paths.load_from_feather(), test_paths.load_from_feather()
 
 
 def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: argparse.Namespace):

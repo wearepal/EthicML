@@ -36,9 +36,7 @@ class TestTuple:
         return TestPathTuple(
             x=_save_helper(data_dir, self.x, identifier, "x"),
             s=_save_helper(data_dir, self.s, identifier, "s"),
-            name=_save_helper(
-                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
-            ),
+            name=self.name if self.name is not None else "",
         )
 
 
@@ -74,9 +72,7 @@ class DataTuple(TestTuple, DataTupleValues):
             x=_save_helper(data_dir, self.x, identifier, "x"),
             s=_save_helper(data_dir, self.s, identifier, "s"),
             y=_save_helper(data_dir, self.y, identifier, "y"),
-            name=_save_helper(
-                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
-            ),
+            name=self.name if self.name is not None else "",
         )
 
 
@@ -86,7 +82,13 @@ class TestPathTuple:
 
     x: Path  # path to file with features
     s: Path  # path to file with sensitive attributes
-    name: Path  # name of the dataset
+    name: str  # name of the dataset
+
+    def load_from_feather(self) -> TestTuple:
+        """Load a dataframe from a feather file"""
+        return TestTuple(
+            x=load_feather(self.x), s=load_feather(self.s), name=self.name if self.name else None
+        )
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -94,6 +96,15 @@ class PathTuple(TestPathTuple):
     """For algorithms that run in their own process, we pass around paths to the data"""
 
     y: Path  # path to file with class labels
+
+    def load_from_feather(self) -> DataTuple:
+        """Load a dataframe from a feather file"""
+        return DataTuple(
+            x=load_feather(self.x),
+            s=load_feather(self.s),
+            y=load_feather(self.y),
+            name=self.name if self.name else None,
+        )
 
 
 def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
