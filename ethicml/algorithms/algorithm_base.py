@@ -59,9 +59,7 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
         except asyncio.TimeoutError as error:
             raise RuntimeError("The script timed out.") from error
 
-        if process.returncode == 0:
-            print(f"Success: {cmd_args!r} (pid = {process.pid})")
-        else:
+        if process.returncode != 0:
             print(f"Failure: {cmd_args!r} (pid = {process.pid})")
             if stderr:
                 print(stderr.decode().strip())
