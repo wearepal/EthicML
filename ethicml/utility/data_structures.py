@@ -116,6 +116,7 @@ def write_as_feather(
     Returns:
         tuple of tuple of paths (one tuple for training, one for test)
     """
+    # TODO: this should be an assert instead (requires changing code that calls this function)
     if isinstance(test, DataTuple):
         # because of polymorphism it can happen that `test` is a DataTuple posing as a TestTuple
         # this causes problems though because it will write an additional file (the one with y)
