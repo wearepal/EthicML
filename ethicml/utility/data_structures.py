@@ -21,11 +21,12 @@ class TestTuple:
     def __iter__(self):
         return iter([self.x, self.s])
 
-    def write_as_feather(self, data_dir: Path) -> "TestPathTuple":
+    def write_as_feather(self, data_dir: Path, identifier: str) -> "TestPathTuple":
         """Write the TestTuple to Feather files and return the file paths as a TestPathTuple
 
         Args:
             data_dir: directory where the files should be stored
+            identifier: a string that ideally identifies the file uniquely, can be a UUID
         Returns:
             tuple of paths
         """
@@ -33,9 +34,11 @@ class TestTuple:
         data_dir.mkdir(parents=True, exist_ok=True)
 
         return TestPathTuple(
-            x=_save_helper(data_dir, self.x, "test", "x"),
-            s=_save_helper(data_dir, self.s, "test", "s"),
-            name=_save_helper(data_dir, pd.DataFrame([self.name], columns=['0']), "test", "name"),
+            x=_save_helper(data_dir, self.x, identifier, "x"),
+            s=_save_helper(data_dir, self.s, identifier, "s"),
+            name=_save_helper(
+                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
+            ),
         )
 
 
@@ -55,11 +58,12 @@ class DataTuple(TestTuple, DataTupleValues):
         """Convert the DataTuple instance to a TestTuple instance"""
         return TestTuple(x=self.x, s=self.s, name=self.name)
 
-    def write_as_feather(self, data_dir: Path) -> "PathTuple":
+    def write_as_feather(self, data_dir: Path, identifier: str) -> "PathTuple":
         """Write the DataTuple to Feather files and return the file paths as a PathTuple
 
         Args:
             data_dir: directory where the files should be stored
+            identifier: a string that ideally identifies the file uniquely, can be a UUID
         Returns:
             tuple of paths
         """
@@ -67,10 +71,12 @@ class DataTuple(TestTuple, DataTupleValues):
         data_dir.mkdir(parents=True, exist_ok=True)
 
         return PathTuple(
-            x=_save_helper(data_dir, self.x, "train", "x"),
-            s=_save_helper(data_dir, self.s, "train", "s"),
-            y=_save_helper(data_dir, self.y, "train", "y"),
-            name=_save_helper(data_dir, pd.DataFrame([self.name], columns=['0']), "train", "name"),
+            x=_save_helper(data_dir, self.x, identifier, "x"),
+            s=_save_helper(data_dir, self.s, identifier, "s"),
+            y=_save_helper(data_dir, self.y, identifier, "y"),
+            name=_save_helper(
+                data_dir, pd.DataFrame([self.name], columns=['0']), identifier, "name"
+            ),
         )
 
 
@@ -110,7 +116,7 @@ def write_as_feather(
     Returns:
         tuple of tuple of paths (one tuple for training, one for test)
     """
-    return train.write_as_feather(data_dir), test.write_as_feather(data_dir)
+    return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
 
 
 def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
