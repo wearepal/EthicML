@@ -33,9 +33,9 @@ class TestTuple:
         data_dir.mkdir(parents=True, exist_ok=True)
 
         return TestPathTuple(
-            x=_save_helper(data_dir, self.x, "train", "x"),
-            s=_save_helper(data_dir, self.s, "train", "s"),
-            name=_save_helper(data_dir, pd.DataFrame([self.name], columns=['0']), "train", "name"),
+            x=_save_helper(data_dir, self.x, "test", "x"),
+            s=_save_helper(data_dir, self.s, "test", "s"),
+            name=_save_helper(data_dir, pd.DataFrame([self.name], columns=['0']), "test", "name"),
         )
 
 
