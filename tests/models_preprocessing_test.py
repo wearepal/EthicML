@@ -136,6 +136,8 @@ def test_threaded_zemel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -178,6 +180,8 @@ def test_threaded_beutel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == "Beutel: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -202,6 +206,8 @@ def test_threaded_vfae():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
@@ -244,6 +250,8 @@ def test_threaded_custom_beutel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
@@ -266,6 +274,8 @@ def test_upsampler():
     new_train, new_test = upsampler.run(train, test)
 
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -285,11 +295,11 @@ def test_async_upsampler():
 
     new_train: DataTuple
     new_test: TestTuple
-    new_train, new_test = run_blocking(
-        upsampler.run_async(train, test)
-    )
+    new_train, new_test = run_blocking(upsampler.run_async(train, test))
 
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None

@@ -1,5 +1,4 @@
 """Beutel's algorithm"""
-from pathlib import Path
 from typing import List, Sequence, Tuple
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
@@ -64,26 +63,10 @@ class Beutel(PreAlgorithmAsync):
         self,
         train_paths: PathTuple,
         test_paths: TestPathTuple,
-        new_train_x_path: Path,
-        new_train_s_path: Path,
-        new_train_y_path: Path,
-        new_train_name_path: Path,
-        new_test_x_path: Path,
-        new_test_s_path: Path,
-        new_test_name_path: Path,
+        new_train_paths: PathTuple,
+        new_test_paths: TestPathTuple,
     ) -> List[str]:
-        args = flag_interface(
-            train_paths,
-            test_paths,
-            new_train_x_path,
-            new_train_s_path,
-            new_train_y_path,
-            new_train_name_path,
-            new_test_x_path,
-            new_test_s_path,
-            new_test_name_path,
-            vars(self),
-        )
+        args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, vars(self))
         return ["-m", "ethicml.implementations.beutel"] + args
 
     @property
