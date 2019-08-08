@@ -4,7 +4,7 @@ This module contains metrics which can be applied to prediction results
 from .accuracy import Accuracy
 from .bcr import BCR
 from .confusion_matrix import confusion_matrix, LabelOutOfBounds
-from .cv import CV
+from .cv import CV, AbsCV
 from .hsic import Hsic
 from .metric import Metric
 from .normalized_mutual_information import NMI
