@@ -30,3 +30,21 @@ class CV(Metric):
     @property
     def apply_per_sensitive(self) -> bool:
         return False
+
+
+class AbsCV(CV):
+    """Absolute value of Calder-Verwer
+
+    This metric is supposed to make it easier to compare results.
+    """
+
+    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        cv_score = super().score(prediction, actual)
+        # the following is equivalent to 1 - abs(diff)
+        if cv_score > 1:
+            return 2 - cv_score
+        return cv_score
+
+    @property
+    def name(self) -> str:
+        return "CV absolute"
