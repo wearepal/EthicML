@@ -37,7 +37,9 @@ class Kamishima(InstalledModel):
             )
         else:
             zeros = pd.DataFrame([0 for _ in range(data.x.shape[0])], columns=['y'])
-            result = pd.concat([data.x, data.s, zeros], axis="columns").to_numpy().astype(np.float64)
+            result = (
+                pd.concat([data.x, data.s, zeros], axis="columns").to_numpy().astype(np.float64)
+            )
         np.savetxt(file_path, result)
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
