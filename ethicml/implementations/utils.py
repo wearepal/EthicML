@@ -62,19 +62,15 @@ def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: argparse
     train, test = transforms
 
     def _save(data: pd.DataFrame, path: str) -> None:
-        # SUGGESTION: maybe the file names should be completely random to avoid collisions
-        data_path = Path(path)
         # write the file
         data.columns = data.columns.astype(str)
-        data.to_feather(data_path)
+        data.to_feather(Path(path))
 
     _save(train.x, args.new_train_x)
     _save(train.s, args.new_train_s)
     _save(train.y, args.new_train_y)
-    _save(pd.DataFrame([train.name], columns=['0']), args.new_train_name)
     _save(test.x, args.new_test_x)
     _save(test.s, args.new_test_s)
-    _save(pd.DataFrame([test.name], columns=['0']), args.new_test_name)
 
 
 def pre_algo_argparser() -> argparse.ArgumentParser:

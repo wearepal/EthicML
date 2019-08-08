@@ -23,8 +23,8 @@ from ethicml.algorithms.inprocess import (
     SVM,
 )
 from ethicml.evaluators import CrossValidator
-from ethicml.metrics import Accuracy
-from ethicml.utility import Heaviside, DataTuple
+from ethicml.metrics import Accuracy, AbsCV
+from ethicml.utility import Heaviside, DataTuple, TrainTestPair
 from ethicml.data import load_data, Compas
 from ethicml.preprocessing import train_test_split
 from tests.run_algorithm_test import get_train_test
@@ -54,7 +54,7 @@ def test_majority():
     assert predictions.values[predictions.values == -1].shape[0] == 400
 
 
-def test_corels(toy_train_test):
+def test_corels(toy_train_test: TrainTestPair) -> None:
     model: InAlgorithm = Corels()
     assert model is not None
     assert model.name == "CORELS"
@@ -102,8 +102,8 @@ def test_cv_svm():
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
-def test_cv_lr():
-    train, test = get_train_test()
+def test_cv_lr(toy_train_test: TrainTestPair) -> None:
+    train, test = toy_train_test
 
     hyperparams: Dict[str, List[int]] = {'C': [1, 10, 100]}
 
@@ -112,13 +112,36 @@ def test_cv_lr():
     assert lr_cv is not None
     assert isinstance(lr_cv.model(), InAlgorithm)
 
-    lr_cv.run(train)
+    measure = Accuracy()
+    lr_cv.run(train, measures=[measure])
 
-    best_model = lr_cv.best(Accuracy())
+    best_model = lr_cv.best(measure)
 
     predictions: pd.DataFrame = best_model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
+
+
+def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
+    train, test = toy_train_test
+
+    hyperparams: Dict[str, List[float]] = {'C': [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
+
+    lr_cv = CrossValidator(LR, hyperparams, folds=3)
+
+    assert lr_cv is not None
+    assert isinstance(lr_cv.model(), InAlgorithm)
+
+    primary = Accuracy()
+    fair_measure = AbsCV()
+    lr_cv.run(train, measures=[primary, fair_measure])
+
+    best_result = lr_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+    print(best_result)
+
+    assert best_result.params['C'] == 1e-5
+    assert best_result.scores['Accuracy'] == approx(0.8475, rel=1e-4)
+    assert best_result.scores['CV absolute'] == approx(0.6654, rel=1e-4)
 
 
 @pytest.fixture(scope="module")
