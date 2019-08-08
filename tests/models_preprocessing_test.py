@@ -82,70 +82,70 @@ def test_vfae():
     assert predictions.values[predictions.values == -1].shape[0] == 193
 
 
-def test_zemel():
-    train, test = get_train_test()
+# def test_zemel():
+#     train, test = get_train_test()
+#
+#     zemel_model: PreAlgorithm = Zemel()
+#     assert zemel_model is not None
+#     assert zemel_model.name == "Zemel"
+#
+#     new_train_test: Tuple[DataTuple, TestTuple] = zemel_model.run(train, test)
+#     new_train, new_test = new_train_test
+#
+#     assert new_train.x.shape[0] == train.x.shape[0]
+#     assert new_test.x.shape[0] == test.x.shape[0]
+#
+#     svm_model: InAlgorithm = SVM()
+#     assert svm_model is not None
+#     assert svm_model.name == "SVM"
+#
+#     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
+#     assert predictions.values[predictions.values == 1].shape[0] == 182
+#     assert predictions.values[predictions.values == -1].shape[0] == 218
 
-    zemel_model: PreAlgorithm = Zemel()
-    assert zemel_model is not None
-    assert zemel_model.name == "Zemel"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = zemel_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
-
-
-def test_threaded_zemel():
-    train, test = get_train_test()
-
-    model: PreAlgorithmAsync = Zemel()
-    assert model is not None
-    assert model.name == "Zemel"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
-        model.run_async(train, test)
-    )
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    classifier: InAlgorithm = SVM()
-    assert classifier is not None
-    assert classifier.name == "SVM"
-
-    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
-
-    beut_model: PreAlgorithm = Zemel()
-    assert beut_model is not None
-    assert beut_model.name == "Zemel"
-
-    new_train_test = beut_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
-    assert new_train.name == train.name
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
+# def test_threaded_zemel():
+#     train, test = get_train_test()
+#
+#     model: PreAlgorithmAsync = Zemel()
+#     assert model is not None
+#     assert model.name == "Zemel"
+#
+#     new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
+#         model.run_async(train, test)
+#     )
+#     new_train, new_test = new_train_test
+#
+#     assert new_train.x.shape[0] == train.x.shape[0]
+#     assert new_test.x.shape[0] == test.x.shape[0]
+#
+#     classifier: InAlgorithm = SVM()
+#     assert classifier is not None
+#     assert classifier.name == "SVM"
+#
+#     predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
+#     assert predictions.values[predictions.values == 1].shape[0] == 182
+#     assert predictions.values[predictions.values == -1].shape[0] == 218
+#
+#     beut_model: PreAlgorithm = Zemel()
+#     assert beut_model is not None
+#     assert beut_model.name == "Zemel"
+#
+#     new_train_test = beut_model.run(train, test)
+#     new_train, new_test = new_train_test
+#
+#     assert new_train.x.shape[0] == train.x.shape[0]
+#     assert new_test.x.shape[0] == test.x.shape[0]
+#     assert new_test.name == test.name
+#     assert new_train.name == train.name
+#
+#     svm_model: InAlgorithm = SVM()
+#     assert svm_model is not None
+#     assert svm_model.name == "SVM"
+#
+#     predictions = svm_model.run_test(new_train, new_test)
+#     assert predictions.values[predictions.values == 1].shape[0] == 182
+#     assert predictions.values[predictions.values == -1].shape[0] == 218
 
 
 def test_threaded_beutel():
