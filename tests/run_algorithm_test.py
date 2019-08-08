@@ -61,9 +61,9 @@ def test_run_parallel():
 def cleanup():
     yield None
     print("remove generated directory")
-    dir = Path(".") / "results"
-    if dir.exists():
-        shutil.rmtree(dir)
+    res_dir = Path(".") / "results"
+    if res_dir.exists():
+        shutil.rmtree(res_dir)
 
 
 def test_empty_evaluate(cleanup):
@@ -85,8 +85,8 @@ def test_run_alg_suite(cleanup):
     evaluate_models(datasets, preprocess_models, inprocess_models,
                     postprocess_models, metrics, per_sens_metrics,
                     repeats=1, test_mode=True, delete_prev=True)
-    files = os.listdir(Path(".") / "results")
 
+    files = os.listdir(Path(".") / "results")
     file_names = ['Adult Race_Upsample.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample.csv', 'Toy_no_transform.csv']
     assert len(files) == 4
     assert sorted(files) == file_names

@@ -13,7 +13,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
+from ethicml.data import Toy, Adult, load_data, Dataset
+from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple
+from ethicml.visualisation.common import errorbox, DataEntry, PlotDef
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
@@ -169,3 +172,101 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         os.mkdir(file_path)
     plt.savefig(file_path)
     plt.clf()
+
+
+def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric):
+    """
+
+    Args:
+        results:
+        metric_1:
+        metric_2:
+
+    Returns:
+
+    """
+    directory = Path(".") / "plots"
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+
+    import itertools
+
+    cols_met_1 = [col for col in results.columns if metric_1.name in col]
+    cols_met_2 = [col for col in results.columns if metric_2.name in col]
+
+    if len(cols_met_1) > 1:
+        cols_met_1 = [col for col in cols_met_1 if ("-" in col) or ("/" in col)]
+    if len(cols_met_2) > 1:
+        cols_met_2 = [col for col in cols_met_2 if ("-" in col) or ("/" in col)]
+
+    cols_met_1 += cols_met_2
+
+    possible_pairs = list(itertools.combinations([col for col in cols_met_1], 2))
+
+    for dataset in results.index.to_frame()['dataset'].unique():
+
+        dataset_: str = str(dataset)
+
+        # data: Dataset
+        # if dataset_ == 'Toy':
+        #     data = Toy()
+        # elif dataset_ == "Adult Race":
+        #     data = Adult(split='Race')
+        # elif dataset_ == "Adult Sex":
+        #     data = Adult()
+        #
+        # data_tup: DataTuple = load_data(data)
+
+        for transform in results.index.to_frame()['transform'].unique():
+
+            for pair in possible_pairs:
+
+                entries: List[DataEntry] = []
+                count = 0
+                fig, plot = plt.subplots(dpi=300)
+                plot_def = PlotDef(title=f"{dataset_} {transform}", entries=entries)
+
+                if (
+                    not pd.isnull(
+                        results.loc[
+                            (results.index.to_frame()['dataset'] == dataset_)
+                            & (results.index.to_frame()['transform'] == transform)
+                        ][list(pair)]
+                    )
+                    .any()
+                    .any()
+                ):
+
+                    for model in sorted(results.index.to_frame()['model'].unique()):
+
+                        entries.append(
+                            DataEntry(
+                                f" {model} {transform}",
+                                results.loc[
+                                    (results.index.to_frame()['dataset'] == dataset_)
+                                    & (results.index.to_frame()['model'] == model)
+                                    & (results.index.to_frame()['transform'] == transform)
+                                ],
+                                count % 2 == 0,
+                            )
+                        )
+                        count += 1
+
+                    errorbox(
+                        plot,
+                        plot_def,
+                        (pair[1], f"{pair[1]}"),
+                        (pair[0], f"{pair[0]}"),
+                        legend='outside',
+                    )
+
+                    metric_a = f"{pair[0]}".replace("/", "_over_")
+                    metric_b = f"{pair[1]}".replace("/", "_over_")
+                    fig.savefig(
+                        directory / f"{dataset} {transform} {metric_a} {metric_b}",
+                        bbox_inches='tight',
+                    )
+                    plt.cla()
+                plt.close(fig)
+
+    return
