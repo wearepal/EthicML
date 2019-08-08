@@ -2,6 +2,7 @@
 Test that an algorithm can run against some data
 """
 import os
+import shutil
 from pathlib import Path
 from typing import Tuple, List
 import numpy as np  # import needed for mypy
@@ -56,14 +57,23 @@ def test_run_parallel():
     assert count_true(result[2][1].values == -1) == 400
 
 
-def test_empty_evaluate():
+@pytest.fixture(scope="module")
+def cleanup():
+    yield None
+    print("remove generated directory")
+    dir = Path(".") / "results"
+    if dir.exists():
+        shutil.rmtree(dir)
+
+
+def test_empty_evaluate(cleanup):
     empty_result = evaluate_models([Toy()])
-    exptected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
-    exptected_result = exptected_result.set_index(["dataset", "transform", "model", "repeat"])
-    pd.testing.assert_frame_equal(empty_result, exptected_result)
+    expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
+    expected_result = expected_result.set_index(["dataset", "transform", "model", "repeat"])
+    pd.testing.assert_frame_equal(empty_result, expected_result)
 
 
-def test_run_alg_suite():
+def test_run_alg_suite(cleanup):
     dataset = Adult("Race")
     dataset.sens_attrs = ["race_White"]
     datasets: List[Dataset] = [dataset, Toy()]
@@ -75,18 +85,18 @@ def test_run_alg_suite():
     evaluate_models(datasets, preprocess_models, inprocess_models,
                     postprocess_models, metrics, per_sens_metrics,
                     repeats=1, test_mode=True, delete_prev=True)
-    files = os.listdir(Path("../results"))
+    files = os.listdir(Path(".") / "results")
 
     file_names = ['Adult Race_Upsample.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample.csv', 'Toy_no_transform.csv']
     assert len(files) == 4
     assert sorted(files) == file_names
 
     for file in file_names:
-        written_file = pd.read_csv(Path(f"../results/{file}"))
+        written_file = pd.read_csv(Path(f"./results/{file}"))
         assert written_file.shape == (2,14)
 
 
-def test_run_alg_suite_wrong_metrics():
+def test_run_alg_suite_wrong_metrics(cleanup):
     datasets: List[Dataset] = [Toy(), Adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [SVM(kernel='linear'), LR()]

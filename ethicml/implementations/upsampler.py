@@ -113,7 +113,7 @@ def train_and_transform(train, test):
     """
     upsampled_train = upsample(train)
 
-    return upsampled_train, test
+    return upsampled_train, TestTuple(x=test.x, s=test.s, name=test.name)
 
 
 def main():

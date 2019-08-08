@@ -110,7 +110,7 @@ def evaluate_models(
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
-    outdir = Path("..") / "results"  # OS-independent way of saying '../results'
+    outdir = Path(".") / "results"  # OS-independent way of saying '../results'
     outdir.mkdir(exist_ok=True)
 
     if delete_prev:
@@ -120,7 +120,7 @@ def evaluate_models(
                 transform_list.append(preprocess_model.name)
             for transform_name in transform_list:
                 path_to_file: Path = outdir / f"{dataset.name}_{transform_name}.csv"
-                if path_to_file.is_file():  # Check the file exists
+                if path_to_file.exists():
                     path_to_file.unlink()
 
     seed = 0
