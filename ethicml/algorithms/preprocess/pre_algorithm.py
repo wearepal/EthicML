@@ -6,6 +6,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Tuple, List
 from abc import abstractmethod
+from dataclasses import replace
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
@@ -22,7 +23,7 @@ class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing"""
 
     @abstractmethod
-    def run(self, train: DataTuple, test: TestTuple) -> (Tuple[DataTuple, TestTuple]):
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data
 
         Args:
@@ -39,14 +40,17 @@ class PreAlgorithm(Algorithm):
 class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
     """Pre-Algorithm that can be run blocking and asynchronously"""
 
-    def run(self, train: DataTuple, test: TestTuple):
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data asynchronously"""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
+            # write data to files
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
+
+            # ========================== generate commandline arguments ===========================
             transformed_train_paths = PathTuple(
                 x=tmp_path / "transform_train_x.feather",
                 s=tmp_path / "transform_train_s.feather",
@@ -61,10 +65,22 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
             cmd = self._script_command(
                 train_paths, test_paths, transformed_train_paths, transformed_test_paths
             )
+
+            # ============================= run the generated command =============================
             await self._call_script(cmd)
+
+            # ================================== load results =====================================
             transformed_train = transformed_train_paths.load_from_feather()
             transformed_test = transformed_test_paths.load_from_feather()
-            return transformed_train, transformed_test
+
+        # prefix the name of the algorithm to the dataset name
+        transformed_train = replace(
+            transformed_train, name=None if train.name is None else f"{self.name}: {train.name}"
+        )
+        transformed_test = replace(
+            transformed_test, name=None if test.name is None else f"{self.name}: {test.name}"
+        )
+        return transformed_train, transformed_test
 
     @abstractmethod
     def _script_command(
