@@ -87,7 +87,7 @@ def test_run_alg_suite(cleanup):
                     repeats=1, test_mode=True, delete_prev=True)
 
     files = os.listdir(Path(".") / "results")
-    file_names = ['Adult Race_Upsample.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample.csv', 'Toy_no_transform.csv']
+    file_names = ['Adult Race_Upsample uniform.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample uniform.csv', 'Toy_no_transform.csv']
     assert len(files) == 4
     assert sorted(files) == file_names
 

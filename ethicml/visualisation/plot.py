@@ -13,7 +13,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-from ethicml.data import Toy, Adult, load_data, Dataset
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple
 from ethicml.visualisation.common import errorbox, DataEntry, PlotDef
@@ -174,7 +173,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     plt.clf()
 
 
-def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric):
+def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric) -> None:
     """
 
     Args:
@@ -206,16 +205,6 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
     for dataset in results.index.to_frame()['dataset'].unique():
 
         dataset_: str = str(dataset)
-
-        # data: Dataset
-        # if dataset_ == 'Toy':
-        #     data = Toy()
-        # elif dataset_ == "Adult Race":
-        #     data = Adult(split='Race')
-        # elif dataset_ == "Adult Sex":
-        #     data = Adult()
-        #
-        # data_tup: DataTuple = load_data(data)
 
         for transform in results.index.to_frame()['transform'].unique():
 
@@ -268,5 +257,3 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
                     )
                     plt.cla()
                 plt.close(fig)
-
-    return

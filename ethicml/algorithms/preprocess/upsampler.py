@@ -16,9 +16,12 @@ class Upsampler(PreAlgorithmAsync):
     of samples.
     """
 
-    def __init__(self):
+    def __init__(self, strategy: str = "uniform"):
         super().__init__()
-        self.flags: Dict[str, str] = {}
+
+        assert strategy in ["uniform", "preferential", "naive"]
+        self.strategy = strategy
+        self.flags: Dict[str, str] = {"strategy": strategy}
 
     def _script_command(
         self,
@@ -34,8 +37,8 @@ class Upsampler(PreAlgorithmAsync):
     def run(self, train, test) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import upsampler
 
-        return upsampler.train_and_transform(train, test)
+        return upsampler.train_and_transform(train, test, self.flags)
 
     @property
     def name(self) -> str:
-        return "Upsample"
+        return f"Upsample {self.strategy}"
