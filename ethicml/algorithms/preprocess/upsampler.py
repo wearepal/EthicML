@@ -16,7 +16,7 @@ class Upsampler(PreAlgorithmAsync):
     of samples.
     """
 
-    def __init__(self, strategy: str = "kamiran"):
+    def __init__(self, strategy: str = "uniform"):
         super().__init__()
 
         assert strategy in ["uniform", "preferential", "naive"]
