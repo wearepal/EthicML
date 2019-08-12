@@ -50,7 +50,7 @@ def test_label_plot(cleanup):
     save_label_plot(train, "./plots/labels.png")
 
 
-def test_plot_evals():
+def test_plot_evals(cleanup):
     datasets: List[Dataset] = [Adult(), Toy()]
     preprocess_models: List[PreAlgorithm] = [Upsampler(strategy="preferential")]
     inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear'), Kamiran()]

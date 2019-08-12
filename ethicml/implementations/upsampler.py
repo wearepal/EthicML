@@ -3,7 +3,6 @@ implementation of the upsampling method
 """
 
 import pandas as pd
-import sklearn
 
 from ethicml.algorithms.inprocess import LRProb
 from ethicml.implementations.utils import (
@@ -120,14 +119,13 @@ def upsample(dataset, flags):
         else:
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
 
-
     if flags['strategy'] == "preferential":
         ranker = LRProb()
         rank = ranker.run(dataset, dataset)
 
-        dp = []
+        selected = []
 
-        all_data: pd.DataFrame = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
+        all_data = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
         all_data = pd.concat([all_data, rank], axis="columns")
 
         for key, val in data.items():
@@ -139,23 +137,33 @@ def upsample(dataset, flags):
             if s_val <= 0:
                 ascending = True
 
-            if percentages[key] > 1.:
-                dp.append(all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)])
-                percentages[key] -= 1.
+            if percentages[key] > 1.0:
+                selected.append(all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)])
+                percentages[key] -= 1.0
 
-            w = all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)][
-                y_col].count()
-            dp.append(
-                all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)].sort_values(by=['preds'], ascending=ascending).iloc[:int(percentages[key] * w)]
+            weight = all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)][
+                y_col
+            ].count()
+            selected.append(
+                all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)]
+                .sort_values(by=['preds'], ascending=ascending)
+                .iloc[: int(percentages[key] * weight)]
             )
 
-        upsampled_dataframes = None
-        for df in dp:
-            if upsampled_dataframes is None:
+        upsampled_dataframes: pd.DataFrame
+        for i, df in enumerate(selected):
+            if i == 0:
                 upsampled_dataframes = df.drop(['preds'], axis=1)
             else:
-                upsampled_dataframes = pd.concat([upsampled_dataframes, df.drop(['preds'], axis=1)], axis='rows').reset_index(drop=True)
-        upsampled_datatuple = DataTuple(x=upsampled_dataframes[x_columns], s=upsampled_dataframes[s_columns], y=upsampled_dataframes[y_columns], name=dataset.name)
+                upsampled_dataframes = pd.concat(
+                    [upsampled_dataframes, df.drop(['preds'], axis=1)], axis='rows'
+                ).reset_index(drop=True)
+        upsampled_datatuple = DataTuple(
+            x=upsampled_dataframes[x_columns],
+            s=upsampled_dataframes[s_columns],
+            y=upsampled_dataframes[y_columns],
+            name=dataset.name,
+        )
 
     return upsampled_datatuple
 

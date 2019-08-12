@@ -269,7 +269,7 @@ def test_upsampler():
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
     assert upsampler is not None
-    assert upsampler.name == "Upsample"
+    assert upsampler.name == "Upsample naive"
 
     new_train: DataTuple
     new_test: TestTuple
@@ -310,32 +310,25 @@ def test_upsampler():
     assert predictions.values[predictions.values == -1].shape[0] == 252
 
 
-    # kamiran_model: InAlgorithm = Kamiran()
-    # kam_preds = kamiran_model.run(train, test)
-
-    # from pandas.util.testing import assert_frame_equal
-    # assert_frame_equal(predictions, kam_preds, check_exact=False, check_less_precise=2)
-
-
 def test_async_upsampler():
     train, test = get_train_test()
 
     upsampler: PreAlgorithmAsync = Upsampler()
     assert upsampler is not None
-    assert upsampler.name == "Upsample"
+    assert upsampler.name == "Upsample uniform"
 
     new_train: DataTuple
     new_test: TestTuple
     new_train, new_test = run_blocking(upsampler.run_async(train, test))
 
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Upsample: " + str(test.name)
-    assert new_train.name == "Upsample: " + str(train.name)
+    assert new_test.name == "Upsample uniform: " + str(test.name)
+    assert new_train.name == "Upsample uniform: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 218
-    assert predictions.values[predictions.values == -1].shape[0] == 182
+    assert predictions.values[predictions.values == 1].shape[0] == 227
+    assert predictions.values[predictions.values == -1].shape[0] == 173
