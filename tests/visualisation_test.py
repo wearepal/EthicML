@@ -50,9 +50,9 @@ def test_label_plot(cleanup):
     save_label_plot(train, "./plots/labels.png")
 
 
-def test_plot_evals(cleanup):
+def test_plot_evals():
     datasets: List[Dataset] = [Adult(), Toy()]
-    preprocess_models: List[PreAlgorithm] = [Upsampler()]
+    preprocess_models: List[PreAlgorithm] = [Upsampler(strategy="preferential")]
     inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear'), Kamiran()]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
@@ -61,4 +61,4 @@ def test_plot_evals(cleanup):
                     postprocess_models, metrics, per_sens_metrics,
                     repeats=3, test_mode=True, delete_prev=True)
 
-    plot_mean_std_box(results, Accuracy(), TPR())
+    plot_mean_std_box(results, Accuracy(), ProbPos())

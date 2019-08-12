@@ -2,7 +2,7 @@ from typing import Tuple
 import pandas as pd
 
 from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import InAlgorithm, SVM
+from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Kamiran
 from ethicml.algorithms.preprocess import (PreAlgorithm, PreAlgorithmAsync, Beutel,
                                            Zemel, VFAE, Upsampler)
 from ethicml.utility import DataTuple, FairType, TestTuple
@@ -267,7 +267,7 @@ def test_threaded_custom_beutel():
 def test_upsampler():
     train, test = get_train_test()
 
-    upsampler: PreAlgorithm = Upsampler()
+    upsampler: PreAlgorithm = Upsampler(strategy="naive")
     assert upsampler is not None
     assert upsampler.name == "Upsample"
 
@@ -279,13 +279,42 @@ def test_upsampler():
     assert new_test.name == test.name
     assert new_train.name == train.name
 
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
+    lr_model: InAlgorithm = LR()
+    assert lr_model is not None
+    assert lr_model.name == "Logistic Regression"
 
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 218
-    assert predictions.values[predictions.values == -1].shape[0] == 182
+    predictions = lr_model.run_test(new_train, new_test)
+    assert predictions.values[predictions.values == 1].shape[0] == 209
+    assert predictions.values[predictions.values == -1].shape[0] == 191
+
+    upsampler = Upsampler(strategy="uniform")
+    new_train, new_test = upsampler.run(train, test)
+
+    assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
+
+    predictions = lr_model.run_test(new_train, new_test)
+    assert predictions.values[predictions.values == 1].shape[0] == 215
+    assert predictions.values[predictions.values == -1].shape[0] == 185
+
+    upsampler = Upsampler(strategy="preferential")
+    new_train, new_test = upsampler.run(train, test)
+
+    assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == test.name
+    assert new_train.name == train.name
+
+    predictions = lr_model.run_test(new_train, new_test)
+    assert predictions.values[predictions.values == 1].shape[0] == 148
+    assert predictions.values[predictions.values == -1].shape[0] == 252
+
+
+    # kamiran_model: InAlgorithm = Kamiran()
+    # kam_preds = kamiran_model.run(train, test)
+
+    # from pandas.util.testing import assert_frame_equal
+    # assert_frame_equal(predictions, kam_preds, check_exact=False, check_less_precise=2)
 
 
 def test_async_upsampler():

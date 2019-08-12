@@ -3,6 +3,9 @@ implementation of the upsampling method
 """
 
 import pandas as pd
+import sklearn
+
+from ethicml.algorithms.inprocess import LRProb
 from ethicml.implementations.utils import (
     pre_algo_argparser,
     load_data_from_flags,
@@ -40,7 +43,7 @@ def concat_datatuples(first_dt, second_dt):
     )
 
 
-def upsample(dataset):
+def upsample(dataset, flags):
     """
     Upsample a datatuple
     Args:
@@ -75,7 +78,26 @@ def upsample(dataset):
         vals.append(val.x.shape[0])
 
     for key, val in data.items():
-        percentages[key] = max(vals) / val.x.shape[0]
+        if flags['strategy'] == "naive":
+            percentages[key] = max(vals) / val.x.shape[0]
+        else:
+            s_val = key[0]
+            y_val = key[1]
+
+            y_eq_y = dataset.y[dataset.y[y_col] == y_val].count()
+            s_eq_s = dataset.s[dataset.s[s_col] == s_val].count()
+
+            num_samples = dataset.y.count()
+            num_batch = val.y.count()
+
+            percentages[key] = round(
+                (
+                    y_eq_y.values[0]
+                    * s_eq_s.values[0]
+                    / (num_batch.values[0] * num_samples.values[0])
+                ),
+                8,
+            )
 
     x_columns: pd.Index = dataset.x.columns
     s_columns: pd.Index = dataset.s.columns
@@ -98,10 +120,47 @@ def upsample(dataset):
         else:
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
 
+
+    if flags['strategy'] == "preferential":
+        ranker = LRProb()
+        rank = ranker.run(dataset, dataset)
+
+        dp = []
+
+        all_data: pd.DataFrame = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
+        all_data = pd.concat([all_data, rank], axis="columns")
+
+        for key, val in data.items():
+
+            s_val = key[0]
+            y_val = key[1]
+
+            ascending = False
+            if s_val <= 0:
+                ascending = True
+
+            if percentages[key] > 1.:
+                dp.append(all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)])
+                percentages[key] -= 1.
+
+            w = all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)][
+                y_col].count()
+            dp.append(
+                all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)].sort_values(by=['preds'], ascending=ascending).iloc[:int(percentages[key] * w)]
+            )
+
+        upsampled_dataframes = None
+        for df in dp:
+            if upsampled_dataframes is None:
+                upsampled_dataframes = df.drop(['preds'], axis=1)
+            else:
+                upsampled_dataframes = pd.concat([upsampled_dataframes, df.drop(['preds'], axis=1)], axis='rows').reset_index(drop=True)
+        upsampled_datatuple = DataTuple(x=upsampled_dataframes[x_columns], s=upsampled_dataframes[s_columns], y=upsampled_dataframes[y_columns], name=dataset.name)
+
     return upsampled_datatuple
 
 
-def train_and_transform(train, test):
+def train_and_transform(train, test, flags):
     """
     Tran and transform function for the upsampler method
     Args:
@@ -111,7 +170,7 @@ def train_and_transform(train, test):
     Returns:
 
     """
-    upsampled_train = upsample(train)
+    upsampled_train = upsample(train, flags)
 
     return upsampled_train, TestTuple(x=test.x, s=test.s, name=test.name)
 
@@ -120,9 +179,14 @@ def main():
     """This function runs the SVM model as a standalone program"""
     parser = pre_algo_argparser()
 
+    parser.add_argument("--strategy", type=str, required=True)
+
     args = parser.parse_args()
-    train, test = load_data_from_flags(vars(args))
-    save_transformations(train_and_transform(train, test), args)
+
+    flags = vars(parser.parse_args())
+
+    train, test = load_data_from_flags(flags)
+    save_transformations(train_and_transform(train, test, flags), args)
 
 
 if __name__ == "__main__":
