@@ -2,17 +2,32 @@
 common plotting functions / datastructures
 """
 
-from collections import namedtuple
-from typing import Tuple
+from typing import Tuple, Union, NamedTuple, List
 
-import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
-DataEntry = namedtuple('DataEntry', ['label', 'values', 'do_fill'])
-PlotDef = namedtuple('PlotDef', ['title', 'entries'])
+
+class DataEntry(NamedTuple):
+    """Defines one element in a plot"""
+
+    label: str
+    values: pd.DataFrame
+    do_fill: bool
 
 
-def common_plotting_settings(plot, plot_def, xaxis_title, yaxis_title, legend: str = "inside"):
+class PlotDef(NamedTuple):
+    title: str
+    entries: List[DataEntry]
+
+
+def common_plotting_settings(
+    plot: plt.Axes,
+    plot_def: PlotDef,
+    xaxis_title: str,
+    yaxis_title: str,
+    legend: Union[str, Tuple[str, float]] = "inside",
+):
     """Common settings for plots
     Args:
         plot: a pyplot plot object
@@ -35,11 +50,11 @@ def common_plotting_settings(plot, plot_def, xaxis_title, yaxis_title, legend: s
 
 
 def errorbox(
-    plot: plt.plot,
+    plot: plt.Axes,
     plot_def: PlotDef,
     xaxis: Tuple[str, str],
     yaxis: Tuple[str, str],
-    legend: str = "inside",
+    legend: Union[str, Tuple[str, float]] = "inside",
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
@@ -52,43 +67,22 @@ def errorbox(
         yaxis: either a string or a tuple of two strings
         legend: where to put the legend; allowed values: None, "inside", "outside"
     """
-
-    colors = [
-        "#1f77b4",
-        "#ff7f0e",
-        "#2ca02c",
-        "#d62728",
-        "#9467bd",
-        "#8c564b",
-        "#e377c2",
-        "#7f7f7f",
-        "#bcbd22",
-        "#17becf",
-    ]
-    pale_colors = [
-        "#aec7e8",
-        "#ffbb78",
-        "#98df8a",
-        "#ff9896",
-        "#c5b0d5",
-        "#c49c94",
-        "#f7b6d2",
-        "#c7c7c7",
-        "#dbdb8d",
-        "#9edae5",
-    ]
+    # ================================ constants for plots ========================================
+    colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
+    colors += ["#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+    pale_colors = ["#aec7e8", "#ffbb78", "#98df8a", "#ff9896", "#c5b0d5"]
+    pale_colors += ["#c49c94", "#f7b6d2", "#c7c7c7", "#dbdb8d", "#9edae5"]
     shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
-
     hatch_pattern = ['/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*']
 
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
     filled_counter = firstcolor
 
-    max_xmean: float = 0.0
-    min_xmean: float = 1.0
+    max_xmean = 0.0
+    min_xmean = 1.0
 
-    max_ymean: float = 0.0
-    min_ymean: float = 1.0
+    max_ymean = 0.0
+    min_ymean = 1.0
 
     for i, entry in enumerate(plot_def.entries):
         if entry.do_fill:
@@ -98,15 +92,15 @@ def errorbox(
             color = pale_colors[i + firstcolor - filled_counter]
         i_shp = firstshape + i
 
-        xmean: float = float(np.mean(entry.values[xaxis_measure]))
-        xstd: float = float(np.std(entry.values[xaxis_measure]))
+        xmean: float = entry.values[xaxis_measure].mean()
+        xstd: float = entry.values[xaxis_measure].std()
         if xmean + (0.5 * xstd) > max_xmean:
             max_xmean = xmean + (0.5 * xstd)
         if xmean - (0.5 * xstd) < min_xmean:
             min_xmean = xmean - (0.5 * xstd)
 
-        ymean: float = float(np.mean(entry.values[yaxis_measure]))
-        ystd: float = float(np.std(entry.values[yaxis_measure]))
+        ymean: float = entry.values[yaxis_measure].mean()
+        ystd: float = entry.values[yaxis_measure].std()
         if ymean + (0.5 * ystd) > max_ymean:
             max_ymean = ymean + (0.5 * ystd)
         if ymean - (0.5 * ystd) < min_ymean:

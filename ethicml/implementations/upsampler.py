@@ -1,6 +1,7 @@
 """
 implementation of the upsampling method
 """
+from typing import Optional
 
 import pandas as pd
 
@@ -13,16 +14,8 @@ from ethicml.implementations.utils import (
 from ethicml.utility import DataTuple, TestTuple
 
 
-def concat_datatuples(first_dt, second_dt):
-    """
-    Given 2 datatuples, concatenate them and shuffle
-    Args:
-        first_dt: DataTuple
-        second_dt: DataTuple
-
-    Returns: DataTuple
-
-    """
+def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
+    """Given 2 datatuples, concatenate them and shuffle"""
     assert (first_dt.x.columns == second_dt.x.columns).all()
     assert (first_dt.s.columns == second_dt.s.columns).all()
     assert (first_dt.y.columns == second_dt.y.columns).all()
@@ -112,7 +105,7 @@ def upsample(dataset, flags):
             x=all_data[x_columns], s=all_data[s_columns], y=all_data[y_columns], name=dataset.name
         )
 
-    upsampled_datatuple = None
+    upsampled_datatuple: Optional[DataTuple] = None
     for key, val in upsampled.items():
         if upsampled_datatuple is None:
             upsampled_datatuple = val

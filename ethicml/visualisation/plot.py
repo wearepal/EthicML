@@ -212,6 +212,8 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
 
                 entries: List[DataEntry] = []
                 count = 0
+                fig: plt.Figure
+                plot: plt.Axes
                 fig, plot = plt.subplots(dpi=300)
                 plot_def = PlotDef(title=f"{dataset_} {transform}", entries=entries)
 
@@ -244,15 +246,15 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
                     errorbox(
                         plot,
                         plot_def,
-                        (pair[1], f"{pair[1]}"),
-                        (pair[0], f"{pair[0]}"),
+                        (pair[1], pair[1].replace("_", " ")),
+                        (pair[0], pair[0].replace("_", " ")),
                         legend='outside',
                     )
 
                     metric_a = f"{pair[0]}".replace("/", "_over_")
                     metric_b = f"{pair[1]}".replace("/", "_over_")
                     fig.savefig(
-                        directory / f"{dataset} {transform} {metric_a} {metric_b}",
+                        directory / f"{dataset} {transform} {metric_a} {metric_b}.svg",
                         bbox_inches='tight',
                     )
                     plt.cla()
