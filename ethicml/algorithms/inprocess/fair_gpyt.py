@@ -4,7 +4,7 @@ Wrapper for calling the fair GP model
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from typing import List
+from typing import List, Optional, Dict
 import numpy as np
 import pandas as pd
 
@@ -206,7 +206,7 @@ class GPyTEqOdds(GPyT):
         else:
             self.__name = f"{self.basename}_eq_odds_in_{self.s_as_input}"
 
-        self.odds = None
+        self.odds: Optional[Dict[str, float]] = None
         if any(x is not None for x in [tnr0, tnr1, tpr0, tpr1]):  # if any of them is not `None`
             self.odds = {}
             for val, name, target in [
