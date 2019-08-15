@@ -1,8 +1,6 @@
 """
 creates plots of a dataset
 """
-
-
 import os
 from pathlib import Path
 from typing import Tuple, List
@@ -217,13 +215,10 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
                 fig, plot = plt.subplots(dpi=300)
                 plot_def = PlotDef(title=f"{dataset_} {transform}", entries=entries)
 
+                mask_for_dataset = results.index.to_frame()['dataset'] == dataset_
+                mask_for_transform = results.index.to_frame()['transform'] == transform
                 if (
-                    not pd.isnull(
-                        results.loc[
-                            (results.index.to_frame()['dataset'] == dataset_)
-                            & (results.index.to_frame()['transform'] == transform)
-                        ][list(pair)]
-                    )
+                    not pd.isnull(results.loc[mask_for_dataset & mask_for_transform][list(pair)])
                     .any()
                     .any()
                 ):
@@ -234,9 +229,9 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
                             DataEntry(
                                 f" {model} {transform}",
                                 results.loc[
-                                    (results.index.to_frame()['dataset'] == dataset_)
+                                    mask_for_dataset
                                     & (results.index.to_frame()['model'] == model)
-                                    & (results.index.to_frame()['transform'] == transform)
+                                    & mask_for_transform
                                 ],
                                 count % 2 == 0,
                             )
@@ -251,10 +246,10 @@ def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric)
                         legend='outside',
                     )
 
-                    metric_a = f"{pair[0]}".replace("/", "_over_")
-                    metric_b = f"{pair[1]}".replace("/", "_over_")
+                    metric_a = pair[0].replace("/", "_over_")
+                    metric_b = pair[1].replace("/", "_over_")
                     fig.savefig(
-                        directory / f"{dataset} {transform} {metric_a} {metric_b}.svg",
+                        directory / f"{dataset} {transform} {metric_a} {metric_b}.pdf",
                         bbox_inches='tight',
                     )
                     plt.cla()
