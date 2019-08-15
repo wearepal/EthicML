@@ -5,6 +5,7 @@ import sys
 from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 import asyncio
+from pathlib import Path
 
 
 class Algorithm(ABC):
@@ -36,7 +37,9 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
         """
         return sys.executable
 
-    async def _call_script(self, cmd_args: List[str], env: Optional[Dict[str, str]] = None):
+    async def _call_script(
+        self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
+    ):
         """This function calls a (Python) script as a separate process
 
         An exception is thrown if the called script failed.
@@ -44,12 +47,14 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
         Args:
             cmd_args: list of strings that are passed as commandline arguments to the executable
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
+            cwd: if not None, change working directory to the given path before running command
         """
         process = await asyncio.create_subprocess_exec(  # wait for process creation to finish
             self._executable,
             *cmd_args,
             stderr=asyncio.subprocess.PIPE,  # we capture the stderr for errors
             env=env,
+            cwd=cwd,
         )
         # print(f"Started: {cmd_args!r} (pid = {process.pid})")
 

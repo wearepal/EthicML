@@ -70,7 +70,7 @@ class InstalledModel(InAlgorithmAsync):
             else:
                 # no executable specified => we create our own environment
                 self.create_venv()
-                self.__executable = str(self._module_path / ".venv" / "bin" / "python")
+                self.__executable = str(self._module_path.resolve() / ".venv" / "bin" / "python")
         super().__init__()
 
     @property
