@@ -7,7 +7,7 @@ from typing import Tuple, List
 
 import pytest
 
-from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Agarwal, Kamiran
+from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Agarwal, Kamiran, MLP, Kamishima
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
 from ethicml.evaluators import evaluate_models
@@ -50,15 +50,16 @@ def test_label_plot(cleanup):
     save_label_plot(train, "./plots/labels.png")
 
 
-def test_plot_evals(cleanup):
-    datasets: List[Dataset] = [Adult(), Toy()]
-    preprocess_models: List[PreAlgorithm] = [Upsampler(strategy="preferential")]
-    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear'), Kamiran()]
+def test_plot_evals():
+    datasets: List[Dataset] = [Adult()]
+    preprocess_models: List[PreAlgorithm] = [Upsampler(strategy="preferential"), Upsampler(strategy="naive"), Upsampler(strategy="uniform")]
+    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear'), Kamiran(), Agarwal(), MLP(), Kamishima()]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [TPR(), ProbPos()]
     results = evaluate_models(datasets, preprocess_models, inprocess_models,
                     postprocess_models, metrics, per_sens_metrics,
-                    repeats=3, test_mode=True, delete_prev=True)
+                    repeats=5, test_mode=False, delete_prev=True)
 
     plot_mean_std_box(results, Accuracy(), ProbPos())
+    plot_mean_std_box(results, Accuracy(), TPR())

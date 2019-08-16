@@ -16,6 +16,7 @@ class Imagine(PreAlgorithmAsync):
         epochs: int = 50,
         adv_weight: float = 1.0,
         validation_pcnt: float = 0.1,
+        dataset: str = "Toy",
     ):
         # pylint: disable=too-many-arguments
         super().__init__()
@@ -26,11 +27,12 @@ class Imagine(PreAlgorithmAsync):
         self.epochs = epochs
         self.adv_weight = adv_weight
         self.validation_pcnt = validation_pcnt
+        self.dataset = dataset
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import imagine  # only import this on demand because of pytorch
 
-        # SUGGESTION: it would be great if BeutelSettings could already be created in the init
+        # SUGGESTION: it would be great if ImagineSettings could already be created in the init
         flags = imagine.ImagineSettings(
             enc_size=self.enc_size,
             adv_size=self.adv_size,
@@ -39,6 +41,7 @@ class Imagine(PreAlgorithmAsync):
             epochs=self.epochs,
             adv_weight=self.adv_weight,
             validation_pcnt=self.validation_pcnt,
+            dataset=self.dataset,
         )
         return imagine.train_and_transform(train, test, flags)
 
@@ -47,7 +50,6 @@ class Imagine(PreAlgorithmAsync):
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, vars(self))
         return ["-m", "ethicml.implementations.imagine"] + args
 
-
-@property
-def name(self) -> str:
-    return "Imagined Examples"
+    @property
+    def name(self) -> str:
+        return "Imagined Examples"
