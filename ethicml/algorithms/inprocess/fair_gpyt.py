@@ -4,7 +4,7 @@ Wrapper for calling the fair GP model
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 import numpy as np
 import pandas as pd
 
@@ -25,7 +25,7 @@ class GPyT(InstalledModel):
 
     basename = "GPyT"
 
-    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, **kwargs):
+    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, **kwargs):
         if 'file_name' not in kwargs:
             kwargs['file_name'] = "run.py"
         super().__init__(  # type: ignore
@@ -38,6 +38,7 @@ class GPyT(InstalledModel):
         self.gpu = gpu
         self.epochs = epochs
         self.length_scale = length_scale
+        self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
@@ -80,7 +81,9 @@ class GPyT(InstalledModel):
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
         cmd = [str(self.script_path)]
-        for key, value in flags.items():
+        # apply flag overwrites
+        cmd_flags = {**flags, **self.flag_overwrites}
+        for key, value in cmd_flags.items():
             cmd += [f"--{key}", str(value)]
         await self._call_script(cmd)
 
