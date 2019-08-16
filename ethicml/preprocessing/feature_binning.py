@@ -1,20 +1,32 @@
-import pandas as pd
+"""
+File For feature binning
+"""
 from itertools import groupby
-from typing import List, Dict
+from typing import List
 
+import pandas as pd
 from ethicml.utility import DataTuple
 
 
 def bin_cont_feats(data: DataTuple) -> DataTuple:
-    x_name: List[str] = data.x.columns
-    groups: List[List[str]] = [list(group) for key, group in groupby(x_name, lambda x: x.split('_')[0])]
+    """
+    Given a datatuple, bin the columns that have ordinal features and return as afresh new DataTuple
+    Args:
+        data:
 
-    copy = data.x.copy()
+    Returns:
+
+    """
+    groups: List[List[str]] = [
+        list(group) for key, group in groupby(data.x.columns, lambda x: x.split('_')[0])
+    ]
+
+    copy: pd.DataFrame = data.x.copy()
 
     for group in groups:
         if len(group) == 1 and int(data.x[group].nunique()) > 2:
             copy[group] = pd.cut(data.x[group].to_numpy()[:, 0], 5)
-            copy = pd.concat([copy, pd.get_dummies(copy[group])], axis=1)
+            copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
             copy = copy.drop(group, axis=1)
 
     return DataTuple(x=copy, s=data.s, y=data.y)
