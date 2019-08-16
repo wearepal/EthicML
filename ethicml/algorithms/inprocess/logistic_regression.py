@@ -3,6 +3,7 @@ Wrapper around Sci-Kit Learn Logistic Regression
 """
 from typing import Optional
 
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
@@ -12,6 +13,7 @@ from ethicml.implementations import (
     logistic_regression_probability,
     logistic_regression_cross_validated,
 )
+from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class LR(InAlgorithmAsync):
@@ -21,7 +23,7 @@ class LR(InAlgorithmAsync):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
-    def run(self, train, test):
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return logistic_regression.train_and_predict(train, test, self.C)
 
     def _script_command(self, train_paths, test_paths, pred_path):
@@ -31,7 +33,7 @@ class LR(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
-        return "Logistic Regression"
+        return f"Logistic Regression, C={self.C}"
 
 
 class LRProb(InAlgorithmAsync):
@@ -41,7 +43,7 @@ class LRProb(InAlgorithmAsync):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
-    def run(self, train, test):
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return logistic_regression_probability.train_and_predict(train, test, self.C)
 
     def _script_command(self, train_paths, test_paths, pred_path):
@@ -51,13 +53,13 @@ class LRProb(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
-        return "Logistic Regression Prob"
+        return f"Logistic Regression Prob, C={self.C}"
 
 
 class LRCV(InAlgorithmAsync):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR"""
 
-    def run(self, train, test):
+    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return logistic_regression_cross_validated.train_and_predict(train, test)
 
     def _script_command(self, train_paths, test_paths, pred_path):
