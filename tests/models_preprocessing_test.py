@@ -281,7 +281,7 @@ def test_upsampler():
 
     lr_model: InAlgorithm = LR()
     assert lr_model is not None
-    assert lr_model.name == "Logistic Regression"
+    assert lr_model.name == "Logistic Regression, C=1.0"
 
     predictions = lr_model.run_test(new_train, new_test)
     assert predictions.values[predictions.values == 1].shape[0] == 209
