@@ -4,6 +4,7 @@ import torch
 from torch.utils.data import Dataset
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
+from itertools import groupby
 
 
 class TestDataset(Dataset):
@@ -17,6 +18,10 @@ class TestDataset(Dataset):
         self.size = data.x.shape[1]
         self.x_names = data.x.columns
         self.s_names = data.s.columns
+        self.column_lookup = {col: i for i, col in enumerate(self.x_names)}
+        self.groups = [list(group) for key, group in groupby(self.x_names, lambda x: x.split('_')[0])]
+        self.group_columns = [[self.column_lookup[g] for g in group] for group in self.groups]
+        print('kkk')
 
     def __getitem__(self, index):
         return self.features[index], self.sens_labels[index]
@@ -38,7 +43,7 @@ class CustomDataset(TestDataset):
         self.y_names = data.y.columns
 
     def __getitem__(self, index):
-        return self.features[index], self.sens_labels[index], self.class_labels[index]
+        return self.features[index], self.sens_labels[index], self.class_labels[index]#, [self.features[:, group][index] for group in self.group_columns]
 
     def names(self):
         return self.x_names, self.s_names, self.y_names
