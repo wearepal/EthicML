@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 import pandas as pd
 import pytest
 from pytest import approx
@@ -166,33 +166,19 @@ def test_kamishima(kamishima):
 
 
 @pytest.fixture(scope="module")
-def zafarAccuracy():
-    zafar_algo = ZafarAccuracy()
-    yield zafar_algo
+def zafarModels():
+    zafarAcc_algo = ZafarAccuracy
+    zafarBas_algo = ZafarBaseline
+    zafarFai_algo = ZafarFairness
+    yield (zafarAcc_algo, zafarBas_algo, zafarFai_algo)
     print("teardown Zafar Accuracy")
-    zafar_algo.remove()
+    zafarAcc_algo().remove()
 
 
-@pytest.fixture(scope="module")
-def zafarBaseline():
-    zafar_algo = ZafarBaseline()
-    yield zafar_algo
-    print("teardown Zafar Baseline")
-    zafar_algo.remove()
-
-
-@pytest.fixture(scope="module")
-def zafarFairness():
-    zafar_algo = ZafarFairness()
-    yield zafar_algo
-    print("teardown Zafar Fairness")
-    zafar_algo.remove()
-
-
-def test_zafar_accuracy(zafarAccuracy):
+def test_zafar_accuracy(zafarModels):
     train, test = get_train_test()
 
-    model: InAlgorithmAsync = zafarAccuracy
+    model: InAlgorithmAsync = zafarModels[0]()
     assert model.name == "ZafarAccuracy, gamma=0.5"
 
     assert model is not None
@@ -205,16 +191,30 @@ def test_zafar_accuracy(zafarAccuracy):
     assert predictions.values[predictions.values == 1].shape[0] == 206
     assert predictions.values[predictions.values == -1].shape[0] == 194
 
+    hyperparams: Dict[str, List[float]] = {'gamma': [1, 1e-1, 1e-2]}
 
-def test_zafar_baseline(zafarBaseline):
-    train, test = get_train_test()
+    model = zafarModels[0]
+    zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
-    model: InAlgorithmAsync = zafarBaseline
+    assert zafar_cv is not None
+    assert isinstance(zafar_cv.model(), InAlgorithm)
+
+    primary = Accuracy()
+    fair_measure = AbsCV()
+    zafar_cv.run(train, measures=[primary, fair_measure])
+
+    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+
+    assert best_result.params['gamma'] == 1
+    assert best_result.scores['Accuracy'] == approx(0.7094, rel=1e-4)
+    assert best_result.scores['CV absolute'] == approx(0.9822, rel=1e-4)
+
+    model = zafarModels[1]()
     assert model.name == "ZafarBaseline"
 
     assert model is not None
 
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions = model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
@@ -222,22 +222,36 @@ def test_zafar_baseline(zafarBaseline):
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
-
-def test_zafar_fairness(zafarFairness):
-    train, test = get_train_test()
-
-    model: InAlgorithmAsync = zafarFairness
+    model = zafarModels[2]()
     assert model.name == "ZafarFairness, c=0.001"
 
     assert model is not None
 
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions = model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 215
     assert predictions.values[predictions.values == -1].shape[0] == 185
 
     predictions = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 215
     assert predictions.values[predictions.values == -1].shape[0] == 185
+
+    hyperparams = {'c': [1, 1e-1, 1e-2]}
+
+    model = zafarModels[2]
+    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+
+    assert zafar_cv is not None
+    assert isinstance(zafar_cv.model(), InAlgorithm)
+
+    primary = Accuracy()
+    fair_measure = AbsCV()
+    zafar_cv.run(train, measures=[primary, fair_measure])
+
+    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+
+    assert best_result.params['c'] == 0.01
+    assert best_result.scores['Accuracy'] == approx(0.7156, rel=1e-4)
+    assert best_result.scores['CV absolute'] == approx(0.9756, rel=1e-4)
 
 
 def test_gpyt_exception():
