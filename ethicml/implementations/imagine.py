@@ -65,7 +65,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     # Build Network
     model = Imagine(data=train_data, dataset=dataset).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
-    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.96)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.98)
 
     # Run Network
     for epoch in range(int(flags.epochs)):
@@ -106,7 +106,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     print(direct_labels[(train.s['s'] == 0) & (direct_labels['y'] == 1)].count(), train.y[(train.s['s'] == 0) & (train.y['y'] == 1)].count())
     print(direct_labels[(train.s['s'] == 1) & (direct_labels['y'] == 0)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 0)].count())
     print(direct_labels[(train.s['s'] == 1) & (direct_labels['y'] == 1)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 1)].count())
-    to_observe = DataTuple(x=train.x, s=train.s, y=direct_labels, name=f"Imagined: {train.name}")
+    to_observe = DataTuple(x=feats, s=train.s, y=direct_labels, name=f"Imagined: {train.name}")
 
     from ethicml.visualisation.plot import save_2d_plot
     save_2d_plot(to_return, './hmmm.png')
@@ -142,32 +142,58 @@ def grad_reverse(features):
 class FeatureEncoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.mu = nn.Linear(2, FEAT_LD)
-        self.logvar = nn.Linear(2, FEAT_LD)
+        self.hid_1 = nn.Linear(2, 100)
+        self.bn_1 = nn.BatchNorm1d(100)
+        self.hid_2 = nn.Linear(100, 100)
+        self.bn_2 = nn.BatchNorm1d(100)
+        self.hid_3 = nn.Linear(100, 100)
+        self.bn_3 = nn.BatchNorm1d(100)
+
+        self.mu = nn.Linear(100, FEAT_LD)
+        self.logvar = nn.Linear(100, FEAT_LD)
 
     def forward(self, x: torch.Tensor):
+        x = self.bn_1(torch.relu(self.hid_1(x)))
+        x = self.bn_2(torch.relu(self.hid_2(x)))
+        x = self.bn_3(torch.relu(self.hid_3(x)))
         return td.Normal(loc=self.mu(x), scale=torch.exp(self.logvar(x)))
 
 
 class FeatureDecoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.out = nn.Linear(FEAT_LD+1, 2)
+        self.hid_1 = nn.Linear(FEAT_LD + 1, 100)
+        self.bn_1 = nn.BatchNorm1d(100)
+        self.hid_2 = nn.Linear(100, 100)
+        self.bn_2 = nn.BatchNorm1d(100)
+        self.hid_3 = nn.Linear(100, 100)
+        self.bn_3 = nn.BatchNorm1d(100)
+
+        self.out = nn.Linear(100, 2)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        return self.out(torch.cat([z.sample(), s], dim=1))
+        x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.mean, s], dim=1))))
+        x = self.bn_2(torch.relu(self.hid_2(x)))
+        x = self.bn_3(torch.relu(self.hid_3(x)))
+        return self.out(x)
 
 
 class FeatureAdv(nn.Module):
     def __init__(self):
         super().__init__()
-        self.out_1 = nn.Linear(FEAT_LD, 10)
-        self.out_2 = nn.Linear(10, 1)
+        self.hid = nn.Linear(FEAT_LD, 100)
+        self.hid_1 = nn.Linear(100, 100)
+        self.bn_1 = nn.BatchNorm1d(100)
+        self.hid_2 = nn.Linear(100, 100)
+        self.bn_2 = nn.BatchNorm1d(100)
+        self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution):
-        z = self.out_1(grad_reverse(z.sample()))
-        z = self.out_2(z)
-        return td.Bernoulli(torch.sigmoid(z))
+        z = torch.relu(self.hid(grad_reverse(z.mean)))
+        z = self.bn_1(torch.relu(self.hid_1(z)))
+        z = self.bn_2(torch.relu(self.hid_2(z)))
+        z = self.out(z)
+        return td.Bernoulli(z)
 
 
 class PredictionEncoder(nn.Module):
@@ -229,12 +255,18 @@ class DirectPredictor(nn.Module):
 class PredictionAdv(nn.Module):
     def __init__(self):
         super().__init__()
-        self.out_1 = nn.Linear(PRED_LD, 10)
-        self.out_2 = nn.Linear(10, 1)
+        self.hid = nn.Linear(PRED_LD, 100)
+        self.hid_1 = nn.Linear(100, 100)
+        self.bn_1 = nn.BatchNorm1d(100)
+        self.hid_2 = nn.Linear(100, 100)
+        self.bn_2 = nn.BatchNorm1d(100)
+        self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution):
-        z = self.out_1(grad_reverse(z.probs))
-        z = self.out_2(z)
+        z = torch.relu(self.hid(grad_reverse(z.probs)))
+        z = self.bn_1(torch.relu(self.hid_1(z)))
+        z = self.bn_2(torch.relu(self.hid_2(z)))
+        z = self.out(z)
         return td.Bernoulli(z)
 
 
@@ -298,7 +330,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(data_x, data_s)
 
         ### Features
-        recon_loss = 0*F.mse_loss(data_x, feat_dec, reduction='mean')
+        recon_loss = F.mse_loss(data_x, feat_dec, reduction='mean')
 
         feat_prior = td.Normal(loc=torch.zeros(FEAT_LD), scale=torch.ones(FEAT_LD))
         feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
@@ -308,11 +340,9 @@ def train_model(epoch, model, train_loader, optimizer, flags):
 
         ### Predictions
         pred_loss = -direct_prediction.log_prob(data_y).mean()
-        # pred_loss += -pred_dec.log_prob(data_y).mean()
 
-        pred_prior = td.Bernoulli(probs=torch.Tensor([0.5]))#td.Normal(loc=(torch.ones(PRED_LD)), scale=torch.ones(PRED_LD))
-        # pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
-        pred_kl_loss = td.kl.kl_divergence(td.Bernoulli((torch.ones_like(pred_enc.probs)/2)), pred_enc)
+        pred_prior = td.Bernoulli((torch.ones_like(pred_enc.probs)/2))
+        pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
         pred_sens_loss = -pred_s_pred.log_prob(data_s)
         ###
@@ -321,8 +351,8 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
         ###
 
-        kl_loss = 0*feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
-        sens_loss = (0*feat_sens_loss + pred_sens_loss).mean()
+        kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
+        sens_loss = (feat_sens_loss + pred_sens_loss).mean()
 
         loss = recon_loss + kl_loss + sens_loss + pred_loss
         loss.backward()
@@ -336,9 +366,11 @@ def train_model(epoch, model, train_loader, optimizer, flags):
                 f'Loss: {loss.item() / len(data_x):.6f}\t'
                 f'recon_loss: {recon_loss.sum().item():.6f}\t'
                 f'pred_loss: {pred_loss.sum().item():.6f}\t'
+                f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
                 f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
                 f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
-                f'adv_feat_loss: {sens_loss.sum().item():.6f}\t'
+                f'adv_feat_loss: {feat_sens_loss.sum().item():.6f}\t'
+                f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
             )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
