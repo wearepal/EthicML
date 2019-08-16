@@ -21,7 +21,7 @@ from ethicml.algorithms.inprocess import (
     Majority,
     MLP,
     SVM,
-)
+    ZafarAccuracy, ZafarBaseline, ZafarFairness)
 from ethicml.evaluators import CrossValidator
 from ethicml.metrics import Accuracy, AbsCV
 from ethicml.utility import Heaviside, DataTuple, TrainTestPair
@@ -163,6 +163,81 @@ def test_kamishima(kamishima):
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 208
     assert predictions.values[predictions.values == -1].shape[0] == 192
+
+
+@pytest.fixture(scope="module")
+def zafarAccuracy():
+    zafar_algo = ZafarAccuracy()
+    yield zafar_algo
+    print("teardown Zafar Accuracy")
+    zafar_algo.remove()
+
+
+@pytest.fixture(scope="module")
+def zafarBaseline():
+    zafar_algo = ZafarBaseline()
+    yield zafar_algo
+    print("teardown Zafar Baseline")
+    zafar_algo.remove()
+
+
+@pytest.fixture(scope="module")
+def zafarFairness():
+    zafar_algo = ZafarFairness()
+    yield zafar_algo
+    print("teardown Zafar Fairness")
+    zafar_algo.remove()
+
+
+def test_zafar_accuracy(zafarAccuracy):
+    train, test = get_train_test()
+
+    model: InAlgorithmAsync = zafarAccuracy
+    assert model.name == "ZafarAccuracy, gamma=0.5"
+
+    assert model is not None
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 206
+    assert predictions.values[predictions.values == -1].shape[0] == 194
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 206
+    assert predictions.values[predictions.values == -1].shape[0] == 194
+
+
+def test_zafar_baseline(zafarBaseline):
+    train, test = get_train_test()
+
+    model: InAlgorithmAsync = zafarBaseline
+    assert model.name == "ZafarBaseline"
+
+    assert model is not None
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
+
+
+def test_zafar_fairness(zafarFairness):
+    train, test = get_train_test()
+
+    model: InAlgorithmAsync = zafarFairness
+    assert model.name == "ZafarFairness, c=0.001"
+
+    assert model is not None
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 215
+    assert predictions.values[predictions.values == -1].shape[0] == 185
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 215
+    assert predictions.values[predictions.values == -1].shape[0] == 185
 
 
 def test_gpyt_exception():

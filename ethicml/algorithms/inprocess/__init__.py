@@ -9,3 +9,4 @@ from .svm import SVM
 from .majority import Majority
 from .mlp import MLP
 from .manual import Corels
+from .zafar import (ZafarAccuracy, ZafarBaseline, ZafarFairness)
