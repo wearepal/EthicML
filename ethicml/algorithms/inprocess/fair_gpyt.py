@@ -38,7 +38,7 @@ class GPyT(InstalledModel):
         self.gpu = gpu
         self.epochs = epochs
         self.length_scale = length_scale
-        self.flag_overrides: Dict[str, Any] = {} if flags is None else flags
+        self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
@@ -81,8 +81,8 @@ class GPyT(InstalledModel):
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
         cmd = [str(self.script_path)]
-        # apply flag overrides
-        cmd_flags = {**flags, **self.flag_overrides}
+        # apply flag overwrites
+        cmd_flags = {**flags, **self.flag_overwrites}
         for key, value in cmd_flags.items():
             cmd += [f"--{key}", str(value)]
         await self._call_script(cmd)
