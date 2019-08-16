@@ -225,7 +225,7 @@ def test_lr():
 
     model: InAlgorithm = LR()
     assert model is not None
-    assert model.name == "Logistic Regression"
+    assert model.name == "Logistic Regression, C=1.0"
 
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
@@ -277,7 +277,7 @@ def test_threaded_lr():
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LR()
-    assert model.name == "Logistic Regression"
+    assert model.name == "Logistic Regression, C=1.0"
 
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 211
@@ -307,7 +307,7 @@ def test_threaded_lr_prob():
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LRProb()
-    assert model.name == "Logistic Regression Prob"
+    assert model.name == "Logistic Regression Prob, C=1.0"
 
     heavi = Heaviside()
 
