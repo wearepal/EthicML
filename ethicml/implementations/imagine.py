@@ -73,45 +73,95 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
         scheduler.step(epoch)
 
     # Transform output
+    actual_feats: List[List[float]] = []
     feats_train: List[List[float]] = []
+    s_1_list: List[List[float]] = []
+    s_2_list: List[List[float]] = []
+    actual_labels: List[List[float]] = []
     direct_preds_train: List[List[float]] = []
     preds_train: List[List[float]] = []
+
     feats_test: List[List[float]] = []
     preds_test: List[List[float]] = []
     with torch.no_grad():
-        for _x, _s, _ in train_loader:
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s)
+        for _x, _s, _y in train_loader:
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s, _s)
             feats_train += feat_dec.data.tolist()
             direct_preds_train += direct_prediction.probs.data.tolist()
             preds_train += pred_dec.probs.data.tolist()
+            s_1_list += _s.data.tolist()
+            s_2_list += _s.data.tolist()
+            actual_labels += _y.data.tolist()
+            actual_feats += _x.data.tolist()
+
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                _x, (_s-1)**2, _s)
+            feats_train += feat_dec.data.tolist()
+            direct_preds_train += direct_prediction.probs.data.tolist()
+            preds_train += pred_dec.probs.data.tolist()
+            s_1_list += ((_s-1)**2).data.tolist()
+            s_2_list += _s.data.tolist()
+            actual_labels += _y.data.tolist()
+            actual_feats += _x.data.tolist()
+
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                feat_dec, (_s-1)**2, (_s-1)**2)
+            feats_train += feat_dec.data.tolist()
+            direct_preds_train += direct_prediction.probs.data.tolist()
+            preds_train += pred_dec.probs.data.tolist()
+            s_1_list += ((_s-1)**2).data.tolist()
+            s_2_list += ((_s-1)**2).data.tolist()
+            actual_labels += _y.data.tolist()
+            actual_feats += _x.data.tolist()
+
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                _x, _s, (_s - 1) ** 2)
+            feats_train += feat_dec.data.tolist()
+            direct_preds_train += direct_prediction.probs.data.tolist()
+            preds_train += pred_dec.probs.data.tolist()
+            s_1_list += _s.data.tolist()
+            s_2_list += ((_s-1)**2).data.tolist()
+            actual_labels += _y.data.tolist()
+            actual_feats += _x.data.tolist()
+
         for _x, _s in test_loader:
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s)
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s, _s)
             feats_test += feat_dec.data.tolist()
             preds_test += pred_dec.probs.data.tolist()
 
     feats = pd.DataFrame(feats_train, columns=train.x.columns)
     direct_labels = pd.DataFrame(direct_preds_train, columns=train.y.columns, dtype=np.int64)
     direct_labels = direct_labels.applymap(lambda x: 1 if x >= 0.5 else 0)
+    s_1 = pd.DataFrame(s_1_list, columns=train.s.columns)
+    s_2 = pd.DataFrame(s_2_list, columns=train.s.columns)
+    actual_labels = pd.DataFrame(actual_labels, columns=train.y.columns)
+    actual_feats = pd.DataFrame(actual_feats, columns=train.x.columns)
 
     labels = pd.DataFrame(preds_train, columns=train.y.columns, dtype=np.int64)
     labels = labels.applymap(lambda x: 1 if x >= 0.5 else 0)
 
-    print(labels[(train.s['s'] == 0) & (labels['y'] == 0)].count(), train.y[(train.s['s'] == 0) & (train.y['y'] == 0)].count())
-    print(labels[(train.s['s'] == 0) & (labels['y'] == 1)].count(), train.y[(train.s['s'] == 0) & (train.y['y'] == 1)].count())
-    print(labels[(train.s['s'] == 1) & (labels['y'] == 0)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 0)].count())
-    print(labels[(train.s['s'] == 1) & (labels['y'] == 1)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 1)].count())
-    to_return = DataTuple(x=train.x, s=train.s, y=labels, name=f"Imagined: {train.name}")
+    print(f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set")
 
-    print(direct_labels[(train.s['s'] == 0) & (direct_labels['y'] == 0)].count(), train.y[(train.s['s'] == 0) & (train.y['y'] == 0)].count())
-    print(direct_labels[(train.s['s'] == 0) & (direct_labels['y'] == 1)].count(), train.y[(train.s['s'] == 0) & (train.y['y'] == 1)].count())
-    print(direct_labels[(train.s['s'] == 1) & (direct_labels['y'] == 0)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 0)].count())
-    print(direct_labels[(train.s['s'] == 1) & (direct_labels['y'] == 1)].count(), train.y[(train.s['s'] == 1) & (train.y['y'] == 1)].count())
-    to_observe = DataTuple(x=feats, s=train.s, y=direct_labels, name=f"Imagined: {train.name}")
+    print(labels[(s_1['s'] == 0) & (labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 0)].count())
+    print(labels[(s_1['s'] == 0) & (labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 1)].count())
+    print(labels[(s_1['s'] == 1) & (labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 0)].count())
+    print(labels[(s_1['s'] == 1) & (labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 1)].count())
+    to_return = DataTuple(x=actual_feats, s=s_1, y=labels, name=f"Imagined: {train.name}")
 
-    from ethicml.visualisation.plot import save_2d_plot
+    print(direct_labels[(s_1['s'] == 0) & (direct_labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 0)].count())
+    print(direct_labels[(s_1['s'] == 0) & (direct_labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 1)].count())
+    print(direct_labels[(s_1['s'] == 1) & (direct_labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 0)].count())
+    print(direct_labels[(s_1['s'] == 1) & (direct_labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 1)].count())
+    to_observe = DataTuple(x=feats, s=s_1, y=direct_labels, name=f"Imagined: {train.name}")
+
+    from ethicml.visualisation.plot import save_2d_plot, save_label_plot
     save_2d_plot(to_return, './hmmm.png')
     save_2d_plot(to_observe, './hmmm_dir.png')
     save_2d_plot(train, './hmmm_og.png')
+
+    save_label_plot(to_return, './labels_just_label_changed.png')
+    save_label_plot(to_observe, './labels_all_changed.png')
+    save_label_plot(train, './labels_og.png')
 
     pd.testing.assert_frame_equal(train.y, to_return.y)
 
@@ -282,18 +332,18 @@ class Imagine(nn.Module):
         self.direct_pred = DirectPredictor()
         self.prediction_adv = PredictionAdv()
 
-    def forward(self, x, s):
+    def forward(self, x, s_1, s_2):
 
         feat_enc: td.Distribution = self.feature_encoder(x)
-        feat_dec = self.feature_decoder(feat_enc, s)
+        feat_dec = self.feature_decoder(feat_enc, s_1)
 
         pred_enc: td.Distribution = self.prediction_encoder(x)
-        pred_dec: td.Distribution = self.prediction_decoder(pred_enc, s)
+        pred_dec: td.Distribution = self.prediction_decoder(pred_enc, s_2)
 
         feat_s_pred = self.feature_adv(feat_enc)
         pred_s_pred = self.prediction_adv(pred_enc)
 
-        direct_prediction: td.Distribution = self.direct_pred(x, s)
+        direct_prediction: td.Distribution = self.direct_pred(x, s_1)
 
         return feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction
 
@@ -316,7 +366,8 @@ def train_model(epoch, model, train_loader, optimizer, flags):
     train_loss = 0
     for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):
         data_x = data_x.to("cpu")
-        data_s = data_s.to("cpu")
+        data_s_1 = data_s.to("cpu")
+        data_s_2 = data_s.to("cpu")
         data_y = data_y.to("cpu")
 
         optimizer.zero_grad()
@@ -327,7 +378,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         pred_dec: td.Distribution
         pred_s_pred: td.Distribution
         direct_prediction: td.Distribution
-        feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(data_x, data_s)
+        feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(data_x, data_s_1, data_s_2)
 
         ### Features
         recon_loss = F.mse_loss(data_x, feat_dec, reduction='mean')
@@ -335,7 +386,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         feat_prior = td.Normal(loc=torch.zeros(FEAT_LD), scale=torch.ones(FEAT_LD))
         feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
 
-        feat_sens_loss = -feat_s_pred.log_prob(data_s)
+        feat_sens_loss = -feat_s_pred.log_prob(data_s_1)
         ###
 
         ### Predictions
@@ -344,7 +395,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         pred_prior = td.Bernoulli((torch.ones_like(pred_enc.probs)/2))
         pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
-        pred_sens_loss = -pred_s_pred.log_prob(data_s)
+        pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
         ###
 
         ### Direct Pred

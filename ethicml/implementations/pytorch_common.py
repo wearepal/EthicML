@@ -21,7 +21,6 @@ class TestDataset(Dataset):
         self.column_lookup = {col: i for i, col in enumerate(self.x_names)}
         self.groups = [list(group) for key, group in groupby(self.x_names, lambda x: x.split('_')[0])]
         self.group_columns = [[self.column_lookup[g] for g in group] for group in self.groups]
-        print('kkk')
 
     def __getitem__(self, index):
         return self.features[index], self.sens_labels[index]
