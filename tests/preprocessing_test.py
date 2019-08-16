@@ -5,8 +5,9 @@ import math
 
 from typing import Tuple
 
+from ethicml.preprocessing.feature_binning import bin_cont_feats
 from ethicml.utility import DataTuple
-from ethicml.data import load_data, Toy
+from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import train_test_split
 
 
@@ -105,3 +106,12 @@ def test_random_seed():
 
     assert train_3.x.shape[0] == train_3.s.shape[0]
     assert train_3.s.shape[0] == train_3.y.shape[0]
+
+
+def test_binning():
+    data: DataTuple = load_data(Adult())
+
+    binned: DataTuple = bin_cont_feats(data)
+
+    assert len([col for col in binned.x.columns if col not in data.x.columns]) == 25
+    assert 'age' not in binned.x.columns
