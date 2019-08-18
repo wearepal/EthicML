@@ -8,20 +8,16 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
     Corels,
-    GPyT,
-    GPyTDemPar,
-    GPyTEqOdds,
-    InAlgorithm,
-    InAlgorithmAsync,
+    GPyT, GPyTDemPar, GPyTEqOdds,
+    InAlgorithm, InAlgorithmAsync,
     Kamiran,
     Kamishima,
-    LR,
-    LRCV,
-    LRProb,
+    LR, LRCV, LRProb,
     Majority,
     MLP,
     SVM,
-    ZafarAccuracy, ZafarBaseline, ZafarFairness)
+    ZafarAccuracy, ZafarBaseline, ZafarEqOdds, ZafarEqOpp, ZafarFairness,
+)
 from ethicml.evaluators import CrossValidator
 from ethicml.metrics import Accuracy, AbsCV
 from ethicml.utility import Heaviside, DataTuple, TrainTestPair
@@ -175,11 +171,11 @@ def zafarModels():
     zafarAcc_algo().remove()
 
 
-def test_zafar_accuracy(zafarModels):
-    train, test = get_train_test()
+def test_zafar(zafarModels, toy_train_test: TrainTestPair):
+    train, test = toy_train_test
 
     model: InAlgorithmAsync = zafarModels[0]()
-    assert model.name == "ZafarAccuracy, gamma=0.5"
+    assert model.name == "ZafarAccuracy, γ=0.5"
 
     assert model is not None
 
@@ -252,6 +248,20 @@ def test_zafar_accuracy(zafarModels):
     assert best_result.params['c'] == 0.01
     assert best_result.scores['Accuracy'] == approx(0.7156, rel=1e-4)
     assert best_result.scores['CV absolute'] == approx(0.9756, rel=1e-4)
+
+    # ==================== Zafar Equality of Opportunity ========================
+    zafar_eq_opp: InAlgorithm = ZafarEqOpp()
+    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
+
+    predictions = zafar_eq_opp.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 217
+
+    # ==================== Zafar Equalised Odds ========================
+    zafar_eq_odds: InAlgorithm = ZafarEqOdds()
+    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
+
+    predictions = zafar_eq_odds.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 189
 
 
 def test_gpyt_exception():
