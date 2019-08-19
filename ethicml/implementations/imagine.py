@@ -65,7 +65,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     print(f"Batch Size: {flags.batch_size}")
 
     # Set up the data
-    train, validate = train_test_split(train, train_percentage=0.1)
+    train, validate = train_test_split(train, train_percentage=0.9)
 
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=flags.batch_size)
