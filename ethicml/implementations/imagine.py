@@ -1,3 +1,5 @@
+import os
+import shutil
 from pathlib import Path
 from typing import Sequence, Tuple, List
 
@@ -390,10 +392,14 @@ class Imagine(nn.Module):
         direct_prediction: td.Distribution = self.direct_pred(x, s_1)
 
         return feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction
+
+
 def save_checkpoint(checkpoint, filename, is_best, save_path):
     print("===> Saving checkpoint '{}'".format(filename))
     model_filename = save_path / filename
     best_filename = save_path / 'model_best.pth.tar'
+    if not os.path.exists(save_path):
+        os.mkdir(save_path)
     torch.save(checkpoint, model_filename)
     if is_best:
         shutil.copyfile(model_filename, best_filename)
