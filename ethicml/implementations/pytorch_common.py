@@ -46,7 +46,7 @@ class CustomDataset(TestDataset):
         _x = self.features[index]
         _s = self.sens_labels[index]
         _y = self.class_labels[index]
-        _x_groups = [self.features[:, group][index] for group in self.group_columns]
+        _x_groups = [_x[group] for group in self.group_columns]
 
         return torch.from_numpy(_x), torch.from_numpy(_s), torch.from_numpy(_y), [torch.from_numpy(_g) for _g in _x_groups]
 
