@@ -264,10 +264,9 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
     assert predictions.values[predictions.values == 1].shape[0] == 189
 
 
-def test_gpyt_exception():
-    # test succeeds if the specified exception is thrown
-    with pytest.raises(ValueError, match="an executable has to be given"):
-        GPyT(file_name=Path("non existing path"))
+def test_gpyt_creation():
+    gpyt = GPyT(code_dir="non existing path")
+    assert gpyt.name == "GPyT_in_True"
 
 
 # @pytest.fixture(scope="module")

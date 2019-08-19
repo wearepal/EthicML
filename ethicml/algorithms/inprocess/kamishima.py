@@ -20,10 +20,9 @@ class Kamishima(InstalledModel):
 
     def __init__(self, eta=1.0):
         super().__init__(
-            name="kamishima",
+            dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
-            module="kamfadm",
-            file_name="train_pr.py",
+            top_dir="kamfadm",
         )
         self.eta = eta
 
@@ -56,7 +55,7 @@ class Kamishima(InstalledModel):
             # try:
             await self._call_script(
                 [
-                    str(self._module_path / "train_pr.py"),
+                    str(self._code_path / "train_pr.py"),
                     "-e",
                     str(self.eta),
                     "-i",
@@ -69,7 +68,7 @@ class Kamishima(InstalledModel):
 
             await self._call_script(
                 [
-                    str(self._module_path / "predict_lr.py"),
+                    str(self._code_path / "predict_lr.py"),
                     "-i",
                     test_path,
                     "-m",
