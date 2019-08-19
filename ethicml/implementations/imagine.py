@@ -24,8 +24,8 @@ from ethicml.preprocessing import LabelBinarizer
 from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
-PRED_LD = 1
-FEAT_LD = 2
+_PRED_LD = 1
+FEAT_LD = 60
 
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
@@ -44,7 +44,10 @@ class ImagineSettings:
 
 def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSettings) -> Tuple[DataTuple, TestTuple]:
     dataset = get_dataset_obj_by_name(flags.dataset)
-    set_seed(888)
+
+    device = torch.device("cuda:0" if (torch.cuda.is_available()) else "cpu")
+
+    set_seed(888, torch.cuda.is_available())
 
     post_process = False
 
@@ -55,6 +58,8 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
         train = processor.adjust(train)
         post_process = True
 
+    print(f"Batch Size: {flags.batch_size}")
+
     # Set up the data
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=flags.batch_size)
@@ -63,13 +68,13 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     test_loader = DataLoader(test_data, batch_size=flags.batch_size)
 
     # Build Network
-    model = Imagine(data=train_data, dataset=dataset).to("cpu")
+    model = Imagine(data=train_data, dataset=dataset).to(device)
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
-    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.98)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.975)
 
     # Run Network
     for epoch in range(int(flags.epochs)):
-        train_model(epoch, model, train_loader, optimizer, flags)
+        train_model(epoch, model, train_loader, optimizer, device, flags)
         scheduler.step(epoch)
 
     # Transform output
@@ -81,59 +86,80 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     direct_preds_train: List[List[float]] = []
     preds_train: List[List[float]] = []
 
-    feats_test: List[List[float]] = []
-    preds_test: List[List[float]] = []
+    SAMPLES = 50
+
     with torch.no_grad():
-        for _x, _s, _y in train_loader:
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s, _s)
-            feats_train += feat_dec.data.tolist()
-            direct_preds_train += direct_prediction.probs.data.tolist()
-            preds_train += pred_dec.probs.data.tolist()
-            s_1_list += _s.data.tolist()
-            s_2_list += _s.data.tolist()
-            actual_labels += _y.data.tolist()
-            actual_feats += _x.data.tolist()
+        for _x, _s, _y, _out in train_loader:
 
+            ###
+            # original data
+            ###
+            _s_1 = _s.detach().clone()
+            _s_2 = _s.detach().clone()
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
+            for i in range(SAMPLES):
+                feats_train += _x.data.tolist()#torch.cat([feat.sample() for feat in feat_dec], 1).data.tolist()
+                direct_preds_train += direct_prediction.probs.data.tolist()
+                preds_train += _y.data.tolist()#pred_dec.probs.data.tolist()
+                s_1_list += _s_1.data.tolist()
+                s_2_list += _s_2.data.tolist()
+                actual_labels += _y.data.tolist()
+                actual_feats += _x.data.tolist()
+
+            ###
+            # flippedx, og y
+            ###
+            _s_1 = (_s.detach().clone()-1)**2
+            _s_2 = _s.detach().clone()
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                _x, (_s-1)**2, _s)
-            feats_train += feat_dec.data.tolist()
-            direct_preds_train += direct_prediction.probs.data.tolist()
-            preds_train += pred_dec.probs.data.tolist()
-            s_1_list += ((_s-1)**2).data.tolist()
-            s_2_list += _s.data.tolist()
-            actual_labels += _y.data.tolist()
-            actual_feats += _x.data.tolist()
+                _x, _s_1, _s_2)
+            for i in range(SAMPLES):
+                feats_train += torch.cat([feat.sample() for feat in feat_dec], 1).data.tolist()
+                direct_preds_train += direct_prediction.probs.data.tolist()
+                preds_train += _y.data.tolist()
+                s_1_list += (_s_1-1).data.tolist()
+                s_2_list += _s_2.data.tolist()
+                actual_labels += _y.data.tolist()
+                actual_feats += _x.data.tolist()
 
+
+            ###
+            # flipped x, flipped y
+            ###
+            _s_1 = (_s.detach().clone() - 1) ** 2
+            _s_2 = (_s.detach().clone() - 1) ** 2
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                feat_dec, (_s-1)**2, (_s-1)**2)
-            feats_train += feat_dec.data.tolist()
-            direct_preds_train += direct_prediction.probs.data.tolist()
-            preds_train += pred_dec.probs.data.tolist()
-            s_1_list += ((_s-1)**2).data.tolist()
-            s_2_list += ((_s-1)**2).data.tolist()
-            actual_labels += _y.data.tolist()
-            actual_feats += _x.data.tolist()
+                torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2)
+            for i in range(SAMPLES):
+                feats_train += torch.cat([feat.sample() for feat in feat_dec], 1).data.tolist()
+                direct_preds_train += direct_prediction.probs.data.tolist()
+                preds_train += pred_dec.probs.data.tolist()
+                s_1_list += _s_1.data.tolist()
+                s_2_list += _s_2.data.tolist()
+                actual_labels += _y.data.tolist()
+                actual_feats += _x.data.tolist()
 
+            ###
+            # og x, flipped y
+            ###
+            _s_1 = _s.detach().clone()
+            _s_2 = (_s.detach().clone() - 1) ** 2
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                _x, _s, (_s - 1) ** 2)
-            feats_train += feat_dec.data.tolist()
-            direct_preds_train += direct_prediction.probs.data.tolist()
-            preds_train += pred_dec.probs.data.tolist()
-            s_1_list += _s.data.tolist()
-            s_2_list += ((_s-1)**2).data.tolist()
-            actual_labels += _y.data.tolist()
-            actual_feats += _x.data.tolist()
-
-        for _x, _s in test_loader:
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s, _s)
-            feats_test += feat_dec.data.tolist()
-            preds_test += pred_dec.probs.data.tolist()
+                _x, _s_1, _s_2)
+            for i in range(SAMPLES):
+                feats_train += _x.data.tolist()
+                direct_preds_train += direct_prediction.probs.data.tolist()
+                preds_train += pred_dec.probs.data.tolist()
+                s_1_list += _s_1.data.tolist()
+                s_2_list += _s_2.data.tolist()
+                actual_labels += _y.data.tolist()
+                actual_feats += _x.data.tolist()
 
     feats = pd.DataFrame(feats_train, columns=train.x.columns)
     direct_labels = pd.DataFrame(direct_preds_train, columns=train.y.columns, dtype=np.int64)
     direct_labels = direct_labels.applymap(lambda x: 1 if x >= 0.5 else 0)
-    s_1 = pd.DataFrame(s_1_list, columns=train.s.columns)
-    s_2 = pd.DataFrame(s_2_list, columns=train.s.columns)
+    s_1_total = pd.DataFrame(s_1_list, columns=train.s.columns)
+    s_2_total = pd.DataFrame(s_2_list, columns=train.s.columns)
     actual_labels = pd.DataFrame(actual_labels, columns=train.y.columns)
     actual_feats = pd.DataFrame(actual_feats, columns=train.x.columns)
 
@@ -142,28 +168,31 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
 
     print(f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set")
 
-    print(labels[(s_1['s'] == 0) & (labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 0)].count())
-    print(labels[(s_1['s'] == 0) & (labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 1)].count())
-    print(labels[(s_1['s'] == 1) & (labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 0)].count())
-    print(labels[(s_1['s'] == 1) & (labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 1)].count())
-    to_return = DataTuple(x=actual_feats, s=s_1, y=labels, name=f"Imagined: {train.name}")
+    s_col = train.s.columns[0]
+    y_col = train.y.columns[0]
 
-    print(direct_labels[(s_1['s'] == 0) & (direct_labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 0)].count())
-    print(direct_labels[(s_1['s'] == 0) & (direct_labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 0) & (actual_labels['y'] == 1)].count())
-    print(direct_labels[(s_1['s'] == 1) & (direct_labels['y'] == 0)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 0)].count())
-    print(direct_labels[(s_1['s'] == 1) & (direct_labels['y'] == 1)].count(), actual_labels[(s_1['s'] == 1) & (actual_labels['y'] == 1)].count())
-    to_observe = DataTuple(x=feats, s=s_1, y=direct_labels, name=f"Imagined: {train.name}")
+    print(labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(), actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count())
+    print(labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(), actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count())
+    print(labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(), actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count())
+    print(labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(), actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count())
+    to_return = DataTuple(x=feats, s=s_1_total, y=labels, name=f"Imagined: {train.name}")
+
+    print(direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(), actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count())
+    print(direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(), actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count())
+    print(direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(), actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count())
+    print(direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(), actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count())
+    to_observe = DataTuple(x=feats, s=s_1_total, y=direct_labels, name=f"Imagined: {train.name}")
 
     from ethicml.visualisation.plot import save_2d_plot, save_label_plot
-    save_2d_plot(to_return, './hmmm.png')
-    save_2d_plot(to_observe, './hmmm_dir.png')
-    save_2d_plot(train, './hmmm_og.png')
+    # save_2d_plot(to_return, './hmmm.png')
+    # save_2d_plot(to_observe, './hmmm_dir.png')
+    # save_2d_plot(train, './hmmm_og.png')
 
     save_label_plot(to_return, './labels_just_label_changed.png')
     save_label_plot(to_observe, './labels_all_changed.png')
     save_label_plot(train, './labels_og.png')
 
-    pd.testing.assert_frame_equal(train.y, to_return.y)
+    # pd.testing.assert_frame_equal(train.y, to_return.y)
 
     if post_process:
         to_return = processor.post(to_return)
@@ -171,7 +200,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
 
     return (
         to_return,
-        TestTuple(x=pd.DataFrame(feats_test), s=test.s, name=f"Imagined: {test.name}"),
+        TestTuple(x=test.x, s=test.s, name=f"Imagined: {test.name}"),
     )
 
 
@@ -190,9 +219,9 @@ def grad_reverse(features):
 
 
 class FeatureEncoder(nn.Module):
-    def __init__(self):
+    def __init__(self, in_size: int):
         super().__init__()
-        self.hid_1 = nn.Linear(2, 100)
+        self.hid_1 = nn.Linear(in_size, 100)
         self.bn_1 = nn.BatchNorm1d(100)
         self.hid_2 = nn.Linear(100, 100)
         self.bn_2 = nn.BatchNorm1d(100)
@@ -210,7 +239,7 @@ class FeatureEncoder(nn.Module):
 
 
 class FeatureDecoder(nn.Module):
-    def __init__(self):
+    def __init__(self, out_groups):
         super().__init__()
         self.hid_1 = nn.Linear(FEAT_LD + 1, 100)
         self.bn_1 = nn.BatchNorm1d(100)
@@ -219,13 +248,13 @@ class FeatureDecoder(nn.Module):
         self.hid_3 = nn.Linear(100, 100)
         self.bn_3 = nn.BatchNorm1d(100)
 
-        self.out = nn.Linear(100, 2)
+        self.out = nn.ModuleList([nn.Linear(100, len(out)) for out in out_groups])#nn.Linear(100, 2)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.mean, s], dim=1))))
         x = self.bn_2(torch.relu(self.hid_2(x)))
         x = self.bn_3(torch.relu(self.hid_3(x)))
-        return self.out(x)
+        return [td.OneHotCategorical(logits=f(x)) for f in self.out]#torch.softmax(f(x), 1)) for f in self.out]
 
 
 class FeatureAdv(nn.Module):
@@ -247,16 +276,16 @@ class FeatureAdv(nn.Module):
 
 
 class PredictionEncoder(nn.Module):
-    def __init__(self):
+    def __init__(self, in_size: int):
         super().__init__()
-        self.hid_1 = nn.Linear(2, 100)
+        self.hid_1 = nn.Linear(in_size, 100)
         self.bn_1 = nn.BatchNorm1d(100)
         self.hid_2 = nn.Linear(100, 100)
         self.bn_2 = nn.BatchNorm1d(100)
         self.hid_3 = nn.Linear(100, 100)
         self.bn_3 = nn.BatchNorm1d(100)
-        self.mu = nn.Linear(100, PRED_LD)
-        self.logvar = nn.Linear(100, PRED_LD)
+        self.mu = nn.Linear(100, _PRED_LD)
+        self.logvar = nn.Linear(100, _PRED_LD)
 
     def forward(self, x: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(x)))
@@ -268,7 +297,7 @@ class PredictionEncoder(nn.Module):
 class PredictionDecoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.hid_1 = nn.Linear(PRED_LD+1, 100)
+        self.hid_1 = nn.Linear(_PRED_LD + 1, 100)
         self.bn_1 = nn.BatchNorm1d(100)
         self.hid_2 = nn.Linear(100, 100)
         self.bn_2 = nn.BatchNorm1d(100)
@@ -277,17 +306,17 @@ class PredictionDecoder(nn.Module):
         self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.probs, s], dim=1))))
-        x = self.bn_2(torch.relu(self.hid_2(x)))
-        x = self.bn_3(torch.relu(self.hid_3(x)))
-        mean = self.out(x)
+        x = self.bn_1(self.hid_1(torch.cat([z.probs, s], dim=1)))
+        x = self.bn_2(self.hid_2(x))
+        x = self.bn_3(self.hid_3(x))
+        mean = z.probs + self.out(x)
         return td.Bernoulli(torch.sigmoid(mean))
 
 
 class DirectPredictor(nn.Module):
-    def __init__(self):
+    def __init__(self, in_size: int):
         super().__init__()
-        self.hid = nn.Linear(3, 100)
+        self.hid = nn.Linear(in_size+1, 100)
         self.hid_1 = nn.Linear(100, 100)
         self.bn_1 = nn.BatchNorm1d(100)
         self.hid_2 = nn.Linear(100, 100)
@@ -305,7 +334,7 @@ class DirectPredictor(nn.Module):
 class PredictionAdv(nn.Module):
     def __init__(self):
         super().__init__()
-        self.hid = nn.Linear(PRED_LD, 100)
+        self.hid = nn.Linear(_PRED_LD, 100)
         self.hid_1 = nn.Linear(100, 100)
         self.bn_1 = nn.BatchNorm1d(100)
         self.hid_2 = nn.Linear(100, 100)
@@ -323,13 +352,13 @@ class PredictionAdv(nn.Module):
 class Imagine(nn.Module):
     def __init__(self, data: CustomDataset, dataset: Dataset):
         super().__init__()
-        self.feature_encoder = FeatureEncoder()
-        self.feature_decoder = FeatureDecoder()
+        self.feature_encoder = FeatureEncoder(in_size=data.size)
+        self.feature_decoder = FeatureDecoder(data.groups)
         self.feature_adv = FeatureAdv()
 
-        self.prediction_encoder = PredictionEncoder()
+        self.prediction_encoder = PredictionEncoder(in_size=data.size)
         self.prediction_decoder = PredictionDecoder()
-        self.direct_pred = DirectPredictor()
+        self.direct_pred = DirectPredictor(in_size=data.size)
         self.prediction_adv = PredictionAdv()
 
     def forward(self, x, s_1, s_2):
@@ -348,7 +377,7 @@ class Imagine(nn.Module):
         return feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction
 
 
-def train_model(epoch, model, train_loader, optimizer, flags):
+def train_model(epoch, model, train_loader, optimizer, device, flags):
     """
     Train the model
     Args:
@@ -364,11 +393,12 @@ def train_model(epoch, model, train_loader, optimizer, flags):
 
     model.train()
     train_loss = 0
-    for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):
-        data_x = data_x.to("cpu")
-        data_s_1 = data_s.to("cpu")
-        data_s_2 = data_s.to("cpu")
-        data_y = data_y.to("cpu")
+    for batch_idx, (data_x, data_s, data_y, out_groups) in enumerate(train_loader):
+        data_x = data_x.to(device)
+        data_s_1 = data_s.to(device)
+        data_s_2 = data_s.to(device)
+        data_y = data_y.to(device)
+        out_groups = [out.to(device) for out in out_groups]
 
         optimizer.zero_grad()
         feat_enc: td.Distribution
@@ -381,7 +411,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(data_x, data_s_1, data_s_2)
 
         ### Features
-        recon_loss = F.mse_loss(data_x, feat_dec, reduction='mean')
+        recon_loss = (sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])).mean()#F.mse_loss(data_x, feat_dec, reduction='mean')
 
         feat_prior = td.Normal(loc=torch.zeros(FEAT_LD), scale=torch.ones(FEAT_LD))
         feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)

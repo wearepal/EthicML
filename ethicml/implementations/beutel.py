@@ -47,12 +47,17 @@ class BeutelSettings:
     validation_pcnt: float
 
 
-def set_seed(seed: int):
+def set_seed(seed: int, use_cuda: bool = False):
     """Set the seeds for numpy torch etc"""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)  # type: ignore  # mypy claims manual_seed_all doesn't exist
+    if use_cuda:
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)  # gpu vars
+        torch.backends.cudnn.deterministic = True  # needed
+        torch.backends.cudnn.benchmark = False
 
 
 def build_networks(
