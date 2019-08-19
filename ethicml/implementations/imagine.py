@@ -413,7 +413,7 @@ def train_model(epoch, model, train_loader, optimizer, device, flags):
         ### Features
         recon_loss = (sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])).mean()#F.mse_loss(data_x, feat_dec, reduction='mean')
 
-        feat_prior = td.Normal(loc=torch.zeros(FEAT_LD), scale=torch.ones(FEAT_LD))
+        feat_prior = td.Normal(loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device))
         feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
 
         feat_sens_loss = -feat_s_pred.log_prob(data_s_1)
@@ -422,7 +422,7 @@ def train_model(epoch, model, train_loader, optimizer, device, flags):
         ### Predictions
         pred_loss = -direct_prediction.log_prob(data_y).mean()
 
-        pred_prior = td.Bernoulli((torch.ones_like(pred_enc.probs)/2))
+        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape)/2))
         pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
         pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
