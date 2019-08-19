@@ -1,9 +1,9 @@
 """
 creates plots of a dataset
 """
-import os
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Union
+import itertools
 
 import imageio
 import pandas as pd
@@ -40,8 +40,7 @@ def save_2d_plot(data: DataTuple, filepath: str):
         legend="full",
     )
 
-    if not os.path.exists(file_path.parent):
-        os.mkdir(file_path.parent)
+    file_path.parent.mkdir(exist_ok=True)
     plot.figure.savefig(file_path)
     plt.clf()
 
@@ -61,8 +60,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
     plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
 
-    if not os.path.exists(file_path.parent):
-        os.mkdir(file_path)
+    file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
     plt.clf()
 
@@ -165,92 +163,109 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         ]
     )
 
-    if not os.path.exists(file_path.parent):
-        os.mkdir(file_path)
+    file_path.parent.mkdir(exist_ok=True)
     plt.savefig(file_path)
     plt.clf()
 
 
-def plot_mean_std_box(results: pd.DataFrame, metric_1: Metric, metric_2: Metric) -> None:
-    """
+def plot_single_mean_std_box(
+    plot: plt.Axes, results: pd.DataFrame, x_axis: str, y_axis: str, dataset: str, transform: str
+):
+    """This is essentially a wrapper around the `errorbox` function
+
+    This function can also be used to create figures with multiple plots on them, because it does
+    not generate a Figure object itself.
 
     Args:
-        results:
-        metric_1:
-        metric_2:
+        plot: Plot object
+        results: DataFrame with the data
+        x_axis: name of metric for the x-axis
+        y_axis: name of metric for the y-axis
+        dataset: string that identifies the dataset
+        transform: string that identifies the preprocessing method
+
+    Returns
+        the legend object if something was plotted
+    """
+    mask_for_dataset = results.index.to_frame()['dataset'] == dataset
+    mask_for_transform = results.index.to_frame()['transform'] == transform
+    matching_results = results.loc[mask_for_dataset & mask_for_transform]
+
+    if not pd.isnull(matching_results[[x_axis, y_axis]]).any().any():
+        entries: List[DataEntry] = []
+        for count, model in enumerate(sorted(results.index.to_frame()['model'].unique())):
+            mask_for_model = results.index.to_frame()['model'] == model
+            data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+            entries.append(DataEntry(f" {model} {transform}", data, count % 2 == 0))
+
+        return errorbox(
+            plot,
+            plot_def=PlotDef(title=f"{dataset} {transform}", entries=entries),
+            xaxis=(x_axis, x_axis.replace("_", " ")),
+            yaxis=(y_axis, y_axis.replace("_", " ")),
+            legend='outside',
+        )
+    return None
+
+
+def plot_mean_std_box(
+    results: pd.DataFrame,
+    metric_y: Union[str, Metric],
+    metric_x: Union[str, Metric],
+    save: bool = True,
+) -> List[Tuple[plt.Figure, plt.Axes]]:
+    """Plot the given result with boxes that represent mean and standard deviation
+
+    Args:
+        results: a DataFrame that already contains the values of the metrics
+        metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
+        metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
+        save: if True, save the plot as a PDF
 
     Returns:
-
+        A list of all figures and plots
     """
     directory = Path(".") / "plots"
-    if not os.path.exists(directory):
-        os.mkdir(directory)
+    directory.mkdir(exist_ok=True)
 
-    import itertools
+    # if the metric is given as a Metric object, take the name
+    metric_x_name: str = metric_x.name if isinstance(metric_x, Metric) else metric_x
+    metric_y_name: str = metric_y.name if isinstance(metric_y, Metric) else metric_y
 
-    cols_met_1 = [col for col in results.columns if metric_1.name in col]
-    cols_met_2 = [col for col in results.columns if metric_2.name in col]
+    cols_x = [col for col in results.columns if metric_x_name in col]
+    cols_y = [col for col in results.columns if metric_y_name in col]
+    if not cols_y or not cols_x:
+        raise ValueError(f"No matching columns found for either {metric_x_name} or {metric_y_name}")
 
-    if len(cols_met_1) > 1:
-        cols_met_1 = [col for col in cols_met_1 if ("-" in col) or ("/" in col)]
-    if len(cols_met_2) > 1:
-        cols_met_2 = [col for col in cols_met_2 if ("-" in col) or ("/" in col)]
+    # if there are multiple matches, then the metric was `per_sensitive_attribute`. in this case,
+    # we *only* want ratios and differences; not the plain result
+    if len(cols_y) > 1:
+        cols_y = [col for col in cols_y if ("-" in col) or ("/" in col)]
+    if len(cols_x) > 1:
+        cols_x = [col for col in cols_x if ("-" in col) or ("/" in col)]
 
-    cols_met_1 += cols_met_2
+    # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
+    possible_pairs = list(itertools.product(cols_x, cols_y))
 
-    possible_pairs = list(itertools.combinations([col for col in cols_met_1], 2))
-
+    figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
     for dataset in results.index.to_frame()['dataset'].unique():
-
         dataset_: str = str(dataset)
-
         for transform in results.index.to_frame()['transform'].unique():
-
-            for pair in possible_pairs:
-
-                entries: List[DataEntry] = []
-                count = 0
+            transform_: str = str(transform)
+            for x_axis, y_axis in possible_pairs:
                 fig: plt.Figure
                 plot: plt.Axes
                 fig, plot = plt.subplots(dpi=300)
-                plot_def = PlotDef(title=f"{dataset_} {transform}", entries=entries)
 
-                mask_for_dataset = results.index.to_frame()['dataset'] == dataset_
-                mask_for_transform = results.index.to_frame()['transform'] == transform
-                if (
-                    not pd.isnull(results.loc[mask_for_dataset & mask_for_transform][list(pair)])
-                    .any()
-                    .any()
-                ):
+                plot_single_mean_std_box(plot, results, x_axis, y_axis, dataset_, transform_)
 
-                    for model in sorted(results.index.to_frame()['model'].unique()):
-
-                        entries.append(
-                            DataEntry(
-                                f" {model} {transform}",
-                                results.loc[
-                                    mask_for_dataset
-                                    & (results.index.to_frame()['model'] == model)
-                                    & mask_for_transform
-                                ],
-                                count % 2 == 0,
-                            )
-                        )
-                        count += 1
-
-                    errorbox(
-                        plot,
-                        plot_def,
-                        (pair[1], pair[1].replace("_", " ")),
-                        (pair[0], pair[0].replace("_", " ")),
-                        legend='outside',
-                    )
-
-                    metric_a = pair[0].replace("/", "_over_")
-                    metric_b = pair[1].replace("/", "_over_")
+                if save:
+                    metric_a = x_axis.replace("/", "_over_")
+                    metric_b = y_axis.replace("/", "_over_")
                     fig.savefig(
                         directory / f"{dataset} {transform} {metric_a} {metric_b}.pdf",
                         bbox_inches='tight',
                     )
-                    plt.cla()
                 plt.close(fig)
+                figure_list += [(fig, plot)]
+    return figure_list

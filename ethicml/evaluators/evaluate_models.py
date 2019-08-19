@@ -194,9 +194,10 @@ def evaluate_models(
                     results.to_csv(path_to_file, index=False)
                     results = pd.DataFrame(columns=columns)
 
+    preprocess_names = [model.name for model in preprocess_models]
     results = pd.DataFrame(columns=columns)
     for dataset in datasets:
-        for transform_name, transform in to_operate_on.items():
+        for transform_name in ["no_transform"] + preprocess_names:
             path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
             exists = path_to_file.is_file()
             if exists:
