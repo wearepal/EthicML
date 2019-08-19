@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 import pandas as pd
 import pytest
 from pytest import approx
@@ -8,19 +8,15 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
     Corels,
-    GPyT,
-    GPyTDemPar,
-    GPyTEqOdds,
-    InAlgorithm,
-    InAlgorithmAsync,
+    GPyT, GPyTDemPar, GPyTEqOdds,
+    InAlgorithm, InAlgorithmAsync,
     Kamiran,
     Kamishima,
-    LR,
-    LRCV,
-    LRProb,
+    LR, LRCV, LRProb,
     Majority,
     MLP,
     SVM,
+    ZafarAccuracy, ZafarBaseline, ZafarEqOdds, ZafarEqOpp, ZafarFairness,
 )
 from ethicml.evaluators import CrossValidator
 from ethicml.metrics import Accuracy, AbsCV
@@ -163,6 +159,109 @@ def test_kamishima(kamishima):
     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 208
     assert predictions.values[predictions.values == -1].shape[0] == 192
+
+
+@pytest.fixture(scope="module")
+def zafarModels():
+    zafarAcc_algo = ZafarAccuracy
+    zafarBas_algo = ZafarBaseline
+    zafarFai_algo = ZafarFairness
+    yield (zafarAcc_algo, zafarBas_algo, zafarFai_algo)
+    print("teardown Zafar Accuracy")
+    zafarAcc_algo().remove()
+
+
+def test_zafar(zafarModels, toy_train_test: TrainTestPair):
+    train, test = toy_train_test
+
+    model: InAlgorithmAsync = zafarModels[0]()
+    assert model.name == "ZafarAccuracy, γ=0.5"
+
+    assert model is not None
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 206
+    assert predictions.values[predictions.values == -1].shape[0] == 194
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 206
+    assert predictions.values[predictions.values == -1].shape[0] == 194
+
+    hyperparams: Dict[str, List[float]] = {'gamma': [1, 1e-1, 1e-2]}
+
+    model = zafarModels[0]
+    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+
+    assert zafar_cv is not None
+    assert isinstance(zafar_cv.model(), InAlgorithm)
+
+    primary = Accuracy()
+    fair_measure = AbsCV()
+    zafar_cv.run(train, measures=[primary, fair_measure])
+
+    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+
+    assert best_result.params['gamma'] == 1
+    assert best_result.scores['Accuracy'] == approx(0.7094, rel=1e-4)
+    assert best_result.scores['CV absolute'] == approx(0.9822, rel=1e-4)
+
+    model = zafarModels[1]()
+    assert model.name == "ZafarBaseline"
+
+    assert model is not None
+
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 211
+    assert predictions.values[predictions.values == -1].shape[0] == 189
+
+    model = zafarModels[2]()
+    assert model.name == "ZafarFairness, c=0.001"
+
+    assert model is not None
+
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 215
+    assert predictions.values[predictions.values == -1].shape[0] == 185
+
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 215
+    assert predictions.values[predictions.values == -1].shape[0] == 185
+
+    hyperparams = {'c': [1, 1e-1, 1e-2]}
+
+    model = zafarModels[2]
+    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+
+    assert zafar_cv is not None
+    assert isinstance(zafar_cv.model(), InAlgorithm)
+
+    primary = Accuracy()
+    fair_measure = AbsCV()
+    zafar_cv.run(train, measures=[primary, fair_measure])
+
+    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+
+    assert best_result.params['c'] == 0.01
+    assert best_result.scores['Accuracy'] == approx(0.7156, rel=1e-4)
+    assert best_result.scores['CV absolute'] == approx(0.9756, rel=1e-4)
+
+    # ==================== Zafar Equality of Opportunity ========================
+    zafar_eq_opp: InAlgorithm = ZafarEqOpp()
+    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
+
+    predictions = zafar_eq_opp.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 217
+
+    # ==================== Zafar Equalised Odds ========================
+    zafar_eq_odds: InAlgorithm = ZafarEqOdds()
+    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
+
+    predictions = zafar_eq_odds.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 189
 
 
 def test_gpyt_exception():

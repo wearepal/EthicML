@@ -3,6 +3,7 @@ Simplae class to make class labels binary. Useful if a network uses BCELoss for 
 """
 
 import numpy as np
+import pandas as pd
 
 from ethicml.utility.data_structures import DataTuple
 
@@ -56,24 +57,21 @@ class LabelBinarizer:
 
         return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
 
+    def post_only_labels(self, labels: pd.DataFrame) -> pd.DataFrame:
+        """Inverse of adjust but only for a DataFrame instead of a DataTuple"""
+        y_col = labels.columns[0]
+        assert labels[y_col].nunique() == 2
+
+        # make copy of the labels
+        labels_copy = labels.copy()
+
+        y_col = labels_copy.columns[0]
+        labels_copy[y_col].replace(0, self.min_val, inplace=True)
+        labels_copy[y_col].replace(1, self.max_val, inplace=True)
+        return labels_copy
+
     def post(self, dataset: DataTuple) -> DataTuple:
-        """
-        Inverse of adjust
-        Args:
-            dataset:
+        """Inverse of adjust"""
 
-        Returns:
-
-        """
-        y_col = dataset.y.columns[0]
-        assert dataset.y[y_col].nunique() == 2
-
-        # make copy of dataset
-        dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy(), name=dataset.name)
-
-        y_col = dataset.y.columns[0]
-
-        dataset.y[y_col].replace(0, self.min_val, inplace=True)
-        dataset.y[y_col].replace(1, self.max_val, inplace=True)
-
-        return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
+        transformed_y = self.post_only_labels(dataset.y)
+        return DataTuple(x=dataset.x, s=dataset.s, y=transformed_y, name=dataset.name)
