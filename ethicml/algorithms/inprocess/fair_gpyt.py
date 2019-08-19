@@ -27,19 +27,14 @@ class GPyT(InstalledModel):
 
     basename = "GPyT"
 
-    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, code_dir=None):
+    def __init__(
+        self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, code_dir=None
+    ):
         if code_dir is None:
-            super().__init__(
-                dir_name="gpyt",
-                top_dir="fair-gpytorch",
-                url=REPO_URL,
-            )
+            super().__init__(dir_name="gpyt", top_dir="fair-gpytorch", url=REPO_URL)
         else:
             super().__init__(
-                dir_name=str(code_dir),
-                top_dir="",
-                url=REPO_URL,
-                executable=sys.executable
+                dir_name=str(code_dir), top_dir="", url=REPO_URL, executable=sys.executable
             )
         self.s_as_input = s_as_input
         self.gpu = gpu
