@@ -11,8 +11,8 @@ class TestDataset(Dataset):
     """Shared Dataset for pytorch models without labels"""
 
     def __init__(self, data: TestTuple):
-        self.features = np.array(data.x.values, dtype=np.float32)
-        self.sens_labels = np.array(data.s.values, dtype=np.float32)
+        self.features = data.x.to_numpy(dtype=np.float32)
+        self.sens_labels = data.s.to_numpy(dtype=np.float32)
         self.num = data.s.shape[0]
         self.s_size = data.s.shape[1]
         self.size = data.x.shape[1]
@@ -37,12 +37,18 @@ class CustomDataset(TestDataset):
 
     def __init__(self, data: DataTuple):
         super().__init__(data.remove_y())
-        self.class_labels = np.array(data.y.values, dtype=np.float32)
+        self.class_labels = data.y.to_numpy(dtype=np.float32)
         self.y_size = data.y.shape[1]
         self.y_names = data.y.columns
 
     def __getitem__(self, index):
-        return self.features[index], self.sens_labels[index], self.class_labels[index]#, [self.features[:, group][index] for group in self.group_columns]
+
+        _x = self.features[index]
+        _s = self.sens_labels[index]
+        _y = self.class_labels[index]
+        _x_groups = [self.features[:, group][index] for group in self.group_columns]
+
+        return torch.from_numpy(_x), torch.from_numpy(_s), torch.from_numpy(_y), [torch.from_numpy(_g) for _g in _x_groups]
 
     def names(self):
         return self.x_names, self.s_names, self.y_names
