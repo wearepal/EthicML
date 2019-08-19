@@ -40,6 +40,7 @@ class ImagineSettings:
     adv_weight: float
     validation_pcnt: float
     dataset: str
+    sample: int
 
 
 def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSettings) -> Tuple[DataTuple, TestTuple]:
@@ -86,7 +87,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     direct_preds_train: List[List[float]] = []
     preds_train: List[List[float]] = []
 
-    SAMPLES = 50
+    SAMPLES = flags.sample
 
     with torch.no_grad():
         for _x, _s, _y, _out in train_loader:
@@ -476,6 +477,7 @@ def main():
     parser.add_argument("--epochs", type=int, required=True)
     parser.add_argument("--adv_weight", type=float, required=True)
     parser.add_argument("--validation_pcnt", type=float, required=True)
+    parser.add_argument("--sample", type=int, required=True)
     args = parser.parse_args()
     # convert args object to a dictionary and load the feather files from the paths
     train, test = load_data_from_flags(vars(args))
@@ -489,6 +491,7 @@ def main():
         epochs=args.epochs,
         adv_weight=args.adv_weight,
         validation_pcnt=args.validation_pcnt,
+        sample=args.sample,
     )
     save_transformations(train_and_transform(train, test, flags), args)
 
