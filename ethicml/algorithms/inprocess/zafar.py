@@ -18,10 +18,9 @@ SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"
 class _ZafarAlgorithmBase(InstalledModel):
     def __init__(self, sub_dir: Path):
         super().__init__(
-            name="zafar",
+            dir_name="zafar",
             url="https://github.com/predictive-analytics-lab/fair-classification.git",
-            module="fair-classification",
-            file_name="",
+            top_dir="fair-classification",
         )
         self._sub_dir = sub_dir
 
@@ -55,7 +54,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             predictions_path = tmp_path / "predictions.json"
 
             cmd = self._create_command_line(str(train_path), str(test_path), str(predictions_path))
-            working_dir = self._module_path.resolve() / self._sub_dir
+            working_dir = self._code_path.resolve() / self._sub_dir
             await self._call_script(cmd, cwd=working_dir)
             predictions = predictions_path.open().read()
             predictions = json.loads(predictions)

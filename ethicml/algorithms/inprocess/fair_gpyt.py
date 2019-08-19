@@ -1,6 +1,7 @@
 """
 Wrapper for calling the fair GP model
 """
+import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -11,6 +12,7 @@ import pandas as pd
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.utility.data_structures import DataTuple, TestTuple
 
+REPO_URL = "https://github.com/predictive-analytics-lab/fair-gpytorch.git"
 PRED_FNAME = "predictions.npz"
 MAX_EPOCHS = 1000
 MAX_BATCH_SIZE = 10100  # can go up to 10000
@@ -25,15 +27,20 @@ class GPyT(InstalledModel):
 
     basename = "GPyT"
 
-    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, **kwargs):
-        if 'file_name' not in kwargs:
-            kwargs['file_name'] = "run.py"
-        super().__init__(  # type: ignore
-            name="gpyt",
-            url="https://github.com/predictive-analytics-lab/fair-gpytorch.git",
-            module="fair-gpytorch",
-            **kwargs,
-        )
+    def __init__(self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, code_dir=None):
+        if code_dir is None:
+            super().__init__(
+                dir_name="gpyt",
+                top_dir="fair-gpytorch",
+                url=REPO_URL,
+            )
+        else:
+            super().__init__(
+                dir_name=str(code_dir),
+                top_dir="",
+                url=REPO_URL,
+                executable=sys.executable
+            )
         self.s_as_input = s_as_input
         self.gpu = gpu
         self.epochs = epochs
@@ -80,7 +87,7 @@ class GPyT(InstalledModel):
 
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT"""
-        cmd = [str(self.script_path)]
+        cmd = [str(self._code_path / "run.py")]
         # apply flag overwrites
         cmd_flags = {**flags, **self.flag_overwrites}
         for key, value in cmd_flags.items():

@@ -6,95 +6,69 @@ in it's own venv and makes everyone happy.
 """
 import os
 from pathlib import Path
-from typing import List, Union, overload, Optional
+from typing import List, Optional
 import shutil
 import subprocess
 
 import git
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 class InstalledModel(InAlgorithmAsync):
-    """ the model that does the magic"""
-
-    # pylint: disable=function-redefined,super-init-not-called,unused-argument
-
-    @overload
-    def __init__(self, name: str, url: str, module: str, file_name: str):
-        ...
-
-    @overload
-    def __init__(self, name: str, url: str, module: str, file_name: Path, executable: str):
-        ...
+    """the model that does the magic"""
 
     def __init__(
         self,
-        name: str,
-        url: str,
-        module: str,
-        file_name: Union[str, Path],
+        dir_name: str,
+        top_dir: str,
+        url: Optional[str] = None,
         executable: Optional[str] = None,
     ):
         """
-        The behavior of this class depends on whether a full file path is given in `file_name`. If
-        yes, then it is assumed that the code is already there and it is not downloaded. In this
-        case it is also assumed that the user already has a suitable python enviroment and no new
-        environment is created.
+        Download code from given URL and create a Pip environment with the Pipfile found in the code
+
+        Args:
+            dir_name: where to download the code to
+            top_dir: top directory of the repository where the Pipfile can be found
+            url: (optional) URL of the repository
+            executable: (optional) path to Python executable
         """
-        self.script_path: Path
-        self.__executable: str
+        self._dir_name: str = dir_name
+        self._top_dir: str = top_dir
 
-        # check whether we have been given a complete path
-        if isinstance(file_name, Path):
-            self.script_path = file_name
-            # if given a complete path, we also need the executable, because we don't have a Pipfile
-            if executable is None:
-                raise ValueError("When full file path is specified, an executable has to be given.")
-            self.__executable = executable
+        if url is not None:
+            # download code
+            self._clone_directory(url)
+
+        if executable is None:
+            # create virtual environment
+            self._create_venv()
+            self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
-            # no full path specified => we download the code ourselves
-            self.url = url
-            self.repo_name = name
-            self.module = module
-
-            # download code and set script path
-            self.clone_directory()
-            self.script_path = self._module_path / file_name
-
-            # determine which executable to use
-            if executable is not None:
-                self.__executable = executable
-            else:
-                # no executable specified => we create our own environment
-                self.create_venv()
-                self.__executable = str(self._module_path.resolve() / ".venv" / "bin" / "python")
+            self.__executable = executable
         super().__init__()
 
     @property
-    def _module_path(self) -> Path:
-        return Path(".") / self.repo_name / self.module
+    def _code_path(self) -> Path:
+        """Path to where the code of the model is located"""
+        return Path(".") / self._dir_name / self._top_dir
 
     @property
     def _executable(self) -> str:
         return self.__executable
 
-    @property
-    def name(self) -> str:
-        return self.module
-
-    def clone_directory(self) -> None:
+    def _clone_directory(self, url: str) -> None:
         """
-        Clones the repo
+        Clones the repo from `url` into `dir_name`
         """
-        directory = Path(".") / self.repo_name
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            git.Git(directory).clone(self.url)
+        directory = Path(".") / self._dir_name
+        if not directory.exists():
+            directory.mkdir()
+            git.Git(directory).clone(url)
 
-    def create_venv(self) -> None:
+    def _create_venv(self) -> None:
         """
         Creates a venv based on the repos Pipfile
         """
@@ -102,25 +76,28 @@ class InstalledModel(InAlgorithmAsync):
         environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
         environ["PIPENV_VENV_IN_PROJECT"] = "true"
         environ["PIPENV_YES"] = "true"
-        environ["PIPENV_PIPFILE"] = str(self._module_path / "Pipfile")
+        environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
-        venv_directory = self._module_path / ".venv"
+        venv_directory = self._code_path / ".venv"
 
-        if not os.path.exists(venv_directory):
+        if not venv_directory.exists():
             subprocess.check_call("pipenv install", env=environ, shell=True)
-
-    def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
-    ) -> (List[str]):
-        args = conventional_interface(train_paths, test_paths, pred_path)
-        return [str(self.script_path)] + args
 
     def remove(self) -> None:
         """
-        Removes the directory that we created in clone_directory
+        Removes the directory that we created in _clone_directory()
         """
-        directory = Path(".") / self.repo_name
+        directory = Path(".") / self._dir_name
         try:
             shutil.rmtree(directory)
         except OSError as excep:
             print("Error: %s - %s." % (excep.filename, excep.strerror))
+
+    def _script_command(
+        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
+    ) -> (List[str]):
+        return []  # pylint was complaining when I didn't return anything here...
+
+    @property
+    def name(self) -> str:
+        raise NotImplementedError
