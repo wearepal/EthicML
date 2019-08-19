@@ -124,7 +124,7 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
                 feats_train += torch.cat([feat.sample() for feat in feat_dec], 1).data.tolist()
                 direct_preds_train += direct_prediction.probs.data.tolist()
                 preds_train += _y.data.tolist()
-                s_1_list += (_s_1-1).data.tolist()
+                s_1_list += _s_1.data.tolist()
                 s_2_list += _s_2.data.tolist()
                 actual_labels += _y.data.tolist()
                 actual_feats += _x.data.tolist()
