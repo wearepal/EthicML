@@ -91,6 +91,12 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     with torch.no_grad():
         for _x, _s, _y, _out in train_loader:
 
+            _x = _x.to(device)
+            _s = _s.to(device)
+            _y = _y.to(device)
+            _out = [out.to(device) for out in _out]
+
+
             ###
             # original data
             ###
