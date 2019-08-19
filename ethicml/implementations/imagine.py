@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Sequence, Tuple, List
 
 import torch
@@ -20,7 +21,7 @@ from ethicml.implementations.pytorch_common import TestDataset, CustomDataset
 from ethicml.implementations.utils import pre_algo_argparser, load_data_from_flags, \
     save_transformations
 from ethicml.implementations.vfae import get_dataset_obj_by_name
-from ethicml.preprocessing import LabelBinarizer
+from ethicml.preprocessing import LabelBinarizer, train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
@@ -62,8 +63,13 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
     print(f"Batch Size: {flags.batch_size}")
 
     # Set up the data
+    train, validate = train_test_split(train, train_percentage=0.1)
+
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=flags.batch_size)
+
+    valid_data = CustomDataset(validate)
+    valid_loader = DataLoader(valid_data, batch_size=flags.batch_size)
 
     test_data = TestDataset(test)
     test_loader = DataLoader(test_data, batch_size=flags.batch_size)
@@ -75,8 +81,10 @@ def train_and_transform(train: DataTuple, test: TestTuple, flags: ImagineSetting
 
     # Run Network
     for epoch in range(int(flags.epochs)):
-        train_model(epoch, model, train_loader, optimizer, device, flags)
+        train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
         scheduler.step(epoch)
+
+    model.eval()
 
     # Transform output
     actual_feats: List[List[float]] = []
@@ -382,9 +390,19 @@ class Imagine(nn.Module):
         direct_prediction: td.Distribution = self.direct_pred(x, s_1)
 
         return feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction
+def save_checkpoint(checkpoint, filename, is_best, save_path):
+    print("===> Saving checkpoint '{}'".format(filename))
+    model_filename = save_path / filename
+    best_filename = save_path / 'model_best.pth.tar'
+    torch.save(checkpoint, model_filename)
+    if is_best:
+        shutil.copyfile(model_filename, best_filename)
+    print("===> Saved checkpoint '{}'".format(model_filename))
 
 
-def train_model(epoch, model, train_loader, optimizer, device, flags):
+BEST_LOSS = np.inf
+
+def train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags):
     """
     Train the model
     Args:
@@ -462,6 +480,64 @@ def train_model(epoch, model, train_loader, optimizer, device, flags):
             )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
+
+    model.eval()
+
+    valid_loss = 0
+    with torch.no_grad():
+        for data_x, data_s, data_y, out_groups in valid_loader:
+            data_x = data_x.to(device)
+            data_s_1 = data_s.to(device)
+            data_s_2 = data_s.to(device)
+            data_y = data_y.to(device)
+            out_groups = [out.to(device) for out in out_groups]
+
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                data_x, data_s_1, data_s_2)
+
+            ### Features
+            recon_loss = (sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec,
+                                                                        out_groups)])).mean()  # F.mse_loss(data_x, feat_dec, reduction='mean')
+
+            feat_prior = td.Normal(loc=torch.zeros(FEAT_LD).to(device),
+                                   scale=torch.ones(FEAT_LD).to(device))
+            feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
+
+            feat_sens_loss = -feat_s_pred.log_prob(data_s_1)
+            ###
+
+            ### Predictions
+            pred_loss = -direct_prediction.log_prob(data_y).mean()
+
+            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) / 2))
+            pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
+
+            pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
+            ###
+
+            ### Direct Pred
+            direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
+            ###
+
+            kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
+            sens_loss = (feat_sens_loss + pred_sens_loss).mean()
+
+            valid_loss += recon_loss + kl_loss + sens_loss + pred_loss
+
+    is_best = valid_loss < BEST_LOSS
+    best_loss = min(valid_loss, BEST_LOSS)
+
+
+    # Save checkpoint
+    save_path = Path(".") / "checkpoint"
+    model_filename = 'checkpoint_%03d.pth.tar' % epoch
+    checkpoint = {
+        'epoch': epoch,
+        'model': model.state_dict(),
+        'optimizer': optimizer.state_dict(),
+        'best_loss': best_loss
+    }
+    save_checkpoint(checkpoint, model_filename, is_best, save_path)
 
 
 def main():
