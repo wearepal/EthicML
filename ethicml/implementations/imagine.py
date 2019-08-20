@@ -121,43 +121,43 @@ def train_and_transform(
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -175,7 +175,7 @@ def train_and_transform(
                     [
                         feats_train,
                         pd.DataFrame(
-                            torch.cat([feat.sample() for feat in feat_dec], 1).numpy(),
+                            torch.cat([feat.cpu().sample() for feat in feat_dec], 1).numpy(),
                             columns=train.x.columns,
                         ),
                     ],
@@ -186,36 +186,36 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -226,14 +226,14 @@ def train_and_transform(
             _s_1 = (_s.detach().clone() - 1) ** 2
             _s_2 = (_s.detach().clone() - 1) ** 2
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
+                torch.cat([feat.cpu().sample() for feat in feat_dec], 1), _s_1, _s_2
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
                     [
                         feats_train,
                         pd.DataFrame(
-                            torch.cat([feat.sample() for feat in feat_dec], 1).numpy(),
+                            torch.cat([feat.cpu().sample() for feat in feat_dec], 1).numpy(),
                             columns=train.x.columns,
                         ),
                     ],
@@ -243,36 +243,36 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.probs.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(pred_dec.cpu().probs.numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -287,43 +287,43 @@ def train_and_transform(
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.probs.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(pred_dec.cpu().probs.numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
