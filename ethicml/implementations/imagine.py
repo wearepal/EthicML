@@ -1,3 +1,4 @@
+import math
 import os
 import shutil
 from pathlib import Path
@@ -18,7 +19,7 @@ from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.imagine_modules.adversary import FeatAdversary, PredAdversary
 from ethicml.implementations.imagine_modules.features import Features
 from ethicml.implementations.imagine_modules.predictor import Predictor
-from ethicml.implementations.pytorch_common import TestDataset, CustomDataset
+from ethicml.implementations.pytorch_common import TestDataset, CustomDataset, RAdam
 from ethicml.implementations.utils import (
     pre_algo_argparser,
     load_data_from_flags,
@@ -46,6 +47,7 @@ class ImagineSettings:
     validation_pcnt: float
     dataset: str
     sample: int
+    start_from: int
 
 
 def train_and_transform(
@@ -81,15 +83,36 @@ def train_and_transform(
     test_loader = DataLoader(test_data, batch_size=flags.batch_size)
 
     # Build Network
+    current_epoch = 0
     model = Imagine(data=train_data, dataset=dataset).to(device)
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
-    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.975)
+    optimizer = RAdam(model.parameters(), lr=1e-3)
+    if int(flags.start_from) >= 0:
+        current_epoch = int(flags.start_from)
+        filename = 'checkpoint_%03d.pth.tar' % current_epoch
+        PATH = Path(".") / "checkpoint" / filename
+        dict_ = torch.load(PATH)
+        print(f"loaded: {dict_['epoch']}")
+        model.load_state_dict(dict_['model'])
+        optimizer.load_state_dict(dict_['optimizer'])
+    else:
+        PATH = Path(".") / "checkpoint"
+        import shutil
+        shutil.rmtree(PATH)
+
+
+    # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
 
     # Run Network
-    for epoch in range(int(flags.epochs)):
+    for epoch in range(current_epoch, current_epoch+int(flags.epochs)):
         train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
+        # if epoch % 15 == 0:
         scheduler.step(epoch)
 
+    PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
+    dict_ = torch.load(PATH)
+    print(f"Best model was at step: {dict_['epoch']}")
+    model.load_state_dict(dict_['model'])
     model.eval()
 
     # Transform output
@@ -719,7 +742,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
             sens_loss = (feat_sens_loss + pred_sens_loss).mean()
 
-            valid_loss += recon_loss + kl_loss + sens_loss + pred_loss
+            valid_loss += recon_loss + kl_loss + pred_loss - sens_loss
 
     is_best = valid_loss < BEST_LOSS
     best_loss = min(valid_loss, BEST_LOSS)
@@ -750,6 +773,7 @@ def main():
     parser.add_argument("--adv_weight", type=float, required=True)
     parser.add_argument("--validation_pcnt", type=float, required=True)
     parser.add_argument("--sample", type=int, required=True)
+    parser.add_argument("--start_from", type=int, required=True)
     args = parser.parse_args()
     # convert args object to a dictionary and load the feather files from the paths
     train, test = load_data_from_flags(vars(args))
@@ -764,6 +788,7 @@ def main():
         adv_weight=args.adv_weight,
         validation_pcnt=args.validation_pcnt,
         sample=args.sample,
+        start_from=args.start_from,
     )
     save_transformations(train_and_transform(train, test, flags), args)
 

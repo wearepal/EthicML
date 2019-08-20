@@ -17,6 +17,7 @@ class Imagine(PreAlgorithmAsync):
         validation_pcnt: float = 0.1,
         dataset: str = "Toy",
         sample: int = 1,
+        start_from: int = -1,
     ):
         # pylint: disable=too-many-arguments
         super().__init__()
@@ -29,6 +30,7 @@ class Imagine(PreAlgorithmAsync):
         self.validation_pcnt = validation_pcnt
         self.dataset = dataset
         self.sample = sample
+        self.start_from = start_from
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import imagine  # only import this on demand because of pytorch
@@ -44,6 +46,7 @@ class Imagine(PreAlgorithmAsync):
             validation_pcnt=self.validation_pcnt,
             dataset=self.dataset,
             sample=self.sample,
+            start_from=self.start_from,
         )
         return imagine.train_and_transform(train, test, flags)
 
