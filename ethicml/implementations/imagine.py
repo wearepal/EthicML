@@ -128,7 +128,7 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
@@ -175,7 +175,7 @@ def train_and_transform(
                     [
                         feats_train,
                         pd.DataFrame(
-                            torch.cat([feat.cpu().sample() for feat in feat_dec], 1).numpy(),
+                            torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
                             columns=train.x.columns,
                         ),
                     ],
@@ -226,14 +226,14 @@ def train_and_transform(
             _s_1 = (_s.detach().clone() - 1) ** 2
             _s_2 = (_s.detach().clone() - 1) ** 2
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                torch.cat([feat.cpu().sample() for feat in feat_dec], 1), _s_1, _s_2
+                torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
                     [
                         feats_train,
                         pd.DataFrame(
-                            torch.cat([feat.cpu().sample() for feat in feat_dec], 1).numpy(),
+                            torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
                             columns=train.x.columns,
                         ),
                     ],
@@ -243,13 +243,13 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.cpu().probs.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -294,13 +294,13 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.cpu().probs.numpy(), columns=train.y.columns),
+                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.cpu().probs.numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
