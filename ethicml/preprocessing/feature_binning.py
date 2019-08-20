@@ -13,7 +13,7 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     Given a datatuple, bin the columns that have ordinal features and return as afresh new DataTuple
     """
     groups: List[List[str]] = [
-        list(group) for _, group in groupby(data.x.columns, lambda x: x.split('_')[0])
+        list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])
     ]
 
     copy: pd.DataFrame = data.x.copy()
@@ -23,6 +23,6 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
         if len(group) == 1 and data.x[group[0]].nunique() > 2:
             copy[group] = pd.cut(data.x[group].to_numpy()[:, 0], 5)
             copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
-            copy = copy.drop(group, axis=1)
+            copy = copy.drop(group, axis="columns")
 
     return DataTuple(x=copy, s=data.s, y=data.y)
