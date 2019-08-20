@@ -145,7 +145,9 @@ def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
     return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y], name=datatup.name)
 
 
-def concat_dt(datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False):
+def concat_dt(
+    datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False
+) -> DataTuple:
     """Concatenate the data tuples in the given list"""
 
     to_return = DataTuple(
@@ -161,6 +163,25 @@ def concat_dt(datatup_list: List[DataTuple], axis: str = "index", ignore_index: 
             ),
             y=pd.concat(
                 [to_return.y, datatup_list[i].y], axis=axis, sort=False, ignore_index=ignore_index
+            ),
+            name=to_return.name,
+        )
+    return to_return
+
+
+def concat_tt(
+    datatup_list: List[TestTuple], axis: str = "index", ignore_index: bool = False
+) -> TestTuple:
+    """Concatenate the test tuples in the given list"""
+
+    to_return = TestTuple(x=datatup_list[0].x, s=datatup_list[0].s, name=datatup_list[0].name)
+    for i in range(1, len(datatup_list)):
+        to_return = TestTuple(
+            x=pd.concat(
+                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
+            ),
+            s=pd.concat(
+                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
             ),
             name=to_return.name,
         )
