@@ -6,7 +6,6 @@ from ethicml.utility import PathTuple, TestPathTuple, DataTuple, TestTuple
 
 
 class Imagine(PreAlgorithmAsync):
-
     def __init__(
         self,
         enc_size: Sequence[int] = (40,),
@@ -48,8 +47,13 @@ class Imagine(PreAlgorithmAsync):
         )
         return imagine.train_and_transform(train, test, flags)
 
-    def _script_command(self, train_paths: PathTuple, test_paths: TestPathTuple,
-                        new_train_paths: PathTuple, new_test_paths: TestPathTuple) -> List[str]:
+    def _script_command(
+        self,
+        train_paths: PathTuple,
+        test_paths: TestPathTuple,
+        new_train_paths: PathTuple,
+        new_test_paths: TestPathTuple,
+    ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, vars(self))
         return ["-m", "ethicml.implementations.imagine"] + args
 

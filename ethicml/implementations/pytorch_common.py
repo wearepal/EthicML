@@ -19,7 +19,9 @@ class TestDataset(Dataset):
         self.x_names = data.x.columns
         self.s_names = data.s.columns
         self.column_lookup = {col: i for i, col in enumerate(self.x_names)}
-        self.groups = [list(group) for key, group in groupby(self.x_names, lambda x: x.split('_')[0])]
+        self.groups = [
+            list(group) for key, group in groupby(self.x_names, lambda x: x.split('_')[0])
+        ]
         self.group_columns = [[self.column_lookup[g] for g in group] for group in self.groups]
 
     def __getitem__(self, index):
@@ -48,7 +50,12 @@ class CustomDataset(TestDataset):
         _y = self.class_labels[index]
         _x_groups = [_x[group] for group in self.group_columns]
 
-        return torch.from_numpy(_x), torch.from_numpy(_s), torch.from_numpy(_y), [torch.from_numpy(_g) for _g in _x_groups]
+        return (
+            torch.from_numpy(_x),
+            torch.from_numpy(_s),
+            torch.from_numpy(_y),
+            [torch.from_numpy(_g) for _g in _x_groups],
+        )
 
     def names(self):
         return self.x_names, self.s_names, self.y_names
