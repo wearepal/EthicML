@@ -97,7 +97,8 @@ def train_and_transform(
     else:
         PATH = Path(".") / "checkpoint"
         import shutil
-        shutil.rmtree(PATH)
+        if PATH.exists():
+            shutil.rmtree(PATH)
 
 
     # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
@@ -662,7 +663,9 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         ###
 
         ### Predictions
-        pred_loss = -direct_prediction.log_prob(data_y).mean()
+        pred_loss_1 = -direct_prediction.log_prob(data_y)
+        pred_loss_2 = -pred_dec.log_prob(data_y)
+        pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
         pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) / 2))
         pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
@@ -688,7 +691,8 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
                 f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
                 f'Loss: {loss.item() / len(data_x):.6f}\t'
                 f'recon_loss: {recon_loss.sum().item():.6f}\t'
-                f'pred_loss: {pred_loss.sum().item():.6f}\t'
+                f'pred_loss_xs: {pred_loss_1.sum().item():.6f}\t'
+                f'pred_loss_ybs: {pred_loss_2.sum().item():.6f}\t'
                 f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
                 f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
                 f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
@@ -727,7 +731,9 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             ###
 
             ### Predictions
-            pred_loss = -direct_prediction.log_prob(data_y).mean()
+            pred_loss_1 = -direct_prediction.log_prob(data_y)
+            pred_loss_2 = -pred_dec.log_prob(data_y)
+            pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
             pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) / 2))
             pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
