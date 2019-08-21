@@ -45,7 +45,7 @@ class LabelBinarizer:
         assert dataset.y[y_col].nunique() == 2
 
         # make copy of dataset
-        dataset = DataTuple(x=dataset.x, s=dataset.s, y=dataset.y.copy(), name=dataset.name)
+        dataset = dataset.make_copy_with(y=dataset.y.copy())
 
         self.min_val = dataset.y.values.min()
         self.max_val = dataset.y.values.max()
@@ -74,4 +74,4 @@ class LabelBinarizer:
         """Inverse of adjust"""
 
         transformed_y = self.post_only_labels(dataset.y)
-        return DataTuple(x=dataset.x, s=dataset.s, y=transformed_y, name=dataset.name)
+        return dataset.make_copy_with(y=transformed_y)

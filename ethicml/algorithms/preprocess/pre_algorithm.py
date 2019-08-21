@@ -10,7 +10,6 @@ from dataclasses import replace
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
-    get_subset,
     DataTuple,
     TestTuple,
     PathTuple,
@@ -33,7 +32,7 @@ class PreAlgorithm(Algorithm):
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker"""
-        train_testing = get_subset(train)
+        train_testing = train.get_subset()
         return self.run(train_testing, test)
 
 

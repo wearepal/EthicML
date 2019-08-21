@@ -4,9 +4,8 @@ Set of scripts for splitting the train and test datasets based on conditions
 
 import re
 from typing import Tuple
-from functools import partial
 import pandas as pd
-from ethicml.utility.data_structures import DataTuple, apply_to_joined_tuple
+from ethicml.utility.data_structures import DataTuple
 
 
 def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
@@ -23,8 +22,11 @@ def query_dt(datatup: DataTuple, query_str: str):
     """Query a datatuple"""
     assert isinstance(query_str, str)
     assert isinstance(datatup, DataTuple)
-    query_func = partial(dataset_from_cond, cond=query_str)
-    return apply_to_joined_tuple(query_func, datatup)
+
+    def _query_func(joined_data_frame):
+        return dataset_from_cond(joined_data_frame, cond=query_str)
+
+    return datatup.apply_to_joined_df(_query_func)
 
 
 def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTuple, DataTuple]:

@@ -12,7 +12,6 @@ from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blo
 from ethicml.utility.data_structures import (
     DataTuple,
     TestTuple,
-    get_subset,
     PathTuple,
     TestPathTuple,
     write_as_feather,
@@ -34,7 +33,7 @@ class InAlgorithm(Algorithm):
 
     def run_test(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         """Run with reduced training set so that it finishes quicker"""
-        train_testing = get_subset(train)
+        train_testing = train.get_subset()
         return self.run(train_testing, test)
 
 
