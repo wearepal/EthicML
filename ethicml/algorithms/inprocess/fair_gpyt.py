@@ -27,19 +27,19 @@ class GPyT(InstalledModel):
 
     basename = "GPyT"
 
-    def __init__(
-        self, s_as_input=True, gpu=0, epochs=70, length_scale=1.2, flags=None, code_dir=None
-    ):
+    def __init__(self, s_as_input=True, flags=None, code_dir=None):
+        """
+        Args:
+            s_as_input: if True, use s as an input feature
+            flags: (optional) a dictionary that can overwrite *any* flag
+            code_dir: (optional) a directory where the GPyT code can be found. if this is not given,
+                      then the code is downloaded from GitHub
+        """
         if code_dir is None:
             super().__init__(dir_name="gpyt", top_dir="fair-gpytorch", url=REPO_URL)
         else:
-            super().__init__(
-                dir_name=str(code_dir), top_dir="", url=REPO_URL, executable=sys.executable
-            )
+            super().__init__(dir_name=str(code_dir), top_dir="", executable=sys.executable)
         self.s_as_input = s_as_input
-        self.gpu = gpu
-        self.epochs = epochs
-        self.length_scale = length_scale
         self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
@@ -66,9 +66,6 @@ class GPyT(InstalledModel):
                 self.s_as_input,
                 model_name,
                 raw_data["ytrain"].shape[0],
-                self.gpu,
-                self.epochs,
-                self.length_scale,
             )
             await self._run_gpyt(flags)
 
@@ -276,9 +273,6 @@ class GPyTEqOdds(GPyT):
                 self.s_as_input,
                 model_name,
                 len(raw_data["ytrain"]),
-                self.gpu,
-                self.epochs,
-                self.length_scale,
             )
 
             if self.odds is None:
@@ -409,11 +403,10 @@ def split_train_dev(inputs, labels, sensitive):
     )
 
 
-def _flags(
-    parameters, data_path, save_dir, s_as_input, model_name, num_train, gpu, epochs, length_scale
-):
+def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train):
     batch_size = min(MAX_BATCH_SIZE, num_train)
-    epochs = _num_epochs(num_train) if epochs is None else epochs
+    # epochs = _num_epochs(num_train)
+    epochs = 70
     return {
         **dict(
             inf="Variational",
@@ -434,11 +427,11 @@ def _flags(
             save_dir=save_dir,  # "/home/ubuntu/out2/",
             plot="",
             logging_steps=1,
-            gpus=str(gpu),
+            gpus='0',
             preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
             num_samples=20,
             optimize_inducing=True,
-            length_scale=length_scale,
+            length_scale=1.2,
             sf=1.0,
             iso=False,
             num_samples_pred=2000,

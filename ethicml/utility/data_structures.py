@@ -4,7 +4,7 @@ reasonable time
 """
 from pathlib import Path
 from typing import Tuple, List, Optional, NamedTuple
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import Enum
 
 import pandas as pd
@@ -75,6 +75,36 @@ class DataTuple(TestTuple, DataTupleValues):
             name=self.name if self.name is not None else "",
         )
 
+    def make_copy_with(
+        self,
+        *,
+        x: Optional[pd.DataFrame] = None,
+        s: Optional[pd.DataFrame] = None,
+        y: Optional[pd.DataFrame] = None,
+        name: Optional[str] = None,
+    ) -> "DataTuple":
+        """Create a copy of the DataTuple but change the given values"""
+        changes = {k: v for k, v in [('x', x), ('s', s), ('y', y), ('name', name)] if v is not None}
+        return replace(self, **changes)
+
+    def apply_to_joined_df(self, mapper) -> "DataTuple":
+        """Concatenate the dataframes in the DataTuple and then apply a function to it"""
+        cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
+        joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
+        joined = mapper(joined)
+        return self.make_copy_with(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+
+    def get_subset(self, num: int = 500) -> "DataTuple":
+        """Get the first elements of the dataset
+
+        Args:
+            num: how many samples to take for subset
+
+        Returns:
+            subset of training data
+        """
+        return self.make_copy_with(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
 class TestPathTuple:
@@ -135,16 +165,6 @@ def write_as_feather(
     return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
 
 
-def apply_to_joined_tuple(mapper, datatup: DataTuple) -> DataTuple:
-    """Concatenate the dataframes in a DataTuple and apply a function to it"""
-    cols_x = datatup.x.columns
-    cols_s = datatup.s.columns
-    cols_y = datatup.y.columns
-    joined = pd.concat([datatup.x, datatup.s, datatup.y], axis="columns", sort=False)
-    joined = mapper(joined)
-    return DataTuple(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y], name=datatup.name)
-
-
 def concat_dt(
     datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False
 ) -> DataTuple:
@@ -193,20 +213,6 @@ def load_feather(output_path: Path) -> pd.DataFrame:
     with output_path.open("rb") as file_obj:
         df = pd.read_feather(file_obj)
     return df
-
-
-def get_subset(train: DataTuple, num: int = 500) -> DataTuple:
-    """Get the first elements of the given dataset
-
-    Args:
-        train: training data
-
-    Returns:
-        subset of training data
-    """
-    return DataTuple(
-        x=train.x.iloc[:num], s=train.s.iloc[:num], y=train.y.iloc[:num], name=train.name
-    )
 
 
 class FairType(Enum):

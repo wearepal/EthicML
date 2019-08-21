@@ -1,5 +1,6 @@
 """Post-processing method by Hardt et al."""
 import numpy as np
+from numpy.random import RandomState
 import pandas as pd
 from scipy.optimize import linprog
 
@@ -16,7 +17,7 @@ class Hardt(PostAlgorithm):
         super().__init__()
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label
-        self._random = np.random.RandomState(seed=888)
+        self._random = RandomState(seed=888)
 
     def run(
         self, train_predictions: pd.DataFrame, train: DataTuple, test_predictions, test: TestTuple
@@ -29,14 +30,15 @@ class Hardt(PostAlgorithm):
         fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()
         fraction_s1 = 1 - fraction_s0
 
+        s_col = train.s.columns[0]
         tprs = metric_per_sensitive_attribute(train_predictions, train, TPR())
-        tpr0 = tprs["s_0"]
-        tpr1 = tprs["s_1"]
+        tpr0 = tprs[f"{s_col}_0"]
+        tpr1 = tprs[f"{s_col}_1"]
         fnr0 = 1 - tpr0
         fnr1 = 1 - tpr1
         tnrs = metric_per_sensitive_attribute(train_predictions, train, TNR())
-        tnr0 = tnrs["s_0"]
-        tnr1 = tnrs["s_1"]
+        tnr0 = tnrs[f"{s_col}_0"]
+        tnr1 = tnrs[f"{s_col}_1"]
         fpr0 = 1 - tnr0
         fpr1 = 1 - tnr1
 

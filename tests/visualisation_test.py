@@ -7,7 +7,7 @@ from typing import Tuple, List
 
 import pytest
 
-from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Agarwal, Kamiran
+from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Kamiran
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
 from ethicml.evaluators import evaluate_models
@@ -15,8 +15,7 @@ from ethicml.metrics import Accuracy, CV, TPR, Metric, ProbPos
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Adult, Dataset, Toy
 from ethicml.preprocessing import train_test_split
-from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot
-from ethicml.visualisation.plot import plot_mean_std_box
+from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot, plot_mean_std_box
 from tests.run_algorithm_test import get_train_test
 
 

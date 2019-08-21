@@ -5,10 +5,8 @@ This module contains kind of useful things that don't really belong anywhere els
 from .activation import Activation
 from .heaviside import Heaviside
 from .data_structures import (
-    apply_to_joined_tuple,
     concat_dt,
     concat_tt,
-    get_subset,
     load_feather,
     DataTuple,
     FairType,

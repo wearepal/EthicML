@@ -11,7 +11,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, get_subset, TestTuple, TrainTestPair
+from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (
@@ -133,7 +133,7 @@ def evaluate_models(
                 seed += 2410
                 if test_mode:
                     # take smaller subset of training data to speed up training
-                    train = get_subset(train)
+                    train = train.get_subset()
 
                 to_operate_on: Dict[str, TrainTestPair] = {
                     "no_transform": TrainTestPair(train=train, test=test)
