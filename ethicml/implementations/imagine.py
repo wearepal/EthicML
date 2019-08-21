@@ -740,20 +740,20 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, pro
 
         train_loss += loss.item()
         optimizer.step()
-        # if batch_idx % 100 == 0:
-        #     print(
-        #         f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
-        #         f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
-        #         f'Loss: {loss.item() / len(data_x):.6f}\t'
-        #         f'recon_loss: {recon_loss.sum().item():.6f}\t'
-        #         f'pred_loss_xs: {pred_loss_1.sum().item():.6f}\t'
-        #         f'pred_loss_ybs: {pred_loss_2.sum().item():.6f}\t'
-        #         f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
-        #         f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
-        #         f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
-        #         f'adv_feat_loss: {feat_sens_loss.sum().item():.6f}\t'
-        #         f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
-        #     )
+        if batch_idx % 100 == 0:
+            print(
+                f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
+                f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+                f'Loss: {loss.item() / len(data_x):.6f}\t'
+                f'recon_loss: {recon_loss.sum().item():.6f}\t'
+                f'pred_loss_xs: {pred_loss_1.sum().item():.6f}\t'
+                f'pred_loss_ybs: {pred_loss_2.sum().item():.6f}\t'
+                f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
+                f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
+                f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
+                f'adv_feat_loss: {feat_sens_loss.sum().item():.6f}\t'
+                f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
+            )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
 
