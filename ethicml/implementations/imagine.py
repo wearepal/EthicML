@@ -110,13 +110,9 @@ def train_and_transform(
     # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
     scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
 
-    prob_pos = ProbPos()
-    prob_pos = prob_pos.score(_train.y, _train)
-    # print(f"prob pos: {prob_pos}")
-
     # Run Network
     for epoch in range(current_epoch, current_epoch + int(flags.epochs)):
-        train_model(epoch, model, train_loader, valid_loader, optimizer, device, prob_pos, flags)
+        train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
         # if epoch % 15 == 0:
         scheduler.step(epoch)
 
@@ -428,29 +424,29 @@ def train_and_transform(
     labels = preds_train
     labels = labels.applymap(lambda x: 1 if x >= 0.5 else 0)
 
-    # print(
-    #     f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set"
-    # )
+    print(
+        f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set"
+    )
 
     s_col = _train.s.columns[0]
     y_col = _train.y.columns[0]
 
-    # print(
-    #     labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(),
-    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-    # )
-    # print(
-    #     labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(),
-    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-    # )
-    # print(
-    #     labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(),
-    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-    # )
-    # print(
-    #     labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(),
-    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-    # )
+    print(
+        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(),
+        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
+    )
+    print(
+        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(),
+        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
+    )
+    print(
+        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(),
+        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
+    )
+    print(
+        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(),
+        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
+    )
     to_return = DataTuple(x=feats, s=s_1_total, y=labels, name=f"Imagined: {train.name}")
 
     # print(
@@ -671,7 +667,7 @@ def save_checkpoint(checkpoint, filename, is_best, save_path):
 BEST_LOSS = np.inf
 
 
-def train_model(epoch, model, train_loader, valid_loader, optimizer, device, prob_pos, flags):
+def train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags):
     """
     Train the model
     Args:
@@ -722,7 +718,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, pro
         pred_loss_2 = -pred_dec.log_prob(data_y)
         pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
-        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * (prob_pos)))
+        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
         pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
         pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
@@ -790,7 +786,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, pro
             pred_loss_2 = -pred_dec.log_prob(data_y)
             pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
-            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * prob_pos))
+            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
             pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
             pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
