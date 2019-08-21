@@ -102,7 +102,6 @@ def quadratic_time_mmd(data_first, data_second, sigma):
 
 
 class RAdam(Optimizer):
-
     def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0):
         defaults = dict(lr=lr, betas=betas, eps=eps, weight_decay=weight_decay)
         self.buffer = [[None, None, None] for ind in range(10)]
@@ -157,7 +156,19 @@ class RAdam(Optimizer):
 
                     # more conservative since it's an approximated value
                     if N_sma >= 5:
-                        step_size = group['lr'] * math.sqrt((1 - beta2_t) * (N_sma - 4) / (N_sma_max - 4) * (N_sma - 2) / N_sma * N_sma_max / (N_sma_max - 2)) / (1 - beta1 ** state['step'])
+                        step_size = (
+                            group['lr']
+                            * math.sqrt(
+                                (1 - beta2_t)
+                                * (N_sma - 4)
+                                / (N_sma_max - 4)
+                                * (N_sma - 2)
+                                / N_sma
+                                * N_sma_max
+                                / (N_sma_max - 2)
+                            )
+                            / (1 - beta1 ** state['step'])
+                        )
                     else:
                         step_size = group['lr'] / (1 - beta1 ** state['step'])
                     buffered[2] = step_size

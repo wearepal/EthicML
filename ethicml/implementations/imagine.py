@@ -13,8 +13,10 @@ import torch.distributions as td
 import torch.nn.functional as F
 import numpy as np
 import pandas as pd
+from ethicml.algorithms.inprocess import LR
 
 from ethicml.data import Dataset
+from ethicml.evaluators import run_metrics
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.imagine_modules.adversary import FeatAdversary, PredAdversary
 from ethicml.implementations.imagine_modules.features import Features
@@ -26,6 +28,7 @@ from ethicml.implementations.utils import (
     save_transformations,
 )
 from ethicml.implementations.vfae import get_dataset_obj_by_name
+from ethicml.metrics import ProbPos, Accuracy, TPR
 from ethicml.preprocessing import LabelBinarizer, train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
@@ -68,16 +71,19 @@ def train_and_transform(
         train = processor.adjust(train)
         post_process = True
 
-    print(f"Batch Size: {flags.batch_size}")
+    # print(f"Batch Size: {flags.batch_size}")
 
     # Set up the data
-    train, validate = train_test_split(train, train_percentage=0.9)
+    _train, validate = train_test_split(train, train_percentage=0.9)
 
-    train_data = CustomDataset(train)
+    train_data = CustomDataset(_train)
     train_loader = DataLoader(train_data, batch_size=flags.batch_size)
 
     valid_data = CustomDataset(validate)
     valid_loader = DataLoader(valid_data, batch_size=flags.batch_size)
+
+    all_data = CustomDataset(train)
+    all_data_loader = DataLoader(all_data, batch_size=flags.batch_size)
 
     test_data = TestDataset(test)
     test_loader = DataLoader(test_data, batch_size=flags.batch_size)
@@ -91,44 +97,50 @@ def train_and_transform(
         filename = 'checkpoint_%03d.pth.tar' % current_epoch
         PATH = Path(".") / "checkpoint" / filename
         dict_ = torch.load(PATH)
-        print(f"loaded: {dict_['epoch']}")
+        # print(f"loaded: {dict_['epoch']}")
         model.load_state_dict(dict_['model'])
         optimizer.load_state_dict(dict_['optimizer'])
     else:
         PATH = Path(".") / "checkpoint"
         import shutil
+
         if PATH.exists():
             shutil.rmtree(PATH)
-
 
     # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
     scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
 
+    prob_pos = ProbPos()
+    prob_pos = prob_pos.score(_train.y, _train)
+    # print(f"prob pos: {prob_pos}")
+
     # Run Network
-    for epoch in range(current_epoch, current_epoch+int(flags.epochs)):
-        train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
+    for epoch in range(current_epoch, current_epoch + int(flags.epochs)):
+        train_model(epoch, model, train_loader, valid_loader, optimizer, device, prob_pos, flags)
         # if epoch % 15 == 0:
         scheduler.step(epoch)
 
     PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
     dict_ = torch.load(PATH)
-    print(f"Best model was at step: {dict_['epoch']}")
+    # print(f"Best model was at step: {dict_['epoch']}")
     model.load_state_dict(dict_['model'])
     model.eval()
 
     # Transform output
-    actual_feats: pd.DataFrame = pd.DataFrame(columns=train.x.columns)
-    feats_train: pd.DataFrame = pd.DataFrame(columns=train.x.columns)
-    s_1_list: pd.DataFrame = pd.DataFrame(columns=train.s.columns)
-    s_2_list: pd.DataFrame = pd.DataFrame(columns=train.s.columns)
-    actual_labels: pd.DataFrame = pd.DataFrame(columns=train.y.columns)
-    direct_preds_train: pd.DataFrame = pd.DataFrame(columns=train.y.columns)
-    preds_train: pd.DataFrame = pd.DataFrame(columns=train.y.columns)
+    actual_feats: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
+    feats_encs: pd.DataFrame = pd.DataFrame(columns=list(range(FEAT_LD)))
+    feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
+    s_1_list: pd.DataFrame = pd.DataFrame(columns=_train.s.columns)
+    s_2_list: pd.DataFrame = pd.DataFrame(columns=_train.s.columns)
+    actual_labels: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    direct_preds_train: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_train: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
 
     SAMPLES = flags.sample
 
     with torch.no_grad():
-        for _x, _s, _y, _out in train_loader:
+        for _x, _s, _y, _out in all_data_loader:
 
             _x = _x.to(device)
             _s = _s.to(device)
@@ -145,43 +157,67 @@ def train_and_transform(
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                feats_encs = pd.concat(
+                    [
+                        feats_encs,
+                        pd.DataFrame(feat_enc.sample().cpu().numpy(), columns=list(range(FEAT_LD))),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
+                        pd.DataFrame(
+                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                        ),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_1_list,
+                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_2_list,
+                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                preds_encs = pd.concat(
+                    [
+                        preds_encs,
+                        pd.DataFrame(pred_enc.sample().cpu().numpy(), columns=_train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -200,7 +236,7 @@ def train_and_transform(
                         feats_train,
                         pd.DataFrame(
                             torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
-                            columns=train.x.columns,
+                            columns=_train.x.columns,
                         ),
                     ],
                     axis='rows',
@@ -210,36 +246,44 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
+                        pd.DataFrame(
+                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                        ),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns)],
+                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_1_list,
+                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_2_list,
+                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -258,7 +302,7 @@ def train_and_transform(
                         feats_train,
                         pd.DataFrame(
                             torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
-                            columns=train.x.columns,
+                            columns=_train.x.columns,
                         ),
                     ],
                     axis='rows',
@@ -267,36 +311,47 @@ def train_and_transform(
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
+                        pd.DataFrame(
+                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                        ),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=train.y.columns)],
+                    [
+                        preds_train,
+                        pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=_train.y.columns),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_1_list,
+                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_2_list,
+                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -311,43 +366,54 @@ def train_and_transform(
             )
             for i in range(SAMPLES):
                 feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
                 direct_preds_train = pd.concat(
                     [
                         direct_preds_train,
-                        pd.DataFrame(direct_prediction.probs.cpu().numpy(), columns=train.y.columns),
+                        pd.DataFrame(
+                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                        ),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=train.y.columns)],
+                    [
+                        preds_train,
+                        pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=_train.y.columns),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_1_list = pd.concat(
-                    [s_1_list, pd.DataFrame(_s_1.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_1_list,
+                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 s_2_list = pd.concat(
-                    [s_2_list, pd.DataFrame(_s_2.cpu().numpy(), columns=train.s.columns, dtype=np.int64)],
+                    [
+                        s_2_list,
+                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_labels = pd.concat(
                     [
                         actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=train.y.columns, dtype=np.int64),
+                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
                 actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=train.x.columns)],
+                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -362,56 +428,54 @@ def train_and_transform(
     labels = preds_train
     labels = labels.applymap(lambda x: 1 if x >= 0.5 else 0)
 
-    print(
-        f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set"
-    )
+    # print(
+    #     f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set"
+    # )
 
-    s_col = train.s.columns[0]
-    y_col = train.y.columns[0]
+    s_col = _train.s.columns[0]
+    y_col = _train.y.columns[0]
 
-    print(
-        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-    )
+    # print(
+    #     labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(),
+    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
+    # )
+    # print(
+    #     labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(),
+    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
+    # )
+    # print(
+    #     labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(),
+    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
+    # )
+    # print(
+    #     labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(),
+    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
+    # )
     to_return = DataTuple(x=feats, s=s_1_total, y=labels, name=f"Imagined: {train.name}")
 
-    print(
-        direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-    )
-    print(
-        direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-    )
+    # print(
+    #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(),
+    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
+    # )
+    # print(
+    #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(),
+    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
+    # )
+    # print(
+    #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(),
+    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
+    # )
+    # print(
+    #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(),
+    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
+    # )
     to_observe = DataTuple(x=feats, s=s_1_total, y=direct_labels, name=f"Imagined: {train.name}")
 
     from ethicml.visualisation.plot import save_label_plot
 
     save_label_plot(to_return, './labels_preds.png')
     save_label_plot(to_observe, './labels_direct.png')
-    save_label_plot(train, './labels_og.png')
-
-    # pd.testing.assert_frame_equal(train.y, to_return.y)
+    save_label_plot(_train, './labels_og.png')
 
     if post_process:
         to_return = processor.post(to_return)
@@ -464,17 +528,13 @@ class FeatureDecoder(nn.Module):
         self.hid_3 = nn.Linear(100, 100)
         self.bn_3 = nn.BatchNorm1d(100)
 
-        self.out = nn.ModuleList(
-            [nn.Linear(100, len(out)) for out in out_groups]
-        )  # nn.Linear(100, 2)
+        self.out = nn.ModuleList([nn.Linear(100, len(out)) for out in out_groups])
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.mean, s], dim=1))))
         x = self.bn_2(torch.relu(self.hid_2(x)))
         x = self.bn_3(torch.relu(self.hid_3(x)))
-        return [
-            td.OneHotCategorical(logits=f(x)) for f in self.out
-        ]  # torch.softmax(f(x), 1)) for f in self.out]
+        return [td.OneHotCategorical(logits=f(x)) for f in self.out]
 
 
 class FeatureAdv(nn.Module):
@@ -505,15 +565,12 @@ class PredictionEncoder(nn.Module):
         self.hid_3 = nn.Linear(100, 100)
         self.bn_3 = nn.BatchNorm1d(100)
         self.mu = nn.Linear(100, _PRED_LD)
-        self.logvar = nn.Linear(100, _PRED_LD)
 
     def forward(self, x: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(x)))
         x = self.bn_2(torch.relu(self.hid_2(x)))
         x = self.bn_3(torch.relu(self.hid_3(x)))
-        return td.Bernoulli(
-            probs=torch.sigmoid(self.mu(x))
-        )  # td.Normal(loc=self.mu(x), scale=torch.exp(self.logvar(x)))
+        return td.Bernoulli(probs=torch.sigmoid(self.mu(x)))
 
 
 class PredictionDecoder(nn.Module):
@@ -614,7 +671,7 @@ def save_checkpoint(checkpoint, filename, is_best, save_path):
 BEST_LOSS = np.inf
 
 
-def train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags):
+def train_model(epoch, model, train_loader, valid_loader, optimizer, device, prob_pos, flags):
     """
     Train the model
     Args:
@@ -650,9 +707,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         )
 
         ### Features
-        recon_loss = (
-            sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
-        ).mean()  # F.mse_loss(data_x, feat_dec, reduction='mean')
+        recon_loss = (sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])).mean()
 
         feat_prior = td.Normal(
             loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
@@ -667,7 +722,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         pred_loss_2 = -pred_dec.log_prob(data_y)
         pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
-        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) / 2))
+        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * (prob_pos)))
         pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
         pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
@@ -685,20 +740,20 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
 
         train_loss += loss.item()
         optimizer.step()
-        if batch_idx % 100 == 0:
-            print(
-                f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
-                f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
-                f'Loss: {loss.item() / len(data_x):.6f}\t'
-                f'recon_loss: {recon_loss.sum().item():.6f}\t'
-                f'pred_loss_xs: {pred_loss_1.sum().item():.6f}\t'
-                f'pred_loss_ybs: {pred_loss_2.sum().item():.6f}\t'
-                f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
-                f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
-                f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
-                f'adv_feat_loss: {feat_sens_loss.sum().item():.6f}\t'
-                f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
-            )
+        # if batch_idx % 100 == 0:
+        #     print(
+        #         f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
+        #         f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
+        #         f'Loss: {loss.item() / len(data_x):.6f}\t'
+        #         f'recon_loss: {recon_loss.sum().item():.6f}\t'
+        #         f'pred_loss_xs: {pred_loss_1.sum().item():.6f}\t'
+        #         f'pred_loss_ybs: {pred_loss_2.sum().item():.6f}\t'
+        #         f'kld_loss feats: {feat_kl_loss.sum().item():.6f}\t'
+        #         f'kld_loss prior: {pred_kl_loss.sum().item():.6f}\t'
+        #         f'kld_loss outps: {direct_loss.sum().item():.6f}\t'
+        #         f'adv_feat_loss: {feat_sens_loss.sum().item():.6f}\t'
+        #         f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
+        #     )
 
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
 
@@ -735,7 +790,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             pred_loss_2 = -pred_dec.log_prob(data_y)
             pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
-            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) / 2))
+            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * prob_pos))
             pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
             pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
