@@ -98,7 +98,7 @@ def train_and_transform(
             post_test += z1.data.tolist()
 
     return (
-        train.make_copy_with(x=pd.DataFrame(post_train), name=f"VFAE: {train.name}"),
+        DataTuple(x=pd.DataFrame(post_train), s=train.s, y=train.y, name=f"VFAE: {train.name}"),
         TestTuple(x=pd.DataFrame(post_test), s=test.s, name=f"VFAE: {test.name}"),
     )
 

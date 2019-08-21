@@ -405,7 +405,8 @@ def split_train_dev(inputs, labels, sensitive):
 
 def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train):
     batch_size = min(MAX_BATCH_SIZE, num_train)
-    epochs = _num_epochs(num_train)
+    # epochs = _num_epochs(num_train)
+    epochs = 70
     return {
         **dict(
             inf="Variational",

@@ -264,7 +264,7 @@ def train_and_transform(
     )
 
     return (
-        train.make_copy_with(x=train_transformed),
+        DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name),
         TestTuple(x=test_transformed, s=test.s, name=test.name),
     )
 
