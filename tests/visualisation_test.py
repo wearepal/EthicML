@@ -27,8 +27,8 @@ def cleanup():
     print("remove generated directory")
     plt_dir = Path(".") / "plots"
     res_dir = Path(".") / "results"
-    # if plt_dir.exists():
-    #     shutil.rmtree(plt_dir)
+    if plt_dir.exists():
+        shutil.rmtree(plt_dir)
     if res_dir.exists():
         shutil.rmtree(res_dir)
 
@@ -51,7 +51,7 @@ def test_label_plot(cleanup):
     save_label_plot(train, "./plots/labels.png")
 
 
-def test_plot_evals(cleanup):
+def test_plot_evals(cleanup: None):
     results: pd.DataFrame = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
@@ -63,7 +63,7 @@ def test_plot_evals(cleanup):
         delete_prev=True
     )
 
-    figs_and_plots: List[Tuple[plt.Figure, List[plt.Axes]]]
+    figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]
 
     # plot with metrics
     figs_and_plots = plot_mean_std_box(results, Accuracy(), ProbPos())
