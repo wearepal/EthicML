@@ -73,7 +73,7 @@ def errorbox(
     pale_colors = ["#aec7e8", "#ffbb78", "#98df8a", "#ff9896", "#c5b0d5"]
     pale_colors += ["#c49c94", "#f7b6d2", "#c7c7c7", "#dbdb8d", "#9edae5"]
     shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
-    hatch_pattern = ['o', '.', '|', '-', '/', '\\', '+', 'x', '*', 'O']
+    hatch_pattern = ['O', 'o', '|', '-', '/', '\\', '+', 'x', '*']
 
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
     filled_counter = firstcolor
@@ -121,7 +121,7 @@ def errorbox(
         plot.plot(
             xmean,
             ymean,
-            shapes[i_shp],
+            shapes[i_shp % len(shapes)],
             c=color,
             label=entry.label,
             zorder=4 + 2 * i_shp,
