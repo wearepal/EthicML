@@ -168,8 +168,17 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     plt.clf()
 
 
-def plot_single_mean_std_box(
-    plot: plt.Axes, results: pd.DataFrame, x_axis: str, y_axis: str, dataset: str, transform: str
+def single_plot_mean_std_box(
+    plot: plt.Axes,
+    results: pd.DataFrame,
+    xaxis: Tuple[str, str],
+    yaxis: Tuple[str, str],
+    dataset: str,
+    transform: str,
+    legend: Union[str, Tuple[str, float]] = "outside",
+    firstcolor: int = 0,
+    firstshape: int = 0,
+    markersize: int = 6,
 ):
     """This is essentially a wrapper around the `errorbox` function
 
@@ -179,33 +188,30 @@ def plot_single_mean_std_box(
     Args:
         plot: Plot object
         results: DataFrame with the data
-        x_axis: name of metric for the x-axis
-        y_axis: name of metric for the y-axis
+        x_axis: name of column that's plotted on the x-axis
+        y_axis: name of column that's plotted on the y-axis
         dataset: string that identifies the dataset
         transform: string that identifies the preprocessing method
 
     Returns
-        the legend object if something was plotted
+        the legend object if something was plotted; False otherwise
     """
-    mask_for_dataset = results.index.to_frame()['dataset'] == dataset
-    mask_for_transform = results.index.to_frame()['transform'] == transform
+    mask_for_dataset = results.index.get_level_values('dataset') == dataset
+    mask_for_transform = results.index.get_level_values('transform') == transform
     matching_results = results.loc[mask_for_dataset & mask_for_transform]
 
-    if not pd.isnull(matching_results[[x_axis, y_axis]]).any().any():
-        entries: List[DataEntry] = []
-        for count, model in enumerate(sorted(results.index.to_frame()['model'].unique())):
-            mask_for_model = results.index.to_frame()['model'] == model
-            data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
-            entries.append(DataEntry(f" {model} {transform}", data, count % 2 == 0))
+    if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).any().any():
+        return False  # nothing to plot
 
-        return errorbox(
-            plot,
-            plot_def=PlotDef(title=f"{dataset} {transform}", entries=entries),
-            xaxis=(x_axis, x_axis.replace("_", " ")),
-            yaxis=(y_axis, y_axis.replace("_", " ")),
-            legend='outside',
-        )
-    return None
+    entries: List[DataEntry] = []
+    for count, model in enumerate(sorted(results.index.to_frame()['model'].unique())):
+        mask_for_model = results.index.get_level_values('model') == model
+        data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+        model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
+        entries.append(DataEntry(model_label, data, count % 2 == 0))
+
+    plot_def = PlotDef(title=f"{dataset}, {transform}", entries=entries)
+    return errorbox(plot, plot_def, xaxis, yaxis, legend, firstcolor, firstshape, markersize)
 
 
 def plot_mean_std_box(
@@ -228,23 +234,33 @@ def plot_mean_std_box(
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)
 
-    # if the metric is given as a Metric object, take the name
-    metric_x_name: str = metric_x.name if isinstance(metric_x, Metric) else metric_x
-    metric_y_name: str = metric_y.name if isinstance(metric_y, Metric) else metric_y
+    def _get_columns(metric: Metric) -> List[str]:
+        cols = [col for col in results.columns if metric.name in col]
+        if not cols:
+            raise ValueError(f"No matching columns found for Metric \"{metric.name}\".")
+        # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
+        # case, we *only* want ratios and differences; not the plain result
+        if len(cols) > 1:
+            cols = [col for col in cols if ("-" in col) or ("/" in col)]
+        return cols
 
-    cols_x = [col for col in results.columns if metric_x_name in col]
-    cols_y = [col for col in results.columns if metric_y_name in col]
-    if not cols_y or not cols_x:
-        raise ValueError(f"No matching columns found for either {metric_x_name} or {metric_y_name}")
+    if isinstance(metric_x, Metric):
+        # if the metric is given as a Metric object, look for matching columns
+        cols_x = _get_columns(metric_x)
+    else:
+        if metric_x not in results.columns:
+            raise ValueError(f"No column named \"{metric_x}\".")
+        cols_x = [metric_x]
 
-    # if there are multiple matches, then the metric was `per_sensitive_attribute`. in this case,
-    # we *only* want ratios and differences; not the plain result
-    if len(cols_y) > 1:
-        cols_y = [col for col in cols_y if ("-" in col) or ("/" in col)]
-    if len(cols_x) > 1:
-        cols_x = [col for col in cols_x if ("-" in col) or ("/" in col)]
+    if isinstance(metric_y, Metric):
+        cols_y = _get_columns(metric_y)
+    else:
+        if metric_y not in results.columns:
+            raise ValueError(f"No column named \"{metric_y}\".")
+        cols_y = [metric_y]
 
     # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
+    # this preserves the order of x and y
     possible_pairs = list(itertools.product(cols_x, cols_y))
 
     figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
@@ -257,7 +273,13 @@ def plot_mean_std_box(
                 plot: plt.Axes
                 fig, plot = plt.subplots(dpi=300)
 
-                plot_single_mean_std_box(plot, results, x_axis, y_axis, dataset_, transform_)
+                xtuple = (x_axis, x_axis.replace("_", " "))
+                ytuple = (y_axis, y_axis.replace("_", " "))
+                lgnd = single_plot_mean_std_box(plot, results, xtuple, ytuple, dataset_, transform_)
+
+                if lgnd is False:  # we need "is" here because otherwise any falsy value would match
+                    del fig
+                    continue  # nothing was plotted -> don't save it and don't add it to the list
 
                 if save:
                     metric_a = x_axis.replace("/", "_over_")
