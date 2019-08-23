@@ -1,6 +1,6 @@
 # EthicML
 
-EthicML exists to combat the problems we've found with off-the-shelf fairness comparison packages.
+EthicML exists to solve the problems we've found with off-the-shelf fairness comparison packages.
 
 These other packages are useful, but given that we primarily do research,
 a lot of the work we do doesn't fit into some nice box.
@@ -19,6 +19,18 @@ IBM's fair-360, Aequitas, EthicalML/XAI, Fairness-Comparison and others.
 They're all great at what they do, they're just not right for us.
 We will however be influenced by them.
 
+## Installation
+
+EthicML requires Python >= 3.6.
+To install EthicML, just do
+```
+pip3 install ethicml
+```
+
+**Attention**: In order to use all features of EthicML, PyTorch needs to be installed separately.
+We are not including PyTorch as a requirement of EthicML,
+because there are many different versions for different systems.
+
 ## Design Principles
 
 ### The Triplet
@@ -34,11 +46,11 @@ All methods must assume S and Y are multi-class.
 We use a named tuple to contain the triplet
 
 ```python
-triplet = DataTuple(x=dataframe, s=dataframe, y=dataframe)
+triplet = DataTuple(x: pandas.DataFrame, s: pandas.DataFrame, y: pandas.DataFrame)
 ```
 
-The dataframe may be a little innefficient,
-but given the amount of splicing on conditions that we're doing it feels worth it.
+The dataframe may be a little inefficient,
+but given the amount of splicing on conditions that we're doing, it feels worth it.
 
 ### Separation of Methods
 
