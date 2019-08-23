@@ -31,6 +31,11 @@ class LR(InAlgorithmAsync):
         args = conventional_interface(train_paths, test_paths, pred_path, str(self.C))
         return script + args
 
+    def fit(self, train):
+        clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class='auto')
+        clf.fit(train.x, train.y.values.ravel())
+        return clf
+
     @property
     def name(self) -> str:
         return f"Logistic Regression, C={self.C}"

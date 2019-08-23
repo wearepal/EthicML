@@ -8,6 +8,7 @@ from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
+from ethicml.implementations.kamiran import compute_weights
 from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import kamiran
 
@@ -56,6 +57,14 @@ class Kamiran(InAlgorithmAsync):
             train_paths, test_paths, pred_path, self.classifier, str(self.C), self.kernel
         )
         return script + args
+
+    def fit(self, train: DataTuple):
+        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=1.)
+        model.fit(
+            train.x, train.y.values.ravel(),
+            sample_weight=compute_weights(train)["instance weights"]
+        )
+        return model
 
     @property
     def name(self) -> str:

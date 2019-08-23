@@ -11,12 +11,15 @@ from torch.autograd import Function
 from torch.utils.data import DataLoader
 import torch.distributions as td
 import torch.nn.functional as F
+from tqdm import tqdm, trange
+
 import numpy as np
 import pandas as pd
-from ethicml.algorithms.inprocess import LR
+from ethicml.algorithms.inprocess import LR, Kamiran
 
 from ethicml.data import Dataset
-from ethicml.evaluators import run_metrics
+from ethicml.evaluators import run_metrics, metric_per_sensitive_attribute, \
+    diff_per_sensitive_attribute
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.imagine_modules.adversary import FeatAdversary, PredAdversary
 from ethicml.implementations.imagine_modules.features import Features
@@ -51,6 +54,7 @@ class ImagineSettings:
     dataset: str
     sample: int
     start_from: int
+    strategy: str
 
 
 def train_and_transform(
@@ -85,7 +89,7 @@ def train_and_transform(
     all_data = CustomDataset(train)
     all_data_loader = DataLoader(all_data, batch_size=flags.batch_size)
 
-    test_data = TestDataset(test)
+    test_data = CustomDataset(test)
     test_loader = DataLoader(test_data, batch_size=flags.batch_size)
 
     # Build Network
@@ -123,21 +127,33 @@ def train_and_transform(
     model.eval()
 
     # Transform output
-    actual_feats: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
-    feats_encs: pd.DataFrame = pd.DataFrame(columns=list(range(FEAT_LD)))
-    feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
-    s_1_list: pd.DataFrame = pd.DataFrame(columns=_train.s.columns)
-    s_2_list: pd.DataFrame = pd.DataFrame(columns=_train.s.columns)
-    actual_labels: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    actual_feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
+    feats_train_encs: pd.DataFrame = pd.DataFrame(columns=list(range(FEAT_LD)))
+    feats_train_encs_og_only: pd.DataFrame = pd.DataFrame(columns=list(range(FEAT_LD)))
+    feats_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.x.columns]+["id"])
+    s_1_list_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns]+["id"])
+    s_2_list_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns]+["id"])
+    actual_labels_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns]+["id"])
     direct_preds_train: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
-    preds_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
-    preds_train: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_train_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns]+["id"])
+
+    actual_feats_test: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
+    feats_test_encs: pd.DataFrame = pd.DataFrame(columns=list(range(FEAT_LD)))
+    feats_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.x.columns] + ["id"])
+    s_1_list_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns] + ["id"])
+    s_2_list_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns] + ["id"])
+    actual_labels_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns] + ["id"])
+    direct_preds_test: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_test_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
+    preds_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns] + ["id"])
 
     SAMPLES = flags.sample
 
     with torch.no_grad():
-        for _x, _s, _y, _out in all_data_loader:
+        for _i, _x, _s, _y, _out in all_data_loader:
 
+            _i = _i.to(device)
             _x = _x.to(device)
             _s = _s.to(device)
             _y = _y.to(device)
@@ -151,16 +167,30 @@ def train_and_transform(
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
                 _x, _s_1, _s_2
             )
-            for i in range(SAMPLES):
+            for _ in range(SAMPLES):
                 feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                    [
+                        feats_train,
+                        pd.concat([
+                            pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
-                feats_encs = pd.concat(
+                feats_train_encs_og_only = pd.concat(
                     [
-                        feats_encs,
-                        pd.DataFrame(feat_enc.sample().cpu().numpy(), columns=list(range(FEAT_LD))),
+                        feats_train_encs_og_only,
+                        pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                feats_train_encs = pd.concat(
+                    [
+                        feats_train_encs,
+                        pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
                     ],
                     axis='rows',
                     ignore_index=True,
@@ -176,44 +206,59 @@ def train_and_transform(
                     ignore_index=True,
                 )
                 preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns)],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                s_1_list = pd.concat(
                     [
-                        s_1_list,
-                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                        preds_train,
+                        pd.concat([
+                            pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                s_2_list = pd.concat(
+                s_1_list_train = pd.concat(
                     [
-                        s_2_list,
-                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                        s_1_list_train,
+                        pd.concat([
+                            pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                actual_labels = pd.concat(
+                s_2_list_train = pd.concat(
                     [
-                        actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                        s_2_list_train,
+                        pd.concat([
+                            pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                preds_encs = pd.concat(
+                actual_labels_train = pd.concat(
                     [
-                        preds_encs,
+                        actual_labels_train,
+                        pd.concat([
+                            pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                preds_train_encs = pd.concat(
+                    [
+                        preds_train_encs,
                         pd.DataFrame(pred_enc.sample().cpu().numpy(), columns=_train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                actual_feats_train = pd.concat(
+                    [actual_feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
@@ -221,154 +266,320 @@ def train_and_transform(
             ###
             # flippedx, og y
             ###
-            _s_1 = (_s.detach().clone() - 1) ** 2
-            _s_2 = _s.detach().clone()
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                _x, _s_1, _s_2
-            )
-            for i in range(SAMPLES):
-                feats_train = pd.concat(
-                    [
-                        feats_train,
-                        pd.DataFrame(
-                            torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
-                            columns=_train.x.columns,
-                        ),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
+            if flags.strategy in ["flip_x", "use_all"]:
+                _s_1 = (_s.detach().clone() - 1) ** 2
+                _s_2 = _s.detach().clone()
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    _x, _s_1, _s_2
                 )
-                # feats_train += torch.cat([feat.sample() for feat in feat_dec], 1).data.tolist()
-                direct_preds_train = pd.concat(
-                    [
-                        direct_preds_train,
-                        pd.DataFrame(
-                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
-                        ),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                preds_train = pd.concat(
-                    [preds_train, pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns)],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                s_1_list = pd.concat(
-                    [
-                        s_1_list,
-                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                s_2_list = pd.concat(
-                    [
-                        s_2_list,
-                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                actual_labels = pd.concat(
-                    [
-                        actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
-                    axis='rows',
-                    ignore_index=True,
-                )
+                for _ in range(SAMPLES):
+                    feats_train = pd.concat(
+                        [
+                            feats_train,
+                            pd.concat([
+                                pd.DataFrame(torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(), columns=_train.x.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])], axis='columns', ignore_index=False
+                            )
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_train_encs = pd.concat(
+                        [
+                            feats_train_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_train = pd.concat(
+                        [
+                            direct_preds_train,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_train = pd.concat(
+                        [
+                            preds_train,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_train = pd.concat(
+                        [
+                            s_1_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_train = pd.concat(
+                        [
+                            s_2_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_train = pd.concat(
+                        [
+                            actual_labels_train,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_train = pd.concat(
+                        [actual_feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
 
             ###
             # flipped x, flipped y
             ###
-            _s_1 = (_s.detach().clone() - 1) ** 2
-            _s_2 = (_s.detach().clone() - 1) ** 2
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
-            )
-            for i in range(SAMPLES):
-                feats_train = pd.concat(
-                    [
-                        feats_train,
-                        pd.DataFrame(
-                            torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(),
-                            columns=_train.x.columns,
-                        ),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
+            if flags.strategy in ["flip_both", "use_all"]:
+                _s_1 = (_s.detach().clone() - 1) ** 2
+                _s_2 = (_s.detach().clone() - 1) ** 2
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
                 )
-                direct_preds_train = pd.concat(
-                    [
-                        direct_preds_train,
-                        pd.DataFrame(
-                            direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
-                        ),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                preds_train = pd.concat(
-                    [
-                        preds_train,
-                        pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=_train.y.columns),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                s_1_list = pd.concat(
-                    [
-                        s_1_list,
-                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                s_2_list = pd.concat(
-                    [
-                        s_2_list,
-                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                actual_labels = pd.concat(
-                    [
-                        actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
-                    ],
-                    axis='rows',
-                    ignore_index=True,
-                )
-                actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
-                    axis='rows',
-                    ignore_index=True,
-                )
+                for _ in range(SAMPLES):
+                    feats_train = pd.concat(
+                        [
+                            feats_train,
+                            pd.concat([
+                                pd.DataFrame(
+                                    torch.cat([feat.sample() for feat in feat_dec],
+                                              1).cpu().numpy(),
+                                    columns=_train.x.columns,
+                                ),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_train_encs = pd.concat(
+                        [
+                            feats_train_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_train = pd.concat(
+                        [
+                            direct_preds_train,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_train = pd.concat(
+                        [
+                            preds_train,
+                            pd.concat([
+                                pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=_train.y.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_train = pd.concat(
+                        [
+                            s_1_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_train = pd.concat(
+                        [
+                            s_2_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_train = pd.concat(
+                        [
+                            actual_labels_train,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_train = pd.concat(
+                        [actual_feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
 
             ###
             # og x, flipped y
             ###
+            if flags.strategy in ["flip_y", "use_all"]:
+                _s_1 = _s.detach().clone()
+                _s_2 = (_s.detach().clone() - 1) ** 2
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    _x, _s_1, _s_2
+                )
+                for _ in range(SAMPLES):
+                    feats_train = pd.concat(
+                        [
+                            feats_train,
+                            pd.concat([
+                                pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_train_encs = pd.concat(
+                        [
+                            feats_train_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_train = pd.concat(
+                        [
+                            direct_preds_train,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_train = pd.concat(
+                        [
+                            preds_train,
+                            pd.concat([
+                                pd.DataFrame(pred_dec.probs.cpu().numpy(),
+                                             columns=_train.y.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_train = pd.concat(
+                        [
+                            s_1_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_train = pd.concat(
+                        [
+                            s_2_list_train,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_train = pd.concat(
+                        [
+                            actual_labels_train,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_train = pd.concat(
+                        [actual_feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+
+        for _i, _x, _s, _y, _out in test_loader:
+            _i = _i.to(device)
+            _x = _x.to(device)
+            _s = _s.to(device)
+            _y = _y.to(device)
+            _out = [out.to(device) for out in _out]
+
+            ###
+            # original data
+            ###
             _s_1 = _s.detach().clone()
-            _s_2 = (_s.detach().clone() - 1) ** 2
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                _x, _s_1, _s_2
-            )
-            for i in range(SAMPLES):
-                feats_train = pd.concat(
-                    [feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+            _s_2 = _s.detach().clone()
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
+            for _ in range(SAMPLES):
+                feats_test = pd.concat(
+                    [
+                        feats_test,
+                        pd.concat([
+                            pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
+                    ],
                     axis='rows',
                     ignore_index=True,
                 )
-                direct_preds_train = pd.concat(
+                feats_test_encs = pd.concat(
                     [
-                        direct_preds_train,
+                        feats_test_encs,
+                        pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                direct_preds_test = pd.concat(
+                    [
+                        direct_preds_test,
                         pd.DataFrame(
                             direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
                         ),
@@ -376,108 +587,548 @@ def train_and_transform(
                     axis='rows',
                     ignore_index=True,
                 )
-                preds_train = pd.concat(
+                preds_test = pd.concat(
                     [
-                        preds_train,
-                        pd.DataFrame(pred_dec.probs.cpu().numpy(), columns=_train.y.columns),
+                        preds_test,
+                        pd.concat([
+                            pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                s_1_list = pd.concat(
+                s_1_list_test = pd.concat(
                     [
-                        s_1_list,
-                        pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                        s_1_list_test,
+                        pd.concat([
+                            pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                s_2_list = pd.concat(
+                s_2_list_test = pd.concat(
                     [
-                        s_2_list,
-                        pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns, dtype=np.int64),
+                        s_2_list_test,
+                        pd.concat([
+                            pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                actual_labels = pd.concat(
+                actual_labels_test = pd.concat(
                     [
-                        actual_labels,
-                        pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                        actual_labels_test,
+                        pd.concat([
+                            pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
                     ],
                     axis='rows',
                     ignore_index=True,
                 )
-                actual_feats = pd.concat(
-                    [actual_feats, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                preds_test_encs = pd.concat(
+                    [
+                        preds_test_encs,
+                        pd.DataFrame(pred_enc.sample().cpu().numpy(), columns=_train.y.columns),
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                actual_feats_test = pd.concat(
+                    [actual_feats_test, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                     axis='rows',
                     ignore_index=True,
                 )
 
-    feats = feats_train
-    direct_labels = direct_preds_train
-    direct_labels = direct_labels.applymap(lambda x: 1 if x >= 0.5 else 0)
-    s_1_total = s_1_list
-    s_2_total = s_2_list
-    actual_labels = actual_labels
+            ###
+            # flippedx, og y
+            ###
+            if flags.strategy in ["flip_x", "use_all"]:
+                _s_1 = (_s.detach().clone() - 1) ** 2
+                _s_2 = _s.detach().clone()
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    _x, _s_1, _s_2
+                )
+                for _ in range(SAMPLES):
+                    feats_test = pd.concat(
+                        [
+                            feats_test,
+                            pd.concat([
+                                pd.DataFrame(torch.cat([feat.sample() for feat in feat_dec],
+                                                       1).cpu().numpy(), columns=_train.x.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])], axis='columns',
+                                ignore_index=False
+                            )
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_test_encs = pd.concat(
+                        [
+                            feats_test_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_test = pd.concat(
+                        [
+                            direct_preds_test,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_test = pd.concat(
+                        [
+                            preds_test,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_test = pd.concat(
+                        [
+                            s_1_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_test = pd.concat(
+                        [
+                            s_2_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_test = pd.concat(
+                        [
+                            actual_labels_test,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_test = pd.concat(
+                        [actual_feats_test,
+                         pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
 
-    labels = preds_train
-    labels = labels.applymap(lambda x: 1 if x >= 0.5 else 0)
+            ###
+            # flipped x, flipped y
+            ###
+            if flags.strategy in ["flip_both", "use_all"]:
+                _s_1 = (_s.detach().clone() - 1) ** 2
+                _s_2 = (_s.detach().clone() - 1) ** 2
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
+                )
+                for _ in range(SAMPLES):
+                    feats_test = pd.concat(
+                        [
+                            feats_test,
+                            pd.concat([
+                                pd.DataFrame(
+                                    torch.cat([feat.sample() for feat in feat_dec],
+                                              1).cpu().numpy(),
+                                    columns=_train.x.columns,
+                                ),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_test_encs = pd.concat(
+                        [
+                            feats_test_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_test = pd.concat(
+                        [
+                            direct_preds_test,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_test = pd.concat(
+                        [
+                            preds_test,
+                            pd.concat([
+                                pd.DataFrame(pred_dec.probs.cpu().numpy(),
+                                             columns=_train.y.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_test = pd.concat(
+                        [
+                            s_1_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_test = pd.concat(
+                        [
+                            s_2_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_test = pd.concat(
+                        [
+                            actual_labels_test,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_test = pd.concat(
+                        [actual_feats_test,
+                         pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
 
-    print(
-        f"there are {train.y.count()} labels in the original training set and {labels.count()} in the augmented set"
-    )
+            ###
+            # og x, flipped y
+            ###
+            if flags.strategy in ["flip_y", "use_all"]:
+                _s_1 = _s.detach().clone()
+                _s_2 = (_s.detach().clone() - 1) ** 2
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    _x, _s_1, _s_2
+                )
+                for _ in range(SAMPLES):
+                    feats_test = pd.concat(
+                        [
+                            feats_test,
+                            pd.concat([
+                                pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    feats_test_encs = pd.concat(
+                        [
+                            feats_test_encs,
+                            pd.DataFrame(feat_enc.mean.cpu().numpy(), columns=list(range(FEAT_LD))),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    direct_preds_test = pd.concat(
+                        [
+                            direct_preds_test,
+                            pd.DataFrame(
+                                direct_prediction.probs.cpu().numpy(), columns=_train.y.columns
+                            ),
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    preds_test = pd.concat(
+                        [
+                            preds_test,
+                            pd.concat([
+                                pd.DataFrame(pred_dec.probs.cpu().numpy(),
+                                             columns=_train.y.columns),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_1_list_test = pd.concat(
+                        [
+                            s_1_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_1.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    s_2_list_test = pd.concat(
+                        [
+                            s_2_list_test,
+                            pd.concat([
+                                pd.DataFrame(_s_2.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_labels_test = pd.concat(
+                        [
+                            actual_labels_test,
+                            pd.concat([
+                                pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_feats_test = pd.concat(
+                        [actual_feats_test,
+                         pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
+                        axis='rows',
+                        ignore_index=True,
+                    )
 
-    s_col = _train.s.columns[0]
-    y_col = _train.y.columns[0]
+        direct_preds_train = direct_preds_train.applymap(lambda x: 1 if x >= 0.5 else 0)
 
-    print(
-        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 0) & (labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 0)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-    )
-    print(
-        labels[(s_1_total[s_col] == 1) & (labels[y_col] == 1)].count(),
-        actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-    )
-    to_return = DataTuple(x=feats, s=s_1_total, y=labels, name=f"Imagined: {train.name}")
+        preds_train[train.y.columns[0]] = preds_train[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
+        preds_test[train.y.columns[0]] = preds_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
-    # print(
-    #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(),
-    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-    # )
-    # print(
-    #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(),
-    #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-    # )
-    # print(
-    #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(),
-    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-    # )
-    # print(
-    #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(),
-    #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-    # )
-    to_observe = DataTuple(x=feats, s=s_1_total, y=direct_labels, name=f"Imagined: {train.name}")
+        actual_labels_train[train.y.columns[0]] = actual_labels_train[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
+        actual_labels_test[train.y.columns[0]] = actual_labels_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
-    from ethicml.visualisation.plot import save_label_plot
+        # _mod = Kamiran()
+        # clf = _mod.fit(train)
+        # total = 0
+        # feats_grouped = feats_test.groupby("id")
+        # labels_grouped = preds_test.groupby("id")
+        # sens_grouped = s_1_list_test.groupby("id")
+        # # pbar = tqdm(total=test.x.shape[0], position=1)
+        # for l, ((_, x_g), (_, s_g), (_, y_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped), total=test.x.shape[0], desc="kc ind par")):
+        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=y_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #     # pbar.update()
+        # tqdm.write(f"Ind. Parity {_mod.name}: {total/test.x.shape[0]}")
+        # pbar.close()
 
-    save_label_plot(to_return, './labels_preds.png')
-    save_label_plot(to_observe, './labels_direct.png')
-    save_label_plot(_train, './labels_og.png')
+
+        # print(
+        #     f"there are {train.y.count()} labels in the original training set and {preds_train.count()} in the augmented set"
+        # )
+
+        s_col = _train.s.columns[0]
+        y_col = _train.y.columns[0]
+
+        # print(
+        #     preds_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 0)].count(),
+        #     actual_labels_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 0)].count(),
+        # )
+        # print(
+        #     preds_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 1)].count(),
+        #     actual_labels_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 1)].count(),
+        # )
+        # print(
+        #     preds_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 0)].count(),
+        #     actual_labels_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 0)].count(),
+        # )
+        # print(
+        #     preds_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 1)].count(),
+        #     actual_labels_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 1)].count(),
+        # )
+        to_return = DataTuple(x=feats_train.drop(["id"], axis=1), s=s_1_list_train.drop(["id"], axis=1), y=preds_train.drop(["id"], axis=1), name=f"Imagined: {train.name}")
+
+        # print(
+        #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(),
+        #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
+        # )
+        # print(
+        #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(),
+        #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
+        # )
+        # print(
+        #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(),
+        #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
+        # )
+        # print(
+        #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(),
+        #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
+        # )
+        to_observe = DataTuple(x=feats_train, s=s_1_list_train, y=direct_preds_train, name=f"Imagined: {train.name}")
+
+        # _mod = LR()
+        # clf = _mod.fit(train)
+        # total = 0
+        # feats_grouped = feats_test.groupby("id")
+        # labels_grouped = preds_test.groupby("id")
+        # sens_grouped = s_1_list_test.groupby("id")
+        # # pbar = tqdm(total=test.x.shape[0], position=1)
+        # for l, ((_, x_g), (_, s_g), (_, y_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped), total=test.x.shape[0], desc="lr ind par")):
+        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=y_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #     # pbar.update()
+        # tqdm.write(f"Ind. Parity {_mod.name}: {total/test.x.shape[0]}")
+        # pbar.close()
+
+        _lr_lhs = LR()
+        _lr_rhs = LR()
+        lr_clf_lhs = _lr_lhs.fit(train)
+        lr_clf_rhs = _lr_rhs.fit(DataTuple(x=feats_train_encs_og_only, s=train.s, y=train.y))
+        lr_preds_lhs = pd.DataFrame(columns=['preds_lhs'])
+        lr_preds_rhs = pd.DataFrame(columns=['preds_rhs'])
+
+        _kc_lhs = Kamiran()
+        _kc_rhs = Kamiran()
+        kc_clf_lhs = _kc_lhs.fit(train)
+        kc_clf_rhs = _kc_rhs.fit(DataTuple(x=feats_train_encs_og_only, s=train.s, y=train.y))
+        kc_preds_lhs = pd.DataFrame(columns=['preds_lhs'])
+        kc_preds_rhs = pd.DataFrame(columns=['preds_rhs'])
+
+        _im_lhs = LR()
+        _im_rhs = LR()
+        im_clf_lhs = _im_lhs.fit(DataTuple(x=feats_train.drop("id", axis=1), s=s_1_list_train.drop('id', axis=1),
+                                           y=preds_train.drop('id', axis=1)))
+        im_clf_rhs = _im_rhs.fit(DataTuple(x=feats_train_encs_og_only, s=train.s, y=train.y))
+        im_preds_lhs = pd.DataFrame(columns=['preds_lhs'])
+        im_preds_rhs = pd.DataFrame(columns=['preds_rhs'])
+        for _i, _x, _s, _y, _out in tqdm(test_loader, desc="checking"):
+            _s_1 = _s.detach().clone()
+            _s_2 = _s.detach().clone()
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
+            lr_preds_lhs = pd.concat(
+                [
+                    lr_preds_lhs,
+                    pd.DataFrame(lr_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+            lr_preds_rhs = pd.concat(
+                [
+                    lr_preds_rhs,
+                    pd.DataFrame(lr_clf_rhs.predict(feat_enc.mean.cpu().numpy()),
+                                 columns=['preds_rhs'], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+            kc_preds_lhs = pd.concat(
+                [
+                    kc_preds_lhs,
+                    pd.DataFrame(kc_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+            kc_preds_rhs = pd.concat(
+                [
+                    kc_preds_rhs,
+                    pd.DataFrame(kc_clf_rhs.predict(feat_enc.mean.cpu().numpy()), columns=['preds_rhs'], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+            im_preds_lhs = pd.concat(
+                [
+                    im_preds_lhs,
+                    pd.DataFrame(im_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+            im_preds_rhs = pd.concat(
+                [
+                    im_preds_rhs,
+                    pd.DataFrame(im_clf_rhs.predict(feat_enc.mean.cpu().numpy()),
+                                 columns=['preds_rhs'], dtype=np.int64),
+                ],
+                axis='rows',
+                ignore_index=True,
+            )
+
+        lr_preds_lhs = lr_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
+        kc_preds_lhs = kc_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
+        im_preds_lhs = im_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
+
+        lr_eval_ind_par = pd.concat([lr_preds_lhs, lr_preds_rhs], axis='columns')
+        kc_eval_ind_par = pd.concat([kc_preds_lhs, kc_preds_rhs], axis='columns')
+        im_eval_ind_par = pd.concat([im_preds_lhs, im_preds_rhs], axis='columns')
+        tqdm.write(f"lr train ind par: {abs(lr_eval_ind_par['preds_lhs'].mean() - lr_eval_ind_par['preds_rhs'].mean())}")
+        tqdm.write(f"lr train ind eq op: {abs(lr_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - lr_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
+        tqdm.write(f"lr train acc: {Accuracy().score(lr_preds_lhs, test)}")
+        tqdm.write(f"kc train ind par: {abs(kc_eval_ind_par['preds_lhs'].mean() - kc_eval_ind_par['preds_rhs'].mean())}")
+        tqdm.write(f"kc train ind eq op: {abs(kc_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - kc_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
+        tqdm.write(f"kc train acc: {Accuracy().score(kc_preds_lhs, test)}")
+        tqdm.write(f"im train ind par: {abs(im_eval_ind_par['preds_lhs'].mean() - im_eval_ind_par['preds_rhs'].mean())}")
+        tqdm.write(f"im train ind eq op: {abs(im_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - im_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
+        tqdm.write(f"im train acc: {Accuracy().score(im_preds_lhs, test)}")
+
+
+
+
+
+    # from ethicml.visualisation.plot import save_label_plot
+    #
+    # save_label_plot(to_return, './labels_preds.png')
+    # save_label_plot(to_observe, './labels_direct.png')
+    # save_label_plot(_train, './labels_og.png')
 
     if post_process:
         to_return = processor.post(to_return)
         to_observe = processor.post(to_observe)
 
-    return (to_return, TestTuple(x=test.x, s=test.s, name=f"Imagined: {test.name}"))
+    return to_return, test#DataTuple(x=feats_train, s=s_1_list_train, y=preds_train, name=f"Imagined: {train.name}")
 
 
 class GradReverse(Function):
@@ -683,7 +1334,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
 
     model.train()
     train_loss = 0
-    for batch_idx, (data_x, data_s, data_y, out_groups) in enumerate(train_loader):
+    for batch_idx, (i, data_x, data_s, data_y, out_groups) in enumerate(train_loader):
         data_x = data_x.to(device)
         data_s_1 = data_s.to(device)
         data_s_2 = data_s.to(device)
@@ -757,7 +1408,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
 
     valid_loss = 0
     with torch.no_grad():
-        for data_x, data_s, data_y, out_groups in valid_loader:
+        for i, data_x, data_s, data_y, out_groups in valid_loader:
             data_x = data_x.to(device)
             data_s_1 = data_s.to(device)
             data_s_2 = data_s.to(device)
@@ -831,6 +1482,7 @@ def main():
     parser.add_argument("--validation_pcnt", type=float, required=True)
     parser.add_argument("--sample", type=int, required=True)
     parser.add_argument("--start_from", type=int, required=True)
+    parser.add_argument("--strategy", type=str, required=True)
     args = parser.parse_args()
     # convert args object to a dictionary and load the feather files from the paths
     train, test = load_data_from_flags(vars(args))
@@ -846,6 +1498,7 @@ def main():
         validation_pcnt=args.validation_pcnt,
         sample=args.sample,
         start_from=args.start_from,
+        strategy=args.strategy,
     )
     save_transformations(train_and_transform(train, test, flags), args)
 

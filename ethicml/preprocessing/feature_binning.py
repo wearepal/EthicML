@@ -25,4 +25,4 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
             copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
             copy = copy.drop(group, axis="columns")
 
-    return DataTuple(x=copy, s=data.s, y=data.y)
+    return DataTuple(x=copy, s=data.s, y=data.y, name=data.name)

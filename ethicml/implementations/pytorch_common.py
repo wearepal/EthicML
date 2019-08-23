@@ -46,7 +46,7 @@ class CustomDataset(TestDataset):
         self.y_size = data.y.shape[1]
         self.y_names = data.y.columns
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
 
         _x = self.features[index]
         _s = self.sens_labels[index]
@@ -54,6 +54,7 @@ class CustomDataset(TestDataset):
         _x_groups = [_x[group] for group in self.group_columns]
 
         return (
+            torch.from_numpy(np.array([index])),
             torch.from_numpy(_x),
             torch.from_numpy(_s),
             torch.from_numpy(_y),

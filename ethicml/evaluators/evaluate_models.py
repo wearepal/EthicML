@@ -75,7 +75,7 @@ def run_metrics(
 
 
 def evaluate_models(
-    datasets: List[Dataset],
+    datasets: List[Union[Dataset, DataTuple]],
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
     postprocess_models: Sequence[PostAlgorithm] = (),
@@ -129,7 +129,10 @@ def evaluate_models(
             for repeat in range(repeats):
                 train: DataTuple
                 test: DataTuple
-                train, test = train_test_split(load_data(dataset), random_seed=seed)
+                if isinstance(dataset, Dataset):
+                    train, test = train_test_split(load_data(dataset), random_seed=seed)
+                else:
+                    train, test = train_test_split(dataset, random_seed=seed)
                 seed += 2410
                 if test_mode:
                     # take smaller subset of training data to speed up training
