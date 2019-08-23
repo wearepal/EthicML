@@ -219,6 +219,7 @@ def plot_mean_std_box(
     metric_y: Union[str, Metric],
     metric_x: Union[str, Metric],
     save: bool = True,
+    dpi: int = 300,
 ) -> List[Tuple[plt.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation
 
@@ -227,7 +228,7 @@ def plot_mean_std_box(
         metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
         metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
         save: if True, save the plot as a PDF
-
+        dpi: DPI of the plots
     Returns:
         A list of all figures and plots
     """
@@ -271,14 +272,14 @@ def plot_mean_std_box(
             for x_axis, y_axis in possible_pairs:
                 fig: plt.Figure
                 plot: plt.Axes
-                fig, plot = plt.subplots(dpi=300)
+                fig, plot = plt.subplots(dpi=dpi)
 
                 xtuple = (x_axis, x_axis.replace("_", " "))
                 ytuple = (y_axis, y_axis.replace("_", " "))
                 lgnd = single_plot_mean_std_box(plot, results, xtuple, ytuple, dataset_, transform_)
 
                 if lgnd is False:  # we need "is" here because otherwise any falsy value would match
-                    del fig
+                    plt.close(fig)
                     continue  # nothing was plotted -> don't save it and don't add it to the list
 
                 if save:
