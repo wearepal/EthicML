@@ -38,7 +38,6 @@ setup(
         "pandas >= 0.24.0",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
-        "torch >= 1.1.0, <= 1.1.0.post2",
         "pyarrow >= 0.11",
         "numba",
         "fairlearn >= 0.2.0",
@@ -56,6 +55,7 @@ setup(
             "pytest-cov >= 2.6.0",
             "mypy >= 0.720",
             "black",
+            "torch >= 1.1.0, <= 1.1.0.post2",
         ],
     },
 )
