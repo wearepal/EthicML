@@ -12,7 +12,7 @@ https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/reweig
 
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 
 from ethicml.utility.data_structures import DataTuple
 from ethicml.implementations.utils import InAlgoInterface
@@ -80,7 +80,7 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
-        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=C)
+        model = LogisticRegressionCV(solver="liblinear", random_state=888, max_iter=5000, C=C)
     model.fit(
         train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
     )

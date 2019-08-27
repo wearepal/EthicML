@@ -3,8 +3,10 @@ Wrapper around Sci-Kit Learn Logistic Regression
 """
 from typing import Optional
 
+from sklearn.model_selection import KFold
+
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.algorithms.inprocess.interface import conventional_interface
@@ -75,3 +77,11 @@ class LRCV(InAlgorithmAsync):
     @property
     def name(self) -> str:
         return "LRCV"
+
+    def fit(self, train):
+        folder = KFold(n_splits=3, random_state=888, shuffle=False)
+        clf = LogisticRegressionCV(
+            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto'
+        )
+        clf.fit(train.x, train.y.values.ravel())
+        return clf

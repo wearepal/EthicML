@@ -1,10 +1,12 @@
 import math
 import os
 import shutil
+from itertools import groupby
 from pathlib import Path
 from typing import Sequence, Tuple, List
 
 import torch
+from torchvision.utils import save_image
 from dataclasses import dataclass
 from torch import nn, optim
 from torch.autograd import Function
@@ -15,7 +17,7 @@ from tqdm import tqdm, trange
 
 import numpy as np
 import pandas as pd
-from ethicml.algorithms.inprocess import LR, Kamiran, LRProb
+from ethicml.algorithms.inprocess import LR, Kamiran, LRProb, LRCV
 
 from ethicml.data import Dataset
 from ethicml.evaluators import run_metrics, metric_per_sensitive_attribute, \
@@ -150,6 +152,9 @@ def train_and_transform(
 
     SAMPLES = flags.sample
 
+    first = True
+    first_flip_x = True
+
     with torch.no_grad():
         for _i, _x, _s, _y, _out in all_data_loader:
 
@@ -167,6 +172,11 @@ def train_and_transform(
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
                 _x, _s_1, _s_2
             )
+
+            if first:
+                save_image(_x, Path("./original.png"))
+                first = False
+
             for _ in range(SAMPLES):
                 feats_train = pd.concat(
                     [
@@ -272,6 +282,11 @@ def train_and_transform(
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
                     _x, _s_1, _s_2
                 )
+
+                if first_flip_x:
+                    print([list(group) for key, group in groupby(all_data.x_names, lambda x: x.split('_')[0])])
+                    save_image(torch.cat([feat.sample() for feat in feat_dec], 1), Path("./flipped_x.png"))
+                    first_flip_x = False
                 for _ in range(SAMPLES):
                     feats_train = pd.concat(
                         [
@@ -985,7 +1000,6 @@ def train_and_transform(
         tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
 
 
-
         # print(
         #     f"there are {train.y.count()} labels in the original training set and {preds_train.count()} in the augmented set"
         # )
@@ -1029,7 +1043,7 @@ def train_and_transform(
         # )
         to_observe = DataTuple(x=feats_train, s=s_1_list_train, y=direct_preds_train, name=f"Imagined: {train.name}")
 
-        _mod = LR()
+        _mod = LRCV()
         clf = _mod.fit(train)
         total = 0
         tpr_total = 0
@@ -1066,7 +1080,7 @@ def train_and_transform(
         res = metric_per_sensitive_attribute(preds_lr, test, TPR())
         tqdm.write(f"lr train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        _mod = LR()
+        _mod = LRCV()
         clf = _mod.fit(DataTuple(x=feats_train.drop("id", axis=1), s=s_1_list_train.drop('id', axis=1),
                                            y=preds_train.drop('id', axis=1)))
         total = 0
