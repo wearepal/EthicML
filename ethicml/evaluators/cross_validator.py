@@ -134,7 +134,8 @@ class CrossValidator:
                 scores = {measure.name: measure.score(preds, val) for measure in measures}
                 # store the result
                 self.results.append(experiment, i, scores)
-                print(f"fold_{i}_model_{model.name}_completed")
+                score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
+                print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
 
     def best(self, measure: Metric) -> InAlgorithm:
         return self.model(**self.best_hyper_params(measure))
