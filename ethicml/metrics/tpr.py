@@ -15,7 +15,7 @@ class TPR(Metric):
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         _, _, f_neg, t_pos = confusion_matrix(prediction, actual, self.positive_class)
 
-        return t_pos / (t_pos + f_neg)
+        return t_pos / (t_pos + f_neg) if (t_pos + f_neg) > 0 else 0
 
     @property
     def name(self) -> str:

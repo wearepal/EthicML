@@ -15,7 +15,7 @@ from tqdm import tqdm, trange
 
 import numpy as np
 import pandas as pd
-from ethicml.algorithms.inprocess import LR, Kamiran
+from ethicml.algorithms.inprocess import LR, Kamiran, LRProb
 
 from ethicml.data import Dataset
 from ethicml.evaluators import run_metrics, metric_per_sensitive_attribute, \
@@ -945,21 +945,45 @@ def train_and_transform(
         actual_labels_train[train.y.columns[0]] = actual_labels_train[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
         actual_labels_test[train.y.columns[0]] = actual_labels_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
-        # _mod = Kamiran()
-        # clf = _mod.fit(train)
-        # total = 0
-        # feats_grouped = feats_test.groupby("id")
-        # labels_grouped = preds_test.groupby("id")
-        # sens_grouped = s_1_list_test.groupby("id")
-        # # pbar = tqdm(total=test.x.shape[0], position=1)
-        # for l, ((_, x_g), (_, s_g), (_, y_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped), total=test.x.shape[0], desc="kc ind par")):
-        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=y_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #     # pbar.update()
-        # tqdm.write(f"Ind. Parity {_mod.name}: {total/test.x.shape[0]}")
-        # pbar.close()
+        _mod = Kamiran()
+        clf = _mod.fit(train)
+        total = 0
+        tpr_total = 0
+        _total = 0
+        acc = 0
+        tpr_count = 0
+        feats_grouped = feats_test.groupby("id")
+        labels_grouped = preds_test.groupby("id")
+        sens_grouped = s_1_list_test.groupby("id")
+        actual_grouped = actual_labels_test.groupby("id")
+
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+
+        tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
+        tqdm.write(f"KC Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        tqdm.write(f"KC test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+
+        preds_kc = pd.DataFrame(clf.predict(test.x), columns=['preds'])
+        tqdm.write(f"kc train acc: {Accuracy().score(preds_kc, test)}")
+
+        res = metric_per_sensitive_attribute(preds_kc, test, ProbPos())
+        tqdm.write(f"kc train dp: {diff_per_sensitive_attribute(res).values()}")
+
+        res = metric_per_sensitive_attribute(preds_kc, test, TPR())
+        tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
+
 
 
         # print(
@@ -1005,21 +1029,83 @@ def train_and_transform(
         # )
         to_observe = DataTuple(x=feats_train, s=s_1_list_train, y=direct_preds_train, name=f"Imagined: {train.name}")
 
-        # _mod = LR()
-        # clf = _mod.fit(train)
-        # total = 0
-        # feats_grouped = feats_test.groupby("id")
-        # labels_grouped = preds_test.groupby("id")
-        # sens_grouped = s_1_list_test.groupby("id")
-        # # pbar = tqdm(total=test.x.shape[0], position=1)
-        # for l, ((_, x_g), (_, s_g), (_, y_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped), total=test.x.shape[0], desc="lr ind par")):
-        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=y_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #     # pbar.update()
-        # tqdm.write(f"Ind. Parity {_mod.name}: {total/test.x.shape[0]}")
-        # pbar.close()
+        _mod = LR()
+        clf = _mod.fit(train)
+        total = 0
+        tpr_total = 0
+        _total = 0
+        acc = 0
+        tpr_count = 0
+        feats_grouped = feats_test.groupby("id")
+        labels_grouped = preds_test.groupby("id")
+        sens_grouped = s_1_list_test.groupby("id")
+        actual_grouped = actual_labels_test.groupby("id")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="lr ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+        tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
+        tqdm.write(f"LR Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        tqdm.write(f"LR test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+
+        preds_lr = pd.DataFrame(clf.predict(test.x), columns=['preds'])
+        tqdm.write(f"lr train acc: {Accuracy().score(preds_lr, test)}")
+
+        res = metric_per_sensitive_attribute(preds_lr, test, ProbPos())
+        tqdm.write(f"lr train dp: {diff_per_sensitive_attribute(res).values()}")
+
+        res = metric_per_sensitive_attribute(preds_lr, test, TPR())
+        tqdm.write(f"lr train eq op: {diff_per_sensitive_attribute(res).values()}")
+
+        _mod = LR()
+        clf = _mod.fit(DataTuple(x=feats_train.drop("id", axis=1), s=s_1_list_train.drop('id', axis=1),
+                                           y=preds_train.drop('id', axis=1)))
+        total = 0
+        tpr_total = 0
+        _total = 0
+        acc = 0
+        tpr_count = 0
+        feats_grouped = feats_test.groupby("id")
+        labels_grouped = preds_test.groupby("id")
+        sens_grouped = s_1_list_test.groupby("id")
+        actual_grouped = actual_labels_test.groupby("id")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="im ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
+                           s=s_g.drop(["id"], axis=1).reset_index(drop=True),
+                           y=a_g.drop(["id"], axis=1).reset_index(drop=True),
+                           name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
+        tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
+        tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
+
+        preds_im = pd.DataFrame(clf.predict(test.x), columns=['preds'])
+        tqdm.write(f"im train acc: {Accuracy().score(preds_im, test)}")
+
+        res = metric_per_sensitive_attribute(preds_im, test, ProbPos())
+        tqdm.write(f"im train dp: {diff_per_sensitive_attribute(res).values()}")
+
+        res = metric_per_sensitive_attribute(preds_im, test, TPR())
+        tqdm.write(f"im train eq op: {diff_per_sensitive_attribute(res).values()}")
 
         _lr_lhs = LR()
         _lr_rhs = LR()
@@ -1049,7 +1135,7 @@ def train_and_transform(
             lr_preds_lhs = pd.concat(
                 [
                     lr_preds_lhs,
-                    pd.DataFrame(lr_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                    pd.DataFrame(lr_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
                 ],
                 axis='rows',
                 ignore_index=True,
@@ -1057,7 +1143,7 @@ def train_and_transform(
             lr_preds_rhs = pd.concat(
                 [
                     lr_preds_rhs,
-                    pd.DataFrame(lr_clf_rhs.predict(feat_enc.mean.cpu().numpy()),
+                    pd.DataFrame(lr_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[1],
                                  columns=['preds_rhs'], dtype=np.int64),
                 ],
                 axis='rows',
@@ -1066,7 +1152,7 @@ def train_and_transform(
             kc_preds_lhs = pd.concat(
                 [
                     kc_preds_lhs,
-                    pd.DataFrame(kc_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                    pd.DataFrame(kc_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
                 ],
                 axis='rows',
                 ignore_index=True,
@@ -1074,7 +1160,7 @@ def train_and_transform(
             kc_preds_rhs = pd.concat(
                 [
                     kc_preds_rhs,
-                    pd.DataFrame(kc_clf_rhs.predict(feat_enc.mean.cpu().numpy()), columns=['preds_rhs'], dtype=np.int64),
+                    pd.DataFrame(kc_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1], columns=['preds_rhs'], dtype=np.float64),
                 ],
                 axis='rows',
                 ignore_index=True,
@@ -1082,7 +1168,7 @@ def train_and_transform(
             im_preds_lhs = pd.concat(
                 [
                     im_preds_lhs,
-                    pd.DataFrame(im_clf_lhs.predict(_x.cpu().numpy()), columns=["preds_lhs"], dtype=np.int64),
+                    pd.DataFrame(im_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
                 ],
                 axis='rows',
                 ignore_index=True,
@@ -1090,29 +1176,25 @@ def train_and_transform(
             im_preds_rhs = pd.concat(
                 [
                     im_preds_rhs,
-                    pd.DataFrame(im_clf_rhs.predict(feat_enc.mean.cpu().numpy()),
-                                 columns=['preds_rhs'], dtype=np.int64),
+                    pd.DataFrame(im_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1],
+                                 columns=['preds_rhs'], dtype=np.float64),
                 ],
                 axis='rows',
                 ignore_index=True,
             )
 
-        lr_preds_lhs = lr_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
-        kc_preds_lhs = kc_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
-        im_preds_lhs = im_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0)
-
         lr_eval_ind_par = pd.concat([lr_preds_lhs, lr_preds_rhs], axis='columns')
         kc_eval_ind_par = pd.concat([kc_preds_lhs, kc_preds_rhs], axis='columns')
         im_eval_ind_par = pd.concat([im_preds_lhs, im_preds_rhs], axis='columns')
-        tqdm.write(f"lr train ind par: {abs(lr_eval_ind_par['preds_lhs'].mean() - lr_eval_ind_par['preds_rhs'].mean())}")
-        tqdm.write(f"lr train ind eq op: {abs(lr_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - lr_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
-        tqdm.write(f"lr train acc: {Accuracy().score(lr_preds_lhs, test)}")
-        tqdm.write(f"kc train ind par: {abs(kc_eval_ind_par['preds_lhs'].mean() - kc_eval_ind_par['preds_rhs'].mean())}")
-        tqdm.write(f"kc train ind eq op: {abs(kc_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - kc_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
-        tqdm.write(f"kc train acc: {Accuracy().score(kc_preds_lhs, test)}")
-        tqdm.write(f"im train ind par: {abs(im_eval_ind_par['preds_lhs'].mean() - im_eval_ind_par['preds_rhs'].mean())}")
-        tqdm.write(f"im train ind eq op: {abs(im_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_lhs'].mean() - im_eval_ind_par[actual_labels_test[actual_labels_test.columns[0]] == 1]['preds_rhs'].mean())}")
-        tqdm.write(f"im train acc: {Accuracy().score(im_preds_lhs, test)}")
+        tqdm.write(f"lr train ind par: {(lr_eval_ind_par['preds_lhs']-lr_eval_ind_par['preds_rhs']).abs().mean()}")
+        tqdm.write(f"lr train ind eq op: {(lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        tqdm.write(f"lr train acc: {Accuracy().score(lr_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
+        tqdm.write(f"kc train ind par: {(kc_eval_ind_par['preds_lhs']-kc_eval_ind_par['preds_rhs']).abs().mean()}")
+        tqdm.write(f"kc train ind eq op: {(kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        tqdm.write(f"kc train acc: {Accuracy().score(kc_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
+        tqdm.write(f"im train ind par: {(im_eval_ind_par['preds_lhs']-im_eval_ind_par['preds_rhs']).abs().mean()}")
+        tqdm.write(f"im train ind eq op: {(im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        tqdm.write(f"im train acc: {Accuracy().score(im_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
 
 
 
