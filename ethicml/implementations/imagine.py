@@ -972,8 +972,8 @@ def train_and_transform(
 
         tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
         tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
-        tqdm.write(f"KC Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        tqdm.write(f"KC test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+        # tqdm.write(f"KC Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        # tqdm.write(f"KC test ind par {_mod.name}: {_total/(test.x.shape[0])}")
 
         preds_kc = pd.DataFrame(clf.predict(test.x), columns=['preds'])
         tqdm.write(f"kc train acc: {Accuracy().score(preds_kc, test)}")
@@ -1054,8 +1054,8 @@ def train_and_transform(
             _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
         tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
         tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
-        tqdm.write(f"LR Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        tqdm.write(f"LR test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+        # tqdm.write(f"LR Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        # tqdm.write(f"LR test ind par {_mod.name}: {_total/(test.x.shape[0])}")
 
         preds_lr = pd.DataFrame(clf.predict(test.x), columns=['preds'])
         tqdm.write(f"lr train acc: {Accuracy().score(preds_lr, test)}")
@@ -1095,8 +1095,8 @@ def train_and_transform(
             acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
         tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
         tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
-        tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
+        # tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        # tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
 
         preds_im = pd.DataFrame(clf.predict(test.x), columns=['preds'])
         tqdm.write(f"im train acc: {Accuracy().score(preds_im, test)}")
