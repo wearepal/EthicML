@@ -1129,6 +1129,12 @@ def train_and_transform(
         im_preds_lhs = pd.DataFrame(columns=['preds_lhs'])
         im_preds_rhs = pd.DataFrame(columns=['preds_rhs'])
         for _i, _x, _s, _y, _out in tqdm(test_loader, desc="checking"):
+            _i = _i.to(device)
+            _x = _x.to(device)
+            _s = _s.to(device)
+            _y = _y.to(device)
+            _out = [out.to(device) for out in _out]
+
             _s_1 = _s.detach().clone()
             _s_2 = _s.detach().clone()
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
