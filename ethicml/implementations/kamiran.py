@@ -9,6 +9,7 @@ https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/reweig
            Classification without Discrimination," Knowledge and Information
            Systems, 2012.
 """
+from sklearn.model_selection import KFold
 
 import pandas as pd
 import numpy as np
@@ -80,7 +81,8 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
-        model = LogisticRegressionCV(solver="liblinear", random_state=888, max_iter=5000, C=C)
+        folder = KFold(n_splits=5, random_state=888, shuffle=False)
+        model = LogisticRegressionCV(cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto')
     model.fit(
         train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
     )

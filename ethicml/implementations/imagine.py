@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Sequence, Tuple, List
 
 import torch
+from PIL import Image
 from torchvision.utils import save_image
 from dataclasses import dataclass
 from torch import nn, optim
@@ -77,22 +78,22 @@ def train_and_transform(
         train = processor.adjust(train)
         post_process = True
 
-    # print(f"Batch Size: {flags.batch_size}")
+    batch_size = 100 if flags.epochs == 0 else flags.batch_size
 
     # Set up the data
     _train, validate = train_test_split(train, train_percentage=0.9)
 
     train_data = CustomDataset(_train)
-    train_loader = DataLoader(train_data, batch_size=flags.batch_size)
+    train_loader = DataLoader(train_data, batch_size=batch_size)
 
     valid_data = CustomDataset(validate)
-    valid_loader = DataLoader(valid_data, batch_size=flags.batch_size)
+    valid_loader = DataLoader(valid_data, batch_size=batch_size)
 
     all_data = CustomDataset(train)
-    all_data_loader = DataLoader(all_data, batch_size=flags.batch_size)
+    all_data_loader = DataLoader(all_data, batch_size=batch_size)
 
     test_data = CustomDataset(test)
-    test_loader = DataLoader(test_data, batch_size=flags.batch_size)
+    test_loader = DataLoader(test_data, batch_size=batch_size)
 
     # Build Network
     current_epoch = 0
@@ -154,6 +155,7 @@ def train_and_transform(
 
     first = True
     first_flip_x = True
+    to_plot = None
 
     with torch.no_grad():
         for _i, _x, _s, _y, _out in all_data_loader:
@@ -175,6 +177,7 @@ def train_and_transform(
 
             if first:
                 save_image(_x, Path("./original.png"))
+                to_plot = _x
                 first = False
 
             for _ in range(SAMPLES):
@@ -286,6 +289,9 @@ def train_and_transform(
                 if first_flip_x:
                     print([list(group) for key, group in groupby(all_data.x_names, lambda x: x.split('_')[0])])
                     save_image(torch.cat([feat.sample() for feat in feat_dec], 1), Path("./flipped_x.png"))
+                    to_plot -= torch.cat([feat.sample() for feat in feat_dec], 1)
+                    save_image(to_plot, Path("./difference.png"), normalize=True)
+
                     first_flip_x = False
                 for _ in range(SAMPLES):
                     feats_train = pd.concat(
