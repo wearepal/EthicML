@@ -58,6 +58,7 @@ def errorbox(
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
+    use_cross: bool = False,
 ):
     """Generate a figure with errorboxes that reflect the std dev of an entry
     Args:
@@ -106,27 +107,41 @@ def errorbox(
         if ymean - (0.5 * ystd) < min_ymean:
             min_ymean = ymean - (0.5 * ystd)
 
-        plot.bar(
-            xmean,
-            ystd,
-            bottom=ymean - 0.5 * ystd,
-            width=xstd,
-            align='center',
-            color='none',
-            edgecolor=color,
-            linewidth=3,
-            zorder=3 + 2 * i_shp,
-            hatch=hatch_pattern[i % len(hatch_pattern)],
-        )
-        plot.plot(
-            xmean,
-            ymean,
-            shapes[i_shp % len(shapes)],
-            c=color,
-            label=entry.label,
-            zorder=4 + 2 * i_shp,
-            markersize=markersize,
-        )
+        if use_cross:
+            plot.errorbar(
+                xmean,
+                ymean,
+                xerr=xstd,
+                yerr=ystd,
+                fmt=shapes[i_shp % len(shapes)],
+                color=color,
+                elinewidth=3,
+                zorder=3 + 2 * i_shp,
+                label=entry.label,
+                markersize=markersize,
+            )
+        else:
+            plot.bar(
+                xmean,
+                ystd,
+                bottom=ymean - 0.5 * ystd,
+                width=xstd,
+                align='center',
+                color='none',
+                edgecolor=color,
+                linewidth=3,
+                zorder=3 + 2 * i_shp,
+                hatch=hatch_pattern[i % len(hatch_pattern)],
+            )
+            plot.plot(
+                xmean,
+                ymean,
+                shapes[i_shp % len(shapes)],
+                c=color,
+                label=entry.label,
+                zorder=4 + 2 * i_shp,
+                markersize=markersize,
+            )
 
     x_min = min_xmean * 0.99
     x_max = max_xmean * 1.01
