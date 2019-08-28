@@ -1473,18 +1473,18 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         ###
 
         ### Predictions
-        pred_loss_1 = -direct_prediction.log_prob(data_y)
-        pred_loss_2 = -pred_dec.log_prob(data_y)
+        pred_loss_1 = 0*-direct_prediction.log_prob(data_y)
+        pred_loss_2 = 0*-pred_dec.log_prob(data_y)
         pred_loss = (pred_loss_1 + pred_loss_2).mean()
 
         pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-        pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
+        pred_kl_loss = 0*td.kl.kl_divergence(pred_prior, pred_enc)
 
-        pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
+        pred_sens_loss = 0*-pred_s_pred.log_prob(data_s_1)
         ###
 
         ### Direct Pred
-        direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
+        direct_loss = 0*td.kl.kl_divergence(direct_prediction, pred_dec)
         ###
 
         kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
