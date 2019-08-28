@@ -79,9 +79,9 @@ class LRCV(InAlgorithmAsync):
         return "LRCV"
 
     def fit(self, train):
-        folder = KFold(n_splits=5, random_state=888, shuffle=False)
+        folder = KFold(n_splits=3, random_state=888, shuffle=False)
         clf = LogisticRegressionCV(
-            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto'
+            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto', max_iter=10000, tol=1e-8, Cs=[10**i for i in range(6)]
         )
         clf.fit(train.x, train.y.values.ravel())
         return clf

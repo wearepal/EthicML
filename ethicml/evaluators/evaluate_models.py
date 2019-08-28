@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import List, Dict, Union, Sequence
 from collections import OrderedDict
 
+from sklearn.model_selection import KFold
+
 import pandas as pd
 from tqdm import tqdm
 
@@ -130,9 +132,10 @@ def evaluate_models(
                 train: DataTuple
                 test: DataTuple
                 if isinstance(dataset, Dataset):
-                    train, test = train_test_split(load_data(dataset), random_seed=seed)
+                    train, test = train_test_split(load_data(dataset), random_seed=seed, train_percentage=2.0/3.0)
                 else:
-                    train, test = train_test_split(dataset, random_seed=seed)
+                    train, test = train_test_split(dataset, random_seed=seed, train_percentage=2.0/3.0)
+
                 seed += 2410
                 if test_mode:
                     # take smaller subset of training data to speed up training

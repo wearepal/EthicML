@@ -81,8 +81,8 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
-        folder = KFold(n_splits=5, random_state=888, shuffle=False)
-        model = LogisticRegressionCV(cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto')
+        folder = KFold(n_splits=3, random_state=888, shuffle=False)
+        model = LogisticRegressionCV(cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto', max_iter=10000, tol=1e-8, Cs=[10**i for i in range(6)])
     model.fit(
         train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
     )
