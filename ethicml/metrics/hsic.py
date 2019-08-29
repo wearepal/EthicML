@@ -4,6 +4,7 @@ Method for calculating the HSIC - an independence criterion. a score of 0 denote
 import math
 import pandas as pd
 import numpy as np
+from numpy.random import RandomState
 
 from ethicml.utility.data_structures import DataTuple
 from ethicml.metrics.metric import Metric
@@ -19,8 +20,11 @@ def hsic(
     x_sqnorms = np.diag(xx_gram)
     y_sqnorms = np.diag(yy_gram)
 
-    exp_r = lambda x: np.expand_dims(x, 0)
-    exp_c = lambda x: np.expand_dims(x, 1)
+    def exp_r(x):
+        return np.expand_dims(x, 0)
+
+    def exp_c(x):
+        return np.expand_dims(x, 1)
 
     gamma_first = 1.0 / (2 * sigma_first ** 2)
     gamma_second = 1.0 / (2 * sigma_second ** 2)
@@ -61,10 +65,10 @@ class Hsic(Metric):
 
         together = np.hstack((prediction.values, sens_labels)).transpose()
 
-        np.random.seed(888)
-        col_idx = np.random.permutation(together.shape[1])
+        random = RandomState(seed=888)
+        col_idx = random.permutation(together.shape[1])
 
-        together = together[:, col_idx]
+        together = np.take(together, col_idx, axis=1)
 
         prediction_shuffled = together[0]
         label_shuffled = together[1]

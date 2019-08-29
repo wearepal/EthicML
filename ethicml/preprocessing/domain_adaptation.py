@@ -18,12 +18,12 @@ def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
     return subset
 
 
-def query_dt(datatup: DataTuple, query_str: str):
+def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
     """Query a datatuple"""
     assert isinstance(query_str, str)
     assert isinstance(datatup, DataTuple)
 
-    def _query_func(joined_data_frame):
+    def _query_func(joined_data_frame: pd.DataFrame):
         return dataset_from_cond(joined_data_frame, cond=query_str)
 
     return datatup.apply_to_joined_df(_query_func)

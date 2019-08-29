@@ -26,7 +26,7 @@ from ..preprocessing.train_test_split import train_test_split
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
     """Get all possible combinations of sensitive attribute and metrics"""
-    poss_values = []
+    poss_values: List[str] = []
     for col in train.s.columns:
         uniques = train.s[col].unique()
         for unique in uniques:
@@ -35,7 +35,7 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
-def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]):
+def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
     """Check if the given metrics allow application per sensitive attribute"""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
@@ -84,6 +84,7 @@ def evaluate_models(
     repeats: int = 3,
     test_mode: bool = False,
     delete_prev: bool = False,
+    proportional_splits: bool = False,
 ) -> pd.DataFrame:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
@@ -97,6 +98,7 @@ def evaluate_models(
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         test_mode: if True, only use a small subset of the data so that the models run faster
         delete_prev:  False by default. If True, delete saved results in directory
+        proportional_splits: if True, the train-test split preserves the proportion of s and y
     """
     per_sens_metrics_check(per_sens_metrics)
 
@@ -129,7 +131,9 @@ def evaluate_models(
             for repeat in range(repeats):
                 train: DataTuple
                 test: DataTuple
-                train, test = train_test_split(load_data(dataset), random_seed=seed)
+                train, test = train_test_split(
+                    load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
+                )
                 seed += 2410
                 if test_mode:
                     # take smaller subset of training data to speed up training
