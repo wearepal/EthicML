@@ -7,6 +7,7 @@ from typing import Sequence, Tuple, List
 
 import torch
 from PIL import Image
+from torch.optim import Adam
 from torchvision.utils import save_image
 from dataclasses import dataclass
 from torch import nn, optim
@@ -98,7 +99,7 @@ def train_and_transform(
     # Build Network
     current_epoch = 0
     model = Imagine(data=train_data, dataset=dataset).to(device)
-    optimizer = RAdam(model.parameters(), lr=1e-3)
+    optimizer = Adam(model.parameters(), lr=1e-3)
     # if int(flags.start_from) >= 0:
     #     current_epoch = int(flags.start_from)
     #     filename = 'checkpoint_%03d.pth.tar' % current_epoch
@@ -1535,7 +1536,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         )
 
         ### Features
-        recon_loss = (sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])).mean()
+        recon_loss = sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
 
         feat_prior = td.Normal(
             loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
@@ -1560,14 +1561,15 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         direct_loss = 0*td.kl.kl_divergence(direct_prediction, pred_dec)
         ###
 
-        kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
-        sens_loss = (feat_sens_loss + pred_sens_loss).mean()
+        kl_loss = feat_kl_loss #+ (pred_kl_loss + direct_loss)
+        sens_loss = (feat_sens_loss + pred_sens_loss)
 
-        loss = recon_loss + kl_loss + sens_loss + pred_loss
+        loss = (recon_loss + kl_loss.sum(1) + sens_loss.squeeze() + pred_loss).sum()
         loss.backward()
 
         train_loss += loss.item()
         optimizer.step()
+        optimizer.zero_grad()
         if batch_idx % 100 == 0:
             print(
                 f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
