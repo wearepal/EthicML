@@ -1545,7 +1545,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             )
             feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
 
-            feat_sens_loss = -feat_s_pred.log_prob(data_s_1)
+            feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
             ###
 
             ### Predictions
@@ -1556,7 +1556,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
             pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
-            pred_sens_loss = -pred_s_pred.log_prob(data_s_1)
+            pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
             ###
 
             ### Direct Pred
