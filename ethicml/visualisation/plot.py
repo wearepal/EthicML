@@ -13,7 +13,7 @@ import matplotlib as mpl
 
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple
-from ethicml.visualisation.common import errorbox, DataEntry, PlotDef
+from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
@@ -175,9 +175,7 @@ def single_plot_mean_std_box(
     yaxis: Tuple[str, str],
     dataset: str,
     transform: str,
-    legend: Union[str, Tuple[str, float]] = "outside",
-    firstcolor: int = 0,
-    firstshape: int = 0,
+    legend: Union[None, LegendType, Tuple[LegendType, float]] = "outside",
     markersize: int = 6,
     use_cross: bool = False,
 ):
@@ -211,8 +209,8 @@ def single_plot_mean_std_box(
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
 
-    pdef = PlotDef(title=f"{dataset}, {transform}", entries=entries)
-    return errorbox(plot, pdef, xaxis, yaxis, legend, firstcolor, firstshape, markersize, use_cross)
+    plot_def = PlotDef(title=f"{dataset}, {transform}", entries=entries, legend=legend)
+    return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross)
 
 
 def plot_mean_std_box(

@@ -3,9 +3,12 @@ common plotting functions / datastructures
 """
 
 from typing import Tuple, Union, NamedTuple, List
+from typing_extensions import Literal
 
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+
+LegendType = Union[Literal["inside"], Literal["outside"]]
 
 
 class DataEntry(NamedTuple):
@@ -17,36 +20,47 @@ class DataEntry(NamedTuple):
 
 
 class PlotDef(NamedTuple):
+    """All the things needed to make a plot
+
+    Args:
+        title: the title of the plot
+        entries: a List of DataEntries
+        legend: where to put the legend; allowed values: None, "inside", "outside"
+    """
+
     title: str
     entries: List[DataEntry]
+    legend: Union[None, LegendType, Tuple[LegendType, float]] = None
 
 
-def common_plotting_settings(
-    plot: plt.Axes,
-    plot_def: PlotDef,
-    xaxis_title: str,
-    yaxis_title: str,
-    legend: Union[str, Tuple[str, float]] = "inside",
-):
+def common_plotting_settings(plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str):
     """Common settings for plots
     Args:
         plot: a pyplot plot object
         plot_def: a `PlotDef` that defines properties of the plot
         xaxis_title: label for x-axis
         yaxis_title: label for y-axis
-        legend: where to put the legend; allowed values: None, "inside", "outside"
     """
     plot.set_xlabel(xaxis_title)
     plot.set_ylabel(yaxis_title)
     if plot_def.title:
         plot.set_title(plot_def.title)
     plot.grid(True)
-    legend_ = plot.legend()
-    if legend == "outside":
-        legend_ = plot.legend(loc='upper left', bbox_to_anchor=(1, 1))
-    elif isinstance(legend, tuple) and legend[0] == "outside" and isinstance(legend[1], float):
-        legend_ = plot.legend(bbox_to_anchor=(1, legend[1]), loc=2)
-    return legend_
+
+    # get handles and labels for the legend
+    handles, labels = plot.get_legend_handles_labels()
+    # remove the errorbars from the legend if they are there
+    if isinstance(handles[0], tuple):
+        handles = [h[0] for h in handles]
+
+    lgnd_def = plot_def.legend
+    if lgnd_def == "inside":
+        return plot.legend(handles, labels)
+    if lgnd_def == "outside":
+        return plot.legend(handles, labels, loc='upper left', bbox_to_anchor=(1, 1))
+    if isinstance(lgnd_def, tuple) and lgnd_def[0] == "outside" and isinstance(lgnd_def[1], float):
+        return plot.legend(handles, labels, bbox_to_anchor=(1, lgnd_def[1]), loc=2)
+    return None
 
 
 def errorbox(
@@ -54,19 +68,18 @@ def errorbox(
     plot_def: PlotDef,
     xaxis: Tuple[str, str],
     yaxis: Tuple[str, str],
-    legend: Union[str, Tuple[str, float]] = "inside",
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
     use_cross: bool = False,
 ):
     """Generate a figure with errorboxes that reflect the std dev of an entry
+
     Args:
-        plot: a pyplot plot object
+        plot: a pyplot Axes object
         plot_def: a `PlotDef` that defines properties of the plot
-        xaxis: either a string or a tuple of two strings
-        yaxis: either a string or a tuple of two strings
-        legend: where to put the legend; allowed values: None, "inside", "outside"
+        xaxis: a tuple of two strings
+        yaxis: a tuple of two strings
     """
     # ================================ constants for plots ========================================
     colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
@@ -111,13 +124,13 @@ def errorbox(
             plot.errorbar(
                 xmean,
                 ymean,
-                xerr=xstd,
-                yerr=ystd,
+                xerr=0.5 * xstd,
+                yerr=0.5 * ystd,
                 fmt=shapes[i_shp % len(shapes)],
                 color=color,
-                ecolor='k',
+                ecolor="#555555",
                 capsize=4,
-                elinewidth=2.0,
+                elinewidth=1.0,
                 zorder=3 + 2 * i_shp,
                 label=entry.label,
                 markersize=markersize,
@@ -153,4 +166,4 @@ def errorbox(
 
     plot.set_xlim([x_min, x_max])
     plot.set_ylim([y_min, y_max])
-    return common_plotting_settings(plot, plot_def, xaxis[1], yaxis[1], legend)
+    return common_plotting_settings(plot, plot_def, xaxis[1], yaxis[1])
