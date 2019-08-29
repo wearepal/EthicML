@@ -118,16 +118,16 @@ def _proportional_train_test_split(
         test_idx = np.concatenate([test_idx, idx[split_idx:]], axis=0)
 
     train: DataTuple = DataTuple(
-        x=data.x.iloc[train_idx],
-        s=data.s.iloc[train_idx],
-        y=data.y.iloc[train_idx],
+        x=data.x.iloc[train_idx].reset_index(drop=True),
+        s=data.s.iloc[train_idx].reset_index(drop=True),
+        y=data.y.iloc[train_idx].reset_index(drop=True),
         name=f"{data.name} - Train",
     )
 
     test: DataTuple = DataTuple(
-        x=data.x.iloc[test_idx],
-        s=data.s.iloc[test_idx],
-        y=data.y.iloc[test_idx],
+        x=data.x.iloc[test_idx].reset_index(drop=True),
+        s=data.s.iloc[test_idx].reset_index(drop=True),
+        y=data.y.iloc[test_idx].reset_index(drop=True),
         name=f"{data.name} - Test",
     )
 
