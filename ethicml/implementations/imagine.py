@@ -40,7 +40,7 @@ from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
 _PRED_LD = 1
-FEAT_LD = 20
+FEAT_LD = 50
 
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
@@ -81,13 +81,13 @@ def train_and_transform(
     batch_size = 100 if flags.epochs == 0 else flags.batch_size
 
     # Set up the data
-    _train, validate = train_test_split(train, train_percentage=0.9)
+    _train, validate = train_test_split(train, train_percentage=0.2)
 
     train_data = CustomDataset(_train)
     train_loader = DataLoader(train_data, batch_size=batch_size)
 
-    valid_data = CustomDataset(validate)
-    valid_loader = DataLoader(valid_data, batch_size=batch_size)
+    # valid_data = CustomDataset(validate)
+    # valid_loader = DataLoader(valid_data, batch_size=batch_size)
 
     all_data = CustomDataset(train)
     all_data_loader = DataLoader(all_data, batch_size=batch_size)
@@ -99,35 +99,35 @@ def train_and_transform(
     current_epoch = 0
     model = Imagine(data=train_data, dataset=dataset).to(device)
     optimizer = RAdam(model.parameters(), lr=1e-3)
-    if int(flags.start_from) >= 0:
-        current_epoch = int(flags.start_from)
-        filename = 'checkpoint_%03d.pth.tar' % current_epoch
-        PATH = Path(".") / "checkpoint" / filename
-        dict_ = torch.load(PATH)
-        # print(f"loaded: {dict_['epoch']}")
-        model.load_state_dict(dict_['model'])
-        optimizer.load_state_dict(dict_['optimizer'])
-    else:
-        PATH = Path(".") / "checkpoint"
-        import shutil
-
-        if PATH.exists():
-            shutil.rmtree(PATH)
+    # if int(flags.start_from) >= 0:
+    #     current_epoch = int(flags.start_from)
+    #     filename = 'checkpoint_%03d.pth.tar' % current_epoch
+    #     PATH = Path(".") / "checkpoint" / filename
+    #     dict_ = torch.load(PATH)
+    #     # print(f"loaded: {dict_['epoch']}")
+    #     model.load_state_dict(dict_['model'])
+    #     optimizer.load_state_dict(dict_['optimizer'])
+    # else:
+    #     PATH = Path(".") / "checkpoint"
+    #     import shutil
+    #
+    #     if PATH.exists():
+    #         shutil.rmtree(PATH)
 
     # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
-    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
+    # scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
 
     # Run Network
     for epoch in range(current_epoch, current_epoch + int(flags.epochs)):
-        train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
+        train_model(epoch, model, train_loader, None, optimizer, device, flags)
         # if epoch % 15 == 0:
-        scheduler.step(epoch)
+        # scheduler.step(epoch)
 
-    PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
-    dict_ = torch.load(PATH)
+    # PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
+    # dict_ = torch.load(PATH)
     # print(f"Best model was at step: {dict_['epoch']}")
-    model.load_state_dict(dict_['model'])
-    model.eval()
+    # model.load_state_dict(dict_['model'])
+    # model.eval()
 
     # Transform output
     actual_feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
@@ -137,6 +137,7 @@ def train_and_transform(
     s_1_list_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns]+["id"])
     s_2_list_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns]+["id"])
     actual_labels_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns]+["id"])
+    actual_sens_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns]+["id"])
     direct_preds_train: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
     preds_train_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
     preds_train: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns]+["id"])
@@ -147,6 +148,7 @@ def train_and_transform(
     s_1_list_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns] + ["id"])
     s_2_list_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns] + ["id"])
     actual_labels_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns] + ["id"])
+    actual_sens_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.s.columns] + ["id"])
     direct_preds_test: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
     preds_test_encs: pd.DataFrame = pd.DataFrame(columns=_train.y.columns)
     preds_test: pd.DataFrame = pd.DataFrame(columns=[col for col in _train.y.columns] + ["id"])
@@ -262,6 +264,18 @@ def train_and_transform(
                     axis='rows',
                     ignore_index=True,
                 )
+                actual_sens_train = pd.concat(
+                    [
+                        actual_sens_train,
+                        pd.concat([
+                            pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
                 preds_train_encs = pd.concat(
                     [
                         preds_train_encs,
@@ -287,7 +301,7 @@ def train_and_transform(
                 )
 
                 if first_flip_x:
-                    print([list(group) for key, group in groupby(all_data.x_names, lambda x: x.split('_')[0])])
+                    # print([list(group) for key, group in groupby(all_data.x_names, lambda x: x.split('_')[0])])
                     save_image(torch.cat([feat.sample() for feat in feat_dec], 1), Path("./flipped_x.png"))
                     to_plot -= torch.cat([feat.sample() for feat in feat_dec], 1)
                     save_image(to_plot, Path("./difference.png"), normalize=True)
@@ -364,6 +378,18 @@ def train_and_transform(
                             actual_labels_train,
                             pd.concat([
                                 pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns, dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_sens_train = pd.concat(
+                        [
+                            actual_sens_train,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
                                 pd.DataFrame(_i.cpu().numpy(), columns=["id"])
                             ], axis='columns', ignore_index=False)
                         ],
@@ -466,6 +492,18 @@ def train_and_transform(
                         axis='rows',
                         ignore_index=True,
                     )
+                    actual_sens_train = pd.concat(
+                        [
+                            actual_sens_train,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
                     actual_feats_train = pd.concat(
                         [actual_feats_train, pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
                         axis='rows',
@@ -552,6 +590,18 @@ def train_and_transform(
                             actual_labels_train,
                             pd.concat([
                                 pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_sens_train = pd.concat(
+                        [
+                            actual_sens_train,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
                                              dtype=np.int64),
                                 pd.DataFrame(_i.cpu().numpy(), columns=["id"])
                             ], axis='columns', ignore_index=False)
@@ -649,6 +699,18 @@ def train_and_transform(
                         actual_labels_test,
                         pd.concat([
                             pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                         dtype=np.int64),
+                            pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                        ], axis='columns', ignore_index=False)
+                    ],
+                    axis='rows',
+                    ignore_index=True,
+                )
+                actual_sens_test = pd.concat(
+                    [
+                        actual_sens_test,
+                        pd.concat([
+                            pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
                                          dtype=np.int64),
                             pd.DataFrame(_i.cpu().numpy(), columns=["id"])
                         ], axis='columns', ignore_index=False)
@@ -759,6 +821,18 @@ def train_and_transform(
                         axis='rows',
                         ignore_index=True,
                     )
+                    actual_sens_test = pd.concat(
+                        [
+                            actual_sens_test,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
                     actual_feats_test = pd.concat(
                         [actual_feats_test,
                          pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
@@ -850,6 +924,18 @@ def train_and_transform(
                             actual_labels_test,
                             pd.concat([
                                 pd.DataFrame(_y.cpu().numpy(), columns=_train.y.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
+                    actual_sens_test = pd.concat(
+                        [
+                            actual_sens_test,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
                                              dtype=np.int64),
                                 pd.DataFrame(_i.cpu().numpy(), columns=["id"])
                             ], axis='columns', ignore_index=False)
@@ -951,6 +1037,18 @@ def train_and_transform(
                         axis='rows',
                         ignore_index=True,
                     )
+                    actual_sens_test = pd.concat(
+                        [
+                            actual_sens_test,
+                            pd.concat([
+                                pd.DataFrame(_s.cpu().numpy(), columns=_train.s.columns,
+                                             dtype=np.int64),
+                                pd.DataFrame(_i.cpu().numpy(), columns=["id"])
+                            ], axis='columns', ignore_index=False)
+                        ],
+                        axis='rows',
+                        ignore_index=True,
+                    )
                     actual_feats_test = pd.concat(
                         [actual_feats_test,
                          pd.DataFrame(_x.cpu().numpy(), columns=_train.x.columns)],
@@ -964,7 +1062,9 @@ def train_and_transform(
         preds_test[train.y.columns[0]] = preds_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
         actual_labels_train[train.y.columns[0]] = actual_labels_train[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
+        actual_sens_train[train.s.columns[0]] = actual_sens_train[train.s.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
         actual_labels_test[train.y.columns[0]] = actual_labels_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
+        actual_sens_test[train.s.columns[0]] = actual_sens_test[train.s.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
         _mod = LRCV()
         clf = _mod.fit(
@@ -984,32 +1084,33 @@ def train_and_transform(
         tqdm.write(f"im train acc: {Accuracy().score(preds_im, test)}")
 
         res = metric_per_sensitive_attribute(preds_im, test, ProbPos())
+        tqdm.write(f"im train dp: {res}")
         tqdm.write(f"im train dp: {diff_per_sensitive_attribute(res).values()}")
 
         res = metric_per_sensitive_attribute(preds_im, test, TPR())
+        tqdm.write(f"im train eq op: {res}")
         tqdm.write(f"im train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(
-            tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped),
-                 total=test.x.shape[0], desc="im ind par")):
-            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
-                           s=s_g.drop(["id"], axis=1).reset_index(drop=True),
-                           y=a_g.drop(["id"], axis=1).reset_index(drop=True),
-                           name=f"Imagined: {train.name}")
-            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-            total += sum(list(diff_per_sensitive_attribute(res).values()))
+        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(
+        #     tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped),
+        #          total=test.x.shape[0], desc="im ind par")):
+        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
+        #                    s=s_g.drop(["id"], axis=1).reset_index(drop=True),
+        #                    y=a_g.drop(["id"], axis=1).reset_index(drop=True),
+        #                    name=f"Imagined: {train.name}")
+        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #
+        #     if a_g[a_g.columns[0]].values[0] == 1:
+        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #         tpr_count += 1
+        #
+        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        # tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
+        # tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
 
-            if a_g[a_g.columns[0]].values[0] == 1:
-                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-                tpr_count += 1
-
-            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-        tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
-        tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
-        # tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        # tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
 
 
         _mod = Kamiran()
@@ -1028,73 +1129,37 @@ def train_and_transform(
         tqdm.write(f"kc train acc: {Accuracy().score(preds_kc, test)}")
 
         res = metric_per_sensitive_attribute(preds_kc, test, ProbPos())
+        tqdm.write(f"kc train dp: {res}")
         tqdm.write(f"kc train dp: {diff_per_sensitive_attribute(res).values()}")
 
         res = metric_per_sensitive_attribute(preds_kc, test, TPR())
+        tqdm.write(f"kc train eq op: {res}")
         tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
-            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-            total += sum(list(diff_per_sensitive_attribute(res).values()))
-
-            if a_g[a_g.columns[0]].values[0] == 1:
-                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-                tpr_count += 1
-
-            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-
-        tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
-        tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
-        # tqdm.write(f"KC Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        # tqdm.write(f"KC test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
+        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #
+        #     if a_g[a_g.columns[0]].values[0] == 1:
+        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #         tpr_count += 1
+        #
+        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+        #
+        # tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        # tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
 
 
 
-
-        # print(
-        #     f"there are {train.y.count()} labels in the original training set and {preds_train.count()} in the augmented set"
-        # )
 
         s_col = _train.s.columns[0]
         y_col = _train.y.columns[0]
 
-        # print(
-        #     preds_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 0)].count(),
-        #     actual_labels_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 0)].count(),
-        # )
-        # print(
-        #     preds_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 1)].count(),
-        #     actual_labels_train[(s_1_list_train[s_col] == 0) & (actual_labels_train[y_col] == 1)].count(),
-        # )
-        # print(
-        #     preds_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 0)].count(),
-        #     actual_labels_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 0)].count(),
-        # )
-        # print(
-        #     preds_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 1)].count(),
-        #     actual_labels_train[(s_1_list_train[s_col] == 1) & (actual_labels_train[y_col] == 1)].count(),
-        # )
         to_return = DataTuple(x=feats_train.drop(["id"], axis=1), s=s_1_list_train.drop(["id"], axis=1), y=preds_train.drop(["id"], axis=1), name=f"Imagined: {train.name}")
 
-        # print(
-        #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 0)].count(),
-        #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 0)].count(),
-        # )
-        # print(
-        #     direct_labels[(s_1_total[s_col] == 0) & (direct_labels[y_col] == 1)].count(),
-        #     actual_labels[(s_1_total[s_col] == 0) & (actual_labels[y_col] == 1)].count(),
-        # )
-        # print(
-        #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 0)].count(),
-        #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 0)].count(),
-        # )
-        # print(
-        #     direct_labels[(s_1_total[s_col] == 1) & (direct_labels[y_col] == 1)].count(),
-        #     actual_labels[(s_1_total[s_col] == 1) & (actual_labels[y_col] == 1)].count(),
-        # )
         to_observe = DataTuple(x=feats_train, s=s_1_list_train, y=direct_preds_train, name=f"Imagined: {train.name}")
 
         _mod = LRCV()
@@ -1113,27 +1178,27 @@ def train_and_transform(
         tqdm.write(f"lr train acc: {Accuracy().score(preds_lr, test)}")
 
         res = metric_per_sensitive_attribute(preds_lr, test, ProbPos())
+        tqdm.write(f"lr train dp: {res}")
         tqdm.write(f"lr train dp: {diff_per_sensitive_attribute(res).values()}")
 
         res = metric_per_sensitive_attribute(preds_lr, test, TPR())
+        tqdm.write(f"lr train eq op: {res}")
         tqdm.write(f"lr train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="lr ind par")):
-            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-            total += sum(list(diff_per_sensitive_attribute(res).values()))
-
-            if a_g[a_g.columns[0]].values[0] == 1:
-                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-                tpr_count += 1
-
-            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-        tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
-        tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
-        # tqdm.write(f"LR Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        # tqdm.write(f"LR test ind par {_mod.name}: {_total/(test.x.shape[0])}")
+        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="lr ind par")):
+        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #
+        #     if a_g[a_g.columns[0]].values[0] == 1:
+        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+        #         tpr_count += 1
+        #
+        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+        # tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        # tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
 
         _lr_lhs = LR()
         _lr_rhs = LR()
@@ -1156,79 +1221,79 @@ def train_and_transform(
         im_clf_rhs = _im_rhs.fit(DataTuple(x=feats_train_encs_og_only, s=train.s, y=train.y))
         im_preds_lhs = pd.DataFrame(columns=['preds_lhs'])
         im_preds_rhs = pd.DataFrame(columns=['preds_rhs'])
-        for _i, _x, _s, _y, _out in tqdm(test_loader, desc="checking"):
-            _i = _i.to(device)
-            _x = _x.to(device)
-            _s = _s.to(device)
-            _y = _y.to(device)
-            _out = [out.to(device) for out in _out]
-
-            _s_1 = _s.detach().clone()
-            _s_2 = _s.detach().clone()
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2, _s.to(device))
-            lr_preds_lhs = pd.concat(
-                [
-                    lr_preds_lhs,
-                    pd.DataFrame(lr_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-            lr_preds_rhs = pd.concat(
-                [
-                    lr_preds_rhs,
-                    pd.DataFrame(lr_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[1],
-                                 columns=['preds_rhs'], dtype=np.int64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-            kc_preds_lhs = pd.concat(
-                [
-                    kc_preds_lhs,
-                    pd.DataFrame(kc_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-            kc_preds_rhs = pd.concat(
-                [
-                    kc_preds_rhs,
-                    pd.DataFrame(kc_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1], columns=['preds_rhs'], dtype=np.float64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-            im_preds_lhs = pd.concat(
-                [
-                    im_preds_lhs,
-                    pd.DataFrame(im_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-            im_preds_rhs = pd.concat(
-                [
-                    im_preds_rhs,
-                    pd.DataFrame(im_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1],
-                                 columns=['preds_rhs'], dtype=np.float64),
-                ],
-                axis='rows',
-                ignore_index=True,
-            )
-
-        lr_eval_ind_par = pd.concat([lr_preds_lhs, lr_preds_rhs], axis='columns')
-        kc_eval_ind_par = pd.concat([kc_preds_lhs, kc_preds_rhs], axis='columns')
-        im_eval_ind_par = pd.concat([im_preds_lhs, im_preds_rhs], axis='columns')
-        tqdm.write(f"lr train ind par: {(lr_eval_ind_par['preds_lhs']-lr_eval_ind_par['preds_rhs']).abs().mean()}")
-        tqdm.write(f"lr train ind eq op: {(lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
-        tqdm.write(f"lr train acc: {Accuracy().score(lr_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
-        tqdm.write(f"kc train ind par: {(kc_eval_ind_par['preds_lhs']-kc_eval_ind_par['preds_rhs']).abs().mean()}")
-        tqdm.write(f"kc train ind eq op: {(kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
-        tqdm.write(f"kc train acc: {Accuracy().score(kc_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
-        tqdm.write(f"im train ind par: {(im_eval_ind_par['preds_lhs']-im_eval_ind_par['preds_rhs']).abs().mean()}")
-        tqdm.write(f"im train ind eq op: {(im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
-        tqdm.write(f"im train acc: {Accuracy().score(im_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
+        # for _i, _x, _s, _y, _out in tqdm(test_loader, desc="checking"):
+        #     _i = _i.to(device)
+        #     _x = _x.to(device)
+        #     _s = _s.to(device)
+        #     _y = _y.to(device)
+        #     _out = [out.to(device) for out in _out]
+        #
+        #     _s_1 = _s.detach().clone()
+        #     _s_2 = _s.detach().clone()
+        #     feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2, _s.to(device))
+        #     lr_preds_lhs = pd.concat(
+        #         [
+        #             lr_preds_lhs,
+        #             pd.DataFrame(lr_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #     lr_preds_rhs = pd.concat(
+        #         [
+        #             lr_preds_rhs,
+        #             pd.DataFrame(lr_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[1],
+        #                          columns=['preds_rhs'], dtype=np.int64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #     kc_preds_lhs = pd.concat(
+        #         [
+        #             kc_preds_lhs,
+        #             pd.DataFrame(kc_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #     kc_preds_rhs = pd.concat(
+        #         [
+        #             kc_preds_rhs,
+        #             pd.DataFrame(kc_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1], columns=['preds_rhs'], dtype=np.float64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #     im_preds_lhs = pd.concat(
+        #         [
+        #             im_preds_lhs,
+        #             pd.DataFrame(im_clf_lhs.predict_proba(_x.cpu().numpy())[:,1], columns=["preds_lhs"], dtype=np.float64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #     im_preds_rhs = pd.concat(
+        #         [
+        #             im_preds_rhs,
+        #             pd.DataFrame(im_clf_rhs.predict_proba(feat_enc.mean.cpu().numpy())[:,1],
+        #                          columns=['preds_rhs'], dtype=np.float64),
+        #         ],
+        #         axis='rows',
+        #         ignore_index=True,
+        #     )
+        #
+        # lr_eval_ind_par = pd.concat([lr_preds_lhs, lr_preds_rhs], axis='columns')
+        # kc_eval_ind_par = pd.concat([kc_preds_lhs, kc_preds_rhs], axis='columns')
+        # im_eval_ind_par = pd.concat([im_preds_lhs, im_preds_rhs], axis='columns')
+        # tqdm.write(f"lr train ind par: {(lr_eval_ind_par['preds_lhs']-lr_eval_ind_par['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"lr train ind eq op: {(lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-lr_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"lr train acc: {Accuracy().score(lr_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
+        # tqdm.write(f"kc train ind par: {(kc_eval_ind_par['preds_lhs']-kc_eval_ind_par['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"kc train ind eq op: {(kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-kc_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"kc train acc: {Accuracy().score(kc_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
+        # tqdm.write(f"im train ind par: {(im_eval_ind_par['preds_lhs']-im_eval_ind_par['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"im train ind eq op: {(im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_lhs']-im_eval_ind_par[(actual_labels_test[y_col] == 1)]['preds_rhs']).abs().mean()}")
+        # tqdm.write(f"im train acc: {Accuracy().score(im_preds_lhs.applymap(lambda x: 1 if x >= 0.5 else 0), test)}")
 
 
 
@@ -1295,8 +1360,8 @@ class FeatureDecoder(nn.Module):
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.mean, s], dim=1))))
-        x = self.bn_2(torch.relu(self.hid_2(x)))
-        x = self.bn_3(torch.relu(self.hid_3(x)))
+        # x = self.bn_2(torch.relu(self.hid_2(x)))
+        # x = self.bn_3(torch.relu(self.hid_3(x)))
         return [td.OneHotCategorical(logits=f(x)) for f in self.out]
 
 
@@ -1312,8 +1377,8 @@ class FeatureAdv(nn.Module):
 
     def forward(self, z: td.Distribution):
         z = torch.relu(self.hid(grad_reverse(z.mean)))
-        z = self.bn_1(torch.relu(self.hid_1(z)))
-        z = self.bn_2(torch.relu(self.hid_2(z)))
+        # z = self.bn_1(torch.relu(self.hid_1(z)))
+        # z = self.bn_2(torch.relu(self.hid_2(z)))
         z = self.out(z)
         return td.Bernoulli(z)
 
@@ -1477,7 +1542,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         )
         feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
 
-        feat_sens_loss = 1e1*-feat_s_pred.log_prob(data_s.to(device))
+        feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
         ###
 
         ### Predictions
@@ -1523,64 +1588,64 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
     model.eval()
 
     valid_loss = 0
-    with torch.no_grad():
-        for i, data_x, data_s, data_y, out_groups in valid_loader:
-            data_x = data_x.to(device)
-            data_s_1 = data_s.to(device)
-            data_s_2 = data_s.to(device)
-            data_y = data_y.to(device)
-            out_groups = [out.to(device) for out in out_groups]
+    # with torch.no_grad():
+        # for i, data_x, data_s, data_y, out_groups in valid_loader:
+        #     data_x = data_x.to(device)
+        #     data_s_1 = data_s.to(device)
+        #     data_s_2 = data_s.to(device)
+        #     data_y = data_y.to(device)
+        #     out_groups = [out.to(device) for out in out_groups]
+        #
+        #     feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+        #         data_x, data_s_1, data_s_2, data_s.to(device)
+        #     )
+        #
+        #     ### Features
+        #     recon_loss = (
+        #         sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
+        #     ).mean()  # F.mse_loss(data_x, feat_dec, reduction='mean')
+        #
+        #     feat_prior = td.Normal(
+        #         loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
+        #     )
+        #     feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
+        #
+        #     feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
+        #     ###
+        #
+        #     ### Predictions
+        #     pred_loss_1 = -direct_prediction.log_prob(data_y)
+        #     pred_loss_2 = -pred_dec.log_prob(data_y)
+        #     pred_loss = (pred_loss_1 + pred_loss_2).mean()
+        #
+        #     pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
+        #     pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
+        #
+        #     pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
+        #     ###
+        #
+        #     ### Direct Pred
+        #     direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
+        #     ###
+        #
+        #     kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
+        #     sens_loss = (feat_sens_loss + pred_sens_loss).mean()
+        #
+        #     valid_loss += recon_loss + kl_loss + pred_loss - sens_loss
 
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                data_x, data_s_1, data_s_2, data_s.to(device)
-            )
-
-            ### Features
-            recon_loss = (
-                sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
-            ).mean()  # F.mse_loss(data_x, feat_dec, reduction='mean')
-
-            feat_prior = td.Normal(
-                loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
-            )
-            feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
-
-            feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
-            ###
-
-            ### Predictions
-            pred_loss_1 = -direct_prediction.log_prob(data_y)
-            pred_loss_2 = -pred_dec.log_prob(data_y)
-            pred_loss = (pred_loss_1 + pred_loss_2).mean()
-
-            pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-            pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
-
-            pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
-            ###
-
-            ### Direct Pred
-            direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
-            ###
-
-            kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
-            sens_loss = (feat_sens_loss + pred_sens_loss).mean()
-
-            valid_loss += recon_loss + kl_loss + pred_loss - sens_loss
-
-    is_best = valid_loss < BEST_LOSS
-    best_loss = min(valid_loss, BEST_LOSS)
-
-    # Save checkpoint
-    save_path = Path(".") / "checkpoint"
-    model_filename = 'checkpoint_%03d.pth.tar' % epoch
-    checkpoint = {
-        'epoch': epoch,
-        'model': model.state_dict(),
-        'optimizer': optimizer.state_dict(),
-        'best_loss': best_loss,
-    }
-    save_checkpoint(checkpoint, model_filename, is_best, save_path)
+    # is_best = valid_loss < BEST_LOSS
+    # best_loss = min(valid_loss, BEST_LOSS)
+    #
+    # # Save checkpoint
+    # save_path = Path(".") / "checkpoint"
+    # model_filename = 'checkpoint_%03d.pth.tar' % epoch
+    # checkpoint = {
+    #     'epoch': epoch,
+    #     'model': model.state_dict(),
+    #     'optimizer': optimizer.state_dict(),
+    #     'best_loss': best_loss,
+    # }
+    # save_checkpoint(checkpoint, model_filename, is_best, save_path)
 
 
 def main():
