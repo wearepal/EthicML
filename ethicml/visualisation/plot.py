@@ -13,7 +13,7 @@ import matplotlib as mpl
 
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple
-from ethicml.visualisation.common import errorbox, DataEntry, PlotDef
+from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
@@ -175,10 +175,9 @@ def single_plot_mean_std_box(
     yaxis: Tuple[str, str],
     dataset: str,
     transform: str,
-    legend: Union[str, Tuple[str, float]] = "outside",
-    firstcolor: int = 0,
-    firstshape: int = 0,
+    legend: Union[None, LegendType, Tuple[LegendType, float]] = "outside",
     markersize: int = 6,
+    use_cross: bool = False,
 ):
     """This is essentially a wrapper around the `errorbox` function
 
@@ -210,8 +209,8 @@ def single_plot_mean_std_box(
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
 
-    plot_def = PlotDef(title=f"{dataset}, {transform}", entries=entries)
-    return errorbox(plot, plot_def, xaxis, yaxis, legend, firstcolor, firstshape, markersize)
+    plot_def = PlotDef(title=f"{dataset}, {transform}", entries=entries, legend=legend)
+    return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross)
 
 
 def plot_mean_std_box(
@@ -220,6 +219,7 @@ def plot_mean_std_box(
     metric_x: Union[str, Metric],
     save: bool = True,
     dpi: int = 300,
+    use_cross: bool = False,
 ) -> List[Tuple[plt.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation
 
@@ -276,9 +276,11 @@ def plot_mean_std_box(
 
                 xtuple = (x_axis, x_axis.replace("_", " "))
                 ytuple = (y_axis, y_axis.replace("_", " "))
-                lgnd = single_plot_mean_std_box(plot, results, xtuple, ytuple, dataset_, transform_)
+                legend = single_plot_mean_std_box(
+                    plot, results, xtuple, ytuple, dataset_, transform_, use_cross=use_cross
+                )
 
-                if lgnd is False:  # we need "is" here because otherwise any falsy value would match
+                if legend is False:  # use "is" here because otherwise any falsy value would match
                     plt.close(fig)
                     continue  # nothing was plotted -> don't save it and don't add it to the list
 
