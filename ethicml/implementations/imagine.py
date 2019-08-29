@@ -40,7 +40,7 @@ from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
 _PRED_LD = 1
-FEAT_LD = 60
+FEAT_LD = 20
 
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
@@ -172,7 +172,7 @@ def train_and_transform(
             _s_1 = _s.detach().clone()
             _s_2 = _s.detach().clone()
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                _x, _s_1, _s_2
+                _x, _s_1, _s_2, _s
             )
 
             if first:
@@ -283,7 +283,7 @@ def train_and_transform(
                 _s_1 = (_s.detach().clone() - 1) ** 2
                 _s_2 = _s.detach().clone()
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    _x, _s_1, _s_2
+                    _x, _s_1, _s_2, _s.to(device)
                 )
 
                 if first_flip_x:
@@ -383,7 +383,7 @@ def train_and_transform(
                 _s_1 = (_s.detach().clone() - 1) ** 2
                 _s_2 = (_s.detach().clone() - 1) ** 2
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
+                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2, _s.to(device)
                 )
                 for _ in range(SAMPLES):
                     feats_train = pd.concat(
@@ -479,7 +479,7 @@ def train_and_transform(
                 _s_1 = _s.detach().clone()
                 _s_2 = (_s.detach().clone() - 1) ** 2
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    _x, _s_1, _s_2
+                    _x, _s_1, _s_2, _s.to(device)
                 )
                 for _ in range(SAMPLES):
                     feats_train = pd.concat(
@@ -577,7 +577,7 @@ def train_and_transform(
             ###
             _s_1 = _s.detach().clone()
             _s_2 = _s.detach().clone()
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2, _s.to(device))
             for _ in range(SAMPLES):
                 feats_test = pd.concat(
                     [
@@ -677,7 +677,7 @@ def train_and_transform(
                 _s_1 = (_s.detach().clone() - 1) ** 2
                 _s_2 = _s.detach().clone()
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    _x, _s_1, _s_2
+                    _x, _s_1, _s_2, _s.to(device)
                 )
                 for _ in range(SAMPLES):
                     feats_test = pd.concat(
@@ -773,7 +773,7 @@ def train_and_transform(
                 _s_1 = (_s.detach().clone() - 1) ** 2
                 _s_2 = (_s.detach().clone() - 1) ** 2
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2
+                    torch.cat([feat.sample() for feat in feat_dec], 1), _s_1, _s_2, _s.to(device)
                 )
                 for _ in range(SAMPLES):
                     feats_test = pd.concat(
@@ -871,7 +871,7 @@ def train_and_transform(
                 _s_1 = _s.detach().clone()
                 _s_2 = (_s.detach().clone() - 1) ** 2
                 feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                    _x, _s_1, _s_2
+                    _x, _s_1, _s_2, _s.to(device)
                 )
                 for _ in range(SAMPLES):
                     feats_test = pd.concat(
@@ -966,6 +966,51 @@ def train_and_transform(
         actual_labels_train[train.y.columns[0]] = actual_labels_train[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
         actual_labels_test[train.y.columns[0]] = actual_labels_test[train.y.columns[0]].map(lambda x: 1 if x>= 0.5 else 0)
 
+        _mod = LRCV()
+        clf = _mod.fit(
+            DataTuple(x=feats_train.drop("id", axis=1), s=s_1_list_train.drop('id', axis=1),
+                      y=preds_train.drop('id', axis=1)))
+        total = 0
+        tpr_total = 0
+        _total = 0
+        acc = 0
+        tpr_count = 0
+        feats_grouped = feats_test.groupby("id")
+        labels_grouped = preds_test.groupby("id")
+        sens_grouped = s_1_list_test.groupby("id")
+        actual_grouped = actual_labels_test.groupby("id")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(
+            tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped),
+                 total=test.x.shape[0], desc="im ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
+                           s=s_g.drop(["id"], axis=1).reset_index(drop=True),
+                           y=a_g.drop(["id"], axis=1).reset_index(drop=True),
+                           name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
+        tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
+        # tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
+        # tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
+
+        preds_im = pd.DataFrame(clf.predict(test.x), columns=['preds'])
+        tqdm.write(f"im train acc: {Accuracy().score(preds_im, test)}")
+
+        res = metric_per_sensitive_attribute(preds_im, test, ProbPos())
+        tqdm.write(f"im train dp: {diff_per_sensitive_attribute(res).values()}")
+
+        res = metric_per_sensitive_attribute(preds_im, test, TPR())
+        tqdm.write(f"im train eq op: {diff_per_sensitive_attribute(res).values()}")
+
+
         _mod = Kamiran()
         clf = _mod.fit(train)
         total = 0
@@ -977,6 +1022,15 @@ def train_and_transform(
         labels_grouped = preds_test.groupby("id")
         sens_grouped = s_1_list_test.groupby("id")
         actual_grouped = actual_labels_test.groupby("id")
+
+        preds_kc = pd.DataFrame(clf.predict(test.x), columns=['preds'])
+        tqdm.write(f"kc train acc: {Accuracy().score(preds_kc, test)}")
+
+        res = metric_per_sensitive_attribute(preds_kc, test, ProbPos())
+        tqdm.write(f"kc train dp: {diff_per_sensitive_attribute(res).values()}")
+
+        res = metric_per_sensitive_attribute(preds_kc, test, TPR())
+        tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
 
         for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
             _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
@@ -996,14 +1050,7 @@ def train_and_transform(
         # tqdm.write(f"KC Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
         # tqdm.write(f"KC test ind par {_mod.name}: {_total/(test.x.shape[0])}")
 
-        preds_kc = pd.DataFrame(clf.predict(test.x), columns=['preds'])
-        tqdm.write(f"kc train acc: {Accuracy().score(preds_kc, test)}")
 
-        res = metric_per_sensitive_attribute(preds_kc, test, ProbPos())
-        tqdm.write(f"kc train dp: {diff_per_sensitive_attribute(res).values()}")
-
-        res = metric_per_sensitive_attribute(preds_kc, test, TPR())
-        tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
 
 
         # print(
@@ -1086,47 +1133,6 @@ def train_and_transform(
         res = metric_per_sensitive_attribute(preds_lr, test, TPR())
         tqdm.write(f"lr train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        _mod = LRCV()
-        clf = _mod.fit(DataTuple(x=feats_train.drop("id", axis=1), s=s_1_list_train.drop('id', axis=1),
-                                           y=preds_train.drop('id', axis=1)))
-        total = 0
-        tpr_total = 0
-        _total = 0
-        acc = 0
-        tpr_count = 0
-        feats_grouped = feats_test.groupby("id")
-        labels_grouped = preds_test.groupby("id")
-        sens_grouped = s_1_list_test.groupby("id")
-        actual_grouped = actual_labels_test.groupby("id")
-        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="im ind par")):
-            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
-                           s=s_g.drop(["id"], axis=1).reset_index(drop=True),
-                           y=a_g.drop(["id"], axis=1).reset_index(drop=True),
-                           name=f"Imagined: {train.name}")
-            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-            total += sum(list(diff_per_sensitive_attribute(res).values()))
-
-            if a_g[a_g.columns[0]].values[0] == 1:
-                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-                tpr_count += 1
-
-            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-        tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
-        tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
-        # tqdm.write(f"IM Accuracy {_mod.name}: {acc/(test.x.shape[0]*2)}")
-        # tqdm.write(f"IM test total {_mod.name}: {_total/(test.x.shape[0])}")
-
-        preds_im = pd.DataFrame(clf.predict(test.x), columns=['preds'])
-        tqdm.write(f"im train acc: {Accuracy().score(preds_im, test)}")
-
-        res = metric_per_sensitive_attribute(preds_im, test, ProbPos())
-        tqdm.write(f"im train dp: {diff_per_sensitive_attribute(res).values()}")
-
-        res = metric_per_sensitive_attribute(preds_im, test, TPR())
-        tqdm.write(f"im train eq op: {diff_per_sensitive_attribute(res).values()}")
-
         _lr_lhs = LR()
         _lr_rhs = LR()
         lr_clf_lhs = _lr_lhs.fit(train)
@@ -1157,7 +1163,7 @@ def train_and_transform(
 
             _s_1 = _s.detach().clone()
             _s_2 = _s.detach().clone()
-            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2)
+            feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(_x, _s_1, _s_2, _s.to(device))
             lr_preds_lhs = pd.concat(
                 [
                     lr_preds_lhs,
@@ -1395,7 +1401,7 @@ class Imagine(nn.Module):
         self.direct_pred = DirectPredictor(in_size=data.size)
         self.prediction_adv = PredictionAdv()
 
-    def forward(self, x, s_1, s_2):
+    def forward(self, x, s_1, s_2, _s):
 
         feat_enc: td.Distribution = self.feature_encoder(x)
         feat_dec = self.feature_decoder(feat_enc, s_1)
@@ -1406,7 +1412,7 @@ class Imagine(nn.Module):
         feat_s_pred = self.feature_adv(feat_enc)
         pred_s_pred = self.prediction_adv(pred_enc)
 
-        direct_prediction: td.Distribution = self.direct_pred(x, s_1)
+        direct_prediction: td.Distribution = self.direct_pred(x, _s)
 
         return feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction
 
@@ -1458,7 +1464,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         pred_s_pred: td.Distribution
         direct_prediction: td.Distribution
         feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-            data_x, data_s_1, data_s_2
+            data_x, data_s_1, data_s_2, data_s.to(device)
         )
 
         ### Features
@@ -1524,7 +1530,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
             out_groups = [out.to(device) for out in out_groups]
 
             feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-                data_x, data_s_1, data_s_2
+                data_x, data_s_1, data_s_2, data_s.to(device)
             )
 
             ### Features
