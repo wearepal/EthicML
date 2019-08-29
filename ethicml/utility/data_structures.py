@@ -3,11 +3,15 @@ Returns a subset of the data. Used primarily in testing so that kernel methods f
 reasonable time
 """
 from pathlib import Path
-from typing import Tuple, List, Optional, NamedTuple
-from dataclasses import dataclass, replace
 from enum import Enum
+from dataclasses import dataclass, replace
+from typing import Tuple, List, Optional, NamedTuple, Callable, Union
+from typing_extensions import Literal
 
 import pandas as pd
+from pandas.testing import assert_index_equal
+
+AxisType = Union[Literal["columns"], Literal["index"]]
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -87,12 +91,19 @@ class DataTuple(TestTuple, DataTupleValues):
         changes = {k: v for k, v in [('x', x), ('s', s), ('y', y), ('name', name)] if v is not None}
         return replace(self, **changes)
 
-    def apply_to_joined_df(self, mapper) -> "DataTuple":
+    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
         """Concatenate the dataframes in the DataTuple and then apply a function to it"""
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
         joined = mapper(joined)
-        return self.make_copy_with(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+        result = self.make_copy_with(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+
+        # assert that the columns haven't changed
+        assert_index_equal(result.x.columns, cols_x)
+        assert_index_equal(result.s.columns, cols_s)
+        assert_index_equal(result.y.columns, cols_y)
+
+        return result
 
     def get_subset(self, num: int = 500) -> "DataTuple":
         """Get the first elements of the dataset
@@ -166,7 +177,7 @@ def write_as_feather(
 
 
 def concat_dt(
-    datatup_list: List[DataTuple], axis: str = "index", ignore_index: bool = False
+    datatup_list: List[DataTuple], axis: AxisType = "index", ignore_index: bool = False
 ) -> DataTuple:
     """Concatenate the data tuples in the given list"""
 
@@ -190,7 +201,7 @@ def concat_dt(
 
 
 def concat_tt(
-    datatup_list: List[TestTuple], axis: str = "index", ignore_index: bool = False
+    datatup_list: List[TestTuple], axis: AxisType = "index", ignore_index: bool = False
 ) -> TestTuple:
     """Concatenate the test tuples in the given list"""
 

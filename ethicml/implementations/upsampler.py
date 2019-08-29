@@ -1,7 +1,8 @@
 """
 implementation of the upsampling method
 """
-from typing import Optional
+import itertools
+from typing import Optional, List, Dict, Tuple
 
 import pandas as pd
 
@@ -27,7 +28,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     a_combined: pd.DataFrame = pd.concat([first_dt.x, first_dt.s, first_dt.y], axis="columns")
     b_combined: pd.DataFrame = pd.concat([second_dt.x, second_dt.s, second_dt.y], axis="columns")
 
-    combined: pd.DataFrame = pd.concat([a_combined, b_combined], axis='rows')
+    combined: pd.DataFrame = pd.concat([a_combined, b_combined], axis="index")
     combined = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)
 
     return DataTuple(
@@ -35,37 +36,29 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     )
 
 
-def upsample(dataset, flags):
-    """
-    Upsample a datatuple
-    Args:
-        dataset:
-
-    Returns:
-
-    """
+def upsample(dataset: DataTuple, flags: Dict[str, str]):
+    """Upsample a datatuple"""
     s_col = dataset.s.columns[0]
     y_col = dataset.y.columns[0]
 
-    s_vals = dataset.s[s_col].unique()
-    y_vals = dataset.y[y_col].unique()
-
-    import itertools
+    s_vals: List[int] = list(map(int, dataset.s[s_col].unique()))
+    y_vals: List[int] = list(map(int, dataset.y[y_col].unique()))
 
     groups = itertools.product(s_vals, y_vals)
 
-    data = {}
+    data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
+        s_y_mask = (dataset.s[s_col] == s) & (dataset.y[y_col] == y)
         data[(s, y)] = DataTuple(
-            x=dataset.x[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
-            s=dataset.s[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
-            y=dataset.y[(dataset.s[s_col] == s) & (dataset.y[y_col] == y)].reset_index(drop=True),
+            x=dataset.x.loc[s_y_mask].reset_index(drop=True),
+            s=dataset.s.loc[s_y_mask].reset_index(drop=True),
+            y=dataset.y.loc[s_y_mask].reset_index(drop=True),
             name=dataset.name,
         )
 
-    percentages = {}
+    percentages: Dict[Tuple[int, int], float] = {}
 
-    vals = []
+    vals: List[int] = []
     for key, val in data.items():
         vals.append(val.x.shape[0])
 
@@ -73,29 +66,22 @@ def upsample(dataset, flags):
         if flags['strategy'] == "naive":
             percentages[key] = max(vals) / val.x.shape[0]
         else:
-            s_val = key[0]
-            y_val = key[1]
+            s_val: int = key[0]
+            y_val: int = key[1]
 
-            y_eq_y = dataset.y[dataset.y[y_col] == y_val].count()
-            s_eq_s = dataset.s[dataset.s[s_col] == s_val].count()
+            y_eq_y = dataset.y.loc[dataset.y[y_col] == y_val].count().values[0]
+            s_eq_s = dataset.s.loc[dataset.s[s_col] == s_val].count().values[0]
 
-            num_samples = dataset.y.count()
-            num_batch = val.y.count()
+            num_samples = dataset.y.count().values[0]
+            num_batch = val.y.count().values[0]
 
-            percentages[key] = round(
-                (
-                    y_eq_y.values[0]
-                    * s_eq_s.values[0]
-                    / (num_batch.values[0] * num_samples.values[0])
-                ),
-                8,
-            )
+            percentages[key] = round((y_eq_y * s_eq_s / (num_batch * num_samples)), 8)
 
     x_columns: pd.Index = dataset.x.columns
     s_columns: pd.Index = dataset.s.columns
     y_columns: pd.Index = dataset.y.columns
 
-    upsampled = {}
+    upsampled: Dict[Tuple[int, int], DataTuple] = {}
     for key, val in data.items():
         all_data: pd.DataFrame = pd.concat([val.x, val.s, val.y], axis="columns")
         all_data = all_data.sample(frac=percentages[key], random_state=1, replace=True).reset_index(
@@ -116,7 +102,7 @@ def upsample(dataset, flags):
         ranker = LRProb()
         rank = ranker.run(dataset, dataset)
 
-        selected = []
+        selected: List[pd.DataFrame] = []
 
         all_data = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
         all_data = pd.concat([all_data, rank], axis="columns")
@@ -125,20 +111,19 @@ def upsample(dataset, flags):
 
             s_val = key[0]
             y_val = key[1]
+            s_y_mask = (dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)
 
             ascending = False
             if s_val <= 0:
                 ascending = True
 
             if percentages[key] > 1.0:
-                selected.append(all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)])
+                selected.append(all_data.loc[s_y_mask])
                 percentages[key] -= 1.0
 
-            weight = all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)][
-                y_col
-            ].count()
+            weight = all_data.loc[s_y_mask][y_col].count()
             selected.append(
-                all_data[(dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)]
+                all_data.loc[s_y_mask]
                 .sort_values(by=['preds'], ascending=ascending)
                 .iloc[: int(percentages[key] * weight)]
             )
@@ -146,10 +131,10 @@ def upsample(dataset, flags):
         upsampled_dataframes: pd.DataFrame
         for i, df in enumerate(selected):
             if i == 0:
-                upsampled_dataframes = df.drop(['preds'], axis=1)
+                upsampled_dataframes = df.drop(['preds'], axis="columns")
             else:
                 upsampled_dataframes = pd.concat(
-                    [upsampled_dataframes, df.drop(['preds'], axis=1)], axis='rows'
+                    [upsampled_dataframes, df.drop(['preds'], axis="columns")], axis="index"
                 ).reset_index(drop=True)
         upsampled_datatuple = DataTuple(
             x=upsampled_dataframes[x_columns],
@@ -177,7 +162,7 @@ def train_and_transform(train, test, flags):
 
 
 def main():
-    """This function runs the SVM model as a standalone program"""
+    """This function runs the Upsampler as a standalone program"""
     parser = pre_algo_argparser()
 
     parser.add_argument("--strategy", type=str, required=True)

@@ -81,58 +81,58 @@ class Dataset(ABC):
         }
 
     @property
-    def continuous_features(self):
+    def continuous_features(self) -> List[str]:
         """List of features that are continuous"""
         return self._cont_features
 
     @continuous_features.setter
-    def continuous_features(self, feats: List[str]):
+    def continuous_features(self, feats: List[str]) -> None:
         self._cont_features = feats
 
     @property
-    def features(self):
+    def features(self) -> List[str]:
         """List of all features"""
         return self._features
 
     @features.setter
-    def features(self, feats: List[str]):
+    def features(self, feats: List[str]) -> None:
         self._features = feats
 
     @property
-    def s_prefix(self):
+    def s_prefix(self) -> List[str]:
         """List of prefixes of the sensitive attribute"""
         return self._s_prefix
 
     @s_prefix.setter
-    def s_prefix(self, sens_attrs: List[str]):
+    def s_prefix(self, sens_attrs: List[str]) -> None:
         self._s_prefix = sens_attrs
         self.features_to_remove += sens_attrs
 
     @property
-    def sens_attrs(self):
+    def sens_attrs(self) -> List[str]:
         """List of sensitive attributes"""
         return self._sens_attrs
 
     @sens_attrs.setter
-    def sens_attrs(self, sens_attrs: List[str]):
+    def sens_attrs(self, sens_attrs: List[str]) -> None:
         self._sens_attrs = sens_attrs
 
     @property
-    def class_labels(self):
+    def class_labels(self) -> List[str]:
         """List of class labels"""
         return self._class_labels
 
     @class_labels.setter
-    def class_labels(self, labels: List[str]):
+    def class_labels(self, labels: List[str]) -> None:
         self._class_labels = labels
 
     @property
-    def class_label_prefix(self):
+    def class_label_prefix(self) -> List[str]:
         """List of prefixes of class labels"""
         return self._class_label_prefix
 
     @class_label_prefix.setter
-    def class_label_prefix(self, label_prefixs: List[str]):
+    def class_label_prefix(self, label_prefixs: List[str]) -> None:
         self._class_label_prefix = label_prefixs
         self.features_to_remove += label_prefixs
 
@@ -144,5 +144,5 @@ class Dataset(ABC):
         )
 
     @discrete_features.setter
-    def discrete_features(self, feats: List[str]):
+    def discrete_features(self, feats: List[str]) -> None:
         self._disc_features = feats

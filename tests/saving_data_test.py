@@ -78,3 +78,20 @@ def test_dataset_name_with_spaces():
     assert name == reloaded.name
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_frame_equal(datatup.s, reloaded.s)
+
+
+def test_apply_to_joined_df():
+    datatup = DataTuple(
+        x=pd.DataFrame([3.0], columns=['a1']),
+        s=pd.DataFrame([4.0], columns=['b2']),
+        y=pd.DataFrame([6.0], columns=['c3']),
+        name=None,
+    )
+
+    def _identity(x: pd.DataFrame):
+        return x
+
+    result = datatup.apply_to_joined_df(_identity)
+    pd.testing.assert_frame_equal(datatup.x, result.x)
+    pd.testing.assert_frame_equal(datatup.s, result.s)
+    pd.testing.assert_frame_equal(datatup.y, result.y)
