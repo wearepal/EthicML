@@ -181,8 +181,8 @@ def train_and_transform(
 
             if first:
                 save_image(_x, Path("./original_1.png"))
-                to_plot = _x
-                rec = torch.cat([feat for feat in feat_dec], 1)
+                to_plot = _x.cpu()
+                rec = torch.cat([feat for feat in feat_dec], 1).cpu()
                 save_image(rec, Path("./recon_x.png"))
                 diff = to_plot - rec
                 save_image(diff, Path("./difference_in_recon.png"), normalize=True)
@@ -308,8 +308,8 @@ def train_and_transform(
 
                 if first_flip_x:
                     save_image(_x, Path("./original.png"))
-                    to_plot = _x
-                    rec_flip = torch.cat([feat for feat in feat_dec], 1)
+                    to_plot = _x.cpu()
+                    rec_flip = torch.cat([feat for feat in feat_dec], 1).cpu()
                     save_image(rec_flip, Path("./flipped_x.png"))
                     diff = to_plot - rec_flip
                     save_image(diff, Path("./difference.png"), normalize=True)
