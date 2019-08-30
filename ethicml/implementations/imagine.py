@@ -15,7 +15,7 @@ from torch.autograd import Function
 from torch.utils.data import DataLoader
 import torch.distributions as td
 import torch.nn.functional as F
-from tqdm import tqdm, trange
+from tqdm import tqdm, trange, tqdm_notebook
 
 import numpy as np
 import pandas as pd
@@ -41,7 +41,7 @@ from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
 _PRED_LD = 1
-FEAT_LD = 20
+FEAT_LD = 50
 
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
@@ -82,13 +82,13 @@ def train_and_transform(
     batch_size = 100 if flags.epochs == 0 else flags.batch_size
 
     # Set up the data
-    # _train, validate = train_test_split(train, train_percentage=0.2)
-    _train = train
+    _train, validate = train_test_split(train, train_percentage=0.9)
+    # _train = train
     train_data = CustomDataset(_train)
     train_loader = DataLoader(train_data, batch_size=batch_size)
 
-    # valid_data = CustomDataset(validate)
-    # valid_loader = DataLoader(valid_data, batch_size=batch_size)
+    valid_data = CustomDataset(validate)
+    valid_loader = DataLoader(valid_data, batch_size=batch_size)
 
     all_data = CustomDataset(train)
     all_data_loader = DataLoader(all_data, batch_size=batch_size)
@@ -120,15 +120,15 @@ def train_and_transform(
 
     # Run Network
     for epoch in range(current_epoch, current_epoch + int(flags.epochs)):
-        train_model(epoch, model, train_loader, None, optimizer, device, flags)
+        train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags)
         # if epoch % 15 == 0:
         scheduler.step(epoch)
 
-    # PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
-    # dict_ = torch.load(PATH)
-    # print(f"Best model was at step: {dict_['epoch']}")
-    # model.load_state_dict(dict_['model'])
-    # model.eval()
+    PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
+    dict_ = torch.load(PATH)
+    print(f"Best model was at step: {dict_['epoch']}")
+    model.load_state_dict(dict_['model'])
+    model.eval()
 
     # Transform output
     actual_feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
@@ -160,6 +160,7 @@ def train_and_transform(
     first_flip_x = True
     to_plot = None
 
+    model.eval()
     with torch.no_grad():
         for _i, _x, _s, _y, _out in all_data_loader:
 
@@ -1099,25 +1100,25 @@ def train_and_transform(
         tqdm.write(f"im train eq op: {res}")
         tqdm.write(f"im train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(
-        #     tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped),
-        #          total=test.x.shape[0], desc="im ind par")):
-        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
-        #                    s=s_g.drop(["id"], axis=1).reset_index(drop=True),
-        #                    y=a_g.drop(["id"], axis=1).reset_index(drop=True),
-        #                    name=f"Imagined: {train.name}")
-        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #
-        #     if a_g[a_g.columns[0]].values[0] == 1:
-        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #         tpr_count += 1
-        #
-        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-        # tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
-        # tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(
+            tqdm_notebook(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped),
+                 total=test.x.shape[0], desc="im ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True),
+                           s=s_g.drop(["id"], axis=1).reset_index(drop=True),
+                           y=a_g.drop(["id"], axis=1).reset_index(drop=True),
+                           name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+        tqdm.write(f"Im Ind. Parity {_mod.name}: {total / (test.x.shape[0])}")
+        tqdm.write(f"Im Ind. Eq Opp {_mod.name}: {tpr_total / tpr_count}")
 
 
 
@@ -1144,21 +1145,21 @@ def train_and_transform(
         tqdm.write(f"kc train eq op: {res}")
         tqdm.write(f"kc train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
-        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #
-        #     if a_g[a_g.columns[0]].values[0] == 1:
-        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #         tpr_count += 1
-        #
-        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-        #
-        # tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
-        # tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm_notebook(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="kc ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+
+        tqdm.write(f"KC Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        tqdm.write(f"KC Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
 
 
 
@@ -1193,20 +1194,20 @@ def train_and_transform(
         tqdm.write(f"lr train eq op: {res}")
         tqdm.write(f"lr train eq op: {diff_per_sensitive_attribute(res).values()}")
 
-        # for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="lr ind par")):
-        #     _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
-        #     tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
-        #     res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
-        #     total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #
-        #     if a_g[a_g.columns[0]].values[0] == 1:
-        #         tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
-        #         tpr_count += 1
-        #
-        #     acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
-        #     _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
-        # tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
-        # tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
+        for l, ((_, x_g), (_, s_g), (_, y_g), (_, a_g)) in enumerate(tqdm_notebook(zip(feats_grouped, sens_grouped, labels_grouped, actual_grouped), total=test.x.shape[0], desc="lr ind par")):
+            _mod_preds = pd.DataFrame(clf.predict(x_g.drop(["id"], axis=1)), columns=["preds"])
+            tt = DataTuple(x=x_g.drop(["id"], axis=1).reset_index(drop=True), s=s_g.drop(["id"], axis=1).reset_index(drop=True), y=a_g.drop(["id"], axis=1).reset_index(drop=True), name=f"Imagined: {train.name}")
+            res = metric_per_sensitive_attribute(_mod_preds, tt, ProbPos())
+            total += sum(list(diff_per_sensitive_attribute(res).values()))
+
+            if a_g[a_g.columns[0]].values[0] == 1:
+                tpr_total += sum(list(diff_per_sensitive_attribute(res).values()))
+                tpr_count += 1
+
+            acc += 2 - abs(_mod_preds.values - (a_g.drop("id", axis=1).values)).sum()
+            _total += (_mod_preds.values[0] ^ _mod_preds.values[1]).sum()
+        tqdm.write(f"LR Ind. Parity {_mod.name}: {total/(test.x.shape[0])}")
+        tqdm.write(f"LR Ind. Eq Opp {_mod.name}: {tpr_total/tpr_count}")
 
         _lr_lhs = LR()
         _lr_rhs = LR()
@@ -1505,7 +1506,7 @@ class Imagine(nn.Module):
 
 
 def save_checkpoint(checkpoint, filename, is_best, save_path):
-    print("===> Saving checkpoint '{}'".format(filename))
+    tqdm.write("===> Saving checkpoint '{}'".format(filename))
     model_filename = save_path / filename
     best_filename = save_path / 'model_best.pth.tar'
     if not os.path.exists(save_path):
@@ -1513,10 +1514,10 @@ def save_checkpoint(checkpoint, filename, is_best, save_path):
     torch.save(checkpoint, model_filename)
     if is_best:
         shutil.copyfile(model_filename, best_filename)
-    print("===> Saved checkpoint '{}'".format(model_filename))
+    tqdm.write("===> Saved checkpoint '{}'".format(model_filename))
 
 
-BEST_LOSS = np.inf
+START_SAVING = 10
 
 
 def train_model(epoch, model, train_loader, valid_loader, optimizer, device, flags):
@@ -1532,6 +1533,14 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
     Returns:
 
     """
+    best_loss = np.inf
+
+    if epoch > START_SAVING + 1:
+        last_epoch = epoch - 1
+        filename = 'checkpoint_%03d.pth.tar' % last_epoch
+        PATH = Path(".") / "checkpoint" / filename
+        dict_ = torch.load(PATH)
+        best_loss = dict_['best_loss']
 
     model.train()
     train_loss = 0
@@ -1592,7 +1601,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         optimizer.step()
         optimizer.zero_grad()
         if batch_idx % 100 == 0:
-            print(
+            tqdm.write(
                 f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
                 f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
                 f'Loss: {loss.item() / len(data_x):.6f}\t'
@@ -1606,69 +1615,74 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
                 f'adv_pred_loss: {pred_sens_loss.sum().item():.6f}\t'
             )
 
-    print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
+    tqdm.write(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
 
-    model.eval()
+    # model.eval()
 
-    valid_loss = 0
-    # with torch.no_grad():
-        # for i, data_x, data_s, data_y, out_groups in valid_loader:
-        #     data_x = data_x.to(device)
-        #     data_s_1 = data_s.to(device)
-        #     data_s_2 = data_s.to(device)
-        #     data_y = data_y.to(device)
-        #     out_groups = [out.to(device) for out in out_groups]
-        #
-        #     feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
-        #         data_x, data_s_1, data_s_2, data_s.to(device)
-        #     )
-        #
-        #     ### Features
-        #     recon_loss = (
-        #         sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
-        #     ).mean()  # F.mse_loss(data_x, feat_dec, reduction='mean')
-        #
-        #     feat_prior = td.Normal(
-        #         loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
-        #     )
-        #     feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
-        #
-        #     feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
-        #     ###
-        #
-        #     ### Predictions
-        #     pred_loss_1 = -direct_prediction.log_prob(data_y)
-        #     pred_loss_2 = -pred_dec.log_prob(data_y)
-        #     pred_loss = (pred_loss_1 + pred_loss_2).mean()
-        #
-        #     pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-        #     pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
-        #
-        #     pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
-        #     ###
-        #
-        #     ### Direct Pred
-        #     direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
-        #     ###
-        #
-        #     kl_loss = feat_kl_loss.mean() + (pred_kl_loss + direct_loss).mean()
-        #     sens_loss = (feat_sens_loss + pred_sens_loss).mean()
-        #
-        #     valid_loss += recon_loss + kl_loss + pred_loss - sens_loss
+    valid_loss = np.inf
+    if epoch > START_SAVING:
+        valid_loss = 0
+        with torch.no_grad():
+            for i, data_x, data_s, data_y, out_groups in valid_loader:
+                data_x = data_x.to(device)
+                data_s_1 = data_s.to(device)
+                data_s_2 = data_s.to(device)
+                data_y = data_y.to(device)
+                out_groups = [out.to(device) for out in out_groups]
 
-    # is_best = valid_loss < BEST_LOSS
-    # best_loss = min(valid_loss, BEST_LOSS)
-    #
-    # # Save checkpoint
-    # save_path = Path(".") / "checkpoint"
-    # model_filename = 'checkpoint_%03d.pth.tar' % epoch
-    # checkpoint = {
-    #     'epoch': epoch,
-    #     'model': model.state_dict(),
-    #     'optimizer': optimizer.state_dict(),
-    #     'best_loss': best_loss,
-    # }
-    # save_checkpoint(checkpoint, model_filename, is_best, save_path)
+                feat_enc, feat_dec, feat_s_pred, pred_enc, pred_dec, pred_s_pred, direct_prediction = model(
+                    data_x, data_s_1, data_s_2, data_s.to(device)
+                )
+
+                ### Features
+                recon_loss = sum([-ohe.log_prob(real) for ohe, real in zip(feat_dec, out_groups)])
+
+                feat_prior = td.Normal(
+                    loc=torch.zeros(FEAT_LD).to(device), scale=torch.ones(FEAT_LD).to(device)
+                )
+                feat_kl_loss = td.kl.kl_divergence(feat_prior, feat_enc)
+
+                feat_sens_loss = -feat_s_pred.log_prob(data_s.to(device))
+                ###
+
+                ### Predictions
+                pred_loss_1 = -direct_prediction.log_prob(data_y)
+                pred_loss_2 = -pred_dec.log_prob(data_y)
+                pred_loss = (pred_loss_1 + pred_loss_2).sum()
+
+                pred_prior = td.Normal(
+                    loc=torch.zeros(1).to(device), scale=torch.ones(1).to(device)
+                )  # td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
+                pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
+
+                pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
+                ###
+
+                ### Direct Pred
+                direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
+                ###
+
+                kl_loss = feat_kl_loss.sum(1) + (pred_kl_loss + direct_loss).squeeze(1)
+                sens_loss = (feat_sens_loss + pred_sens_loss)
+
+                valid_loss += (recon_loss + kl_loss + pred_loss - sens_loss.squeeze()).sum()
+
+    tqdm.write(f"Validation loss: {valid_loss} \t Best Loss: {best_loss} \t {(valid_loss/best_loss)*100}")
+    is_best = valid_loss < best_loss
+    best_loss = min(valid_loss, best_loss)
+    if is_best:
+        tqdm.write(f"Best saved at epoch {epoch}")
+
+    # Save checkpoint
+    save_path = Path(".") / "checkpoint"
+    model_filename = 'checkpoint_%03d.pth.tar' % epoch
+    checkpoint = {
+        'epoch': epoch,
+        'model': model.state_dict(),
+        'optimizer': optimizer.state_dict(),
+        'best_loss': best_loss,
+    }
+    save_checkpoint(checkpoint, model_filename, is_best, save_path)
 
 
 def main():
