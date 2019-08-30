@@ -41,7 +41,7 @@ from ethicml.preprocessing.adjust_labels import assert_binary_labels
 from ethicml.utility import DataTuple, TestTuple, Heaviside
 
 _PRED_LD = 1
-FEAT_LD = 50
+FEAT_LD = 20
 
 
 @dataclass(frozen=True)  # "frozen" makes it immutable
@@ -82,8 +82,8 @@ def train_and_transform(
     batch_size = 100 if flags.epochs == 0 else flags.batch_size
 
     # Set up the data
-    _train, validate = train_test_split(train, train_percentage=0.2)
-
+    # _train, validate = train_test_split(train, train_percentage=0.2)
+    _train = train
     train_data = CustomDataset(_train)
     train_loader = DataLoader(train_data, batch_size=batch_size)
 
@@ -100,29 +100,29 @@ def train_and_transform(
     current_epoch = 0
     model = Imagine(data=train_data, dataset=dataset).to(device)
     optimizer = Adam(model.parameters(), lr=1e-3)
-    # if int(flags.start_from) >= 0:
-    #     current_epoch = int(flags.start_from)
-    #     filename = 'checkpoint_%03d.pth.tar' % current_epoch
-    #     PATH = Path(".") / "checkpoint" / filename
-    #     dict_ = torch.load(PATH)
-    #     # print(f"loaded: {dict_['epoch']}")
-    #     model.load_state_dict(dict_['model'])
-    #     optimizer.load_state_dict(dict_['optimizer'])
-    # else:
-    #     PATH = Path(".") / "checkpoint"
-    #     import shutil
-    #
-    #     if PATH.exists():
-    #         shutil.rmtree(PATH)
+    if int(flags.start_from) >= 0:
+        current_epoch = int(flags.start_from)
+        filename = 'checkpoint_%03d.pth.tar' % current_epoch
+        PATH = Path(".") / "checkpoint" / filename
+        dict_ = torch.load(PATH)
+        # print(f"loaded: {dict_['epoch']}")
+        model.load_state_dict(dict_['model'])
+        optimizer.load_state_dict(dict_['optimizer'])
+    else:
+        PATH = Path(".") / "checkpoint"
+        import shutil
+
+        if PATH.exists():
+            shutil.rmtree(PATH)
 
     # scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=flags.epochs)
-    # scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
+    scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.995)
 
     # Run Network
     for epoch in range(current_epoch, current_epoch + int(flags.epochs)):
         train_model(epoch, model, train_loader, None, optimizer, device, flags)
         # if epoch % 15 == 0:
-        # scheduler.step(epoch)
+        scheduler.step(epoch)
 
     # PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
     # dict_ = torch.load(PATH)
@@ -179,8 +179,12 @@ def train_and_transform(
             )
 
             if first:
-                save_image(_x, Path("./original.png"))
+                save_image(_x, Path("./original_1.png"))
                 to_plot = _x
+                rec = torch.cat([feat for feat in feat_dec], 1)
+                save_image(rec, Path("./recon_x.png"))
+                diff = to_plot - rec
+                save_image(diff, Path("./difference_in_recon.png"), normalize=True)
                 first = False
 
             for _ in range(SAMPLES):
@@ -302,18 +306,21 @@ def train_and_transform(
                 )
 
                 if first_flip_x:
-                    # print([list(group) for key, group in groupby(all_data.x_names, lambda x: x.split('_')[0])])
-                    save_image(torch.cat([feat.sample() for feat in feat_dec], 1), Path("./flipped_x.png"))
-                    to_plot -= torch.cat([feat.sample() for feat in feat_dec], 1)
-                    save_image(to_plot, Path("./difference.png"), normalize=True)
-
+                    save_image(_x, Path("./original.png"))
+                    to_plot = _x
+                    rec_flip = torch.cat([feat for feat in feat_dec], 1)
+                    save_image(rec_flip, Path("./flipped_x.png"))
+                    diff = to_plot - rec_flip
+                    save_image(diff, Path("./difference.png"), normalize=True)
+                    save_image(rec - rec_flip, Path("./difference_rec_to_flip.png"), normalize=True)
                     first_flip_x = False
+
                 for _ in range(SAMPLES):
                     feats_train = pd.concat(
                         [
                             feats_train,
                             pd.concat([
-                                pd.DataFrame(torch.cat([feat.sample() for feat in feat_dec], 1).cpu().numpy(), columns=_train.x.columns),
+                                pd.DataFrame(torch.cat([feat for feat in feat_dec], 1).cpu().numpy(), columns=_train.x.columns),
                                 pd.DataFrame(_i.cpu().numpy(), columns=["id"])], axis='columns', ignore_index=False
                             )
                         ],
@@ -747,7 +754,7 @@ def train_and_transform(
                         [
                             feats_test,
                             pd.concat([
-                                pd.DataFrame(torch.cat([feat.sample() for feat in feat_dec],
+                                pd.DataFrame(torch.cat([feat for feat in feat_dec],
                                                        1).cpu().numpy(), columns=_train.x.columns),
                                 pd.DataFrame(_i.cpu().numpy(), columns=["id"])], axis='columns',
                                 ignore_index=False
@@ -1344,7 +1351,7 @@ class FeatureEncoder(nn.Module):
         x = self.bn_1(torch.relu(self.hid_1(x)))
         x = self.bn_2(torch.relu(self.hid_2(x)))
         x = self.bn_3(torch.relu(self.hid_3(x)))
-        return td.Normal(loc=self.mu(x), scale=torch.exp(self.logvar(x)))
+        return td.Normal(loc=self.mu(x), scale=F.softplus(self.logvar(x)))
 
 
 class FeatureDecoder(nn.Module):
@@ -1359,11 +1366,21 @@ class FeatureDecoder(nn.Module):
 
         self.out = nn.ModuleList([nn.Linear(100, len(out)) for out in out_groups])
 
+    def ohe(self, dist: td.OneHotCategorical) -> torch.Tensor:
+        am = dist.probs.argmax(1)
+        am = am.type(torch.int64).view(-1, 1)
+        one_hots = torch.zeros(dist.probs.shape).scatter_(1, am, 1)
+        one_hots = one_hots.view(*am.shape, -1)
+        return one_hots.squeeze(1)
+
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.mean, s], dim=1))))
-        # x = self.bn_2(torch.relu(self.hid_2(x)))
-        # x = self.bn_3(torch.relu(self.hid_3(x)))
-        return [td.OneHotCategorical(logits=f(x)) for f in self.out]
+        x = self.bn_1(torch.relu(self.hid_1(torch.cat([z.rsample(), s], dim=1))))
+        x = self.bn_2(torch.relu(self.hid_2(x)))
+        x = self.bn_3(torch.relu(self.hid_3(x)))
+        if self.training:
+            return [td.OneHotCategorical(logits=f(x)) for f in self.out]
+        else:
+            return [self.ohe(td.OneHotCategorical(logits=f(x))) for f in self.out]
 
 
 class FeatureAdv(nn.Module):
@@ -1377,11 +1394,11 @@ class FeatureAdv(nn.Module):
         self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution):
-        z = torch.relu(self.hid(grad_reverse(z.mean)))
-        # z = self.bn_1(torch.relu(self.hid_1(z)))
-        # z = self.bn_2(torch.relu(self.hid_2(z)))
+        z = torch.relu(self.hid(grad_reverse(z.rsample())))
+        z = self.bn_1(torch.relu(self.hid_1(z)))
+        z = self.bn_2(torch.relu(self.hid_2(z)))
         z = self.out(z)
-        return td.Bernoulli(z)
+        return td.Bernoulli(probs=torch.sigmoid(torch.tanh(z)))
 
 
 class PredictionEncoder(nn.Module):
@@ -1394,12 +1411,13 @@ class PredictionEncoder(nn.Module):
         self.hid_3 = nn.Linear(100, 100)
         self.bn_3 = nn.BatchNorm1d(100)
         self.mu = nn.Linear(100, _PRED_LD)
+        self.logvar = nn.Linear(100, _PRED_LD)
 
     def forward(self, x: torch.Tensor):
         x = self.bn_1(torch.relu(self.hid_1(x)))
         x = self.bn_2(torch.relu(self.hid_2(x)))
         x = self.bn_3(torch.relu(self.hid_3(x)))
-        return td.Bernoulli(probs=torch.sigmoid(self.mu(x)))
+        return td.Normal(loc=self.mu(x), scale=F.softplus(self.logvar(x)))
 
 
 class PredictionDecoder(nn.Module):
@@ -1414,11 +1432,12 @@ class PredictionDecoder(nn.Module):
         self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        x = self.bn_1(self.hid_1(torch.cat([z.probs, s], dim=1)))
+        x = self.bn_1(self.hid_1(torch.cat([z.rsample(), s], dim=1)))
         x = self.bn_2(self.hid_2(x))
         x = self.bn_3(self.hid_3(x))
-        mean = z.probs + self.out(x)
-        return td.Bernoulli(torch.sigmoid(mean))
+        # mean = z.probs + self.out(x)
+        x = self.out(x)
+        return td.Bernoulli(torch.sigmoid(torch.tanh(x)))
 
 
 class DirectPredictor(nn.Module):
@@ -1450,7 +1469,7 @@ class PredictionAdv(nn.Module):
         self.out = nn.Linear(100, 1)
 
     def forward(self, z: td.Distribution):
-        z = torch.relu(self.hid(grad_reverse(z.probs)))
+        z = torch.relu(self.hid(grad_reverse(z.rsample())))
         z = self.bn_1(torch.relu(self.hid_1(z)))
         z = self.bn_2(torch.relu(self.hid_2(z)))
         z = self.out(z)
@@ -1547,24 +1566,26 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         ###
 
         ### Predictions
-        pred_loss_1 = 0*-direct_prediction.log_prob(data_y)
-        pred_loss_2 = 0*-pred_dec.log_prob(data_y)
-        pred_loss = (pred_loss_1 + pred_loss_2).mean()
+        pred_loss_1 = -direct_prediction.log_prob(data_y)
+        pred_loss_2 = -pred_dec.log_prob(data_y)
+        pred_loss = (pred_loss_1 + pred_loss_2).sum()
 
-        pred_prior = td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-        pred_kl_loss = 0*td.kl.kl_divergence(pred_prior, pred_enc)
+        pred_prior = td.Normal(
+            loc=torch.zeros(1).to(device), scale=torch.ones(1).to(device)
+        )#td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
+        pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc)
 
-        pred_sens_loss = 0*-pred_s_pred.log_prob(data_s.to(device))
+        pred_sens_loss = -pred_s_pred.log_prob(data_s.to(device))
         ###
 
         ### Direct Pred
-        direct_loss = 0*td.kl.kl_divergence(direct_prediction, pred_dec)
+        direct_loss = td.kl.kl_divergence(direct_prediction, pred_dec)
         ###
 
-        kl_loss = feat_kl_loss #+ (pred_kl_loss + direct_loss)
+        kl_loss = feat_kl_loss.sum(1) + (pred_kl_loss + direct_loss).squeeze(1)
         sens_loss = (feat_sens_loss + pred_sens_loss)
 
-        loss = (recon_loss + kl_loss.sum(1) + sens_loss.squeeze() + pred_loss).sum()
+        loss = (recon_loss + kl_loss + sens_loss.squeeze() + pred_loss).sum()
         loss.backward()
 
         train_loss += loss.item()
