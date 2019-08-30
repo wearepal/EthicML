@@ -124,11 +124,11 @@ def train_and_transform(
         # if epoch % 15 == 0:
         scheduler.step(epoch)
 
-    PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
-    dict_ = torch.load(PATH)
-    print(f"Best model was at step: {dict_['epoch']}")
-    model.load_state_dict(dict_['model'])
-    model.eval()
+    # PATH = Path(".") / "checkpoint" / 'model_best.pth.tar'
+    # dict_ = torch.load(PATH)
+    # print(f"Best model was at step: {dict_['epoch']}")
+    # model.load_state_dict(dict_['model'])
+    # model.eval()
 
     # Transform output
     actual_feats_train: pd.DataFrame = pd.DataFrame(columns=_train.x.columns)
@@ -1665,7 +1665,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
                 kl_loss = feat_kl_loss.sum(1) + (pred_kl_loss + direct_loss).squeeze(1)
                 sens_loss = (feat_sens_loss + pred_sens_loss)
 
-                valid_loss += (recon_loss + kl_loss + pred_loss - sens_loss.squeeze()).sum()
+                valid_loss += (recon_loss + kl_loss + pred_loss + sens_loss.squeeze()).sum()
 
     tqdm.write(f"Validation loss: {valid_loss} \t Best Loss: {best_loss} \t {(valid_loss/best_loss)*100}")
     is_best = valid_loss < best_loss

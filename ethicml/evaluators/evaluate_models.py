@@ -8,7 +8,7 @@ from collections import OrderedDict
 from sklearn.model_selection import KFold
 
 import pandas as pd
-from tqdm import tqdm
+from tqdm import tqdm, tqdm_notebook
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
@@ -126,15 +126,15 @@ def evaluate_models(
                     path_to_file.unlink()
 
     seed = 0
-    with tqdm(total=total_experiments) as pbar:
+    with tqdm_notebook(total=total_experiments) as pbar:
         for dataset in datasets:
             for repeat in range(repeats):
                 train: DataTuple
                 test: DataTuple
                 if isinstance(dataset, Dataset):
-                    train, test = train_test_split(load_data(dataset), random_seed=seed, train_percentage=2.0/3.0)
+                    train, test = train_test_split(load_data(dataset), random_seed=seed, train_percentage=0.8)
                 else:
-                    train, test = train_test_split(dataset, random_seed=seed, train_percentage=2.0/3.0)
+                    train, test = train_test_split(dataset, random_seed=seed, train_percentage=0.8)
 
                 seed += 2410
                 if test_mode:
