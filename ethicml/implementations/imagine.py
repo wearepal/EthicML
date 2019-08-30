@@ -1369,7 +1369,7 @@ class FeatureDecoder(nn.Module):
 
     def ohe(self, dist: td.OneHotCategorical) -> torch.Tensor:
         am = dist.probs.argmax(1)
-        am = am.type(torch.int64).view(-1, 1)
+        am = am.type(torch.int64).view(-1, 1).cpu()
         one_hots = torch.zeros(dist.probs.shape).scatter_(1, am, 1)
         one_hots = one_hots.view(*am.shape, -1)
         return one_hots.squeeze(1)
