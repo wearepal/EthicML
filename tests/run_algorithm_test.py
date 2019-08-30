@@ -57,7 +57,7 @@ def test_run_parallel():
     assert count_true(result[2][1].values == -1) == 400
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def cleanup():
     yield None
     print("remove generated directory")
@@ -67,7 +67,7 @@ def cleanup():
 
 
 def test_empty_evaluate(cleanup):
-    empty_result = evaluate_models([Toy()])
+    empty_result = evaluate_models([Toy()], repeats=3)
     expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "repeat"])
     pd.testing.assert_frame_equal(empty_result, expected_result)
@@ -84,16 +84,21 @@ def test_run_alg_suite(cleanup):
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
     evaluate_models(datasets, preprocess_models, inprocess_models,
                     postprocess_models, metrics, per_sens_metrics,
-                    repeats=1, test_mode=True, delete_prev=True)
+                    repeats=1, test_mode=True, delete_prev=True, topic="pytest")
 
     files = os.listdir(Path(".") / "results")
-    file_names = ['Adult Race_Upsample uniform.csv', 'Adult Race_no_transform.csv', 'Toy_Upsample uniform.csv', 'Toy_no_transform.csv']
+    file_names = [
+        'pytest_Adult Race_Upsample uniform.csv',
+        'pytest_Adult Race_no_transform.csv',
+        'pytest_Toy_Upsample uniform.csv',
+        'pytest_Toy_no_transform.csv',
+    ]
     assert len(files) == 4
     assert sorted(files) == file_names
 
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
-        assert written_file.shape == (2,14)
+        assert written_file.shape == (2, 14)
 
 
 def test_run_alg_suite_wrong_metrics(cleanup):

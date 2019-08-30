@@ -2,7 +2,7 @@
 Runs given metrics on given algorithms for given datasets
 """
 from pathlib import Path
-from typing import List, Dict, Union, Sequence
+from typing import List, Dict, Union, Sequence, Optional
 from collections import OrderedDict
 
 import pandas as pd
@@ -81,10 +81,12 @@ def evaluate_models(
     postprocess_models: Sequence[PostAlgorithm] = (),
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
-    repeats: int = 3,
+    repeats: int = 1,
     test_mode: bool = False,
     delete_prev: bool = False,
     proportional_splits: bool = False,
+    topic: Optional[str] = None,
+    start_seed: int = 0,
 ) -> pd.DataFrame:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
@@ -99,7 +101,10 @@ def evaluate_models(
         test_mode: if True, only use a small subset of the data so that the models run faster
         delete_prev:  False by default. If True, delete saved results in directory
         proportional_splits: if True, the train-test split preserves the proportion of s and y
+        topic: (optional) a string that identifies the run; the string is prepended to the filename
+        start_seed: random seed for the first repeat
     """
+    # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
 
     columns = ["dataset", "transform", "model", "repeat"]
@@ -112,6 +117,7 @@ def evaluate_models(
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
+    base_name: str = "" if topic is None else f"{topic}_"
     outdir = Path(".") / "results"  # OS-independent way of saying '../results'
     outdir.mkdir(exist_ok=True)
 
@@ -121,88 +127,100 @@ def evaluate_models(
             for preprocess_model in preprocess_models:
                 transform_list.append(preprocess_model.name)
             for transform_name in transform_list:
-                path_to_file: Path = outdir / f"{dataset.name}_{transform_name}.csv"
+                path_to_file: Path = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
                 if path_to_file.exists():
                     path_to_file.unlink()
 
-    seed = 0
-    with tqdm(total=total_experiments) as pbar:
-        for dataset in datasets:
-            for repeat in range(repeats):
-                train: DataTuple
-                test: DataTuple
-                train, test = train_test_split(
-                    load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
+    pbar = tqdm(total=total_experiments)
+    for dataset in datasets:
+        # reset the seed for every dataset, otherwise seed would depend on the number of datasets
+        seed = start_seed
+
+        # ================================== begin: one repeat ====================================
+        for repeat in range(repeats):
+            train: DataTuple
+            test: DataTuple
+            train, test = train_test_split(
+                load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
+            )
+            if test_mode:
+                # take smaller subset of training data to speed up training
+                train = train.get_subset()
+
+            to_operate_on: Dict[str, TrainTestPair] = {
+                "no_transform": TrainTestPair(train=train, test=test)
+            }
+
+            # ========================== begin: run preprocessing models ==========================
+            for pre_process_method in preprocess_models:
+                logging: 'OrderedDict[str, str]' = OrderedDict()
+                logging['model'] = pre_process_method.name
+                logging['dataset'] = dataset.name
+                logging['repeat'] = str(repeat)
+                pbar.set_postfix(ordered_dict=logging)
+
+                new_train, new_test = pre_process_method.run(train, test)
+                to_operate_on[pre_process_method.name] = TrainTestPair(
+                    train=new_train, test=new_test
                 )
-                seed += 2410
-                if test_mode:
-                    # take smaller subset of training data to speed up training
-                    train = train.get_subset()
 
-                to_operate_on: Dict[str, TrainTestPair] = {
-                    "no_transform": TrainTestPair(train=train, test=test)
-                }
+                pbar.update()
+            # =========================== end: run preprocessing models ===========================
 
-                for pre_process_method in preprocess_models:
-                    logging: 'OrderedDict[str, str]' = OrderedDict()
-                    logging['model'] = pre_process_method.name
+            # ========================= begin: loop over preprocessed data ========================
+            for transform_name, transform in to_operate_on.items():
+
+                transformed_train: DataTuple = transform.train
+                transformed_test: Union[DataTuple, TestTuple] = transform.test
+
+                # ========================== begin: run inprocess models ==========================
+                for model in inprocess_models:
+                    logging = OrderedDict()
+                    logging['model'] = model.name
                     logging['dataset'] = dataset.name
+                    logging['transform'] = transform_name
                     logging['repeat'] = str(repeat)
                     pbar.set_postfix(ordered_dict=logging)
 
-                    new_train, new_test = pre_process_method.run(train, test)
-                    to_operate_on[pre_process_method.name] = TrainTestPair(
-                        train=new_train, test=new_test
-                    )
+                    temp_res: Dict[str, Union[str, float]] = {
+                        "dataset": dataset.name,
+                        "transform": transform_name,
+                        "model": model.name,
+                        "repeat": f"{repeat}-{seed}",
+                    }
 
+                    predictions: pd.DataFrame
+                    predictions = model.run(transformed_train, transformed_test)
+
+                    temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+
+                    for postprocess in postprocess_models:
+                        # Post-processing has yet to be defined
+                        # - leaving blank until we have an implementation to work with
+                        pass
+
+                    results = results.append(temp_res, ignore_index=True)
                     pbar.update()
+                # =========================== end: run inprocess models ===========================
 
-                for transform_name, transform in to_operate_on.items():
+                path_to_file = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
+                exists = path_to_file.is_file()
+                if exists:
+                    loaded_results = pd.read_csv(path_to_file)
+                    results = pd.concat([loaded_results, results], sort=True)
+                results.to_csv(path_to_file, index=False)
+                results = pd.DataFrame(columns=columns)
+            # ========================== end: loop over preprocessed data =========================
+            seed += 2410
+        # =================================== end: one repeat =====================================
 
-                    transformed_train: DataTuple = transform.train
-                    transformed_test: Union[DataTuple, TestTuple] = transform.test
-
-                    for model in inprocess_models:
-                        logging = OrderedDict()
-                        logging['model'] = model.name
-                        logging['dataset'] = dataset.name
-                        logging['transform'] = transform_name
-                        logging['repeat'] = str(repeat)
-                        pbar.set_postfix(ordered_dict=logging)
-
-                        temp_res: Dict[str, Union[str, float]] = {
-                            "dataset": dataset.name,
-                            "transform": transform_name,
-                            "model": model.name,
-                            "repeat": f"{repeat}-{seed}",
-                        }
-
-                        predictions: pd.DataFrame
-                        predictions = model.run(transformed_train, transformed_test)
-
-                        temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
-
-                        for postprocess in postprocess_models:
-                            # Post-processing has yet to be defined
-                            # - leaving blank until we have an implementation to work with
-                            pass
-
-                        results = results.append(temp_res, ignore_index=True)
-                        pbar.update()
-
-                    path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
-                    exists = path_to_file.is_file()
-                    if exists:
-                        loaded_results = pd.read_csv(path_to_file)
-                        results = pd.concat([loaded_results, results], sort=True)
-                    results.to_csv(path_to_file, index=False)
-                    results = pd.DataFrame(columns=columns)
+    pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
     preprocess_names = [model.name for model in preprocess_models]
     results = pd.DataFrame(columns=columns)
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
-            path_to_file = outdir / f"{dataset.name}_{transform_name}.csv"
+            path_to_file = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
             exists = path_to_file.is_file()
             if exists:
                 loaded_results = pd.read_csv(path_to_file)
