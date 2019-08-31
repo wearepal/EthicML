@@ -7,15 +7,15 @@ from typing import List, Tuple, Dict
 
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 
-Data = Tuple[DataTuple, DataTuple]
-
-
 async def arrange_in_parallel(
-    algos: List[InAlgorithmAsync], data: List[Data], max_parallel: int = 0
+    algos: List[InAlgorithmAsync],
+    data: List[TrainTestPair],
+    max_parallel: int = 0,
+    log: bool = False,
 ) -> List[List[pd.DataFrame]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
@@ -24,17 +24,20 @@ async def arrange_in_parallel(
         data: list of pairs of data tuples (train and test)
         max_parallel: how many processes can run in parallel at most. if zero (or negative), then
                       there is no maximum
+        log: if True, turn on debug logging
     Returns:
         list of the results
     """
     assert len(algos) >= 1
     assert len(data) >= 1
     assert isinstance(data[0][0], DataTuple)
-    assert isinstance(data[0][1], DataTuple)
+    assert isinstance(data[0][1], TestTuple)
     # create queue of tasks
-    task_queue: asyncio.Queue = asyncio.Queue()
+    task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, TrainTestPair]]" = asyncio.Queue()
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for i, algo in enumerate(algos):
+        if not isinstance(algo, InAlgorithmAsync):
+            raise RuntimeError(f"Algorithm \"{algo.name}\" is not asynchronous!")
         for j, data_item in enumerate(data):
             task_queue.put_nowait((i, j, algo, data_item))
     # create workers
@@ -42,41 +45,49 @@ async def arrange_in_parallel(
     default_num_workers: int = num_cpus if num_cpus is not None else 1
     num_workers = max_parallel if max_parallel > 0 else default_num_workers
     result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
-    workers = [_eval_worker(worker_id, task_queue, result_dict) for worker_id in range(num_workers)]
+    workers = [
+        _eval_worker(worker_id, task_queue, result_dict, log) for worker_id in range(num_workers)
+    ]
     # run workers and confirm that the queue is empty
     await asyncio.gather(*workers)
     assert task_queue.empty()
-    # turn dictionary into a list
+    # turn dictionary into a list; the outer list is over the algos, the inner over the datasets
+    # NOTE: if you want to change the return type, be warned that CrossValidator depends on it
     return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
 
 
 async def _eval_worker(
     worker_id: int,
-    task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, Data]]",
+    task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, TrainTestPair]]",
     result_dict: Dict[Tuple[int, int], pd.DataFrame],
+    debug_logging: bool,
 ) -> None:
     while not task_queue.empty():
         # get a work item out of the queue
         algo_id, data_id, algo, (train, test) = task_queue.get_nowait()
+        if debug_logging:
+            print(f"Worker {worker_id} is about to start algo {algo.name} on dataset {train.name}.")
         # do the work
         result = await algo.run_async(train, test)
         # put result into results dictionary
         result_dict[(algo_id, data_id)] = result
-        print(f"Worker {worker_id} has finished algo {algo_id} on dataset {data_id}.")
+        if debug_logging:
+            print(f"Worker {worker_id} is has finished algo {algo.name} on dataset {train.name}.")
         # notify the queue that the work item has been processed
         task_queue.task_done()
 
 
 def run_in_parallel(
-    algos: List[InAlgorithm], data: List[Data], max_parallel: int = -1
+    algos: List[InAlgorithm], data: List[TrainTestPair], max_parallel: int = 0, log: bool = False
 ) -> List[List[pd.DataFrame]]:
     """Run the given algorithms (embarrassingly) parallel
 
     Args:
         algos: list of in-process algorithms
         data: list of pairs of data tuples (train and test)
-        max_parallel: how many processes can run in parallel at most. if negative, then there is no
-                      maximum
+        max_parallel: how many processes can run in parallel at most. if zero (or negative), then
+                      there is no maximum
+        log: if True, turn on debug logging
     Returns:
         list of the results
     """
@@ -97,7 +108,7 @@ def run_in_parallel(
     event_loop = asyncio.get_event_loop()
 
     # first start the asynchronous results
-    async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
+    async_coroutines = arrange_in_parallel(async_algos, data, max_parallel, log=log)
 
     # then get the blocking results
     # for each algorithm, first loop over all available datasets and then go on to the next algo

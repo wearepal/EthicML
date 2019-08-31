@@ -1,15 +1,16 @@
 """Cross Validation for any in process (at the moment) Algorithm"""
-
-
 from collections import defaultdict
 from itertools import product
 from statistics import mean
 from typing import Dict, List, Tuple, Any, Type, NamedTuple, Optional
 
+import pandas as pd
+
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple
-from ethicml.metrics import Accuracy, Metric, CV
+from ethicml.utility.data_structures import DataTuple, TrainTestPair
+from ethicml.metrics import Accuracy, Metric, AbsCV
 from ethicml.preprocessing.train_test_split import fold_data
+from .parallelism import run_in_parallel
 
 
 class ResultTuple(NamedTuple):
@@ -20,24 +21,18 @@ class ResultTuple(NamedTuple):
     scores: Dict[str, float]
 
 
-class Results:
+class CVResults:
     """
-    Stores the results of the experiments
+    Stores the results of a cross validation experiment
     """
 
-    def __init__(self):
-        self.raw_storage: List[ResultTuple] = []
-        self.mean_storage: Optional[Dict[str, ResultTuple]] = None
-
-    def append(self, config: Dict[str, Any], fold_id: int, scores: Dict[str, float]) -> None:
-        self.raw_storage.append(ResultTuple(config, fold_id, scores))
+    def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
+        self.raw_storage = results
+        self.model = model
+        self.mean_storage = self._organize_and_compute_means()
 
     def _organize_and_compute_means(self) -> Dict[str, ResultTuple]:
         """Compute means over folds and generate unique string for each hyperparameter setting"""
-        # check whether we have already done this
-        if self.mean_storage is not None:
-            return self.mean_storage
-
         # first, group the entries that have the same hyperparameters
         max_fold_id = 0
         grouped: Dict[str, List[ResultTuple]] = defaultdict(list)
@@ -68,30 +63,36 @@ class Results:
 
         assert len(mean_vals) * (max_fold_id + 1) == len(self.raw_storage)
         assert len(list(mean_vals.values())[-1].scores) == len(self.raw_storage[-1].scores)
-        # store the mean values for next time
-        self.mean_storage = mean_vals
         return mean_vals
 
     def get_best_result(self, measure: Metric) -> ResultTuple:
         """
         Get the hyperparameter combination for the best performance of a measure
         """
-        mean_vals = self._organize_and_compute_means()
+        mean_vals = self.mean_storage
 
         def _get_score(item: Tuple[str, ResultTuple]):
+            """Take an entry from `mean_storage` and return the desired score `measure`"""
             _, result = item
             return result.scores[measure.name]
 
+        # find the best entry in `mean_storage` according to `measure`
         best_hyp_string, _ = max(mean_vals.items(), key=_get_score)
 
         return mean_vals[best_hyp_string]
+
+    def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
+        return self.get_best_result(measure).params
+
+    def best(self, measure: Metric) -> InAlgorithm:
+        return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
         """
         First sort the results according to the primary metric, then take the best according to the
         secondary metric from the top K.
         """
-        mean_vals = self._organize_and_compute_means()
+        mean_vals = self.mean_storage
 
         def _get_primary_score(item: Tuple[str, ResultTuple]):
             return item[1].scores[primary.name]
@@ -111,34 +112,71 @@ class CrossValidator:
     Object used to run cross-validation on a model
     """
 
-    def __init__(self, model: Type[InAlgorithm], hyperparams: Dict[str, List[Any]], folds: int = 3):
+    def __init__(
+        self,
+        model: Type[InAlgorithm],
+        hyperparams: Dict[str, List[Any]],
+        folds: int = 3,
+        parallel: bool = False,
+        max_parallel: int = 0,
+    ):
+        """
+        Args:
+            model: the class (not an instance) of the model for cross validation
+            hyperparams: a dictionary where the keys are the names of hyperparameters and the values
+                         are lists of possible values for the hyperparameters
+            folds: the number of folds
+            parallel: if True, run the algorithms in parallel
+            max_parallel: the maximum number of parallel processes; if set to 0, use the default
+                          which is the number of available CPUs
+        """
         self.model = model
         self.hyperparams = hyperparams
-        self.results = Results()
         self.folds = folds
+        self.parallel = parallel
+        self.max_parallel = max_parallel
 
         keys, values = zip(*hyperparams.items())
-        self.experiments = [dict(zip(keys, v)) for v in product(*values)]
+        self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
-    def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> None:
-        """runs the cross validation experiments"""
-        if measures is None:
-            measures = [Accuracy(), CV()]
+    def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
+        """Run the cross validation experiments"""
+        measures_ = [Accuracy(), AbsCV()] if measures is None else measures
 
-        for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
-            for experiment in self.experiments:
-                # instantiate model and run it
-                model = self.model(**experiment)
-                preds = model.run(train_fold, val)
-                # compute all measures
-                scores = {measure.name: measure.score(preds, val) for measure in measures}
-                # store the result
-                self.results.append(experiment, i, scores)
-                score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
-                print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
+        results: List[ResultTuple] = []
 
-    def best(self, measure: Metric) -> InAlgorithm:
-        return self.model(**self.best_hyper_params(measure))
+        def _compute_scores_and_append(
+            experiment: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
+        ):
+            # compute all measures
+            # TODO: this should also compute diffs and ratios
+            scores = {measure.name: measure.score(preds, test) for measure in measures_}
+            # store the result
+            results.append(ResultTuple(experiment, fold_id, scores))
+            return scores
 
-    def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
-        return self.results.get_best_result(measure).params
+        if self.parallel:
+            # instantiate all models
+            models = [self.model(**experiment) for experiment in self.experiments]
+            # create all folds
+            data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
+            # convert to right format
+            pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
+            # run everything in parallel
+            all_results = run_in_parallel(models, pair_folds, self.max_parallel, log=False)
+
+            # finally, iterate over all results, compute scores and store them
+            for preds_for_dataset, experiment in zip(all_results, self.experiments):
+                for i, (preds, (train_fold, val)) in enumerate(zip(preds_for_dataset, data_folds)):
+                    _compute_scores_and_append(experiment, preds, val, i)
+        else:
+            for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
+                # run the models one by one and *immediately* report the scores on the measures
+                for experiment in self.experiments:
+                    # instantiate model and run it
+                    model = self.model(**experiment)
+                    preds = model.run(train_fold, val)
+                    scores = _compute_scores_and_append(experiment, preds, val, i)
+                    score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
+                    print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
+        return CVResults(results, self.model)

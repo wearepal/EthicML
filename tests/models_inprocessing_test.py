@@ -18,12 +18,12 @@ from ethicml.algorithms.inprocess import (
     SVM,
     ZafarAccuracy, ZafarBaseline, ZafarEqOdds, ZafarEqOpp, ZafarFairness,
 )
-from ethicml.evaluators import CrossValidator
+from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy, AbsCV
 from ethicml.utility import Heaviside, DataTuple, TrainTestPair
 from ethicml.data import load_data, Compas
 from ethicml.preprocessing import train_test_split
-from tests.run_algorithm_test import get_train_test
+from tests.run_algorithm_test import get_train_test, count_true
 
 
 def test_svm():
@@ -89,9 +89,9 @@ def test_cv_svm():
     assert svm_cv is not None
     assert isinstance(svm_cv.model(), InAlgorithm)
 
-    svm_cv.run(train)
+    cv_results = svm_cv.run(train)
 
-    best_model = svm_cv.best(Accuracy())
+    best_model = cv_results.best(Accuracy())
 
     predictions: pd.DataFrame = best_model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
@@ -101,7 +101,7 @@ def test_cv_svm():
 def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     train, test = toy_train_test
 
-    hyperparams: Dict[str, List[int]] = {'C': [1, 10, 100]}
+    hyperparams: Dict[str, List[float]] = {'C': [0.01, 0.1, 1.0]}
 
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
@@ -109,13 +109,35 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
-    lr_cv.run(train, measures=[measure])
+    cv_results: CVResults = lr_cv.run(train, measures=[measure])
 
-    best_model = lr_cv.best(measure)
+    assert cv_results.best_hyper_params(measure)['C'] == 0.1
+    best_model = cv_results.best(measure)
 
     predictions: pd.DataFrame = best_model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
+
+
+def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
+    train, test = toy_train_test
+
+    hyperparams: Dict[str, List[float]] = {'C': [0.001, 0.01]}
+
+    lr_cv = CrossValidator(LR, hyperparams, folds=2, parallel=True, max_parallel=1)
+
+    assert lr_cv is not None
+    assert isinstance(lr_cv.model(), InAlgorithm)
+
+    measure = Accuracy()
+    cv_results: CVResults = lr_cv.run(train, measures=[measure])
+
+    assert cv_results.best_hyper_params(measure)['C'] == 0.01
+    best_model = cv_results.best(measure)
+
+    predictions: pd.DataFrame = best_model.run(train, test)
+    assert count_true(predictions.values == 1) == 212
+    assert count_true(predictions.values == -1) == 188
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -130,9 +152,9 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
     primary = Accuracy()
     fair_measure = AbsCV()
-    lr_cv.run(train, measures=[primary, fair_measure])
+    cv_results = lr_cv.run(train, measures=[primary, fair_measure])
 
-    best_result = lr_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+    best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
     print(best_result)
 
     assert best_result.params['C'] == 1e-5
@@ -197,9 +219,9 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
 
     primary = Accuracy()
     fair_measure = AbsCV()
-    zafar_cv.run(train, measures=[primary, fair_measure])
+    cv_results: CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
 
-    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+    best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
     assert best_result.params['gamma'] == 1
     assert best_result.scores['Accuracy'] == approx(0.7094, rel=1e-4)
@@ -241,9 +263,9 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
 
     primary = Accuracy()
     fair_measure = AbsCV()
-    zafar_cv.run(train, measures=[primary, fair_measure])
+    cv_results: CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
 
-    best_result = zafar_cv.results.get_best_in_top_k(primary, fair_measure, top_k=3)
+    best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
     assert best_result.params['c'] == 0.01
     assert best_result.scores['Accuracy'] == approx(0.7156, rel=1e-4)

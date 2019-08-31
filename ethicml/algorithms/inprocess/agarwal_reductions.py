@@ -6,13 +6,10 @@ from typing import List
 
 import pandas as pd
 
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import agarwal
+from ._shared import conventional_interface, settings_for_svm_lr
 
 
 VALID_FAIRNESS = {"DP", "EqOd"}
@@ -42,20 +39,7 @@ class Agarwal(InAlgorithmAsync):
         self.fairness = fairness
         self.eps = eps
         self.iters = iters
-        self.C = C
-        if self.C is None:
-            if self.classifier == "LR":
-                self.C = LogisticRegression().C
-            elif self.classifier == "SVM":
-                self.C = SVC().C
-            else:
-                raise NotImplementedError("Sever problem: this point should not be reached")
-        self.kernel = kernel
-        if self.kernel is None:
-            if self.classifier == "SVM":
-                self.kernel = SVC().kernel
-            else:
-                self.kernel = ""
+        self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return agarwal.train_and_predict(
