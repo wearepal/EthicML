@@ -6,8 +6,8 @@ from typing import Optional
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import svm
+from ._shared import conventional_interface
 
 
 class SVM(InAlgorithmAsync):

@@ -6,8 +6,8 @@ from typing import Optional, Tuple
 from sklearn.neural_network import MLPClassifier
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import mlp
+from ._shared import conventional_interface
 
 
 class MLP(InAlgorithmAsync):

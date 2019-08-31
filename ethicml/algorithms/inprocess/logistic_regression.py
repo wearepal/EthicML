@@ -7,13 +7,13 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.algorithms.inprocess.interface import conventional_interface
 from ethicml.implementations import (
     logistic_regression,
     logistic_regression_probability,
     logistic_regression_cross_validated,
 )
 from ethicml.utility.data_structures import DataTuple, TestTuple
+from ._shared import conventional_interface
 
 
 class LR(InAlgorithmAsync):
