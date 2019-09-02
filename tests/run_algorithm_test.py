@@ -15,7 +15,7 @@ from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
 from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult, Dataset
-from ethicml.evaluators import run_in_parallel, evaluate_models, MetricNotApplicable
+from ethicml.evaluators import run_in_parallel, evaluate_models, MetricNotApplicable, load_results
 from ethicml.preprocessing import train_test_split
 
 
@@ -99,6 +99,12 @@ def test_run_alg_suite(cleanup):
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert written_file.shape == (2, 14)
+
+    reloaded = load_results("Adult Race", "Upsample uniform", "pytest", set_index=True)
+    assert reloaded is not None
+    read = pd.read_csv(Path(".") / "results" / 'pytest_Adult Race_Upsample uniform.csv')
+    read = read.set_index(["dataset", "transform", "model", "repeat"])
+    pd.testing.assert_frame_equal(reloaded, read)
 
 
 def test_run_alg_suite_wrong_metrics(cleanup):
