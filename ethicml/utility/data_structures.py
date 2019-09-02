@@ -25,6 +25,17 @@ class TestTuple:
     def __iter__(self):
         return iter([self.x, self.s])
 
+    def replace(
+        self,
+        *,
+        x: Optional[pd.DataFrame] = None,
+        s: Optional[pd.DataFrame] = None,
+        name: Optional[str] = None,
+    ) -> "DataTuple":
+        """Create a copy of the DataTuple but change the given values"""
+        changes = {k: v for k, v in [('x', x), ('s', s), ('name', name)] if v is not None}
+        return replace(self, **changes)
+
     def write_as_feather(self, data_dir: Path, identifier: str) -> "TestPathTuple":
         """Write the TestTuple to Feather files and return the file paths as a TestPathTuple
 
@@ -79,7 +90,7 @@ class DataTuple(TestTuple, DataTupleValues):
             name=self.name if self.name is not None else "",
         )
 
-    def make_copy_with(
+    def replace(
         self,
         *,
         x: Optional[pd.DataFrame] = None,
@@ -96,7 +107,7 @@ class DataTuple(TestTuple, DataTupleValues):
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
         joined = mapper(joined)
-        result = self.make_copy_with(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+        result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
         # assert that the columns haven't changed
         assert_index_equal(result.x.columns, cols_x)
@@ -114,7 +125,7 @@ class DataTuple(TestTuple, DataTupleValues):
         Returns:
             subset of training data
         """
-        return self.make_copy_with(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -243,6 +254,7 @@ class FairType(Enum):
         return self.value
 
 
-class TrainTestPair(NamedTuple):
+@dataclass(frozen=True)  # "frozen" means the objects are immutable
+class TrainTestPair:
     train: DataTuple
     test: TestTuple

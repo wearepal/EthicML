@@ -90,6 +90,15 @@ class Dataset(ABC):
         self._cont_features = feats
 
     @property
+    def discrete_features(self) -> List[str]:
+        """List of features that are discrete"""
+        return self._disc_features
+
+    @discrete_features.setter
+    def discrete_features(self, feats: List[str]) -> None:
+        self._disc_features = feats
+
+    @property
     def features(self) -> List[str]:
         """List of all features"""
         return self._features
@@ -135,14 +144,3 @@ class Dataset(ABC):
     def class_label_prefix(self, label_prefixs: List[str]) -> None:
         self._class_label_prefix = label_prefixs
         self.features_to_remove += label_prefixs
-
-    @property
-    def discrete_features(self) -> List[str]:
-        """List of features that are discrete"""
-        return get_discrete_features(
-            self.features, self.features_to_remove, self.continuous_features
-        )
-
-    @discrete_features.setter
-    def discrete_features(self, feats: List[str]) -> None:
-        self._disc_features = feats
