@@ -254,7 +254,6 @@ class FairType(Enum):
         return self.value
 
 
-@dataclass(frozen=True)  # "frozen" means the objects are immutable
-class TrainTestPair:
+class TrainTestPair(NamedTuple):
     train: DataTuple
     test: TestTuple
