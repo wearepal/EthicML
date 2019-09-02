@@ -74,6 +74,42 @@ def run_metrics(
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
+def load_results(
+    dataset_name: str,
+    transform_name: str,
+    topic: Optional[str] = None,
+    outdir: Path = Path(".") / "results",
+    set_index: bool = False,
+) -> Optional[pd.DataFrame]:
+    """Load results from a CSV file that was created by `evaluate_models`
+
+    Args:
+        dataset_name: name of the dataset of the results
+        transform_name: name of the transformation that was used for the results
+        topic: (optional) topic string of the results
+        outdir: directory where the results are stored
+        set_index: if True, set the multi-index on the dataframe just like `evaluate_models` does
+
+    Returns:
+        DataFrame if the file exists; None otherwise
+    """
+    path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
+    exists = path_to_file.is_file()
+    if exists:
+        results = pd.read_csv(path_to_file)
+        if set_index:
+            return results.set_index(["dataset", "transform", "model", "repeat"])
+        return results
+    return None
+
+
+def _result_path(
+    outdir: Path, dataset_name: str, transform_name: str, topic: Optional[str]
+) -> Path:
+    base_name: str = "" if topic is None else f"{topic}_"
+    return outdir / f"{base_name}{dataset_name}_{transform_name}.csv"
+
+
 def evaluate_models(
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
@@ -117,7 +153,6 @@ def evaluate_models(
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
-    base_name: str = "" if topic is None else f"{topic}_"
     outdir = Path(".") / "results"  # OS-independent way of saying '../results'
     outdir.mkdir(exist_ok=True)
 
@@ -127,7 +162,7 @@ def evaluate_models(
             for preprocess_model in preprocess_models:
                 transform_list.append(preprocess_model.name)
             for transform_name in transform_list:
-                path_to_file: Path = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
+                path_to_file: Path = _result_path(outdir, dataset.name, transform_name, topic)
                 if path_to_file.exists():
                     path_to_file.unlink()
 
@@ -203,7 +238,7 @@ def evaluate_models(
                     pbar.update()
                 # =========================== end: run inprocess models ===========================
 
-                path_to_file = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
+                path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
                 exists = path_to_file.is_file()
                 if exists:
                     loaded_results = pd.read_csv(path_to_file)
@@ -220,10 +255,8 @@ def evaluate_models(
     results = pd.DataFrame(columns=columns)
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
-            path_to_file = outdir / f"{base_name}{dataset.name}_{transform_name}.csv"
-            exists = path_to_file.is_file()
-            if exists:
-                loaded_results = pd.read_csv(path_to_file)
-                results = pd.concat([loaded_results, results], sort=True)
+            loaded_results_ = load_results(dataset.name, transform_name, topic=topic, outdir=outdir)
+            if loaded_results_ is not None:
+                results = pd.concat([loaded_results_, results], sort=True)
     results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results
