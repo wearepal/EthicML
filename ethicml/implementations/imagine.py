@@ -1712,6 +1712,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
     train_loss = 0
     for batch_idx, (i, data_x, data_s, data_y, out_groups) in enumerate(train_loader):
         data_x = data_x.to(device)
+        data_s = data_s.to(device)
         data_s_1 = data_s.to(device)
         data_s_2 = data_s.to(device)
         data_y = data_y.to(device)
