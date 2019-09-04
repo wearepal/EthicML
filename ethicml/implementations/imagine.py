@@ -1558,7 +1558,7 @@ class PredictionEncoder(nn.Module):
 class PredictionDecoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.hid_1 = nn.Linear(_PRED_LD + 1, 20)
+        self.hid_1 = nn.Linear(_PRED_LD + 1, 1)
         self.bn_1 = nn.BatchNorm1d(20)
         self.hid_2 = nn.Linear(20, 20)
         self.bn_2 = nn.BatchNorm1d(20)
