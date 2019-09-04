@@ -1548,8 +1548,8 @@ class PredictionEncoder(nn.Module):
         self.logvar = nn.Linear(100, _PRED_LD)
 
     def forward(self, z: torch.Tensor):
-        x = self.bn_1(F.relu(self.hid_1(z)))
-        x = self.bn_2(F.relu(self.hid_2(x)))
+        x = F.relu(self.hid_1(z))
+        x = F.relu(self.hid_2(x))
         # x = self.bn_3(F.relu(self.hid_3(x)))
         # x = self.mu(x)
         return td.Normal(loc=self.mu(x), scale=F.softplus(self.logvar(x)))
