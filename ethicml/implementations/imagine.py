@@ -1567,11 +1567,11 @@ class PredictionDecoder(nn.Module):
         self.out = nn.Linear(20, 1)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        x = self.bn_1(F.relu(self.hid_1(torch.cat([z, s], dim=1))))
-        x = self.bn_2(F.relu(self.hid_2(x)))
+        # x = self.bn_1(F.relu(self.hid_1(torch.cat([z, s], dim=1))))
+        # x = self.bn_2(F.relu(self.hid_2(x)))
         # x = F.selu(self.hid_3(x))
         # x = z + self.out(x)
-        x = self.out(x)#.sigmoid()
+        # x = self.out(x)#.sigmoid()
         return self.hid_1(torch.cat([z, s], dim=1))#x#td.Bernoulli(probs=x)
 
 
