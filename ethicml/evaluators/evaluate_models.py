@@ -132,9 +132,9 @@ def evaluate_models(
                 train: DataTuple
                 test: DataTuple
                 if isinstance(dataset, Dataset):
-                    train, test = train_test_split(load_data(dataset), random_seed=seed, train_percentage=0.8)
+                    train, test = train_test_split(load_data(dataset), random_seed=seed, train_percentage=2./3.)
                 else:
-                    train, test = train_test_split(dataset, random_seed=seed, train_percentage=0.8)
+                    train, test = train_test_split(dataset, random_seed=seed, train_percentage=2./3.)
 
                 seed += 2410
                 if test_mode:
