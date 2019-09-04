@@ -2,7 +2,7 @@
 Runs given metrics on given algorithms for given datasets
 """
 from pathlib import Path
-from typing import List, Dict, Union, Sequence, Optional
+from typing import List, Dict, Union, Sequence, Optional, Tuple
 from collections import OrderedDict
 
 import pandas as pd
@@ -12,6 +12,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair
+from .parallelism import run_in_parallel
 from ..data.dataset import Dataset
 from ..data.load import load_data
 from .per_sensitive_attribute import (
@@ -242,7 +243,7 @@ def evaluate_models(
                 exists = path_to_file.is_file()
                 if exists:
                     loaded_results = pd.read_csv(path_to_file)
-                    results = pd.concat([loaded_results, results], sort=True)
+                    results = pd.concat([loaded_results, results], sort=False)
                 results.to_csv(path_to_file, index=False)
                 results = pd.DataFrame(columns=columns)
             # ========================== end: loop over preprocessed data =========================
@@ -257,6 +258,94 @@ def evaluate_models(
         for transform_name in ["no_transform"] + preprocess_names:
             loaded_results_ = load_results(dataset.name, transform_name, topic=topic, outdir=outdir)
             if loaded_results_ is not None:
-                results = pd.concat([loaded_results_, results], sort=True)
+                results = pd.concat([results, loaded_results_], sort=False)
+    results = results.set_index(["dataset", "transform", "model", "repeat"])
+    return results
+
+
+def evaluate_models_parallel(
+    datasets: List[Dataset],
+    inprocess_models: Sequence[InAlgorithm] = (),
+    metrics: Sequence[Metric] = (),
+    per_sens_metrics: Sequence[Metric] = (),
+    repeats: int = 1,
+    test_mode: bool = False,
+    proportional_splits: bool = False,
+    topic: Optional[str] = None,
+    start_seed: int = 0,
+    max_parallel: int = 0,
+) -> pd.DataFrame:
+    """Evaluate all the given models for all the given datasets and compute all the given metrics
+
+    Args:
+        datasets: list of dataset objects
+        inprocess_models: list of inprocess model objects
+        metrics: list of metric objects
+        per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
+        repeats: number of repeats to perform for the experiments
+        test_mode: if True, only use a small subset of the data so that the models run faster
+        proportional_splits: if True, the train-test split preserves the proportion of s and y
+        topic: (optional) a string that identifies the run; the string is prepended to the filename
+        start_seed: random seed for the first repeat
+    """
+    # pylint: disable=too-many-arguments
+    per_sens_metrics_check(per_sens_metrics)
+
+    transform_name = "no_transform"
+
+    outdir = Path(".") / "results"  # OS-independent way of saying './results'
+    outdir.mkdir(exist_ok=True)
+
+    data_splits: List[TrainTestPair] = []
+    test_data: List[Tuple[DataTuple, str, str]] = []
+    for dataset in datasets:
+        # reset the seed for every dataset, otherwise seed would depend on the number of datasets
+        seed = start_seed
+
+        for repeat in range(repeats):
+            train: DataTuple
+            test: DataTuple
+            train, test = train_test_split(
+                load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
+            )
+            if test_mode:
+                # take smaller subset of training data to speed up training
+                train = train.get_subset()
+            data_splits.append(TrainTestPair(train, test))
+            test_data.append((test, dataset.name, f"{repeat}-{seed}"))
+            seed += 2410
+
+    all_results = run_in_parallel(list(inprocess_models), data_splits, max_parallel, log=True)
+
+    # transpose `all_results`
+    all_results_t = [list(i) for i in zip(*all_results)]
+
+    # create empty results dataframe
+    columns = ["dataset", "transform", "model", "repeat"]
+    columns += [metric.name for metric in metrics]
+    results = pd.DataFrame(columns=columns)
+
+    # compute metrics and put them into `results`
+    for preds_for_model, (test, dataset_name, repeat_str) in zip(all_results_t, test_data):
+        predictions: pd.DataFrame
+        for predictions, model in zip(preds_for_model, inprocess_models):
+            temp_res: Dict[str, Union[str, float]] = {
+                "dataset": dataset_name,
+                "transform": transform_name,
+                "model": model.name,
+                "repeat": repeat_str,
+            }
+
+            temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+
+            results = results.append(temp_res, ignore_index=True)
+
+    # write results to CSV files and load previous results from the files if they already exist
+    for dataset in datasets:
+        path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
+        if path_to_file.is_file():
+            loaded_results = pd.read_csv(path_to_file)
+            results = pd.concat([loaded_results, results], sort=False)
+        results.to_csv(path_to_file, index=False)
     results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results
