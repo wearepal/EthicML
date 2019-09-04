@@ -8,7 +8,7 @@ import pandas as pd
 from ethicml.utility import DataTuple
 
 
-def bin_cont_feats(data: DataTuple) -> DataTuple:
+def bin_cont_feats(data: DataTuple, bins: int = 5) -> DataTuple:
     """
     Given a datatuple, bin the columns that have ordinal features and return as afresh new DataTuple
     """
@@ -21,7 +21,7 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     for group in groups:
         # if there is only one element in the group, then it corresponds to a continuous feature
         if len(group) == 1 and data.x[group[0]].nunique() > 2:
-            copy[group] = pd.cut(data.x[group].to_numpy()[:, 0], 5)
+            copy[group] = pd.cut(data.x[group].to_numpy()[:, 0], bins)
             copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
             copy = copy.drop(group, axis="columns")
 
