@@ -1572,7 +1572,7 @@ class PredictionDecoder(nn.Module):
         # x = F.selu(self.hid_3(x))
         # x = z + self.out(x)
         x = self.out(x)#.sigmoid()
-        return x#td.Bernoulli(probs=x)
+        return self.hid_1(torch.cat([z, s], dim=1))#x#td.Bernoulli(probs=x)
 
 
 class DirectPredictor(nn.Module):
