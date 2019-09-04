@@ -1753,7 +1753,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         pred_prior = \
             td.Normal(loc=torch.zeros(_PRED_LD).to(device), scale=torch.ones(_PRED_LD).to(device))
         #     td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-        pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc).sum(1)
+        pred_kl_loss = td.kl.kl_divergence(pred_enc, pred_prior).sum(1)
         # pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
 
         pred_sens_loss = F.binary_cross_entropy_with_logits(pred_s_pred, data_s)#-pred_s_pred.log_prob(data_s.to(device))
@@ -1837,7 +1837,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
                     td.Normal(loc=torch.zeros(_PRED_LD).to(device),
                               scale=torch.ones(_PRED_LD).to(device))
                 #     td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-                pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc).sum(1)
+                pred_kl_loss = td.kl.kl_divergence(pred_enc, pred_prior).sum(1)
                 # pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
 
                 pred_sens_loss = F.binary_cross_entropy_with_logits(pred_s_pred,
