@@ -289,7 +289,7 @@ def train_and_transform(
                 preds_train_encs = pd.concat(
                     [
                         preds_train_encs,
-                        pd.DataFrame(pred_enc.rsample().cpu().numpy(), columns=_train.y.columns),
+                        pd.DataFrame(pred_enc.sigmoid().cpu().numpy(), columns=_train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
@@ -798,7 +798,7 @@ def train_and_transform(
             preds_test_encs = pd.concat(
                 [
                     preds_test_encs,
-                    pd.DataFrame(pred_enc.rsample().cpu().numpy(), columns=_train.y.columns),
+                    pd.DataFrame(pred_enc.sigmoid().cpu().numpy(), columns=_train.y.columns),
                 ],
                 axis='rows',
                 ignore_index=True,
@@ -1548,17 +1548,17 @@ class PredictionEncoder(nn.Module):
         self.logvar = nn.Linear(100, _PRED_LD)
 
     def forward(self, z: torch.Tensor):
-        x = F.relu(self.hid_1(z))
-        x = F.relu(self.hid_2(x))
+        x = self.bn_1(F.relu(self.hid_1(z)))
+        x = self.bn_2(F.relu(self.hid_2(x)))
         # x = self.bn_3(F.relu(self.hid_3(x)))
-        # x = self.mu(x)
-        return td.Normal(loc=self.mu(x), scale=F.softplus(self.logvar(x)))
+        x = self.mu(x)
+        return x#td.Normal(loc=self.mu(x), scale=F.softplus(self.logvar(x)))
 
 
 class PredictionDecoder(nn.Module):
     def __init__(self):
         super().__init__()
-        self.hid_1 = nn.Linear(_PRED_LD + 1, 1)
+        self.hid_1 = nn.Linear(_PRED_LD + 1, 20)
         self.bn_1 = nn.BatchNorm1d(20)
         self.hid_2 = nn.Linear(20, 20)
         self.bn_2 = nn.BatchNorm1d(20)
@@ -1567,12 +1567,12 @@ class PredictionDecoder(nn.Module):
         self.out = nn.Linear(20, 1)
 
     def forward(self, z: td.Distribution, s: torch.Tensor):
-        # x = self.bn_1(F.relu(self.hid_1(torch.cat([z, s], dim=1))))
-        # x = self.bn_2(F.relu(self.hid_2(x)))
+        x = self.bn_1(F.relu(self.hid_1(torch.cat([z, s], dim=1))))
+        x = self.bn_2(F.relu(self.hid_2(x)))
         # x = F.selu(self.hid_3(x))
         # x = z + self.out(x)
-        # x = self.out(x)#.sigmoid()
-        return self.hid_1(torch.cat([z, s], dim=1))#x#td.Bernoulli(probs=x)
+        x = self.out(x)#.sigmoid()
+        return x#td.Bernoulli(probs=x)
 
 
 class DirectPredictor(nn.Module):
@@ -1644,7 +1644,7 @@ class Preds(nn.Module):
 
     def forward(self, x: torch.Tensor, s: torch.Tensor):
         pred_enc: td.Distribution = self.prediction_encoder(x)
-        sample = pred_enc.rsample()
+        sample = pred_enc.sigmoid()
         pred_dec: td.Distribution = self.prediction_decoder(sample, s)
         pred_dec_flip: td.Distribution = self.prediction_decoder(sample, (1-s))
 
@@ -1712,7 +1712,6 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
     train_loss = 0
     for batch_idx, (i, data_x, data_s, data_y, out_groups) in enumerate(train_loader):
         data_x = data_x.to(device)
-        data_s = data_s.to(device)
         data_s_1 = data_s.to(device)
         data_s_2 = data_s.to(device)
         data_y = data_y.to(device)
@@ -1750,11 +1749,11 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         pred_loss_2 = F.binary_cross_entropy_with_logits(pred_dec, data_y)#0*-pred_dec.log_prob(data_y)
         pred_loss = (pred_loss_1 + pred_loss_2)#.squeeze()
 
-        pred_prior = \
-            td.Normal(loc=torch.zeros(_PRED_LD).to(device), scale=torch.ones(_PRED_LD).to(device))
+        # pred_prior = \
+        #     td.Normal(loc=torch.zeros(_PRED_LD).to(device), scale=torch.ones(_PRED_LD).to(device))
         #     td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-        pred_kl_loss = td.kl.kl_divergence(pred_enc, pred_prior).sum(1)
-        # pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
+        # pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc).sum(1)
+        pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
 
         pred_sens_loss = F.binary_cross_entropy_with_logits(pred_s_pred, data_s)#-pred_s_pred.log_prob(data_s.to(device))
         ###
@@ -1800,7 +1799,6 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         with torch.no_grad():
             for i, data_x, data_s, data_y, out_groups in valid_loader:
                 data_x = data_x.to(device)
-                data_s = data_s.to(device)
                 data_s_1 = data_s.to(device)
                 data_s_2 = data_s.to(device)
                 data_y = data_y.to(device)
@@ -1837,8 +1835,8 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
                     td.Normal(loc=torch.zeros(_PRED_LD).to(device),
                               scale=torch.ones(_PRED_LD).to(device))
                 #     td.Bernoulli((data_x.new_ones(pred_enc.probs.shape) * 0.5))
-                pred_kl_loss = td.kl.kl_divergence(pred_enc, pred_prior).sum(1)
-                # pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
+                # pred_kl_loss = td.kl.kl_divergence(pred_prior, pred_enc).sum(1)
+                pred_kl_loss = kl_b_b(pred_enc.sigmoid(), (data_x.new_ones(pred_enc.shape) * 0.5))
 
                 pred_sens_loss = F.binary_cross_entropy_with_logits(pred_s_pred,
                                                                     data_s)  # -pred_s_pred.log_prob(data_s.to(device))
