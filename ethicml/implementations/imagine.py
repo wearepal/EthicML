@@ -289,7 +289,7 @@ def train_and_transform(
                 preds_train_encs = pd.concat(
                     [
                         preds_train_encs,
-                        pd.DataFrame(pred_enc.sigmoid().cpu().numpy(), columns=_train.y.columns),
+                        pd.DataFrame(pred_enc.rsample().cpu().numpy(), columns=_train.y.columns),
                     ],
                     axis='rows',
                     ignore_index=True,
@@ -798,7 +798,7 @@ def train_and_transform(
             preds_test_encs = pd.concat(
                 [
                     preds_test_encs,
-                    pd.DataFrame(pred_enc.sigmoid().cpu().numpy(), columns=_train.y.columns),
+                    pd.DataFrame(pred_enc.rsample().cpu().numpy(), columns=_train.y.columns),
                 ],
                 axis='rows',
                 ignore_index=True,
