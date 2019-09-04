@@ -1800,6 +1800,7 @@ def train_model(epoch, model, train_loader, valid_loader, optimizer, device, fla
         with torch.no_grad():
             for i, data_x, data_s, data_y, out_groups in valid_loader:
                 data_x = data_x.to(device)
+                data_s = data_s.to(device)
                 data_s_1 = data_s.to(device)
                 data_s_2 = data_s.to(device)
                 data_y = data_y.to(device)
