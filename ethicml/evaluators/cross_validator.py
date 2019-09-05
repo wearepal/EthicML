@@ -163,7 +163,7 @@ class CrossValidator:
             # convert to right format
             pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
             # run everything in parallel
-            all_results = run_in_parallel(models, pair_folds, self.max_parallel, log=False)
+            all_results = run_in_parallel(models, pair_folds, self.max_parallel)
 
             # finally, iterate over all results, compute scores and store them
             for preds_for_dataset, experiment in zip(all_results, self.experiments):
