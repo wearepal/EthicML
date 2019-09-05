@@ -50,8 +50,7 @@ def common_plotting_settings(plot: plt.Axes, plot_def: PlotDef, xaxis_title: str
     # get handles and labels for the legend
     handles, labels = plot.get_legend_handles_labels()
     # remove the errorbars from the legend if they are there
-    if isinstance(handles[0], tuple):
-        handles = [h[0] for h in handles]
+    handles = [(h[0] if isinstance(h, tuple) else h) for h in handles]
 
     lgnd_def = plot_def.legend
     if lgnd_def == "inside":
