@@ -315,7 +315,7 @@ def evaluate_models_parallel(
             test_data.append((test, dataset.name, f"{repeat}-{seed}"))
             seed += 2410
 
-    all_results = run_in_parallel(list(inprocess_models), data_splits, max_parallel, log=True)
+    all_results = run_in_parallel(list(inprocess_models), data_splits, max_parallel)
 
     # transpose `all_results`
     all_results_t = [list(i) for i in zip(*all_results)]

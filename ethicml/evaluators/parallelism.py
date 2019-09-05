@@ -4,18 +4,17 @@ Collection of functions that enable parallelism
 import os
 import asyncio
 from typing import List, Tuple, Dict
+from collections import OrderedDict
 
 import pandas as pd
+from tqdm import tqdm
 
 from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 
 async def arrange_in_parallel(
-    algos: List[InAlgorithmAsync],
-    data: List[TrainTestPair],
-    max_parallel: int = 0,
-    log: bool = False,
+    algos: List[InAlgorithmAsync], data: List[TrainTestPair], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
@@ -40,13 +39,15 @@ async def arrange_in_parallel(
             raise RuntimeError(f"Algorithm \"{algo.name}\" is not asynchronous!")
         for j, data_item in enumerate(data):
             task_queue.put_nowait((i, j, algo, data_item))
+    num_tasks = len(algos) * len(data)
+    pbar: tqdm = tqdm(total=num_tasks)
     # create workers
     num_cpus = os.cpu_count()
     default_num_workers: int = num_cpus if num_cpus is not None else 1
     num_workers = max_parallel if max_parallel > 0 else default_num_workers
     result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
     workers = [
-        _eval_worker(worker_id, task_queue, result_dict, log) for worker_id in range(num_workers)
+        _eval_worker(worker_id, task_queue, result_dict, pbar) for worker_id in range(num_workers)
     ]
     # run workers and confirm that the queue is empty
     await asyncio.gather(*workers)
@@ -60,25 +61,28 @@ async def _eval_worker(
     worker_id: int,
     task_queue: "asyncio.Queue[Tuple[int, int, InAlgorithmAsync, TrainTestPair]]",
     result_dict: Dict[Tuple[int, int], pd.DataFrame],
-    debug_logging: bool,
+    pbar: tqdm,
 ) -> None:
     while not task_queue.empty():
         # get a work item out of the queue
         algo_id, data_id, algo, (train, test) = task_queue.get_nowait()
-        if debug_logging:
-            print(f"Worker {worker_id} is about to start algo {algo.name} on dataset {train.name}.")
+        # do some logging
+        logging: 'OrderedDict[str, str]' = OrderedDict()
+        logging['model'] = algo.name
+        logging['dataset'] = train.name if train.name is not None else ""
+        logging['worker_id'] = str(worker_id)
+        pbar.set_postfix(ordered_dict=logging)
         # do the work
         result = await algo.run_async(train, test)
         # put result into results dictionary
         result_dict[(algo_id, data_id)] = result
-        if debug_logging:
-            print(f"Worker {worker_id} is has finished algo {algo.name} on dataset {train.name}.")
+        pbar.update()
         # notify the queue that the work item has been processed
         task_queue.task_done()
 
 
 def run_in_parallel(
-    algos: List[InAlgorithm], data: List[TrainTestPair], max_parallel: int = 0, log: bool = False
+    algos: List[InAlgorithm], data: List[TrainTestPair], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
     """Run the given algorithms (embarrassingly) parallel
 
@@ -108,7 +112,7 @@ def run_in_parallel(
     event_loop = asyncio.get_event_loop()
 
     # first start the asynchronous results
-    async_coroutines = arrange_in_parallel(async_algos, data, max_parallel, log=log)
+    async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
 
     # then get the blocking results
     # for each algorithm, first loop over all available datasets and then go on to the next algo
