@@ -203,7 +203,7 @@ def single_plot_mean_std_box(
         return False  # nothing to plot
 
     entries: List[DataEntry] = []
-    for count, model in enumerate(sorted(results.index.to_frame()['model'].unique())):
+    for count, model in enumerate(results.index.to_frame()['model'].unique()):
         mask_for_model = results.index.get_level_values('model') == model
         data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
