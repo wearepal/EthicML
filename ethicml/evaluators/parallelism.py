@@ -14,9 +14,7 @@ from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 
 
 async def arrange_in_parallel(
-    algos: List[InAlgorithmAsync],
-    data: List[TrainTestPair],
-    max_parallel: int = 0,
+    algos: List[InAlgorithmAsync], data: List[TrainTestPair], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
     """Arrange the given algorithms to run (embarrassingly) parallel
 
