@@ -145,7 +145,6 @@ def evaluate_models(
     per_sens_metrics_check(per_sens_metrics)
 
     columns = ["dataset", "transform", "model", "repeat"]
-    columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
     total_experiments = (
@@ -235,7 +234,7 @@ def evaluate_models(
                         # - leaving blank until we have an implementation to work with
                         pass
 
-                    results = results.append(temp_res, ignore_index=True)
+                    results = results.append(temp_res, ignore_index=True, sort=False)
                     pbar.update()
                 # =========================== end: run inprocess models ===========================
 
@@ -258,6 +257,7 @@ def evaluate_models(
         for transform_name in ["no_transform"] + preprocess_names:
             loaded_results_ = load_results(dataset.name, transform_name, topic=topic, outdir=outdir)
             if loaded_results_ is not None:
+                # we want the order in `results` reflect the order in the loop, so `results` first:
                 results = pd.concat([results, loaded_results_], sort=False)
     results = results.set_index(["dataset", "transform", "model", "repeat"])
     return results
@@ -322,7 +322,6 @@ def evaluate_models_parallel(
 
     # create empty results dataframe
     columns = ["dataset", "transform", "model", "repeat"]
-    columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
     # compute metrics and put them into `results`
@@ -338,7 +337,7 @@ def evaluate_models_parallel(
 
             temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
-            results = results.append(temp_res, ignore_index=True)
+            results = results.append(temp_res, ignore_index=True, sort=False)
 
     # write results to CSV files and load previous results from the files if they already exist
     for dataset in datasets:
