@@ -52,6 +52,7 @@ async def arrange_in_parallel(
     # run workers and confirm that the queue is empty
     await asyncio.gather(*workers)
     assert task_queue.empty()
+    pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
     # turn dictionary into a list; the outer list is over the algos, the inner over the datasets
     # NOTE: if you want to change the return type, be warned that CrossValidator depends on it
     return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
