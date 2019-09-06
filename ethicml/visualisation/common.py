@@ -2,11 +2,12 @@
 common plotting functions / datastructures
 """
 
-from typing import Tuple, Union, NamedTuple, List
+from typing import Tuple, Union, NamedTuple, List, Optional
 from typing_extensions import Literal
 
 import pandas as pd
 from matplotlib import pyplot as plt
+import matplotlib as mpl
 
 LegendType = Union[Literal["inside"], Literal["outside"]]
 
@@ -33,7 +34,9 @@ class PlotDef(NamedTuple):
     legend: Union[None, LegendType, Tuple[LegendType, float]] = None
 
 
-def common_plotting_settings(plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str):
+def common_plotting_settings(
+    plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
+) -> Optional[mpl.legend.Legend]:
     """Common settings for plots
     Args:
         plot: a pyplot plot object
@@ -50,8 +53,7 @@ def common_plotting_settings(plot: plt.Axes, plot_def: PlotDef, xaxis_title: str
     # get handles and labels for the legend
     handles, labels = plot.get_legend_handles_labels()
     # remove the errorbars from the legend if they are there
-    if isinstance(handles[0], tuple):
-        handles = [h[0] for h in handles]
+    handles = [(h[0] if isinstance(h, tuple) else h) for h in handles]
 
     lgnd_def = plot_def.legend
     if lgnd_def == "inside":
@@ -59,7 +61,7 @@ def common_plotting_settings(plot: plt.Axes, plot_def: PlotDef, xaxis_title: str
     if lgnd_def == "outside":
         return plot.legend(handles, labels, loc='upper left', bbox_to_anchor=(1, 1))
     if isinstance(lgnd_def, tuple) and lgnd_def[0] == "outside" and isinstance(lgnd_def[1], float):
-        return plot.legend(handles, labels, bbox_to_anchor=(1, lgnd_def[1]), loc=2)
+        return plot.legend(handles, labels, bbox_to_anchor=(1, lgnd_def[1]), loc='upper left')
     return None
 
 
@@ -72,7 +74,7 @@ def errorbox(
     firstshape: int = 0,
     markersize: int = 6,
     use_cross: bool = False,
-):
+) -> Optional[mpl.legend.Legend]:
     """Generate a figure with errorboxes that reflect the std dev of an entry
 
     Args:
@@ -152,7 +154,7 @@ def errorbox(
                 xmean,
                 ymean,
                 shapes[i_shp % len(shapes)],
-                c=color,
+                color=color,
                 label=entry.label,
                 zorder=4 + 2 * i_shp,
                 markersize=markersize,
@@ -164,6 +166,6 @@ def errorbox(
     y_min = min_ymean * 0.99
     y_max = max_ymean * 1.01
 
-    plot.set_xlim([x_min, x_max])
-    plot.set_ylim([y_min, y_max])
+    plot.set_xlim(x_min, x_max)
+    plot.set_ylim(y_min, y_max)
     return common_plotting_settings(plot, plot_def, xaxis[1], yaxis[1])

@@ -311,6 +311,7 @@ def evaluate_models_parallel(
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_subset()
+            train = train.make_copy_with(name=f"{train.name} ({repeat})")
             data_splits.append(TrainTestPair(train, test))
             test_data.append((test, dataset.name, f"{repeat}-{seed}"))
             seed += 2410
