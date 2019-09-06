@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Tuple, List, Union
 import itertools
 
+from typing_extensions import Literal
 import imageio
 import pandas as pd
 import seaborn as sns
@@ -111,9 +112,9 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     mpl.style.use("seaborn-pastel")
     # plt.xkcd()
 
-    # fig, ax = plt.subplots()
+    fig, plot = plt.subplots()
 
-    _ = plt.bar(
+    quadrant1 = plot.bar(
         0,
         height=y_s0[y_0_label] * 100,
         width=s_0_val * 100,
@@ -121,7 +122,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         edgecolor="black",
         color="C0",
     )
-    _ = plt.bar(
+    quadrant2 = plot.bar(
         s_0_val * 100,
         height=y_s1[y_0_label] * 100,
         width=s_1_val * 100,
@@ -129,7 +130,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         edgecolor="black",
         color="C1",
     )
-    _ = plt.bar(
+    quadrant3 = plot.bar(
         0,
         height=y_s0[y_1_label] * 100,
         width=s_0_val * 100,
@@ -138,7 +139,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         edgecolor="black",
         color="C2",
     )
-    _ = plt.bar(
+    quadrant4 = plot.bar(
         s_0_val * 100,
         height=y_s1[y_1_label] * 100,
         width=s_1_val * 100,
@@ -148,24 +149,24 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         color="C3",
     )
 
-    plt.ylim([0, 100])
-    plt.xlim([0, 100])
-    plt.ylabel(f"Percent {y_col}=y")
-    plt.xlabel(f"Percent {s_col}=s")
-    plt.title("Dataset Composition by class and sensitive attribute")
+    plot.set_ylim(0, 100)
+    plot.set_xlim(0, 100)
+    plot.set_ylabel(f"Percent {y_col}=y")
+    plot.set_xlabel(f"Percent {s_col}=s")
+    plot.set_title("Dataset Composition by class and sensitive attribute")
 
-    plt.legend(
+    plot.legend(
+        [quadrant1, quadrant2, quadrant3, quadrant4],
         [
             f"y={y_0_label}, s={s_0_label}",
             f"y={y_0_label}, s={s_1_label}",
             f"y={y_1_label}, s={s_0_label}",
             f"y={y_1_label}, s={s_1_label}",
-        ]
+        ],
     )
 
     file_path.parent.mkdir(exist_ok=True)
-    plt.savefig(file_path)
-    plt.clf()
+    fig.savefig(file_path)
 
 
 def single_plot_mean_std_box(
@@ -178,7 +179,7 @@ def single_plot_mean_std_box(
     legend: Union[None, LegendType, Tuple[LegendType, float]] = "outside",
     markersize: int = 6,
     use_cross: bool = False,
-):
+) -> Union[None, Literal[False], mpl.legend.Legend]:
     """This is essentially a wrapper around the `errorbox` function
 
     This function can also be used to create figures with multiple plots on them, because it does
