@@ -1,4 +1,6 @@
+import sys
 from typing import List, Dict, Any
+from pathlib import Path
 import pandas as pd
 import pytest
 from pytest import approx
@@ -9,8 +11,9 @@ from ethicml.algorithms.inprocess import (
     Corels,
     GPyT, GPyTDemPar, GPyTEqOdds,
     InAlgorithm, InAlgorithmAsync,
+    InstalledModel,
     Kamiran,
-    Kamishima,
+    # Kamishima,
     LR, LRCV, LRProb,
     Majority,
     MLP,
@@ -19,7 +22,7 @@ from ethicml.algorithms.inprocess import (
 )
 from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy, AbsCV
-from ethicml.utility import Heaviside, DataTuple, TrainTestPair
+from ethicml.utility import Heaviside, DataTuple, TrainTestPair, PathTuple, TestPathTuple
 from ethicml.data import load_data, Compas
 from ethicml.preprocessing import train_test_split
 from tests.run_algorithm_test import get_train_test, count_true
@@ -161,25 +164,25 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert best_result.scores['CV absolute'] == approx(0.6654, rel=1e-4)
 
 
-@pytest.fixture(scope="module")
-def kamishima():
-    kamishima_algo = Kamishima()
-    yield kamishima_algo
-    print("teardown Kamishima")
-    kamishima_algo.remove()
+# @pytest.fixture(scope="module")
+# def kamishima():
+#     kamishima_algo = Kamishima()
+#     yield kamishima_algo
+#     print("teardown Kamishima")
+#     kamishima_algo.remove()
 
 
-def test_kamishima(kamishima):
-    train, test = get_train_test()
+# def test_kamishima(kamishima):
+#     train, test = get_train_test()
 
-    model: InAlgorithmAsync = kamishima
-    assert model.name == "Kamishima"
+#     model: InAlgorithmAsync = kamishima
+#     assert model.name == "Kamishima"
 
-    assert model is not None
+#     assert model is not None
 
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 208
-    assert predictions.values[predictions.values == -1].shape[0] == 192
+#     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
+#     assert predictions.values[predictions.values == 1].shape[0] == 208
+#     assert predictions.values[predictions.values == -1].shape[0] == 192
 
 
 @pytest.fixture(scope="module")
@@ -349,6 +352,34 @@ def test_lr():
     predictions: pd.DataFrame = model.run(train, test)
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
+
+
+def test_local_installed_lr(toy_train_test: TrainTestPair):
+    train, test = toy_train_test
+
+    class _LocalInstalledLR(InstalledModel):
+        def __init__(self):
+            super().__init__(dir_name=".", top_dir="", executable=sys.executable)
+
+        @property
+        def name(self) -> str:
+            return "local installed LR"
+
+        def _script_command(
+            self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
+        ) -> (List[str]):
+            script = "./tests/local_installed_lr.py"
+            return [
+                script, str(train_paths.x), str(train_paths.y), str(test_paths.x), str(pred_path)
+            ]
+
+    model: InAlgorithm = _LocalInstalledLR()
+    assert model is not None
+    assert model.name == "local installed LR"
+
+    predictions: pd.DataFrame = model.run(train, test)
+    assert count_true(predictions.values == 1) == 211
+    assert count_true(predictions.values == -1) == 189
 
 
 def test_agarwal():
