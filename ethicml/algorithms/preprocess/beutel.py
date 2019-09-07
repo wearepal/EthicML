@@ -1,7 +1,13 @@
 """Beutel's algorithm"""
 from typing import List, Sequence, Tuple
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple, FairType
+from ethicml.utility.data_structures import (
+    DataTuple,
+    TestTuple,
+    PathTuple,
+    TestPathTuple,
+    FairnessType,
+)
 from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
 
@@ -11,7 +17,7 @@ class Beutel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        fairness: FairType = FairType.DI,
+        fairness: FairnessType = "DP",
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),

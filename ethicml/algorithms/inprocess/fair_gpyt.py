@@ -98,9 +98,9 @@ class GPyT(InstalledModel):
 class GPyTDemPar(GPyT):
     """GP algorithm which enforces demographic parity"""
 
-    MEAN = 2
-    MIN = 3
-    MAX = 4
+    MEAN = 2  # pylint: disable=invalid-name
+    MIN = 3  # pylint: disable=invalid-name
+    MAX = 4  # pylint: disable=invalid-name
 
     def __init__(
         self,

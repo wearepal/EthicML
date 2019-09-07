@@ -2,10 +2,10 @@ from typing import Tuple
 import pandas as pd
 
 from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR, Kamiran
+from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
 from ethicml.algorithms.preprocess import (PreAlgorithm, PreAlgorithmAsync, Beutel,
                                            Zemel, VFAE, Upsampler)
-from ethicml.utility import DataTuple, FairType, TestTuple
+from ethicml.utility import DataTuple, TestTuple
 from tests.run_algorithm_test import get_train_test
 
 
@@ -223,7 +223,7 @@ def test_threaded_vfae():
 def test_threaded_custom_beutel():
     train, test = get_train_test()
 
-    beut_model: PreAlgorithm = Beutel(epochs=5, fairness=FairType.EOPP)
+    beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
     assert beut_model is not None
     assert beut_model.name == "Beutel"
 
@@ -241,7 +241,7 @@ def test_threaded_custom_beutel():
     assert predictions.values[predictions.values == 1].shape[0] == 202
     assert predictions.values[predictions.values == -1].shape[0] == 198
 
-    model: PreAlgorithmAsync = Beutel(epochs=5, fairness=FairType.EOPP)
+    model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
     assert model is not None
     assert model.name == "Beutel"
 

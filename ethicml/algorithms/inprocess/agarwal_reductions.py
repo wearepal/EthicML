@@ -2,18 +2,25 @@
 implementation of Agarwal model
 """
 from pathlib import Path
-from typing import List
+from typing import List, Set, Optional
 
 import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
+from ethicml.utility.data_structures import (
+    PathTuple,
+    TestPathTuple,
+    DataTuple,
+    TestTuple,
+    FairnessType,
+    ClassifierType,
+)
 from ethicml.implementations import agarwal
 from ._shared import conventional_interface, settings_for_svm_lr
 
 
-VALID_FAIRNESS = {"DP", "EqOd"}
-VALID_MODELS = {"LR", "SVM"}
+VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
+VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
 class Agarwal(InAlgorithmAsync):
@@ -23,12 +30,12 @@ class Agarwal(InAlgorithmAsync):
 
     def __init__(
         self,
-        fairness: str = "DP",
-        classifier: str = "LR",
+        fairness: FairnessType = "DP",
+        classifier: ClassifierType = "LR",
         eps: float = 0.1,
-        iters=50,
-        C=None,
-        kernel=None,
+        iters: int = 50,
+        C: Optional[float] = None,
+        kernel: Optional[str] = None,
     ):
         if fairness not in VALID_FAIRNESS:
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)

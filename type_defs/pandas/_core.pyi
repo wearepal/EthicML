@@ -19,7 +19,7 @@ from pathlib import Path as _Path
 import numpy as _np
 
 _T = TypeVar('_T', str, int)
-_AxisType = Union[Literal["columns"], Literal["index"]]
+_AxisType = Literal["columns", "index"]
 
 class Index(Generic[_T]):
     # magic methods
