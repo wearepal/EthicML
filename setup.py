@@ -59,4 +59,9 @@ setup(
             "torch >= 1.1.0, <= 1.1.0.post2",
         ],
     },
+    classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Typing :: Typed",
+    ],
 )
