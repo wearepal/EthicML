@@ -1,17 +1,13 @@
-"""
-Returns a subset of the data. Used primarily in testing so that kernel methods finish in a
-reasonable time
-"""
+"""Data structures that are used throughout the code"""
 from pathlib import Path
-from enum import Enum
 from dataclasses import dataclass, replace
-from typing import Tuple, List, Optional, NamedTuple, Callable, Union
+from typing import Tuple, List, Optional, NamedTuple, Callable
 from typing_extensions import Literal
 
 import pandas as pd
 from pandas.testing import assert_index_equal
 
-AxisType = Union[Literal["columns"], Literal["index"]]
+AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -226,21 +222,22 @@ def load_feather(output_path: Path) -> pd.DataFrame:
     return df
 
 
-class FairType(Enum):
-    """
-    This is an enum that can be used to specify the type of fairness
+FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
 
-    It basically works like the enums in C, but we can also give it values that are not integers.
-    """
 
-    DI = "DI"
-    DP = "DI"  # alias for DI (for "demographic parity")
-    EOPP = "Eq. Opp"
-    EODDS = "Eq. Odds"
+def str_to_fair_type(fair_str: str) -> Optional[FairnessType]:
+    """Convert a string to a fairness type or return None if not possible"""
+    # this somewhat silly code is needed because mypy doesn't support narrowing to literals yet
+    if fair_str == "DP":
+        return "DP"
+    if fair_str == "EqOd":
+        return "EqOd"
+    if fair_str == "EqOp":
+        return "EqOp"
+    return None
 
-    def __str__(self) -> str:
-        """This function is needed so that, for example, str(FairType.DI) returns 'DI'."""
-        return self.value
+
+ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
 
 
 class TrainTestPair(NamedTuple):

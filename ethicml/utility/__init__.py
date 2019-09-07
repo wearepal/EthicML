@@ -9,7 +9,7 @@ from .data_structures import (
     concat_tt,
     load_feather,
     DataTuple,
-    FairType,
+    FairnessType,
     PathTuple,
     TestPathTuple,
     TestTuple,

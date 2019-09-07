@@ -14,7 +14,7 @@ from torch import nn
 from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, FairType
+from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
@@ -33,7 +33,7 @@ STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 class BeutelSettings:
     """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
 
-    fairness: FairType
+    fairness: FairnessType
     enc_size: Sequence[int]
     adv_size: Sequence[int]
     pred_size: Sequence[int]
@@ -155,11 +155,11 @@ def train_and_transform(
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags.fairness == FairType.EOPP:
+            if flags.fairness == "EqOp":
                 mask = class_label.ge(0.5)
-            elif flags.fairness == FairType.EODDS:
+            elif flags.fairness == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags.fairness == FairType.DI:
+            elif flags.fairness == "DP":
                 mask = torch.ones(s_pred.shape).byte()
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
@@ -225,11 +225,11 @@ def get_mask(flags: BeutelSettings, s_pred, class_label):
     Returns:
 
     """
-    if flags.fairness == FairType.EOPP:
+    if flags.fairness == "EqOp":
         mask = class_label.ge(0.5)
-    elif flags.fairness == FairType.EODDS:
+    elif flags.fairness == "EqOd":
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags.fairness == FairType.DI:
+    elif flags.fairness == "DP":
         mask = torch.ones(s_pred.shape).byte()
 
     return mask
@@ -327,7 +327,7 @@ class Adversary(nn.Module):
 
     def __init__(
         self,
-        fairness: FairType,
+        fairness: FairnessType,
         adv_size: Sequence[int],
         init_size: int,
         s_size: int,
@@ -357,13 +357,13 @@ class Adversary(nn.Module):
 
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness == FairType.EOPP:
+        if self.fairness == "EqOp":
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness == FairType.EODDS:
+        elif self.fairness == "EqOd":
             raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness == FairType.DI:
+        elif self.fairness == "DP":
             x = self.adversary(x)
         return x
 
@@ -419,7 +419,7 @@ def main():
     parser = pre_algo_argparser()
 
     # model parameters
-    parser.add_argument("--fairness", type=FairType, choices=list(FairType), required=True)
+    parser.add_argument("--fairness", choices=["DP", "EqOp", "EqOd"], required=True)
     parser.add_argument("--enc_size", type=int, nargs="+", required=True)
     parser.add_argument("--adv_size", type=int, nargs="+", required=True)
     parser.add_argument("--pred_size", type=int, nargs="+", required=True)

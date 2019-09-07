@@ -5,7 +5,7 @@ from fairlearn.classred import expgrad
 from fairlearn.moments import Moment, DP, EO
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType, str_to_fair_type
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
 from ethicml.utility.heaviside import Heaviside
@@ -15,7 +15,7 @@ def train_and_predict(
     train: DataTuple,
     test: TestTuple,
     classifier: str,
-    fairness: str,
+    fairness: FairnessType,
     eps: float,
     iters: int,
     C: float,
@@ -58,7 +58,9 @@ def main():
     """This function runs the Agarwal model as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
-    classifier, fairness, eps, iters, C, kernel = interface.remaining_args()
+    classifier, fairness_, eps, iters, C, kernel = interface.remaining_args()
+    fairness = str_to_fair_type(fairness_)
+    assert fairness is not None
     interface.save_predictions(
         train_and_predict(
             train,

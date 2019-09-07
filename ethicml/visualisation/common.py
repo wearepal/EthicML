@@ -9,7 +9,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib as mpl
 
-LegendType = Union[Literal["inside"], Literal["outside"]]
+LegendType = Literal["inside", "outside"]  # pylint: disable=invalid-name
 
 
 class DataEntry(NamedTuple):

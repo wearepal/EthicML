@@ -9,30 +9,28 @@ from .legend import Legend
 
 _Data = Union[float, _np.ndarray[float], Sequence[float]]
 
-_LegendLocation = Union[
-    Literal["best"],
-    Literal["upper right"],
-    Literal["upper left"],
-    Literal["lower left"],
-    Literal["lower right"],
-    Literal["center left"],
-    Literal["center right"],
-    Literal["lower center"],
-    Literal["upper center"],
-    Literal["center"],
+_LegendLocation = Literal[
+    "best",
+    "upper right",
+    "upper left",
+    "lower left",
+    "lower right",
+    "center left",
+    "center right",
+    "lower center",
+    "upper center",
+    "center",
 ]
 
 class Axes:
     def set_xlabel(self, xlabel: str) -> None: ...
     def set_ylabel(self, ylabel: str) -> None: ...
-    def set_title(
-        self, label: str, loc: Union[Literal["left"], Literal["center"], Literal["right"]] = ...
-    ) -> None: ...
+    def set_title(self, label: str, loc: Literal["left", "center", "right"] = ...) -> None: ...
     def grid(
         self,
         b: Optional[bool] = ...,
-        which: Union[Literal["major"], Literal["minor"], Literal["both"]] = ...,
-        axis: Union[Literal["both"], Literal["x"], Literal["y"]] = ...,
+        which: Literal["major", "minor", "both"] = ...,
+        axis: Literal["both", "x", "y"] = ...,
     ) -> None: ...
     def get_legend_handles_labels(
         self
@@ -73,7 +71,7 @@ class Axes:
         width: _Data = ...,
         bottom: _Data = ...,
         *,
-        align: Union[Literal["center"], Literal["edge"]] = ...,
+        align: Literal["center", "edge"] = ...,
         color: str = ...,
         edgecolor: str = ...,
         linewidth: float = ...,
