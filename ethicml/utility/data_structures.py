@@ -2,7 +2,7 @@
 from pathlib import Path
 from dataclasses import dataclass, replace
 from typing import Tuple, List, Optional, NamedTuple, Callable
-from typing_extensions import Literal
+from typing_extensions import Literal, Final
 
 import pandas as pd
 from pandas.testing import assert_index_equal
@@ -243,3 +243,71 @@ ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
 class TrainTestPair(NamedTuple):
     train: DataTuple
     test: TestTuple
+
+
+class Results:
+    """Container for results from `evaluate_models`"""
+
+    columns: Final = ["dataset", "transform", "model", "repeat"]
+
+    def __init__(self, data_frame: Optional[pd.DataFrame] = None):
+        self._data: pd.DataFrame
+        if data_frame is not None:
+            # ensure correct index
+            if data_frame.index.names != self.columns:
+                self._data = data_frame.set_index(self.columns)
+            else:
+                self._data = data_frame
+        else:
+            self._data = pd.DataFrame(columns=self.columns).set_index(self.columns)
+
+    @property
+    def data(self) -> pd.DataFrame:
+        return self._data
+
+    def __repr__(self) -> str:
+        return repr(self._data)
+
+    def __str__(self) -> str:
+        return str(self._data)
+
+    def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
+        """Append (or prepend) a DataFrame to this object"""
+        if data_frame.index.names != self.columns:
+            data_frame = data_frame.set_index(self.columns)  # set correct index
+        order = [data_frame, self._data] if prepend else [self._data, data_frame]
+        # set sort=False so that the order of the columns is preserved
+        self._data = pd.concat(order, sort=False, axis='index')
+
+    def append_from_file(self, csv_file: Path, prepend: bool = False) -> bool:
+        """Append results from a CSV file"""
+        if csv_file.is_file():  # if file exists
+            self.append_df(pd.read_csv(csv_file), prepend=prepend)
+            return True
+        return False
+
+    def save_as_csv(self, file_path: Path) -> None:
+        # `_data` has the multi index based on [dataset, transform, ...] so we have to reset that
+        self._data.reset_index(drop=False).to_csv(file_path, index=False)
+
+    @classmethod
+    def from_file(cls, csv_file: Path) -> Optional['Results']:
+        """Load results from a CSV file that was created by `evaluate_models`
+
+        Args:
+            csv_file: path to a CSV file with results
+
+        Returns:
+            DataFrame if the file exists; None otherwise
+        """
+        if csv_file.is_file():
+            return cls(pd.read_csv(csv_file))
+        return None
+
+    def map_over_index(
+        self, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]
+    ) -> pd.DataFrame:
+        """Change the values of the index with a transformation function"""
+        results_mapped = self._data.copy()
+        results_mapped.index = results_mapped.index.map(mapper)  # type: ignore
+        return results_mapped

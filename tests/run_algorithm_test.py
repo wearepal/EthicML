@@ -80,7 +80,7 @@ def test_empty_evaluate(cleanup):
     empty_result = evaluate_models([Toy()], repeats=3)
     expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "repeat"])
-    pd.testing.assert_frame_equal(empty_result, expected_result)
+    pd.testing.assert_frame_equal(empty_result.data, expected_result)
 
 
 def test_run_alg_suite(cleanup):
@@ -98,7 +98,9 @@ def test_run_alg_suite(cleanup):
     results = evaluate_models(datasets, preprocess_models, inprocess_models,
                               postprocess_models, metrics, per_sens_metrics,
                               repeats=1, test_mode=True, delete_prev=True, topic="pytest")
-    pd.testing.assert_frame_equal(parallel_results, results.query("transform == \"no_transform\""))
+    pd.testing.assert_frame_equal(
+        parallel_results.data, results.data.query("transform == \"no_transform\"")
+    )
 
     files = os.listdir(Path(".") / "results")
     file_names = [
@@ -114,11 +116,11 @@ def test_run_alg_suite(cleanup):
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert written_file.shape == (2, 14)
 
-    reloaded = load_results("Adult Race", "Upsample uniform", "pytest", set_index=True)
+    reloaded = load_results("Adult Race", "Upsample uniform", "pytest")
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / 'pytest_Adult Race_Upsample uniform.csv')
     read = read.set_index(["dataset", "transform", "model", "repeat"])
-    pd.testing.assert_frame_equal(reloaded, read)
+    pd.testing.assert_frame_equal(reloaded.data, read)
 
 
 def test_run_alg_suite_wrong_metrics(cleanup):

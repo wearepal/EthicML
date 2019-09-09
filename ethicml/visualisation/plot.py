@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 from ethicml.metrics import Metric
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Results
 from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
@@ -171,7 +171,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
 def single_plot_mean_std_box(
     plot: plt.Axes,
-    results: pd.DataFrame,
+    results: Results,
     xaxis: Tuple[str, str],
     yaxis: Tuple[str, str],
     dataset: str,
@@ -196,17 +196,18 @@ def single_plot_mean_std_box(
     Returns
         the legend object if something was plotted; False otherwise
     """
-    mask_for_dataset = results.index.get_level_values('dataset') == dataset
-    mask_for_transform = results.index.get_level_values('transform') == transform
-    matching_results = results.loc[mask_for_dataset & mask_for_transform]
+    results_df = results.data
+    mask_for_dataset = results_df.index.get_level_values('dataset') == dataset
+    mask_for_transform = results_df.index.get_level_values('transform') == transform
+    matching_results = results_df.loc[mask_for_dataset & mask_for_transform]
 
     if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).any().any():
         return False  # nothing to plot
 
     entries: List[DataEntry] = []
-    for count, model in enumerate(results.index.to_frame()['model'].unique()):
-        mask_for_model = results.index.get_level_values('model') == model
-        data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+    for count, model in enumerate(results_df.index.to_frame()['model'].unique()):
+        mask_for_model = results_df.index.get_level_values('model') == model
+        data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
 
@@ -215,7 +216,7 @@ def single_plot_mean_std_box(
 
 
 def plot_mean_std_box(
-    results: pd.DataFrame,
+    results: Results,
     metric_y: Union[str, Metric],
     metric_x: Union[str, Metric],
     save: bool = True,
@@ -235,9 +236,10 @@ def plot_mean_std_box(
     """
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)
+    results_df = results.data
 
     def _get_columns(metric: Metric) -> List[str]:
-        cols = [col for col in results.columns if metric.name in col]
+        cols = [col for col in results_df.columns if metric.name in col]
         if not cols:
             raise ValueError(f"No matching columns found for Metric \"{metric.name}\".")
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
@@ -250,14 +252,14 @@ def plot_mean_std_box(
         # if the metric is given as a Metric object, look for matching columns
         cols_x = _get_columns(metric_x)
     else:
-        if metric_x not in results.columns:
+        if metric_x not in results_df.columns:
             raise ValueError(f"No column named \"{metric_x}\".")
         cols_x = [metric_x]
 
     if isinstance(metric_y, Metric):
         cols_y = _get_columns(metric_y)
     else:
-        if metric_y not in results.columns:
+        if metric_y not in results_df.columns:
             raise ValueError(f"No column named \"{metric_y}\".")
         cols_y = [metric_y]
 
@@ -266,9 +268,9 @@ def plot_mean_std_box(
     possible_pairs = list(itertools.product(cols_x, cols_y))
 
     figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
-    for dataset in results.index.to_frame()['dataset'].unique():
+    for dataset in results_df.index.to_frame()['dataset'].unique():
         dataset_: str = str(dataset)
-        for transform in results.index.to_frame()['transform'].unique():
+        for transform in results_df.index.to_frame()['transform'].unique():
             transform_: str = str(transform)
             for x_axis, y_axis in possible_pairs:
                 fig: plt.Figure
