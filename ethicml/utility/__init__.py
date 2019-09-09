@@ -11,6 +11,7 @@ from .data_structures import (
     DataTuple,
     FairnessType,
     PathTuple,
+    Results,
     TestPathTuple,
     TestTuple,
     TrainTestPair,

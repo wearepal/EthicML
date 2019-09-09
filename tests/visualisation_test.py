@@ -14,7 +14,7 @@ from ethicml.algorithms.inprocess import SVM, LR, Kamiran
 from ethicml.algorithms.preprocess import Upsampler
 from ethicml.evaluators import evaluate_models
 from ethicml.metrics import Accuracy, CV, TPR, ProbPos, NMI
-from ethicml.utility import DataTuple
+from ethicml.utility import DataTuple, Results
 from ethicml.data import load_data, Adult, Toy
 from ethicml.preprocessing import train_test_split
 from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot, plot_mean_std_box
@@ -52,7 +52,7 @@ def test_label_plot(cleanup):
 
 
 def test_plot_evals(cleanup: None):
-    results: pd.DataFrame = evaluate_models(
+    results: Results = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
         inprocess_models=[LR(), SVM(kernel='linear'), Kamiran()],

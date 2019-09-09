@@ -11,7 +11,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair
+from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair, Results
 from .parallelism import run_in_parallel
 from ..data.dataset import Dataset
 from ..data.load import load_data
@@ -80,8 +80,7 @@ def load_results(
     transform_name: str,
     topic: Optional[str] = None,
     outdir: Path = Path(".") / "results",
-    set_index: bool = False,
-) -> Optional[pd.DataFrame]:
+) -> Optional[Results]:
     """Load results from a CSV file that was created by `evaluate_models`
 
     Args:
@@ -89,19 +88,12 @@ def load_results(
         transform_name: name of the transformation that was used for the results
         topic: (optional) topic string of the results
         outdir: directory where the results are stored
-        set_index: if True, set the multi-index on the dataframe just like `evaluate_models` does
 
     Returns:
         DataFrame if the file exists; None otherwise
     """
     path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
-    exists = path_to_file.is_file()
-    if exists:
-        results = pd.read_csv(path_to_file)
-        if set_index:
-            return results.set_index(["dataset", "transform", "model", "repeat"])
-        return results
-    return None
+    return Results.from_file(path_to_file)
 
 
 def _result_path(
@@ -124,7 +116,7 @@ def evaluate_models(
     proportional_splits: bool = False,
     topic: Optional[str] = None,
     start_seed: int = 0,
-) -> pd.DataFrame:
+) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
@@ -145,7 +137,6 @@ def evaluate_models(
     per_sens_metrics_check(per_sens_metrics)
 
     columns = ["dataset", "transform", "model", "repeat"]
-    results = pd.DataFrame(columns=columns)
 
     total_experiments = (
         len(datasets)
@@ -207,6 +198,7 @@ def evaluate_models(
 
                 transformed_train: DataTuple = transform.train
                 transformed_test: Union[DataTuple, TestTuple] = transform.test
+                results_df = pd.DataFrame(columns=columns)
 
                 # ========================== begin: run inprocess models ==========================
                 for model in inprocess_models:
@@ -234,17 +226,15 @@ def evaluate_models(
                         # - leaving blank until we have an implementation to work with
                         pass
 
-                    results = results.append(temp_res, ignore_index=True, sort=False)
+                    results_df = results_df.append(temp_res, ignore_index=True, sort=False)
                     pbar.update()
                 # =========================== end: run inprocess models ===========================
 
                 path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-                exists = path_to_file.is_file()
-                if exists:
-                    loaded_results = pd.read_csv(path_to_file)
-                    results = pd.concat([loaded_results, results], sort=False)
-                results.to_csv(path_to_file, index=False)
-                results = pd.DataFrame(columns=columns)
+                results: Results = Results(results_df)
+                # put old results before new results -> prepend=True
+                results.append_from_file(path_to_file, prepend=True)
+                results.save_as_csv(path_to_file)
             # ========================== end: loop over preprocessed data =========================
             seed += 2410
         # =================================== end: one repeat =====================================
@@ -252,14 +242,11 @@ def evaluate_models(
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
     preprocess_names = [model.name for model in preprocess_models]
-    results = pd.DataFrame(columns=columns)
+    results = Results()  # create empty Results object
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
-            loaded_results_ = load_results(dataset.name, transform_name, topic=topic, outdir=outdir)
-            if loaded_results_ is not None:
-                # we want the order in `results` reflect the order in the loop, so `results` first:
-                results = pd.concat([results, loaded_results_], sort=False)
-    results = results.set_index(["dataset", "transform", "model", "repeat"])
+            path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
+            results.append_from_file(path_to_file)
     return results
 
 
@@ -274,7 +261,7 @@ def evaluate_models_parallel(
     topic: Optional[str] = None,
     start_seed: int = 0,
     max_parallel: int = 0,
-) -> pd.DataFrame:
+) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
     Args:
@@ -292,6 +279,7 @@ def evaluate_models_parallel(
     per_sens_metrics_check(per_sens_metrics)
 
     transform_name = "no_transform"
+    columns = ["dataset", "transform", "model", "repeat"]
 
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
@@ -316,17 +304,16 @@ def evaluate_models_parallel(
             test_data.append((test, dataset.name, f"{repeat}-{seed}"))
             seed += 2410
 
-    all_results = run_in_parallel(list(inprocess_models), data_splits, max_parallel)
+    all_predictions = run_in_parallel(list(inprocess_models), data_splits, max_parallel)
 
     # transpose `all_results`
-    all_results_t = [list(i) for i in zip(*all_results)]
+    all_predictions_t = [list(i) for i in zip(*all_predictions)]
 
-    # create empty results dataframe
-    columns = ["dataset", "transform", "model", "repeat"]
-    results = pd.DataFrame(columns=columns)
+    all_results = Results()
 
-    # compute metrics and put them into `results`
-    for preds_for_model, (test, dataset_name, repeat_str) in zip(all_results_t, test_data):
+    # compute metrics, collect them and write them to files
+    for preds_for_model, (test, dataset_name, repeat_str) in zip(all_predictions_t, test_data):
+        results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
         predictions: pd.DataFrame
         for predictions, model in zip(preds_for_model, inprocess_models):
             temp_res: Dict[str, Union[str, float]] = {
@@ -338,14 +325,14 @@ def evaluate_models_parallel(
 
             temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
-            results = results.append(temp_res, ignore_index=True, sort=False)
+            results_df = results_df.append(temp_res, ignore_index=True, sort=False)
 
-    # write results to CSV files and load previous results from the files if they already exist
-    for dataset in datasets:
-        path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-        if path_to_file.is_file():
-            loaded_results = pd.read_csv(path_to_file)
-            results = pd.concat([loaded_results, results], sort=False)
-        results.to_csv(path_to_file, index=False)
-    results = results.set_index(["dataset", "transform", "model", "repeat"])
-    return results
+        # write results to CSV files and load previous results from the files if they already exist
+        path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
+        results: Results = Results(results_df)
+        # put old results before new results -> prepend=True
+        results.append_from_file(path_to_file, prepend=True)
+        results.save_as_csv(path_to_file)
+        all_results.append_df(results.data)
+
+    return all_results
