@@ -13,17 +13,22 @@ from ethicml.algorithms.inprocess import InAlgorithmAsync
 
 
 def test_simple_saving():
+    """
+    tests that a DataTuple can be saved
+    Returns:
+
+    """
     data_tuple = DataTuple(
-        x=pd.DataFrame(
-            {'a1': np.array([3.2, 9.4, np.nan, 0.0]), 'a2': np.array([1, 1, 0, 1])}),
+        x=pd.DataFrame({'a1': np.array([3.2, 9.4, np.nan, 0.0]), 'a2': np.array([1, 1, 0, 1])}),
         s=pd.DataFrame(
-            {'b1': np.array([1.8, -0.3, 1e10]),
-             'b2': np.array([1, 1, -1]),
-             'b3': np.array([0, 1, 0])}),
-        y=pd.DataFrame(
-            {'c1': np.array([-2, -3, np.nan]),
-             'c3': np.array([0, 1, 0])}),
-        name='test data'
+            {
+                'b1': np.array([1.8, -0.3, 1e10]),
+                'b2': np.array([1, 1, -1]),
+                'b3': np.array([0, 1, 0]),
+            }
+        ),
+        y=pd.DataFrame({'c1': np.array([-2, -3, np.nan]), 'c3': np.array([0, 1, 0])}),
+        name='test data',
     )
 
     class CheckEquality(InAlgorithmAsync):
@@ -46,6 +51,11 @@ def test_simple_saving():
 
 
 def test_dataset_name_none():
+    """
+    tests that a DataTuple can be saved without the name property
+    Returns:
+
+    """
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=['a1']),
         s=pd.DataFrame([4.0], columns=['b2']),
@@ -64,11 +74,14 @@ def test_dataset_name_none():
 
 
 def test_dataset_name_with_spaces():
+    """
+    tests that a dataset name can contain spaces and special chars
+    Returns:
+
+    """
     name = "This is a very@#$%^&*((())) complicated name"
     datatup = TestTuple(
-        x=pd.DataFrame([3.0], columns=['a1']),
-        s=pd.DataFrame([4.0], columns=['b2']),
-        name=name,
+        x=pd.DataFrame([3.0], columns=['a1']), s=pd.DataFrame([4.0], columns=['b2']), name=name
     )
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
@@ -81,6 +94,11 @@ def test_dataset_name_with_spaces():
 
 
 def test_apply_to_joined_df():
+    """
+    tests apply_to_joined_df_function
+    Returns:
+
+    """
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=['a1']),
         s=pd.DataFrame([4.0], columns=['b2']),

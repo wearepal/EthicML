@@ -1,4 +1,3 @@
-from . import (
-    loading_data_test,
-    metric_test,
-)
+"""EthicML"""
+
+from . import loading_data_test, metric_test

@@ -14,6 +14,11 @@ from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
+    """
+
+    Returns:
+
+    """
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -58,12 +63,17 @@ def test_train_test_split():
     len_0_0 = math.floor((2000 / 100) * 0)
     train, test = train_test_split(data, train_percentage=0.0)
     assert train.s.shape[0] == len_0_0
-    assert "Toy - Train" == train.name
+    assert train.name == "Toy - Train"
     assert test.s.shape[0] == 2000 - len_0_0
-    assert "Toy - Test" == test.name
+    assert test.name == "Toy - Test"
 
 
 def test_prop_train_test_split():
+    """
+
+    Returns:
+
+    """
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data, proportional=True)
     train, test = train_test
@@ -116,12 +126,17 @@ def test_prop_train_test_split():
     len_0_0 = math.floor((2000 / 100) * 0)
     train, test = train_test_split(data, train_percentage=0.0, proportional=True)
     assert train.s.shape[0] == len_0_0
-    assert "Toy - Train" == train.name
+    assert train.name == "Toy - Train"
     assert test.s.shape[0] == 2000 - len_0_0
-    assert "Toy - Test" == test.name
+    assert test.name == "Toy - Test"
 
 
 def test_random_seed():
+    """
+
+    Returns:
+
+    """
     data: DataTuple = load_data(Toy())
     train_test_0: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train_0, test_0 = train_test_0
@@ -169,6 +184,11 @@ def test_random_seed():
 
 
 def test_binning():
+    """
+
+    Returns:
+
+    """
     data: DataTuple = load_data(Adult())
 
     binned: DataTuple = bin_cont_feats(data)

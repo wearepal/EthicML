@@ -8,11 +8,7 @@ _PATCH_VERSION = '0'
 _VERSION_SUFFIX = 'dev'
 
 # Example, '0.4.0-rc1'
-version = '.'.join([
-    _MAJOR_VERSION,
-    _MINOR_VERSION,
-    _PATCH_VERSION,
-])
+version = '.'.join([_MAJOR_VERSION, _MINOR_VERSION, _PATCH_VERSION])
 if _VERSION_SUFFIX:
     version = f'{version}-{_VERSION_SUFFIX}'
 
@@ -57,7 +53,7 @@ setup(
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
             "torch >= 1.1.0, <= 1.1.0.post2",
-        ],
+        ]
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",

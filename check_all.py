@@ -6,7 +6,7 @@ import black
 
 # pytest
 print("############### pytest #################")
-# pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
+pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
 print('')
 
 # pylint
@@ -28,15 +28,14 @@ print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
 # mypy
 print("############  mypy tests  ##############")
-MYPY_RESULTS = mypy.run(['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs'])
+MYPY_RESULTS = mypy.run(
+    ['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs']
+)
 print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
 print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
 # black
 print("############  black ##############")
-black.main(['-l', '100', '-t', 'py36', '-S', 'ethicml/'])
-black.main(['-l', '100', '-t', 'py36', '-S', 'tests/'])
-black.main(['--check', '-l', '100', '-t', 'py36', '-S', 'ethicml/'])
-black.main(['--check', '-l', '100', '-t', 'py36', '-S', 'tests/'])
+black.main(['-l', '100', '-t', 'py36', '-S', './'])
 print('')

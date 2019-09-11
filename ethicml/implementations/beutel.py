@@ -174,12 +174,15 @@ def train_and_transform(
             for embedding, sens_label, class_label in validation_loader:
                 _, s_pred, y_pred = model(embedding, class_label)
 
-                val_y_loss += y_loss_fn(y_pred, class_label)
+                val_y_loss += float(y_loss_fn(y_pred, class_label))
 
                 mask = get_mask(flags, s_pred, class_label)
 
-                val_s_loss -= s_loss_fn(
-                    s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
+                val_s_loss -= float(
+                    s_loss_fn(
+                        s_pred,
+                        torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size)),
+                    )
                 )
 
             val_loss = (val_y_loss / len(validation_loader)) + (val_s_loss / len(validation_loader))
