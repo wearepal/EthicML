@@ -5,7 +5,6 @@ import shutil
 from pathlib import Path
 from typing import Tuple, List
 
-import pandas as pd
 from matplotlib import pyplot as plt
 
 import pytest
@@ -23,6 +22,11 @@ from tests.run_algorithm_test import get_train_test
 
 @pytest.fixture(scope="module")
 def cleanup():
+    """
+
+    Returns:
+
+    """
     yield None
     print("remove generated directory")
     plt_dir = Path(".") / "plots"
@@ -34,16 +38,40 @@ def cleanup():
 
 
 def test_plot(cleanup):
+    """
+
+    Args:
+        cleanup:
+
+    Returns:
+
+    """
     train, _ = get_train_test()
     save_2d_plot(train, "./plots/test.png")
 
 
 def test_joint_plot(cleanup):
+    """
+
+    Args:
+        cleanup:
+
+    Returns:
+
+    """
     train, _ = get_train_test()
     save_jointplot(train, "./plots/joint.png")
 
 
 def test_label_plot(cleanup):
+    """
+
+    Args:
+        cleanup:
+
+    Returns:
+
+    """
     data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
@@ -52,6 +80,14 @@ def test_label_plot(cleanup):
 
 
 def test_plot_evals(cleanup: None):
+    """
+
+    Args:
+        cleanup:
+
+    Returns:
+
+    """
     results: Results = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
@@ -60,7 +96,7 @@ def test_plot_evals(cleanup: None):
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,
         test_mode=True,
-        delete_prev=True
+        delete_prev=True,
     )
 
     figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]

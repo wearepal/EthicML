@@ -14,6 +14,11 @@ print("############### pylint #################")
 PYLINT_RESULTS = pylint.Run(['./ethicml/'], do_exit=False)
 print('')
 
+# pylint
+print("############### pylint tests #################")
+PYLINT_RESULTS = pylint.Run(['./tests/'], do_exit=False)
+print('')
+
 # mypy
 print("###############  mypy  #################")
 MYPY_RESULTS = mypy.run(['./ethicml/', '--warn-redundant-casts', '--show-error-context'])
@@ -23,13 +28,14 @@ print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
 # mypy
 print("############  mypy tests  ##############")
-MYPY_RESULTS = mypy.run(['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs'])
+MYPY_RESULTS = mypy.run(
+    ['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs']
+)
 print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
 print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
 # black
 print("############  black ##############")
-black.main(['-l', '100', '-t', 'py36', '-S', 'ethicml/'])
-black.main(['--check', '-l', '100', '-t', 'py36', '-S', 'ethicml/'])
+black.main(['-l', '100', '-t', 'py36', '-S', './'])
 print('')

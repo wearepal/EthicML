@@ -145,7 +145,7 @@ def train_and_transform(
     optimizer = torch.optim.Adam(model.parameters())
     scheduler = ExponentialLR(optimizer, gamma=0.95)
 
-    best_val_loss = np.inf
+    best_val_loss = torch.ones(1) * np.inf
     best_enc = None
 
     for i in range(1, flags.epochs + 1):
@@ -169,8 +169,8 @@ def train_and_transform(
 
         if i % 5 == 0 or i == flags.epochs:
             model.eval()
-            val_y_loss = 0.0
-            val_s_loss = 0.0
+            val_y_loss = torch.zeros(1)
+            val_s_loss = torch.zeros(1)
             for embedding, sens_label, class_label in validation_loader:
                 _, s_pred, y_pred = model(embedding, class_label)
 

@@ -1,15 +1,27 @@
+"""EthicML tests"""
 from typing import Tuple
 import pandas as pd
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
-from ethicml.algorithms.preprocess import (PreAlgorithm, PreAlgorithmAsync, Beutel,
-                                           Zemel, VFAE, Upsampler)
+from ethicml.algorithms.preprocess import (
+    PreAlgorithm,
+    PreAlgorithmAsync,
+    Beutel,
+    Zemel,
+    VFAE,
+    Upsampler,
+)
 from ethicml.utility import DataTuple, TestTuple
 from tests.run_algorithm_test import get_train_test
 
 
 def test_beutel():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     beut_model: PreAlgorithm = Beutel()
@@ -32,6 +44,11 @@ def test_beutel():
 
 
 def test_vfae():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
@@ -52,7 +69,7 @@ def test_vfae():
     assert predictions.values[predictions.values == 1].shape[0] == 201
     assert predictions.values[predictions.values == -1].shape[0] == 199
 
-    vfae_model = VFAE(dataset="Toy", epochs=10, fairness="Eq. Opp", batch_size=100)
+    vfae_model = VFAE(dataset="Toy", supervised=True, epochs=10, fairness="Eq. Opp", batch_size=100)
     assert vfae_model is not None
     assert vfae_model.name == "VFAE"
 
@@ -66,8 +83,9 @@ def test_vfae():
     assert predictions.values[predictions.values == 1].shape[0] == 201
     assert predictions.values[predictions.values == -1].shape[0] == 199
 
-    vfae_model = VFAE(dataset="Toy", supervised=False, epochs=10,
-                      fairness="Eq. Opp", batch_size=100)
+    vfae_model = VFAE(
+        dataset="Toy", supervised=False, epochs=10, fairness="Eq. Opp", batch_size=100
+    )
     assert vfae_model is not None
     assert vfae_model.name == "VFAE"
 
@@ -83,6 +101,11 @@ def test_vfae():
 
 
 def test_zemel():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     zemel_model: PreAlgorithm = Zemel()
@@ -105,15 +128,18 @@ def test_zemel():
 
 
 def test_threaded_zemel():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = Zemel()
     assert model is not None
     assert model.name == "Zemel"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
-        model.run_async(train, test)
-    )
+    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
@@ -149,15 +175,18 @@ def test_threaded_zemel():
 
 
 def test_threaded_beutel():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = Beutel()
     assert model is not None
     assert model.name == "Beutel"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
-        model.run_async(train, test)
-    )
+    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
@@ -195,15 +224,18 @@ def test_threaded_beutel():
 
 
 def test_threaded_vfae():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = VFAE(dataset='Toy')
     assert model is not None
     assert model.name == "VFAE"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
-        model.run_async(train, test)
-    )
+    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
@@ -221,6 +253,11 @@ def test_threaded_vfae():
 
 
 def test_threaded_custom_beutel():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
@@ -245,9 +282,7 @@ def test_threaded_custom_beutel():
     assert model is not None
     assert model.name == "Beutel"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(
-        model.run_async(train, test)
-    )
+    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
@@ -265,6 +300,11 @@ def test_threaded_custom_beutel():
 
 
 def test_upsampler():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
@@ -311,6 +351,11 @@ def test_upsampler():
 
 
 def test_async_upsampler():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     upsampler: PreAlgorithmAsync = Upsampler()

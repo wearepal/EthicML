@@ -1,5 +1,4 @@
 """Shared fixtures for testing"""
-from typing import Tuple
 import pytest
 
 from ethicml.utility import DataTuple, TrainTestPair

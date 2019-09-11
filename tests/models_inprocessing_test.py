@@ -1,3 +1,4 @@
+"""EthicML Tests"""
 import sys
 from typing import List, Dict, Any
 from pathlib import Path
@@ -9,16 +10,23 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
     Agarwal,
     Corels,
-    GPyT, GPyTDemPar, GPyTEqOdds,
-    InAlgorithm, InAlgorithmAsync,
+    GPyT,
+    InAlgorithm,
+    InAlgorithmAsync,
     InstalledModel,
     Kamiran,
     # Kamishima,
-    LR, LRCV, LRProb,
+    LR,
+    LRCV,
+    LRProb,
     Majority,
     MLP,
     SVM,
-    ZafarAccuracy, ZafarBaseline, ZafarEqOdds, ZafarEqOpp, ZafarFairness,
+    ZafarAccuracy,
+    ZafarBaseline,
+    ZafarEqOdds,
+    ZafarEqOpp,
+    ZafarFairness,
 )
 from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy, AbsCV
@@ -29,6 +37,11 @@ from tests.run_algorithm_test import get_train_test, count_true
 
 
 def test_svm():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithm = SVM()
@@ -41,6 +54,11 @@ def test_svm():
 
 
 def test_majority():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithm = Majority()
@@ -53,6 +71,14 @@ def test_majority():
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
+    """
+
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
     model: InAlgorithm = Corels()
     assert model is not None
     assert model.name == "CORELS"
@@ -70,6 +96,11 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
 
 
 def test_mlp():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithm = MLP()
@@ -82,6 +113,11 @@ def test_mlp():
 
 
 def test_cv_svm():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     hyperparams: Dict[str, List[Any]] = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
@@ -101,6 +137,14 @@ def test_cv_svm():
 
 
 def test_cv_lr(toy_train_test: TrainTestPair) -> None:
+    """
+
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
     train, test = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [0.01, 0.1, 1.0]}
@@ -122,6 +166,14 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
+    """
+
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
     train, test = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [0.001, 0.01]}
@@ -143,7 +195,15 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
-    train, test = toy_train_test
+    """
+
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
+    train, _ = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
@@ -186,7 +246,12 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 @pytest.fixture(scope="module")
-def zafarModels():
+def zafar_models():
+    """
+
+    Returns:
+
+    """
     zafarAcc_algo = ZafarAccuracy
     zafarBas_algo = ZafarBaseline
     zafarFai_algo = ZafarFairness
@@ -195,10 +260,19 @@ def zafarModels():
     zafarAcc_algo().remove()
 
 
-def test_zafar(zafarModels, toy_train_test: TrainTestPair):
+def test_zafar(zafar_models, toy_train_test: TrainTestPair):
+    """
+
+    Args:
+        zafarModels:
+        toy_train_test:
+
+    Returns:
+
+    """
     train, test = toy_train_test
 
-    model: InAlgorithmAsync = zafarModels[0]()
+    model: InAlgorithmAsync = zafar_models[0]()
     assert model.name == "ZafarAccuracy, γ=0.5"
 
     assert model is not None
@@ -213,7 +287,7 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
 
     hyperparams: Dict[str, List[float]] = {'gamma': [1, 1e-1, 1e-2]}
 
-    model = zafarModels[0]
+    model = zafar_models[0]
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
@@ -229,7 +303,7 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
     assert best_result.scores['Accuracy'] == approx(0.7094, rel=1e-4)
     assert best_result.scores['CV absolute'] == approx(0.9822, rel=1e-4)
 
-    model = zafarModels[1]()
+    model = zafar_models[1]()
     assert model.name == "ZafarBaseline"
 
     assert model is not None
@@ -242,7 +316,7 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
     assert predictions.values[predictions.values == 1].shape[0] == 211
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
-    model = zafarModels[2]()
+    model = zafar_models[2]()
     assert model.name == "ZafarFairness, c=0.001"
 
     assert model is not None
@@ -257,7 +331,7 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
 
     hyperparams = {'c': [1, 1e-1, 1e-2]}
 
-    model = zafarModels[2]
+    model = zafar_models[2]
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
@@ -289,6 +363,11 @@ def test_zafar(zafarModels, toy_train_test: TrainTestPair):
 
 
 def test_gpyt_creation():
+    """
+
+    Returns:
+
+    """
     gpyt = GPyT(code_dir="non existing path")
     assert gpyt.name == "GPyT_in_True"
 
@@ -327,6 +406,11 @@ def test_gpyt_creation():
 
 
 def test_threaded_svm():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithmAsync = SVM()
@@ -343,6 +427,11 @@ def test_threaded_svm():
 
 
 def test_lr():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithm = LR()
@@ -355,6 +444,14 @@ def test_lr():
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
+    """
+
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
     train, test = toy_train_test
 
     class _LocalInstalledLR(InstalledModel):
@@ -370,7 +467,11 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         ) -> (List[str]):
             script = "./tests/local_installed_lr.py"
             return [
-                script, str(train_paths.x), str(train_paths.y), str(test_paths.x), str(pred_path)
+                script,
+                str(train_paths.x),
+                str(train_paths.y),
+                str(test_paths.x),
+                str(pred_path),
             ]
 
     model: InAlgorithm = _LocalInstalledLR()
@@ -383,6 +484,11 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 
 def test_agarwal():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
     model: InAlgorithm = Agarwal()
     assert model is not None
@@ -424,6 +530,11 @@ def test_agarwal():
 
 
 def test_threaded_lr():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LR()
@@ -439,6 +550,11 @@ def test_threaded_lr():
 
 
 def test_threaded_lr_cross_validated():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LRCV()
@@ -454,6 +570,11 @@ def test_threaded_lr_cross_validated():
 
 
 def test_threaded_lr_prob():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LRProb()
@@ -476,6 +597,11 @@ def test_threaded_lr_prob():
 
 
 def test_kamiran():
+    """
+
+    Returns:
+
+    """
     train, test = get_train_test()
 
     kamiran_model: InAlgorithmAsync = Kamiran()

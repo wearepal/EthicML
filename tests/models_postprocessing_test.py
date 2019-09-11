@@ -1,3 +1,6 @@
+"""EthicML tests"""
+
+
 import pandas as pd
 
 from ethicml.algorithms.inprocess import InAlgorithm, LR
@@ -6,6 +9,14 @@ from ethicml.utility import TrainTestPair, concat_tt
 
 
 def test_hardt(toy_train_test: TrainTestPair) -> None:
+    """
+    tests the hardt postprocessing technique
+    Args:
+        toy_train_test:
+
+    Returns:
+
+    """
     train, test = toy_train_test
     train_test = concat_tt([train, test], ignore_index=True)
 
@@ -16,8 +27,8 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     predictions: pd.DataFrame = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.iloc[:train.y.shape[0]]
-    pred_test = predictions.iloc[train.y.shape[0]:]
+    pred_train = predictions.iloc[: train.y.shape[0]]
+    pred_test = predictions.iloc[train.y.shape[0] :]
     assert (pred_test.values == 1).sum() == 211
     assert (pred_test.values == -1).sum() == 189
 

@@ -129,8 +129,8 @@ def train_model(epoch, model, train_loader, optimizer, flags):
         data_trip = (data_x, data_s, data_y)
 
         loss_tuple = loss_function(flags, z1_trip, z2_trip, z1_d_trip, data_trip, x_dec, y_pred)
-        prediction_loss, reconsruction_loss, kld_loss, mmd_loss = loss_tuple
-        loss = kld_loss + reconsruction_loss + prediction_loss + mmd_loss
+        prediction_loss, reconstruction_loss, kld_loss, mmd_loss = loss_tuple
+        loss = kld_loss + reconstruction_loss + prediction_loss + mmd_loss
         loss.backward()
         # KLD_loss = KLD1 + KLD2
         train_loss += loss.item()
@@ -142,7 +142,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
                     f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
                     f'Loss: {loss.item() / len(data_x):.6f}\t'
                     f'pred_loss: {prediction_loss.item():.6f}\t'
-                    f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                    f'recon_loss: {reconstruction_loss.item():.6f}\t'
                     f'kld_loss: {kld_loss.item():.6f}\t'
                     f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}'
                 )
@@ -151,7 +151,7 @@ def train_model(epoch, model, train_loader, optimizer, flags):
                     f'train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}'
                     f'({100. * batch_idx / len(train_loader):.0f}%)]\t'
                     f'Loss: {loss.item() / len(data_x):.6f}\t'
-                    f'recon_loss: {reconsruction_loss.item():.6f}\t'
+                    f'recon_loss: {reconstruction_loss.item():.6f}\t'
                     f'mmd_loss: {flags["batch_size"] * mmd_loss.item():.6f}'
                 )
 

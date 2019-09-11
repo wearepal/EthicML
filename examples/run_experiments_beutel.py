@@ -31,23 +31,27 @@ def run_experiments(train, test, exp_name, seed):
     best_lr_hyperparams = lr_cv.best_hyper_params(Accuracy())
     print(f"seed_{seed}_lr_CV_completed")
 
-    models = [best_svm, best_lr,
-              Kamishima(),
-              Agarwal(**best_lr_hyperparams, fairness="EqOd", classifier="LR"),
-              Agarwal(**best_svm_hyperparams, fairness="EqOd", classifier="SVM"),
-              Kamiran(**best_lr_hyperparams, classifier="LR"),
-              Kamiran(**best_svm_hyperparams, classifier="SVM")
-              ]
+    models = [
+        best_svm,
+        best_lr,
+        Kamishima(),
+        Agarwal(**best_lr_hyperparams, fairness="EqOd", classifier="LR"),
+        Agarwal(**best_svm_hyperparams, fairness="EqOd", classifier="SVM"),
+        Kamiran(**best_lr_hyperparams, classifier="LR"),
+        Kamiran(**best_svm_hyperparams, classifier="SVM"),
+    ]
 
     columns = ['dataset', 'transform', 'model', 'repeat']
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
     for model in models:
-        temp_res = {'dataset': "Adult",
-                    'transform': "beutel",
-                    'model': model.name,
-                    'repeat': f"{seed}"}
+        temp_res = {
+            'dataset': "Adult",
+            'transform': "beutel",
+            'model': model.name,
+            'repeat': f"{seed}",
+        }
 
         predictions: pd.DataFrame
         predictions = model.run(train, test)
@@ -70,14 +74,16 @@ def main():
 
     data_loc = Path(".") / "data" / "styling_beutel" / f"seed_{SEED}"
 
-    train_beutel_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtraintilde.csv',
-                                                   s_columns=["sensitive"],
-                                                   y_columns=["label"])
+    train_beutel_dataset: Dataset = create_data_obj(
+        data_loc / f'seed_{SEED}_stylingtraintilde.csv',
+        s_columns=["sensitive"],
+        y_columns=["label"],
+    )
     train_beutel_data: DataTuple = load_data(train_tilde_dataset)
 
-    test_beutel_dataset: Dataset = create_data_obj(data_loc / f'seed_{SEED}_stylingtesttilde.csv',
-                                                  s_columns=["sensitive"],
-                                                  y_columns=["label"])
+    test_beutel_dataset: Dataset = create_data_obj(
+        data_loc / f'seed_{SEED}_stylingtesttilde.csv', s_columns=["sensitive"], y_columns=["label"]
+    )
     test_beutel_data: DataTuple = load_data(test_tilde_dataset)
 
     run_experiments(train_beutel_data, test_beutel_data, "tilde", SEED)
