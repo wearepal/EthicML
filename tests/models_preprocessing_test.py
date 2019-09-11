@@ -69,7 +69,7 @@ def test_vfae():
     assert predictions.values[predictions.values == 1].shape[0] == 201
     assert predictions.values[predictions.values == -1].shape[0] == 199
 
-    vfae_model = VFAE(dataset="Toy", epochs=10, fairness="Eq. Opp", batch_size=100)
+    vfae_model = VFAE(dataset="Toy", supervised=True, epochs=10, fairness="Eq. Opp", batch_size=100)
     assert vfae_model is not None
     assert vfae_model.name == "VFAE"
 

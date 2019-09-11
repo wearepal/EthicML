@@ -76,9 +76,9 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         # second_kl = F.kl_div(z1_dec, z1, reduction='sum')
         # second_kl = (z1_dec.sum()+1e-10).log() - (z1.sum()+1e-10).log()
         kl_div = first_kl + second_kl
-        prediction_loss = float(F.binary_cross_entropy(y_pred, y, reduction="sum"))
+        prediction_loss = F.binary_cross_entropy(y_pred, y, reduction="sum")
     else:
-        kl_div = 0
-        prediction_loss = 0
+        kl_div = torch.zeros(1)
+        prediction_loss = torch.zeros(1)
 
     return prediction_loss, reconstruction_loss, kl_div, 100 * mmd_loss
