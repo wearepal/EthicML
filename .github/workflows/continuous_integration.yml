@@ -1,4 +1,4 @@
-name: Python package
+name: EthicML CI
 
 on:
   pull_request:
@@ -54,7 +54,7 @@ jobs:
       run: |
         python -m black --check -l 100 -t py36 -S ethicml/
         python -m black --check -l 100 -t py36 -S tests/
-        
+
   type_check_with_mypy:
 
     runs-on: ubuntu-latest
