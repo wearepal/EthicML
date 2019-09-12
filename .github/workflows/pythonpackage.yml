@@ -16,11 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 2.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 2.7
-    - name: Set up Python 3.6
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
