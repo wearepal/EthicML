@@ -14,11 +14,7 @@ from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
-    """
-
-    Returns:
-
-    """
+    """test train test split"""
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -69,11 +65,7 @@ def test_train_test_split():
 
 
 def test_prop_train_test_split():
-    """
-
-    Returns:
-
-    """
+    """test prop train test split"""
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data, proportional=True)
     train, test = train_test
@@ -132,11 +124,7 @@ def test_prop_train_test_split():
 
 
 def test_random_seed():
-    """
-
-    Returns:
-
-    """
+    """test random seed"""
     data: DataTuple = load_data(Toy())
     train_test_0: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train_0, test_0 = train_test_0
@@ -184,11 +172,7 @@ def test_random_seed():
 
 
 def test_binning():
-    """
-
-    Returns:
-
-    """
+    """test binning"""
     data: DataTuple = load_data(Adult())
 
     binned: DataTuple = bin_cont_feats(data)

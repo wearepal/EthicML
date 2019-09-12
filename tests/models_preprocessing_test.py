@@ -17,11 +17,7 @@ from tests.run_algorithm_test import get_train_test
 
 
 def test_beutel():
-    """
-
-    Returns:
-
-    """
+    """test beutel"""
     train, test = get_train_test()
 
     beut_model: PreAlgorithm = Beutel()
@@ -44,11 +40,7 @@ def test_beutel():
 
 
 def test_vfae():
-    """
-
-    Returns:
-
-    """
+    """test vfae"""
     train, test = get_train_test()
 
     vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
@@ -101,11 +93,7 @@ def test_vfae():
 
 
 def test_zemel():
-    """
-
-    Returns:
-
-    """
+    """test zemel"""
     train, test = get_train_test()
 
     zemel_model: PreAlgorithm = Zemel()
@@ -128,11 +116,7 @@ def test_zemel():
 
 
 def test_threaded_zemel():
-    """
-
-    Returns:
-
-    """
+    """test threaded zemel"""
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = Zemel()
@@ -175,11 +159,7 @@ def test_threaded_zemel():
 
 
 def test_threaded_beutel():
-    """
-
-    Returns:
-
-    """
+    """test threaded beutel"""
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = Beutel()
@@ -224,11 +204,7 @@ def test_threaded_beutel():
 
 
 def test_threaded_vfae():
-    """
-
-    Returns:
-
-    """
+    """test threaded vfae"""
     train, test = get_train_test()
 
     model: PreAlgorithmAsync = VFAE(dataset='Toy')
@@ -253,11 +229,7 @@ def test_threaded_vfae():
 
 
 def test_threaded_custom_beutel():
-    """
-
-    Returns:
-
-    """
+    """test threaded custom beutel"""
     train, test = get_train_test()
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
@@ -300,11 +272,7 @@ def test_threaded_custom_beutel():
 
 
 def test_upsampler():
-    """
-
-    Returns:
-
-    """
+    """test upsampler"""
     train, test = get_train_test()
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
@@ -351,11 +319,7 @@ def test_upsampler():
 
 
 def test_async_upsampler():
-    """
-
-    Returns:
-
-    """
+    """test async upsampler"""
     train, test = get_train_test()
 
     upsampler: PreAlgorithmAsync = Upsampler()

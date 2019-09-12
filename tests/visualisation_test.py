@@ -23,9 +23,7 @@ from tests.run_algorithm_test import get_train_test
 @pytest.fixture(scope="module")
 def cleanup():
     """
-
-    Returns:
-
+    Clean up after the tests by removing the `plots` and `results` directories
     """
     yield None
     print("remove generated directory")
@@ -38,40 +36,19 @@ def cleanup():
 
 
 def test_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+    """test plot"""
     train, _ = get_train_test()
     save_2d_plot(train, "./plots/test.png")
 
 
 def test_joint_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+    """test joint plot"""
     train, _ = get_train_test()
     save_jointplot(train, "./plots/joint.png")
 
 
 def test_label_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+    """test label plot"""
     data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
@@ -80,14 +57,7 @@ def test_label_plot(cleanup):
 
 
 def test_plot_evals(cleanup: None):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+    """test plot evals"""
     results: Results = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],

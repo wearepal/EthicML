@@ -12,11 +12,9 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
 
 
-def test_simple_saving():
+def test_simple_saving() -> None:
     """
     tests that a DataTuple can be saved
-    Returns:
-
     """
     data_tuple = DataTuple(
         x=pd.DataFrame({'a1': np.array([3.2, 9.4, np.nan, 0.0]), 'a2': np.array([1, 1, 0, 1])}),
@@ -50,11 +48,9 @@ def test_simple_saving():
     pd.testing.assert_frame_equal(data_tuple.x, data_x)
 
 
-def test_dataset_name_none():
+def test_dataset_name_none() -> None:
     """
     tests that a DataTuple can be saved without the name property
-    Returns:
-
     """
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=['a1']),
@@ -73,11 +69,9 @@ def test_dataset_name_none():
     pd.testing.assert_frame_equal(datatup.y, reloaded.y)
 
 
-def test_dataset_name_with_spaces():
+def test_dataset_name_with_spaces() -> None:
     """
     tests that a dataset name can contain spaces and special chars
-    Returns:
-
     """
     name = "This is a very@#$%^&*((())) complicated name"
     datatup = TestTuple(
@@ -93,11 +87,9 @@ def test_dataset_name_with_spaces():
     pd.testing.assert_frame_equal(datatup.s, reloaded.s)
 
 
-def test_apply_to_joined_df():
+def test_apply_to_joined_df() -> None:
     """
     tests apply_to_joined_df_function
-    Returns:
-
     """
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=['a1']),

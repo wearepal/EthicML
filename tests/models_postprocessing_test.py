@@ -12,10 +12,7 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     """
     tests the hardt postprocessing technique
     Args:
-        toy_train_test:
-
-    Returns:
-
+        toy_train_test: Train-test pair of toy data
     """
     train, test = toy_train_test
     train_test = concat_tt([train, test], ignore_index=True)
