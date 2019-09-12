@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  run_tests_and_pylint:
+  test_with_pytest:
 
     runs-on: ubuntu-latest
     strategy:

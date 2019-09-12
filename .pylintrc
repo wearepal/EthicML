@@ -466,7 +466,14 @@ int-import-graph=
 known-standard-library=
 
 # Force import order to recognize a module as part of a third party library.
-known-third-party=typing_extensions,torch,matplotlib,sklearn,seaborn
+known-third-party=typing_extensions,
+                  torch,
+                  matplotlib,
+                  sklearn,
+                  seaborn,
+                  pandas,
+                  numpy,
+                  imageio
 
 
 [EXCEPTIONS]
