@@ -473,7 +473,8 @@ known-third-party=typing_extensions,
                   seaborn,
                   pandas,
                   numpy,
-                  imageio
+                  imageio,
+                  fairlearn
 
 
 [EXCEPTIONS]
