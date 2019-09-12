@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  build:
+  run_tests_and_pylint:
 
     runs-on: ubuntu-latest
     strategy:
@@ -24,18 +24,52 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[dev]
-    - name: Format with black
-      run: |
-        python -m black --check -l 100 -t py36 -S ethicml/
-        python -m black --check -l 100 -t py36 -S tests/
     - name: Lint with pylint
       run: |
         python run_pylint.py
         python run_pylint_tests.py
+    - name: Test with pytest
+      run: |
+        python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
+
+  format_with_black:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.6]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install black
+      run: |
+        python -m pip install --upgrade pip
+        pip install black
+    - name: Format with black
+      run: |
+        python -m black --check -l 100 -t py36 -S ethicml/
+        python -m black --check -l 100 -t py36 -S tests/
+        
+  type_check_with_mypy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install mypy
+      run: |
+        python -m pip install --upgrade pip
+        pip install mypy
     - name: Type check with mypy
       run: |
         python run_mypy.py
         python run_mypy_tests.py
-    - name: Test with pytest
-      run: |
-        python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
