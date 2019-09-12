@@ -24,13 +24,32 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[dev]
+    - name: Test with pytest
+      run: |
+        python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
+
+  lint_with_pylint:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.6]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install pylint
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
     - name: Lint with pylint
       run: |
         python run_pylint.py
         python run_pylint_tests.py
-    - name: Test with pytest
-      run: |
-        python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
 
   format_with_black:
 
