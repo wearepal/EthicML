@@ -1,6 +1,4 @@
-"""
-Test that we can get some metrics on predictions
-"""
+"""Test that we can get some metrics on predictions"""
 
 from typing import Tuple
 import pandas as pd
@@ -41,11 +39,7 @@ RTOL = 1e-5  # relative tolerance when comparing two floats
 
 
 def test_get_acc_of_predictions():
-    """
-
-    Returns:
-
-    """
+    """test get acc of predictions"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -56,11 +50,7 @@ def test_get_acc_of_predictions():
 
 
 def test_mni_preds_and_s():
-    """
-
-    Returns:
-
-    """
+    """test mni preds and s"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -71,11 +61,7 @@ def test_mni_preds_and_s():
 
 
 def test_accuracy_per_sens_attr():
-    """
-
-    Returns:
-
-    """
+    """test accuracy per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -84,11 +70,7 @@ def test_accuracy_per_sens_attr():
 
 
 def test_probpos_per_sens_attr():
-    """
-
-    Returns:
-
-    """
+    """test probpos per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -97,11 +79,7 @@ def test_probpos_per_sens_attr():
 
 
 def test_proboutcome_per_sens_attr():
-    """
-
-    Returns:
-
-    """
+    """test proboutcome per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = LRProb()
     predictions: pd.DataFrame = model.run(train, test)
@@ -113,11 +91,7 @@ def test_proboutcome_per_sens_attr():
 
 
 def test_probneg_per_sens_attr():
-    """
-
-    Returns:
-
-    """
+    """test probneg per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -126,11 +100,7 @@ def test_probneg_per_sens_attr():
 
 
 def test_acc_per_nonbinary_sens():
-    """
-
-    Returns:
-
-    """
+    """test acc per nonbinary sens"""
     data: DataTuple = load_data(Adult("Nationality"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -227,11 +197,7 @@ def test_acc_per_nonbinary_sens():
 
 
 def test_acc_per_race():
-    """
-
-    Returns:
-
-    """
+    """test acc per race"""
     data: DataTuple = load_data(Adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -256,11 +222,7 @@ def test_acc_per_race():
 
 
 def test_tpr_diff():
-    """
-
-    Returns:
-
-    """
+    """test tpr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -273,11 +235,7 @@ def test_tpr_diff():
 
 
 def test_get_nmi_of_predictions():
-    """
-
-    Returns:
-
-    """
+    """test get nmi of predictions"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -288,11 +246,7 @@ def test_get_nmi_of_predictions():
 
 
 def test_nmi_diff():
-    """
-
-    Returns:
-
-    """
+    """test nmi diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -304,11 +258,7 @@ def test_nmi_diff():
 
 
 def test_ppv_diff():
-    """
-
-    Returns:
-
-    """
+    """test ppv diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -320,11 +270,7 @@ def test_ppv_diff():
 
 
 def test_npv_diff():
-    """
-
-    Returns:
-
-    """
+    """test npv diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -336,11 +282,7 @@ def test_npv_diff():
 
 
 def test_bcr_diff():
-    """
-
-    Returns:
-
-    """
+    """test bcr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -352,11 +294,7 @@ def test_bcr_diff():
 
 
 def test_cv():
-    """
-
-    Returns:
-
-    """
+    """test cv"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -367,11 +305,7 @@ def test_cv():
 
 
 def test_theil():
-    """
-
-    Returns:
-
-    """
+    """test theil"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -394,11 +328,7 @@ def test_theil():
 
 
 def test_theil_per_sens_attr():
-    """
-
-    Returns:
-
-    """
+    """test theil per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -410,11 +340,7 @@ def test_theil_per_sens_attr():
 
 
 def test_hsic():
-    """
-
-    Returns:
-
-    """
+    """test hsic"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -425,11 +351,7 @@ def test_hsic():
 
 
 def test_use_appropriate_metric():
-    """
-
-    Returns:
-
-    """
+    """test use appropriate metric"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -438,11 +360,7 @@ def test_use_appropriate_metric():
 
 
 def test_tnr_diff():
-    """
-
-    Returns:
-
-    """
+    """test tnr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -454,11 +372,7 @@ def test_tnr_diff():
 
 
 def test_run_metrics():
-    """
-
-    Returns:
-
-    """
+    """test run metrics"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
@@ -472,11 +386,7 @@ def test_run_metrics():
 
 
 def test_nmi_diff_non_binary_race():
-    """
-
-    Returns:
-
-    """
+    """test nmi diff non binary race"""
     data: DataTuple = load_data(Adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -529,11 +439,7 @@ def test_nmi_diff_non_binary_race():
 
 
 def test_tpr_diff_non_binary_race():
-    """
-
-    Returns:
-
-    """
+    """test tpr diff non binary race"""
     data: DataTuple = load_data(Adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -586,11 +492,7 @@ def test_tpr_diff_non_binary_race():
 
 
 def test_tpr_ratio_non_binary_race():
-    """
-
-    Returns:
-
-    """
+    """test tpr ratio non binary race"""
     data: DataTuple = load_data(Adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -643,11 +545,7 @@ def test_tpr_ratio_non_binary_race():
 
 
 def test_nb_acc():
-    """
-
-    Returns:
-
-    """
+    """test nb acc"""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -666,11 +564,7 @@ def test_nb_acc():
 
 
 def test_nb_tpr():
-    """
-
-    Returns:
-
-    """
+    """test nb tpr"""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -717,11 +611,7 @@ def test_nb_tpr():
 
 
 def test_nb_tnr():
-    """
-
-    Returns:
-
-    """
+    """test nb tnr"""
     data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test

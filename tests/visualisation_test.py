@@ -1,8 +1,6 @@
 """
 Testing for plotting functionality
 """
-import shutil
-from pathlib import Path
 from typing import Tuple, List
 
 from matplotlib import pyplot as plt
@@ -20,58 +18,23 @@ from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot,
 from tests.run_algorithm_test import get_train_test
 
 
-@pytest.fixture(scope="module")
-def cleanup():
-    """
-
-    Returns:
-
-    """
-    yield None
-    print("remove generated directory")
-    plt_dir = Path(".") / "plots"
-    res_dir = Path(".") / "results"
-    if plt_dir.exists():
-        shutil.rmtree(plt_dir)
-    if res_dir.exists():
-        shutil.rmtree(res_dir)
-
-
-def test_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
+def test_plot():
+    """test plot"""
     train, _ = get_train_test()
     save_2d_plot(train, "./plots/test.png")
 
 
-def test_joint_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("plot_cleanup")
+def test_joint_plot():
+    """test joint plot"""
     train, _ = get_train_test()
     save_jointplot(train, "./plots/joint.png")
 
 
-def test_label_plot(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("plot_cleanup")
+def test_label_plot():
+    """test label plot"""
     data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
@@ -79,15 +42,9 @@ def test_label_plot(cleanup):
     save_label_plot(train, "./plots/labels.png")
 
 
-def test_plot_evals(cleanup: None):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("plot_cleanup")
+def test_plot_evals():
+    """test plot evals"""
     results: Results = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],

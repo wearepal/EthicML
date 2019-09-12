@@ -37,11 +37,7 @@ from tests.run_algorithm_test import get_train_test, count_true
 
 
 def test_svm():
-    """
-
-    Returns:
-
-    """
+    """test svm"""
     train, test = get_train_test()
 
     model: InAlgorithm = SVM()
@@ -54,11 +50,7 @@ def test_svm():
 
 
 def test_majority():
-    """
-
-    Returns:
-
-    """
+    """test majority"""
     train, test = get_train_test()
 
     model: InAlgorithm = Majority()
@@ -71,14 +63,7 @@ def test_majority():
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
-    """
-
-    Args:
-        toy_train_test:
-
-    Returns:
-
-    """
+    """test corels"""
     model: InAlgorithm = Corels()
     assert model is not None
     assert model.name == "CORELS"
@@ -96,11 +81,7 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
 
 
 def test_mlp():
-    """
-
-    Returns:
-
-    """
+    """test mlp"""
     train, test = get_train_test()
 
     model: InAlgorithm = MLP()
@@ -113,11 +94,7 @@ def test_mlp():
 
 
 def test_cv_svm():
-    """
-
-    Returns:
-
-    """
+    """test cv svm"""
     train, test = get_train_test()
 
     hyperparams: Dict[str, List[Any]] = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
@@ -137,14 +114,7 @@ def test_cv_svm():
 
 
 def test_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """
-
-    Args:
-        toy_train_test:
-
-    Returns:
-
-    """
+    """test cv lr"""
     train, test = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [0.01, 0.1, 1.0]}
@@ -166,14 +136,7 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """
-
-    Args:
-        toy_train_test:
-
-    Returns:
-
-    """
+    """test parallel cv lr"""
     train, test = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [0.001, 0.01]}
@@ -195,14 +158,7 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """
-
-    Args:
-        toy_train_test:
-
-    Returns:
-
-    """
+    """test fair cv lr"""
     train, _ = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {'C': [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
@@ -247,10 +203,10 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 @pytest.fixture(scope="module")
 def zafar_models():
-    """
+    """Create and destroy Zafar models
 
     Returns:
-
+        Tuple of three Zafar model classes
     """
     zafarAcc_algo = ZafarAccuracy
     zafarBas_algo = ZafarBaseline
@@ -260,15 +216,12 @@ def zafar_models():
     zafarAcc_algo().remove()
 
 
-def test_zafar(zafar_models, toy_train_test: TrainTestPair):
+def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     """
 
     Args:
         zafarModels:
         toy_train_test:
-
-    Returns:
-
     """
     train, test = toy_train_test
 
@@ -363,11 +316,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair):
 
 
 def test_gpyt_creation():
-    """
-
-    Returns:
-
-    """
+    """test gpyt creation"""
     gpyt = GPyT(code_dir="non existing path")
     assert gpyt.name == "GPyT_in_True"
 
@@ -406,11 +355,7 @@ def test_gpyt_creation():
 
 
 def test_threaded_svm():
-    """
-
-    Returns:
-
-    """
+    """test threaded svm"""
     train, test = get_train_test()
 
     model: InAlgorithmAsync = SVM()
@@ -427,11 +372,7 @@ def test_threaded_svm():
 
 
 def test_lr():
-    """
-
-    Returns:
-
-    """
+    """test lr"""
     train, test = get_train_test()
 
     model: InAlgorithm = LR()
@@ -444,14 +385,7 @@ def test_lr():
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
-    """
-
-    Args:
-        toy_train_test:
-
-    Returns:
-
-    """
+    """test local installed lr"""
     train, test = toy_train_test
 
     class _LocalInstalledLR(InstalledModel):
@@ -484,11 +418,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 
 def test_agarwal():
-    """
-
-    Returns:
-
-    """
+    """test agarwal"""
     train, test = get_train_test()
     model: InAlgorithm = Agarwal()
     assert model is not None
@@ -530,11 +460,7 @@ def test_agarwal():
 
 
 def test_threaded_lr():
-    """
-
-    Returns:
-
-    """
+    """test threaded lr"""
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LR()
@@ -550,11 +476,7 @@ def test_threaded_lr():
 
 
 def test_threaded_lr_cross_validated():
-    """
-
-    Returns:
-
-    """
+    """test threaded lr cross validated"""
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LRCV()
@@ -570,11 +492,7 @@ def test_threaded_lr_cross_validated():
 
 
 def test_threaded_lr_prob():
-    """
-
-    Returns:
-
-    """
+    """test threaded lr prob"""
     train, test = get_train_test()
 
     model: InAlgorithmAsync = LRProb()
@@ -597,11 +515,7 @@ def test_threaded_lr_prob():
 
 
 def test_kamiran():
-    """
-
-    Returns:
-
-    """
+    """test kamiran"""
     train, test = get_train_test()
 
     kamiran_model: InAlgorithmAsync = Kamiran()

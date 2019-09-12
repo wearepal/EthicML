@@ -2,7 +2,6 @@
 Test that an algorithm can run against some data
 """
 import os
-import shutil
 from pathlib import Path
 from typing import Tuple, List
 import numpy as np  # import needed for mypy
@@ -26,11 +25,7 @@ from ethicml.preprocessing import train_test_split
 
 
 def get_train_test() -> Tuple[DataTuple, DataTuple]:
-    """
-
-    Returns:
-
-    """
+    """Helper function for other tests which loads the Toy dataset and splits it into train-test"""
     data: DataTuple = load_data(Toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     return train_test
@@ -42,22 +37,14 @@ def count_true(mask: 'np.ndarray[bool]') -> int:
 
 
 def test_can_load_test_data():
-    """
-
-    Returns:
-
-    """
+    """test whether we can load test data"""
     train, test = get_train_test()
     assert train is not None
     assert test is not None
 
 
 def test_run_parallel():
-    """
-
-    Returns:
-
-    """
+    """test run parallel"""
     data0 = get_train_test()
     data1 = get_train_test()
     result = run_in_parallel(
@@ -80,44 +67,18 @@ def test_run_parallel():
     assert count_true(result[2][1].values == -1) == 400
 
 
-@pytest.fixture(scope="function")
-def cleanup():
-    """
-
-    Returns:
-
-    """
-    yield None
-    print("remove generated directory")
-    res_dir = Path(".") / "results"
-    if res_dir.exists():
-        shutil.rmtree(res_dir)
-
-
-def test_empty_evaluate(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("results_cleanup")
+def test_empty_evaluate():
+    """test empty evaluate"""
     empty_result = evaluate_models([Toy()], repeats=3)
     expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "repeat"])
     pd.testing.assert_frame_equal(empty_result.data, expected_result)
 
 
-def test_run_alg_suite(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite():
+    """test run alg suite"""
     dataset = Adult("Race")
     dataset.sens_attrs = ["race_White"]
     datasets: List[Dataset] = [dataset, Toy()]
@@ -172,15 +133,9 @@ def test_run_alg_suite(cleanup):
     pd.testing.assert_frame_equal(reloaded.data, read)
 
 
-def test_run_alg_suite_wrong_metrics(cleanup):
-    """
-
-    Args:
-        cleanup:
-
-    Returns:
-
-    """
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_wrong_metrics():
+    """test run alg suite wrong metrics"""
     datasets: List[Dataset] = [Toy(), Adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [SVM(kernel='linear'), LR()]

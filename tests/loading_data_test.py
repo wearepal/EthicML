@@ -22,22 +22,14 @@ from ethicml.preprocessing import domain_split, query_dt
 
 
 def test_can_load_test_data():
-    """
-
-    Returns:
-
-    """
+    """test whether we can load test data"""
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data: pd.DataFrame = pd.read_csv(data_loc)
     assert data is not None
 
 
 def test_load_data():
-    """
-
-    Returns:
-
-    """
+    """test loading data"""
     data: DataTuple = load_data(Toy())
     assert (2000, 2) == data.x.shape
     assert (2000, 1) == data.s.shape
@@ -46,11 +38,7 @@ def test_load_data():
 
 
 def test_load_non_binary_data():
-    """
-
-    Returns:
-
-    """
+    """test load non binary data"""
     data: DataTuple = load_data(NonBinaryToy())
     assert (100, 2) == data.x.shape
     assert (100, 1) == data.s.shape
@@ -58,11 +46,7 @@ def test_load_non_binary_data():
 
 
 def test_discrete_data():
-    """
-
-    Returns:
-
-    """
+    """test discrete data"""
     data: DataTuple = load_data(Adult())
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -73,11 +57,7 @@ def test_discrete_data():
 
 
 def test_load_data_as_a_function():
-    """
-
-    Returns:
-
-    """
+    """test load data as a function"""
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
@@ -88,11 +68,7 @@ def test_load_data_as_a_function():
 
 
 def test_joining_2_load_functions():
-    """
-
-    Returns:
-
-    """
+    """test joining 2 load functions"""
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: DataTuple = load_data(data_obj)
@@ -102,11 +78,7 @@ def test_joining_2_load_functions():
 
 
 def test_load_adult():
-    """
-
-    Returns:
-
-    """
+    """test load adult"""
     data: DataTuple = load_data(Adult())
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -115,11 +87,7 @@ def test_load_adult():
 
 
 def test_load_compas():
-    """
-
-    Returns:
-
-    """
+    """test load compas"""
     data: DataTuple = load_data(Compas())
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
@@ -128,11 +96,7 @@ def test_load_compas():
 
 
 def test_load_sqf():
-    """
-
-    Returns:
-
-    """
+    """test load sqf"""
     data: DataTuple = load_data(Sqf())
     assert (12347, 144) == data.x.shape
     assert (12347, 1) == data.s.shape
@@ -141,11 +105,7 @@ def test_load_sqf():
 
 
 def test_load_german():
-    """
-
-    Returns:
-
-    """
+    """test load german"""
     data: DataTuple = load_data(German())
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
@@ -154,11 +114,7 @@ def test_load_german():
 
 
 def test_load_german_ordered():
-    """
-
-    Returns:
-
-    """
+    """test load german ordered"""
     data: DataTuple = load_data(German(), ordered=True)
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
@@ -166,11 +122,7 @@ def test_load_german_ordered():
 
 
 def test_load_adult_explicitly_sex():
-    """
-
-    Returns:
-
-    """
+    """test load adult explicitly sex"""
     data: DataTuple = load_data(Adult("Sex"))
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -178,11 +130,7 @@ def test_load_adult_explicitly_sex():
 
 
 def test_load_compas_explicitly_sex():
-    """
-
-    Returns:
-
-    """
+    """test load compas explicitly sex"""
     data: DataTuple = load_data(Compas("Sex"))
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
@@ -190,11 +138,7 @@ def test_load_compas_explicitly_sex():
 
 
 def test_load_compas_feature_length():
-    """
-
-    Returns:
-
-    """
+    """test load compas feature length"""
     data: DataTuple = load_data(Compas())
     assert len(Compas().ordered_features['x']) == 400
     assert len(Compas().discrete_features) == 395
@@ -204,11 +148,7 @@ def test_load_compas_feature_length():
 
 
 def test_load_credit_feature_length():
-    """
-
-    Returns:
-
-    """
+    """test load credit feature length"""
     data: DataTuple = load_data(Credit())
     assert len(Credit().ordered_features['x']) == 26
     assert len(Credit().discrete_features) == 6
@@ -218,11 +158,7 @@ def test_load_credit_feature_length():
 
 
 def test_load_adult_race():
-    """
-
-    Returns:
-
-    """
+    """test load adult race"""
     data: DataTuple = load_data(Adult("Race"))
     assert (45222, 98) == data.x.shape
     assert (45222, 5) == data.s.shape
@@ -230,11 +166,7 @@ def test_load_adult_race():
 
 
 def test_load_compas_race():
-    """
-
-    Returns:
-
-    """
+    """test load compas race"""
     data: DataTuple = load_data(Compas("Race"))
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
@@ -242,11 +174,7 @@ def test_load_compas_race():
 
 
 def test_load_adult_race_sex():
-    """
-
-    Returns:
-
-    """
+    """test load adult race sex"""
     data: DataTuple = load_data(Adult("Race-Sex"))
     assert (45222, 96) == data.x.shape
     assert (45222, 6) == data.s.shape
@@ -254,11 +182,7 @@ def test_load_adult_race_sex():
 
 
 def test_load_compas_race_sex():
-    """
-
-    Returns:
-
-    """
+    """test load compas race sex"""
     data: DataTuple = load_data(Compas("Race-Sex"))
     assert (6167, 399) == data.x.shape
     assert (6167, 2) == data.s.shape
@@ -266,11 +190,7 @@ def test_load_compas_race_sex():
 
 
 def test_load_adult_nationality():
-    """
-
-    Returns:
-
-    """
+    """test load adult nationality"""
     data: DataTuple = load_data(Adult("Nationality"))
     assert (45222, 62) == data.x.shape
     assert (45222, 41) == data.s.shape
@@ -278,11 +198,7 @@ def test_load_adult_nationality():
 
 
 def test_race_feature_split():
-    """
-
-    Returns:
-
-    """
+    """test race feature split"""
     adult: Adult = Adult(split="Custom")
     adult.sens_attrs = ["race_White"]
     adult.s_prefix = ["race"]
@@ -297,11 +213,7 @@ def test_race_feature_split():
 
 
 def test_additional_columns_load():
-    """
-
-    Returns:
-
-    """
+    """test additional columns load"""
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv"
     data_obj: Dataset = create_data_obj(
         data_loc,
@@ -317,11 +229,7 @@ def test_additional_columns_load():
 
 
 def test_domain_adapt_adult():
-    """
-
-    Returns:
-
-    """
+    """test domain adapt adult"""
     data: DataTuple = load_data(Adult())
     train, test = domain_split(
         datatup=data,
@@ -364,11 +272,7 @@ def test_domain_adapt_adult():
 
 
 def test_query():
-    """
-
-    Returns:
-
-    """
+    """test query"""
     x: pd.DataFrame = pd.DataFrame(columns=['0a', 'b'], data=[[0, 1], [2, 3], [4, 5]])
     s: pd.DataFrame = pd.DataFrame(columns=['c='], data=[[6], [7], [8]])
     y: pd.DataFrame = pd.DataFrame(columns=['d'], data=[[9], [10], [11]])
@@ -380,11 +284,7 @@ def test_query():
 
 
 def test_concat():
-    """
-
-    Returns:
-
-    """
+    """test concat"""
     x: pd.DataFrame = pd.DataFrame(columns=['a'], data=[[1]])
     s: pd.DataFrame = pd.DataFrame(columns=['b'], data=[[2]])
     y: pd.DataFrame = pd.DataFrame(columns=['c'], data=[[3]])
