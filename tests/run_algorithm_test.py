@@ -2,7 +2,6 @@
 Test that an algorithm can run against some data
 """
 import os
-import shutil
 from pathlib import Path
 from typing import Tuple, List
 import numpy as np  # import needed for mypy
@@ -68,17 +67,8 @@ def test_run_parallel():
     assert count_true(result[2][1].values == -1) == 400
 
 
-@pytest.fixture(scope="function")
-def cleanup():
-    """cleanup"""
-    yield None
-    print("remove generated directory")
-    res_dir = Path(".") / "results"
-    if res_dir.exists():
-        shutil.rmtree(res_dir)
-
-
-def test_empty_evaluate(cleanup):
+@pytest.mark.usefixtures("results_cleanup")
+def test_empty_evaluate():
     """test empty evaluate"""
     empty_result = evaluate_models([Toy()], repeats=3)
     expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
@@ -86,7 +76,8 @@ def test_empty_evaluate(cleanup):
     pd.testing.assert_frame_equal(empty_result.data, expected_result)
 
 
-def test_run_alg_suite(cleanup):
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite():
     """test run alg suite"""
     dataset = Adult("Race")
     dataset.sens_attrs = ["race_White"]
@@ -142,7 +133,8 @@ def test_run_alg_suite(cleanup):
     pd.testing.assert_frame_equal(reloaded.data, read)
 
 
-def test_run_alg_suite_wrong_metrics(cleanup):
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_wrong_metrics():
     """test run alg suite wrong metrics"""
     datasets: List[Dataset] = [Toy(), Adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
