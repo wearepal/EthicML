@@ -1,4 +1,4 @@
-name: Python package
+name: Black Format Checker
 
 on:
   pull_request:
