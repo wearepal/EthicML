@@ -23,15 +23,17 @@ class DataEntry(NamedTuple):
 class PlotDef(NamedTuple):
     """All the things needed to make a plot
 
-    Args:
+    Attributes:
         title: the title of the plot
         entries: a List of DataEntries
-        legend: where to put the legend; allowed values: None, "inside", "outside"
+        legend_pos: where to put the legend; allowed values: None, "inside", "outside"
+        legend_yanchor: float that specifies the vertical position of the legend
     """
 
     title: str
     entries: List[DataEntry]
-    legend: Union[None, LegendType, Tuple[LegendType, float]] = None
+    legend_pos: Optional[LegendType] = None
+    legend_yanchor: float = 1.0
 
 
 def common_plotting_settings(
@@ -55,13 +57,12 @@ def common_plotting_settings(
     # remove the errorbars from the legend if they are there
     handles = [(h[0] if isinstance(h, tuple) else h) for h in handles]
 
-    lgnd_def = plot_def.legend
-    if lgnd_def == "inside":
+    if plot_def.legend_pos == "inside":
         return plot.legend(handles, labels)
-    if lgnd_def == "outside":
-        return plot.legend(handles, labels, loc='upper left', bbox_to_anchor=(1, 1))
-    if isinstance(lgnd_def, tuple) and lgnd_def[0] == "outside" and isinstance(lgnd_def[1], float):
-        return plot.legend(handles, labels, bbox_to_anchor=(1, lgnd_def[1]), loc='upper left')
+    if plot_def.legend_pos == "outside":
+        return plot.legend(
+            handles, labels, loc='upper left', bbox_to_anchor=(1, plot_def.legend_yanchor)
+        )
     return None
 
 
