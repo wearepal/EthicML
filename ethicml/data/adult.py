@@ -1,6 +1,7 @@
 """
 Class to describe features of the Adult dataset
 """
+from typing_extensions import Literal
 
 from .dataset import Dataset
 
@@ -10,7 +11,11 @@ class Adult(Dataset):
     UCL Adult dataset
     """
 
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
+    def __init__(
+        self,
+        split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
+        discrete_only: bool = False,
+    ):
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only

@@ -2,7 +2,7 @@
 creates plots of a dataset
 """
 from pathlib import Path
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Optional
 import itertools
 
 from typing_extensions import Literal
@@ -21,10 +21,7 @@ MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 def save_2d_plot(data: DataTuple, filepath: str):
     """
-
-    Args:
-        data:
-        filepath:
+    Make 2D plot
     """
     file_path = Path(filepath)
     columns = data.x.columns
@@ -48,11 +45,7 @@ def save_2d_plot(data: DataTuple, filepath: str):
 
 def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)):
     """
-
-    Args:
-        data:
-        filepath:
-        dims:
+    Make joint plot
     """
     file_path = Path(filepath)
     columns = data.x.columns
@@ -68,10 +61,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
 def make_gif(files: List[str], name="movie"):
     """
-
-    Args:
-        files:
-        name:
+    Make GIF
     """
     images = []
     for filename in files:
@@ -81,10 +71,7 @@ def make_gif(files: List[str], name="movie"):
 
 def save_label_plot(data: DataTuple, filename: str) -> None:
     """
-
-    Args:
-        data:
-        filename:
+    Make label plot
     """
     file_path = Path(filename)
 
@@ -176,7 +163,8 @@ def single_plot_mean_std_box(
     yaxis: Tuple[str, str],
     dataset: str,
     transform: str,
-    legend: Union[None, LegendType, Tuple[LegendType, float]] = "outside",
+    legend_pos: Optional[LegendType] = "outside",
+    legend_yanchor: float = 1.0,
     markersize: int = 6,
     use_cross: bool = False,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
@@ -188,10 +176,14 @@ def single_plot_mean_std_box(
     Args:
         plot: Plot object
         results: DataFrame with the data
-        x_axis: name of column that's plotted on the x-axis
-        y_axis: name of column that's plotted on the y-axis
+        xaxis: name of column that's plotted on the x-axis
+        yaxis: name of column that's plotted on the y-axis
         dataset: string that identifies the dataset
         transform: string that identifies the preprocessing method
+        legend_pos: position of the legend (or None for no legend)
+        legend_yanchor: position in the vertical direction where the legend should begin
+        markersize: size of marker
+        use_cross: if True, use crosses with error bars instead of boxes
 
     Returns
         the legend object if something was plotted; False otherwise
@@ -211,7 +203,10 @@ def single_plot_mean_std_box(
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
 
-    plot_def = PlotDef(title=f"{dataset}, {transform}", entries=entries, legend=legend)
+    title = f"{dataset}, {transform}"
+    plot_def = PlotDef(
+        title=title, entries=entries, legend_pos=legend_pos, legend_yanchor=legend_yanchor
+    )
     return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross)
 
 
@@ -231,6 +226,8 @@ def plot_mean_std_box(
         metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
         save: if True, save the plot as a PDF
         dpi: DPI of the plots
+        use_cross: if True, use crosses with error bars instead of boxes
+
     Returns:
         A list of all figures and plots
     """

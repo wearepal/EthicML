@@ -1,6 +1,7 @@
 """
 Class to describe features of the Compas dataset
 """
+from typing_extensions import Literal
 
 from ethicml.data.dataset import Dataset
 
@@ -8,7 +9,9 @@ from ethicml.data.dataset import Dataset
 class Compas(Dataset):
     """Compas (or ProPublica) dataset"""
 
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
+    def __init__(
+        self, split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
+    ):
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
