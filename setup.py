@@ -25,7 +25,7 @@ setup(
     long_description_content_type='text/markdown',
     url="https://github.com/predictive-analytics-lab/EthicML",
     packages=find_packages(),
-    package_data={'ethicml.data': ['csvs/*.csv']},
+    package_data={'ethicml.data': ['csvs/*.csv'], 'ethicml': ['py.typed']},
     python_requires=">=3.6",
     install_requires=[
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
@@ -47,9 +47,9 @@ setup(
     extras_require={
         # use `pip install EthicML[dev]` to install development packages
         'dev': [
-            "black",
-            "mypy >= 0.720",
-            "pylint >= 2.0",
+            # "black",
+            # "mypy >= 0.720",
+            # "pylint >= 2.0",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
             "torch >= 1.1.0, <= 1.1.0.post2",
@@ -60,4 +60,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Typing :: Typed",
     ],
+    zip_safe=False,
 )
