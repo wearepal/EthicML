@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ethicml.algorithms.inprocess &mdash; EthicML 0.1.0a3 documentation</title>
+  <title>ethicml.algorithms.inprocess &mdash; EthicML 0.1.0-alpha3 documentation</title>
   
 
   
@@ -87,7 +87,6 @@
 <li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
@@ -1405,30 +1404,6 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarAccuracy</code><span class="sig-paren">(</span><em class="sig-param">gamma: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
-<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.remove" title="ethicml.algorithms.inprocess.ZafarAccuracy.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run" title="ethicml.algorithms.inprocess.ZafarAccuracy.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_async" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_test" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1441,12 +1416,27 @@ simply the last part of the repository URL)</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format">
-<em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p>
-</dd></dl>
-
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.remove" title="ethicml.algorithms.inprocess.ZafarAccuracy.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run" title="ethicml.algorithms.inprocess.ZafarAccuracy.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_async" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_test" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.name" title="Permalink to this definition">¶</a></dt>
@@ -1492,30 +1482,6 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarBaseline</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar without fairness</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
-<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.remove" title="ethicml.algorithms.inprocess.ZafarBaseline.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run" title="ethicml.algorithms.inprocess.ZafarBaseline.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_async" title="ethicml.algorithms.inprocess.ZafarBaseline.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_test" title="ethicml.algorithms.inprocess.ZafarBaseline.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1528,12 +1494,27 @@ simply the last part of the repository URL)</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format">
-<em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p>
-</dd></dl>
-
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.remove" title="ethicml.algorithms.inprocess.ZafarBaseline.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run" title="ethicml.algorithms.inprocess.ZafarBaseline.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_async" title="ethicml.algorithms.inprocess.ZafarBaseline.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_test" title="ethicml.algorithms.inprocess.ZafarBaseline.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.name" title="Permalink to this definition">¶</a></dt>
@@ -1579,30 +1560,6 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarEqOdds</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar.ZafarEqOpp</span></code></p>
 <p>Zafar for Equalised Odds</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
-<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.remove" title="ethicml.algorithms.inprocess.ZafarEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run" title="ethicml.algorithms.inprocess.ZafarEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_async" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_test" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1615,12 +1572,27 @@ simply the last part of the repository URL)</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format">
-<em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p>
-</dd></dl>
-
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.remove" title="ethicml.algorithms.inprocess.ZafarEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run" title="ethicml.algorithms.inprocess.ZafarEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_async" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_test" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.name" title="Permalink to this definition">¶</a></dt>
@@ -1666,30 +1638,6 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarEqOpp</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar for Equality of Opportunity</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
-<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.remove" title="ethicml.algorithms.inprocess.ZafarEqOpp.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run" title="ethicml.algorithms.inprocess.ZafarEqOpp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_async" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_test" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1702,12 +1650,27 @@ simply the last part of the repository URL)</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format">
-<em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p>
-</dd></dl>
-
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.remove" title="ethicml.algorithms.inprocess.ZafarEqOpp.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run" title="ethicml.algorithms.inprocess.ZafarEqOpp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_async" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_test" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.name" title="Permalink to this definition">¶</a></dt>
@@ -1753,30 +1716,6 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarFairness</code><span class="sig-paren">(</span><em class="sig-param">c: float = 0.001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness</p>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
-<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.remove" title="ethicml.algorithms.inprocess.ZafarFairness.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run" title="ethicml.algorithms.inprocess.ZafarFairness.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_async" title="ethicml.algorithms.inprocess.ZafarFairness.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_test" title="ethicml.algorithms.inprocess.ZafarFairness.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1789,12 +1728,27 @@ simply the last part of the repository URL)</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format">
-<em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p>
-</dd></dl>
-
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.remove" title="ethicml.algorithms.inprocess.ZafarFairness.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run" title="ethicml.algorithms.inprocess.ZafarFairness.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_async" title="ethicml.algorithms.inprocess.ZafarFairness.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_test" title="ethicml.algorithms.inprocess.ZafarFairness.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.name" title="Permalink to this definition">¶</a></dt>

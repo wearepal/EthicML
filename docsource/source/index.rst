@@ -39,7 +39,6 @@ API
    ethicml.algorithms.postprocess
    ethicml.data
    ethicml.evaluators
-   ethicml.implementations
    ethicml.metrics
    ethicml.preprocessing
    ethicml.utility

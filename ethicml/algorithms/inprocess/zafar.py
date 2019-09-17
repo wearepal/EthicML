@@ -25,7 +25,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         self._sub_dir = sub_dir
 
     @staticmethod
-    def create_file_in_zafar_format(
+    def _create_file_in_zafar_format(
         data: Union[DataTuple, TestTuple], file_path: Path, label_converter: LabelBinarizer
     ):
         """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants"""
@@ -49,8 +49,8 @@ class _ZafarAlgorithmBase(InstalledModel):
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.json"
             test_path = tmp_path / "test.json"
-            self.create_file_in_zafar_format(train, train_path, label_converter)
-            self.create_file_in_zafar_format(test, test_path, label_converter)
+            self._create_file_in_zafar_format(train, train_path, label_converter)
+            self._create_file_in_zafar_format(test, test_path, label_converter)
             predictions_path = tmp_path / "predictions.json"
 
             cmd = self._create_command_line(str(train_path), str(test_path), str(predictions_path))
