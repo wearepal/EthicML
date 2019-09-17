@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ethicml.visualisation &#8212; EthicML 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="ethicml.utility" href="ethicml.utility.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.utility.html" title="ethicml.utility"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ethicml.visualisation">
+<span id="ethicml-visualisation"></span><h1>ethicml.visualisation<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this headline">¶</a></h1>
+<p>This module contains tools for plotting results</p>
+<dl class="function">
+<dt id="ethicml.visualisation.plot_mean_std_box">
+<code class="sig-name descname">plot_mean_std_box</code><span class="sig-paren">(</span><em class="sig-param">results: ethicml.utility.data_structures.Results, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], save: bool = True, dpi: int = 300, use_cross: bool = False</em><span class="sig-paren">)</span> &#x2192; List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]<a class="headerlink" href="#ethicml.visualisation.plot_mean_std_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the given result with boxes that represent mean and standard deviation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> – a DataFrame that already contains the values of the metrics</p></li>
+<li><p><strong>metric_y</strong> – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
+<li><p><strong>metric_x</strong> – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
+<li><p><strong>save</strong> – if True, save the plot as a PDF</p></li>
+<li><p><strong>dpi</strong> – DPI of the plots</p></li>
+<li><p><strong>use_cross</strong> – if True, use crosses with error bars instead of boxes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of all figures and plots</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.visualisation.save_2d_plot">
+<code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make 2D plot</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.visualisation.save_jointplot">
+<code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em>, <em class="sig-param">dims: Tuple[int</em>, <em class="sig-param">int] = (0</em>, <em class="sig-param">1)</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make joint plot</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.visualisation.save_label_plot">
+<code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make label plot</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.visualisation.single_plot_mean_std_box">
+<code class="sig-name descname">single_plot_mean_std_box</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: ethicml.utility.data_structures.Results, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: str, legend_pos: Optional[typing_extensions.Literal['inside', 'outside'][inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6, use_cross: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[None, typing_extensions.Literal[False][False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot_mean_std_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is essentially a wrapper around the <cite>errorbox</cite> function</p>
+<p>This function can also be used to create figures with multiple plots on them, because it does
+not generate a Figure object itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plot</strong> – Plot object</p></li>
+<li><p><strong>results</strong> – DataFrame with the data</p></li>
+<li><p><strong>xaxis</strong> – name of column that’s plotted on the x-axis</p></li>
+<li><p><strong>yaxis</strong> – name of column that’s plotted on the y-axis</p></li>
+<li><p><strong>dataset</strong> – string that identifies the dataset</p></li>
+<li><p><strong>transform</strong> – string that identifies the preprocessing method</p></li>
+<li><p><strong>legend_pos</strong> – position of the legend (or None for no legend)</p></li>
+<li><p><strong>legend_yanchor</strong> – position in the vertical direction where the legend should begin</p></li>
+<li><p><strong>markersize</strong> – size of marker</p></li>
+<li><p><strong>use_cross</strong> – if True, use crosses with error bars instead of boxes</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns</dt><dd><p>the legend object if something was plotted; False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ethicml.utility.html"
+                        title="previous chapter">ethicml.utility</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ethicml.visualisation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.utility.html" title="ethicml.utility"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>
