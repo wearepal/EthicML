@@ -23,18 +23,16 @@ copyright = '2019, O. Thomas, T. Kehrenberg'
 author = 'O. Thomas, T. Kehrenberg'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0a3'
+release = '0.1.0-alpha3'
 
 
 # -- General configuration ---------------------------------------------------
 autoclass_content = "both"  # include both class docstring and __init__
-autodoc_default_flags = [
-    # Make sure that any autodoc declarations show the right members
-    "members",
-    "inherited-members",
-    "show-inheritance",
-]
 autodoc_default_options = {
+    # Make sure that any autodoc declarations show the right members
+    "members": True,
+    "inherited-members": True,
+    "show-inheritance": True,
     "autosummary": True,
 }
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
