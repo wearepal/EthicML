@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ethicml.preprocessing &#8212; EthicML 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ethicml.utility" href="ethicml.utility.html" />
+    <link rel="prev" title="ethicml.metrics" href="ethicml.metrics.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.utility.html" title="ethicml.utility"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ethicml.metrics.html" title="ethicml.metrics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ethicml.preprocessing">
+<span id="ethicml-preprocessing"></span><h1>ethicml.preprocessing<a class="headerlink" href="#module-ethicml.preprocessing" title="Permalink to this headline">¶</a></h1>
+<p>This moodule contains algorithms that pre-process the data in some way</p>
+<dl class="class">
+<dt id="ethicml.preprocessing.LabelBinarizer">
+<em class="property">class </em><code class="sig-name descname">LabelBinarizer</code><a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>If a dataset has labels [-1,1], then this will make it so the labels = [0,1]</p>
+<dl class="method">
+<dt id="ethicml.preprocessing.LabelBinarizer.adjust">
+<code class="sig-name descname">adjust</code><span class="sig-paren">(</span><em class="sig-param">dataset: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer.adjust" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a datatuple and make the labels [0,1]
+:param dataset:</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.preprocessing.LabelBinarizer.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><em class="sig-param">dataset: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of adjust</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.preprocessing.LabelBinarizer.post_only_labels">
+<code class="sig-name descname">post_only_labels</code><span class="sig-paren">(</span><em class="sig-param">labels: pandas.core.frame.DataFrame</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.preprocessing.LabelBinarizer.post_only_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inverse of adjust but only for a DataFrame instead of a DataTuple</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.preprocessing.dataset_from_cond">
+<code class="sig-name descname">dataset_from_cond</code><span class="sig-paren">(</span><em class="sig-param">dataset: pandas.core.frame.DataFrame</em>, <em class="sig-param">cond: str</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.preprocessing.dataset_from_cond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dataframe that meets some condition</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.preprocessing.domain_split">
+<code class="sig-name descname">domain_split</code><span class="sig-paren">(</span><em class="sig-param">datatup: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">tr_cond: str</em>, <em class="sig-param">te_cond: str</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.DataTuple]<a class="headerlink" href="#ethicml.preprocessing.domain_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a datatuple based on a condition
+:param datatup: DataTuple
+:param tr_cond: condition for the training set
+:param te_cond: condition for the test set</p>
+<p>Returns: Tuple of DataTuple split into train and test. The test is all those that meet
+the test condition plus the same percentage again of the train set.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.preprocessing.query_dt">
+<code class="sig-name descname">query_dt</code><span class="sig-paren">(</span><em class="sig-param">datatup: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">query_str: str</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.preprocessing.query_dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query a datatuple</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.preprocessing.train_test_split">
+<code class="sig-name descname">train_test_split</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">train_percentage: float = 0.8</em>, <em class="sig-param">random_seed: int = 0</em>, <em class="sig-param">proportional: bool = False</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.DataTuple]<a class="headerlink" href="#ethicml.preprocessing.train_test_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a data tuple into two datatuple along the rows of the DataFrames</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – data tuple to split</p></li>
+<li><p><strong>train_percentage</strong> – percentage for train split</p></li>
+<li><p><strong>random_seed</strong> – seed to make splitting reproducible</p></li>
+<li><p><strong>proportional</strong> – if True, ensure that the proportion of s and y are the same in train and test</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>train split and test split</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ethicml.metrics.html"
+                        title="previous chapter">ethicml.metrics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ethicml.utility.html"
+                        title="next chapter">ethicml.utility</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ethicml.preprocessing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.utility.html" title="ethicml.utility"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ethicml.metrics.html" title="ethicml.metrics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>

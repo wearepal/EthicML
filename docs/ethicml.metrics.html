@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ethicml.metrics &#8212; EthicML 0.1.0a3 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ethicml.preprocessing" href="ethicml.preprocessing.html" />
+    <link rel="prev" title="ethicml.implementations" href="ethicml.implementations.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ethicml.implementations.html" title="ethicml.implementations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ethicml.metrics">
+<span id="ethicml-metrics"></span><h1>ethicml.metrics<a class="headerlink" href="#module-ethicml.metrics" title="Permalink to this headline">¶</a></h1>
+<p>This module contains metrics which can be applied to prediction results</p>
+<dl class="class">
+<dt id="ethicml.metrics.AbsCV">
+<em class="property">class </em><code class="sig-name descname">AbsCV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AbsCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.cv.CV</span></code></p>
+<p>Absolute value of Calder-Verwer</p>
+<p>This metric is supposed to make it easier to compare results.</p>
+<dl class="method">
+<dt id="ethicml.metrics.AbsCV.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.AbsCV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.AbsCV.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.AbsCV.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.AbsCV.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.AbsCV.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.Accuracy">
+<em class="property">class </em><code class="sig-name descname">Accuracy</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Computes the classification accuracy</p>
+<dl class="method">
+<dt id="ethicml.metrics.Accuracy.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Accuracy.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Accuracy.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.Accuracy.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Accuracy.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.Accuracy.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.BCR">
+<em class="property">class </em><code class="sig-name descname">BCR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BCR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Balanced Classification Rate</p>
+<dl class="method">
+<dt id="ethicml.metrics.BCR.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.BCR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.BCR.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.BCR.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.BCR.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.BCR.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.CV">
+<em class="property">class </em><code class="sig-name descname">CV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Calder-Verwer</p>
+<dl class="method">
+<dt id="ethicml.metrics.CV.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.CV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.CV.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.CV.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.CV.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.CV.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.Hsic">
+<em class="property">class </em><code class="sig-name descname">Hsic</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Hsic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>see module string</p>
+<dl class="method">
+<dt id="ethicml.metrics.Hsic.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Hsic.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Hsic.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.Hsic.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Hsic.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.Hsic.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>We add the ability to take the average of hsic sscore as for
+larger datasets it will kill your machine</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="ethicml.metrics.LabelOutOfBounds">
+<em class="property">exception </em><code class="sig-name descname">LabelOutOfBounds</code><a class="headerlink" href="#ethicml.metrics.LabelOutOfBounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead</p>
+<dl class="method">
+<dt id="ethicml.metrics.LabelOutOfBounds.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.LabelOutOfBounds.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.Metric">
+<em class="property">class </em><code class="sig-name descname">Metric</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Metric" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for all metrics</p>
+<dl class="method">
+<dt id="ethicml.metrics.Metric.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Metric.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Metric.name">
+<em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.Metric.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Metric.score">
+<em class="property">abstract </em><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.Metric.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.NMI">
+<em class="property">class </em><code class="sig-name descname">NMI</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em>, <em class="sig-param">base: str = 'y'</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NMI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Normalized Mutual Information</p>
+<dl class="method">
+<dt id="ethicml.metrics.NMI.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.NMI.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.NMI.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.NMI.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.NMI.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.NMI.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.NPV">
+<em class="property">class </em><code class="sig-name descname">NPV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Negative predictive value</p>
+<dl class="method">
+<dt id="ethicml.metrics.NPV.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.NPV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.NPV.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.NPV.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.NPV.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.NPV.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.PPV">
+<em class="property">class </em><code class="sig-name descname">PPV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Positive predictive value</p>
+<dl class="method">
+<dt id="ethicml.metrics.PPV.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.PPV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.PPV.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.PPV.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.PPV.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.PPV.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.ProbNeg">
+<em class="property">class </em><code class="sig-name descname">ProbNeg</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Probability of negative prediction</p>
+<dl class="method">
+<dt id="ethicml.metrics.ProbNeg.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbNeg.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbNeg.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.ProbNeg.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbNeg.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.ProbNeg.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.ProbOutcome">
+<em class="property">class </em><code class="sig-name descname">ProbOutcome</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbOutcome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Mean of logits</p>
+<dl class="method">
+<dt id="ethicml.metrics.ProbOutcome.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbOutcome.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbOutcome.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.ProbOutcome.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbOutcome.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.ProbOutcome.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.ProbPos">
+<em class="property">class </em><code class="sig-name descname">ProbPos</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Probability of positive prediction</p>
+<dl class="method">
+<dt id="ethicml.metrics.ProbPos.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbPos.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbPos.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.ProbPos.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.ProbPos.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.ProbPos.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.TNR">
+<em class="property">class </em><code class="sig-name descname">TNR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>True negative rate</p>
+<dl class="method">
+<dt id="ethicml.metrics.TNR.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.TNR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.TNR.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.TNR.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.TNR.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.TNR.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.TPR">
+<em class="property">class </em><code class="sig-name descname">TPR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>True positive rate</p>
+<dl class="method">
+<dt id="ethicml.metrics.TPR.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.TPR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.TPR.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.TPR.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.TPR.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.TPR.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.metrics.Theil">
+<em class="property">class </em><code class="sig-name descname">Theil</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Theil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
+<p>Theil Index</p>
+<dl class="method">
+<dt id="ethicml.metrics.Theil.apply_per_sensitive">
+<em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Theil.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the metric can be applied per sensitive attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Theil.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.metrics.Theil.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the metric</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.metrics.Theil.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#ethicml.metrics.Theil.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute score</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> – predicted labels</p></li>
+<li><p><strong>actual</strong> – dictionary with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ethicml.metrics.confusion_matrix">
+<code class="sig-name descname">confusion_matrix</code><span class="sig-paren">(</span><em class="sig-param">prediction: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">pos_cls: int</em><span class="sig-paren">)</span> &#x2192; Tuple[int, int, int, int]<a class="headerlink" href="#ethicml.metrics.confusion_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ethicml.implementations.html"
+                        title="previous chapter">ethicml.implementations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ethicml.preprocessing.html"
+                        title="next chapter">ethicml.preprocessing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ethicml.metrics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ethicml.implementations.html" title="ethicml.implementations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
+    </div>
+  </body>
+</html>
