@@ -34,6 +34,9 @@ autodoc_default_flags = [
     "inherited-members",
     "show-inheritance",
 ]
+autodoc_default_options = {
+    "autosummary": True,
+}
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
 add_module_names = False
@@ -47,6 +50,7 @@ extensions = [
     # 'sphinx.ext.autosummary',
     # The Napoleon extension allows for nicer argument formatting.
     'sphinx.ext.napoleon',
+    'autodocsumm',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -63,7 +67,8 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'nature'  # 'alabaster'
+html_theme = 'sphinx_rtd_theme'  # 'alabaster'
+pygments_style = 'sphinx'  # syntax highlighting style to use
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

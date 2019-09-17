@@ -11,7 +11,7 @@ from ._shared import conventional_interface
 
 
 class MLP(InAlgorithmAsync):
-    """MLP"""
+    """Multi-layer Perceptron"""
 
     def __init__(
         self, hidden_layer_sizes: Optional[Tuple[int]] = None, activation: Optional[str] = None

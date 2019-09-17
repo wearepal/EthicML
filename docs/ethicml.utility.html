@@ -1,54 +1,235 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>ethicml.utility &#8212; EthicML 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ethicml.utility &mdash; EthicML 0.1.0a3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ethicml.visualisation" href="ethicml.visualisation.html" />
     <link rel="prev" title="ethicml.preprocessing" href="ethicml.preprocessing.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.visualisation.html" title="ethicml.visualisation"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">ethicml.algorithms.inprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ethicml.utility</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.utility.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.utility">
 <span id="ethicml-utility"></span><h1>ethicml.utility<a class="headerlink" href="#module-ethicml.utility" title="Permalink to this headline">¶</a></h1>
 <p>This module contains kind of useful things that don’t really belong anywhere else (just yet)</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation" title="ethicml.utility.Activation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Activation</span></code></a></p></td>
+<td><p>Base class for decision functions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataTuple</span></code></a>(y, x, s, name)</p></td>
+<td><p>A tuple of dataframes for the features, the sensitive attribute and the class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside" title="ethicml.utility.Heaviside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Heaviside</span></code></a></p></td>
+<td><p>Decision function that accepts predictions with score of 50% or above</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.PathTuple" title="ethicml.utility.PathTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PathTuple</span></code></a>(x, s, name, y)</p></td>
+<td><p>For algorithms that run in their own process, we pass around paths to the data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.Results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Results</span></code></a>(data_frame)</p></td>
+<td><p>Container for results from <cite>evaluate_models</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TestPathTuple" title="ethicml.utility.TestPathTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestPathTuple</span></code></a>(x, s, name)</p></td>
+<td><p>For algorithms that run in their own process, we pass around paths to the data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple" title="ethicml.utility.TestTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTuple</span></code></a>(x, s, name)</p></td>
+<td><p>A tuple of dataframes for the features and the sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair" title="ethicml.utility.TrainTestPair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainTestPair</span></code></a></p></td>
+<td><p>2-Tuple of train and test data</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.concat_dt" title="ethicml.utility.concat_dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_dt</span></code></a>(datatup_list, axis, ][columns, …)</p></td>
+<td><p>Concatenate the data tuples in the given list</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.concat_tt" title="ethicml.utility.concat_tt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_tt</span></code></a>(datatup_list, axis, ][columns, …)</p></td>
+<td><p>Concatenate the test tuples in the given list</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.load_feather" title="ethicml.utility.load_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_feather</span></code></a>(output_path)</p></td>
+<td><p>Load a dataframe from a feather file</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="ethicml.utility.Activation">
 <em class="property">class </em><code class="sig-name descname">Activation</code><a class="headerlink" href="#ethicml.utility.Activation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for decision functions</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation.apply" title="ethicml.utility.Activation.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(soft_output)</p></td>
+<td><p>Apply the decision function to a soft prediction</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Activation.get_name" title="ethicml.utility.Activation.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
+<td><p>Name of activation function</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.Activation.apply">
 <em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">soft_output: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#ethicml.utility.Activation.apply" title="Permalink to this definition">¶</a></dt>
@@ -76,6 +257,30 @@
 <em class="property">class </em><code class="sig-name descname">DataTuple</code><span class="sig-paren">(</span><em class="sig-param">y: pandas.core.frame.DataFrame</em>, <em class="sig-param">x: pandas.core.frame.DataFrame</em>, <em class="sig-param">s: pandas.core.frame.DataFrame</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.DataTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.TestTuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.DataTupleValues</span></code></p>
 <p>A tuple of dataframes for the features, the sensitive attribute and the class labels</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.apply_to_joined_df" title="ethicml.utility.DataTuple.apply_to_joined_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_to_joined_df</span></code></a>(mapper, …)</p></td>
+<td><p>Concatenate the dataframes in the DataTuple and then apply a function to it</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.get_subset" title="ethicml.utility.DataTuple.get_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subset</span></code></a>(num)</p></td>
+<td><p>Get the first elements of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.make_copy_with" title="ethicml.utility.DataTuple.make_copy_with"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_copy_with</span></code></a>(*, x, s, y, name)</p></td>
+<td><p>Create a copy of the DataTuple but change the given values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.remove_y" title="ethicml.utility.DataTuple.remove_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_y</span></code></a>()</p></td>
+<td><p>Convert the DataTuple instance to a TestTuple instance</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.write_as_feather" title="ethicml.utility.DataTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
+<td><p>Write the DataTuple to Feather files and return the file paths as a PathTuple</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.DataTuple.apply_to_joined_df">
 <code class="sig-name descname">apply_to_joined_df</code><span class="sig-paren">(</span><em class="sig-param">mapper: Callable[[pandas.core.frame.DataFrame], pandas.core.frame.DataFrame]</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.apply_to_joined_df" title="Permalink to this definition">¶</a></dt>
@@ -132,6 +337,21 @@
 <em class="property">class </em><code class="sig-name descname">Heaviside</code><a class="headerlink" href="#ethicml.utility.Heaviside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.activation.Activation</span></code></p>
 <p>Decision function that accepts predictions with score of 50% or above</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside.apply" title="ethicml.utility.Heaviside.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(soft_output)</p></td>
+<td><p>Apply the decision function to a soft prediction</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside.get_name" title="ethicml.utility.Heaviside.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
+<td><p>Name of activation function</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.Heaviside.apply">
 <code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">soft_output: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#ethicml.utility.Heaviside.apply" title="Permalink to this definition">¶</a></dt>
@@ -159,6 +379,18 @@
 <em class="property">class </em><code class="sig-name descname">PathTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pathlib.Path</em>, <em class="sig-param">s: pathlib.Path</em>, <em class="sig-param">name: str</em>, <em class="sig-param">y: pathlib.Path</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.PathTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.TestPathTuple</span></code></p>
 <p>For algorithms that run in their own process, we pass around paths to the data</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.PathTuple.load_from_feather" title="ethicml.utility.PathTuple.load_from_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_feather</span></code></a>()</p></td>
+<td><p>Load a dataframe from a feather file</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.PathTuple.load_from_feather">
 <code class="sig-name descname">load_from_feather</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.PathTuple.load_from_feather" title="Permalink to this definition">¶</a></dt>
@@ -172,6 +404,27 @@
 <em class="property">class </em><code class="sig-name descname">Results</code><span class="sig-paren">(</span><em class="sig-param">data_frame: Optional[pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.Results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Container for results from <cite>evaluate_models</cite></p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.append_df" title="ethicml.utility.Results.append_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_df</span></code></a>(data_frame, prepend)</p></td>
+<td><p>Append (or prepend) a DataFrame to this object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Results.append_from_file" title="ethicml.utility.Results.append_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_from_file</span></code></a>(csv_file, prepend)</p></td>
+<td><p>Append results from a CSV file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.from_file" title="ethicml.utility.Results.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a>(csv_file)</p></td>
+<td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Results.map_over_index" title="ethicml.utility.Results.map_over_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_over_index</span></code></a>(mapper, str, str, str]], …)</p></td>
+<td><p>Change the values of the index with a transformation function</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.Results.append_df">
 <code class="sig-name descname">append_df</code><span class="sig-paren">(</span><em class="sig-param">data_frame: pandas.core.frame.DataFrame</em>, <em class="sig-param">prepend: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.utility.Results.append_df" title="Permalink to this definition">¶</a></dt>
@@ -211,6 +464,18 @@
 <em class="property">class </em><code class="sig-name descname">TestPathTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pathlib.Path</em>, <em class="sig-param">s: pathlib.Path</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TestPathTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>For algorithms that run in their own process, we pass around paths to the data</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestPathTuple.load_from_feather" title="ethicml.utility.TestPathTuple.load_from_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_feather</span></code></a>()</p></td>
+<td><p>Load a dataframe from a feather file</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.TestPathTuple.load_from_feather">
 <code class="sig-name descname">load_from_feather</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.TestPathTuple.load_from_feather" title="Permalink to this definition">¶</a></dt>
@@ -224,6 +489,18 @@
 <em class="property">class </em><code class="sig-name descname">TestTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pandas.core.frame.DataFrame</em>, <em class="sig-param">s: pandas.core.frame.DataFrame</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TestTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A tuple of dataframes for the features and the sensitive attribute</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.write_as_feather" title="ethicml.utility.TestTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
+<td><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.TestTuple.write_as_feather">
 <code class="sig-name descname">write_as_feather</code><span class="sig-paren">(</span><em class="sig-param">data_dir: pathlib.Path</em>, <em class="sig-param">identifier: str</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestPathTuple<a class="headerlink" href="#ethicml.utility.TestTuple.write_as_feather" title="Permalink to this definition">¶</a></dt>
@@ -245,9 +522,40 @@
 
 <dl class="class">
 <dt id="ethicml.utility.TrainTestPair">
-<em class="property">class </em><code class="sig-name descname">TrainTestPair</code><span class="sig-paren">(</span><em class="sig-param">train</em>, <em class="sig-param">test</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">TrainTestPair</code><a class="headerlink" href="#ethicml.utility.TrainTestPair" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>2-Tuple of train and test data</p>
 <p>Create new instance of TrainTestPair(train, test)</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.count" title="ethicml.utility.TrainTestPair.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a></p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.index" title="ethicml.utility.TrainTestPair.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a></p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.test" title="ethicml.utility.TrainTestPair.test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></a></p></td>
+<td><p>Alias for field number 1</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.train" title="ethicml.utility.TrainTestPair.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a></p></td>
+<td><p>Alias for field number 0</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.utility.TrainTestPair.count">
 <code class="sig-name descname">count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.count" title="Permalink to this definition">¶</a></dt>
@@ -296,59 +604,52 @@
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.visualisation.html" class="btn btn-neutral float-right" title="ethicml.visualisation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.preprocessing.html" class="btn btn-neutral float-left" title="ethicml.preprocessing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ethicml.preprocessing.html"
-                        title="previous chapter">ethicml.preprocessing</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ethicml.visualisation.html"
-                        title="next chapter">ethicml.visualisation</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ethicml.utility.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.visualisation.html" title="ethicml.visualisation"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>

@@ -6,7 +6,7 @@ from .dataset import Dataset
 
 
 class NonBinaryToy(Dataset):
-    """Class to describe features of the Non-Binary toy dataset"""
+    """Dataset with non-binary toy data for testing"""
 
     cont_features: List[str]
     disc_features: List[str]

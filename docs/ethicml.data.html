@@ -1,54 +1,265 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>ethicml.data &#8212; EthicML 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ethicml.data &mdash; EthicML 0.1.0a3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ethicml.evaluators" href="ethicml.evaluators.html" />
     <link rel="prev" title="ethicml.algorithms.postprocess" href="ethicml.algorithms.postprocess.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.evaluators.html" title="ethicml.evaluators"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.postprocess.html" title="ethicml.algorithms.postprocess"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">ethicml.algorithms.inprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ethicml.data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.data">
 <span id="ethicml-data"></span><h1>ethicml.data<a class="headerlink" href="#module-ethicml.data" title="Permalink to this headline">¶</a></h1>
 <p>This module contains items related to data, such as raw csv’s and data objects</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult" title="ethicml.data.Adult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adult</span></code></a>(split, , , , ][Sex, Race, Race-Sex, …)</p></td>
+<td><p>UCL Adult dataset</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas" title="ethicml.data.Compas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Compas</span></code></a>(split, , ][Sex, Race, Race-Sex] =, …)</p></td>
+<td><p>Compas (or ProPublica) dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset" title="ethicml.data.ConfigurableDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConfigurableDataset</span></code></a>()</p></td>
+<td><p>Dataset that is configurable</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit" title="ethicml.data.Credit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Credit</span></code></a>(split, discrete_only)</p></td>
+<td><p>UCL Credit Card dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset" title="ethicml.data.Dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></a>()</p></td>
+<td><p>Base class for datasets</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German" title="ethicml.data.German"><code class="xref py py-obj docutils literal notranslate"><span class="pre">German</span></code></a>(split, discrete_only)</p></td>
+<td><p>German credit dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy" title="ethicml.data.NonBinaryToy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonBinaryToy</span></code></a>()</p></td>
+<td><p>Dataset with non-binary toy data for testing</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf" title="ethicml.data.Sqf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sqf</span></code></a>(split, discrete_only)</p></td>
+<td><p>Stop, question and frisk dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy" title="ethicml.data.Toy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Toy</span></code></a>()</p></td>
+<td><p>Dataset with toy data for testing</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.create_data_obj" title="ethicml.data.create_data_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_data_obj</span></code></a>(filepath, s_columns, …)</p></td>
+<td><p>Create a <cite>ConfigurableDataset</cite> from the given file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.filter_features_by_prefixes" title="ethicml.data.filter_features_by_prefixes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_features_by_prefixes</span></code></a>(features, prefixes)</p></td>
+<td><p>Filter the features by prefixes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.load_data" title="ethicml.data.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a>(dataset, ordered)</p></td>
+<td><p>Load dataset from its CSV file</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="ethicml.data.Adult">
 <em class="property">class </em><code class="sig-name descname">Adult</code><span class="sig-paren">(</span><em class="sig-param">split: typing_extensions.Literal['Sex'</em>, <em class="sig-param">'Race'</em>, <em class="sig-param">'Race-Sex'</em>, <em class="sig-param">'Custom'</em>, <em class="sig-param">'Nationality'][Sex</em>, <em class="sig-param">Race</em>, <em class="sig-param">Race-Sex</em>, <em class="sig-param">Custom</em>, <em class="sig-param">Nationality] = 'Sex'</em>, <em class="sig-param">discrete_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>UCL Adult dataset</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.class_label_prefix" title="ethicml.data.Adult.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Adult.class_labels" title="ethicml.data.Adult.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.continuous_features" title="ethicml.data.Adult.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Adult.discrete_features" title="ethicml.data.Adult.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.feature_split" title="ethicml.data.Adult.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Adult.features" title="ethicml.data.Adult.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.filename" title="ethicml.data.Adult.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Adult.name" title="ethicml.data.Adult.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.ordered_features" title="ethicml.data.Adult.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Adult.s_prefix" title="ethicml.data.Adult.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Adult.sens_attrs" title="ethicml.data.Adult.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Adult.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Adult.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -125,6 +336,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">Compas</code><span class="sig-paren">(</span><em class="sig-param">split: typing_extensions.Literal['Sex'</em>, <em class="sig-param">'Race'</em>, <em class="sig-param">'Race-Sex'][Sex</em>, <em class="sig-param">Race</em>, <em class="sig-param">Race-Sex] = 'Sex'</em>, <em class="sig-param">discrete_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>Compas (or ProPublica) dataset</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.class_label_prefix" title="ethicml.data.Compas.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas.class_labels" title="ethicml.data.Compas.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.continuous_features" title="ethicml.data.Compas.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas.discrete_features" title="ethicml.data.Compas.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.feature_split" title="ethicml.data.Compas.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas.features" title="ethicml.data.Compas.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.filename" title="ethicml.data.Compas.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas.name" title="ethicml.data.Compas.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.ordered_features" title="ethicml.data.Compas.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Compas.s_prefix" title="ethicml.data.Compas.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Compas.sens_attrs" title="ethicml.data.Compas.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Compas.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Compas.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -201,6 +454,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">ConfigurableDataset</code><a class="headerlink" href="#ethicml.data.ConfigurableDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>Dataset that is configurable</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.class_label_prefix" title="ethicml.data.ConfigurableDataset.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.class_labels" title="ethicml.data.ConfigurableDataset.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.continuous_features" title="ethicml.data.ConfigurableDataset.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.discrete_features" title="ethicml.data.ConfigurableDataset.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.feature_split" title="ethicml.data.ConfigurableDataset.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.features" title="ethicml.data.ConfigurableDataset.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.filename" title="ethicml.data.ConfigurableDataset.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.name" title="ethicml.data.ConfigurableDataset.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.ordered_features" title="ethicml.data.ConfigurableDataset.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.s_prefix" title="ethicml.data.ConfigurableDataset.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.ConfigurableDataset.sens_attrs" title="ethicml.data.ConfigurableDataset.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.ConfigurableDataset.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.ConfigurableDataset.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -277,6 +572,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">Credit</code><span class="sig-paren">(</span><em class="sig-param">split: str = 'Sex'</em>, <em class="sig-param">discrete_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>UCL Credit Card dataset</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.class_label_prefix" title="ethicml.data.Credit.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit.class_labels" title="ethicml.data.Credit.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.continuous_features" title="ethicml.data.Credit.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit.discrete_features" title="ethicml.data.Credit.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.feature_split" title="ethicml.data.Credit.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit.features" title="ethicml.data.Credit.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.filename" title="ethicml.data.Credit.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit.name" title="ethicml.data.Credit.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.ordered_features" title="ethicml.data.Credit.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Credit.s_prefix" title="ethicml.data.Credit.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Credit.sens_attrs" title="ethicml.data.Credit.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Credit.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Credit.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -353,6 +690,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">Dataset</code><a class="headerlink" href="#ethicml.data.Dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for datasets</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.class_label_prefix" title="ethicml.data.Dataset.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Dataset.class_labels" title="ethicml.data.Dataset.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.continuous_features" title="ethicml.data.Dataset.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Dataset.discrete_features" title="ethicml.data.Dataset.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.feature_split" title="ethicml.data.Dataset.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Dataset.features" title="ethicml.data.Dataset.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.filename" title="ethicml.data.Dataset.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Dataset.name" title="ethicml.data.Dataset.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.ordered_features" title="ethicml.data.Dataset.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Dataset.s_prefix" title="ethicml.data.Dataset.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.sens_attrs" title="ethicml.data.Dataset.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Dataset.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Dataset.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -429,6 +808,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">German</code><span class="sig-paren">(</span><em class="sig-param">split: str = 'Sex'</em>, <em class="sig-param">discrete_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>German credit dataset</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.class_label_prefix" title="ethicml.data.German.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German.class_labels" title="ethicml.data.German.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.continuous_features" title="ethicml.data.German.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German.discrete_features" title="ethicml.data.German.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.feature_split" title="ethicml.data.German.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German.features" title="ethicml.data.German.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.filename" title="ethicml.data.German.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German.name" title="ethicml.data.German.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.ordered_features" title="ethicml.data.German.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.German.s_prefix" title="ethicml.data.German.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.German.sens_attrs" title="ethicml.data.German.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.German.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.German.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -504,7 +925,49 @@ then the continuous</p>
 <dt id="ethicml.data.NonBinaryToy">
 <em class="property">class </em><code class="sig-name descname">NonBinaryToy</code><a class="headerlink" href="#ethicml.data.NonBinaryToy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
-<p>Class to describe features of the Non-Binary toy dataset</p>
+<p>Dataset with non-binary toy data for testing</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.class_label_prefix" title="ethicml.data.NonBinaryToy.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.class_labels" title="ethicml.data.NonBinaryToy.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.continuous_features" title="ethicml.data.NonBinaryToy.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.discrete_features" title="ethicml.data.NonBinaryToy.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.feature_split" title="ethicml.data.NonBinaryToy.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.features" title="ethicml.data.NonBinaryToy.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.filename" title="ethicml.data.NonBinaryToy.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.name" title="ethicml.data.NonBinaryToy.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.ordered_features" title="ethicml.data.NonBinaryToy.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.s_prefix" title="ethicml.data.NonBinaryToy.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.NonBinaryToy.sens_attrs" title="ethicml.data.NonBinaryToy.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.NonBinaryToy.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.NonBinaryToy.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -581,6 +1044,48 @@ then the continuous</p>
 <em class="property">class </em><code class="sig-name descname">Sqf</code><span class="sig-paren">(</span><em class="sig-param">split: str = 'Sex'</em>, <em class="sig-param">discrete_only: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
 <p>Stop, question and frisk dataset</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.class_label_prefix" title="ethicml.data.Sqf.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf.class_labels" title="ethicml.data.Sqf.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.continuous_features" title="ethicml.data.Sqf.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf.discrete_features" title="ethicml.data.Sqf.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.feature_split" title="ethicml.data.Sqf.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf.features" title="ethicml.data.Sqf.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.filename" title="ethicml.data.Sqf.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf.name" title="ethicml.data.Sqf.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.ordered_features" title="ethicml.data.Sqf.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Sqf.s_prefix" title="ethicml.data.Sqf.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Sqf.sens_attrs" title="ethicml.data.Sqf.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Sqf.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Sqf.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -656,7 +1161,49 @@ then the continuous</p>
 <dt id="ethicml.data.Toy">
 <em class="property">class </em><code class="sig-name descname">Toy</code><a class="headerlink" href="#ethicml.data.Toy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></p>
-<p>Class to describe features of the Test dataset</p>
+<p>Dataset with toy data for testing</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.class_label_prefix" title="ethicml.data.Toy.class_label_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_label_prefix</span></code></a></p></td>
+<td><p>List of prefixes of class labels</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Toy.class_labels" title="ethicml.data.Toy.class_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_labels</span></code></a></p></td>
+<td><p>List of class labels</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.continuous_features" title="ethicml.data.Toy.continuous_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continuous_features</span></code></a></p></td>
+<td><p>List of features that are continuous</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Toy.discrete_features" title="ethicml.data.Toy.discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">discrete_features</span></code></a></p></td>
+<td><p>List of features that are discrete</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.feature_split" title="ethicml.data.Toy.feature_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feature_split</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Toy.features" title="ethicml.data.Toy.features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">features</span></code></a></p></td>
+<td><p>List of all features</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.filename" title="ethicml.data.Toy.filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span></code></a></p></td>
+<td><p>File from which to load the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Toy.name" title="ethicml.data.Toy.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.ordered_features" title="ethicml.data.Toy.ordered_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_features</span></code></a></p></td>
+<td><p>Return a dictionary that has separate entries for the features, the labels and the</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.Toy.s_prefix" title="ethicml.data.Toy.s_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s_prefix</span></code></a></p></td>
+<td><p>List of prefixes of the sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Toy.sens_attrs" title="ethicml.data.Toy.sens_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sens_attrs</span></code></a></p></td>
+<td><p>List of sensitive attributes</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.data.Toy.class_label_prefix">
 <em class="property">property </em><code class="sig-name descname">class_label_prefix</code><a class="headerlink" href="#ethicml.data.Toy.class_label_prefix" title="Permalink to this definition">¶</a></dt>
@@ -730,18 +1277,21 @@ then the continuous</p>
 
 <dl class="function">
 <dt id="ethicml.data.create_data_obj">
-<code class="sig-name descname">create_data_obj</code><span class="sig-paren">(</span><em class="sig-param">filepath: pathlib.Path, s_columns: List[str], y_columns: List[str], additional_to_drop=None</em><span class="sig-paren">)</span> &#x2192; ethicml.data.dataset.Dataset<a class="headerlink" href="#ethicml.data.create_data_obj" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<code class="sig-name descname">create_data_obj</code><span class="sig-paren">(</span><em class="sig-param">filepath: pathlib.Path, s_columns: List[str], y_columns: List[str], additional_to_drop: Optional[List[str]] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.data.configurable_dataset.ConfigurableDataset<a class="headerlink" href="#ethicml.data.create_data_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <cite>ConfigurableDataset</cite> from the given file</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> – </p></li>
-<li><p><strong>s_columns</strong> – </p></li>
-<li><p><strong>y_columns</strong> – </p></li>
-<li><p><strong>additional_to_drop</strong> – </p></li>
+<li><p><strong>filepath</strong> – path to a CSV file</p></li>
+<li><p><strong>s_columns</strong> – list of columns that represent sensitive attributes</p></li>
+<li><p><strong>y_columns</strong> – list of columns that contain lables</p></li>
+<li><p><strong>additional_to_drop</strong> – other columns that should be dropped</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dataset object</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="function">
@@ -781,59 +1331,52 @@ then the continuous</p>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.evaluators.html" class="btn btn-neutral float-right" title="ethicml.evaluators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.algorithms.postprocess.html" class="btn btn-neutral float-left" title="ethicml.algorithms.postprocess" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ethicml.algorithms.postprocess.html"
-                        title="previous chapter">ethicml.algorithms.postprocess</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ethicml.evaluators.html"
-                        title="next chapter">ethicml.evaluators</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ethicml.data.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.evaluators.html" title="ethicml.evaluators"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.postprocess.html" title="ethicml.algorithms.postprocess"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>

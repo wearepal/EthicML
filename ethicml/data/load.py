@@ -3,7 +3,7 @@ Loads Data from .csv files
 """
 
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
 import pandas as pd
 
 from ethicml.utility.data_structures import DataTuple
@@ -34,18 +34,21 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
 
 def create_data_obj(
-    filepath: Path, s_columns: List[str], y_columns: List[str], additional_to_drop=None
-) -> Dataset:
-    """
+    filepath: Path,
+    s_columns: List[str],
+    y_columns: List[str],
+    additional_to_drop: Optional[List[str]] = None,
+) -> ConfigurableDataset:
+    """Create a `ConfigurableDataset` from the given file
 
     Args:
-        filepath:
-        s_columns:
-        y_columns:
-        additional_to_drop:
+        filepath: path to a CSV file
+        s_columns: list of columns that represent sensitive attributes
+        y_columns: list of columns that contain lables
+        additional_to_drop: other columns that should be dropped
 
     Returns:
-
+        Dataset object
     """
     if additional_to_drop is None:
         additional_to_drop = []

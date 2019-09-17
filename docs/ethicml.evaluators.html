@@ -1,54 +1,247 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>ethicml.evaluators &#8212; EthicML 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ethicml.evaluators &mdash; EthicML 0.1.0a3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ethicml.implementations" href="ethicml.implementations.html" />
     <link rel="prev" title="ethicml.data" href="ethicml.data.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.implementations.html" title="ethicml.implementations"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.data.html" title="ethicml.data"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">ethicml.algorithms.inprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.evaluators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ethicml.evaluators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.evaluators.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.evaluators">
 <span id="ethicml-evaluators"></span><h1>ethicml.evaluators<a class="headerlink" href="#module-ethicml.evaluators" title="Permalink to this headline">¶</a></h1>
 <p>This module contains evaluators which apply algorithms over datasets and obtain metrics</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.CVResults" title="ethicml.evaluators.CVResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CVResults</span></code></a>(results, model)</p></td>
+<td><p>Stores the results of a cross validation experiment</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.CrossValidator" title="ethicml.evaluators.CrossValidator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CrossValidator</span></code></a>(model, hyperparams, …)</p></td>
+<td><p>Object used to run cross-validation on a model</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.MetricNotApplicable" title="ethicml.evaluators.MetricNotApplicable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a></p></td>
+<td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.arrange_in_parallel" title="ethicml.evaluators.arrange_in_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_in_parallel</span></code></a>(algos, data, max_parallel)</p></td>
+<td><p>Arrange the given algorithms to run (embarrassingly) parallel</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.diff_per_sensitive_attribute" title="ethicml.evaluators.diff_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sensitive_attribute</span></code></a>(per_sens_res, …)</p></td>
+<td><p>Compute the difference in the metrics per sensitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate_models" title="ethicml.evaluators.evaluate_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_models</span></code></a>(datasets, preprocess_models, …)</p></td>
+<td><p>Evaluate all the given models for all the given datasets and compute all the given metrics</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate_models_parallel" title="ethicml.evaluators.evaluate_models_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_models_parallel</span></code></a>(datasets, …)</p></td>
+<td><p>Evaluate all the given models for all the given datasets and compute all the given metrics</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.load_results" title="ethicml.evaluators.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a>(dataset_name, transform_name, …)</p></td>
+<td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.metric_per_sensitive_attribute" title="ethicml.evaluators.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a>(predictions, …)</p></td>
+<td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.ratio_per_sensitive_attribute" title="ethicml.evaluators.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a>(per_sens_res, …)</p></td>
+<td><p>Compute the ratios in the metrics per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.run_in_parallel" title="ethicml.evaluators.run_in_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_parallel</span></code></a>(algos, data, max_parallel)</p></td>
+<td><p>Run the given algorithms (embarrassingly) parallel</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.run_metrics" title="ethicml.evaluators.run_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_metrics</span></code></a>(predictions, actual, metrics, …)</p></td>
+<td><p>Run all the given metrics on the given predictions and return the results</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="ethicml.evaluators.CVResults">
 <em class="property">class </em><code class="sig-name descname">CVResults</code><span class="sig-paren">(</span><em class="sig-param">results: List[ethicml.evaluators.cross_validator.ResultTuple], model: Type[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm]</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.CVResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stores the results of a cross validation experiment</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.CVResults.get_best_in_top_k" title="ethicml.evaluators.CVResults.get_best_in_top_k"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_in_top_k</span></code></a>(primary, secondary, top_k)</p></td>
+<td><p>First sort the results according to the primary metric, then take the best according to the secondary metric from the top K.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.CVResults.get_best_result" title="ethicml.evaluators.CVResults.get_best_result"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_best_result</span></code></a>(measure)</p></td>
+<td><p>Get the hyperparameter combination for the best performance of a measure</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.evaluators.CVResults.get_best_in_top_k">
 <code class="sig-name descname">get_best_in_top_k</code><span class="sig-paren">(</span><em class="sig-param">primary: ethicml.metrics.metric.Metric</em>, <em class="sig-param">secondary: ethicml.metrics.metric.Metric</em>, <em class="sig-param">top_k: int</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.ResultTuple<a class="headerlink" href="#ethicml.evaluators.CVResults.get_best_in_top_k" title="Permalink to this definition">¶</a></dt>
@@ -82,6 +275,18 @@ which is the number of available CPUs</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.CrossValidator.run" title="ethicml.evaluators.CrossValidator.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, measures)</p></td>
+<td><p>Run the cross validation experiments</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.evaluators.CrossValidator.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">measures: Optional[List[ethicml.metrics.metric.Metric]] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.CVResults<a class="headerlink" href="#ethicml.evaluators.CrossValidator.run" title="Permalink to this definition">¶</a></dt>
@@ -127,12 +332,15 @@ there is no maximum</p></li>
 <dl class="function">
 <dt id="ethicml.evaluators.diff_per_sensitive_attribute">
 <code class="sig-name descname">diff_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param">per_sens_res: Dict[str, float]</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.diff_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Compute the difference in the metrics per sensitive attribute</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> – </p>
+<dd class="field-odd"><p><strong>per_sens_res</strong> – dictionary of the results</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of differences</p>
 </dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="function">
@@ -208,12 +416,15 @@ there is no maximum</p></li>
 <dl class="function">
 <dt id="ethicml.evaluators.ratio_per_sensitive_attribute">
 <code class="sig-name descname">ratio_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param">per_sens_res: Dict[str, float]</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.ratio_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Compute the ratios in the metrics per sensitive attribute</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> – </p>
+<dd class="field-odd"><p><strong>per_sens_res</strong> – dictionary of the results</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of ratios</p>
 </dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="function">
@@ -255,59 +466,52 @@ there is no maximum</p></li>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.implementations.html" class="btn btn-neutral float-right" title="ethicml.implementations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.data.html" class="btn btn-neutral float-left" title="ethicml.data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ethicml.data.html"
-                        title="previous chapter">ethicml.data</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ethicml.implementations.html"
-                        title="next chapter">ethicml.implementations</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ethicml.evaluators.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.implementations.html" title="ethicml.implementations"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.data.html" title="ethicml.data"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>
