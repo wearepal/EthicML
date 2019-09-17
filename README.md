@@ -33,7 +33,7 @@ because there are many different versions for different systems.
 
 ## Documentation
 
-The documentation can be found here: https://predictive-analytics-lab.github.io/EthicML/index.html
+The documentation can be found here: https://predictive-analytics-lab.github.io/EthicML/
 
 ## Design Principles
 
