@@ -6,7 +6,7 @@ from .dataset import Dataset
 
 
 class Toy(Dataset):
-    """Class to describe features of the Test dataset"""
+    """Dataset with toy data for testing"""
 
     cont_features: List[str]
     disc_features: List[str]

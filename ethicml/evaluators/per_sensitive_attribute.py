@@ -61,12 +61,13 @@ def metric_per_sensitive_attribute(
 
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """
+    Compute the difference in the metrics per sensitive attribute
 
     Args:
-        per_sens_res:
+        per_sens_res: dictionary of the results
 
     Returns:
-
+        dictionary of differences
     """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()
@@ -84,12 +85,13 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
 
 def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """
+    Compute the ratios in the metrics per sensitive attribute
 
     Args:
-        per_sens_res:
+        per_sens_res: dictionary of the results
 
     Returns:
-
+        dictionary of ratios
     """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()

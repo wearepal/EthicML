@@ -1,55 +1,275 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>ethicml.metrics &#8212; EthicML 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ethicml.metrics &mdash; EthicML 0.1.0a3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ethicml.preprocessing" href="ethicml.preprocessing.html" />
     <link rel="prev" title="ethicml.implementations" href="ethicml.implementations.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.implementations.html" title="ethicml.implementations"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">ethicml.algorithms.inprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ethicml.metrics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.metrics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.metrics">
 <span id="ethicml-metrics"></span><h1>ethicml.metrics<a class="headerlink" href="#module-ethicml.metrics" title="Permalink to this headline">¶</a></h1>
 <p>This module contains metrics which can be applied to prediction results</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.AbsCV" title="ethicml.metrics.AbsCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbsCV</span></code></a>(pos_class)</p></td>
+<td><p>Absolute value of Calder-Verwer</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Accuracy" title="ethicml.metrics.Accuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Accuracy</span></code></a>(pos_class)</p></td>
+<td><p>Computes the classification accuracy</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.BCR" title="ethicml.metrics.BCR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BCR</span></code></a>(pos_class)</p></td>
+<td><p>Balanced Classification Rate</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.CV" title="ethicml.metrics.CV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CV</span></code></a>(pos_class)</p></td>
+<td><p>Calder-Verwer</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic" title="ethicml.metrics.Hsic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hsic</span></code></a>(pos_class)</p></td>
+<td><p>see module string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metric</span></code></a>(pos_class)</p></td>
+<td><p>Base class for all metrics</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.NMI" title="ethicml.metrics.NMI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NMI</span></code></a>(pos_class, base)</p></td>
+<td><p>Normalized Mutual Information</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.NPV" title="ethicml.metrics.NPV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NPV</span></code></a>(pos_class)</p></td>
+<td><p>Negative predictive value</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.PPV" title="ethicml.metrics.PPV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PPV</span></code></a>(pos_class)</p></td>
+<td><p>Positive predictive value</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ProbNeg" title="ethicml.metrics.ProbNeg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProbNeg</span></code></a>(pos_class)</p></td>
+<td><p>Probability of negative prediction</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbOutcome" title="ethicml.metrics.ProbOutcome"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProbOutcome</span></code></a>(pos_class)</p></td>
+<td><p>Mean of logits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ProbPos" title="ethicml.metrics.ProbPos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProbPos</span></code></a>(pos_class)</p></td>
+<td><p>Probability of positive prediction</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TNR" title="ethicml.metrics.TNR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TNR</span></code></a>(pos_class)</p></td>
+<td><p>True negative rate</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.TPR" title="ethicml.metrics.TPR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TPR</span></code></a>(pos_class)</p></td>
+<td><p>True positive rate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Theil" title="ethicml.metrics.Theil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Theil</span></code></a>(pos_class)</p></td>
+<td><p>Theil Index</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exceptions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds" title="ethicml.metrics.LabelOutOfBounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelOutOfBounds</span></code></a></p></td>
+<td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.confusion_matrix" title="ethicml.metrics.confusion_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confusion_matrix</span></code></a>(prediction, actual, pos_cls)</p></td>
+<td><p>Apply sci-kit learn’s confusion matrix</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="ethicml.metrics.AbsCV">
 <em class="property">class </em><code class="sig-name descname">AbsCV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AbsCV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.cv.CV</span></code></p>
 <p>Absolute value of Calder-Verwer</p>
 <p>This metric is supposed to make it easier to compare results.</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.AbsCV.apply_per_sensitive" title="ethicml.metrics.AbsCV.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.AbsCV.name" title="ethicml.metrics.AbsCV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.AbsCV.score" title="ethicml.metrics.AbsCV.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.AbsCV.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.AbsCV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -86,6 +306,33 @@
 <em class="property">class </em><code class="sig-name descname">Accuracy</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Computes the classification accuracy</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Accuracy.apply_per_sensitive" title="ethicml.metrics.Accuracy.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Accuracy.name" title="ethicml.metrics.Accuracy.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Accuracy.score" title="ethicml.metrics.Accuracy.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.Accuracy.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Accuracy.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -122,6 +369,33 @@
 <em class="property">class </em><code class="sig-name descname">BCR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BCR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Balanced Classification Rate</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.BCR.apply_per_sensitive" title="ethicml.metrics.BCR.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.BCR.name" title="ethicml.metrics.BCR.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.BCR.score" title="ethicml.metrics.BCR.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.BCR.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.BCR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -158,6 +432,33 @@
 <em class="property">class </em><code class="sig-name descname">CV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Calder-Verwer</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.CV.apply_per_sensitive" title="ethicml.metrics.CV.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.CV.name" title="ethicml.metrics.CV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.CV.score" title="ethicml.metrics.CV.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.CV.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.CV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -194,6 +495,33 @@
 <em class="property">class </em><code class="sig-name descname">Hsic</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Hsic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>see module string</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic.apply_per_sensitive" title="ethicml.metrics.Hsic.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic.name" title="ethicml.metrics.Hsic.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic.score" title="ethicml.metrics.Hsic.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>We add the ability to take the average of hsic sscore as for</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.Hsic.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Hsic.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -234,6 +562,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">Metric</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Metric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for all metrics</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Metric.apply_per_sensitive" title="ethicml.metrics.Metric.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Metric.name" title="ethicml.metrics.Metric.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Metric.score" title="ethicml.metrics.Metric.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.Metric.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Metric.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -270,6 +625,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">NMI</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em>, <em class="sig-param">base: str = 'y'</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NMI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Normalized Mutual Information</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.NMI.apply_per_sensitive" title="ethicml.metrics.NMI.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.NMI.name" title="ethicml.metrics.NMI.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.NMI.score" title="ethicml.metrics.NMI.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.NMI.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.NMI.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -306,6 +688,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">NPV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Negative predictive value</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.NPV.apply_per_sensitive" title="ethicml.metrics.NPV.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.NPV.name" title="ethicml.metrics.NPV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.NPV.score" title="ethicml.metrics.NPV.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.NPV.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.NPV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -342,6 +751,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">PPV</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Positive predictive value</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.PPV.apply_per_sensitive" title="ethicml.metrics.PPV.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.PPV.name" title="ethicml.metrics.PPV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.PPV.score" title="ethicml.metrics.PPV.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.PPV.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.PPV.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -378,6 +814,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">ProbNeg</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Probability of negative prediction</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbNeg.apply_per_sensitive" title="ethicml.metrics.ProbNeg.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ProbNeg.name" title="ethicml.metrics.ProbNeg.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbNeg.score" title="ethicml.metrics.ProbNeg.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.ProbNeg.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbNeg.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -414,6 +877,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">ProbOutcome</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbOutcome" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Mean of logits</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbOutcome.apply_per_sensitive" title="ethicml.metrics.ProbOutcome.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ProbOutcome.name" title="ethicml.metrics.ProbOutcome.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbOutcome.score" title="ethicml.metrics.ProbOutcome.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.ProbOutcome.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbOutcome.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -450,6 +940,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">ProbPos</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Probability of positive prediction</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbPos.apply_per_sensitive" title="ethicml.metrics.ProbPos.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ProbPos.name" title="ethicml.metrics.ProbPos.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ProbPos.score" title="ethicml.metrics.ProbPos.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.ProbPos.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.ProbPos.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -486,6 +1003,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">TNR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>True negative rate</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TNR.apply_per_sensitive" title="ethicml.metrics.TNR.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.TNR.name" title="ethicml.metrics.TNR.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TNR.score" title="ethicml.metrics.TNR.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.TNR.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.TNR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -522,6 +1066,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">TPR</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>True positive rate</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TPR.apply_per_sensitive" title="ethicml.metrics.TPR.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.TPR.name" title="ethicml.metrics.TPR.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TPR.score" title="ethicml.metrics.TPR.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.TPR.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.TPR.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -558,6 +1129,33 @@ set self.__traceback__ to tb and return self.</p>
 <em class="property">class </em><code class="sig-name descname">Theil</code><span class="sig-paren">(</span><em class="sig-param">pos_class: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Theil" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></p>
 <p>Theil Index</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Theil.apply_per_sensitive" title="ethicml.metrics.Theil.apply_per_sensitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_per_sensitive</span></code></a></p></td>
+<td><p>Whether the metric can be applied per sensitive attribute</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Theil.name" title="ethicml.metrics.Theil.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the metric</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Theil.score" title="ethicml.metrics.Theil.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(prediction, actual)</p></td>
+<td><p>Compute score</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.metrics.Theil.apply_per_sensitive">
 <em class="property">property </em><code class="sig-name descname">apply_per_sensitive</code><a class="headerlink" href="#ethicml.metrics.Theil.apply_per_sensitive" title="Permalink to this definition">¶</a></dt>
@@ -598,59 +1196,52 @@ set self.__traceback__ to tb and return self.</p>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.preprocessing.html" class="btn btn-neutral float-right" title="ethicml.preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.implementations.html" class="btn btn-neutral float-left" title="ethicml.implementations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ethicml.implementations.html"
-                        title="previous chapter">ethicml.implementations</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ethicml.preprocessing.html"
-                        title="next chapter">ethicml.preprocessing</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ethicml.metrics.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.preprocessing.html" title="ethicml.preprocessing"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.implementations.html" title="ethicml.implementations"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>

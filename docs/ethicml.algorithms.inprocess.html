@@ -1,54 +1,271 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>ethicml.algorithms.inprocess &#8212; EthicML 0.1.0a3 documentation</title>
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ethicml.algorithms.inprocess &mdash; EthicML 0.1.0a3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ethicml.algorithms.postprocess" href="ethicml.algorithms.postprocess.html" />
     <link rel="prev" title="ethicml.algorithms.preprocess" href="ethicml.algorithms.preprocess.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.postprocess.html" title="ethicml.algorithms.postprocess"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.preprocess.html" title="ethicml.algorithms.preprocess"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.algorithms.inprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.implementations.html">ethicml.implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>ethicml.algorithms.inprocess</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.algorithms.inprocess.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.algorithms.inprocess">
 <span id="ethicml-algorithms-inprocess"></span><h1>ethicml.algorithms.inprocess<a class="headerlink" href="#module-ethicml.algorithms.inprocess" title="Permalink to this headline">¶</a></h1>
 <p>In-process algorithms take training data and make predictions</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal" title="ethicml.algorithms.inprocess.Agarwal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Agarwal</span></code></a>(fairness, , ][DP, EqOp, EqOd] =, …)</p></td>
+<td><p>Agarwal class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels" title="ethicml.algorithms.inprocess.Corels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Corels</span></code></a>(*args, **kwargs)</p></td>
+<td><p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT" title="ethicml.algorithms.inprocess.GPyT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyT</span></code></a>([s_as_input, flags, code_dir])</p></td>
+<td><p>Normal GP model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar" title="ethicml.algorithms.inprocess.GPyTDemPar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyTDemPar</span></code></a>([target_acceptance, …])</p></td>
+<td><p>GP algorithm which enforces demographic parity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds" title="ethicml.algorithms.inprocess.GPyTEqOdds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyTEqOdds</span></code></a>([average_prediction, tpr, …])</p></td>
+<td><p>GP algorithm which enforces equality of opportunity</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm" title="ethicml.algorithms.inprocess.InAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Abstract Base Class for algorithms that run in the middle of the pipeline</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="ethicml.algorithms.inprocess.InAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithmAsync</span></code></a>(*args, **kwargs)</p></td>
+<td><p>In-Algorithm that can be run blocking and asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel" title="ethicml.algorithms.inprocess.InstalledModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InstalledModel</span></code></a>(dir_name, top_dir, url, …)</p></td>
+<td><p>the model that does the magic</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran" title="ethicml.algorithms.inprocess.Kamiran"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kamiran</span></code></a>(classifier, C, kernel)</p></td>
+<td><p>Kamiran and Calders 2012</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima" title="ethicml.algorithms.inprocess.Kamishima"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kamishima</span></code></a>([eta])</p></td>
+<td><p>Model that calls Kamishima’s code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR" title="ethicml.algorithms.inprocess.LR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LR</span></code></a>(C)</p></td>
+<td><p>Logistic regression with hard predictions</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV" title="ethicml.algorithms.inprocess.LRCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRCV</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb" title="ethicml.algorithms.inprocess.LRProb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRProb</span></code></a>(C)</p></td>
+<td><p>Logistic regression with soft output</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP" title="ethicml.algorithms.inprocess.MLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MLP</span></code></a>(hidden_layer_sizes, activation)</p></td>
+<td><p>Multi-layer Perceptron</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority" title="ethicml.algorithms.inprocess.Majority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Majority</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Simply returns the majority label from the train set</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM" title="ethicml.algorithms.inprocess.SVM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SVM</span></code></a>(C, kernel)</p></td>
+<td><p>Support Vector Machine</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="ethicml.algorithms.inprocess.ZafarAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarAccuracy</span></code></a>(gamma)</p></td>
+<td><p>Zafar with fairness</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline" title="ethicml.algorithms.inprocess.ZafarBaseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarBaseline</span></code></a>()</p></td>
+<td><p>Zafar without fairness</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds" title="ethicml.algorithms.inprocess.ZafarEqOdds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarEqOdds</span></code></a>(tau, mu, eps)</p></td>
+<td><p>Zafar for Equalised Odds</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp" title="ethicml.algorithms.inprocess.ZafarEqOpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarEqOpp</span></code></a>(tau, mu, eps)</p></td>
+<td><p>Zafar for Equality of Opportunity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness" title="ethicml.algorithms.inprocess.ZafarFairness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarFairness</span></code></a>(c)</p></td>
+<td><p>Zafar with fairness</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.Agarwal">
 <em class="property">class </em><code class="sig-name descname">Agarwal</code><span class="sig-paren">(</span><em class="sig-param">fairness: typing_extensions.Literal['DP'</em>, <em class="sig-param">'EqOp'</em>, <em class="sig-param">'EqOd'][DP</em>, <em class="sig-param">EqOp</em>, <em class="sig-param">EqOd] = 'DP'</em>, <em class="sig-param">classifier: typing_extensions.Literal['LR'</em>, <em class="sig-param">'SVM'][LR</em>, <em class="sig-param">SVM] = 'LR'</em>, <em class="sig-param">eps: float = 0.1</em>, <em class="sig-param">iters: int = 50</em>, <em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Agarwal class</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.name" title="ethicml.algorithms.inprocess.Agarwal.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run" title="ethicml.algorithms.inprocess.Agarwal.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run_async" title="ethicml.algorithms.inprocess.Agarwal.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run_test" title="ethicml.algorithms.inprocess.Agarwal.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Agarwal.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal.name" title="Permalink to this definition">¶</a></dt>
@@ -90,6 +307,33 @@
 <p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p>
 <p>This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.</p>
 <p>From this paper: <a class="reference external" href="https://arxiv.org/abs/1704.01701">https://arxiv.org/abs/1704.01701</a></p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.name" title="ethicml.algorithms.inprocess.Corels.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.run" title="ethicml.algorithms.inprocess.Corels.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(_, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.run_test" title="ethicml.algorithms.inprocess.Corels.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Corels.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Corels.name" title="Permalink to this definition">¶</a></dt>
@@ -133,6 +377,39 @@ then the code is downloaded from GitHub</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.name" title="ethicml.algorithms.inprocess.GPyT.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.remove" title="ethicml.algorithms.inprocess.GPyT.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run" title="ethicml.algorithms.inprocess.GPyT.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run_async" title="ethicml.algorithms.inprocess.GPyT.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run_test" title="ethicml.algorithms.inprocess.GPyT.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.name" title="Permalink to this definition">¶</a></dt>
@@ -191,6 +468,39 @@ predictions</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.name" title="ethicml.algorithms.inprocess.GPyTDemPar.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.remove" title="ethicml.algorithms.inprocess.GPyTDemPar.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run" title="ethicml.algorithms.inprocess.GPyTDemPar.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_async" title="ethicml.algorithms.inprocess.GPyTDemPar.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_test" title="ethicml.algorithms.inprocess.GPyTDemPar.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.name" title="Permalink to this definition">¶</a></dt>
@@ -236,6 +546,39 @@ predictions</p></li>
 <em class="property">class </em><code class="sig-name descname">GPyTEqOdds</code><span class="sig-paren">(</span><em class="sig-param">average_prediction=False</em>, <em class="sig-param">tpr=None</em>, <em class="sig-param">marginal=False</em>, <em class="sig-param">tnr0=None</em>, <em class="sig-param">tnr1=None</em>, <em class="sig-param">tpr0=None</em>, <em class="sig-param">tpr1=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.fair_gpyt.GPyT</span></code></p>
 <p>GP algorithm which enforces equality of opportunity</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.name" title="ethicml.algorithms.inprocess.GPyTEqOdds.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.remove" title="ethicml.algorithms.inprocess.GPyTEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run" title="ethicml.algorithms.inprocess.GPyTEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_async" title="ethicml.algorithms.inprocess.GPyTEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_test" title="ethicml.algorithms.inprocess.GPyTEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.name" title="Permalink to this definition">¶</a></dt>
@@ -281,6 +624,33 @@ predictions</p></li>
 <em class="property">class </em><code class="sig-name descname">InAlgorithm</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
 <p>Abstract Base Class for algorithms that run in the middle of the pipeline</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.name" title="ethicml.algorithms.inprocess.InAlgorithm.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.run" title="ethicml.algorithms.inprocess.InAlgorithm.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.run_test" title="ethicml.algorithms.inprocess.InAlgorithm.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithm.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm.name" title="Permalink to this definition">¶</a></dt>
@@ -314,6 +684,36 @@ predictions</p></li>
 <em class="property">class </em><code class="sig-name descname">InAlgorithmAsync</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></p>
 <p>In-Algorithm that can be run blocking and asynchronously</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.name" title="ethicml.algorithms.inprocess.InAlgorithmAsync.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_async" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_test" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.name" title="Permalink to this definition">¶</a></dt>
@@ -365,6 +765,39 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 </dl>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.name" title="ethicml.algorithms.inprocess.InstalledModel.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.remove" title="ethicml.algorithms.inprocess.InstalledModel.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run" title="ethicml.algorithms.inprocess.InstalledModel.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run_async" title="ethicml.algorithms.inprocess.InstalledModel.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run_test" title="ethicml.algorithms.inprocess.InstalledModel.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.name" title="Permalink to this definition">¶</a></dt>
@@ -410,6 +843,36 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">Kamiran</code><span class="sig-paren">(</span><em class="sig-param">classifier: str = 'LR'</em>, <em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Kamiran and Calders 2012</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.name" title="ethicml.algorithms.inprocess.Kamiran.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run" title="ethicml.algorithms.inprocess.Kamiran.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run_async" title="ethicml.algorithms.inprocess.Kamiran.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run_test" title="ethicml.algorithms.inprocess.Kamiran.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamiran.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran.name" title="Permalink to this definition">¶</a></dt>
@@ -450,6 +913,42 @@ simply the last part of the repository URL)</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.installed_model.InstalledModel</span></code></p>
 <p>Model that calls Kamishima’s code. Based on Algo-Fairness
 <a class="reference external" href="https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py">https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py</a></p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format" title="ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_kamishima_format</span></code></a>(data, …)</p></td>
+<td><p>Create a text file with the data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.remove" title="ethicml.algorithms.inprocess.Kamishima.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run" title="ethicml.algorithms.inprocess.Kamishima.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run_async" title="ethicml.algorithms.inprocess.Kamishima.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run_test" title="ethicml.algorithms.inprocess.Kamishima.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.name" title="ethicml.algorithms.inprocess.Kamishima.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_kamishima_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: str</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format" title="Permalink to this definition">¶</a></dt>
@@ -501,6 +1000,36 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">LR</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[float] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Logistic regression with hard predictions</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.name" title="ethicml.algorithms.inprocess.LR.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run" title="ethicml.algorithms.inprocess.LR.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run_async" title="ethicml.algorithms.inprocess.LR.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run_test" title="ethicml.algorithms.inprocess.LR.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LR.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LR.name" title="Permalink to this definition">¶</a></dt>
@@ -540,6 +1069,36 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">LRCV</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.name" title="ethicml.algorithms.inprocess.LRCV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run" title="ethicml.algorithms.inprocess.LRCV.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run_async" title="ethicml.algorithms.inprocess.LRCV.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run_test" title="ethicml.algorithms.inprocess.LRCV.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRCV.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV.name" title="Permalink to this definition">¶</a></dt>
@@ -579,6 +1138,36 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">LRProb</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[int] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Logistic regression with soft output</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.name" title="ethicml.algorithms.inprocess.LRProb.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run" title="ethicml.algorithms.inprocess.LRProb.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run_async" title="ethicml.algorithms.inprocess.LRProb.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run_test" title="ethicml.algorithms.inprocess.LRProb.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRProb.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb.name" title="Permalink to this definition">¶</a></dt>
@@ -617,6 +1206,37 @@ simply the last part of the repository URL)</p></li>
 <dt id="ethicml.algorithms.inprocess.MLP">
 <em class="property">class </em><code class="sig-name descname">MLP</code><span class="sig-paren">(</span><em class="sig-param">hidden_layer_sizes: Optional[Tuple[int]] = None</em>, <em class="sig-param">activation: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.MLP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
+<p>Multi-layer Perceptron</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.name" title="ethicml.algorithms.inprocess.MLP.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run" title="ethicml.algorithms.inprocess.MLP.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run_async" title="ethicml.algorithms.inprocess.MLP.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run_test" title="ethicml.algorithms.inprocess.MLP.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.MLP.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.MLP.name" title="Permalink to this definition">¶</a></dt>
@@ -656,6 +1276,33 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">Majority</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
 <p>Simply returns the majority label from the train set</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.name" title="ethicml.algorithms.inprocess.Majority.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.run" title="ethicml.algorithms.inprocess.Majority.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.run_test" title="ethicml.algorithms.inprocess.Majority.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Majority.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority.name" title="Permalink to this definition">¶</a></dt>
@@ -689,6 +1336,36 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">SVM</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.SVM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Support Vector Machine</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.name" title="ethicml.algorithms.inprocess.SVM.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run" title="ethicml.algorithms.inprocess.SVM.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run_async" title="ethicml.algorithms.inprocess.SVM.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run_test" title="ethicml.algorithms.inprocess.SVM.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.SVM.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.SVM.name" title="Permalink to this definition">¶</a></dt>
@@ -728,6 +1405,42 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarAccuracy</code><span class="sig-paren">(</span><em class="sig-param">gamma: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
+<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.remove" title="ethicml.algorithms.inprocess.ZafarAccuracy.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run" title="ethicml.algorithms.inprocess.ZafarAccuracy.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_async" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_test" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.name" title="ethicml.algorithms.inprocess.ZafarAccuracy.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
@@ -779,6 +1492,42 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarBaseline</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar without fairness</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
+<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.remove" title="ethicml.algorithms.inprocess.ZafarBaseline.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run" title="ethicml.algorithms.inprocess.ZafarBaseline.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_async" title="ethicml.algorithms.inprocess.ZafarBaseline.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_test" title="ethicml.algorithms.inprocess.ZafarBaseline.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.name" title="ethicml.algorithms.inprocess.ZafarBaseline.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
@@ -830,6 +1579,42 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarEqOdds</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar.ZafarEqOpp</span></code></p>
 <p>Zafar for Equalised Odds</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
+<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.remove" title="ethicml.algorithms.inprocess.ZafarEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run" title="ethicml.algorithms.inprocess.ZafarEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_async" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_test" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.name" title="ethicml.algorithms.inprocess.ZafarEqOdds.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
@@ -881,6 +1666,42 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarEqOpp</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar for Equality of Opportunity</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
+<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.remove" title="ethicml.algorithms.inprocess.ZafarEqOpp.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run" title="ethicml.algorithms.inprocess.ZafarEqOpp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_async" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_test" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.name" title="ethicml.algorithms.inprocess.ZafarEqOpp.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
@@ -932,6 +1753,42 @@ simply the last part of the repository URL)</p></li>
 <em class="property">class </em><code class="sig-name descname">ZafarFairness</code><span class="sig-paren">(</span><em class="sig-param">c: float = 0.001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness</p>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format" title="ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_zafar_format</span></code></a>(data, …)</p></td>
+<td><p>Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.remove" title="ethicml.algorithms.inprocess.ZafarFairness.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
+<td><p>Removes the directory that we created in _clone_directory()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run" title="ethicml.algorithms.inprocess.ZafarFairness.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_async" title="ethicml.algorithms.inprocess.ZafarFairness.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
+<td><p>Run Algorithm on the given data asynchronously</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_test" title="ethicml.algorithms.inprocess.ZafarFairness.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.name" title="ethicml.algorithms.inprocess.ZafarFairness.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Name of the algorithm</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_zafar_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: pathlib.Path, label_converter: ethicml.preprocessing.adjust_labels.LabelBinarizer</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.create_file_in_zafar_format" title="Permalink to this definition">¶</a></dt>
@@ -981,59 +1838,52 @@ simply the last part of the repository URL)</p></li>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.algorithms.postprocess.html" class="btn btn-neutral float-right" title="ethicml.algorithms.postprocess" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.algorithms.preprocess.html" class="btn btn-neutral float-left" title="ethicml.algorithms.preprocess" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="ethicml.algorithms.preprocess.html"
-                        title="previous chapter">ethicml.algorithms.preprocess</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="ethicml.algorithms.postprocess.html"
-                        title="next chapter">ethicml.algorithms.postprocess</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/ethicml.algorithms.inprocess.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.postprocess.html" title="ethicml.algorithms.postprocess"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="ethicml.algorithms.preprocess.html" title="ethicml.algorithms.preprocess"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">EthicML 0.1.0a3 documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, O. Thomas, T. Kehrenberg.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
 </html>

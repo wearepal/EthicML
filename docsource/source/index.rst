@@ -16,13 +16,14 @@ Example
    from ethicml.data import Adult
    from ethicml.algorithms.inprocess import SVM, Kamiran
    from ethicml.metrics import Accuracy, TPR, ProbPos
+   from ethicml.evaluators import evaluate_models
    
    evaluate_models(
        datasets=[Adult()],
        inprocess_models=[SVM(), Kamiran()],
        metrics=[Accuracy()],
        per_sens_metrics=[TPR(), ProbPos()],
-       repeats=3
+       repeats=5,
    )
 
 

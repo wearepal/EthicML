@@ -241,6 +241,8 @@ ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
 
 
 class TrainTestPair(NamedTuple):
+    """2-Tuple of train and test data"""
+
     train: DataTuple
     test: TestTuple
 
