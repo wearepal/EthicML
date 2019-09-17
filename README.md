@@ -31,6 +31,10 @@ pip3 install ethicml
 We are not including PyTorch as a requirement of EthicML,
 because there are many different versions for different systems.
 
+## Documentation
+
+The documentation can be found here: https://predictive-analytics-lab.github.io/EthicML/index.html
+
 ## Design Principles
 
 ### The Triplet
