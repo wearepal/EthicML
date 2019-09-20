@@ -1,7 +1,5 @@
 # EthicML
 
-![status badge](https://github.com/predictive-analytics-lab/EthicML/workflows/EthicML%20CI/badge.svg)
-
 EthicML exists to solve the problems we've found with off-the-shelf fairness comparison packages.
 
 These other packages are useful, but given that we primarily do research,
