@@ -71,7 +71,7 @@ class CVResults:
         """
         mean_vals = self.mean_storage
 
-        def _get_score(item: Tuple[str, ResultTuple]):
+        def _get_score(item: Tuple[str, ResultTuple]) -> float:
             """Take an entry from `mean_storage` and return the desired score `measure`"""
             _, result = item
             return result.scores[measure.name]
@@ -94,13 +94,13 @@ class CVResults:
         """
         mean_vals = self.mean_storage
 
-        def _get_primary_score(item: Tuple[str, ResultTuple]):
+        def _get_primary_score(item: Tuple[str, ResultTuple]) -> float:
             return item[1].scores[primary.name]
 
         sorted_by_primary = sorted(mean_vals.items(), key=_get_primary_score)
         top_k_candidates = sorted_by_primary[:top_k]
 
-        def _get_secondary_score(item: Tuple[str, ResultTuple]):
+        def _get_secondary_score(item: Tuple[str, ResultTuple]) -> float:
             return item[1].scores[secondary.name]
 
         best_hyp_string, _ = max(top_k_candidates, key=_get_secondary_score)
@@ -147,7 +147,7 @@ class CrossValidator:
 
         def _compute_scores_and_append(
             experiment: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
-        ):
+        ) -> Dict[str, float]:
             # compute all measures
             # TODO: this should also compute diffs and ratios
             scores = {measure.name: measure.score(preds, test) for measure in measures_}

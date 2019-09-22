@@ -1,5 +1,5 @@
 """
-Simplae class to make class labels binary. Useful if a network uses BCELoss for example
+Simple class to make class labels binary. Useful if a network uses BCELoss for example
 """
 
 import numpy as np
@@ -8,19 +8,14 @@ import pandas as pd
 from ethicml.utility.data_structures import DataTuple
 
 
-def assert_binary_labels(train: DataTuple):
+def assert_binary_labels(data_tuple: DataTuple) -> None:
     """
     Assert that datasets only include binary labels
-    Args:
-        train:
-
-    Returns:
-
     """
 
-    y_col = train.y.columns[0]
-    assert train.y[y_col].nunique() == 2
-    assert (np.unique(train.y[y_col].values) == np.array([0, 1])).all()
+    y_col = data_tuple.y.columns[0]
+    assert data_tuple.y[y_col].nunique() == 2
+    assert (np.unique(data_tuple.y[y_col].to_numpy()) == np.array([0, 1])).all()
 
 
 class LabelBinarizer:
@@ -28,7 +23,7 @@ class LabelBinarizer:
     If a dataset has labels [-1,1], then this will make it so the labels = [0,1]
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.min_val: int
         self.max_val: int
 
@@ -47,8 +42,8 @@ class LabelBinarizer:
         # make copy of dataset
         dataset = dataset.make_copy_with(y=dataset.y.copy())
 
-        self.min_val = dataset.y.values.min()
-        self.max_val = dataset.y.values.max()
+        self.min_val = dataset.y.to_numpy().min()
+        self.max_val = dataset.y.to_numpy().max()
 
         y_col = dataset.y.columns[0]
 

@@ -1,12 +1,13 @@
 """
 Implementation for Louizos et al Variational Fair Autoencoder
 """
+# pylint: disable=arguments-differ
 
 from itertools import groupby
 from typing import List
 
 import torch
-from torch import nn
+from torch import nn, Tensor
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.categorical import Categorical
@@ -17,7 +18,7 @@ class Decoder(nn.Module):
     Decoder for VFAE
     """
 
-    def __init__(self, dataset: Dataset, deploy=False):
+    def __init__(self, dataset: Dataset, deploy: bool = False):
         super().__init__()
         self._deploy = deploy
         self.features: List[str] = dataset.feature_split["x"]
@@ -52,7 +53,7 @@ class Decoder(nn.Module):
             [_add_output_layer(feature) for feature in self.grouped_features]
         )
 
-    def forward(self, x, s):
+    def forward(self, x: Tensor, s: Tensor) -> Tensor:  # type: ignore
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s), 1))
         decoded = torch.cat(

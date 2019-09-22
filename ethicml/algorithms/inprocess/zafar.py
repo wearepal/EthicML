@@ -27,7 +27,7 @@ class _ZafarAlgorithmBase(InstalledModel):
     @staticmethod
     def _create_file_in_zafar_format(
         data: Union[DataTuple, TestTuple], file_path: Path, label_converter: LabelBinarizer
-    ):
+    ) -> None:
         """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants"""
         out: Dict[str, Any] = {}
         out["x"] = data.x.to_numpy().tolist()
@@ -72,7 +72,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 class ZafarBaseline(_ZafarAlgorithmBase):
     """Zafar without fairness"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(sub_dir=SUB_DIR_IMPACT)
 
     def _create_command_line(

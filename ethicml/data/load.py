@@ -59,7 +59,7 @@ def create_data_obj(
 
     dataframe: pd.DataFrame = pd.read_csv(filepath)
 
-    columns: List[str] = dataframe.columns.values.tolist()
+    columns: List[str] = dataframe.columns.to_numpy().tolist()
     for s_col in s_columns:
         columns.remove(s_col)
     for y_col in y_columns:

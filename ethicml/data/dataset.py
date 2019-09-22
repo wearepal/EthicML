@@ -21,7 +21,7 @@ class Dataset(ABC):
     _cont_features: List[str]
     _disc_features: List[str]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._features: List[str] = []
         self._class_label_prefix: List[str] = []
         self._class_labels: List[str] = []

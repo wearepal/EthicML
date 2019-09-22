@@ -18,7 +18,7 @@ def confusion_matrix(
     prediction: pd.DataFrame, actual: DataTuple, pos_cls: int
 ) -> Tuple[int, int, int, int]:
     """Apply sci-kit learn's confusion matrix"""
-    actual_y: np.ndarray[int] = actual.y.values
+    actual_y: np.ndarray[int] = actual.y.to_numpy(dtype=np.int32)
     labels: np.ndarray[int] = np.unique(actual_y)
     if labels.size == 1:
         labels = np.array([0, 1])

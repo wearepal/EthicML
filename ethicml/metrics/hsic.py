@@ -20,10 +20,10 @@ def hsic(
     x_sqnorms = np.diag(xx_gram)
     y_sqnorms = np.diag(yy_gram)
 
-    def exp_r(x):
+    def exp_r(x: np.ndarray) -> np.ndarray:
         return np.expand_dims(x, 0)
 
-    def exp_c(x):
+    def exp_c(x: np.ndarray) -> np.ndarray:
         return np.expand_dims(x, 1)
 
     gamma_first = 1.0 / (2 * sigma_first ** 2)
@@ -59,11 +59,11 @@ class Hsic(Metric):
         """
 
         s_cols = actual.s.columns
-        sens_labels = np.array(actual.s[s_cols].values)
+        sens_labels = np.array(actual.s[s_cols].to_numpy())
 
         batchs_size = 5000
 
-        together = np.hstack((prediction.values, sens_labels)).transpose()
+        together = np.hstack((prediction.to_numpy(), sens_labels)).transpose()
 
         random = RandomState(seed=888)
         col_idx = random.permutation(together.shape[1])

@@ -5,15 +5,16 @@ from sklearn.model_selection import KFold
 import pandas as pd
 
 from ethicml.implementations.utils import InAlgoInterface
+from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
-def train_and_predict(train, test):
+def train_and_predict(train: DataTuple, test: TestTuple) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data"""
     folder = KFold(n_splits=3, random_state=888, shuffle=False)
     clf = LogisticRegressionCV(
         cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto'
     )
-    clf.fit(train.x, train.y.values.ravel())
+    clf.fit(train.x, train.y.to_numpy().ravel())
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
 

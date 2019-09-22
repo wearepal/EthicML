@@ -15,15 +15,15 @@ class Zemel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        threshold=0.5,
-        clusters=2,
-        Ax=0.01,
-        Ay=0.1,
-        Az=0.5,
-        max_iter=5000,
-        maxfun=5000,
-        epsilon=1e-5,
-    ):
+        threshold: float = 0.5,
+        clusters: int = 2,
+        Ax: float = 0.01,
+        Ay: float = 0.1,
+        Az: float = 0.5,
+        max_iter: int = 5000,
+        maxfun: int = 5000,
+        epsilon: float = 1e-5,
+    ) -> None:
         super().__init__()
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
@@ -36,7 +36,7 @@ class Zemel(PreAlgorithmAsync):
             "threshold": threshold,
         }
 
-    def run(self, train, test) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import zemel
 
         return zemel.train_and_transform(train, test, self.flags)

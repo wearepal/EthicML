@@ -22,7 +22,7 @@ def get_concatenated_features(
     return s_prefix + y_prefix + continuous_features if discrete_only else s_prefix + y_prefix
 
 
-def filter_features_by_prefixes(features: List[str], prefixes: List[str]):
+def filter_features_by_prefixes(features: List[str], prefixes: List[str]) -> List[str]:
     """Filter the features by prefixes
 
     Args:
@@ -32,7 +32,7 @@ def filter_features_by_prefixes(features: List[str], prefixes: List[str]):
     Returns:
         filtered feature names
     """
-    res = []
+    res: List[str] = []
     for name in features:
         filtered = False
         for pref in prefixes:

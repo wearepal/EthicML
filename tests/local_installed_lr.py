@@ -12,7 +12,7 @@ def main():
     x, y = pd.read_feather(Path(args[0])), pd.read_feather(Path(args[1]))
     test_x = pd.read_feather(Path(args[2]))
     clf = LogisticRegression(solver="liblinear", random_state=888, multi_class='auto')
-    clf.fit(x, y.values.ravel())
+    clf.fit(x, y.to_numpy().ravel())
     predictions = pd.DataFrame(clf.predict(test_x), columns=["preds"])
     predictions.to_feather(Path(args[3]))
 

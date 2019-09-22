@@ -11,7 +11,9 @@ from pathlib import Path
 class Algorithm(ABC):
     """Base class for Algorithms"""
 
-    def __init__(self, *args, **kwargs):  # this seems really pointless but it makes mypy happy
+    def __init__(
+        self, *args: Any, **kwargs: Any
+    ) -> None:  # this seems really pointless but it makes mypy happy
         pass
 
     @property
@@ -39,7 +41,7 @@ class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
 
     async def _call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
-    ):
+    ) -> None:
         """This function calls a (Python) script as a separate process
 
         An exception is thrown if the called script failed.

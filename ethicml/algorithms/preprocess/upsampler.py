@@ -10,8 +10,8 @@ from ethicml.utility import PathTuple, TestPathTuple, TestTuple, DataTuple
 
 
 class Upsampler(PreAlgorithmAsync):
-    """
-    Upsampler class.
+    """Upsampler algorithm.
+
     Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
     of samples.
     """
@@ -34,7 +34,7 @@ class Upsampler(PreAlgorithmAsync):
 
         return ["-m", "ethicml.implementations.upsampler"] + args
 
-    def run(self, train, test) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         from ...implementations import upsampler
 
         return upsampler.train_and_transform(train, test, self.flags)

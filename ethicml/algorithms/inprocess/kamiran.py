@@ -7,7 +7,7 @@ import pandas as pd
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import kamiran
-from ._shared import conventional_interface, settings_for_svm_lr
+from .shared import conventional_interface, settings_for_svm_lr
 
 VALID_MODELS = {"LR", "SVM"}
 

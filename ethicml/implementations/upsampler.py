@@ -36,7 +36,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     )
 
 
-def upsample(dataset: DataTuple, flags: Dict[str, str]):
+def upsample(dataset: DataTuple, flags: Dict[str, str]) -> DataTuple:
     """Upsample a datatuple"""
     s_col = dataset.s.columns[0]
     y_col = dataset.y.columns[0]
@@ -69,11 +69,11 @@ def upsample(dataset: DataTuple, flags: Dict[str, str]):
             s_val: int = key[0]
             y_val: int = key[1]
 
-            y_eq_y = dataset.y.loc[dataset.y[y_col] == y_val].count().values[0]
-            s_eq_s = dataset.s.loc[dataset.s[s_col] == s_val].count().values[0]
+            y_eq_y = dataset.y.loc[dataset.y[y_col] == y_val].count().to_numpy()[0]
+            s_eq_s = dataset.s.loc[dataset.s[s_col] == s_val].count().to_numpy()[0]
 
-            num_samples = dataset.y.count().values[0]
-            num_batch = val.y.count().values[0]
+            num_samples = dataset.y.count().to_numpy()[0]
+            num_batch = val.y.count().to_numpy()[0]
 
             percentages[key] = round((y_eq_y * s_eq_s / (num_batch * num_samples)), 8)
 
@@ -143,25 +143,22 @@ def upsample(dataset: DataTuple, flags: Dict[str, str]):
             name=dataset.name,
         )
 
+    assert upsampled_datatuple is not None
     return upsampled_datatuple
 
 
-def train_and_transform(train, test, flags):
+def train_and_transform(
+    train: DataTuple, test: TestTuple, flags: Dict[str, str]
+) -> Tuple[DataTuple, TestTuple]:
     """
-    Tran and transform function for the upsampler method
-    Args:
-        train:
-        test:
-
-    Returns:
-
+    Train and transform function for the upsampler method
     """
     upsampled_train = upsample(train, flags)
 
     return upsampled_train, TestTuple(x=test.x, s=test.s, name=test.name)
 
 
-def main():
+def main() -> None:
     """This function runs the Upsampler as a standalone program"""
     parser = pre_algo_argparser()
 

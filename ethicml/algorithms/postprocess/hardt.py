@@ -2,7 +2,7 @@
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
-from scipy.optimize import linprog
+from scipy.optimize import linprog, OptimizeResult
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.metrics import TPR, TNR
@@ -20,12 +20,16 @@ class Hardt(PostAlgorithm):
         self._random = RandomState(seed=888)
 
     def run(
-        self, train_predictions: pd.DataFrame, train: DataTuple, test_predictions, test: TestTuple
+        self,
+        train_predictions: pd.DataFrame,
+        train: DataTuple,
+        test_predictions: pd.DataFrame,
+        test: TestTuple,
     ) -> pd.DataFrame:
         model_params = self._fit(train_predictions, train)
         return self._predict(model_params, test_predictions, test)
 
-    def _fit(self, train_predictions: pd.DataFrame, train: DataTuple):
+    def _fit(self, train_predictions: pd.DataFrame, train: DataTuple) -> OptimizeResult:
         # compute basic statistics
         fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()
         fraction_s1 = 1 - fraction_s0
@@ -126,7 +130,7 @@ class Hardt(PostAlgorithm):
         return linprog(coeffs, A_ub=inequalilty_constraint_matrix, b_ub=b_ub, A_eq=a_eq, b_eq=b_eq)
 
     def _predict(
-        self, model_params, test_predictions: pd.DataFrame, test: TestTuple
+        self, model_params: OptimizeResult, test_predictions: pd.DataFrame, test: TestTuple
     ) -> pd.DataFrame:
         sp2p, sn2p, op2p, on2p = model_params.x
 

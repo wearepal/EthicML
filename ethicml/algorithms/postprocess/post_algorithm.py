@@ -14,7 +14,11 @@ class PostAlgorithm(Algorithm):
 
     @abstractmethod
     def run(
-        self, train_predictions: pd.DataFrame, train: DataTuple, test_predictions, test: TestTuple
+        self,
+        train_predictions: pd.DataFrame,
+        train: DataTuple,
+        test_predictions: pd.DataFrame,
+        test: TestTuple,
     ) -> pd.DataFrame:
         """Make predictions fair
 

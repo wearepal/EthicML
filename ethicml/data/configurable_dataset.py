@@ -8,7 +8,7 @@ from .dataset import Dataset
 class ConfigurableDataset(Dataset):
     """Dataset that is configurable"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.filename = ""
         super().__init__()
         self._dataname: str = "No name assigned."

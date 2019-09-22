@@ -2,7 +2,7 @@
 common plotting functions / datastructures
 """
 
-from typing import Tuple, Union, NamedTuple, List, Optional
+from typing import Tuple, NamedTuple, List, Optional
 from typing_extensions import Literal
 
 import pandas as pd
