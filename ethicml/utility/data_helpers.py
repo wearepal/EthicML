@@ -2,5 +2,5 @@
 import pandas as pd
 
 
-def shuffle_df(df: pd.DataFrame, random_state: int):
+def shuffle_df(df: pd.DataFrame, random_state: int) -> pd.DataFrame:
     return df.sample(frac=1.0, random_state=random_state).reset_index(drop=True)

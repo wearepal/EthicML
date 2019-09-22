@@ -35,7 +35,12 @@ print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
 print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
-# black
-print("############  black ##############")
-black.main(['-l', '100', '-t', 'py36', '-S', './'])
+# black ethicml
+print("############  black ethicml ##############")
+black.main(['-l', '100', '-t', 'py36', '-S', 'ethicml/'])
+print('')
+
+# black tests
+print("############  black tests ##############")
+black.main(['-l', '100', '-t', 'py36', '-S', 'tests/'])
 print('')

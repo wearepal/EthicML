@@ -7,9 +7,9 @@ import pandas as pd
 import torch
 from torch import optim
 from torch.utils.data import DataLoader
+from torch.optim import Adam
 
-from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy
-from ethicml.data.dataset import Dataset
+from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy, Dataset
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.utils import (
     pre_algo_argparser,
@@ -24,11 +24,6 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 def get_dataset_obj_by_name(name: str) -> Dataset:
     """
     Given a dataset name, get the corresponding dataset object
-    Args:
-        name:
-
-    Returns:
-
     """
     lookup: Dict[str, Dataset] = {
         "Adult": Adult(),
@@ -71,7 +66,7 @@ def train_and_transform(
     model = VFAENetwork(
         dataset,
         flags['supervised'],
-        train_data.size,
+        train_data.xdim,
         latent_dims=50,
         z1_enc_size=flags['z1_enc_size'],
         z2_enc_size=flags['z2_enc_size'],
@@ -103,7 +98,9 @@ def train_and_transform(
     )
 
 
-def train_model(epoch, model, train_loader, optimizer, flags):
+def train_model(
+    epoch: int, model: VFAENetwork, train_loader: DataLoader, optimizer: Adam, flags: Dict[str, Any]
+) -> None:
     """
     Train the model
     Args:

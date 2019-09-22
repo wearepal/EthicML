@@ -1,8 +1,10 @@
 """
 Implementation for Louizos et al Variational Fair Autoencoder
 """
+# pylint: disable=arguments-differ
 
-from torch import nn
+from typing import List, Tuple
+from torch import nn, Tensor
 
 
 class Encoder(nn.Module):
@@ -10,7 +12,9 @@ class Encoder(nn.Module):
     Encoder for VFAE
     """
 
-    def __init__(self, enc_size, init_size, ld, activation=nn.ReLU()):
+    def __init__(
+        self, enc_size: List[int], init_size: int, ld: int, activation: nn.Module = nn.ReLU()
+    ) -> None:
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -33,6 +37,6 @@ class Encoder(nn.Module):
             self.z1_enc_mu = nn.Linear(enc_size[-1], ld)
             self.z1_enc_logvar = nn.Linear(enc_size[-1], ld)
 
-    def forward(self, input_):
+    def forward(self, input_: Tensor) -> Tuple[Tensor, Tensor]:  # type: ignore
         step = self.encoder(input_)
         return self.z1_enc_mu(step), self.z1_enc_logvar(step)

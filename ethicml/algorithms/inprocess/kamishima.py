@@ -18,7 +18,7 @@ class Kamishima(InstalledModel):
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
     """
 
-    def __init__(self, eta=1.0):
+    def __init__(self, eta: float = 1.0):
         super().__init__(
             dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
@@ -27,7 +27,7 @@ class Kamishima(InstalledModel):
         self.eta = eta
 
     @staticmethod
-    def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str):
+    def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str) -> None:
         """Create a text file with the data"""
 
         if isinstance(data, DataTuple):
@@ -90,5 +90,5 @@ class Kamishima(InstalledModel):
         return to_return
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "Kamishima"

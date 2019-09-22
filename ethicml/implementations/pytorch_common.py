@@ -1,50 +1,68 @@
 """Functions that are common to PyTorch models"""
+from typing import Tuple, List
+
 import numpy as np
 import torch
+from torch import Tensor
 from torch.utils.data import Dataset
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
+
+
+def _get_info(
+    data: TestTuple
+) -> Tuple["np.ndarray[float]", "np.ndarray[float]", int, int, int, List[str], List[str]]:
+    features = data.x.to_numpy(dtype=np.float32)
+    sens_labels = data.s.to_numpy(dtype=np.float32)
+    num = data.s.shape[0]
+    xdim = data.x.shape[1]
+    sdim = data.s.shape[1]
+    x_names = data.x.columns
+    s_names = data.s.columns
+    return features, sens_labels, num, xdim, sdim, x_names, s_names
 
 
 class TestDataset(Dataset):
     """Shared Dataset for pytorch models without labels"""
 
     def __init__(self, data: TestTuple):
-        self.features = np.array(data.x.values, dtype=np.float32)
-        self.sens_labels = np.array(data.s.values, dtype=np.float32)
-        self.num = data.s.shape[0]
-        self.s_size = data.s.shape[1]
-        self.size = data.x.shape[1]
-        self.x_names = data.x.columns
-        self.s_names = data.s.columns
+        super().__init__()
+        self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(data)
 
-    def __getitem__(self, index):
-        return self.features[index], self.sens_labels[index]
+    def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
+        return self.x[index, ...], self.s[index, ...]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.num
 
-    def names(self):
+    @property
+    def names(self) -> Tuple[List[str], List[str]]:
         return self.x_names, self.s_names
 
 
-class CustomDataset(TestDataset):
+class CustomDataset(Dataset):
     """Shared Dataset for pytorch models"""
 
     def __init__(self, data: DataTuple):
-        super().__init__(data.remove_y())
-        self.class_labels = np.array(data.y.values, dtype=np.float32)
-        self.y_size = data.y.shape[1]
+        super().__init__()
+        test = data.remove_y()
+        self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(test)
+        self.y = data.y.to_numpy(dtype=np.float32)
+        self.ydim = data.y.shape[1]
         self.y_names = data.y.columns
 
-    def __getitem__(self, index):
-        return self.features[index], self.sens_labels[index], self.class_labels[index]
+    def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        return self.x[index, ...], self.s[index, ...], self.y[index, ...]
 
-    def names(self):
+    def __len__(self) -> int:
+        return self.num
+
+    @property
+    def names(self) -> Tuple[List[str], List[str], List[str]]:
         return self.x_names, self.s_names, self.y_names
 
 
-def quadratic_time_mmd(data_first, data_second, sigma):
+def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) -> Tensor:
     """
 
     Args:

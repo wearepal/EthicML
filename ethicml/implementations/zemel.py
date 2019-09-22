@@ -314,8 +314,8 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     sensitive_idx = dataset.x[dataset.s[sens_col] == 0].index
     nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
 
-    transformed_features = np.zeros_like(dataset.x.values)
-    # transformed_labels = np.zeros_like(dataset.y.values)
+    transformed_features = np.zeros_like(dataset.x.to_numpy())
+    # transformed_labels = np.zeros_like(dataset.y.to_numpy())
     transformed_features[sensitive_idx] = x_n_hat_sensitive
     transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
     # transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])

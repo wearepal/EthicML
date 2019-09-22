@@ -23,7 +23,7 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
     assert isinstance(query_str, str)
     assert isinstance(datatup, DataTuple)
 
-    def _query_func(joined_data_frame: pd.DataFrame):
+    def _query_func(joined_data_frame: pd.DataFrame) -> pd.DataFrame:
         return dataset_from_cond(joined_data_frame, cond=query_str)
 
     return datatup.apply_to_joined_df(_query_func)

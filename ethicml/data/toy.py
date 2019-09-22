@@ -11,7 +11,7 @@ class Toy(Dataset):
     cont_features: List[str]
     disc_features: List[str]
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.cont_features = ["a1", "a2"]
         self.disc_features = []

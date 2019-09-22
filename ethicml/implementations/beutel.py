@@ -10,9 +10,10 @@ from dataclasses import dataclass
 import pandas as pd
 import numpy as np
 import torch
-from torch import nn
+from torch import nn, Tensor
 from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
+from torch.optim import Adam
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
 from ethicml.implementations.utils import (
@@ -60,20 +61,20 @@ def build_networks(
 ):
     """build teh networks we use - pulled into a separate function to make the code a bit neater"""
     enc = Encoder(
-        enc_size=flags.enc_size, init_size=int(train_data.size), activation=enc_activation
+        enc_size=flags.enc_size, init_size=int(train_data.xdim), activation=enc_activation
     )
     adv = Adversary(
         fairness=flags.fairness,
         adv_size=flags.adv_size,
         init_size=flags.enc_size[-1],
-        s_size=int(train_data.s_size),
+        s_size=int(train_data.sdim),
         activation=adv_activation,
         adv_weight=flags.adv_weight,
     )
     pred = Predictor(
         pred_size=flags.pred_size,
         init_size=flags.enc_size[-1],
-        class_label_size=int(train_data.y_size),
+        class_label_size=int(train_data.ydim),
         activation=adv_activation,
     )
 
@@ -162,7 +163,7 @@ def train_and_transform(
             elif flags.fairness == "DP":
                 mask = torch.ones(s_pred.shape).byte()
             loss += s_loss_fn(
-                s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
+                s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
 
             step(i, loss, optimizer, scheduler)
@@ -179,7 +180,7 @@ def train_and_transform(
                 mask = get_mask(flags, s_pred, class_label)
 
                 val_s_loss -= s_loss_fn(
-                    s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.s_size))
+                    s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
                 )
 
             val_loss = (val_y_loss / len(validation_loader)) + (val_s_loss / len(validation_loader))
@@ -196,17 +197,9 @@ def train_and_transform(
     return transformed_train, encode_testset(enc, test_loader, test)
 
 
-def step(iteration, loss, optimizer, scheduler):
+def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR) -> None:
     """
-
-    Args:
-        iteration:
-        loss:
-        optimizer:
-        scheduler:
-
-    Returns:
-
+    Do one training step
     """
     optimizer.zero_grad()
     loss.backward()
@@ -217,13 +210,6 @@ def step(iteration, loss, optimizer, scheduler):
 def get_mask(flags: BeutelSettings, s_pred, class_label):
     """
     Get a mask to enforce different fairness types
-    Args:
-        flags:
-        s_pred:
-        class_label:
-
-    Returns:
-
     """
     if flags.fairness == "EqOp":
         mask = class_label.ge(0.5)
@@ -240,12 +226,6 @@ def encode_dataset(
 ) -> DataTuple:
     """
     Encode a dataset
-    Args:
-        enc:
-        dataloader:
-
-    Returns:
-
     """
     data_to_return: List[Any] = []
 
@@ -284,7 +264,7 @@ class GradReverse(Function):
     """Gradient reversal layer"""
 
     @staticmethod
-    def forward(ctx, x, lambda_):
+    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore
         ctx.lambda_ = lambda_
         return x.view_as(x)
 
@@ -293,7 +273,7 @@ class GradReverse(Function):
         return grad_output.neg().mul(ctx.lambda_), None
 
 
-def _grad_reverse(features, lambda_):
+def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
     return GradReverse.apply(  # type: ignore  # mypy was claiming that apply doesn't exist
         features, lambda_
     )
@@ -317,7 +297,7 @@ class Encoder(nn.Module):
                 )
                 self.encoder.add_module("encoder activation {}".format(k + 1), activation)
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:  # type: ignore
         encoded = self.encoder(x)
         return encoded
 
@@ -353,7 +333,7 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
             self.adversary.add_module("adversary last activation", activation)
 
-    def forward(self, x, y):
+    def forward(self, x: Tensor, y: Tensor) -> Tensor:  # type: ignore
 
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
@@ -394,20 +374,20 @@ class Predictor(nn.Module):
             )
             self.predictor.add_module("adversary last activation", activation)
 
-    def forward(self, x):
+    def forward(self, x: Tensor) -> Tensor:  # type: ignore
         return self.predictor(x)
 
 
 class Model(nn.Module):
     """Whole GAN model"""
 
-    def __init__(self, enc, adv, pred):
+    def __init__(self, enc: Encoder, adv: Adversary, pred: Predictor) -> None:
         super().__init__()
         self.enc = enc
         self.adv = adv
         self.pred = pred
 
-    def forward(self, x, y):
+    def forward(self, x: Tensor, y: Tensor) -> Tuple[Tensor, Tensor, Tensor]:  # type: ignore
         encoded = self.enc(x)
         s_hat = self.adv(encoded, y)
         y_hat = self.pred(encoded)

@@ -13,7 +13,7 @@ class Accuracy(Metric):
     """Computes the classification accuracy"""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        actual_y = actual.y.values
+        actual_y = actual.y.to_numpy()
         return accuracy_score(actual_y, prediction)
 
     @property

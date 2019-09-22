@@ -82,7 +82,9 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
     else:
         model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=C)
     model.fit(
-        train.x, train.y.values.ravel(), sample_weight=compute_weights(train)["instance weights"]
+        train.x,
+        train.y.to_numpy().ravel(),
+        sample_weight=compute_weights(train)["instance weights"],
     )
     return pd.DataFrame(model.predict(test.x), columns=["preds"])
 

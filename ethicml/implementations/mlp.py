@@ -30,7 +30,7 @@ def select_mlp(hidden_layer_sizes: Tuple[int], activation: ActivationType):
 def train_and_predict(train: DataTuple, test: TestTuple, hid_layers, activation: ActivationType):
     """Train an SVM model and compute predictions on the given test data"""
     clf = select_mlp(hid_layers, activation)
-    clf.fit(train.x, train.y.values.ravel())
+    clf.fit(train.x, train.y.to_numpy().ravel())
     return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
 

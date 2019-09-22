@@ -16,7 +16,7 @@ from ethicml.utility.data_structures import (
     ClassifierType,
 )
 from ethicml.implementations import agarwal
-from ._shared import conventional_interface, settings_for_svm_lr
+from .shared import conventional_interface, settings_for_svm_lr
 
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}

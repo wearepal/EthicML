@@ -2,7 +2,7 @@
 Split into train and test data
 """
 import itertools
-from typing import Tuple, List
+from typing import Tuple, List, Iterator
 
 import numpy as np
 from numpy.random import RandomState
@@ -145,7 +145,7 @@ def _proportional_train_test_split(
     return train, test
 
 
-def fold_data(data: DataTuple, folds: int):
+def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
     """
     So much love to sklearn for making their source code open
     """

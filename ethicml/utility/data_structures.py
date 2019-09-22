@@ -1,7 +1,7 @@
 """Data structures that are used throughout the code"""
 from pathlib import Path
 from dataclasses import dataclass, replace
-from typing import Tuple, List, Optional, NamedTuple, Callable
+from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator
 from typing_extensions import Literal, Final
 
 import pandas as pd
@@ -18,7 +18,7 @@ class TestTuple:
     s: pd.DataFrame  # senstitive attributes
     name: Optional[str] = None  # name of the dataset
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[pd.DataFrame]:
         return iter([self.x, self.s])
 
     def write_as_feather(self, data_dir: Path, identifier: str) -> "TestPathTuple":
@@ -49,7 +49,7 @@ class DataTupleValues:
 class DataTuple(TestTuple, DataTupleValues):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[pd.DataFrame]:
         return iter([self.x, self.s, self.y])
 
     def remove_y(self) -> TestTuple:

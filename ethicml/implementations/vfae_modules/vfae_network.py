@@ -1,10 +1,11 @@
 """
 Implementation for Louizos et al Variational Fair Autoencoder
 """
+# pylint: disable=arguments-differ
 
 from typing import List, Optional, Any, Tuple
 import torch
-from torch import nn
+from torch import nn, Tensor
 
 from ethicml.data.dataset import Dataset
 from ethicml.implementations.vfae_modules.encoder import Encoder
@@ -43,23 +44,31 @@ class VFAENetwork(nn.Module):
         self.x_dec = Decoder(dataset)
         self.ypred = nn.Linear(latent_dims, 1)
 
-    def encode_z1(self, x, s):
+    def encode_z1(self, x: Tensor, s: Tensor) -> Tuple[Tensor, Tensor]:
         return self.z1_encoder(torch.cat((x, s), 1))
 
-    def encode_z2(self, z1, y):
+    def encode_z2(self, z1: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
         return self.z2_encoder(torch.cat((z1, y), 1))
 
-    def decode_z1(self, z2, y):
+    def decode_z1(self, z2: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
         return self.z1_decoder(torch.cat((z2, y), 1))
 
     @staticmethod
-    def reparameterize(mean, logvar):
+    def reparameterize(mean: Tensor, logvar: Tensor) -> Tensor:
         """reparametrization trick - Leaving as a method to try and control reproducability"""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps.mul(std).add_(mean)  # type: ignore  # mypy was claming "mul" doesn't exist
 
-    def forward(self, x, s, y):
+    def forward(  # type: ignore
+        self, x: Tensor, s: Tensor, y: Tensor
+    ) -> Tuple[
+        Tuple[Tensor, Tensor, Tensor],
+        Optional[Tuple[Tensor, Tensor, Tensor]],
+        Optional[Tuple[Tensor, Tensor, Tensor]],
+        Tensor,
+        Optional[Tensor],
+    ]:
         z1_mu, z1_logvar = self.encode_z1(x, s)
         # z1 = F.sigmoid(reparameterize(z1_mu, z1_logvar))
         z1 = self.reparameterize(z1_mu, z1_logvar)

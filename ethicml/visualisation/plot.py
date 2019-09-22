@@ -19,7 +19,7 @@ from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendTyp
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 
-def save_2d_plot(data: DataTuple, filepath: str):
+def save_2d_plot(data: DataTuple, filepath: str) -> None:
     """
     Make 2D plot
     """
@@ -43,7 +43,7 @@ def save_2d_plot(data: DataTuple, filepath: str):
     plt.clf()
 
 
-def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)):
+def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)) -> None:
     """
     Make joint plot
     """
@@ -59,7 +59,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
     plt.clf()
 
 
-def make_gif(files: List[str], name="movie"):
+def make_gif(files: List[str], name: str = "movie") -> None:
     """
     Make GIF
     """

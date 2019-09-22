@@ -21,10 +21,10 @@ class NMI(Metric):
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         if self.base == "y":
-            base_values = actual.y.values.flatten()
+            base_values = actual.y.to_numpy().flatten()
         else:
-            base_values = actual.s.values.flatten()
-        return nmis(base_values, prediction.values.flatten(), average_method="geometric")
+            base_values = actual.s.to_numpy().flatten()
+        return nmis(base_values, prediction.to_numpy().flatten(), average_method="geometric")
 
     @property
     def name(self) -> str:

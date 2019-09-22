@@ -2,13 +2,17 @@
 Implementation for Louizos et al Variational Fair Autoencoder
 """
 
+from typing import Optional
 import torch
 import torch.nn.functional as F
+from torch import Tensor
 
 from ethicml.implementations.pytorch_common import quadratic_time_mmd
 
 
-def kullback_leibler(mu1, logvar1, mu2=None, logvar2=None):
+def kullback_leibler(
+    mu1: Tensor, logvar1: Tensor, mu2: Optional[Tensor] = None, logvar2: Optional[Tensor] = None
+) -> Tensor:
     """
 
     Args:

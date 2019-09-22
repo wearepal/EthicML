@@ -1,5 +1,5 @@
 """Methods that are shared among the inprocess algorithms"""
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -7,7 +7,9 @@ from sklearn.svm import SVC
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
-def conventional_interface(train_paths: PathTuple, test_paths: TestPathTuple, *args) -> List[str]:
+def conventional_interface(
+    train_paths: PathTuple, test_paths: TestPathTuple, *args: Any
+) -> List[str]:
     """
     Generate the commandline arguments that are expected by the scripts that follow the convention.
 
