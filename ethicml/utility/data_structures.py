@@ -238,6 +238,7 @@ def str_to_fair_type(fair_str: str) -> Optional[FairnessType]:
 
 
 ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
+ActivationType = Literal["identity", "logistic", "tanh", "relu"]  # pylint: disable=invalid-name
 
 
 class TrainTestPair(NamedTuple):

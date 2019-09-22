@@ -5,9 +5,7 @@ This module contains kind of useful things that don't really belong anywhere els
 from .activation import Activation
 from .heaviside import Heaviside
 from .data_structures import (
-    concat_dt,
-    concat_tt,
-    load_feather,
+    ActivationType,
     DataTuple,
     FairnessType,
     PathTuple,
@@ -15,4 +13,7 @@ from .data_structures import (
     TestPathTuple,
     TestTuple,
     TrainTestPair,
+    concat_dt,
+    concat_tt,
+    load_feather,
 )
