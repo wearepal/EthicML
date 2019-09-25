@@ -39,6 +39,17 @@ class TestTuple:
             name=self.name if self.name is not None else "",
         )
 
+    def replace(
+        self,
+        *,
+        x: Optional[pd.DataFrame] = None,
+        s: Optional[pd.DataFrame] = None,
+        name: Optional[str] = None,
+    ) -> "DataTuple":
+        """Create a copy of the TestTuple but change the given values"""
+        changes = {k: v for k, v in [("x", x), ("s", s), ("name", name)] if v is not None}
+        return replace(self, **changes)
+
 
 @dataclass(frozen=True)
 class DataTupleValues:
@@ -75,7 +86,7 @@ class DataTuple(TestTuple, DataTupleValues):
             name=self.name if self.name is not None else "",
         )
 
-    def make_copy_with(
+    def replace(
         self,
         *,
         x: Optional[pd.DataFrame] = None,
@@ -84,7 +95,7 @@ class DataTuple(TestTuple, DataTupleValues):
         name: Optional[str] = None,
     ) -> "DataTuple":
         """Create a copy of the DataTuple but change the given values"""
-        changes = {k: v for k, v in [('x', x), ('s', s), ('y', y), ('name', name)] if v is not None}
+        changes = {k: v for k, v in [("x", x), ("s", s), ("y", y), ("name", name)] if v is not None}
         return replace(self, **changes)
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
@@ -92,7 +103,7 @@ class DataTuple(TestTuple, DataTupleValues):
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
         joined = mapper(joined)
-        result = self.make_copy_with(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+        result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
         # assert that the columns haven't changed
         assert_index_equal(result.x.columns, cols_x)
@@ -110,7 +121,7 @@ class DataTuple(TestTuple, DataTupleValues):
         Returns:
             subset of training data
         """
-        return self.make_copy_with(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
 
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
@@ -280,7 +291,7 @@ class Results:
             data_frame = data_frame.set_index(self.columns)  # set correct index
         order = [data_frame, self._data] if prepend else [self._data, data_frame]
         # set sort=False so that the order of the columns is preserved
-        self._data = pd.concat(order, sort=False, axis='index')
+        self._data = pd.concat(order, sort=False, axis="index")
 
     def append_from_file(self, csv_file: Path, prepend: bool = False) -> bool:
         """Append results from a CSV file"""
@@ -294,7 +305,7 @@ class Results:
         self._data.reset_index(drop=False).to_csv(file_path, index=False)
 
     @classmethod
-    def from_file(cls, csv_file: Path) -> Optional['Results']:
+    def from_file(cls, csv_file: Path) -> Optional["Results"]:
         """Load results from a CSV file that was created by `evaluate_models`
 
         Args:
