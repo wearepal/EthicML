@@ -1,7 +1,12 @@
 [tool.black]
 line-length = 88
 target_version = ['py36']
-include = '((.*)(ethicml|tests)\/(.*)\.pyi?)$'
+include = '''
+(
+  ethicml/(.*).pi?$
+  | tests/(.*).pi?$
+)
+'''
 exclude = '''
 (
   /(
