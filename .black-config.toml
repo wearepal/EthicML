@@ -3,8 +3,8 @@ line-length = 88
 target_version = ['py36']
 include = '''
 (
-  ethicml/(.*).pi?$
-  | tests/(.*).pi?$
+  ethicml/(.*).pyi?$
+  | tests/(.*).pyi?$
 )
 '''
 exclude = '''
