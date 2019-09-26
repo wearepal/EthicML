@@ -48,9 +48,9 @@ setup(
         'ci': ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch >= 1.1.0, <= 1.1.0.post2"],
         # use `pip install EthicML[dev]` to install development packages
         'dev': [
-            # "black",
-            # "mypy >= 0.720",
-            # "pylint >= 2.0",
+            "black",
+            "mypy >= 0.720",
+            "pylint >= 2.0",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
             "pre-commit",
