@@ -45,16 +45,16 @@ setup(
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
+        'ci': ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch >= 1.1.0, <= 1.1.0.post2"],
         # use `pip install EthicML[dev]` to install development packages
-        "dev": [
+        'dev': [
             # "black",
             # "mypy >= 0.720",
             # "pylint >= 2.0",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
-            "torch >= 1.1.0, <= 1.1.0.post2",
             "pre-commit",
-        ]
+        ],
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",
