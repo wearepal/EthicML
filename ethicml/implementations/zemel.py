@@ -42,7 +42,7 @@ def distances(X, v, alpha, N, P, K):
 @jit
 def M_nk(dists, N, k):
     """
-    Not a clue
+    Softmax
     Args:
         dists:
         N:
@@ -53,7 +53,6 @@ def M_nk(dists, N, k):
     """
     exp = np.exp(-dists)
     denom = exp.sum(axis=1, keepdims=True)
-    # denom = np.nan_to_num(denom, nan=1e-6)
     denom[denom == 0] = 1e-6
     matrix_nk = exp / denom
 
@@ -63,42 +62,30 @@ def M_nk(dists, N, k):
 @jit
 def x_n_hat(X, matrix_nk, v, N, P, k):
     """???"""
+    x_n_hat_obj = matrix_nk @ v
+    L_x = np.sum(np.square(X - x_n_hat_obj))
 
-    x_n_hat_obj = np.sum(matrix_nk[:, None] * v[None], axis=-1)
-    L_x = np.square(X - x_n_hat_obj)
-    # x_n_hat_obj = np.zeros((N, P))
-    # L_x = 0.0
-    # for i in range(N):
-    #     for p in range(P):
-    #         for j in range(k):
-    #             x_n_hat_obj[i, p] += matrix_nk[i, j] * v[j, p]
-    #         L_x += (X[i, p] - x_n_hat_obj[i, p]) * (X[i, p] - x_n_hat_obj[i, p])
     return x_n_hat_obj, L_x
 
 
 @jit
 def yhat(matrix_nk, y, w, N, k):
-    """no idea"""
-    y_hat = np.zeros(N)
-    L_y = 0.0
-    for i in range(N):
-        for j in range(k):
-            y_hat[i] += matrix_nk[i, j] * w[j]
-        y_hat[i] = 1e-6 if y_hat[i] <= 0 else y_hat[i]
-        y_hat[i] = 0.999 if y_hat[i] >= 1 else y_hat[i]
-        L_y += -1 * y[i] * np.log(y_hat[i]) - (1.0 - y[i]) * np.log(1.0 - y_hat[i])
+    """Compute predictions and cross-entropy loss"""
+    y_hat = matrix_nk @ w
+    y_hat[y_hat <= 0] = 1e-6
+    y_hat[y_hat >= 1] = 0.999
+    L_y = np.sum(y * np.log(y_hat) - (1 - y) * np.log(1 - y_hat))
+
     return y_hat, L_y
 
 
 @jit
 def yhat_without_loss(matrix_nk, w, N, k):
-    """no idea without loss"""
-    y_hat = np.zeros(N)
-    for i in range(N):
-        for j in range(k):
-            y_hat[i] += matrix_nk[i, j] * w[j]
-        y_hat[i] = 1e-6 if y_hat[i] <= 0 else y_hat[i]
-        y_hat[i] = 0.999 if y_hat[i] >= 1 else y_hat[i]
+    """Compute predictions"""
+    y_hat = matrix_nk @ w
+    y_hat[y_hat <= 0] = 1e-6
+    y_hat[y_hat >= 1] = 0.999
+
     return y_hat
 
 
