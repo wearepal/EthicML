@@ -1,31 +1,31 @@
 from setuptools import setup, find_packages
 
 # We follow Semantic Versioning (https://semver.org/)
-_MAJOR_VERSION = '0'
-_MINOR_VERSION = '1'
-_PATCH_VERSION = '0'
+_MAJOR_VERSION = "0"
+_MINOR_VERSION = "1"
+_PATCH_VERSION = "0"
 
-_VERSION_SUFFIX = 'dev'
+_VERSION_SUFFIX = "dev"
 
 # Example, '0.4.0-rc1'
-version = '.'.join([_MAJOR_VERSION, _MINOR_VERSION, _PATCH_VERSION])
+version = ".".join([_MAJOR_VERSION, _MINOR_VERSION, _PATCH_VERSION])
 if _VERSION_SUFFIX:
-    version = f'{version}-{_VERSION_SUFFIX}'
+    version = f"{version}-{_VERSION_SUFFIX}"
 
-with open('README.md', 'r') as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='EthicML',
+    name="EthicML",
     version=version,
-    author='Predictive Analytics Lab - University of Sussex',
+    author="Predictive Analytics Lab - University of Sussex",
     author_email="olliethomas86@gmail.com",
     description="A toolkit for understanding and researching algorithmic bias",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     url="https://github.com/predictive-analytics-lab/EthicML",
     packages=find_packages(),
-    package_data={'ethicml.data': ['csvs/*.csv'], 'ethicml': ['py.typed']},
+    package_data={"ethicml.data": ["csvs/*.csv"], "ethicml": ["py.typed"]},
     python_requires=">=3.6",
     install_requires=[
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
@@ -33,7 +33,7 @@ setup(
         "GitPython >= 2.1.11",
         "imageio >= 2.4.1",
         "matplotlib >= 3.0.2",
-        "numba",
+        "numba == 0.45.0",
         "numpy >= 1.14.2",
         "pandas >= 0.24.0",
         "pipenv >= 2018.11.26",
@@ -45,19 +45,20 @@ setup(
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
+        'ci': ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch >= 1.1.0, <= 1.1.0.post2"],
         # use `pip install EthicML[dev]` to install development packages
         'dev': [
-            # "black",
-            # "mypy >= 0.720",
-            # "pylint >= 2.0",
-            "pytest >= 3.3.2",
-            "pytest-cov >= 2.6.0",
-            "torch >= 1.1.0, <= 1.1.0.post2",
-        ]
+            "black",
+            "mypy",
+            "pylint",
+            "pytest",
+            "pytest-cov",
+            "pre-commit",
+        ],
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Typing :: Typed",
     ],
     zip_safe=False,

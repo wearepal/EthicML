@@ -78,3 +78,8 @@ where preds is a one column dataframe with the column name 'preds'.
 
 Hopefully EthicML becomes a super easy way to look at the biases in different datasets
 and get a comparison of different models.
+
+## Development
+Install development dependencies with `pip install -e .[dev]`
+
+To use the pre-commit hooks run `pre-commit install`
