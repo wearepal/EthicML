@@ -21,7 +21,7 @@ from ethicml.implementations.utils import (
 
 
 @jit
-def distances(X, v, alpha, N, P, k):
+def distances(X, v, alpha, N, P, K):
     """
     Calculates distances?
     Args:
@@ -35,11 +35,7 @@ def distances(X, v, alpha, N, P, k):
     Returns:
 
     """
-    dists = np.zeros((N, P))
-    for i in range(N):
-        for p in range(P):
-            for j in range(k):
-                dists[i, j] += (X[i, p] - v[j, p]) * (X[i, p] - v[j, p]) * alpha[p]
+    dists = np.sum(np.square(X[:, None] - v[None]) * alpha, axis=-1)
     return dists
 
 
@@ -55,51 +51,28 @@ def M_nk(dists, N, k):
     Returns:
 
     """
-    matrix_nk = np.zeros((N, k))
-    exp = np.zeros((N, k))
-    denom = np.zeros(N)
-    for i in range(N):
-        for j in range(k):
-            exp[i, j] = np.exp(-1 * dists[i, j])
-            denom[i] += exp[i, j]
-        for j in range(k):
-            if denom[i]:
-                matrix_nk[i, j] = exp[i, j] / denom[i]
-            else:
-                matrix_nk[i, j] = exp[i, j] / 1e-6
+    exp = np.exp(-dists)
+    denom = exp.sum(axis=1, keepdims=True)
+    # denom = np.nan_to_num(denom, nan=1e-6)
+    denom[denom == 0] = 1e-6
+    matrix_nk = exp / denom
+
     return matrix_nk
-
-
-@jit
-def M_k(matrix_nk, N, k):
-    """
-    ???
-    Args:
-        matrix_nk:
-        N:
-        k:
-
-    Returns:
-
-    """
-    matrix_k = np.zeros(k)
-    for j in range(k):
-        for i in range(N):
-            matrix_k[j] += matrix_nk[i, j]
-        matrix_k[j] /= N
-    return matrix_k
 
 
 @jit
 def x_n_hat(X, matrix_nk, v, N, P, k):
     """???"""
-    x_n_hat_obj = np.zeros((N, P))
-    L_x = 0.0
-    for i in range(N):
-        for p in range(P):
-            for j in range(k):
-                x_n_hat_obj[i, p] += matrix_nk[i, j] * v[j, p]
-            L_x += (X[i, p] - x_n_hat_obj[i, p]) * (X[i, p] - x_n_hat_obj[i, p])
+
+    x_n_hat_obj = np.sum(matrix_nk[:, None] * v[None], axis=-1)
+    L_x = np.square(X - x_n_hat_obj)
+    # x_n_hat_obj = np.zeros((N, P))
+    # L_x = 0.0
+    # for i in range(N):
+    #     for p in range(P):
+    #         for j in range(k):
+    #             x_n_hat_obj[i, p] += matrix_nk[i, j] * v[j, p]
+    #         L_x += (X[i, p] - x_n_hat_obj[i, p]) * (X[i, p] - x_n_hat_obj[i, p])
     return x_n_hat_obj, L_x
 
 
@@ -174,12 +147,10 @@ def LFR_optim_obj(
     M_nk_sensitive = M_nk(dists_sensitive, Ns, k)
     M_nk_nonsensitive = M_nk(dists_nonsensitive, Nns, k)
 
-    M_k_sensitive = M_k(M_nk_sensitive, Ns, k)
-    M_k_nonsensitive = M_k(M_nk_nonsensitive, Nns, k)
+    M_k_sensitive = M_nk_sensitive.mean(axis=0)
+    M_k_nonsensitive = M_nk_nonsensitive.mean(axis=0)
 
-    L_z = 0.0
-    for j in range(k):
-        L_z += abs(M_k_sensitive[j] - M_k_nonsensitive[j])
+    L_z = np.sum(np.abs(M_k_sensitive - M_k_nonsensitive))
 
     _, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v, Ns, P, k)
     _, L_x2 = x_n_hat(data_nonsensitive, M_nk_nonsensitive, v, Nns, P, k)
