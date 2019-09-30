@@ -28,12 +28,12 @@ setup(
     package_data={"ethicml.data": ["csvs/*.csv"], "ethicml": ["py.typed"]},
     python_requires=">=3.6",
     install_requires=[
-        'dataclasses;python_version<"3.7"',  # dataclasses are in the stdlib in python>=3.7
+        "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
         "fairlearn >= 0.2.0",
         "GitPython >= 2.1.11",
         "imageio >= 2.4.1",
         "matplotlib >= 3.0.2",
-        "numba",
+        "numba == 0.45.0",
         "numpy >= 1.14.2",
         "pandas >= 0.24.0",
         "pipenv >= 2018.11.26",
@@ -49,10 +49,10 @@ setup(
         # use `pip install EthicML[dev]` to install development packages
         'dev': [
             "black",
-            "mypy >= 0.720",
-            "pylint >= 2.0",
-            "pytest >= 3.3.2",
-            "pytest-cov >= 2.6.0",
+            "mypy",
+            "pylint",
+            "pytest",
+            "pytest-cov",
             "pre-commit",
         ],
     },
