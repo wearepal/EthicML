@@ -37,6 +37,6 @@ class Encoder(nn.Module):
             self.z1_enc_mu = nn.Linear(enc_size[-1], ld)
             self.z1_enc_logvar = nn.Linear(enc_size[-1], ld)
 
-    def forward(self, input_: Tensor) -> Tuple[Tensor, Tensor]:  # type: ignore
+    def forward(self, input_: Tensor) -> Tuple[Tensor, Tensor]:  # type: ignore[override]
         step = self.encoder(input_)
         return self.z1_enc_mu(step), self.z1_enc_logvar(step)

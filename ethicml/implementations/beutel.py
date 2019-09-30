@@ -53,7 +53,7 @@ def set_seed(seed: int):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # type: ignore  # mypy claims manual_seed_all doesn't exist
+    torch.cuda.manual_seed_all(seed)  # type: ignore[attr-defined]
 
 
 def build_networks(
@@ -264,7 +264,7 @@ class GradReverse(Function):
     """Gradient reversal layer"""
 
     @staticmethod
-    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore
+    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore[override]
         ctx.lambda_ = lambda_
         return x.view_as(x)
 
@@ -274,9 +274,7 @@ class GradReverse(Function):
 
 
 def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
-    return GradReverse.apply(  # type: ignore  # mypy was claiming that apply doesn't exist
-        features, lambda_
-    )
+    return GradReverse.apply(features, lambda_)  # type: ignore[attr-defined]
 
 
 class Encoder(nn.Module):
@@ -297,7 +295,7 @@ class Encoder(nn.Module):
                 )
                 self.encoder.add_module("encoder activation {}".format(k + 1), activation)
 
-    def forward(self, x: Tensor) -> Tensor:  # type: ignore
+    def forward(self, x: Tensor) -> Tensor:  # type: ignore[override]
         encoded = self.encoder(x)
         return encoded
 
@@ -333,7 +331,7 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
             self.adversary.add_module("adversary last activation", activation)
 
-    def forward(self, x: Tensor, y: Tensor) -> Tensor:  # type: ignore
+    def forward(self, x: Tensor, y: Tensor) -> Tensor:  # type: ignore[override]
 
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
@@ -374,7 +372,7 @@ class Predictor(nn.Module):
             )
             self.predictor.add_module("adversary last activation", activation)
 
-    def forward(self, x: Tensor) -> Tensor:  # type: ignore
+    def forward(self, x: Tensor) -> Tensor:  # type: ignore[override]
         return self.predictor(x)
 
 
@@ -387,7 +385,9 @@ class Model(nn.Module):
         self.adv = adv
         self.pred = pred
 
-    def forward(self, x: Tensor, y: Tensor) -> Tuple[Tensor, Tensor, Tensor]:  # type: ignore
+    def forward(  # type: ignore[override]
+        self, x: Tensor, y: Tensor
+    ) -> Tuple[Tensor, Tensor, Tensor]:
         encoded = self.enc(x)
         s_hat = self.adv(encoded, y)
         y_hat = self.pred(encoded)

@@ -58,9 +58,9 @@ class VFAENetwork(nn.Module):
         """reparametrization trick - Leaving as a method to try and control reproducability"""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
-        return eps.mul(std).add_(mean)  # type: ignore  # mypy was claming "mul" doesn't exist
+        return eps.mul(std).add_(mean)  # type: ignore[attr-defined]
 
-    def forward(  # type: ignore
+    def forward(  # type: ignore[override]
         self, x: Tensor, s: Tensor, y: Tensor
     ) -> Tuple[
         Tuple[Tensor, Tensor, Tensor],

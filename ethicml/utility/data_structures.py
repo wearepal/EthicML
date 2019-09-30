@@ -45,7 +45,7 @@ class TestTuple:
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.DataFrame] = None,
         name: Optional[str] = None,
-    ) -> "DataTuple":
+    ) -> "TestTuple":
         """Create a copy of the TestTuple but change the given values"""
         changes = {k: v for k, v in [("x", x), ("s", s), ("name", name)] if v is not None}
         return replace(self, **changes)
@@ -323,5 +323,5 @@ class Results:
     ) -> pd.DataFrame:
         """Change the values of the index with a transformation function"""
         results_mapped = self._data.copy()
-        results_mapped.index = results_mapped.index.map(mapper)  # type: ignore
+        results_mapped.index = results_mapped.index.map(mapper)
         return results_mapped
