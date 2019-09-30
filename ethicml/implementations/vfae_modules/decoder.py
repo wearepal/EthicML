@@ -53,7 +53,7 @@ class Decoder(nn.Module):
             [_add_output_layer(feature) for feature in self.grouped_features]
         )
 
-    def forward(self, x: Tensor, s: Tensor) -> Tensor:  # type: ignore
+    def forward(self, x: Tensor, s: Tensor) -> Tensor:  # type: ignore[override]
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s), 1))
         decoded = torch.cat(

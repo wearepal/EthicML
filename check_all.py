@@ -29,7 +29,7 @@ print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 # mypy
 print("############  mypy tests  ##############")
 MYPY_RESULTS = mypy.run(
-    ['./tests/', '--warn-redundant-casts', '--show-error-context', '--check-untyped-defs']
+    ['./tests/', '--warn-redundant-casts', '--show-error-context', '--show-error-codes', '--pretty']
 )
 print(MYPY_RESULTS[0], end='')
 print(MYPY_RESULTS[1], end='')
