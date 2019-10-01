@@ -4,79 +4,103 @@ https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
 """
 from typing import List, Tuple, Dict, Optional, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import scipy.optimize as optim
-from numba import jit
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.implementations.utils import (
     load_data_from_flags,
     save_transformations,
     pre_algo_argparser,
 )
+from ethicml.utility.data_structures import DataTuple, TestTuple
+
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
 # pylint: disable=invalid-name
 
 
-def distances(X, v, alpha):
+def distances(x: np.ndarray, v: np.ndarray, alpha: np.ndarray) -> np.ndarray:
     """
-    Calculates distances?
+    Compute the l2 distance between each feature, x_n, and each
+    prototype vector, v_k, weighted by a feature-wise weight parameter, alpha
     Args:
-        X:
-        v:
-        alpha:
-        N:
-        P:
-        k:
+        x: Input features
+        v: Prototype vectors
+        alpha: Individual weight parameters for each feature dimension
 
-    Returns:
-
+    Returns: array of shape [n, k]containing the weighted l2 distances between
+    each feature, x_n, and each prototype vector, v_k
     """
-    dists = np.sum(np.square(X[:, None] - v[None]) * alpha, axis=-1)
+    dists = np.sum(np.square(x[:, None] - v[None]) * alpha, axis=-1)
     return dists
 
 
-def M_nk(dists):
+def softmax(dists: np.ndarray) -> np.ndarray:
     """
-    Softmax
+    Compute the probability that x_n maps to a given prototype vector, v_k
     Args:
-        dists:
-        N:
-        k:
+        dists: l2 distances between each input feature and each prototype vector
 
     Returns:
-
+        Membership probabilities of each input feature to each prototype
     """
     exp = np.exp(-dists)
-    denom = exp.sum(axis=1, keepdims=True)
+    denom = np.sum(exp, axis=1, keepdims=True)
     denom[denom == 0] = 1e-6
     matrix_nk = exp / denom
 
     return matrix_nk
 
 
-def x_n_hat(X, matrix_nk, v):
-    """???"""
+def x_n_hat(x, matrix_nk, v) -> Tuple[np.ndarray, float]:
+    """Reconstruct x_n from z_n and compute the difference between
+    the original input and its reconstruction using l2 loss.
+
+    Args:
+        x: Input features
+        matrix_nk: Membership probabilities of each input feature to each prototype
+        v: Prototype vectors
+
+    Returns:
+        Reconstruction of x and the l2 loss between the reconstruction and x
+    """
     x_n_hat_obj = matrix_nk @ v
-    L_x = np.sum(np.square(X - x_n_hat_obj))
+    l_x = (np.square(x - x_n_hat_obj)).sum()
 
-    return x_n_hat_obj, L_x
-
-
-def yhat(matrix_nk, y, w):
-    """Compute predictions and cross-entropy loss"""
-    y_hat = matrix_nk @ w
-    y_hat[y_hat <= 0] = 1e-6
-    y_hat[y_hat >= 1] = 0.999
-    L_y = np.sum(-y * np.log(y_hat) - (1.0 - y) * np.log(1.0 - y_hat))
-
-    return y_hat, L_y
+    return x_n_hat_obj, l_x
 
 
-def yhat_without_loss(matrix_nk, w):
-    """Compute predictions"""
+def yhat(matrix_nk: np.ndarray, y: np.ndarray, w: np.ndarray) -> Tuple[np.ndarray, float]:
+    """Predict y and compute the cross-entropy loss between the resulting predictions
+    and the target labels
+
+    Args:
+        matrix_nk: Matrix encoding the membership probabilities of each input feature to
+        each prototype
+        y: target labels for each sample
+        w: learned parameters governing the mapping from the prototypes to classification decisions
+
+    Returns:
+        Predictions and associated cross-entropy loss
+    """
+    y_hat = yhat_without_loss(matrix_nk, w)
+    l_y = (-y * np.log(y_hat) - (1.0 - y) * np.log(1.0 - y_hat)).sum()
+
+    return y_hat, l_y
+
+
+def yhat_without_loss(matrix_nk: np.ndarray, w: np.ndarray) -> np.ndarray:
+    """Predict y without computing the classification loss
+
+    Args:
+        matrix_nk: Matrix encoding the membership probabilities of each input feature to
+        each prototype
+        w: learned parameters governing the mapping from the prototypes to classification decisions
+
+    Returns:
+        Predictions and associated cross-entropy loss
+    """
     y_hat = matrix_nk @ w
     y_hat[y_hat <= 0] = 1e-6
     y_hat[y_hat >= 1] = 0.999
@@ -84,74 +108,81 @@ def yhat_without_loss(matrix_nk, w):
     return y_hat
 
 
-def LFR_optim_obj(
-    params,
-    data_sensitive,
-    data_nonsensitive,
-    y_sensitive,
-    y_nonsensitive,
-    k=10,
-    A_x=0.01,
-    A_y=0.1,
-    A_z=0.5,
-    results=0,
-):
+def lfr_optim_ob(
+    params: np.ndarray,
+    data_sensitive: np.ndarray,
+    data_nonsensitive: np.ndarray,
+    y_sensitive: np.ndarray,
+    y_nonsensitive: np.ndarray,
+    k: int = 10,
+    a_x: float = 0.01,
+    a_y: float = 0.1,
+    a_z: float = 0.5,
+    results: bool = False,
+) -> Union[Tuple[np.ndarray], float]:
     """
-    The funtion to be optimized
+    Apply L-BFGS to minimize the LFR objective function
     Args:
-        params:
-        data_sensitive:
-        data_nonsensitive:
+        params: Array of trainable parameters.
+        data_sensitive: Data for the subset of individuals that are members
+        of the protected set (i.e. S= 1)
+        data_nonsensitive: Data for the subset of individuals that are not members
+        of the protected set (i.e. S= 0)
         y_sensitive:
         y_nonsensitive:
-        k:
-        A_x:
-        A_y:
-        A_z:
-        results:
+        k: Number of prototype sets
+        a_x: Pre-factor for the L_x loss term.
+        a_y: Pre-factor for the L_y loss term.
+        a_z: Pre-factor for the L_z loss term.
+        results: Whether to return the predictions and prototype membership probabilities (True)
+        or the weighted LFR loss (False)
 
     Returns:
-
+        If 'results' is True, returns the predictions and prototype membership probabilities;
+        otherwise returns the weighted LFR loss
     """
-    LFR_optim_obj.iters += 1
-    _, P = data_sensitive.shape
+    lfr_optim_ob.iters += 1
+    _, p = data_sensitive.shape
 
-    alpha0 = params[:P]
-    alpha1 = params[P : 2 * P]
-    w = params[2 * P : (2 * P) + k]
-    v = np.array(params[(2 * P) + k :]).reshape((k, P))
+    alpha0 = params[:p]
+    alpha1 = params[p : 2 * p]
+    w = params[2 * p : (2 * p) + k]
+    v = np.array(params[(2 * p) + k :]).reshape((k, p))
 
     dists_sensitive = distances(data_sensitive, v, alpha1)
     dists_nonsensitive = distances(data_nonsensitive, v, alpha0)
 
-    M_nk_sensitive = M_nk(dists_sensitive)
-    M_nk_nonsensitive = M_nk(dists_nonsensitive)
+    m_nk_sensitive = softmax(dists_sensitive)
+    m_k_nonsensitive = softmax(dists_nonsensitive)
 
-    M_k_sensitive = M_nk_sensitive.mean(axis=0)
-    M_k_nonsensitive = M_nk_nonsensitive.mean(axis=0)
+    m_k_sensitive = np.mean(m_nk_sensitive, axis=0)
+    m_k_nonsensitive = np.mean(m_k_nonsensitive, axis=0)
 
-    L_z = np.sum(np.abs(M_k_sensitive - M_k_nonsensitive))
+    # Loss term enforcing group fairness (minimizes MI between z and s)
+    l_z = np.sum(np.abs(m_k_sensitive - m_k_nonsensitive))
 
-    _, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v)
-    _, L_x2 = x_n_hat(data_nonsensitive, M_nk_nonsensitive, v)
-    L_x = L_x1 + L_x2
+    _, l_x1 = x_n_hat(data_sensitive, m_nk_sensitive, v)
+    _, l_x2 = x_n_hat(data_nonsensitive, m_k_nonsensitive, v)
+    l_x = l_x1 + l_x2
 
-    yhat_sensitive, L_y1 = yhat(M_nk_sensitive, y_sensitive, w)
-    yhat_nonsensitive, L_y2 = yhat(M_nk_nonsensitive, y_nonsensitive, w)
-    L_y = L_y1 + L_y2
+    yhat_sensitive, l_y1 = yhat(m_nk_sensitive, y_sensitive, w)
+    yhat_nonsensitive, l_y2 = yhat(m_k_nonsensitive, y_nonsensitive, w)
+    l_y = l_y1 + l_y2
 
-    criterion = A_x * L_x + A_y * L_y + A_z * L_z
+    criterion = a_x * l_x + a_y * l_y + a_z * l_z
 
-    return_tuple = (yhat_sensitive, yhat_nonsensitive, M_nk_sensitive, M_nk_nonsensitive)
+    return_tuple = (yhat_sensitive, yhat_nonsensitive, m_nk_sensitive, m_k_nonsensitive)
+
     return return_tuple if results else criterion
 
 
-LFR_optim_obj.iters = 0
+lfr_optim_ob.iters = 0
 
 
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, float]]
 ) -> (Tuple[DataTuple, TestTuple]):
+
     """Train the Zemel model and return the transformed features of the train and test sets"""
     np.random.seed(888)
     features_dim = train.x.shape[1]
@@ -173,7 +204,7 @@ def train_and_transform(
             bnd.append((0, 1))
 
     learned_model = optim.fmin_l_bfgs_b(
-        LFR_optim_obj,
+        lfr_optim_ob,
         x0=model_inits,
         epsilon=flags['epsilon'],
         args=(
@@ -196,8 +227,6 @@ def train_and_transform(
 
     testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
     testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
-    # ytest_sensitive = test.y.loc[test.s[sens_col] == 0].to_numpy()
-    # ytest_nonsensitive = test.y.loc[test.s[sens_col] == 1].to_numpy()
 
     # Mutated, fairer dataset with new labels
     test_transformed = transform(
@@ -222,43 +251,37 @@ def train_and_transform(
 
 def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     """
-    transform a dataset based on the
+    Transform a dataset based on the
     Args:
-        features_sens:
-        features_nonsens:
-        label_sens:
-        label_nonsens:
-        learned_model:
-        dataset:
+        features_sens: Sensitive features.
+        features_nonsens: Nonsensitive features.
+        label_sens: Sensitive labels.
+        label_nonsens: Class labels.
+        learned_model: Model optimized for the LFR objective.
+        dataset: Dataset to be transformed.
 
     Returns:
 
     """
     k = flags['clusters']
-    Ns, P = features_sens.shape
-    N, _ = features_nonsens.shape
-    alphaoptim0 = learned_model[:P]
-    alphaoptim1 = learned_model[P : 2 * P]
-    # woptim = learned_model[2 * P : (2 * P) + k]
-    voptim = np.array(learned_model[(2 * P) + k :]).reshape((k, P))
+    _, p = features_sens.shape
+    alphaoptim0 = learned_model[:p]
+    alphaoptim1 = learned_model[p : 2 * p]
+    voptim = np.array(learned_model[(2 * p) + k :]).reshape((k, p))
 
     # compute distances on the test dataset using train model params
     dist_sensitive = distances(features_sens, voptim, alphaoptim1)
     dist_nonsensitive = distances(features_nonsens, voptim, alphaoptim0)
 
     # compute cluster probabilities for test instances
-    M_nk_sensitive = M_nk(dist_sensitive)
-    M_nk_nonsensitive = M_nk(dist_nonsensitive)
+    m_nk_sensitive = softmax(dist_sensitive)
+    m_nk_nonsensitive = softmax(dist_nonsensitive)
 
     # learned mappings for test instances
-    res_sensitive = x_n_hat(features_sens, M_nk_sensitive, voptim)
+    res_sensitive = x_n_hat(features_sens, m_nk_sensitive, voptim)
     x_n_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = x_n_hat(features_nonsens, M_nk_nonsensitive, voptim)
+    res_nonsensitive = x_n_hat(features_nonsens, m_nk_nonsensitive, voptim)
     x_n_hat_nonsensitive = res_nonsensitive[0]
-
-    # compute predictions for test instances
-    # y_hat_sensitive = yhat_without_loss(M_nk_sensitive, woptim, Ns, k)
-    # y_hat_nonsensitive = yhat_without_loss(M_nk_nonsensitive, woptim, N, k)
 
     sens_col = dataset.s.columns[0]
 
@@ -266,18 +289,8 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
 
     transformed_features = np.zeros_like(dataset.x.to_numpy())
-    # transformed_labels = np.zeros_like(dataset.y.to_numpy())
     transformed_features[sensitive_idx] = x_n_hat_sensitive
     transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
-    # transformed_labels[sensitive_idx] = np.reshape(y_hat_sensitive, [-1, 1])
-    # transformed_labels[nonsensitive_idx] = np.reshape(y_hat_nonsensitive, [-1, 1])
-    # transformed_labels = (np.array(transformed_labels) > flags['threshold']).astype(np.float64)
-
-    # return DataTuple(
-    #     x=pd.DataFrame(transformed_features, columns=dataset.x.columns),
-    #     s=pd.DataFrame(dataset.s, columns=dataset.s.columns),
-    #     y=pd.DataFrame(transformed_labels, columns=dataset.y.columns),
-    # )
 
     return pd.DataFrame(transformed_features, columns=dataset.x.columns)
 
