@@ -74,7 +74,7 @@ def yhat(matrix_nk, y, w, N, k):
     y_hat = matrix_nk @ w
     y_hat[y_hat <= 0] = 1e-6
     y_hat[y_hat >= 1] = 0.999
-    L_y = np.sum(y * np.log(y_hat) - (1 - y) * np.log(1 - y_hat))
+    L_y = np.sum(-y * np.log(y_hat) - (1.0 - y) * np.log(1.0 - y_hat))
 
     return y_hat, L_y
 
