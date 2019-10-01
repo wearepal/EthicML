@@ -91,7 +91,7 @@ class Hsic(Metric):
 
             start += batchs_size
 
-        return np.mean(np.array(batches)).item()
+        return np.mean(np.array(batches))
 
     @property
     def name(self) -> str:

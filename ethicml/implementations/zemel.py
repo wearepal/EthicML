@@ -119,7 +119,7 @@ def lfr_optim_ob(
     a_y: float = 0.1,
     a_z: float = 0.5,
     results: bool = False,
-) -> Union[Tuple[np.ndarray, ...], np.ndarray]:
+) -> Union[Tuple[np.ndarray, ...], float]:
     """
     Apply L-BFGS to minimize the LFR objective function
     Args:

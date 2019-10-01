@@ -101,13 +101,13 @@ def _proportional_train_test_split(
 
     train_empty: List[int] = []  # this is necessary because mypy is silly
     test_empty: List[int] = []
-    train_idx: "np.ndarray[int]" = np.array(train_empty, dtype=int)
-    test_idx: "np.ndarray[int]" = np.array(test_empty, dtype=int)
+    train_idx: "np.ndarray[np.int32]" = np.array(train_empty, dtype=np.int32)
+    test_idx: "np.ndarray[np.int32]" = np.array(test_empty, dtype=np.int32)
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
         # find all indices for this group
-        idx: "np.ndarray[int]"
+        idx: "np.ndarray[np.int32]"
         idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
 
         # shuffle and take subsets
@@ -150,15 +150,15 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
     So much love to sklearn for making their source code open
     """
 
-    indices: np.ndarray[int] = np.arange(data.x.shape[0])
+    indices: np.ndarray[np.int64] = np.arange(data.x.shape[0])
 
-    fold_sizes: np.ndarray[int] = np.full(folds, data.x.shape[0] // folds, dtype=int)
+    fold_sizes: np.ndarray[np.int32] = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)
     fold_sizes[: data.x.shape[0] % folds] += 1
 
     current = 0
     for i, fold_size in enumerate(fold_sizes):
         start, stop = current, current + fold_size
-        val_inds: np.ndarray[int] = indices[start:stop]
+        val_inds: np.ndarray[np.int64] = indices[start:stop]
         train_inds = [i for i in indices if i not in val_inds]  # Pretty sure this is inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)
