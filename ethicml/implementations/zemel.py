@@ -20,8 +20,7 @@ from ethicml.implementations.utils import (
 # pylint: disable=invalid-name
 
 
-@jit
-def distances(X, v, alpha, N, P, K):
+def distances(X, v, alpha):
     """
     Calculates distances?
     Args:
@@ -39,8 +38,7 @@ def distances(X, v, alpha, N, P, K):
     return dists
 
 
-@jit
-def M_nk(dists, N, k):
+def M_nk(dists):
     """
     Softmax
     Args:
@@ -59,8 +57,7 @@ def M_nk(dists, N, k):
     return matrix_nk
 
 
-@jit
-def x_n_hat(X, matrix_nk, v, N, P, k):
+def x_n_hat(X, matrix_nk, v):
     """???"""
     x_n_hat_obj = matrix_nk @ v
     L_x = np.sum(np.square(X - x_n_hat_obj))
@@ -68,8 +65,7 @@ def x_n_hat(X, matrix_nk, v, N, P, k):
     return x_n_hat_obj, L_x
 
 
-@jit
-def yhat(matrix_nk, y, w, N, k):
+def yhat(matrix_nk, y, w):
     """Compute predictions and cross-entropy loss"""
     y_hat = matrix_nk @ w
     y_hat[y_hat <= 0] = 1e-6
@@ -79,8 +75,7 @@ def yhat(matrix_nk, y, w, N, k):
     return y_hat, L_y
 
 
-@jit
-def yhat_without_loss(matrix_nk, w, N, k):
+def yhat_without_loss(matrix_nk, w):
     """Compute predictions"""
     y_hat = matrix_nk @ w
     y_hat[y_hat <= 0] = 1e-6
@@ -89,7 +84,6 @@ def yhat_without_loss(matrix_nk, w, N, k):
     return y_hat
 
 
-@jit
 def LFR_optim_obj(
     params,
     data_sensitive,
@@ -120,31 +114,30 @@ def LFR_optim_obj(
 
     """
     LFR_optim_obj.iters += 1
-    Ns, P = data_sensitive.shape
-    Nns, _ = data_nonsensitive.shape
+    _, P = data_sensitive.shape
 
     alpha0 = params[:P]
     alpha1 = params[P : 2 * P]
     w = params[2 * P : (2 * P) + k]
     v = np.array(params[(2 * P) + k :]).reshape((k, P))
 
-    dists_sensitive = distances(data_sensitive, v, alpha1, Ns, P, k)
-    dists_nonsensitive = distances(data_nonsensitive, v, alpha0, Nns, P, k)
+    dists_sensitive = distances(data_sensitive, v, alpha1)
+    dists_nonsensitive = distances(data_nonsensitive, v, alpha0)
 
-    M_nk_sensitive = M_nk(dists_sensitive, Ns, k)
-    M_nk_nonsensitive = M_nk(dists_nonsensitive, Nns, k)
+    M_nk_sensitive = M_nk(dists_sensitive)
+    M_nk_nonsensitive = M_nk(dists_nonsensitive)
 
     M_k_sensitive = M_nk_sensitive.mean(axis=0)
     M_k_nonsensitive = M_nk_nonsensitive.mean(axis=0)
 
     L_z = np.sum(np.abs(M_k_sensitive - M_k_nonsensitive))
 
-    _, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v, Ns, P, k)
-    _, L_x2 = x_n_hat(data_nonsensitive, M_nk_nonsensitive, v, Nns, P, k)
+    _, L_x1 = x_n_hat(data_sensitive, M_nk_sensitive, v)
+    _, L_x2 = x_n_hat(data_nonsensitive, M_nk_nonsensitive, v)
     L_x = L_x1 + L_x2
 
-    yhat_sensitive, L_y1 = yhat(M_nk_sensitive, y_sensitive, w, Ns, k)
-    yhat_nonsensitive, L_y2 = yhat(M_nk_nonsensitive, y_nonsensitive, w, Nns, k)
+    yhat_sensitive, L_y1 = yhat(M_nk_sensitive, y_sensitive, w)
+    yhat_nonsensitive, L_y2 = yhat(M_nk_nonsensitive, y_nonsensitive, w)
     L_y = L_y1 + L_y2
 
     criterion = A_x * L_x + A_y * L_y + A_z * L_z
@@ -250,17 +243,17 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     voptim = np.array(learned_model[(2 * P) + k :]).reshape((k, P))
 
     # compute distances on the test dataset using train model params
-    dist_sensitive = distances(features_sens, voptim, alphaoptim1, Ns, P, k)
-    dist_nonsensitive = distances(features_nonsens, voptim, alphaoptim0, N, P, k)
+    dist_sensitive = distances(features_sens, voptim, alphaoptim1)
+    dist_nonsensitive = distances(features_nonsens, voptim, alphaoptim0)
 
     # compute cluster probabilities for test instances
-    M_nk_sensitive = M_nk(dist_sensitive, Ns, k)
-    M_nk_nonsensitive = M_nk(dist_nonsensitive, N, k)
+    M_nk_sensitive = M_nk(dist_sensitive)
+    M_nk_nonsensitive = M_nk(dist_nonsensitive)
 
     # learned mappings for test instances
-    res_sensitive = x_n_hat(features_sens, M_nk_sensitive, voptim, Ns, P, k)
+    res_sensitive = x_n_hat(features_sens, M_nk_sensitive, voptim)
     x_n_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = x_n_hat(features_nonsens, M_nk_nonsensitive, voptim, N, P, k)
+    res_nonsensitive = x_n_hat(features_nonsens, M_nk_nonsensitive, voptim)
     x_n_hat_nonsensitive = res_nonsensitive[0]
 
     # compute predictions for test instances
