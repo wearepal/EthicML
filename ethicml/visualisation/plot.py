@@ -63,6 +63,7 @@ def make_gif(files: List[str], name: str = "movie") -> None:
     Make GIF
     """
     import imageio
+
     images = []
     for filename in files:
         images.append(imageio.imread(filename))
