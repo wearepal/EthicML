@@ -119,7 +119,7 @@ def lfr_optim_ob(
     a_y: float = 0.1,
     a_z: float = 0.5,
     results: bool = False,
-) -> Union[Tuple[np.ndarray], float]:
+) -> Union[Tuple[np.ndarray, ...], np.ndarray]:
     """
     Apply L-BFGS to minimize the LFR objective function
     Args:
@@ -141,7 +141,7 @@ def lfr_optim_ob(
         If 'results' is True, returns the predictions and prototype membership probabilities;
         otherwise returns the weighted LFR loss
     """
-    lfr_optim_ob.iters += 1
+    lfr_optim_ob.iters += 1  # type: ignore[attr-defined]
     _, p = data_sensitive.shape
 
     alpha0 = params[:p]
@@ -176,7 +176,7 @@ def lfr_optim_ob(
     return return_tuple if results else criterion
 
 
-lfr_optim_ob.iters = 0
+lfr_optim_ob.iters = 0  # type: ignore[attr-defined]
 
 
 def train_and_transform(
