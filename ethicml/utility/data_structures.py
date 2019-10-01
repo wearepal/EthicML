@@ -98,9 +98,7 @@ class DataTuple(TestTuple, DataTupleValues):
         changes = {k: v for k, v in [("x", x), ("s", s), ("y", y), ("name", name)] if v is not None}
         return replace(self, **changes)
 
-    def apply_to_joined_df(
-        self, mapper: Callable[[pd.DataFrame], pd.DataFrame]
-    ) -> "DataTuple":
+    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
         """Concatenate the dataframes in the DataTuple and then apply a function to it"""
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
@@ -137,9 +135,7 @@ class TestPathTuple:
     def load_from_feather(self) -> TestTuple:
         """Load a dataframe from a feather file"""
         return TestTuple(
-            x=load_feather(self.x),
-            s=load_feather(self.s),
-            name=self.name if self.name else None,
+            x=load_feather(self.x), s=load_feather(self.s), name=self.name if self.name else None
         )
 
 
@@ -184,10 +180,7 @@ def write_as_feather(
         # because of polymorphism it can happen that `test` is a DataTuple posing as a TestTuple
         # this causes problems though because it will write an additional file (the one with y)
         test = test.remove_y()
-    return (
-        train.write_as_feather(data_dir, "train"),
-        test.write_as_feather(data_dir, "test"),
-    )
+    return (train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test"))
 
 
 def concat_dt(
@@ -196,30 +189,18 @@ def concat_dt(
     """Concatenate the data tuples in the given list"""
 
     to_return = DataTuple(
-        x=datatup_list[0].x,
-        s=datatup_list[0].s,
-        y=datatup_list[0].y,
-        name=datatup_list[0].name,
+        x=datatup_list[0].x, s=datatup_list[0].s, y=datatup_list[0].y, name=datatup_list[0].name
     )
     for i in range(1, len(datatup_list)):
         to_return = DataTuple(
             x=pd.concat(
-                [to_return.x, datatup_list[i].x],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
+                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
             ),
             s=pd.concat(
-                [to_return.s, datatup_list[i].s],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
+                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
             ),
             y=pd.concat(
-                [to_return.y, datatup_list[i].y],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
+                [to_return.y, datatup_list[i].y], axis=axis, sort=False, ignore_index=ignore_index
             ),
             name=to_return.name,
         )
@@ -231,22 +212,14 @@ def concat_tt(
 ) -> TestTuple:
     """Concatenate the test tuples in the given list"""
 
-    to_return = TestTuple(
-        x=datatup_list[0].x, s=datatup_list[0].s, name=datatup_list[0].name
-    )
+    to_return = TestTuple(x=datatup_list[0].x, s=datatup_list[0].s, name=datatup_list[0].name)
     for i in range(1, len(datatup_list)):
         to_return = TestTuple(
             x=pd.concat(
-                [to_return.x, datatup_list[i].x],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
+                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
             ),
             s=pd.concat(
-                [to_return.s, datatup_list[i].s],
-                axis=axis,
-                sort=False,
-                ignore_index=ignore_index,
+                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
             ),
             name=to_return.name,
         )
@@ -276,9 +249,7 @@ def str_to_fair_type(fair_str: str) -> Optional[FairnessType]:
 
 
 ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType = Literal[
-    "identity", "logistic", "tanh", "relu"
-]  # pylint: disable=invalid-name
+ActivationType = Literal["identity", "logistic", "tanh", "relu"]  # pylint: disable=invalid-name
 
 
 class TrainTestPair(NamedTuple):
