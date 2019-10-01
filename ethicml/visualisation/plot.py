@@ -6,7 +6,6 @@ from typing import Tuple, List, Union, Optional
 import itertools
 
 from typing_extensions import Literal
-import imageio
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -63,6 +62,7 @@ def make_gif(files: List[str], name: str = "movie") -> None:
     """
     Make GIF
     """
+    import imageio
     images = []
     for filename in files:
         images.append(imageio.imread(filename))

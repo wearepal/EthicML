@@ -153,25 +153,25 @@ def lfr_optim_ob(
     dists_nonsensitive = distances(data_nonsensitive, v, alpha0)
 
     m_nk_sensitive = softmax(dists_sensitive)
-    m_k_nonsensitive = softmax(dists_nonsensitive)
+    m_nk_nonsensitive = softmax(dists_nonsensitive)
 
     m_k_sensitive = np.mean(m_nk_sensitive, axis=0)
-    m_k_nonsensitive = np.mean(m_k_nonsensitive, axis=0)
+    m_k_nonsensitive = np.mean(m_nk_nonsensitive, axis=0)
 
     # Loss term enforcing group fairness (minimizes MI between z and s)
     l_z = np.sum(np.abs(m_k_sensitive - m_k_nonsensitive))
 
     _, l_x1 = x_n_hat(data_sensitive, m_nk_sensitive, v)
-    _, l_x2 = x_n_hat(data_nonsensitive, m_k_nonsensitive, v)
+    _, l_x2 = x_n_hat(data_nonsensitive, m_nk_nonsensitive, v)
     l_x = l_x1 + l_x2
 
     yhat_sensitive, l_y1 = yhat(m_nk_sensitive, y_sensitive, w)
-    yhat_nonsensitive, l_y2 = yhat(m_k_nonsensitive, y_nonsensitive, w)
+    yhat_nonsensitive, l_y2 = yhat(m_nk_nonsensitive, y_nonsensitive, w)
     l_y = l_y1 + l_y2
 
     criterion = a_x * l_x + a_y * l_y + a_z * l_z
 
-    return_tuple = (yhat_sensitive, yhat_nonsensitive, m_nk_sensitive, m_k_nonsensitive)
+    return_tuple = (yhat_sensitive, yhat_nonsensitive, m_nk_sensitive, m_nk_nonsensitive)
 
     return return_tuple if results else criterion
 
