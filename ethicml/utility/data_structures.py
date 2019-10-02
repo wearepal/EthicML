@@ -188,23 +188,18 @@ def concat_dt(
 ) -> DataTuple:
     """Concatenate the data tuples in the given list"""
 
-    to_return = DataTuple(
-        x=datatup_list[0].x, s=datatup_list[0].s, y=datatup_list[0].y, name=datatup_list[0].name
+    return DataTuple(
+        x=pd.concat(
+            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+        ),
+        s=pd.concat(
+            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+        ),
+        y=pd.concat(
+            [dt.y for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+        ),
+        name=datatup_list[0].name,
     )
-    for i in range(1, len(datatup_list)):
-        to_return = DataTuple(
-            x=pd.concat(
-                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
-            ),
-            s=pd.concat(
-                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
-            ),
-            y=pd.concat(
-                [to_return.y, datatup_list[i].y], axis=axis, sort=False, ignore_index=ignore_index
-            ),
-            name=to_return.name,
-        )
-    return to_return
 
 
 def concat_tt(
@@ -212,18 +207,15 @@ def concat_tt(
 ) -> TestTuple:
     """Concatenate the test tuples in the given list"""
 
-    to_return = TestTuple(x=datatup_list[0].x, s=datatup_list[0].s, name=datatup_list[0].name)
-    for i in range(1, len(datatup_list)):
-        to_return = TestTuple(
-            x=pd.concat(
-                [to_return.x, datatup_list[i].x], axis=axis, sort=False, ignore_index=ignore_index
-            ),
-            s=pd.concat(
-                [to_return.s, datatup_list[i].s], axis=axis, sort=False, ignore_index=ignore_index
-            ),
-            name=to_return.name,
-        )
-    return to_return
+    return TestTuple(
+        x=pd.concat(
+            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+        ),
+        s=pd.concat(
+            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+        ),
+        name=datatup_list[0].name,
+    )
 
 
 def load_feather(output_path: Path) -> pd.DataFrame:
