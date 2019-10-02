@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -210,7 +211,7 @@
 
 <dl class="method">
 <dt id="ethicml.algorithms.postprocess.Hardt.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make predictions fair</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -263,7 +264,7 @@
 
 <dl class="method">
 <dt id="ethicml.algorithms.postprocess.PostAlgorithm.run">
-<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make predictions fair</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

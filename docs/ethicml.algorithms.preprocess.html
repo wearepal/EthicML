@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -175,12 +176,12 @@
 <td><p>Pre-Algorithm that can be run blocking and asynchronously</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler" title="ethicml.algorithms.preprocess.Upsampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upsampler</span></code></a>(strategy)</p></td>
-<td><p>Upsampler class.</p></td>
+<td><p>Upsampler algorithm.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE" title="ethicml.algorithms.preprocess.VFAE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VFAE</span></code></a>(dataset, supervised, epochs, …)</p></td>
 <td><p>VFAE Object - see implementation file for details</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel" title="ethicml.algorithms.preprocess.Zemel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Zemel</span></code></a>([threshold, clusters, Ax, Ay, Az, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel" title="ethicml.algorithms.preprocess.Zemel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Zemel</span></code></a>(threshold, clusters, Ax, Ay, Az, …)</p></td>
 <td><p>AIF360 implementation of Zemel’s LFR</p></td>
 </tr>
 </tbody>
@@ -387,8 +388,8 @@
 <dt id="ethicml.algorithms.preprocess.Upsampler">
 <em class="property">class </em><code class="sig-name descname">Upsampler</code><span class="sig-paren">(</span><em class="sig-param">strategy: str = 'uniform'</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
-<p>Upsampler class.
-Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
+<p>Upsampler algorithm.</p>
+<p>Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
 of samples.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
@@ -428,7 +429,7 @@ of samples.</p>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Upsampler.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train</em>, <em class="sig-param">test</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate fair features with the given data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -525,7 +526,7 @@ of samples.</p>
 
 <dl class="class">
 <dt id="ethicml.algorithms.preprocess.Zemel">
-<em class="property">class </em><code class="sig-name descname">Zemel</code><span class="sig-paren">(</span><em class="sig-param">threshold=0.5</em>, <em class="sig-param">clusters=2</em>, <em class="sig-param">Ax=0.01</em>, <em class="sig-param">Ay=0.1</em>, <em class="sig-param">Az=0.5</em>, <em class="sig-param">max_iter=5000</em>, <em class="sig-param">maxfun=5000</em>, <em class="sig-param">epsilon=1e-05</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Zemel</code><span class="sig-paren">(</span><em class="sig-param">threshold: float = 0.5</em>, <em class="sig-param">clusters: int = 2</em>, <em class="sig-param">Ax: float = 0.01</em>, <em class="sig-param">Ay: float = 0.1</em>, <em class="sig-param">Az: float = 0.5</em>, <em class="sig-param">max_iter: int = 5000</em>, <em class="sig-param">maxfun: int = 5000</em>, <em class="sig-param">epsilon: float = 1e-05</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
 <p>AIF360 implementation of Zemel’s LFR</p>
 <p><strong>Attributes</strong></p>
@@ -566,7 +567,7 @@ of samples.</p>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Zemel.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train</em>, <em class="sig-param">test</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate fair features with the given data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

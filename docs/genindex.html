@@ -26,6 +26,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -213,6 +214,8 @@
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.apply_per_sensitive">apply_per_sensitive() (AbsCV property)</a>
 
       <ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AS.apply_per_sensitive">(AS property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.apply_per_sensitive">(Accuracy property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.apply_per_sensitive">(BCR property)</a>
@@ -248,6 +251,8 @@
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.arrange_in_parallel">arrange_in_parallel() (in module ethicml.evaluators)</a>
 </li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.AS">AS (class in ethicml.metrics)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -259,6 +264,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Beutel">Beutel (class in ethicml.algorithms.preprocess)</a>
+</li>
+      <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.bin_cont_feats">bin_cont_feats() (in module ethicml.preprocessing)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -508,14 +515,18 @@
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CVResults.get_best_result">get_best_result() (CVResults method)</a>
 </li>
+      <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.get_biased_and_debiased_subsets">get_biased_and_debiased_subsets() (in module ethicml.preprocessing)</a>
+</li>
+      <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.get_biased_subset">get_biased_subset() (in module ethicml.preprocessing)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.Activation.get_name">get_name() (Activation method)</a>
 
       <ul>
         <li><a href="ethicml.utility.html#ethicml.utility.Heaviside.get_name">(Heaviside method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.get_subset">get_subset() (DataTuple method)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT">GPyT (class in ethicml.algorithms.inprocess)</a>
@@ -604,14 +615,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority">Majority (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.make_copy_with">make_copy_with() (DataTuple method)</a>
-</li>
       <li><a href="ethicml.utility.html#ethicml.utility.Results.map_over_index">map_over_index() (Results method)</a>
+</li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
-</li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.metric_per_sensitive_attribute">metric_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.MetricNotApplicable">MetricNotApplicable</a>
@@ -627,6 +636,8 @@
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.name">name() (AbsCV property)</a>
 
       <ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AS.name">(AS property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.name">(Accuracy property)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Adult.name">(Adult property)</a>
@@ -840,6 +851,12 @@
       </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.remove_y">remove_y() (DataTuple method)</a>
 </li>
+      <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.replace">replace() (DataTuple method)</a>
+
+      <ul>
+        <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.replace">(TestTuple method)</a>
+</li>
+      </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.Results">Results (class in ethicml.utility)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal.run">run() (Agarwal method)</a>
@@ -1051,6 +1068,8 @@
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.score">score() (AbsCV method)</a>
 
       <ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AS.score">(AS method)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.score">(Accuracy method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.score">(BCR method)</a>

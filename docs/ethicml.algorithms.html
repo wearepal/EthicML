@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -168,8 +169,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class for Algorithms</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync" title="ethicml.algorithms.AlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmAsync</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Base class of async methods.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync" title="ethicml.algorithms.AlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmAsync</span></code></a></p></td>
+<td><p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -212,9 +213,9 @@
 
 <dl class="class">
 <dt id="ethicml.algorithms.AlgorithmAsync">
-<em class="property">class </em><code class="sig-name descname">AlgorithmAsync</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
-<p>Base class of async methods. This class is meant to be used in conjuction with <cite>Algorithm</cite></p>
+<em class="property">class </em><code class="sig-name descname">AlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>

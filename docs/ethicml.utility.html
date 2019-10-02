@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -269,11 +270,11 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.get_subset" title="ethicml.utility.DataTuple.get_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subset</span></code></a>(num)</p></td>
 <td><p>Get the first elements of the dataset</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.make_copy_with" title="ethicml.utility.DataTuple.make_copy_with"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_copy_with</span></code></a>(*, x, s, y, name)</p></td>
-<td><p>Create a copy of the DataTuple but change the given values</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.remove_y" title="ethicml.utility.DataTuple.remove_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_y</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.remove_y" title="ethicml.utility.DataTuple.remove_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_y</span></code></a>()</p></td>
 <td><p>Convert the DataTuple instance to a TestTuple instance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.replace" title="ethicml.utility.DataTuple.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*, x, s, y, name)</p></td>
+<td><p>Create a copy of the DataTuple but change the given values</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.write_as_feather" title="ethicml.utility.DataTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
 <td><p>Write the DataTuple to Feather files and return the file paths as a PathTuple</p></td>
@@ -301,15 +302,15 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.utility.DataTuple.make_copy_with">
-<code class="sig-name descname">make_copy_with</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">x: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">s: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">y: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.make_copy_with" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a copy of the DataTuple but change the given values</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.utility.DataTuple.remove_y">
 <code class="sig-name descname">remove_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.DataTuple.remove_y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the DataTuple instance to a TestTuple instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.DataTuple.replace">
+<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">x: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">s: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">y: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the DataTuple but change the given values</p>
 </dd></dl>
 
 <dl class="method">
@@ -495,11 +496,20 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.write_as_feather" title="ethicml.utility.TestTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.replace" title="ethicml.utility.TestTuple.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*, x, s, name)</p></td>
+<td><p>Create a copy of the TestTuple but change the given values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.write_as_feather" title="ethicml.utility.TestTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
 <td><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple</p></td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="ethicml.utility.TestTuple.replace">
+<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">x: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">s: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.TestTuple.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the TestTuple but change the given values</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="ethicml.utility.TestTuple.write_as_feather">
 <code class="sig-name descname">write_as_feather</code><span class="sig-paren">(</span><em class="sig-param">data_dir: pathlib.Path</em>, <em class="sig-param">identifier: str</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestPathTuple<a class="headerlink" href="#ethicml.utility.TestTuple.write_as_feather" title="Permalink to this definition">¶</a></dt>
