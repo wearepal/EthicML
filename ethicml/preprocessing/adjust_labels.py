@@ -28,14 +28,7 @@ class LabelBinarizer:
         self.max_val: int
 
     def adjust(self, dataset: DataTuple) -> DataTuple:
-        """
-        Take a datatuple and make the labels [0,1]
-        Args:
-            dataset:
-
-        Returns:
-
-        """
+        """Take a datatuple and make the labels [0,1]"""
         y_col = dataset.y.columns[0]
         assert dataset.y[y_col].nunique() == 2
 

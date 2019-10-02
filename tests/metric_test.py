@@ -17,6 +17,7 @@ from ethicml.evaluators import (
 )
 from ethicml.metrics import (
     Accuracy,
+    AS,
     BCR,
     CV,
     Metric,
@@ -67,6 +68,17 @@ def test_accuracy_per_sens_attr():
     predictions: pd.DataFrame = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     assert acc_per_sens == {'s_0': 0.905, 's_1': 0.875}
+
+
+def test_anti_spurious() -> None:
+    """test anti-spurious"""
+    train, test = get_train_test()
+    model: InAlgorithm = SVM()
+    predictions: pd.DataFrame = model.run(train, test)
+    metric: Metric = AS()
+    assert metric.name == "anti_spurious"
+    score = metric.score(predictions, test)
+    assert score == pytest.approx(0.892, abs=0.001)
 
 
 def test_probpos_per_sens_attr():

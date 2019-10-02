@@ -22,8 +22,8 @@ class Algorithm(ABC):
         """Name of the algorithm"""
 
 
-class AlgorithmAsync(Algorithm, metaclass=ABCMeta):
-    """Base class of async methods. This class is meant to be used in conjuction with `Algorithm`"""
+class AlgorithmAsync(metaclass=ABCMeta):
+    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`"""
 
     @property
     @abstractmethod
