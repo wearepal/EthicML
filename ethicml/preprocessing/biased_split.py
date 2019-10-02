@@ -39,6 +39,7 @@ def get_biased_subset(
     The two subsets don't generally sum up to the whole set.
 
     Example behavior:
+
     * mixing_factor=0.0: in biased, s=y everywhere; unbiased is just a subset of `data`
     * mixing_factor=0.5: biased and unbiased are both just subsets of `data`
     * mixing_factor=1.0: in biased, s!=y everywhere; unbiased is just a subset of `data`
@@ -90,11 +91,13 @@ def get_biased_and_debiased_subsets(
 ) -> Tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a debiased subset
 
-    In contrast to `get_biased_subset()`, this function makes the unbiased subset *really* unbiased.
+    In contrast to :func:`get_biased_subset()`, this function makes the unbiased subset *really*
+    unbiased.
 
     The two subsets don't generally sum up to the whole set.
 
     Example behavior:
+
     * mixing_factor=0.0: in biased, s=y everywhere; in debiased, 50% s=y and 50% s!=y
     * mixing_factor=0.5: biased is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
     * mixing_factor=1.0: in biased, s!=y everywhere; in debiased, 50% s=y and 50% s!=y

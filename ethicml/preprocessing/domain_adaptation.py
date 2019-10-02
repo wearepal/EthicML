@@ -32,13 +32,15 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
 def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTuple, DataTuple]:
     """
     Splits a datatuple based on a condition
+
     Args:
         datatup: DataTuple
         tr_cond: condition for the training set
         te_cond: condition for the test set
 
-    Returns: Tuple of DataTuple split into train and test. The test is all those that meet
-    the test condition plus the same percentage again of the train set.
+    Returns:
+        Tuple of DataTuple split into train and test. The test is all those that meet
+        the test condition plus the same percentage again of the train set.
     """
     dataset = datatup.x
 
