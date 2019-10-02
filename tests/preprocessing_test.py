@@ -2,13 +2,19 @@
 Test preprocessing capabilities
 """
 import math
-
 from typing import Tuple
 
-from ethicml.preprocessing.feature_binning import bin_cont_feats
+from pytest import approx
+import pandas as pd
+
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
-from ethicml.preprocessing import train_test_split
+from ethicml.preprocessing import (
+    train_test_split,
+    bin_cont_feats,
+    get_biased_subset,
+    get_biased_and_debiased_subsets,
+)
 
 from .run_algorithm_test import count_true
 
@@ -179,3 +185,102 @@ def test_binning():
 
     assert len([col for col in binned.x.columns if col not in data.x.columns]) == 25
     assert 'age' not in binned.x.columns
+
+
+def test_biased_split():
+    """test biased split"""
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=['feat1']),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens"]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label"]),
+    )
+
+    # ================================== mixing factor = 0 ========================================
+    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
+    # expected behavior: in biased1, s=y everywhere; `subset` is just a subset of `data`
+
+    assert biased1.s.shape == (310, 1)
+    assert biased1.y.shape == (310, 1)
+    assert (biased1.s.to_numpy() == biased1.y.to_numpy()).all()
+
+    # size is exactly 0.5 of the total
+    assert subset.s.shape == (500, 1)
+    assert subset.y.shape == (500, 1)
+
+    # the fraction of `data`points where y=s should be the same in the data and the subset
+    subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
+    data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
+    assert subset_mean == approx(data_mean, abs=0.01)
+
+    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.0, unbiased_pcnt=0.5)
+    # expected behavior: in biased2, s=y everywhere; in debiased, 50% s=y and 50% s!=y
+
+    assert biased2.s.shape == (312, 1)
+    assert biased2.y.shape == (312, 1)
+    assert (biased2.s.to_numpy() == biased2.y.to_numpy()).all()
+
+    assert debiased.s.shape == (626, 1)
+    assert debiased.y.shape == (626, 1)
+    # for the debiased subset, s=y half of the time
+    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    assert count == 626 // 2
+
+    # ================================= mixing factor = 0.5 =======================================
+    biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    # expected behavior: biased1 and `subset` are both just subsets of `data`
+
+    assert biased1.s.shape == (500, 1)
+    assert biased1.y.shape == (500, 1)
+    data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
+    biased1_mean = (biased1.s.to_numpy() == biased1.y.to_numpy()).mean()
+    assert biased1_mean == approx(data_mean, abs=0.01)
+
+    assert subset.s.shape == (500, 1)
+    assert subset.y.shape == (500, 1)
+
+    # the fraction of `data`points where y=s should be the same in the data and the subset
+    subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
+    assert subset_mean == approx(data_mean, abs=0.01)
+
+    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    # expected behavior: biased2 is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
+
+    assert biased2.s.shape == (249, 1)
+    assert biased2.y.shape == (249, 1)
+    data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
+    biased2_mean = (biased2.s.to_numpy() == biased2.y.to_numpy()).mean()
+    assert biased2_mean == approx(data_mean, abs=0.01)
+
+    assert debiased.s.shape == (564, 1)
+    assert debiased.y.shape == (564, 1)
+    # for the debiased subset, s=y half of the time
+    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    assert count == 564 // 2
+
+    # ================================== mixing factor = 1 ========================================
+    biased1, subset = get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
+    # expected behavior: in biased1, s!=y everywhere; `subset` is just a subset of `data`
+
+    assert biased1.s.shape == (190, 1)
+    assert biased1.y.shape == (190, 1)
+    assert (biased1.s.to_numpy() != biased1.y.to_numpy()).all()
+
+    assert subset.s.shape == (500, 1)
+    assert subset.y.shape == (500, 1)
+
+    # the fraction of `data`points where y=s should be the same in the data and the subset
+    subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
+    assert subset_mean == approx(data_mean, abs=0.01)
+
+    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=1.0, unbiased_pcnt=0.5)
+    # expected behavior: in biased2, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
+
+    assert biased2.s.shape == (187, 1)
+    assert biased2.y.shape == (187, 1)
+    assert (biased2.s.to_numpy() != biased2.y.to_numpy()).all()
+
+    assert debiased.s.shape == (376, 1)
+    assert debiased.y.shape == (376, 1)
+    # for the debiased subset, s=y half of the time
+    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    assert count == 376 // 2

@@ -12,7 +12,7 @@ def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
     """Return the dataframe that meets some condition"""
     original_column_names = dataset.columns
     # make column names query-friendly
-    dataset = dataset.rename(axis="columns", mapper=_make_valid_variable_name)
+    dataset = dataset.rename(axis="columns", mapper=make_valid_variable_name)
     subset = dataset.query(cond)
     subset.columns = original_column_names
     return subset
@@ -72,7 +72,7 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
     return train_datatup, test_datatup
 
 
-def _make_valid_variable_name(name: str) -> str:
+def make_valid_variable_name(name: str) -> str:
     """Convert a string into a valid Python variable name"""
     # Ensure that it's a string
     name = str(name)
