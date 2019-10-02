@@ -289,7 +289,7 @@ class GPyTEqOdds(GPyT):
                 with (tmp_path / model_name / PRED_FNAME).open("rb") as file_obj:
                     output = np.load(file_obj)
                     prediction_on_train = output["pred_mean"]
-                preds = (prediction_on_train > 0.5).astype(int)
+                preds = (prediction_on_train > 0.5).astype(np.int32)
                 odds = compute_odds(train_dev_data["ytest"], preds, train_dev_data["stest"])
 
                 # Enforce equality of opportunity

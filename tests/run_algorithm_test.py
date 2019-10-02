@@ -31,7 +31,7 @@ def get_train_test() -> Tuple[DataTuple, DataTuple]:
     return train_test
 
 
-def count_true(mask: "np.ndarray[bool]") -> int:
+def count_true(mask: "np.ndarray[np.bool_]") -> int:
     """Count the number of elements that are True"""
     return mask.nonzero()[0].shape[0]
 
