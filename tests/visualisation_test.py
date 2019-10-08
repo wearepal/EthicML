@@ -14,7 +14,7 @@ from ethicml.metrics import Accuracy, CV, TPR, ProbPos, NMI
 from ethicml.utility import DataTuple, Results
 from ethicml.data import load_data, Adult, Toy
 from ethicml.preprocessing import train_test_split
-from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot, plot_mean_std_box
+from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot, plot_results
 from tests.run_algorithm_test import get_train_test
 
 
@@ -59,16 +59,16 @@ def test_plot_evals():
     figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]
 
     # plot with metrics
-    figs_and_plots = plot_mean_std_box(results, Accuracy(), ProbPos())
+    figs_and_plots = plot_results(results, Accuracy(), ProbPos())
     # num(datasets) * num(preprocess) * num(accuracy combinations) * num(prop_pos combinations)
     assert len(figs_and_plots) == 2 * 2 * 1 * 2
 
     # plot with column names
-    figs_and_plots = plot_mean_std_box(results, "Accuracy", "prob_pos_s_0")
+    figs_and_plots = plot_results(results, "Accuracy", "prob_pos_s_0")
     assert len(figs_and_plots) == 1 * 2 * 1 * 1
 
     with pytest.raises(ValueError, match='No matching columns found for Metric "NMI preds and y".'):
-        plot_mean_std_box(results, Accuracy(), NMI())
+        plot_results(results, Accuracy(), NMI())
 
     with pytest.raises(ValueError, match='No column named "unknown metric".'):
-        plot_mean_std_box(results, "unknown metric", Accuracy())
+        plot_results(results, "unknown metric", Accuracy())

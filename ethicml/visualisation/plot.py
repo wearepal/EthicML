@@ -13,7 +13,7 @@ import matplotlib as mpl
 
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple, Results
-from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType
+from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType, PlotType, scatter
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
@@ -157,17 +157,17 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     fig.savefig(file_path)
 
 
-def single_plot_mean_std_box(
+def single_plot(
     plot: plt.Axes,
     results: Results,
     xaxis: Tuple[str, str],
     yaxis: Tuple[str, str],
     dataset: str,
     transform: str,
+    ptype: PlotType = "box",
     legend_pos: Optional[LegendType] = "outside",
     legend_yanchor: float = 1.0,
     markersize: int = 6,
-    use_cross: bool = False,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
     """This is essentially a wrapper around the `errorbox` function
 
@@ -181,10 +181,10 @@ def single_plot_mean_std_box(
         yaxis: name of column that's plotted on the y-axis
         dataset: string that identifies the dataset
         transform: string that identifies the preprocessing method
+        ptype: plot type
         legend_pos: position of the legend (or None for no legend)
         legend_yanchor: position in the vertical direction where the legend should begin
         markersize: size of marker
-        use_cross: if True, use crosses with error bars instead of boxes
 
     Returns
         the legend object if something was plotted; False otherwise
@@ -208,16 +208,21 @@ def single_plot_mean_std_box(
     plot_def = PlotDef(
         title=title, entries=entries, legend_pos=legend_pos, legend_yanchor=legend_yanchor
     )
-    return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross)
+    if ptype == "box":
+        return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross=False)
+    if ptype == "cross":
+        return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross=True)
+    if ptype == "scatter":
+        return scatter(plot, plot_def, xaxis, yaxis, 0, markersize)
 
 
-def plot_mean_std_box(
+def plot_results(
     results: Results,
     metric_y: Union[str, Metric],
     metric_x: Union[str, Metric],
+    ptype: PlotType = "box",
     save: bool = True,
     dpi: int = 300,
-    use_cross: bool = False,
 ) -> List[Tuple[plt.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation
 
@@ -225,6 +230,7 @@ def plot_mean_std_box(
         results: a DataFrame that already contains the values of the metrics
         metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
         metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
+        ptype: plot type
         save: if True, save the plot as a PDF
         dpi: DPI of the plots
         use_cross: if True, use crosses with error bars instead of boxes
@@ -277,8 +283,8 @@ def plot_mean_std_box(
 
                 xtuple = (x_axis, x_axis.replace("_", " "))
                 ytuple = (y_axis, y_axis.replace("_", " "))
-                legend = single_plot_mean_std_box(
-                    plot, results, xtuple, ytuple, dataset_, transform_, use_cross=use_cross
+                legend = single_plot(
+                    plot, results, xtuple, ytuple, dataset_, transform_, ptype=ptype
                 )
 
                 if legend is False:  # use "is" here because otherwise any falsy value would match
