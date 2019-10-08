@@ -213,7 +213,10 @@ def single_plot(
     if ptype == "cross":
         return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross=True)
     if ptype == "scatter":
-        return scatter(plot, plot_def, xaxis, yaxis, 0, markersize)
+        return scatter(plot, plot_def, xaxis, yaxis, 0, markersize, connect_dots=False)
+    if ptype == "line":
+        return scatter(plot, plot_def, xaxis, yaxis, 0, markersize, connect_dots=True)
+    raise ValueError(f"Unknown plot type '{ptype}'")
 
 
 def plot_results(

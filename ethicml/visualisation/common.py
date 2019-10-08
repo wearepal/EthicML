@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 import matplotlib as mpl
 
 LegendType = Literal["inside", "outside"]  # pylint: disable=invalid-name
-PlotType = Literal["box", "cross", "scatter"]  # pylint: disable=invalid-name
+PlotType = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name
 
 
 class DataEntry(NamedTuple):
@@ -180,6 +180,7 @@ def scatter(
     yaxis: Tuple[str, str],
     startindex: int = 0,
     markersize: int = 6,
+    connect_dots: bool = False,
 ) -> Optional[mpl.legend.Legend]:
     """Generate a scatter plot
     Args:
@@ -215,7 +216,7 @@ def scatter(
         plot.plot(
             entry.values[xaxis_measure].to_numpy(),
             entry.values[yaxis_measure].to_numpy(),
-            shapes[shp_index],
+            shapes[shp_index] + ("-" if connect_dots else ""),
             label=entry.label,
             color=colors10[shp_index],
             markersize=markersize,
