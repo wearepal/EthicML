@@ -87,7 +87,11 @@ def get_biased_subset(
 
 
 def get_biased_and_debiased_subsets(
-    data: DataTuple, mixing_factor: float, unbiased_pcnt: float, seed: int = 42
+    data: DataTuple,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    seed: int = 42,
+    fixed_unbiased: bool = True,
 ) -> Tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a debiased subset
 
@@ -108,6 +112,7 @@ def get_biased_and_debiased_subsets(
                        factor is 0, the biased subset is maximally biased.
         unbiased_pcnt: how much of the data should be reserved for the unbiased subset
         seed: random seed for the splitting
+        fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
 
     Returns:
         biased and unbiased dataset
@@ -118,14 +123,22 @@ def get_biased_and_debiased_subsets(
 
     assert 0 <= unbiased_pcnt <= 1
     # how much of sy_equal should be reserved for the biased subset:
-    biased_pcnt = 1 - unbiased_pcnt
 
-    sy_equal_for_biased_ss, sy_equal_for_debiased_ss = _random_split(
-        sy_equal, first_pcnt=biased_pcnt * (1 - mixing_factor), seed=seed
-    )
-    sy_opp_for_biased_ss, sy_opp_for_debiased_ss = _random_split(
-        sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
-    )
+    if fixed_unbiased:
+        sy_equal_for_debiased_ss, sy_equal_for_biased_ss = _random_split(
+            sy_equal, first_pcnt=unbiased_pcnt, seed=seed
+        )
+        sy_opp_for_debiased_ss, sy_opp_for_biased_ss = _random_split(
+            sy_opposite, first_pcnt=unbiased_pcnt, seed=seed
+        )
+    else:
+        biased_pcnt = 1 - unbiased_pcnt
+        sy_equal_for_biased_ss, sy_equal_for_debiased_ss = _random_split(
+            sy_equal, first_pcnt=biased_pcnt * (1 - mixing_factor), seed=seed
+        )
+        sy_opp_for_biased_ss, sy_opp_for_debiased_ss = _random_split(
+            sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
+        )
 
     biased_subset = concat_dt(
         [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
