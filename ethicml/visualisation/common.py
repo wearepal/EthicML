@@ -2,7 +2,7 @@
 common plotting functions / datastructures
 """
 
-from typing import Tuple, NamedTuple, List, Optional
+from typing import Tuple, NamedTuple, List, Optional, Dict, Any
 from typing_extensions import Literal
 
 import pandas as pd
@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 import matplotlib as mpl
 
 LegendType = Literal["inside", "outside"]  # pylint: disable=invalid-name
+PlotType = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name
 
 
 class DataEntry(NamedTuple):
@@ -169,4 +170,56 @@ def errorbox(
 
     plot.set_xlim(x_min, x_max)
     plot.set_ylim(y_min, y_max)
+    return common_plotting_settings(plot, plot_def, xaxis[1], yaxis[1])
+
+
+def scatter(
+    plot: plt.Axes,
+    plot_def: PlotDef,
+    xaxis: Tuple[str, str],
+    yaxis: Tuple[str, str],
+    startindex: int = 0,
+    markersize: int = 6,
+    connect_dots: bool = False,
+) -> Optional[mpl.legend.Legend]:
+    """Generate a scatter plot
+    Args:
+        plot: a pyplot plot object
+        plot_def: a `PlotDef` that defines properties of the plot
+        xaxis: either a string or a tuple of two strings
+        yaxis: either a string or a tuple of two strings
+    """
+    shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
+    colors10 = [
+        "#1f77b4",
+        "#ff7f0e",
+        "#2ca02c",
+        "#d62728",
+        "#9467bd",
+        "#8c564b",
+        "#e377c2",
+        "#7f7f7f",
+        "#bcbd22",
+        "#17becf",
+    ]
+    xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
+    filled_counter = startindex
+    for i, entry in enumerate(plot_def.entries):
+        additional_params: Dict[str, Any]
+        if entry.do_fill:
+            additional_params = dict()
+            shp_index = filled_counter
+            filled_counter += 1
+        else:
+            additional_params = dict(markerfacecolor='none')
+            shp_index = i + startindex - filled_counter
+        plot.plot(
+            entry.values[xaxis_measure].to_numpy(),
+            entry.values[yaxis_measure].to_numpy(),
+            shapes[shp_index] + ("-" if connect_dots else ""),
+            label=entry.label,
+            color=colors10[shp_index],
+            markersize=markersize,
+            **additional_params,
+        )
     return common_plotting_settings(plot, plot_def, xaxis[1], yaxis[1])
