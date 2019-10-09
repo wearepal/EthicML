@@ -5,7 +5,7 @@ import pandas as pd
 
 from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variable_name
 from ethicml.utility.data_structures import concat_dt, DataTuple
-from .train_test_split import train_test_split, DataSplitter
+from .train_test_split import ProportionalTrainTestSplit, DataSplitter
 
 
 class BiasedSubset(DataSplitter):
@@ -72,25 +72,28 @@ def get_biased_subset(
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
 
-    # task and meta are just normal subsets
     for_biased_subset, normal_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
 
     sy_equal, sy_opposite = _get_sy_equal_and_opp(for_biased_subset, s_name, y_name)
 
-    mix_fact = mixing_factor  # how much of sy_opp should be mixed into task train set
+    mix_fact = mixing_factor  # how much of sy_opp should be mixed into the biased subset
 
     if data_efficient:
-        sy_equal_fraction = min(1.0, 2 * (1 - mix_fact))
-        sy_opp_fraction = min(1.0, 2 * mix_fact)
+        if mix_fact < 0.5:
+            sy_equal_fraction = 1.0
+            sy_opp_fraction = 2 * mix_fact
+        else:
+            sy_equal_fraction = 2 * (1 - mix_fact)
+            sy_opp_fraction = 1.0
     else:
         sy_equal_fraction = 1 - mix_fact
         sy_opp_fraction = mix_fact
 
-    sy_equal_task_train, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
-    sy_opp_task_train, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
+    sy_equal_for_biased_ss, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
+    sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
     biased_subset = concat_dt(
-        [sy_equal_task_train, sy_opp_task_train], axis='index', ignore_index=True
+        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
     )
 
     if mix_fact == 0:
@@ -174,11 +177,24 @@ def get_biased_and_debiased_subsets(
     # how much of sy_equal should be reserved for the biased subset:
 
     if fixed_unbiased:
-        sy_equal_for_debiased_ss, sy_equal_for_biased_ss = _random_split(
+        sy_equal_for_debiased_ss, sy_equal_remaining = _random_split(
             sy_equal, first_pcnt=unbiased_pcnt, seed=seed
         )
-        sy_opp_for_debiased_ss, sy_opp_for_biased_ss = _random_split(
+        sy_opp_for_debiased_ss, sy_opp_remaining = _random_split(
             sy_opposite, first_pcnt=unbiased_pcnt, seed=seed
+        )
+        if mixing_factor < 0.5:
+            sy_equal_fraction = 1.0
+            sy_opp_fraction = 2 * mixing_factor
+        else:
+            sy_equal_fraction = 2 * (1 - mixing_factor)
+            sy_opp_fraction = 1.0
+
+        sy_equal_for_biased_ss, _ = _random_split(
+            sy_equal_remaining, first_pcnt=sy_equal_fraction, seed=seed
+        )
+        sy_opp_for_biased_ss, _ = _random_split(
+            sy_opp_remaining, first_pcnt=sy_opp_fraction, seed=seed
         )
     else:
         biased_pcnt = 1 - unbiased_pcnt
@@ -218,7 +234,8 @@ def get_biased_and_debiased_subsets(
 
 
 def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
-    return train_test_split(data, train_percentage=first_pcnt, random_seed=seed)
+    splitter = ProportionalTrainTestSplit(train_percentage=first_pcnt, start_seed=seed)
+    return splitter(data, 0)[0:2]
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
