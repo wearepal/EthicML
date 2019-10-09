@@ -11,11 +11,6 @@ from pathlib import Path
 class Algorithm(ABC):
     """Base class for Algorithms"""
 
-    def __init__(
-        self, *args: Any, **kwargs: Any
-    ) -> None:  # this seems really pointless but it makes mypy happy
-        pass
-
     @property
     @abstractmethod
     def name(self) -> str:

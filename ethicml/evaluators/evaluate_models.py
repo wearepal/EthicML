@@ -144,7 +144,7 @@ def evaluate_models(
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
-    outdir = Path(".") / "results"  # OS-independent way of saying '../results'
+    outdir = Path(".") / "results"
     outdir.mkdir(exist_ok=True)
 
     if delete_prev:

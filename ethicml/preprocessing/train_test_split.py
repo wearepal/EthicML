@@ -1,6 +1,4 @@
-"""
-Split into train and test data
-"""
+"""Split into train and test data"""
 import itertools
 from typing import Tuple, List, Iterator
 
