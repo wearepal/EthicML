@@ -259,7 +259,7 @@ class TrainTestPair(NamedTuple):
 class Results:
     """Container for results from `evaluate_models`"""
 
-    columns: Final = ["dataset", "transform", "model", "repeat"]
+    columns: Final = ["dataset", "transform", "model", "split_id"]
 
     def __init__(self, data_frame: Optional[pd.DataFrame] = None):
         self._data: pd.DataFrame

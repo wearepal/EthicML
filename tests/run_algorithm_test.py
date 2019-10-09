@@ -71,8 +71,8 @@ def test_run_parallel():
 def test_empty_evaluate():
     """test empty evaluate"""
     empty_result = evaluate_models([Toy()], repeats=3)
-    expected_result = pd.DataFrame([], columns=['dataset', 'transform', 'model', 'repeat'])
-    expected_result = expected_result.set_index(["dataset", "transform", "model", "repeat"])
+    expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
+    expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(empty_result.data, expected_result)
 
 
@@ -129,7 +129,7 @@ def test_run_alg_suite():
     reloaded = load_results("Adult Race", "Upsample uniform", "pytest")
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / 'pytest_Adult Race_Upsample uniform.csv')
-    read = read.set_index(["dataset", "transform", "model", "repeat"])
+    read = read.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded.data, read)
 
 
