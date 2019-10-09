@@ -7,6 +7,8 @@ from tempfile import TemporaryDirectory
 import pandas as pd
 import numpy as np
 
+import pytest
+
 from ethicml.utility import DataTuple, TestTuple
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
@@ -32,7 +34,8 @@ def test_simple_saving() -> None:
     class CheckEquality(InAlgorithmAsync):
         """Dummy algorithm class for testing whether writing and reading feather files works"""
 
-        def name(self):
+        @property
+        def name(self) -> str:
             return "Check equality"
 
         def _script_command(self, train_paths, _, pred_path):
@@ -105,3 +108,23 @@ def test_apply_to_joined_df() -> None:
     pd.testing.assert_frame_equal(datatup.x, result.x)
     pd.testing.assert_frame_equal(datatup.s, result.s)
     pd.testing.assert_frame_equal(datatup.y, result.y)
+
+
+def test_data_tuple_len() -> None:
+    """test DataTuple len property"""
+    datatup_unequal_len = DataTuple(
+        x=pd.DataFrame([3.0, 2.0], columns=['a1']),
+        s=pd.DataFrame([4.0], columns=['b2']),
+        y=pd.DataFrame([6.0], columns=['c3']),
+        name=None,
+    )
+    with pytest.raises(AssertionError):
+        len(datatup_unequal_len)
+
+    datatup_equal_len = DataTuple(
+        x=pd.DataFrame([3.0, 2.0, 1.0], columns=['a1']),
+        s=pd.DataFrame([4.0, 5.0, 9.0], columns=['b2']),
+        y=pd.DataFrame([6.0, 4.2, 6.7], columns=['c3']),
+        name=None,
+    )
+    assert len(datatup_equal_len) == 3

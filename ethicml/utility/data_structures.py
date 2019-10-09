@@ -63,6 +63,11 @@ class DataTuple(TestTuple, DataTupleValues):
     def __iter__(self) -> Iterator[pd.DataFrame]:
         return iter([self.x, self.s, self.y])
 
+    def __len__(self) -> int:
+        len_x = len(self.x)
+        assert len_x == len(self.s) and len_x == len(self.y)
+        return len_x
+
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance"""
         return TestTuple(x=self.x, s=self.s, name=self.name)
