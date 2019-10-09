@@ -97,6 +97,8 @@ def get_biased_subset(
         # s and y should be very correlated in the biased subset
         assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
 
+    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
+    normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")
     return biased_subset, normal_subset
 
 
@@ -210,6 +212,8 @@ def get_biased_and_debiased_subsets(
         # s and y should be very correlated in the biased subset
         assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
 
+    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
+    debiased_subset = debiased_subset.replace(name=f"{data.name} - Debiased (tm={mixing_factor})")
     return biased_subset, debiased_subset
 
 

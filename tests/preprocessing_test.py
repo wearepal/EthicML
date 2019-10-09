@@ -214,7 +214,9 @@ def test_biased_split():
     data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.0, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.0, unbiased_pcnt=0.5, fixed_unbiased=False
+    )
     # expected behavior: in biased2, s=y everywhere; in debiased, 50% s=y and 50% s!=y
 
     assert biased2.s.shape == (312, 1)
@@ -244,7 +246,9 @@ def test_biased_split():
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.5, unbiased_pcnt=0.5, fixed_unbiased=False
+    )
     # expected behavior: biased2 is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
 
     assert biased2.s.shape == (249, 1)
@@ -274,7 +278,9 @@ def test_biased_split():
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=1.0, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=1.0, unbiased_pcnt=0.5, fixed_unbiased=False
+    )
     # expected behavior: in biased2, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
 
     assert biased2.s.shape == (187, 1)
