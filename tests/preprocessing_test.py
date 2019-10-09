@@ -10,6 +10,7 @@ import pandas as pd
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import (
+    ProportionalTrainTestSplit,
     train_test_split,
     bin_cont_feats,
     get_biased_subset,
@@ -73,8 +74,9 @@ def test_train_test_split():
 def test_prop_train_test_split():
     """test prop train test split"""
     data: DataTuple = load_data(Toy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data, proportional=True)
-    train, test = train_test
+    train: DataTuple
+    test: DataTuple
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.8)(data, split_id=0)
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
@@ -93,36 +95,36 @@ def test_prop_train_test_split():
     assert count_true(train.y.to_numpy() == 0) == round(0.8 * count_true(data.y.to_numpy() == 0))
 
     len_0_9 = math.floor((2000 / 100) * 90)
-    train, test = train_test_split(data, train_percentage=0.9, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == 2000 - len_0_9
     assert count_true(train.s.to_numpy() == 0) == round(0.9 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.9 * count_true(data.y.to_numpy() == 0))
 
     len_0_7 = math.floor((2000 / 100) * 70)
-    train, test = train_test_split(data, train_percentage=0.7, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == 2000 - len_0_7
     assert count_true(train.s.to_numpy() == 0) == round(0.7 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.7 * count_true(data.y.to_numpy() == 0))
 
     len_0_5 = math.floor((2000 / 100) * 50)
-    train, test = train_test_split(data, train_percentage=0.5, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.5)(data, split_id=0)
     assert train.s.shape[0] == len_0_5
     assert test.s.shape[0] == 2000 - len_0_5
 
     len_0_3 = math.floor((2000 / 100) * 30)
-    train, test = train_test_split(data, train_percentage=0.3, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.3)(data, split_id=0)
     assert train.s.shape[0] == len_0_3
     assert test.s.shape[0] == 2000 - len_0_3
 
     len_0_1 = math.floor((2000 / 100) * 10)
-    train, test = train_test_split(data, train_percentage=0.1, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.1)(data, split_id=0)
     assert train.s.shape[0] == len_0_1
     assert test.s.shape[0] == 2000 - len_0_1
 
     len_0_0 = math.floor((2000 / 100) * 0)
-    train, test = train_test_split(data, train_percentage=0.0, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.0)(data, split_id=0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
     assert test.s.shape[0] == 2000 - len_0_0
