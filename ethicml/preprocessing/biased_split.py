@@ -210,7 +210,7 @@ def get_biased_and_debiased_subsets(
     )
 
     # the debiased set is constructed from two sets of the same size
-    min_size = min(sy_equal_for_debiased_ss.x.shape[0], sy_opp_for_debiased_ss.x.shape[0])
+    min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
 
     def _get_equal_sized_subset(df: pd.DataFrame) -> pd.DataFrame:
         return df.sample(n=min_size, random_state=seed)
@@ -222,7 +222,7 @@ def get_biased_and_debiased_subsets(
     )
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.1
+    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.11
 
     if mixing_factor == 0:
         # s and y should be very correlated in the biased subset
