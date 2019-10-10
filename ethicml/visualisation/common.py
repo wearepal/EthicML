@@ -183,30 +183,21 @@ def scatter(
     connect_dots: bool = False,
 ) -> Optional[mpl.legend.Legend]:
     """Generate a scatter plot
+
     Args:
         plot: a pyplot plot object
         plot_def: a `PlotDef` that defines properties of the plot
-        xaxis: either a string or a tuple of two strings
-        yaxis: either a string or a tuple of two strings
+        xaxis: a tuple of two strings
+        yaxis: a tuple of two strings
     """
     shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
-    colors10 = [
-        "#1f77b4",
-        "#ff7f0e",
-        "#2ca02c",
-        "#d62728",
-        "#9467bd",
-        "#8c564b",
-        "#e377c2",
-        "#7f7f7f",
-        "#bcbd22",
-        "#17becf",
-    ]
+    colors10 = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
+    colors10 += ["#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
     filled_counter = startindex
     for i, entry in enumerate(plot_def.entries):
         additional_params: Dict[str, Any]
-        if entry.do_fill:
+        if entry.do_fill or connect_dots:
             additional_params = dict()
             shp_index = filled_counter
             filled_counter += 1
@@ -218,7 +209,7 @@ def scatter(
             entry.values[yaxis_measure].to_numpy(),
             shapes[shp_index] + ("-" if connect_dots else ""),
             label=entry.label,
-            color=colors10[shp_index],
+            color=None if connect_dots else colors10[shp_index],
             markersize=markersize,
             **additional_params,
         )

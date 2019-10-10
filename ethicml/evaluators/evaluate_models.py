@@ -22,7 +22,7 @@ from .per_sensitive_attribute import (
     ratio_per_sensitive_attribute,
 )
 from ..metrics.metric import Metric
-from ..preprocessing.train_test_split import train_test_split
+from ..preprocessing.train_test_split import DataSplitter, TrainTestSplit
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -113,9 +113,8 @@ def evaluate_models(
     repeats: int = 1,
     test_mode: bool = False,
     delete_prev: bool = False,
-    proportional_splits: bool = False,
+    splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
-    start_seed: int = 0,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
 
@@ -129,14 +128,18 @@ def evaluate_models(
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         test_mode: if True, only use a small subset of the data so that the models run faster
         delete_prev:  False by default. If True, delete saved results in directory
-        proportional_splits: if True, the train-test split preserves the proportion of s and y
+        splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
-        start_seed: random seed for the first repeat
     """
     # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
+    train_test_split: DataSplitter
+    if splitter is None:
+        train_test_split = TrainTestSplit(train_percentage=0.8, start_seed=0)
+    else:
+        train_test_split = splitter
 
-    columns = ["dataset", "transform", "model", "repeat"]
+    columns = ["dataset", "transform", "model", "split_id"]
 
     total_experiments = (
         len(datasets)
@@ -144,7 +147,7 @@ def evaluate_models(
         * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
     )
 
-    outdir = Path(".") / "results"  # OS-independent way of saying '../results'
+    outdir = Path(".") / "results"
     outdir.mkdir(exist_ok=True)
 
     if delete_prev:
@@ -159,16 +162,11 @@ def evaluate_models(
 
     pbar = tqdm(total=total_experiments)
     for dataset in datasets:
-        # reset the seed for every dataset, otherwise seed would depend on the number of datasets
-        seed = start_seed
-
         # ================================== begin: one repeat ====================================
-        for repeat in range(repeats):
+        for split_id in range(repeats):
             train: DataTuple
             test: DataTuple
-            train, test = train_test_split(
-                load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
-            )
+            train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_subset()
@@ -182,7 +180,7 @@ def evaluate_models(
                 logging: 'OrderedDict[str, str]' = OrderedDict()
                 logging['model'] = pre_process_method.name
                 logging['dataset'] = dataset.name
-                logging['repeat'] = str(repeat)
+                logging['repeat'] = str(split_id)
                 pbar.set_postfix(ordered_dict=logging)
 
                 new_train, new_test = pre_process_method.run(train, test)
@@ -206,14 +204,15 @@ def evaluate_models(
                     logging['model'] = model.name
                     logging['dataset'] = dataset.name
                     logging['transform'] = transform_name
-                    logging['repeat'] = str(repeat)
+                    logging['repeat'] = str(split_id)
                     pbar.set_postfix(ordered_dict=logging)
 
                     temp_res: Dict[str, Union[str, float]] = {
                         "dataset": dataset.name,
                         "transform": transform_name,
                         "model": model.name,
-                        "repeat": f"{repeat}-{seed}",
+                        "split_id": split_id,
+                        **split_info,
                     }
 
                     predictions: pd.DataFrame
@@ -236,7 +235,6 @@ def evaluate_models(
                 results.append_from_file(path_to_file, prepend=True)
                 results.save_as_csv(path_to_file)
             # ========================== end: loop over preprocessed data =========================
-            seed += 2410
         # =================================== end: one repeat =====================================
 
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
@@ -257,9 +255,8 @@ def evaluate_models_parallel(
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 1,
     test_mode: bool = False,
-    proportional_splits: bool = False,
+    splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
-    start_seed: int = 0,
     max_parallel: int = 0,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics
@@ -271,38 +268,37 @@ def evaluate_models_parallel(
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         repeats: number of repeats to perform for the experiments
         test_mode: if True, only use a small subset of the data so that the models run faster
-        proportional_splits: if True, the train-test split preserves the proportion of s and y
+        splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
-        start_seed: random seed for the first repeat
     """
     # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
+    train_test_split: DataSplitter
+    if splitter is None:
+        train_test_split = TrainTestSplit(train_percentage=0.8, start_seed=0)
+    else:
+        train_test_split = splitter
 
     transform_name = "no_transform"
-    columns = ["dataset", "transform", "model", "repeat"]
+    columns = ["dataset", "transform", "model", "split_id"]
 
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
 
     data_splits: List[TrainTestPair] = []
-    test_data: List[Tuple[DataTuple, str, str]] = []
+    test_data: List[Tuple[DataTuple, str, Dict[str, float]]] = []
     for dataset in datasets:
-        # reset the seed for every dataset, otherwise seed would depend on the number of datasets
-        seed = start_seed
-
-        for repeat in range(repeats):
+        for split_id in range(repeats):
             train: DataTuple
             test: DataTuple
-            train, test = train_test_split(
-                load_data(dataset), 0.8, random_seed=seed, proportional=proportional_splits
-            )
+            train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_subset()
-            train = train.replace(name=f"{train.name} ({repeat})")
+            train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
-            test_data.append((test, dataset.name, f"{repeat}-{seed}"))
-            seed += 2410
+            split_info.update({'split_id': split_id})
+            test_data.append((test, dataset.name, split_info))
 
     all_predictions = run_in_parallel(list(inprocess_models), data_splits, max_parallel)
 
@@ -312,7 +308,7 @@ def evaluate_models_parallel(
     all_results = Results()
 
     # compute metrics, collect them and write them to files
-    for preds_for_model, (test, dataset_name, repeat_str) in zip(all_predictions_t, test_data):
+    for preds_for_model, (test, dataset_name, split_info) in zip(all_predictions_t, test_data):
         results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
         predictions: pd.DataFrame
         for predictions, model in zip(preds_for_model, inprocess_models):
@@ -320,7 +316,7 @@ def evaluate_models_parallel(
                 "dataset": dataset_name,
                 "transform": transform_name,
                 "model": model.name,
-                "repeat": repeat_str,
+                **split_info,
             }
 
             temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))

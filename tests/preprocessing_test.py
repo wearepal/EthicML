@@ -10,6 +10,7 @@ import pandas as pd
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import (
+    ProportionalTrainTestSplit,
     train_test_split,
     bin_cont_feats,
     get_biased_subset,
@@ -73,8 +74,9 @@ def test_train_test_split():
 def test_prop_train_test_split():
     """test prop train test split"""
     data: DataTuple = load_data(Toy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data, proportional=True)
-    train, test = train_test
+    train: DataTuple
+    test: DataTuple
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.8)(data, split_id=0)
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
@@ -93,36 +95,36 @@ def test_prop_train_test_split():
     assert count_true(train.y.to_numpy() == 0) == round(0.8 * count_true(data.y.to_numpy() == 0))
 
     len_0_9 = math.floor((2000 / 100) * 90)
-    train, test = train_test_split(data, train_percentage=0.9, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == 2000 - len_0_9
     assert count_true(train.s.to_numpy() == 0) == round(0.9 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.9 * count_true(data.y.to_numpy() == 0))
 
     len_0_7 = math.floor((2000 / 100) * 70)
-    train, test = train_test_split(data, train_percentage=0.7, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == 2000 - len_0_7
     assert count_true(train.s.to_numpy() == 0) == round(0.7 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.7 * count_true(data.y.to_numpy() == 0))
 
     len_0_5 = math.floor((2000 / 100) * 50)
-    train, test = train_test_split(data, train_percentage=0.5, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.5)(data, split_id=0)
     assert train.s.shape[0] == len_0_5
     assert test.s.shape[0] == 2000 - len_0_5
 
     len_0_3 = math.floor((2000 / 100) * 30)
-    train, test = train_test_split(data, train_percentage=0.3, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.3)(data, split_id=0)
     assert train.s.shape[0] == len_0_3
     assert test.s.shape[0] == 2000 - len_0_3
 
     len_0_1 = math.floor((2000 / 100) * 10)
-    train, test = train_test_split(data, train_percentage=0.1, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.1)(data, split_id=0)
     assert train.s.shape[0] == len_0_1
     assert test.s.shape[0] == 2000 - len_0_1
 
     len_0_0 = math.floor((2000 / 100) * 0)
-    train, test = train_test_split(data, train_percentage=0.0, proportional=True)
+    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.0)(data, split_id=0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
     assert test.s.shape[0] == 2000 - len_0_0
@@ -190,97 +192,115 @@ def test_binning():
 def test_biased_split():
     """test biased split"""
     data = DataTuple(
-        x=pd.DataFrame([0] * 1000, columns=['feat1']),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens"]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label"]),
+        x=pd.DataFrame([0] * 1000, columns=['feat1-']),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
+        name="TestData",
     )
 
-    # ================================== mixing factor = 0 ========================================
+    # =================================== mixing factor = 0 =======================================
     biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (310, 1)
-    assert biased1.y.shape == (310, 1)
+    assert biased1.s.shape == (312, 1)
+    assert biased1.y.shape == (312, 1)
     assert (biased1.s.to_numpy() == biased1.y.to_numpy()).all()
+    assert biased1.name == "TestData - Biased (tm=0.0)"
 
     # size is exactly 0.5 of the total
-    assert subset.s.shape == (500, 1)
-    assert subset.y.shape == (500, 1)
+    assert subset.s.shape[0] == approx(500, abs=4)  # can be off by 4 because of proportional split
+    assert subset.y.shape[0] == approx(500, abs=4)
+    assert subset.name == "TestData - Subset (tm=0.0)"
 
     # the fraction of `data`points where y=s should be the same in the data and the subset
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.0, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.0, unbiased_pcnt=0.5, fixed_unbiased=True
+    )
     # expected behavior: in biased2, s=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    assert biased2.s.shape == (312, 1)
-    assert biased2.y.shape == (312, 1)
+    assert biased2.s.shape == (313, 1)
+    assert biased2.y.shape == (313, 1)
     assert (biased2.s.to_numpy() == biased2.y.to_numpy()).all()
 
-    assert debiased.s.shape == (626, 1)
-    assert debiased.y.shape == (626, 1)
+    # assert debiased.s.shape == (626, 1)
+    # assert debiased.y.shape == (626, 1)
+    assert debiased.s.shape == (374, 1)
+    assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    assert count == 626 // 2
+    # assert count == 626 // 2
+    assert count == 374 // 2
 
     # ================================= mixing factor = 0.5 =======================================
     biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
     # expected behavior: biased1 and `subset` are both just subsets of `data`
 
-    assert biased1.s.shape == (500, 1)
-    assert biased1.y.shape == (500, 1)
+    assert biased1.s.shape[0] == approx(500, abs=4)
+    assert biased1.y.shape[0] == approx(500, abs=4)
     data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
     biased1_mean = (biased1.s.to_numpy() == biased1.y.to_numpy()).mean()
     assert biased1_mean == approx(data_mean, abs=0.01)
 
-    assert subset.s.shape == (500, 1)
-    assert subset.y.shape == (500, 1)
+    assert subset.s.shape[0] == approx(500, abs=4)
+    assert subset.y.shape[0] == approx(500, abs=4)
 
     # the fraction of `data`points where y=s should be the same in the data and the subset
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.5, unbiased_pcnt=0.5, fixed_unbiased=True
+    )
     # expected behavior: biased2 is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
 
-    assert biased2.s.shape == (249, 1)
-    assert biased2.y.shape == (249, 1)
+    assert biased2.s.shape[0] == approx(500, abs=4)
+    assert biased2.y.shape[0] == approx(500, abs=4)
     data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
     biased2_mean = (biased2.s.to_numpy() == biased2.y.to_numpy()).mean()
     assert biased2_mean == approx(data_mean, abs=0.01)
 
-    assert debiased.s.shape == (564, 1)
-    assert debiased.y.shape == (564, 1)
+    # assert debiased.s.shape == (564, 1)
+    # assert debiased.y.shape == (564, 1)
+    assert debiased.s.shape == (374, 1)
+    assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    assert count == 564 // 2
+    # assert count == 564 // 2
+    assert count == 374 // 2
 
     # ================================== mixing factor = 1 ========================================
     biased1, subset = get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s!=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (190, 1)
-    assert biased1.y.shape == (190, 1)
+    assert biased1.s.shape == (187, 1)
+    assert biased1.y.shape == (187, 1)
     assert (biased1.s.to_numpy() != biased1.y.to_numpy()).all()
 
-    assert subset.s.shape == (500, 1)
-    assert subset.y.shape == (500, 1)
+    assert subset.s.shape[0] == approx(500, abs=4)
+    assert subset.y.shape[0] == approx(500, abs=4)
 
     # the fraction of `data`points where y=s should be the same in the data and the subset
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(data, mixing_factor=1.0, unbiased_pcnt=0.5)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=1.0, unbiased_pcnt=0.5, fixed_unbiased=True
+    )
     # expected behavior: in biased2, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    assert biased2.s.shape == (187, 1)
-    assert biased2.y.shape == (187, 1)
+    assert biased2.s.shape == (188, 1)
+    assert biased2.y.shape == (188, 1)
     assert (biased2.s.to_numpy() != biased2.y.to_numpy()).all()
 
-    assert debiased.s.shape == (376, 1)
-    assert debiased.y.shape == (376, 1)
+    # assert debiased.s.shape == (376, 1)
+    # assert debiased.y.shape == (376, 1)
+    assert debiased.s.shape == (374, 1)
+    assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    assert count == 376 // 2
+    # assert count == 376 // 2
+    assert count == 374 // 2

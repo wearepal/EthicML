@@ -1,30 +1,44 @@
 """Generate biased subsets"""
-from typing import Tuple
+from typing import Tuple, Sequence, Dict
 
 import pandas as pd
 
-from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variable_name
 from ethicml.utility.data_structures import concat_dt, DataTuple
+from .train_test_split import ProportionalTrainTestSplit, DataSplitter
 
 
-def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
-    return train_test_split(data, train_percentage=first_pcnt, random_seed=seed)
+class BiasedSubset(DataSplitter):
+    """Split the given data into a biased subset and a normal subset"""
 
+    def __init__(
+        self,
+        unbiased_pcnt: float,
+        mixing_factors: Sequence[float] = (0,),
+        seed: int = 42,
+        data_efficient: bool = True,
+    ):
+        """
+        Args:
+            mixing_factors: List of mixing factors; they are chosen based on the split ID
+            unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+            seed: random seed for the splitting
+            data_efficient: if True, try to keep as many data points as possible
+        """
+        super().__init__()
+        self.unbiased_pcnt = unbiased_pcnt
+        self.mixing_factors = mixing_factors
+        self.seed = seed
+        self.data_efficient = data_efficient
 
-def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
-    """Get the subset where s and y are equal and the subset where they are opposite"""
-    s_name = make_valid_variable_name(s_name)
-    y_name = make_valid_variable_name(y_name)
-    # datapoints where s and y are the same
-    s_and_y_equal = query_dt(
-        data, f"({s_name} == 0 & {y_name} == 0) | ({s_name} == 1 & {y_name} == 1)"
-    )
-    # datapoints where they are not the same
-    s_and_y_opposite = query_dt(
-        data, f"({s_name} == 1 & {y_name} == 0) | ({s_name} == 0 & {y_name} == 1)"
-    )
-    return s_and_y_equal, s_and_y_opposite
+    def __call__(
+        self, data: DataTuple, split_id: int
+    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        mixing_factor = self.mixing_factors[split_id]
+        biased, unbiased = get_biased_subset(
+            data, mixing_factor, self.unbiased_pcnt, self.seed, self.data_efficient
+        )
+        return biased, unbiased, {'mix_fact': mixing_factor}
 
 
 def get_biased_subset(
@@ -58,36 +72,78 @@ def get_biased_subset(
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
 
-    # task and meta are just normal subsets
     for_biased_subset, normal_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
 
     sy_equal, sy_opposite = _get_sy_equal_and_opp(for_biased_subset, s_name, y_name)
 
-    mix_fact = mixing_factor  # how much of sy_opp should be mixed into task train set
+    mix_fact = mixing_factor  # how much of sy_opp should be mixed into the biased subset
 
     if data_efficient:
-        sy_equal_fraction = min(1.0, 2 * (1 - mix_fact))
-        sy_opp_fraction = min(1.0, 2 * mix_fact)
+        if mix_fact < 0.5:
+            sy_equal_fraction = 1.0
+            sy_opp_fraction = 2 * mix_fact
+        else:
+            sy_equal_fraction = 2 * (1 - mix_fact)
+            sy_opp_fraction = 1.0
     else:
         sy_equal_fraction = 1 - mix_fact
         sy_opp_fraction = mix_fact
 
-    sy_equal_task_train, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
-    sy_opp_task_train, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
+    sy_equal_for_biased_ss, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
+    sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
     biased_subset = concat_dt(
-        [sy_equal_task_train, sy_opp_task_train], axis='index', ignore_index=True
+        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
     )
 
     if mix_fact == 0:
         # s and y should be very correlated in the biased subset
         assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
 
+    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
+    normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")
     return biased_subset, normal_subset
 
 
+class BiasedDebiasedSubsets(DataSplitter):
+    """Split the given data into a biased subset and a debiased subset"""
+
+    def __init__(
+        self,
+        unbiased_pcnt: float,
+        mixing_factors: Sequence[float] = (0,),
+        seed: int = 42,
+        fixed_unbiased: bool = True,
+    ):
+        """
+        Args:
+            mixing_factors: List of mixing factors; they are chosen based on the split ID
+            unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+            seed: random seed for the splitting
+            fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
+        """
+        super().__init__()
+        self.unbiased_pcnt = unbiased_pcnt
+        self.mixing_factors = mixing_factors
+        self.seed = seed
+        self.fixed_unbiased = fixed_unbiased
+
+    def __call__(
+        self, data: DataTuple, split_id: int
+    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        mixing_factor = self.mixing_factors[split_id]
+        biased, unbiased = get_biased_and_debiased_subsets(
+            data, mixing_factor, self.unbiased_pcnt, self.seed, self.fixed_unbiased
+        )
+        return biased, unbiased, {'mix_fact': mixing_factor}
+
+
 def get_biased_and_debiased_subsets(
-    data: DataTuple, mixing_factor: float, unbiased_pcnt: float, seed: int = 42
+    data: DataTuple,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    seed: int = 42,
+    fixed_unbiased: bool = True,
 ) -> Tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a debiased subset
 
@@ -108,6 +164,7 @@ def get_biased_and_debiased_subsets(
                        factor is 0, the biased subset is maximally biased.
         unbiased_pcnt: how much of the data should be reserved for the unbiased subset
         seed: random seed for the splitting
+        fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
 
     Returns:
         biased and unbiased dataset
@@ -118,21 +175,42 @@ def get_biased_and_debiased_subsets(
 
     assert 0 <= unbiased_pcnt <= 1
     # how much of sy_equal should be reserved for the biased subset:
-    biased_pcnt = 1 - unbiased_pcnt
 
-    sy_equal_for_biased_ss, sy_equal_for_debiased_ss = _random_split(
-        sy_equal, first_pcnt=biased_pcnt * (1 - mixing_factor), seed=seed
-    )
-    sy_opp_for_biased_ss, sy_opp_for_debiased_ss = _random_split(
-        sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
-    )
+    if fixed_unbiased:
+        sy_equal_for_debiased_ss, sy_equal_remaining = _random_split(
+            sy_equal, first_pcnt=unbiased_pcnt, seed=seed
+        )
+        sy_opp_for_debiased_ss, sy_opp_remaining = _random_split(
+            sy_opposite, first_pcnt=unbiased_pcnt, seed=seed
+        )
+        if mixing_factor < 0.5:
+            sy_equal_fraction = 1.0
+            sy_opp_fraction = 2 * mixing_factor
+        else:
+            sy_equal_fraction = 2 * (1 - mixing_factor)
+            sy_opp_fraction = 1.0
+
+        sy_equal_for_biased_ss, _ = _random_split(
+            sy_equal_remaining, first_pcnt=sy_equal_fraction, seed=seed
+        )
+        sy_opp_for_biased_ss, _ = _random_split(
+            sy_opp_remaining, first_pcnt=sy_opp_fraction, seed=seed
+        )
+    else:
+        biased_pcnt = 1 - unbiased_pcnt
+        sy_equal_for_biased_ss, sy_equal_for_debiased_ss = _random_split(
+            sy_equal, first_pcnt=biased_pcnt * (1 - mixing_factor), seed=seed
+        )
+        sy_opp_for_biased_ss, sy_opp_for_debiased_ss = _random_split(
+            sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
+        )
 
     biased_subset = concat_dt(
         [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
     )
 
     # the debiased set is constructed from two sets of the same size
-    min_size = min(sy_equal_for_debiased_ss.x.shape[0], sy_opp_for_debiased_ss.x.shape[0])
+    min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
 
     def _get_equal_sized_subset(df: pd.DataFrame) -> pd.DataFrame:
         return df.sample(n=min_size, random_state=seed)
@@ -144,10 +222,32 @@ def get_biased_and_debiased_subsets(
     )
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.1
+    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.11
 
     if mixing_factor == 0:
         # s and y should be very correlated in the biased subset
         assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
 
+    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
+    debiased_subset = debiased_subset.replace(name=f"{data.name} - Debiased (tm={mixing_factor})")
     return biased_subset, debiased_subset
+
+
+def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
+    splitter = ProportionalTrainTestSplit(train_percentage=first_pcnt, start_seed=seed)
+    return splitter(data, 0)[0:2]
+
+
+def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
+    """Get the subset where s and y are equal and the subset where they are opposite"""
+    s_name = make_valid_variable_name(s_name)
+    y_name = make_valid_variable_name(y_name)
+    # datapoints where s and y are the same
+    s_and_y_equal = query_dt(
+        data, f"({s_name} == 0 & {y_name} == 0) | ({s_name} == 1 & {y_name} == 1)"
+    )
+    # datapoints where they are not the same
+    s_and_y_opposite = query_dt(
+        data, f"({s_name} == 1 & {y_name} == 0) | ({s_name} == 0 & {y_name} == 1)"
+    )
+    return s_and_y_equal, s_and_y_opposite
