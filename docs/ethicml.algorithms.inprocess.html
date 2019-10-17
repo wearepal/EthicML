@@ -169,10 +169,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal" title="ethicml.algorithms.inprocess.Agarwal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Agarwal</span></code></a>(fairness, , ][DP, EqOp, EqOd] =, …)</p></td>
 <td><p>Agarwal class</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm" title="ethicml.algorithms.inprocess.InAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm" title="ethicml.algorithms.inprocess.InAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a></p></td>
 <td><p>Abstract Base Class for algorithms that run in the middle of the pipeline</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="ethicml.algorithms.inprocess.InAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithmAsync</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="ethicml.algorithms.inprocess.InAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithmAsync</span></code></a></p></td>
 <td><p>In-Algorithm that can be run blocking and asynchronously</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel" title="ethicml.algorithms.inprocess.InstalledModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InstalledModel</span></code></a>(dir_name, top_dir, url, …)</p></td>
@@ -196,7 +196,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR" title="ethicml.algorithms.inprocess.LR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LR</span></code></a>(C)</p></td>
 <td><p>Logistic regression with hard predictions</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV" title="ethicml.algorithms.inprocess.LRCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRCV</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV" title="ethicml.algorithms.inprocess.LRCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRCV</span></code></a></p></td>
 <td><p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb" title="ethicml.algorithms.inprocess.LRProb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRProb</span></code></a>(C)</p></td>
@@ -205,13 +205,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM" title="ethicml.algorithms.inprocess.SVM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SVM</span></code></a>(C, kernel)</p></td>
 <td><p>Support Vector Machine</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority" title="ethicml.algorithms.inprocess.Majority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Majority</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority" title="ethicml.algorithms.inprocess.Majority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Majority</span></code></a></p></td>
 <td><p>Simply returns the majority label from the train set</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP" title="ethicml.algorithms.inprocess.MLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MLP</span></code></a>(hidden_layer_sizes, activation, , , …)</p></td>
 <td><p>Multi-layer Perceptron</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels" title="ethicml.algorithms.inprocess.Corels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Corels</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels" title="ethicml.algorithms.inprocess.Corels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Corels</span></code></a></p></td>
 <td><p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="ethicml.algorithms.inprocess.ZafarAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarAccuracy</span></code></a>(gamma)</p></td>
@@ -302,7 +302,7 @@
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.InAlgorithm">
-<em class="property">class </em><code class="sig-name descname">InAlgorithm</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">InAlgorithm</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
 <p>Abstract Base Class for algorithms that run in the middle of the pipeline</p>
 <p><strong>Attributes</strong></p>
@@ -362,7 +362,7 @@
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync">
-<em class="property">class </em><code class="sig-name descname">InAlgorithmAsync</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">InAlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></p>
 <p>In-Algorithm that can be run blocking and asynchronously</p>
 <p><strong>Attributes</strong></p>
@@ -1004,7 +1004,7 @@ predictions</p></li>
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.LRCV">
-<em class="property">class </em><code class="sig-name descname">LRCV</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">LRCV</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
 <p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p>
 <p><strong>Attributes</strong></p>
@@ -1211,7 +1211,7 @@ predictions</p></li>
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.Majority">
-<em class="property">class </em><code class="sig-name descname">Majority</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Majority</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
 <p>Simply returns the majority label from the train set</p>
 <p><strong>Attributes</strong></p>
@@ -1340,7 +1340,7 @@ predictions</p></li>
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.Corels">
-<em class="property">class </em><code class="sig-name descname">Corels</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Corels" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Corels</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Corels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
 <p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p>
 <p>This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.</p>

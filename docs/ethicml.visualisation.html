@@ -165,7 +165,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_mean_std_box" title="ethicml.visualisation.plot_mean_std_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_mean_std_box</span></code></a>(results, metric_y, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_results" title="ethicml.visualisation.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a>(results, metric_y, …)</p></td>
 <td><p>Plot the given result with boxes that represent mean and standard deviation</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_2d_plot" title="ethicml.visualisation.save_2d_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_2d_plot</span></code></a>(data, filepath)</p></td>
@@ -177,14 +177,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_label_plot" title="ethicml.visualisation.save_label_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_label_plot</span></code></a>(data, filename)</p></td>
 <td><p>Make label plot</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot_mean_std_box" title="ethicml.visualisation.single_plot_mean_std_box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot_mean_std_box</span></code></a>(plot, results, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot" title="ethicml.visualisation.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a>(plot, results, xaxis, str], …)</p></td>
 <td><p>This is essentially a wrapper around the <cite>errorbox</cite> function</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="function">
-<dt id="ethicml.visualisation.plot_mean_std_box">
-<code class="sig-name descname">plot_mean_std_box</code><span class="sig-paren">(</span><em class="sig-param">results: ethicml.utility.data_structures.Results, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], save: bool = True, dpi: int = 300, use_cross: bool = False</em><span class="sig-paren">)</span> &#x2192; List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]<a class="headerlink" href="#ethicml.visualisation.plot_mean_std_box" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.visualisation.plot_results">
+<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">results: ethicml.utility.data_structures.Results, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', save: bool = True, dpi: int = 300</em><span class="sig-paren">)</span> &#x2192; List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]<a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the given result with boxes that represent mean and standard deviation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -192,6 +192,7 @@
 <li><p><strong>results</strong> – a DataFrame that already contains the values of the metrics</p></li>
 <li><p><strong>metric_y</strong> – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
 <li><p><strong>metric_x</strong> – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
+<li><p><strong>ptype</strong> – plot type</p></li>
 <li><p><strong>save</strong> – if True, save the plot as a PDF</p></li>
 <li><p><strong>dpi</strong> – DPI of the plots</p></li>
 <li><p><strong>use_cross</strong> – if True, use crosses with error bars instead of boxes</p></li>
@@ -222,8 +223,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="ethicml.visualisation.single_plot_mean_std_box">
-<code class="sig-name descname">single_plot_mean_std_box</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: ethicml.utility.data_structures.Results, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: str, legend_pos: Optional[typing_extensions.Literal['inside', 'outside'][inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6, use_cross: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[None, typing_extensions.Literal[False][False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot_mean_std_box" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.visualisation.single_plot">
+<code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: ethicml.utility.data_structures.Results, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: str, ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', legend_pos: Optional[typing_extensions.Literal['inside', 'outside'][inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6</em><span class="sig-paren">)</span> &#x2192; Union[None, typing_extensions.Literal[False][False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is essentially a wrapper around the <cite>errorbox</cite> function</p>
 <p>This function can also be used to create figures with multiple plots on them, because it does
 not generate a Figure object itself.</p>
@@ -236,10 +237,10 @@ not generate a Figure object itself.</p>
 <li><p><strong>yaxis</strong> – name of column that’s plotted on the y-axis</p></li>
 <li><p><strong>dataset</strong> – string that identifies the dataset</p></li>
 <li><p><strong>transform</strong> – string that identifies the preprocessing method</p></li>
+<li><p><strong>ptype</strong> – plot type</p></li>
 <li><p><strong>legend_pos</strong> – position of the legend (or None for no legend)</p></li>
 <li><p><strong>legend_yanchor</strong> – position in the vertical direction where the legend should begin</p></li>
 <li><p><strong>markersize</strong> – size of marker</p></li>
-<li><p><strong>use_cross</strong> – if True, use crosses with error bars instead of boxes</p></li>
 </ul>
 </dd>
 </dl>

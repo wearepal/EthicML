@@ -345,7 +345,7 @@ there is no maximum</p></li>
 
 <dl class="function">
 <dt id="ethicml.evaluators.evaluate_models">
-<code class="sig-name descname">evaluate_models</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], preprocess_models: Sequence[ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm] = (), inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), postprocess_models: Sequence[ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, delete_prev: bool = False, proportional_splits: bool = False, topic: Optional[str] = None, start_seed: int = 0</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluate_models</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], preprocess_models: Sequence[ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm] = (), inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), postprocess_models: Sequence[ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, delete_prev: bool = False, splitter: Optional[ethicml.preprocessing.train_test_split.DataSplitter] = None, topic: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate all the given models for all the given datasets and compute all the given metrics</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -359,9 +359,8 @@ there is no maximum</p></li>
 <li><p><strong>per_sens_metrics</strong> – list of metric objects that will be evaluated per sensitive attribute</p></li>
 <li><p><strong>test_mode</strong> – if True, only use a small subset of the data so that the models run faster</p></li>
 <li><p><strong>delete_prev</strong> – False by default. If True, delete saved results in directory</p></li>
-<li><p><strong>proportional_splits</strong> – if True, the train-test split preserves the proportion of s and y</p></li>
+<li><p><strong>splitter</strong> – (optional) custom train-test splitter</p></li>
 <li><p><strong>topic</strong> – (optional) a string that identifies the run; the string is prepended to the filename</p></li>
-<li><p><strong>start_seed</strong> – random seed for the first repeat</p></li>
 </ul>
 </dd>
 </dl>
@@ -369,7 +368,7 @@ there is no maximum</p></li>
 
 <dl class="function">
 <dt id="ethicml.evaluators.evaluate_models_parallel">
-<code class="sig-name descname">evaluate_models_parallel</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, proportional_splits: bool = False, topic: Optional[str] = None, start_seed: int = 0, max_parallel: int = 0</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models_parallel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluate_models_parallel</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, splitter: Optional[ethicml.preprocessing.train_test_split.DataSplitter] = None, topic: Optional[str] = None, max_parallel: int = 0</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models_parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate all the given models for all the given datasets and compute all the given metrics</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -380,9 +379,8 @@ there is no maximum</p></li>
 <li><p><strong>per_sens_metrics</strong> – list of metric objects that will be evaluated per sensitive attribute</p></li>
 <li><p><strong>repeats</strong> – number of repeats to perform for the experiments</p></li>
 <li><p><strong>test_mode</strong> – if True, only use a small subset of the data so that the models run faster</p></li>
-<li><p><strong>proportional_splits</strong> – if True, the train-test split preserves the proportion of s and y</p></li>
+<li><p><strong>splitter</strong> – (optional) custom train-test splitter</p></li>
 <li><p><strong>topic</strong> – (optional) a string that identifies the run; the string is prepended to the filename</p></li>
-<li><p><strong>start_seed</strong> – random seed for the first repeat</p></li>
 </ul>
 </dd>
 </dl>
