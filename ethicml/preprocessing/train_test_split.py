@@ -181,10 +181,10 @@ class ProportionalTrainTestSplit(TrainTestSplit):
         assert data.y.shape[0] == train.y.shape[0] + test.y.shape[0]
 
         # assert that we (at least approximately) achieved the specified `train_percentage`
-        expected_train_len = round(data.x.shape[0] * self.train_percentage)
+        expected_train_len = round(len(data) * self.train_percentage)
         # the maximum error occurs when all the group splits favor train or all favor test
         num_groups = len(s_vals) * len(y_vals)
-        assert expected_train_len - num_groups < train.x.shape[0] < expected_train_len + num_groups
+        assert expected_train_len - num_groups < len(train) < expected_train_len + num_groups
 
         split_info: Dict[str, float] = {'seed': random_seed}
         return train, test, split_info

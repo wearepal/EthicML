@@ -69,6 +69,8 @@ def get_biased_subset(
     Returns:
         biased and unbiased dataset
     """
+    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
+    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
 
@@ -169,11 +171,12 @@ def get_biased_and_debiased_subsets(
     Returns:
         biased and unbiased dataset
     """
+    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
+    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
     sy_equal, sy_opposite = _get_sy_equal_and_opp(data, s_name, y_name)
 
-    assert 0 <= unbiased_pcnt <= 1
     # how much of sy_equal should be reserved for the biased subset:
 
     if fixed_unbiased:
@@ -222,7 +225,7 @@ def get_biased_and_debiased_subsets(
     )
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.11
+    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.5
 
     if mixing_factor == 0:
         # s and y should be very correlated in the biased subset

@@ -60,10 +60,10 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     n_up_fav = cond_up_fav.shape[0]
     n_up_unfav = cond_up_unfav.shape[0]
 
-    w_p_fav = n_fav * n_p / (num_samples * n_p_fav)
-    w_p_unfav = n_unfav * n_p / (num_samples * n_p_unfav)
-    w_up_fav = n_fav * n_up / (num_samples * n_up_fav)
-    w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav)
+    w_p_fav = n_fav * n_p / (num_samples * n_p_fav) if n_p_fav != 0 else 1
+    w_p_unfav = n_unfav * n_p / (num_samples * n_p_unfav) if n_p_unfav != 0 else 1
+    w_up_fav = n_fav * n_up / (num_samples * n_up_fav) if n_up_fav != 0 else 1
+    w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav) if n_up_unfav != 0 else 1
 
     train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]), columns=["instance weights"])
 
