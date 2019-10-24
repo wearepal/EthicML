@@ -13,7 +13,7 @@ def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
     original_column_names = dataset.columns
     # make column names query-friendly
     dataset = dataset.rename(axis="columns", mapper=make_valid_variable_name)
-    subset = dataset.query(cond)
+    subset = dataset.query(cond).reset_index(drop=True)
     subset.columns = original_column_names
     return subset
 

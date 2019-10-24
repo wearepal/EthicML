@@ -32,7 +32,7 @@ from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy, AbsCV
 from ethicml.utility import Heaviside, DataTuple, TrainTestPair, PathTuple, TestPathTuple
 from ethicml.data import load_data, Compas
-from ethicml.preprocessing import train_test_split
+from ethicml.preprocessing import train_test_split, query_dt
 from tests.run_algorithm_test import get_train_test, count_true
 
 
@@ -514,9 +514,9 @@ def test_threaded_lr_prob():
     assert predictions.values[predictions.values == -1].shape[0] == 189
 
 
-def test_kamiran():
+def test_kamiran(toy_train_test: TrainTestPair):
     """test kamiran"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     kamiran_model: InAlgorithmAsync = Kamiran()
     assert kamiran_model is not None
@@ -526,6 +526,10 @@ def test_kamiran():
     assert predictions.values[predictions.values == 1].shape[0] == 210
     assert predictions.values[predictions.values == -1].shape[0] == 190
 
-    predictions: pd.DataFrame = run_blocking(kamiran_model.run_async(train, test))
+    predictions = run_blocking(kamiran_model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 210
     assert predictions.values[predictions.values == -1].shape[0] == 190
+
+    # remove all samples with s=0 & y=1 from the data
+    train_no_s0y1 = query_dt(train, "s != 0 | y != 1")
+    predictions = kamiran_model.run(train_no_s0y1, test)
