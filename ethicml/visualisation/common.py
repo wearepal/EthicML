@@ -131,6 +131,7 @@ def errorbox(
                 xerr=0.5 * xstd,
                 yerr=0.5 * ystd,
                 marker=shapes[i_shp % len(shapes)],
+                linestyle="",  # no connecting lines
                 color=color,
                 ecolor="#555555",
                 capsize=4,
@@ -156,7 +157,7 @@ def errorbox(
                 xmean,
                 ymean,
                 marker=shapes[i_shp % len(shapes)],
-                linestyle="",
+                linestyle="",  # no connecting lines
                 color=color,
                 label=entry.label,
                 zorder=4 + 2 * i_shp,
