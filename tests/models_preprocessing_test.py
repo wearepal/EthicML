@@ -27,7 +27,7 @@ def test_beutel():
     new_train_test: Tuple[DataTuple, TestTuple] = beut_model.run(train, test)
     new_train, new_test = new_train_test
 
-    assert new_train.x.shape[0] == train.x.shape[0]
+    assert len(new_train) == len(train)
     assert new_test.x.shape[0] == test.x.shape[0]
 
     svm_model: InAlgorithm = SVM()
@@ -50,7 +50,7 @@ def test_vfae():
     new_train_test: Tuple[DataTuple, TestTuple] = vfae_model.run(train, test)
     new_train, new_test = new_train_test
 
-    assert new_train.x.shape[0] == train.x.shape[0]
+    assert len(new_train) == len(train)
     assert new_test.x.shape[0] == test.x.shape[0]
 
     svm_model: InAlgorithm = SVM()
