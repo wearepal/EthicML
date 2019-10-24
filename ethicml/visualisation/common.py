@@ -130,7 +130,7 @@ def errorbox(
                 ymean,
                 xerr=0.5 * xstd,
                 yerr=0.5 * ystd,
-                fmt=shapes[i_shp % len(shapes)],
+                marker=shapes[i_shp % len(shapes)],
                 color=color,
                 ecolor="#555555",
                 capsize=4,
@@ -155,7 +155,8 @@ def errorbox(
             plot.plot(
                 xmean,
                 ymean,
-                shapes[i_shp % len(shapes)],
+                marker=shapes[i_shp % len(shapes)],
+                linestyle="",
                 color=color,
                 label=entry.label,
                 zorder=4 + 2 * i_shp,
@@ -207,7 +208,8 @@ def scatter(
         plot.plot(
             entry.values[xaxis_measure].to_numpy(),
             entry.values[yaxis_measure].to_numpy(),
-            shapes[shp_index] + ("-" if connect_dots else ""),
+            marker=shapes[shp_index],
+            linestyle="-" if connect_dots else "",
             label=entry.label,
             color=None if connect_dots else colors10[shp_index],
             markersize=markersize,
