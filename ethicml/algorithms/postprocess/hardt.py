@@ -142,8 +142,8 @@ class Hardt(PostAlgorithm):
 
         # Randomly flip labels according to the probabilities in model_params
         self_fair_pred = test_preds_numpy[test.s[test.s.columns[0]].to_numpy() == 0].copy()
-        self_pp_indices, = np.nonzero(test_preds_numpy[mask_s1] == self._favorable_label)
-        self_pn_indices, = np.nonzero(test_preds_numpy[mask_s1] == self._unfavorable_label)
+        (self_pp_indices,) = np.nonzero(test_preds_numpy[mask_s1] == self._favorable_label)
+        (self_pn_indices,) = np.nonzero(test_preds_numpy[mask_s1] == self._unfavorable_label)
         self._random.shuffle(self_pp_indices)
         self._random.shuffle(self_pn_indices)
 
@@ -153,8 +153,8 @@ class Hardt(PostAlgorithm):
         self_fair_pred[p2n_indices] = self._unfavorable_label
 
         othr_fair_pred = test_preds_numpy[mask_s0].copy()
-        othr_pp_indices, = np.nonzero(test_preds_numpy[mask_s0] == self._favorable_label)
-        othr_pn_indices, = np.nonzero(test_preds_numpy[mask_s0] == self._unfavorable_label)
+        (othr_pp_indices,) = np.nonzero(test_preds_numpy[mask_s0] == self._favorable_label)
+        (othr_pn_indices,) = np.nonzero(test_preds_numpy[mask_s0] == self._unfavorable_label)
         self._random.shuffle(othr_pp_indices)
         self._random.shuffle(othr_pn_indices)
 
