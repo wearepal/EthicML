@@ -176,9 +176,7 @@ class ProportionalTrainTestSplit(TrainTestSplit):
         )
 
         # assert that no data points got lost anywhere
-        assert data.x.shape[0] == train.x.shape[0] + test.x.shape[0]
-        assert data.s.shape[0] == train.s.shape[0] + test.s.shape[0]
-        assert data.y.shape[0] == train.y.shape[0] + test.y.shape[0]
+        assert len(data) == len(train) + len(test)
 
         # assert that we (at least approximately) achieved the specified `train_percentage`
         expected_train_len = round(len(data) * self.train_percentage)
