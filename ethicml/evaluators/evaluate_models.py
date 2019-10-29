@@ -22,7 +22,7 @@ from .per_sensitive_attribute import (
     ratio_per_sensitive_attribute,
 )
 from ..metrics.metric import Metric
-from ..preprocessing.train_test_split import DataSplitter, TrainTestSplit
+from ..preprocessing.train_test_split import DataSplitter, RandomSplit
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -135,7 +135,7 @@ def evaluate_models(
     per_sens_metrics_check(per_sens_metrics)
     train_test_split: DataSplitter
     if splitter is None:
-        train_test_split = TrainTestSplit(train_percentage=0.8, start_seed=0)
+        train_test_split = RandomSplit(train_percentage=0.8, start_seed=0)
     else:
         train_test_split = splitter
 
@@ -275,7 +275,7 @@ def evaluate_models_parallel(
     per_sens_metrics_check(per_sens_metrics)
     train_test_split: DataSplitter
     if splitter is None:
-        train_test_split = TrainTestSplit(train_percentage=0.8, start_seed=0)
+        train_test_split = RandomSplit(train_percentage=0.8, start_seed=0)
     else:
         train_test_split = splitter
 

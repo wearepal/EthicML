@@ -6,7 +6,7 @@ import numpy as np
 
 from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variable_name
 from ethicml.utility.data_structures import concat_dt, DataTuple
-from .train_test_split import ProportionalTrainTestSplit, DataSplitter
+from .train_test_split import ProportionalSplit, DataSplitter
 
 __all__ = [
     'BiasedDebiasedSubsets',
@@ -245,7 +245,7 @@ def get_biased_and_debiased_subsets(
 
 
 def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
-    splitter = ProportionalTrainTestSplit(train_percentage=first_pcnt, start_seed=seed)
+    splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
     return splitter(data)[0:2]
 
 

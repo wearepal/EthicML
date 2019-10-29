@@ -13,9 +13,9 @@ from ethicml.utility.data_helpers import shuffle_df
 
 __all__ = [
     'DataSplitter',
-    'ProportionalTrainTestSplit',
+    'ProportionalSplit',
     'SequentialSplit',
-    'TrainTestSplit',
+    'RandomSplit',
     'train_test_split',
 ]
 
@@ -132,7 +132,7 @@ def train_test_split(
     return train, test
 
 
-class TrainTestSplit(DataSplitter):
+class RandomSplit(DataSplitter):
     """Standard train test split"""
 
     def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
@@ -156,7 +156,7 @@ class TrainTestSplit(DataSplitter):
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
-class ProportionalTrainTestSplit(TrainTestSplit):
+class ProportionalSplit(RandomSplit):
     """Split into train and test while preserving the proportion of s and y"""
 
     def __call__(
