@@ -100,7 +100,7 @@ def get_biased_subset(
 
     if mix_fact == 0:
         # s and y should be very correlated in the biased subset
-        assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
+        assert all(biased_subset.s[s_name] == biased_subset.y[y_name])
 
     biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
     normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")

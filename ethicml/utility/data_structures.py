@@ -105,6 +105,7 @@ class DataTuple(TestTuple, DataTupleValues):
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
         """Concatenate the dataframes in the DataTuple and then apply a function to it"""
+        self.x.columns = self.x.columns.astype(str)
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
         joined = mapper(joined)
