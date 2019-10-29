@@ -11,13 +11,21 @@ from pandas.testing import assert_index_equal
 from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 
+__all__ = [
+    'DataSplitter',
+    'ProportionalTrainTestSplit',
+    'SequentialSplit',
+    'TrainTestSplit',
+    'train_test_split',
+]
+
 
 class DataSplitter(ABC):
     """Base class for classes that split data"""
 
     @abstractmethod
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Split the given data
 
@@ -29,6 +37,28 @@ class DataSplitter(ABC):
             A tuple consisting of two datatuples that are the result of the split and a dictionary
             that contains information about the split that is useful for logging.
         """
+
+
+class SequentialSplit(DataSplitter):
+    """Take the first N samples for train set and the rest for test set; no shuffle."""
+
+    def __init__(self, train_percentage: float):
+        self.train_percentage = train_percentage
+
+    def __call__(
+        self, data: DataTuple, split_id: int = 0
+    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        del split_id
+        train_len = round(self.train_percentage * len(data))
+
+        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
+        train = train.replace(name=f"{data.name} - Train")
+
+        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
+        test = test.replace(name=f"{data.name} - Test")
+
+        assert len(train) + len(test) == len(data)
+        return train, test, {}
 
 
 def train_test_split(
@@ -119,7 +149,7 @@ class TrainTestSplit(DataSplitter):
         return self.start_seed + 2410 * split_id
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         random_seed = self._get_seed(split_id)
         split_info: Dict[str, float] = {'seed': random_seed}
@@ -130,7 +160,7 @@ class ProportionalTrainTestSplit(TrainTestSplit):
     """Split into train and test while preserving the proportion of s and y"""
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         random_seed = self._get_seed(split_id)
 

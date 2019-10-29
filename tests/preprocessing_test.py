@@ -11,6 +11,7 @@ from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import (
     ProportionalTrainTestSplit,
+    SequentialSplit,
     train_test_split,
     bin_cont_feats,
     get_biased_subset,
@@ -187,6 +188,18 @@ def test_binning():
 
     assert len([col for col in binned.x.columns if col not in data.x.columns]) == 25
     assert 'age' not in binned.x.columns
+
+
+def test_sequential_split():
+    """test sequential split"""
+    data: DataTuple = load_data(Toy())
+    train: DataTuple
+    test: DataTuple
+    train, test, _ = SequentialSplit(train_percentage=0.8)(data)
+    assert all(data.x.iloc[0] == train.x.iloc[0])
+    assert all(data.x.iloc[-1] == test.x.iloc[-1])
+    assert len(train) == 1600
+    assert len(test) == 400
 
 
 def test_biased_split():

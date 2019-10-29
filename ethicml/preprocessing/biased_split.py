@@ -8,6 +8,13 @@ from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variabl
 from ethicml.utility.data_structures import concat_dt, DataTuple
 from .train_test_split import ProportionalTrainTestSplit, DataSplitter
 
+__all__ = [
+    'BiasedDebiasedSubsets',
+    'BiasedSubset',
+    'get_biased_and_debiased_subsets',
+    'get_biased_subset',
+]
+
 
 class BiasedSubset(DataSplitter):
     """Split the given data into a biased subset and a normal subset"""
@@ -33,7 +40,7 @@ class BiasedSubset(DataSplitter):
         self.data_efficient = data_efficient
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_subset(
@@ -132,7 +139,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         self.fixed_unbiased = fixed_unbiased
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_and_debiased_subsets(
@@ -239,7 +246,7 @@ def get_biased_and_debiased_subsets(
 
 def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
     splitter = ProportionalTrainTestSplit(train_percentage=first_pcnt, start_seed=seed)
-    return splitter(data, 0)[0:2]
+    return splitter(data)[0:2]
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
