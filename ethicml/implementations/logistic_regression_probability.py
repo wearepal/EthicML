@@ -21,7 +21,7 @@ def main():
     """main method to run model"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
-    C, = interface.remaining_args()
+    (C,) = interface.remaining_args()
     interface.save_predictions(train_and_predict(train, test, float(C)))
 
 

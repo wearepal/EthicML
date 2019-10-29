@@ -18,7 +18,7 @@ def main():
     """This function runs the logistic regression model as a standalone program"""
     interface = InAlgoInterface()
     train, test = interface.load_data()
-    C, = interface.remaining_args()
+    (C,) = interface.remaining_args()
     interface.save_predictions(train_and_predict(train, test, C=float(C)))
 
 

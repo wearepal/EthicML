@@ -10,7 +10,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 def _get_info(
-    data: TestTuple
+    data: TestTuple,
 ) -> Tuple["np.ndarray[np.float32]", "np.ndarray[np.float32]", int, int, int, List[str], List[str]]:
     features = data.x.to_numpy(dtype=np.float32)
     sens_labels = data.s.to_numpy(dtype=np.float32)
