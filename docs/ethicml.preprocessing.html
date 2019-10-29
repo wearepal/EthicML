@@ -178,11 +178,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.LabelBinarizer" title="ethicml.preprocessing.LabelBinarizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a>()</p></td>
 <td><p>If a dataset has labels [-1,1], then this will make it so the labels = [0,1]</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.ProportionalTrainTestSplit" title="ethicml.preprocessing.ProportionalTrainTestSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProportionalTrainTestSplit</span></code></a>(train_percentage, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.ProportionalSplit" title="ethicml.preprocessing.ProportionalSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProportionalSplit</span></code></a>(train_percentage, start_seed)</p></td>
 <td><p>Split into train and test while preserving the proportion of s and y</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.TrainTestSplit" title="ethicml.preprocessing.TrainTestSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainTestSplit</span></code></a>(train_percentage, start_seed)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.RandomSplit" title="ethicml.preprocessing.RandomSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomSplit</span></code></a>(train_percentage, start_seed)</p></td>
 <td><p>Standard train test split</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.SequentialSplit" title="ethicml.preprocessing.SequentialSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialSplit</span></code></a>(train_percentage)</p></td>
+<td><p>Take the first N samples for train set and the rest for test set; no shuffle.</p></td>
 </tr>
 </tbody>
 </table>
@@ -301,9 +304,9 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="ethicml.preprocessing.ProportionalTrainTestSplit">
-<em class="property">class </em><code class="sig-name descname">ProportionalTrainTestSplit</code><span class="sig-paren">(</span><em class="sig-param">train_percentage: float = 0.8</em>, <em class="sig-param">start_seed: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.ProportionalTrainTestSplit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.TrainTestSplit</span></code></p>
+<dt id="ethicml.preprocessing.ProportionalSplit">
+<em class="property">class </em><code class="sig-name descname">ProportionalSplit</code><span class="sig-paren">(</span><em class="sig-param">train_percentage: float = 0.8</em>, <em class="sig-param">start_seed: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.ProportionalSplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.RandomSplit</span></code></p>
 <p>Split into train and test while preserving the proportion of s and y</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,8 +319,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="ethicml.preprocessing.TrainTestSplit">
-<em class="property">class </em><code class="sig-name descname">TrainTestSplit</code><span class="sig-paren">(</span><em class="sig-param">train_percentage: float = 0.8</em>, <em class="sig-param">start_seed: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.TrainTestSplit" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.preprocessing.RandomSplit">
+<em class="property">class </em><code class="sig-name descname">RandomSplit</code><span class="sig-paren">(</span><em class="sig-param">train_percentage: float = 0.8</em>, <em class="sig-param">start_seed: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.RandomSplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></p>
 <p>Standard train test split</p>
 <dl class="field-list simple">
@@ -328,6 +331,13 @@
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.preprocessing.SequentialSplit">
+<em class="property">class </em><code class="sig-name descname">SequentialSplit</code><span class="sig-paren">(</span><em class="sig-param">train_percentage: float</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.SequentialSplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></p>
+<p>Take the first N samples for train set and the rest for test set; no shuffle.</p>
 </dd></dl>
 
 <dl class="function">
