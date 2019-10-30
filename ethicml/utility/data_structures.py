@@ -1,6 +1,6 @@
 """Data structures that are used throughout the code"""
 from pathlib import Path
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator
 from typing_extensions import Literal, Final
 
@@ -10,13 +10,25 @@ from pandas.testing import assert_index_equal
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
 
 
-@dataclass(frozen=True)  # "frozen" means the objects are immutable
 class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute"""
 
-    x: pd.DataFrame  # features
-    s: pd.DataFrame  # senstitive attributes
-    name: Optional[str] = None  # name of the dataset
+    def __init__(self, x: pd.DataFrame, s: pd.DataFrame, name: Optional[str] = None):
+        self.__x: pd.DataFrame = x
+        self.__s: pd.DataFrame = s
+        self.__name: Optional[str] = name
+
+    @property
+    def x(self) -> pd.DataFrame:
+        return self.__x
+
+    @property
+    def s(self) -> pd.DataFrame:
+        return self.__s
+
+    @property
+    def name(self) -> Optional[str]:
+        return self.__name
 
     def __iter__(self) -> Iterator[pd.DataFrame]:
         return iter([self.x, self.s])
@@ -47,18 +59,25 @@ class TestTuple:
         name: Optional[str] = None,
     ) -> "TestTuple":
         """Create a copy of the TestTuple but change the given values"""
-        changes = {k: v for k, v in [("x", x), ("s", s), ("name", name)] if v is not None}
-        return replace(self, **changes)
+        return TestTuple(
+            x=x if x is not None else self.x,
+            s=s if s is not None else self.s,
+            name=name if name is not None else self.name,
+        )
 
 
-@dataclass(frozen=True)
-class DataTupleValues:
-    y: pd.DataFrame  # class labels
-
-
-@dataclass(frozen=True)
-class DataTuple(TestTuple, DataTupleValues):
+class DataTuple(TestTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels"""
+
+    def __init__(
+        self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
+    ):
+        super().__init__(x=x, s=s, name=name)
+        self.__y: pd.DataFrame = y
+
+    @property
+    def y(self) -> pd.DataFrame:
+        return self.__y
 
     def __iter__(self) -> Iterator[pd.DataFrame]:
         return iter([self.x, self.s, self.y])
@@ -100,14 +119,19 @@ class DataTuple(TestTuple, DataTupleValues):
         name: Optional[str] = None,
     ) -> "DataTuple":
         """Create a copy of the DataTuple but change the given values"""
-        changes = {k: v for k, v in [("x", x), ("s", s), ("y", y), ("name", name)] if v is not None}
-        return replace(self, **changes)
+        return DataTuple(
+            x=x if x is not None else self.x,
+            s=s if s is not None else self.s,
+            y=y if y is not None else self.y,
+            name=name if name is not None else self.name,
+        )
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
         """Concatenate the dataframes in the DataTuple and then apply a function to it"""
         self.x.columns = self.x.columns.astype(str)
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
+        assert len(joined) == len(self), "something went wrong while concatenating"
         joined = mapper(joined)
         result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
