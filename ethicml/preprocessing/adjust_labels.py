@@ -7,9 +7,7 @@ import pandas as pd
 
 from ethicml.utility.data_structures import DataTuple
 
-__all__ = [
-    'LabelBinarizer',
-]
+__all__ = ['LabelBinarizer']
 
 
 def assert_binary_labels(data_tuple: DataTuple) -> None:
