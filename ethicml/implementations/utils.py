@@ -2,14 +2,40 @@
 Useful functions used in implementations
 """
 import sys
-import argparse
 from pathlib import Path
 from typing import Tuple, Union, List, Optional, Dict, Any
 
 import pandas as pd
 import numpy as np
+import tap
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
+
+
+class PreAlgoArgs(tap.Tap):
+    """ArgumentParser that already has arguments for the paths
+
+    This is a quick way to create a parser that can parse the filenames for the data. This function
+    can be used by pre-algorithms to implement a commandline interface.
+    """
+
+    # paths to the files with the data
+    train_x: str
+    train_s: str
+    train_y: str
+    train_name: str
+    test_x: str
+    test_s: str
+    test_name: str
+
+    # paths to where the processed inputs should be stored
+    new_train_x: str
+    new_train_s: str
+    new_train_y: str
+    new_train_name: str
+    new_test_x: str
+    new_test_s: str
+    new_test_name: str
 
 
 class InAlgoInterface:
@@ -54,7 +80,7 @@ def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
     return train_paths.load_from_feather(), test_paths.load_from_feather()
 
 
-def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: argparse.Namespace):
+def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoArgs):
     """Save the data to the file that was specified in the commandline arguments"""
     assert isinstance(transforms[0], DataTuple)
     assert isinstance(transforms[1], TestTuple)
@@ -71,31 +97,3 @@ def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: argparse
     _save(train.y, args.new_train_y)
     _save(test.x, args.new_test_x)
     _save(test.s, args.new_test_s)
-
-
-def pre_algo_argparser() -> argparse.ArgumentParser:
-    """ArgumentParser that already has arguments for the paths
-
-    This is a quick way to create a parser that can parse the filenames for the data. This function
-    can be used by pre-algorithms to implement a commandline interface.
-    """
-    parser = argparse.ArgumentParser()
-
-    # paths to the files with the data
-    parser.add_argument("--train_x", required=True)
-    parser.add_argument("--train_s", required=True)
-    parser.add_argument("--train_y", required=True)
-    parser.add_argument("--train_name", required=True)
-    parser.add_argument("--test_x", required=True)
-    parser.add_argument("--test_s", required=True)
-    parser.add_argument("--test_name", required=True)
-
-    # paths to where the processed inputs should be stored
-    parser.add_argument("--new_train_x", required=True)
-    parser.add_argument("--new_train_s", required=True)
-    parser.add_argument("--new_train_y", required=True)
-    parser.add_argument("--new_train_name", required=True)
-    parser.add_argument("--new_test_x", required=True)
-    parser.add_argument("--new_test_s", required=True)
-    parser.add_argument("--new_test_name", required=True)
-    return parser
