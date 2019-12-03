@@ -49,6 +49,7 @@ class Agarwal(InAlgorithmAsync):
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         from ethicml.implementations import agarwal
+
         return agarwal.train_and_predict(
             train=train,
             test=test,
@@ -64,6 +65,7 @@ class Agarwal(InAlgorithmAsync):
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         from ethicml.implementations import agarwal
+
         script = ["-m", agarwal.train_and_predict.__module__]
         args = conventional_interface(
             train_paths,
