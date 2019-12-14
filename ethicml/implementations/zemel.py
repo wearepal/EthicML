@@ -296,6 +296,8 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
 
 
 class ZemelArgs(PreAlgoArgs):
+    """Arguments for the Zemel algorithm"""
+
     clusters: int
     Ax: float
     Ay: float
@@ -310,10 +312,9 @@ def main():
     """main method to run model"""
     args = ZemelArgs()
     args.parse_args()
-    flags = args.as_dict()
 
-    train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags), args)
+    train, test = load_data_from_flags(args)
+    save_transformations(train_and_transform(train, test, args.as_dict()), args)
 
 
 if __name__ == "__main__":

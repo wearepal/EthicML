@@ -169,13 +169,10 @@ class VfaeArgs(PreAlgoArgs):
 def main():
     """main method to run model"""
     args = VfaeArgs()
-
     args.parse_args()
 
-    flags = args.as_dict()
-
-    train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags), args)
+    train, test = load_data_from_flags(args)
+    save_transformations(train_and_transform(train, test, args.as_dict()), args)
 
 
 if __name__ == "__main__":

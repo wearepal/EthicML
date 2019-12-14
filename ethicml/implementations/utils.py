@@ -3,7 +3,7 @@ Useful functions used in implementations
 """
 import sys
 from pathlib import Path
-from typing import Tuple, Union, List, Optional, Dict, Any
+from typing import Tuple, Union, List, Optional
 
 import pandas as pd
 import numpy as np
@@ -15,7 +15,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, Tes
 class PreAlgoArgs(tap.Tap):
     """ArgumentParser that already has arguments for the paths
 
-    This is a quick way to create a parser that can parse the filenames for the data. This function
+    This is a quick way to create a parser that can parse the filenames for the data. This class
     can be used by pre-algorithms to implement a commandline interface.
     """
 
@@ -66,17 +66,12 @@ class InAlgoInterface:
         return self.args[8:]
 
 
-def load_data_from_flags(flags: Dict[str, Any]) -> Tuple[DataTuple, TestTuple]:
+def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags"""
     train_paths = PathTuple(
-        x=Path(flags["train_x"]),
-        s=Path(flags["train_s"]),
-        y=Path(flags["train_y"]),
-        name=flags["train_name"],
+        x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name,
     )
-    test_paths = TestPathTuple(
-        x=Path(flags['test_x']), s=Path(flags['test_s']), name=flags["test_name"]
-    )
+    test_paths = TestPathTuple(x=Path(flags.test_x), s=Path(flags.test_s), name=flags.test_name)
     return train_paths.load_from_feather(), test_paths.load_from_feather()
 
 

@@ -6,7 +6,6 @@ Implementation of Beutel's adversarially learned fair representations
 
 import random
 from typing import List, Any, Tuple, Sequence, NamedTuple
-from typing_extensions import Literal
 import pandas as pd
 import numpy as np
 import torch
@@ -415,7 +414,7 @@ def main():
     # model parameters
     args.parse_args()
     # convert args object to a dictionary and load the feather files from the paths
-    train, test = load_data_from_flags(args.as_dict())
+    train, test = load_data_from_flags(args)
 
     # make the argparse object type-safe (is there an easier way to do this?)
     flags = BeutelSettings(
