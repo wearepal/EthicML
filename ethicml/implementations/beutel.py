@@ -15,11 +15,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 from torch.optim import Adam
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
-from ethicml.implementations.utils import (
-    load_data_from_flags,
-    save_transformations,
-    PreAlgoArgs,
-)
+from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
 from .pytorch_common import CustomDataset, TestDataset

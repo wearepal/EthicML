@@ -27,6 +27,7 @@ from ethicml.algorithms.inprocess import (
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
+    Agarwal,
 )
 from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy, AbsCV
@@ -417,48 +418,46 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert count_true(predictions.values == -1) == 189
 
 
-# Agarwal is currently broken
-# TODO: fix Agarwal
-# def test_agarwal():
-#     """test agarwal"""
-#     train, test = get_train_test()
-#     model: InAlgorithm = Agarwal()
-#     assert model is not None
-#     assert model.name == "Agarwal LR"
+def test_agarwal():
+    """test agarwal"""
+    train, test = get_train_test()
+    model: InAlgorithm = Agarwal()
+    assert model is not None
+    assert model.name == "Agarwal LR"
 
-#     predictions: pd.DataFrame = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 145
-#     assert predictions.values[predictions.values == -1].shape[0] == 255
+    predictions: pd.DataFrame = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 146
+    assert predictions.values[predictions.values == -1].shape[0] == 254
 
-#     model = Agarwal(fairness="EqOd")
-#     predictions = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 162
-#     assert predictions.values[predictions.values == -1].shape[0] == 238
+    model = Agarwal(fairness="EqOd")
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 150
+    assert predictions.values[predictions.values == -1].shape[0] == 250
 
-#     model = Agarwal(classifier="SVM")
-#     predictions = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 141
-#     assert predictions.values[predictions.values == -1].shape[0] == 259
+    model = Agarwal(classifier="SVM")
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 119
+    assert predictions.values[predictions.values == -1].shape[0] == 281
 
-#     model = Agarwal(classifier="SVM", kernel='linear')
-#     predictions = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 211
-#     assert predictions.values[predictions.values == -1].shape[0] == 189
+    model = Agarwal(classifier="SVM", kernel='linear')
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 212
+    assert predictions.values[predictions.values == -1].shape[0] == 188
 
-#     model = Agarwal(classifier="SVM", fairness="EqOd")
-#     predictions = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 159
-#     assert predictions.values[predictions.values == -1].shape[0] == 241
+    model = Agarwal(classifier="SVM", fairness="EqOd")
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 157
+    assert predictions.values[predictions.values == -1].shape[0] == 243
 
-#     model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
-#     predictions = model.run(train, test)
-#     assert predictions.values[predictions.values == 1].shape[0] == 211
-#     assert predictions.values[predictions.values == -1].shape[0] == 189
+    model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
+    predictions = model.run(train, test)
+    assert predictions.values[predictions.values == 1].shape[0] == 185
+    assert predictions.values[predictions.values == -1].shape[0] == 215
 
-#     model = Agarwal(classifier="SVM", fairness="EqOd")
-#     predictions = run_blocking(model.run_async(train, test))
-#     assert predictions.values[predictions.values == 1].shape[0] == 159
-#     assert predictions.values[predictions.values == -1].shape[0] == 241
+    model = Agarwal(classifier="SVM", fairness="EqOd")
+    predictions = run_blocking(model.run_async(train, test))
+    assert predictions.values[predictions.values == 1].shape[0] == 157
+    assert predictions.values[predictions.values == -1].shape[0] == 243
 
 
 def test_threaded_lr():

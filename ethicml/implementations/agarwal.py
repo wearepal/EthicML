@@ -1,14 +1,20 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)"""
+import random
+
+import numpy as np
 import pandas as pd
 
-from fairlearn.classred import expgrad
-from fairlearn.moments import Moment, DP, EO
+from fairlearn.reductions import (
+    ExponentiatedGradient,
+    DemographicParity,
+    EqualizedOdds,
+    ConditionalSelectionRate,
+)
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType, str_to_fair_type
 from ethicml.implementations.utils import InAlgoInterface
 from ethicml.implementations.svm import select_svm
-from ethicml.utility.heaviside import Heaviside
 
 
 def train_and_predict(
@@ -23,7 +29,15 @@ def train_and_predict(
 ):
     """Train a logistic regression model and compute predictions on the given test data"""
 
-    fairness_class: Moment = DP() if fairness == "DP" else EO()
+    random.seed(888)
+    np.random.seed(888)
+
+    fairness_class: ConditionalSelectionRate
+    if fairness == "DP":
+        fairness_class = DemographicParity()
+    else:
+        fairness_class = EqualizedOdds()
+
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
@@ -33,21 +47,14 @@ def train_and_predict(
     data_y = train.y[train.y.columns[0]]
     data_a = train.s[train.s.columns[0]]
 
-    res_tuple = expgrad(
-        dataX=data_x,
-        dataA=data_a,
-        dataY=data_y,
-        learner=model,
-        cons=fairness_class,
-        eps=eps,
-        T=iters,
+    exponentiated_gradient = ExponentiatedGradient(
+        model, constraints=fairness_class, eps=eps, T=iters
     )
+    exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
-    res = res_tuple._asdict()
+    randomized_predictions = exponentiated_gradient.predict(test.x)
+    preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
-    preds = pd.DataFrame(res["best_classifier"](test.x), columns=["preds"])
-    helper = Heaviside()
-    preds = preds.apply(helper.apply)
     min_class_label = train.y[train.y.columns[0]].min()
     if preds["preds"].min() != preds["preds"].max():
         preds = preds.replace(preds["preds"].min(), min_class_label)
