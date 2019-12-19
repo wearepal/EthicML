@@ -454,6 +454,9 @@ def test_agarwal():
     assert predictions.values[predictions.values == 1].shape[0] == 185
     assert predictions.values[predictions.values == -1].shape[0] == 215
 
+
+def test_threaded_agarwal():
+    train, test = get_train_test()
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = run_blocking(model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 157
