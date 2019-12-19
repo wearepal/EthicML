@@ -155,7 +155,7 @@ def train_and_transform(
             elif flags.fairness == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif flags.fairness == "DP":
-                mask = torch.ones(s_pred.shape).byte()
+                mask = torch.ones(s_pred.shape).bool()
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -210,7 +210,7 @@ def get_mask(flags: BeutelSettings, s_pred, class_label):
     elif flags.fairness == "EqOd":
         raise NotImplementedError("Not implemented Eq. Odds yet")
     elif flags.fairness == "DP":
-        mask = torch.ones(s_pred.shape).byte()
+        mask = torch.ones(s_pred.shape).bool()
 
     return mask
 

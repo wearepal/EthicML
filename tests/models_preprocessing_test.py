@@ -35,8 +35,8 @@ def test_beutel():
     assert svm_model.name == "SVM"
 
     predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
 
 def test_vfae():
@@ -88,8 +88,8 @@ def test_vfae():
     assert new_test.x.shape[0] == test.x.shape[0]
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 207
-    assert predictions.values[predictions.values == -1].shape[0] == 193
+    assert predictions.values[predictions.values == 1].shape[0] == 205
+    assert predictions.values[predictions.values == -1].shape[0] == 195
 
 
 def test_zemel():
@@ -179,8 +179,8 @@ def test_threaded_beutel():
     assert classifier.name == "SVM"
 
     predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
@@ -199,8 +199,8 @@ def test_threaded_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    assert predictions.values[predictions.values == 1].shape[0] == 200
+    assert predictions.values[predictions.values == -1].shape[0] == 200
 
 
 def test_threaded_vfae():
@@ -224,8 +224,8 @@ def test_threaded_vfae():
     assert classifier.name == "SVM"
 
     predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 193
-    assert predictions.values[predictions.values == -1].shape[0] == 207
+    assert predictions.values[predictions.values == 1].shape[0] == 194
+    assert predictions.values[predictions.values == -1].shape[0] == 206
 
 
 def test_threaded_custom_beutel():

@@ -441,8 +441,8 @@ def test_agarwal():
 
     model = Agarwal(classifier="SVM", kernel='linear')
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 212
-    assert predictions.values[predictions.values == -1].shape[0] == 188
+    assert predictions.values[predictions.values == 1].shape[0] == 141
+    assert predictions.values[predictions.values == -1].shape[0] == 259
 
     model = Agarwal(classifier="SVM", fairness="EqOd")
     predictions = model.run(train, test)
@@ -451,8 +451,8 @@ def test_agarwal():
 
     model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 185
-    assert predictions.values[predictions.values == -1].shape[0] == 215
+    assert predictions.values[predictions.values == 1].shape[0] == 150
+    assert predictions.values[predictions.values == -1].shape[0] == 250
 
 
 def test_threaded_agarwal():
