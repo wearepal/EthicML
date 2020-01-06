@@ -11,11 +11,7 @@ from torch.optim import Adam
 
 from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy, Dataset
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
-from ethicml.implementations.utils import (
-    PreAlgoArgs,
-    load_data_from_flags,
-    save_transformations,
-)
+from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.implementations.vfae_modules.utils import loss_function
 from ethicml.implementations.vfae_modules.vfae_network import VFAENetwork
 from ethicml.utility.data_structures import DataTuple, TestTuple

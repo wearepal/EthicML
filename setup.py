@@ -29,7 +29,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
-        "fairlearn >= 0.2.0",
+        "fairlearn >= 0.4.0",
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2",
         "numpy >= 1.14.2",

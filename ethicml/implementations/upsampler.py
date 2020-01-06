@@ -7,11 +7,7 @@ from typing import Optional, List, Dict, Tuple
 import pandas as pd
 
 from ethicml.algorithms.inprocess import LRProb
-from ethicml.implementations.utils import (
-    PreAlgoArgs,
-    load_data_from_flags,
-    save_transformations,
-)
+from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple
 
 

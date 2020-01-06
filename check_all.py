@@ -37,5 +37,6 @@ print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
 
 # black
 print("############  black ##############")
-black.main(['-l', '100', '-t', 'py36', '-S', './'])
+black.main(['-l', '100', '-t', 'py36', '-S', './ethicml', '--config', '.black-config.toml'])
+black.main(['-l', '100', '-t', 'py36', '-S', './tests', '--config', '.black-config.toml'])
 print('')

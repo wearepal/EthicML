@@ -69,7 +69,7 @@ class InAlgoInterface:
 def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags"""
     train_paths = PathTuple(
-        x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name,
+        x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name
     )
     test_paths = TestPathTuple(x=Path(flags.test_x), s=Path(flags.test_s), name=flags.test_name)
     return train_paths.load_from_feather(), test_paths.load_from_feather()
