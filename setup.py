@@ -40,8 +40,7 @@ setup(
         "seaborn >= 0.9.0",
         "tornado == 4.5.3",
         "tqdm >= 4.31.1",
-        "typed-argument-parser "
-        "@ git+https://github.com/predictive-analytics-lab/typed-argument-parser@v1.4",
+        "typed-argument-parser == 1.4",
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
