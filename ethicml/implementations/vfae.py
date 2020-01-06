@@ -168,7 +168,7 @@ class VfaeArgs(PreAlgoArgs):
 
 def main():
     """main method to run model"""
-    args = VfaeArgs()
+    args = VfaeArgs(explicit_bool=True)
     args.parse_args()
 
     train, test = load_data_from_flags(args)
