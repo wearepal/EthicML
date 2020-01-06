@@ -15,11 +15,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 from torch.optim import Adam
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
-from ethicml.implementations.utils import (
-    load_data_from_flags,
-    save_transformations,
-    PreAlgoArgs,
-)
+from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
 from .pytorch_common import CustomDataset, TestDataset
@@ -159,7 +155,7 @@ def train_and_transform(
             elif flags.fairness == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif flags.fairness == "DP":
-                mask = torch.ones(s_pred.shape).byte()
+                mask = torch.ones(s_pred.shape, dtype=torch.uint8)
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -214,7 +210,7 @@ def get_mask(flags: BeutelSettings, s_pred, class_label):
     elif flags.fairness == "EqOd":
         raise NotImplementedError("Not implemented Eq. Odds yet")
     elif flags.fairness == "DP":
-        mask = torch.ones(s_pred.shape).byte()
+        mask = torch.ones(s_pred.shape, dtype=torch.uint8)
 
     return mask
 

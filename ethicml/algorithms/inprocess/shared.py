@@ -41,13 +41,11 @@ def settings_for_svm_lr(
             C = SVC().C
         else:
             raise NotImplementedError(f"Unsupported classifier \"{classifier}\".")
-    else:
-        C = C
+
     if kernel is None:
         if classifier == "SVM":
             kernel = SVC().kernel
         else:
             kernel = ""
-    else:
-        kernel = kernel
+
     return C, kernel
