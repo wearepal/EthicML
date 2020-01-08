@@ -1,4 +1,6 @@
 """Run all checks"""
+import subprocess
+
 import pytest
 from pylint import lint as pylint
 from mypy import api as mypy
@@ -8,6 +10,11 @@ import black
 print("############### pytest #################")
 pytest.main(['-vv', '--cov=ethicml', '--cov-fail-under=80', 'tests/'])
 print('')
+
+# pydocstyle
+print("############### pydocstyle #################")
+subprocess.call(["pydocstyle", "--convention=google", "ethicml"])
+print("")
 
 # pylint
 print("############### pylint #################")
