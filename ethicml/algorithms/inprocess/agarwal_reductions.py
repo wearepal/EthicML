@@ -7,6 +7,7 @@ from typing import List, Set, Optional
 import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
+from ethicml.implementations import agarwal
 from ethicml.utility.data_structures import (
     PathTuple,
     TestPathTuple,
@@ -15,7 +16,6 @@ from ethicml.utility.data_structures import (
     FairnessType,
     ClassifierType,
 )
-from ethicml.implementations import agarwal
 from .shared import conventional_interface, settings_for_svm_lr
 
 
@@ -49,6 +49,7 @@ class Agarwal(InAlgorithmAsync):
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+
         return agarwal.train_and_predict(
             train=train,
             test=test,
@@ -63,6 +64,7 @@ class Agarwal(InAlgorithmAsync):
     def _script_command(
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
+
         script = ["-m", agarwal.train_and_predict.__module__]
         args = conventional_interface(
             train_paths,

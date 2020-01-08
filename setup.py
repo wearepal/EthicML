@@ -29,7 +29,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
-        "fairlearn >= 0.2.0",
+        "fairlearn >= 0.4.0",
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2",
         "numpy >= 1.14.2",
@@ -40,19 +40,13 @@ setup(
         "seaborn >= 0.9.0",
         "tornado == 4.5.3",
         "tqdm >= 4.31.1",
+        "typed-argument-parser == 1.4",
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
         'ci': ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch >= 1.1.0, <= 1.1.0.post2"],
         # use `pip install EthicML[dev]` to install development packages
-        'dev': [
-            "black",
-            "mypy",
-            "pylint",
-            "pytest",
-            "pytest-cov",
-            "pre-commit",
-        ],
+        'dev': ["black", "mypy", "pylint", "pytest", "pytest-cov", "pre-commit"],
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",

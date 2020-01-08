@@ -7,13 +7,15 @@ from typing import Tuple
 import pandas as pd
 from ethicml.utility.data_structures import DataTuple
 
+__all__ = ['dataset_from_cond', 'domain_split', 'query_dt']
+
 
 def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
     """Return the dataframe that meets some condition"""
     original_column_names = dataset.columns
     # make column names query-friendly
     dataset = dataset.rename(axis="columns", mapper=make_valid_variable_name)
-    subset = dataset.query(cond)
+    subset = dataset.query(cond).reset_index(drop=True)
     subset.columns = original_column_names
     return subset
 

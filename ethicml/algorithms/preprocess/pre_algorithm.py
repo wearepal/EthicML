@@ -6,7 +6,6 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Tuple, List
 from abc import abstractmethod
-from dataclasses import replace
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
@@ -73,11 +72,11 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
             transformed_test = transformed_test_paths.load_from_feather()
 
         # prefix the name of the algorithm to the dataset name
-        transformed_train = replace(
-            transformed_train, name=None if train.name is None else f"{self.name}: {train.name}"
+        transformed_train = transformed_train.replace(
+            name=None if train.name is None else f"{self.name}: {train.name}"
         )
-        transformed_test = replace(
-            transformed_test, name=None if test.name is None else f"{self.name}: {test.name}"
+        transformed_test = transformed_test.replace(
+            name=None if test.name is None else f"{self.name}: {test.name}"
         )
         return transformed_train, transformed_test
 

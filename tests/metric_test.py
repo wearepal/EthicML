@@ -20,6 +20,7 @@ from ethicml.metrics import (
     AS,
     BCR,
     CV,
+    F1,
     Metric,
     NMI,
     PPV,
@@ -39,15 +40,17 @@ from tests.run_algorithm_test import get_train_test
 RTOL = 1e-5  # relative tolerance when comparing two floats
 
 
-def test_get_acc_of_predictions():
+@pytest.mark.parametrize(
+    "name,metric,expected_value", [("Accuracy", Accuracy(), 0.89), ("F1", F1(), 0.893)]
+)
+def test_get_score_of_predictions(name: str, metric: Metric, expected_value: float) -> None:
     """test get acc of predictions"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: pd.DataFrame = model.run(train, test)
-    acc: Metric = Accuracy()
-    assert acc.name == "Accuracy"
-    score = acc.score(predictions, test)
-    assert score == 0.89
+    assert metric.name == name
+    score = metric.score(predictions, test)
+    assert score == approx(expected_value, abs=0.001)
 
 
 def test_mni_preds_and_s():

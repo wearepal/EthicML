@@ -5,8 +5,7 @@ Implementation of Beutel's adversarially learned fair representations
 # pylint: disable=arguments-differ
 
 import random
-from typing import List, Any, Tuple, Sequence
-from dataclasses import dataclass
+from typing import List, Any, Tuple, Sequence, NamedTuple
 import pandas as pd
 import numpy as np
 import torch
@@ -16,11 +15,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 from torch.optim import Adam
 
 from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
-from ethicml.implementations.utils import (
-    load_data_from_flags,
-    save_transformations,
-    pre_algo_argparser,
-)
+from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
 from .pytorch_common import CustomDataset, TestDataset
@@ -30,8 +25,7 @@ STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
-@dataclass(frozen=True)  # "frozen" makes it immutable
-class BeutelSettings:
+class BeutelSettings(NamedTuple):
     """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
 
     fairness: FairnessType
@@ -161,7 +155,7 @@ def train_and_transform(
             elif flags.fairness == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif flags.fairness == "DP":
-                mask = torch.ones(s_pred.shape).byte()
+                mask = torch.ones(s_pred.shape, dtype=torch.uint8)
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -216,7 +210,7 @@ def get_mask(flags: BeutelSettings, s_pred, class_label):
     elif flags.fairness == "EqOd":
         raise NotImplementedError("Not implemented Eq. Odds yet")
     elif flags.fairness == "DP":
-        mask = torch.ones(s_pred.shape).byte()
+        mask = torch.ones(s_pred.shape, dtype=torch.uint8)
 
     return mask
 
@@ -394,26 +388,29 @@ class Model(nn.Module):
         return encoded, s_hat, y_hat
 
 
+class BeutelArgs(PreAlgoArgs):
+    fairness: FairnessType
+    enc_size: List[int]
+    adv_size: List[int]
+    pred_size: List[int]
+    enc_activation: str
+    adv_activation: str
+    batch_size: int
+    y_loss: str
+    s_loss: str
+    epochs: int
+    adv_weight: float
+    validation_pcnt: float
+
+
 def main():
     """Load data from feather files, pass it to `train_and_transform` and then save the result"""
-    parser = pre_algo_argparser()
+    args = BeutelArgs()
 
     # model parameters
-    parser.add_argument("--fairness", choices=["DP", "EqOp", "EqOd"], required=True)
-    parser.add_argument("--enc_size", type=int, nargs="+", required=True)
-    parser.add_argument("--adv_size", type=int, nargs="+", required=True)
-    parser.add_argument("--pred_size", type=int, nargs="+", required=True)
-    parser.add_argument("--enc_activation", required=True)
-    parser.add_argument("--adv_activation", required=True)
-    parser.add_argument("--batch_size", type=int, required=True)
-    parser.add_argument("--y_loss", required=True)
-    parser.add_argument("--s_loss", required=True)
-    parser.add_argument("--epochs", type=int, required=True)
-    parser.add_argument("--adv_weight", type=float, required=True)
-    parser.add_argument("--validation_pcnt", type=float, required=True)
-    args = parser.parse_args()
+    args.parse_args()
     # convert args object to a dictionary and load the feather files from the paths
-    train, test = load_data_from_flags(vars(args))
+    train, test = load_data_from_flags(args)
 
     # make the argparse object type-safe (is there an easier way to do this?)
     flags = BeutelSettings(

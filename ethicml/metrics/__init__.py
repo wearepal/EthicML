@@ -10,28 +10,7 @@ Example:
 
    run_metrics(predictions, test_data, metrics=[Accuracy, TPR, ProbPos])
 """
-__all__ = [
-    "Accuracy",
-    "AS",
-    "BCR",
-    "confusion_matrix",
-    "LabelOutOfBounds",
-    "CV",
-    "AbsCV",
-    "Hsic",
-    "Metric",
-    "NMI",
-    "NPV",
-    "PPV",
-    "ProbNeg",
-    "ProbOutcome",
-    "ProbPos",
-    "Theil",
-    "TNR",
-    "TPR",
-]
-
-from .accuracy import Accuracy
+from .accuracy import *
 from .anti_spur import AS
 from .bcr import BCR
 from .confusion_matrix import confusion_matrix, LabelOutOfBounds

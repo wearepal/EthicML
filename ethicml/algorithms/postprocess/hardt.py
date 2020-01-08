@@ -100,9 +100,8 @@ class Hardt(PostAlgorithm):
         om_tp = np.logical_and(oconst, y_true[mask_s0] == self._favorable_label)
 
         # A_eq - 2-D array which, when matrix-multiplied by x,
-        # gives the values of the equality constraints at x
-        # b_eq - 1-D array of values representing the RHS of each equality
-        # constraint (row) in A_eq.
+        # gives the values of the equality constraints at x.
+        # b_eq - 1-D array of values representing the RHS of each equality constraint (row) in A_eq.
         # Used to impose equality of odds constraint
         a_eq = [
             [
@@ -142,8 +141,8 @@ class Hardt(PostAlgorithm):
 
         # Randomly flip labels according to the probabilities in model_params
         self_fair_pred = test_preds_numpy[test.s[test.s.columns[0]].to_numpy() == 0].copy()
-        self_pp_indices, = np.nonzero(test_preds_numpy[mask_s1] == self._favorable_label)
-        self_pn_indices, = np.nonzero(test_preds_numpy[mask_s1] == self._unfavorable_label)
+        self_pp_indices = (test_preds_numpy[mask_s1] == self._favorable_label).nonzero()[0]
+        self_pn_indices = (test_preds_numpy[mask_s1] == self._unfavorable_label).nonzero()[0]
         self._random.shuffle(self_pp_indices)
         self._random.shuffle(self_pn_indices)
 
@@ -153,8 +152,8 @@ class Hardt(PostAlgorithm):
         self_fair_pred[p2n_indices] = self._unfavorable_label
 
         othr_fair_pred = test_preds_numpy[mask_s0].copy()
-        othr_pp_indices, = np.nonzero(test_preds_numpy[mask_s0] == self._favorable_label)
-        othr_pn_indices, = np.nonzero(test_preds_numpy[mask_s0] == self._unfavorable_label)
+        othr_pp_indices = (test_preds_numpy[mask_s0] == self._favorable_label).nonzero()[0]
+        othr_pn_indices = (test_preds_numpy[mask_s0] == self._unfavorable_label).nonzero()[0]
         self._random.shuffle(othr_pp_indices)
         self._random.shuffle(othr_pn_indices)
 

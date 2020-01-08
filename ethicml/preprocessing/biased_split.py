@@ -2,10 +2,18 @@
 from typing import Tuple, Sequence, Dict
 
 import pandas as pd
+import numpy as np
 
 from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variable_name
 from ethicml.utility.data_structures import concat_dt, DataTuple
-from .train_test_split import ProportionalTrainTestSplit, DataSplitter
+from .train_test_split import ProportionalSplit, DataSplitter
+
+__all__ = [
+    'BiasedDebiasedSubsets',
+    'BiasedSubset',
+    'get_biased_and_debiased_subsets',
+    'get_biased_subset',
+]
 
 
 class BiasedSubset(DataSplitter):
@@ -32,7 +40,7 @@ class BiasedSubset(DataSplitter):
         self.data_efficient = data_efficient
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_subset(
@@ -69,10 +77,12 @@ def get_biased_subset(
     Returns:
         biased and unbiased dataset
     """
+    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
+    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
 
-    for_biased_subset, normal_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
+    normal_subset, for_biased_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
 
     sy_equal, sy_opposite = _get_sy_equal_and_opp(for_biased_subset, s_name, y_name)
 
@@ -98,7 +108,7 @@ def get_biased_subset(
 
     if mix_fact == 0:
         # s and y should be very correlated in the biased subset
-        assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
+        assert all(biased_subset.s[s_name] == biased_subset.y[y_name])
 
     biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
     normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")
@@ -129,7 +139,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         self.fixed_unbiased = fixed_unbiased
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_and_debiased_subsets(
@@ -169,11 +179,12 @@ def get_biased_and_debiased_subsets(
     Returns:
         biased and unbiased dataset
     """
+    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
+    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
     sy_equal, sy_opposite = _get_sy_equal_and_opp(data, s_name, y_name)
 
-    assert 0 <= unbiased_pcnt <= 1
     # how much of sy_equal should be reserved for the biased subset:
 
     if fixed_unbiased:
@@ -222,7 +233,7 @@ def get_biased_and_debiased_subsets(
     )
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.11
+    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.5
 
     if mixing_factor == 0:
         # s and y should be very correlated in the biased subset
@@ -234,20 +245,27 @@ def get_biased_and_debiased_subsets(
 
 
 def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
-    splitter = ProportionalTrainTestSplit(train_percentage=first_pcnt, start_seed=seed)
-    return splitter(data, 0)[0:2]
+    splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
+    return splitter(data)[0:2]
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
     """Get the subset where s and y are equal and the subset where they are opposite"""
     s_name = make_valid_variable_name(s_name)
     y_name = make_valid_variable_name(y_name)
+    s_values = np.unique(data.s.to_numpy())
+    y_values = np.unique(data.y.to_numpy())
+    assert len(s_values) == 2, "function only works with binary sensitive attribute"
+    assert len(y_values) == 2, "function only works with binary labels"
+    # we implicitly assume that the minimum value of s and y are equal; same for the maximum value
+    s_0, s_1 = s_values
+    y_0, y_1 = y_values
     # datapoints where s and y are the same
     s_and_y_equal = query_dt(
-        data, f"({s_name} == 0 & {y_name} == 0) | ({s_name} == 1 & {y_name} == 1)"
+        data, f"({s_name} == {s_0} & {y_name} == {y_0}) | ({s_name} == {s_1} & {y_name} == {y_1})"
     )
     # datapoints where they are not the same
     s_and_y_opposite = query_dt(
-        data, f"({s_name} == 1 & {y_name} == 0) | ({s_name} == 0 & {y_name} == 1)"
+        data, f"({s_name} == {s_0} & {y_name} == {y_1}) | ({s_name} == {s_1} & {y_name} == {y_0})"
     )
     return s_and_y_equal, s_and_y_opposite

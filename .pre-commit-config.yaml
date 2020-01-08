@@ -4,4 +4,4 @@ repos:
     hooks:
     - id: black
       args: [--config=.black-config.toml]
-      language_version: python3.6
+      language_version: python3.7

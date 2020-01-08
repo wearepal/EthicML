@@ -7,11 +7,7 @@ from typing import Optional, List, Dict, Tuple
 import pandas as pd
 
 from ethicml.algorithms.inprocess import LRProb
-from ethicml.implementations.utils import (
-    pre_algo_argparser,
-    load_data_from_flags,
-    save_transformations,
-)
+from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple
 
 
@@ -158,18 +154,17 @@ def train_and_transform(
     return upsampled_train, TestTuple(x=test.x, s=test.s, name=test.name)
 
 
+class UpsamplerArgs(PreAlgoArgs):
+    strategy: str
+
+
 def main() -> None:
     """This function runs the Upsampler as a standalone program"""
-    parser = pre_algo_argparser()
+    args = UpsamplerArgs()
+    args.parse_args()
 
-    parser.add_argument("--strategy", type=str, required=True)
-
-    args = parser.parse_args()
-
-    flags = vars(parser.parse_args())
-
-    train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags), args)
+    train, test = load_data_from_flags(args)
+    save_transformations(train_and_transform(train, test, args.as_dict()), args)
 
 
 if __name__ == "__main__":

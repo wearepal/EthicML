@@ -39,7 +39,6 @@ def flag_interface(
         "--new_test_name",
         new_test_paths.name,
     ]
-    print("flags_list", flags_list)
 
     # model parameters
     for key, values in flags.items():

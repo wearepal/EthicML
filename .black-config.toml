@@ -15,10 +15,27 @@ exclude = '''
     | \.hg
     | \.mypy_cache
     | \.venv
+    | .*/\.venv
     | _build
     | buck-out
     | build
     | dist
+    | .github
+    | docs
+    | docsource
+    | examples
+    | plots
+    | results
+    | \.editorconfig
+    | \.gitignore
+    | \.pytest_cache
+    | \.coverage.*
+    | .pre-commit-config.yaml
+    | .pylintrc
+    | CODEOWNERS
+    | LICENSE
+    | mypy.ini
+    | README.md
   )/
 )
 '''

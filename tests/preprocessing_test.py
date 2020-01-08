@@ -10,7 +10,8 @@ import pandas as pd
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import (
-    ProportionalTrainTestSplit,
+    ProportionalSplit,
+    SequentialSplit,
     train_test_split,
     bin_cont_feats,
     get_biased_subset,
@@ -76,7 +77,7 @@ def test_prop_train_test_split():
     data: DataTuple = load_data(Toy())
     train: DataTuple
     test: DataTuple
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.8)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.8)(data, split_id=0)
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
@@ -95,36 +96,36 @@ def test_prop_train_test_split():
     assert count_true(train.y.to_numpy() == 0) == round(0.8 * count_true(data.y.to_numpy() == 0))
 
     len_0_9 = math.floor((2000 / 100) * 90)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.9)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == 2000 - len_0_9
     assert count_true(train.s.to_numpy() == 0) == round(0.9 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.9 * count_true(data.y.to_numpy() == 0))
 
     len_0_7 = math.floor((2000 / 100) * 70)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.7)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == 2000 - len_0_7
     assert count_true(train.s.to_numpy() == 0) == round(0.7 * count_true(data.s.to_numpy() == 0))
     assert count_true(train.y.to_numpy() == 0) == round(0.7 * count_true(data.y.to_numpy() == 0))
 
     len_0_5 = math.floor((2000 / 100) * 50)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.5)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.5)(data, split_id=0)
     assert train.s.shape[0] == len_0_5
     assert test.s.shape[0] == 2000 - len_0_5
 
     len_0_3 = math.floor((2000 / 100) * 30)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.3)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.3)(data, split_id=0)
     assert train.s.shape[0] == len_0_3
     assert test.s.shape[0] == 2000 - len_0_3
 
     len_0_1 = math.floor((2000 / 100) * 10)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.1)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.1)(data, split_id=0)
     assert train.s.shape[0] == len_0_1
     assert test.s.shape[0] == 2000 - len_0_1
 
     len_0_0 = math.floor((2000 / 100) * 0)
-    train, test, _ = ProportionalTrainTestSplit(train_percentage=0.0)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.0)(data, split_id=0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
     assert test.s.shape[0] == 2000 - len_0_0
@@ -189,6 +190,18 @@ def test_binning():
     assert 'age' not in binned.x.columns
 
 
+def test_sequential_split():
+    """test sequential split"""
+    data: DataTuple = load_data(Toy())
+    train: DataTuple
+    test: DataTuple
+    train, test, _ = SequentialSplit(train_percentage=0.8)(data)
+    assert all(data.x.iloc[0] == train.x.iloc[0])
+    assert all(data.x.iloc[-1] == test.x.iloc[-1])
+    assert len(train) == 1600
+    assert len(test) == 400
+
+
 def test_biased_split():
     """test biased split"""
     data = DataTuple(
@@ -202,8 +215,8 @@ def test_biased_split():
     biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (312, 1)
-    assert biased1.y.shape == (312, 1)
+    assert biased1.s.shape == (313, 1)
+    assert biased1.y.shape == (313, 1)
     assert (biased1.s.to_numpy() == biased1.y.to_numpy()).all()
     assert biased1.name == "TestData - Biased (tm=0.0)"
 
@@ -276,8 +289,8 @@ def test_biased_split():
     biased1, subset = get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s!=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (187, 1)
-    assert biased1.y.shape == (187, 1)
+    assert biased1.s.shape == (188, 1)
+    assert biased1.y.shape == (188, 1)
     assert (biased1.s.to_numpy() != biased1.y.to_numpy()).all()
 
     assert subset.s.shape[0] == approx(500, abs=4)
@@ -304,3 +317,41 @@ def test_biased_split():
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
     # assert count == 376 // 2
     assert count == 374 // 2
+
+
+def test_biased_split_sizes():
+    """test biased split sizes"""
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=['feat1-']),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
+        name="TestData",
+    )
+
+    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.8)
+    assert len(biased1) < len(subset)
+    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.2)
+    assert len(biased1) > len(subset)
+
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.0, unbiased_pcnt=0.8, fixed_unbiased=True
+    )
+    assert len(biased2) < len(debiased)
+    biased2, debiased = get_biased_and_debiased_subsets(
+        data, mixing_factor=0.0, unbiased_pcnt=0.2, fixed_unbiased=True
+    )
+    assert len(biased2) > len(debiased)
+
+
+def test_biased_split_nonbinary():
+    """test biased split nonbinary"""
+    # generate data that uses -1 and 1 instead of 0 and 1 for s and y
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=['feat1-']),
+        s=pd.DataFrame([1] * 750 + [-1] * 250, columns=["sens="]),
+        y=pd.DataFrame([1] * 500 + [-1] * 250 + [1] * 125 + [-1] * 125, columns=["label<"]),
+        name="TestData",
+    )
+
+    biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    assert len(biased1) == approx(len(subset), abs=4)

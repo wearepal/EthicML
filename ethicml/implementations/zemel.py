@@ -8,11 +8,7 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 
-from ethicml.implementations.utils import (
-    load_data_from_flags,
-    save_transformations,
-    pre_algo_argparser,
-)
+from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
@@ -295,22 +291,26 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     return pd.DataFrame(transformed_features, columns=dataset.x.columns)
 
 
+class ZemelArgs(PreAlgoArgs):
+    """Arguments for the Zemel algorithm"""
+
+    clusters: int
+    Ax: float
+    Ay: float
+    Az: float
+    max_iter: int
+    maxfun: int
+    epsilon: float
+    threshold: float
+
+
 def main():
     """main method to run model"""
-    parser = pre_algo_argparser()
-    parser.add_argument("--clusters", type=int, required=True)
-    parser.add_argument("--Ax", type=float, required=True)
-    parser.add_argument("--Ay", type=float, required=True)
-    parser.add_argument("--Az", type=float, required=True)
-    parser.add_argument("--max_iter", type=int, required=True)
-    parser.add_argument("--maxfun", type=int, required=True)
-    parser.add_argument("--epsilon", type=float, required=True)
-    parser.add_argument("--threshold", type=float, required=True)
-    args = parser.parse_args()
-    flags = vars(parser.parse_args())
+    args = ZemelArgs()
+    args.parse_args()
 
-    train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags), args)
+    train, test = load_data_from_flags(args)
+    save_transformations(train_and_transform(train, test, args.as_dict()), args)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 """Functions that are common to PyTorch models"""
-from typing import Tuple, List
+from typing import Tuple, TYPE_CHECKING
 
 import numpy as np
 import torch
@@ -8,10 +8,21 @@ from torch.utils.data import Dataset
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
 
+if TYPE_CHECKING:
+    import pandas as pd  # only needed for type checking
+
 
 def _get_info(
-    data: TestTuple
-) -> Tuple["np.ndarray[np.float32]", "np.ndarray[np.float32]", int, int, int, List[str], List[str]]:
+    data: TestTuple,
+) -> Tuple[
+    "np.ndarray[np.float32]",
+    "np.ndarray[np.float32]",
+    int,
+    int,
+    int,
+    "pd.Index[str]",
+    "pd.Index[str]",
+]:
     features = data.x.to_numpy(dtype=np.float32)
     sens_labels = data.s.to_numpy(dtype=np.float32)
     num = data.s.shape[0]
@@ -36,7 +47,7 @@ class TestDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[List[str], List[str]]:
+    def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]"]:
         return self.x_names, self.s_names
 
 
@@ -58,7 +69,7 @@ class CustomDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[List[str], List[str], List[str]]:
+    def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]", "pd.Index[str]"]:
         return self.x_names, self.s_names, self.y_names
 
 
@@ -79,8 +90,11 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
     x_sqnorms = torch.diagonal(xx_gm)
     y_sqnorms = torch.diagonal(yy_gm)
 
-    pad_first = lambda x: torch.unsqueeze(x, 0)
-    pad_second = lambda x: torch.unsqueeze(x, 1)
+    def pad_first(x):
+        return torch.unsqueeze(x, 0)
+
+    def pad_second(x):
+        return torch.unsqueeze(x, 1)
 
     gamma = 1 / (2 * sigma ** 2)
     # use the second binomial formula

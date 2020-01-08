@@ -28,9 +28,9 @@ def metric_per_sensitive_attribute(
 
     per_sensitive_attr: Dict[str, float] = {}
 
-    s_columns: List[str] = [s_col for s_col in actual.s.columns]
-    y_columns: List[str] = [y_col for y_col in actual.y.columns]
-    pred_column: List[str] = [p_col for p_col in predictions.columns]
+    s_columns: List[str] = list(actual.s.columns)
+    y_columns: List[str] = list(actual.y.columns)
+    pred_column: List[str] = list(predictions.columns)
     assert len(y_columns) == 1
 
     for y_col in y_columns:

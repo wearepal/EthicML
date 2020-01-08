@@ -11,11 +11,7 @@ from torch.optim import Adam
 
 from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy, Dataset
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
-from ethicml.implementations.utils import (
-    pre_algo_argparser,
-    load_data_from_flags,
-    save_transformations,
-)
+from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.implementations.vfae_modules.utils import loss_function
 from ethicml.implementations.vfae_modules.vfae_network import VFAENetwork
 from ethicml.utility.data_structures import DataTuple, TestTuple
@@ -155,24 +151,24 @@ def train_model(
     print(f'====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}')
 
 
+class VfaeArgs(PreAlgoArgs):
+    supervised: bool
+    fairness: str
+    batch_size: int
+    epochs: int
+    dataset: str
+    z1_enc_size: List[int]
+    z2_enc_size: List[int]
+    z1_dec_size: List[int]
+
+
 def main():
     """main method to run model"""
-    parser = pre_algo_argparser()
+    args = VfaeArgs(explicit_bool=True)
+    args.parse_args()
 
-    parser.add_argument("--supervised", type=bool, required=True)
-    parser.add_argument("--fairness", type=str, required=True)
-    parser.add_argument("--batch_size", type=int, required=True)
-    parser.add_argument("--epochs", type=int, required=True)
-    parser.add_argument("--dataset", type=str, required=True)
-    parser.add_argument("--z1_enc_size", type=int, nargs="+", required=True)
-    parser.add_argument("--z2_enc_size", type=int, nargs="+", required=True)
-    parser.add_argument("--z1_dec_size", type=int, nargs="+", required=True)
-    args = parser.parse_args()
-
-    flags = vars(parser.parse_args())
-
-    train, test = load_data_from_flags(flags)
-    save_transformations(train_and_transform(train, test, flags), args)
+    train, test = load_data_from_flags(args)
+    save_transformations(train_and_transform(train, test, args.as_dict()), args)
 
 
 if __name__ == "__main__":

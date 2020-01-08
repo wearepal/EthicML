@@ -11,13 +11,21 @@ from pandas.testing import assert_index_equal
 from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 
+__all__ = [
+    'DataSplitter',
+    'ProportionalSplit',
+    'SequentialSplit',
+    'RandomSplit',
+    'train_test_split',
+]
+
 
 class DataSplitter(ABC):
     """Base class for classes that split data"""
 
     @abstractmethod
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Split the given data
 
@@ -29,6 +37,28 @@ class DataSplitter(ABC):
             A tuple consisting of two datatuples that are the result of the split and a dictionary
             that contains information about the split that is useful for logging.
         """
+
+
+class SequentialSplit(DataSplitter):
+    """Take the first N samples for train set and the rest for test set; no shuffle."""
+
+    def __init__(self, train_percentage: float):
+        self.train_percentage = train_percentage
+
+    def __call__(
+        self, data: DataTuple, split_id: int = 0
+    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        del split_id
+        train_len = round(self.train_percentage * len(data))
+
+        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
+        train = train.replace(name=f"{data.name} - Train")
+
+        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
+        test = test.replace(name=f"{data.name} - Test")
+
+        assert len(train) + len(test) == len(data)
+        return train, test, {}
 
 
 def train_test_split(
@@ -102,7 +132,7 @@ def train_test_split(
     return train, test
 
 
-class TrainTestSplit(DataSplitter):
+class RandomSplit(DataSplitter):
     """Standard train test split"""
 
     def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
@@ -119,18 +149,18 @@ class TrainTestSplit(DataSplitter):
         return self.start_seed + 2410 * split_id
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         random_seed = self._get_seed(split_id)
         split_info: Dict[str, float] = {'seed': random_seed}
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
-class ProportionalTrainTestSplit(TrainTestSplit):
+class ProportionalSplit(RandomSplit):
     """Split into train and test while preserving the proportion of s and y"""
 
     def __call__(
-        self, data: DataTuple, split_id: int
+        self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         random_seed = self._get_seed(split_id)
 
@@ -145,13 +175,13 @@ class ProportionalTrainTestSplit(TrainTestSplit):
 
         train_empty: List[int] = []  # this is necessary because mypy is silly
         test_empty: List[int] = []
-        train_idx: "np.ndarray[np.int32]" = np.array(train_empty, dtype=np.int32)
-        test_idx: "np.ndarray[np.int32]" = np.array(test_empty, dtype=np.int32)
+        train_idx: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
+        test_idx: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
 
         # iterate over all combinations of s and y
         for s, y in itertools.product(s_vals, y_vals):
             # find all indices for this group
-            idx: "np.ndarray[np.int32]"
+            idx: np.ndarray[np.int64]
             idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
 
             # shuffle and take subsets
@@ -176,15 +206,13 @@ class ProportionalTrainTestSplit(TrainTestSplit):
         )
 
         # assert that no data points got lost anywhere
-        assert data.x.shape[0] == train.x.shape[0] + test.x.shape[0]
-        assert data.s.shape[0] == train.s.shape[0] + test.s.shape[0]
-        assert data.y.shape[0] == train.y.shape[0] + test.y.shape[0]
+        assert len(data) == len(train) + len(test)
 
         # assert that we (at least approximately) achieved the specified `train_percentage`
-        expected_train_len = round(data.x.shape[0] * self.train_percentage)
+        expected_train_len = round(len(data) * self.train_percentage)
         # the maximum error occurs when all the group splits favor train or all favor test
         num_groups = len(s_vals) * len(y_vals)
-        assert expected_train_len - num_groups < train.x.shape[0] < expected_train_len + num_groups
+        assert expected_train_len - num_groups <= len(train) <= expected_train_len + num_groups
 
         split_info: Dict[str, float] = {'seed': random_seed}
         return train, test, split_info
