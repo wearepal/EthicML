@@ -80,7 +80,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install mypy
-        pip install data-science-types==0.1.6
+        pip install data-science-types==0.2.1
         pip install typed-argument-parser==1.4
     - name: Type check with mypy
       run: |
