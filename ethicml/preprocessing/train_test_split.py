@@ -175,13 +175,13 @@ class ProportionalSplit(RandomSplit):
 
         train_empty: List[int] = []  # this is necessary because mypy is silly
         test_empty: List[int] = []
-        train_idx: "np.ndarray[np.int32]" = np.array(train_empty, dtype=np.int32)
-        test_idx: "np.ndarray[np.int32]" = np.array(test_empty, dtype=np.int32)
+        train_idx: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
+        test_idx: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
 
         # iterate over all combinations of s and y
         for s, y in itertools.product(s_vals, y_vals):
             # find all indices for this group
-            idx: "np.ndarray[np.int32]"
+            idx: np.ndarray[np.int64]
             idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
 
             # shuffle and take subsets
