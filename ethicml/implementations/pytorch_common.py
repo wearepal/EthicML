@@ -7,6 +7,7 @@ from torch import Tensor
 from torch.utils.data import Dataset
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
+
 if TYPE_CHECKING:
     import pandas as pd  # only needed for type checking
 
