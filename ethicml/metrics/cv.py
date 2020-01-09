@@ -10,7 +10,7 @@ from .metric import Metric
 
 
 class CV(Metric):
-    """Calder-Verwer"""
+    """Calder-Verwer."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         from ethicml.evaluators.per_sensitive_attribute import (

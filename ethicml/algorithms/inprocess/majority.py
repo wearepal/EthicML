@@ -9,7 +9,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class Majority(InAlgorithm):
-    """Simply returns the majority label from the train set"""
+    """Simply returns the majority label from the train set."""
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         maj = train.y.mode().to_numpy()

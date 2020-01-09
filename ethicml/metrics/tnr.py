@@ -10,7 +10,7 @@ from .metric import Metric
 
 
 class TNR(Metric):
-    """True negative rate"""
+    """True negative rate."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         t_neg, f_pos, _, _ = confusion_matrix(prediction, actual, pos_cls=self.positive_class)

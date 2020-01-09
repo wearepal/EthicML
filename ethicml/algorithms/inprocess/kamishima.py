@@ -28,7 +28,7 @@ class Kamishima(InstalledModel):
 
     @staticmethod
     def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str) -> None:
-        """Create a text file with the data"""
+        """Create a text file with the data."""
 
         if isinstance(data, DataTuple):
             result = (

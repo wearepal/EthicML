@@ -1,4 +1,4 @@
-"""Beutel's algorithm"""
+"""Beutel's algorithm."""
 from typing import List, Sequence, Tuple
 
 from ethicml.utility.data_structures import (
@@ -13,7 +13,7 @@ from .interface import flag_interface
 
 
 class Beutel(PreAlgorithmAsync):
-    """Beutel's adversarially learned fair representations"""
+    """Beutel's adversarially learned fair representations."""
 
     def __init__(
         self,

@@ -1,4 +1,4 @@
-"""Methods that define commandline interfaces"""
+"""Methods that define commandline interfaces."""
 from typing import List, Any, Dict
 from dataclasses import asdict
 
@@ -12,7 +12,7 @@ def flag_interface(
     new_test_paths: TestPathTuple,
     flags: Dict[str, Any],
 ) -> List[str]:
-    """Generate the commandline arguments that are expected"""
+    """Generate the commandline arguments that are expected."""
     flags_list: List[str] = []
 
     # paths to training and test data

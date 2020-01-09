@@ -20,7 +20,7 @@ from .shared import conventional_interface
 
 
 class MLP(InAlgorithmAsync):
-    """Multi-layer Perceptron"""
+    """Multi-layer Perceptron."""
 
     def __init__(
         self,

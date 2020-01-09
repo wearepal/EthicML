@@ -1,4 +1,4 @@
-"""Accuracy and related metrics"""
+"""Accuracy and related metrics."""
 from typing import Callable, Optional
 
 import pandas as pd
@@ -11,7 +11,7 @@ __all__ = ["Accuracy", "F1", "SklearnMetric"]
 
 
 class SklearnMetric(Metric):
-    """Wrapper around an sklearn metric"""
+    """Wrapper around an sklearn metric."""
 
     def __init__(
         self,
@@ -35,14 +35,14 @@ class SklearnMetric(Metric):
 
 
 class Accuracy(SklearnMetric):
-    """Classification accuracy"""
+    """Classification accuracy."""
 
     def __init__(self, pos_class: Optional[int] = None):
         super().__init__(accuracy_score, "Accuracy", pos_class=pos_class)
 
 
 class F1(SklearnMetric):
-    """F1 score: harmonic mean of precision and recall"""
+    """F1 score: harmonic mean of precision and recall."""
 
     def __init__(self, pos_class: Optional[int] = None):
         super().__init__(f1_score, "F1", pos_class=pos_class)

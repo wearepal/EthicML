@@ -78,7 +78,7 @@ class GPyT(InstalledModel):
         return pd.DataFrame(predictions, columns=["preds"])
 
     async def _run_gpyt(self, flags):
-        """Generate command to run GPyT"""
+        """Generate command to run GPyT."""
         cmd = [str(self._code_path / "run.py")]
         # apply flag overwrites
         cmd_flags = {**flags, **self.flag_overwrites}
@@ -96,7 +96,7 @@ class GPyT(InstalledModel):
 
 
 class GPyTDemPar(GPyT):
-    """GP algorithm which enforces demographic parity"""
+    """GP algorithm which enforces demographic parity."""
 
     MEAN = 2  # pylint: disable=invalid-name
     MIN = 3  # pylint: disable=invalid-name
@@ -187,7 +187,7 @@ class GPyTDemPar(GPyT):
 
 
 class GPyTEqOdds(GPyT):
-    """GP algorithm which enforces equality of opportunity"""
+    """GP algorithm which enforces equality of opportunity."""
 
     def __init__(
         self,
@@ -321,19 +321,19 @@ class GPyTEqOdds(GPyT):
 
 
 def prior_s(sensitive):
-    """Compute the bias in the labels with respect to the sensitive attributes"""
+    """Compute the bias in the labels with respect to the sensitive attributes."""
     return (np.sum(sensitive == 0) / len(sensitive), np.sum(sensitive == 1) / len(sensitive))
 
 
 def compute_bias(labels, sensitive):
-    """Compute the bias in the labels with respect to the sensitive attributes"""
+    """Compute the bias in the labels with respect to the sensitive attributes."""
     rate_y1_s0 = np.sum(labels[sensitive == 0] == 1) / np.sum(sensitive == 0)
     rate_y1_s1 = np.sum(labels[sensitive == 1] == 1) / np.sum(sensitive == 1)
     return rate_y1_s0, rate_y1_s1
 
 
 def compute_odds(labels, predictions, sensitive):
-    """Compute the bias in the predictions with respect to the sensitive attr. and the labels"""
+    """Compute the bias in the predictions with respect to the sensitive attr. and the labels."""
     return dict(
         p_ybary0_s0=np.mean(predictions[(labels == 0) & (sensitive == 0)] == 0),
         p_ybary1_s0=np.mean(predictions[(labels == 1) & (sensitive == 0)] == 1),
@@ -369,7 +369,7 @@ def _fix_labels(labels):
 
 
 def split_train_dev(inputs, labels, sensitive):
-    """Split the given data into train and dev set with the proportion of labels being preserved"""
+    """Split the given data into train and dev set with the proportion of labels being preserved."""
     n_total = inputs.shape[0]
     idx_s0_y0 = ((sensitive == 0) & (labels == 0)).nonzero()[0]
     idx_s0_y1 = ((sensitive == 0) & (labels == 1)).nonzero()[0]

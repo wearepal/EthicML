@@ -12,7 +12,7 @@ from .metric import Metric
 
 
 class Theil(Metric):
-    """Theil Index"""
+    """Theil Index."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         y_true_df = actual.y

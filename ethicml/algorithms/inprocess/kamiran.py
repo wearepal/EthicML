@@ -1,4 +1,4 @@
-"""Kamiran and Calders 2012"""
+"""Kamiran and Calders 2012."""
 from pathlib import Path
 from typing import List, Optional
 

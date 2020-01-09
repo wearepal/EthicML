@@ -9,21 +9,21 @@ from pathlib import Path
 
 
 class Algorithm(ABC):
-    """Base class for Algorithms"""
+    """Base class for Algorithms."""
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the algorithm"""
+        """Name of the algorithm."""
 
 
 class AlgorithmAsync(metaclass=ABCMeta):
-    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`"""
+    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the algorithm"""
+        """Name of the algorithm."""
 
     @property
     def _executable(self) -> str:
@@ -74,6 +74,6 @@ _T = TypeVar("_T")
 
 
 def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:
-    """Run an asynchronous process as a blocking process"""
+    """Run an asynchronous process as a blocking process."""
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(promise)

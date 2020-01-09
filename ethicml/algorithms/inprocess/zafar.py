@@ -1,4 +1,4 @@
-"""Algorithms by Zafar et al. for Demographic Parity"""
+"""Algorithms by Zafar et al. for Demographic Parity."""
 import json
 from tempfile import TemporaryDirectory
 from pathlib import Path
@@ -28,7 +28,7 @@ class _ZafarAlgorithmBase(InstalledModel):
     def _create_file_in_zafar_format(
         data: Union[DataTuple, TestTuple], file_path: Path, label_converter: LabelBinarizer
     ) -> None:
-        """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants"""
+        """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants."""
         out: Dict[str, Any] = {}
         out["x"] = data.x.to_numpy().tolist()
         sens_attr = data.s.columns[0]
@@ -70,7 +70,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 
 
 class ZafarBaseline(_ZafarAlgorithmBase):
-    """Zafar without fairness"""
+    """Zafar without fairness."""
 
     def __init__(self) -> None:
         super().__init__(sub_dir=SUB_DIR_IMPACT)
@@ -86,7 +86,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 
 
 class ZafarAccuracy(_ZafarAlgorithmBase):
-    """Zafar with fairness"""
+    """Zafar with fairness."""
 
     def __init__(self, gamma: float = 0.5):
         super().__init__(sub_dir=SUB_DIR_IMPACT)
@@ -103,7 +103,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 
 
 class ZafarFairness(_ZafarAlgorithmBase):
-    """Zafar with fairness"""
+    """Zafar with fairness."""
 
     def __init__(self, c: float = 0.001):
         super().__init__(sub_dir=SUB_DIR_IMPACT)
@@ -120,7 +120,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
 
 
 class ZafarEqOpp(_ZafarAlgorithmBase):
-    """Zafar for Equality of Opportunity"""
+    """Zafar for Equality of Opportunity."""
 
     _mode = "fnr"  # class level constant
 
@@ -150,7 +150,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
 
 
 class ZafarEqOdds(ZafarEqOpp):
-    """Zafar for Equalised Odds"""
+    """Zafar for Equalised Odds."""
 
     _mode = "fprfnr"
 

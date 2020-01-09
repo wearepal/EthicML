@@ -17,7 +17,7 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 class InstalledModel(InAlgorithmAsync):
-    """the model that does the magic"""
+    """the model that does the magic."""
 
     def __init__(
         self,
@@ -54,7 +54,7 @@ class InstalledModel(InAlgorithmAsync):
 
     @property
     def _code_path(self) -> Path:
-        """Path to where the code of the model is located"""
+        """Path to where the code of the model is located."""
         return self._store_dir / self._top_dir
 
     @property

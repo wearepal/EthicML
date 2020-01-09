@@ -13,7 +13,7 @@ from ethicml.metrics.metric import Metric
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
 ) -> float:
-    """Calculate the HSIC value"""
+    """Calculate the HSIC value."""
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 

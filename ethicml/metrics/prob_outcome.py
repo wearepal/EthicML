@@ -9,7 +9,7 @@ from .metric import Metric
 
 
 class ProbOutcome(Metric):
-    """Mean of logits"""
+    """Mean of logits."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         return prediction.to_numpy().sum() / prediction.size

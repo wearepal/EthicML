@@ -10,7 +10,7 @@ from ethicml.utility.data_structures import DataTuple
 
 
 class Metric(ABC):
-    """Base class for all metrics"""
+    """Base class for all metrics."""
 
     def __init__(self, pos_class: int = 1):
         self.positive_class = pos_class
@@ -31,7 +31,7 @@ class Metric(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the metric"""
+        """Name of the metric."""
         raise NotImplementedError()
 
     @property

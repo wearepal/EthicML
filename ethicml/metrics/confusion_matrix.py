@@ -11,13 +11,13 @@ from ethicml.utility.data_structures import DataTuple
 
 
 class LabelOutOfBounds(Exception):
-    """Metric Not Applicable per sensitive attribute, apply to whole dataset instead"""
+    """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
 
 
 def confusion_matrix(
     prediction: pd.DataFrame, actual: DataTuple, pos_cls: int
 ) -> Tuple[int, int, int, int]:
-    """Apply sci-kit learn's confusion matrix"""
+    """Apply sci-kit learn's confusion matrix."""
     actual_y: np.ndarray[np.int32] = actual.y.to_numpy(dtype=np.int32)
     labels: np.ndarray[np.int32] = np.unique(actual_y)
     if labels.size == 1:

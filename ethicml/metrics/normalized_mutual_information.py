@@ -11,7 +11,7 @@ from .metric import Metric
 
 
 class NMI(Metric):
-    """Normalized Mutual Information"""
+    """Normalized Mutual Information."""
 
     def __init__(self, pos_class: int = 1, base: str = "y"):
         super().__init__(pos_class=pos_class)

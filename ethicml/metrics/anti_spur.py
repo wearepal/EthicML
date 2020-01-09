@@ -1,4 +1,4 @@
-"""Anti-spurious"""
+"""Anti-spurious."""
 
 import pandas as pd
 
@@ -7,7 +7,7 @@ from .metric import Metric
 
 
 class AS(Metric):
-    """Anti-spurious metric. Computes :math:`P(\\hat{y}=y|y\\neq s)`"""
+    """Anti-spurious metric. Computes :math:`P(\\hat{y}=y|y\\neq s)`."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         preds = prediction.to_numpy()

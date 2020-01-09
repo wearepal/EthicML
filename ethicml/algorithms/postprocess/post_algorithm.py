@@ -10,7 +10,7 @@ from ..algorithm_base import Algorithm
 
 
 class PostAlgorithm(Algorithm):
-    """Abstract Base Class for all algorithms that do post-processing"""
+    """Abstract Base Class for all algorithms that do post-processing."""
 
     @abstractmethod
     def run(

@@ -1,4 +1,4 @@
-"""Methods that are shared among the inprocess algorithms"""
+"""Methods that are shared among the inprocess algorithms."""
 from typing import List, Tuple, Optional, Any
 
 from sklearn.linear_model import LogisticRegression
@@ -33,7 +33,7 @@ def conventional_interface(
 def settings_for_svm_lr(
     classifier: str, C: Optional[float], kernel: Optional[str]
 ) -> Tuple[float, str]:
-    """if necessary get the default settings for the C and kernel parameter of SVM and LR"""
+    """if necessary get the default settings for the C and kernel parameter of SVM and LR."""
     if C is None:
         if classifier == "LR":
             C = LogisticRegression().C
