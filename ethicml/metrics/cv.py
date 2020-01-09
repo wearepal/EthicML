@@ -1,6 +1,4 @@
-"""
-For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))
-"""
+"""For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))."""
 
 import pandas as pd
 
@@ -10,7 +8,7 @@ from .metric import Metric
 
 
 class CV(Metric):
-    """Calder-Verwer"""
+    """Calder-Verwer."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         from ethicml.evaluators.per_sensitive_attribute import (
@@ -33,7 +31,7 @@ class CV(Metric):
 
 
 class AbsCV(CV):
-    """Absolute value of Calder-Verwer
+    """Absolute value of Calder-Verwer.
 
     This metric is supposed to make it easier to compare results.
     """

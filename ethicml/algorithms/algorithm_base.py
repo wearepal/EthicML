@@ -1,6 +1,4 @@
-"""
-Base class for Algorithms
-"""
+"""Base class for Algorithms."""
 import sys
 from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
@@ -9,26 +7,25 @@ from pathlib import Path
 
 
 class Algorithm(ABC):
-    """Base class for Algorithms"""
+    """Base class for Algorithms."""
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the algorithm"""
+        """Name of the algorithm."""
 
 
 class AlgorithmAsync(metaclass=ABCMeta):
-    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`"""
+    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the algorithm"""
+        """Name of the algorithm."""
 
     @property
     def _executable(self) -> str:
-        """
-        Path to a (Python) executable
+        """Path to a (Python) executable.
 
         By default, the Python executable that called this script is used.
         """
@@ -37,7 +34,7 @@ class AlgorithmAsync(metaclass=ABCMeta):
     async def _call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
     ) -> None:
-        """This function calls a (Python) script as a separate process
+        """This function calls a (Python) script as a separate process.
 
         An exception is thrown if the called script failed.
 
@@ -74,6 +71,6 @@ _T = TypeVar("_T")
 
 
 def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:
-    """Run an asynchronous process as a blocking process"""
+    """Run an asynchronous process as a blocking process."""
     loop = asyncio.get_event_loop()
     return loop.run_until_complete(promise)

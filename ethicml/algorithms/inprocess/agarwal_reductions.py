@@ -1,6 +1,4 @@
-"""
-implementation of Agarwal model
-"""
+"""implementation of Agarwal model."""
 from pathlib import Path
 from typing import List, Set, Optional
 
@@ -24,9 +22,7 @@ VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
 class Agarwal(InAlgorithmAsync):
-    """
-    Agarwal class
-    """
+    """Agarwal class."""
 
     def __init__(
         self,

@@ -1,6 +1,4 @@
-"""
-Zemel's Learned Fair Representations
-"""
+"""Zemel's Learned Fair Representations."""
 from typing import Dict, Union, Tuple, List
 
 from ethicml.utility.data_structures import TestTuple, DataTuple, PathTuple, TestPathTuple
@@ -9,9 +7,7 @@ from .interface import flag_interface
 
 
 class Zemel(PreAlgorithmAsync):
-    """
-    AIF360 implementation of Zemel's LFR
-    """
+    """AIF360 implementation of Zemel's LFR."""
 
     def __init__(
         self,

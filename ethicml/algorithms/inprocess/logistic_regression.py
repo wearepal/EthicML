@@ -1,6 +1,4 @@
-"""
-Wrapper around Sci-Kit Learn Logistic Regression
-"""
+"""Wrapper around Sci-Kit Learn Logistic Regression."""
 from pathlib import Path
 from typing import Optional, List
 
@@ -18,7 +16,7 @@ from .shared import conventional_interface
 
 
 class LR(InAlgorithmAsync):
-    """Logistic regression with hard predictions"""
+    """Logistic regression with hard predictions."""
 
     def __init__(self, C: Optional[float] = None):
         super().__init__()
@@ -40,7 +38,7 @@ class LR(InAlgorithmAsync):
 
 
 class LRProb(InAlgorithmAsync):
-    """Logistic regression with soft output"""
+    """Logistic regression with soft output."""
 
     def __init__(self, C: Optional[int] = None):
         super().__init__()
@@ -62,7 +60,7 @@ class LRProb(InAlgorithmAsync):
 
 
 class LRCV(InAlgorithmAsync):
-    """Kind of a cheap hack for now, but gives a proper cross-valudeted LR"""
+    """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         return logistic_regression_cross_validated.train_and_predict(train, test)

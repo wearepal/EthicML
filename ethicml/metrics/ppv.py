@@ -1,6 +1,4 @@
-"""
-For assessing PPV
-"""
+"""For assessing PPV."""
 
 import pandas as pd
 
@@ -10,7 +8,7 @@ from .metric import Metric
 
 
 class PPV(Metric):
-    """Positive predictive value"""
+    """Positive predictive value."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         _, f_pos, _, t_pos = confusion_matrix(prediction, actual, self.positive_class)

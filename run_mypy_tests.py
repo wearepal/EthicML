@@ -1,4 +1,4 @@
-"""Run mypy and report how many errors there are"""
+"""Run mypy and report how many errors there are."""
 
 import sys
 from mypy import api as mypy

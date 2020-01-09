@@ -1,5 +1,6 @@
-"""
-Method for calculating the HSIC - an independence criterion. a score of 0 denotes independence
+"""Method for calculating the HSIC - an independence criterion.
+
+a score of 0 denotes independence
 """
 import math
 import pandas as pd
@@ -13,7 +14,7 @@ from ethicml.metrics.metric import Metric
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
 ) -> float:
-    """Calculate the HSIC value"""
+    """Calculate the HSIC value."""
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 
@@ -48,16 +49,13 @@ def hsic(
 
 
 class Hsic(Metric):
-    """
-    see module string
-    """
+    """See module string."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """
-        We add the ability to take the average of hsic sscore as for
-        larger datasets it will kill your machine
-        """
+        """We add the ability to take the average of hsic score.
 
+        As for larger datasets it will kill your machine
+        """
         s_cols = actual.s.columns
         sens_labels = np.array(actual.s[s_cols].to_numpy())
 

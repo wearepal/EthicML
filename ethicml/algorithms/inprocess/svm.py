@@ -1,6 +1,4 @@
-"""
-Wrapper for SKLearn implementation of SVM
-"""
+"""Wrapper for SKLearn implementation of SVM."""
 from pathlib import Path
 from typing import Optional, List, Union
 
@@ -14,7 +12,7 @@ from .shared import conventional_interface
 
 
 class SVM(InAlgorithmAsync):
-    """Support Vector Machine"""
+    """Support Vector Machine."""
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         super().__init__()

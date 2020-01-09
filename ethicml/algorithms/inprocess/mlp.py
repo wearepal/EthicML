@@ -1,6 +1,4 @@
-"""
-Wrapper for SKLearn implementation of MLP
-"""
+"""Wrapper for SKLearn implementation of MLP."""
 from pathlib import Path
 from typing import Optional, Tuple, List
 
@@ -20,7 +18,7 @@ from .shared import conventional_interface
 
 
 class MLP(InAlgorithmAsync):
-    """Multi-layer Perceptron"""
+    """Multi-layer Perceptron."""
 
     def __init__(
         self,

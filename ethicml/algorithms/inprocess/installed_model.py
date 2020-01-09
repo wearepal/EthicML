@@ -1,4 +1,5 @@
-"""
+"""Installable model.
+
 This is a kind of complicated model, but it's incredibly useful.
 Say you find a paper from a few years ago with code. It's not unreasonable that there might
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
@@ -17,7 +18,7 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 class InstalledModel(InAlgorithmAsync):
-    """the model that does the magic"""
+    """the model that does the magic."""
 
     def __init__(
         self,
@@ -26,8 +27,7 @@ class InstalledModel(InAlgorithmAsync):
         url: Optional[str] = None,
         executable: Optional[str] = None,
     ):
-        """
-        Download code from given URL and create a Pip environment with the Pipfile found in the code
+        """Download code from given URL and create Pip environment with Pipfile found in the code.
 
         Args:
             dir_name: where to download the code to (can be chosen freely)
@@ -54,7 +54,7 @@ class InstalledModel(InAlgorithmAsync):
 
     @property
     def _code_path(self) -> Path:
-        """Path to where the code of the model is located"""
+        """Path to where the code of the model is located."""
         return self._store_dir / self._top_dir
 
     @property
@@ -62,17 +62,13 @@ class InstalledModel(InAlgorithmAsync):
         return self.__executable
 
     def _clone_directory(self, url: str) -> None:
-        """
-        Clones the repo from `url` into `self._store_dir`
-        """
+        """Clones the repo from `url` into `self._store_dir`."""
         if not self._store_dir.exists():
             self._store_dir.mkdir()
             git.Git(self._store_dir).clone(url)
 
     def _create_venv(self) -> None:
-        """
-        Creates a venv based on the Pipfile in the repository
-        """
+        """Creates a venv based on the Pipfile in the repository."""
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
             environ = os.environ.copy()
@@ -84,9 +80,7 @@ class InstalledModel(InAlgorithmAsync):
             subprocess.check_call("pipenv install", env=environ, shell=True)
 
     def remove(self) -> None:
-        """
-        Removes the directory that we created in _clone_directory()
-        """
+        """Removes the directory that we created in _clone_directory()."""
         try:
             shutil.rmtree(self._store_dir)
         except OSError as excep:

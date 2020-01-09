@@ -1,6 +1,4 @@
-"""
-Abstract Base Class of all algorithms in the framework
-"""
+"""Abstract Base Class of all algorithms in the framework."""
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -18,11 +16,11 @@ from ethicml.utility.data_structures import (
 
 
 class PreAlgorithm(Algorithm):
-    """Abstract Base Class for all algorithms that do pre-processing"""
+    """Abstract Base Class for all algorithms that do pre-processing."""
 
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data
+        """Generate fair features with the given data.
 
         Args:
             train: training data
@@ -30,19 +28,19 @@ class PreAlgorithm(Algorithm):
         """
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run with reduced training set so that it finishes quicker"""
+        """Run with reduced training set so that it finishes quicker."""
         train_testing = train.get_subset()
         return self.run(train_testing, test)
 
 
 class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
-    """Pre-Algorithm that can be run blocking and asynchronously"""
+    """Pre-Algorithm that can be run blocking and asynchronously."""
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data asynchronously"""
+        """Generate fair features with the given data asynchronously."""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # write data to files
@@ -88,4 +86,4 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         new_train_paths: PathTuple,
         new_test_paths: TestPathTuple,
     ) -> List[str]:
-        """The command that will run the script"""
+        """The command that will run the script."""

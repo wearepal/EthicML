@@ -1,4 +1,4 @@
-"""In-process algorithms take training data and make predictions"""
+"""In-process algorithms take training data and make predictions."""
 __all__ = [
     "Agarwal",
     "InAlgorithm",

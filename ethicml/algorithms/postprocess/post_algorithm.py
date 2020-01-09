@@ -1,6 +1,4 @@
-"""
-Abstract Base Class of all post-processing algorithms in the framework
-"""
+"""Abstract Base Class of all post-processing algorithms in the framework."""
 
 from abc import abstractmethod
 import pandas as pd
@@ -10,7 +8,7 @@ from ..algorithm_base import Algorithm
 
 
 class PostAlgorithm(Algorithm):
-    """Abstract Base Class for all algorithms that do post-processing"""
+    """Abstract Base Class for all algorithms that do post-processing."""
 
     @abstractmethod
     def run(
@@ -20,7 +18,7 @@ class PostAlgorithm(Algorithm):
         test_predictions: pd.DataFrame,
         test: TestTuple,
     ) -> pd.DataFrame:
-        """Make predictions fair
+        """Make predictions fair.
 
         Args:
             train_predictions: predictions on a training set

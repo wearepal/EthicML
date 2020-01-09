@@ -1,4 +1,4 @@
-"""Run all checks"""
+"""Run all checks."""
 import subprocess
 
 import pytest

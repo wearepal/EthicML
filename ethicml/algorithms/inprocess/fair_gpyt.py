@@ -1,6 +1,4 @@
-"""
-Wrapper for calling the fair GP model
-"""
+"""Wrapper for calling the fair GP model."""
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -21,14 +19,13 @@ SEED = 888
 
 
 class GPyT(InstalledModel):
-    """
-    Normal GP model
-    """
+    """Normal GP model."""
 
     basename = "GPyT"
 
     def __init__(self, s_as_input=True, flags=None, code_dir=None):
-        """
+        """Instantiate the model.
+
         Args:
             s_as_input: if True, use s as an input feature
             flags: (optional) a dictionary that can overwrite *any* flag
@@ -78,7 +75,7 @@ class GPyT(InstalledModel):
         return pd.DataFrame(predictions, columns=["preds"])
 
     async def _run_gpyt(self, flags):
-        """Generate command to run GPyT"""
+        """Generate command to run GPyT."""
         cmd = [str(self._code_path / "run.py")]
         # apply flag overwrites
         cmd_flags = {**flags, **self.flag_overwrites}
@@ -96,7 +93,7 @@ class GPyT(InstalledModel):
 
 
 class GPyTDemPar(GPyT):
-    """GP algorithm which enforces demographic parity"""
+    """GP algorithm which enforces demographic parity."""
 
     MEAN = 2  # pylint: disable=invalid-name
     MIN = 3  # pylint: disable=invalid-name
@@ -111,7 +108,8 @@ class GPyTDemPar(GPyT):
         precision_target=1.0,
         **kwargs,
     ):
-        """
+        """Instantiate the model.
+
         Args:
             s_as_input: should the sensitive attribute be part of the input?
             target_acceptance: which acceptance rate to target
@@ -187,7 +185,7 @@ class GPyTDemPar(GPyT):
 
 
 class GPyTEqOdds(GPyT):
-    """GP algorithm which enforces equality of opportunity"""
+    """GP algorithm which enforces equality of opportunity."""
 
     def __init__(
         self,
@@ -321,19 +319,19 @@ class GPyTEqOdds(GPyT):
 
 
 def prior_s(sensitive):
-    """Compute the bias in the labels with respect to the sensitive attributes"""
+    """Compute the bias in the labels with respect to the sensitive attributes."""
     return (np.sum(sensitive == 0) / len(sensitive), np.sum(sensitive == 1) / len(sensitive))
 
 
 def compute_bias(labels, sensitive):
-    """Compute the bias in the labels with respect to the sensitive attributes"""
+    """Compute the bias in the labels with respect to the sensitive attributes."""
     rate_y1_s0 = np.sum(labels[sensitive == 0] == 1) / np.sum(sensitive == 0)
     rate_y1_s1 = np.sum(labels[sensitive == 1] == 1) / np.sum(sensitive == 1)
     return rate_y1_s0, rate_y1_s1
 
 
 def compute_odds(labels, predictions, sensitive):
-    """Compute the bias in the predictions with respect to the sensitive attr. and the labels"""
+    """Compute the bias in the predictions with respect to the sensitive attr. and the labels."""
     return dict(
         p_ybary0_s0=np.mean(predictions[(labels == 0) & (sensitive == 0)] == 0),
         p_ybary1_s0=np.mean(predictions[(labels == 1) & (sensitive == 0)] == 1),
@@ -343,7 +341,7 @@ def compute_odds(labels, predictions, sensitive):
 
 
 def _fix_labels(labels):
-    """Make sure that labels are either 0 or 1
+    """Make sure that labels are either 0 or 1.
 
     Args"
         labels: the labels as a list of numpy arrays
@@ -369,7 +367,7 @@ def _fix_labels(labels):
 
 
 def split_train_dev(inputs, labels, sensitive):
-    """Split the given data into train and dev set with the proportion of labels being preserved"""
+    """Split the given data into train and dev set with the proportion of labels being preserved."""
     n_total = inputs.shape[0]
     idx_s0_y0 = ((sensitive == 0) & (labels == 0)).nonzero()[0]
     idx_s0_y1 = ((sensitive == 0) & (labels == 1)).nonzero()[0]
@@ -449,7 +447,7 @@ def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train):
 
 
 def _num_inducing(num_train):
-    """Adaptive number of inducing inputs
+    """Adaptive number of inducing inputs.
 
     num_train == 4,000 => num_inducing == 1121
     num_train == 20,000 => num_inducing == 2507
@@ -458,7 +456,7 @@ def _num_inducing(num_train):
 
 
 def _num_epochs(num_train):
-    """Adaptive number of epochs
+    """Adaptive number of epochs.
 
     num_train == 4,000 => num_epochs == 125.7
     num_train == 20,000 => num_epochs == 84

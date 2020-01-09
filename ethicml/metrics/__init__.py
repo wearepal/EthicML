@@ -1,8 +1,6 @@
-"""
-This module contains metrics which can be applied to prediction results
+"""This module contains metrics which can be applied to prediction results.
 
 Example:
-
 .. code:: python
 
    from ethicml.metrics import Accuracy, TPR, ProbPos

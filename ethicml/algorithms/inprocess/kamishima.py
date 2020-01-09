@@ -1,6 +1,4 @@
-"""
-Wrapper for calling Kamishima model
-"""
+"""Wrapper for calling Kamishima model."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Union
@@ -13,8 +11,9 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class Kamishima(InstalledModel):
-    """
-    Model that calls Kamishima's code. Based on Algo-Fairness
+    """Model that calls Kamishima's code.
+
+    Based on Algo-Fairness
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
     """
 
@@ -28,7 +27,7 @@ class Kamishima(InstalledModel):
 
     @staticmethod
     def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str) -> None:
-        """Create a text file with the data"""
+        """Create a text file with the data."""
 
         if isinstance(data, DataTuple):
             result = (

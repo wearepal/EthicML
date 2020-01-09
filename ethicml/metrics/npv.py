@@ -1,6 +1,4 @@
-"""
-For assessing NPV
-"""
+"""For assessing NPV."""
 
 import pandas as pd
 
@@ -10,7 +8,7 @@ from .metric import Metric
 
 
 class NPV(Metric):
-    """Negative predictive value"""
+    """Negative predictive value."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         t_neg, _, f_neg, _ = confusion_matrix(prediction, actual, self.positive_class)

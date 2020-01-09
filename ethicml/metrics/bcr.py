@@ -1,6 +1,4 @@
-"""
-For assessing Balanced Classification Rate (BCR)
-"""
+"""For assessing Balanced Classification Rate (BCR)."""
 
 import pandas as pd
 
@@ -11,7 +9,7 @@ from .metric import Metric
 
 
 class BCR(Metric):
-    """Balanced Classification Rate"""
+    """Balanced Classification Rate."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
         tpr_metric = TPR()
