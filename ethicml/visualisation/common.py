@@ -1,4 +1,4 @@
-"""common plotting functions / datastructures"""
+"""Common plotting functions / datastructures."""
 
 from typing import Tuple, NamedTuple, List, Optional, Dict, Any
 from typing_extensions import Literal
@@ -12,7 +12,7 @@ PlotType = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid
 
 
 class DataEntry(NamedTuple):
-    """Defines one element in a plot"""
+    """Defines one element in a plot."""
 
     label: str
     values: pd.DataFrame
@@ -20,7 +20,7 @@ class DataEntry(NamedTuple):
 
 
 class PlotDef(NamedTuple):
-    """All the things needed to make a plot
+    """All the things needed to make a plot.
 
     Attributes:
         title: the title of the plot
@@ -38,7 +38,7 @@ class PlotDef(NamedTuple):
 def common_plotting_settings(
     plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
 ) -> Optional[mpl.legend.Legend]:
-    """Common settings for plots
+    """Common settings for plots.
 
     Args:
         plot: a pyplot plot object
@@ -76,7 +76,7 @@ def errorbox(
     markersize: int = 6,
     use_cross: bool = False,
 ) -> Optional[mpl.legend.Legend]:
-    """Generate a figure with errorboxes that reflect the std dev of an entry
+    """Generate a figure with errorboxes that reflect the std dev of an entry.
 
     Args:
         plot: a pyplot Axes object
@@ -187,7 +187,7 @@ def scatter(
     markersize: int = 6,
     connect_dots: bool = False,
 ) -> Optional[mpl.legend.Legend]:
-    """Generate a scatter plot
+    """Generate a scatter plot.
 
     Args:
         plot: a pyplot plot object

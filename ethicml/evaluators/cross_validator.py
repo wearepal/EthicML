@@ -1,4 +1,4 @@
-"""Cross Validation for any in process (at the moment) Algorithm"""
+"""Cross Validation for any in process (at the moment) Algorithm."""
 from collections import defaultdict
 from itertools import product
 from statistics import mean
@@ -14,7 +14,7 @@ from .parallelism import run_in_parallel
 
 
 class ResultTuple(NamedTuple):
-    """Result of one experiment"""
+    """Result of one experiment."""
 
     params: Dict[str, Any]
     fold_id: int
@@ -22,17 +22,16 @@ class ResultTuple(NamedTuple):
 
 
 class CVResults:
-    """
-    Stores the results of a cross validation experiment
-    """
+    """Stores the results of a cross validation experiment."""
 
     def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
+        """Init CVResults data store."""
         self.raw_storage = results
         self.model = model
         self.mean_storage = self._organize_and_compute_means()
 
     def _organize_and_compute_means(self) -> Dict[str, ResultTuple]:
-        """Compute means over folds and generate unique string for each hyperparameter setting"""
+        """Compute means over folds and generate unique string for each hyperparameter setting."""
         # first, group the entries that have the same hyperparameters
         max_fold_id = 0
         grouped: Dict[str, List[ResultTuple]] = defaultdict(list)
@@ -66,13 +65,11 @@ class CVResults:
         return mean_vals
 
     def get_best_result(self, measure: Metric) -> ResultTuple:
-        """
-        Get the hyperparameter combination for the best performance of a measure
-        """
+        """Get the hyperparameter combination for the best performance of a measure."""
         mean_vals = self.mean_storage
 
         def _get_score(item: Tuple[str, ResultTuple]) -> float:
-            """Take an entry from `mean_storage` and return the desired score `measure`"""
+            """Take an entry from `mean_storage` and return the desired score `measure`."""
             _, result = item
             return result.scores[measure.name]
 
@@ -82,13 +79,16 @@ class CVResults:
         return mean_vals[best_hyp_string]
 
     def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
+        """Get best hyper-params."""
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
+        """Get best model."""
         return self.model(**self.best_hyper_params(measure))  # type: ignore[call-arg]
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
-        """
+        """Get best result in top K entries.
+
         First sort the results according to the primary metric, then take the best according to the
         secondary metric from the top K.
         """
@@ -108,9 +108,7 @@ class CVResults:
 
 
 class CrossValidator:
-    """
-    Object used to run cross-validation on a model
-    """
+    """Object used to run cross-validation on a model."""
 
     def __init__(
         self,
@@ -120,7 +118,8 @@ class CrossValidator:
         parallel: bool = False,
         max_parallel: int = 0,
     ):
-        """
+        """Init CrossValidator.
+
         Args:
             model: the class (not an instance) of the model for cross validation
             hyperparams: a dictionary where the keys are the names of hyperparameters and the values
@@ -140,7 +139,7 @@ class CrossValidator:
         self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
     def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
-        """Run the cross validation experiments"""
+        """Run the cross validation experiments."""
         measures_ = [Accuracy(), AbsCV()] if measures is None else measures
 
         results: List[ResultTuple] = []

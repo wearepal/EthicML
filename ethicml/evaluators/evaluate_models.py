@@ -1,6 +1,4 @@
-"""
-Runs given metrics on given algorithms for given datasets
-"""
+"""Runs given metrics on given algorithms for given datasets."""
 from pathlib import Path
 from typing import List, Dict, Union, Sequence, Optional, Tuple
 from collections import OrderedDict
@@ -26,7 +24,7 @@ from ..preprocessing.train_test_split import DataSplitter, RandomSplit
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
-    """Get all possible combinations of sensitive attribute and metrics"""
+    """Get all possible combinations of sensitive attribute and metrics."""
     poss_values: List[str] = []
     for col in train.s.columns:
         uniques = train.s[col].unique()
@@ -37,7 +35,7 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
 
 
 def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
-    """Check if the given metrics allow application per sensitive attribute"""
+    """Check if the given metrics allow application per sensitive attribute."""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable(
@@ -52,7 +50,7 @@ def run_metrics(
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
 ) -> Dict[str, float]:
-    """Run all the given metrics on the given predictions and return the results
+    """Run all the given metrics on the given predictions and return the results.
 
     Args:
         predictions: DataFrame with predictions
@@ -81,7 +79,7 @@ def load_results(
     topic: Optional[str] = None,
     outdir: Path = Path(".") / "results",
 ) -> Optional[Results]:
-    """Load results from a CSV file that was created by `evaluate_models`
+    """Load results from a CSV file that was created by `evaluate_models`.
 
     Args:
         dataset_name: name of the dataset of the results
@@ -116,7 +114,7 @@ def evaluate_models(
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
 ) -> Results:
-    """Evaluate all the given models for all the given datasets and compute all the given metrics
+    """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
         repeats: number of repeats to perform for the experiments
@@ -259,9 +257,10 @@ def evaluate_models_parallel(
     topic: Optional[str] = None,
     max_parallel: int = 0,
 ) -> Results:
-    """Evaluate all the given models for all the given datasets and compute all the given metrics
+    """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
+        max_parallel: Max number of threads ot run in parallel
         datasets: list of dataset objects
         inprocess_models: list of inprocess model objects
         metrics: list of metric objects

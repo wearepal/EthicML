@@ -1,6 +1,4 @@
-"""
-Collection of functions that enable parallelism
-"""
+"""Collection of functions that enable parallelism."""
 import os
 import asyncio
 from typing import List, Tuple, Dict
@@ -16,7 +14,7 @@ from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 async def arrange_in_parallel(
     algos: List[InAlgorithmAsync], data: List[TrainTestPair], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
-    """Arrange the given algorithms to run (embarrassingly) parallel
+    """Arrange the given algorithms to run (embarrassingly) parallel.
 
     Args:
         algos: list of algorithms that implement the `run_async` function
@@ -85,7 +83,7 @@ async def _eval_worker(
 def run_in_parallel(
     algos: List[InAlgorithm], data: List[TrainTestPair], max_parallel: int = 0
 ) -> List[List[pd.DataFrame]]:
-    """Run the given algorithms (embarrassingly) parallel
+    """Run the given algorithms (embarrassingly) parallel.
 
     Args:
         algos: list of in-process algorithms

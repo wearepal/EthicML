@@ -1,4 +1,4 @@
-"""Create plots of a dataset"""
+"""Create plots of a dataset."""
 from pathlib import Path
 from typing import Tuple, List, Union, Optional
 import itertools
@@ -17,7 +17,7 @@ MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 
 def save_2d_plot(data: DataTuple, filepath: str) -> None:
-    """Make 2D plot"""
+    """Make 2D plot."""
     file_path = Path(filepath)
     columns = data.x.columns
 
@@ -39,7 +39,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
 
 def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)) -> None:
-    """Make joint plot"""
+    """Make joint plot."""
     file_path = Path(filepath)
     columns = data.x.columns
 
@@ -53,7 +53,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
 
 def make_gif(files: List[str], name: str = "movie") -> None:
-    """Make GIF"""
+    """Make GIF."""
     import imageio
 
     images = []
@@ -63,7 +63,7 @@ def make_gif(files: List[str], name: str = "movie") -> None:
 
 
 def save_label_plot(data: DataTuple, filename: str) -> None:
-    """Make label plot"""
+    """Make label plot."""
     file_path = Path(filename)
 
     # Only consider 1 sens attr for now
@@ -159,7 +159,7 @@ def single_plot(
     legend_yanchor: float = 1.0,
     markersize: int = 6,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
-    """Provide the functionality of the individual plotting functions through a nice interface
+    """Provide the functionality of the individual plotting functions through a nice interface.
 
     This function can also be used to create figures with multiple plots on them, because it does
     not generate a Figure object itself.
@@ -217,7 +217,7 @@ def plot_results(
     save: bool = True,
     dpi: int = 300,
 ) -> List[Tuple[plt.Figure, plt.Axes]]:
-    """Plot the given result with boxes that represent mean and standard deviation
+    """Plot the given result with boxes that represent mean and standard deviation.
 
     Args:
         results: a DataFrame that already contains the values of the metrics
