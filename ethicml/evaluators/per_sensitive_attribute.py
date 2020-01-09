@@ -1,6 +1,4 @@
-"""
-Evaluator for a metric per sensitive attribute class
-"""
+"""Evaluator for a metric per sensitive attribute class."""
 
 from typing import Dict, List
 import pandas as pd
@@ -10,13 +8,13 @@ from ..metrics.metric import Metric
 
 
 class MetricNotApplicable(Exception):
-    """Metric Not Applicable per sensitive attribute, apply to whole dataset instead"""
+    """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
 
 
 def metric_per_sensitive_attribute(
     predictions: pd.DataFrame, actual: DataTuple, metric: Metric
 ) -> Dict[str, float]:
-    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute"""
+    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
             f"Metric {metric.name} is not applicable per sensitive "
@@ -60,8 +58,7 @@ def metric_per_sensitive_attribute(
 
 
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
-    """
-    Compute the difference in the metrics per sensitive attribute
+    """Compute the difference in the metrics per sensitive attribute.
 
     Args:
         per_sens_res: dictionary of the results
@@ -84,8 +81,7 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
 
 
 def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
-    """
-    Compute the ratios in the metrics per sensitive attribute
+    """Compute the ratios in the metrics per sensitive attribute.
 
     Args:
         per_sens_res: dictionary of the results
