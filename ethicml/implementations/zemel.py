@@ -1,5 +1,5 @@
-"""
-Implementation fo Zemel's Learned Fair Representations lifted from AIF360
+"""Implementation fo Zemel's Learned Fair Representations lifted from AIF360.
+
 https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
 """
 from typing import List, Tuple, Dict, Optional, Union
@@ -17,7 +17,8 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 def distances(x: np.ndarray, v: np.ndarray, alpha: np.ndarray) -> np.ndarray:
-    """
+    """Compute distances.
+
     Compute the l2 distance between each feature, x_n, and each
     prototype vector, v_k, weighted by a feature-wise weight parameter, alpha
     Args:
@@ -33,8 +34,8 @@ def distances(x: np.ndarray, v: np.ndarray, alpha: np.ndarray) -> np.ndarray:
 
 
 def softmax(dists: np.ndarray) -> np.ndarray:
-    """
-    Compute the probability that x_n maps to a given prototype vector, v_k
+    """Compute the probability that x_n maps to a given prototype vector, v_k.
+
     Args:
         dists: l2 distances between each input feature and each prototype vector
 
@@ -50,8 +51,9 @@ def softmax(dists: np.ndarray) -> np.ndarray:
 
 
 def x_n_hat(x, matrix_nk, v) -> Tuple[np.ndarray, float]:
-    """Reconstruct x_n from z_n and compute the difference between
-    the original input and its reconstruction using l2 loss.
+    """Reconstruct x_n from z_n.
+
+    And compute the difference between the original input and its reconstruction using l2 loss.
 
     Args:
         x: Input features
@@ -68,8 +70,9 @@ def x_n_hat(x, matrix_nk, v) -> Tuple[np.ndarray, float]:
 
 
 def yhat(matrix_nk: np.ndarray, y: np.ndarray, w: np.ndarray) -> Tuple[np.ndarray, float]:
-    """Predict y and compute the cross-entropy loss between the resulting predictions
-    and the target labels
+    """Predict y and compute the cross-entropy loss.
+
+     This is between the resulting predictions and the target labels
 
     Args:
         matrix_nk: Matrix encoding the membership probabilities of each input feature to
@@ -87,7 +90,7 @@ def yhat(matrix_nk: np.ndarray, y: np.ndarray, w: np.ndarray) -> Tuple[np.ndarra
 
 
 def yhat_without_loss(matrix_nk: np.ndarray, w: np.ndarray) -> np.ndarray:
-    """Predict y without computing the classification loss
+    """Predict y without computing the classification loss.
 
     Args:
         matrix_nk: Matrix encoding the membership probabilities of each input feature to
@@ -116,8 +119,8 @@ def lfr_optim_ob(
     a_z: float = 0.5,
     results: bool = False,
 ) -> Union[Tuple[np.ndarray, ...], float]:
-    """
-    Apply L-BFGS to minimize the LFR objective function
+    """Apply L-BFGS to minimize the LFR objective function.
+
     Args:
         params: Array of trainable parameters.
         data_sensitive: Data for the subset of individuals that are members
@@ -178,8 +181,7 @@ lfr_optim_ob.iters = 0  # type: ignore[attr-defined]
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, float]]
 ) -> (Tuple[DataTuple, TestTuple]):
-
-    """Train the Zemel model and return the transformed features of the train and test sets"""
+    """Train the Zemel model and return the transformed features of the train and test sets."""
     np.random.seed(888)
     features_dim = train.x.shape[1]
 
@@ -246,8 +248,8 @@ def train_and_transform(
 
 
 def transform(features_sens, features_nonsens, learned_model, dataset, flags):
-    """
-    Transform a dataset based on the
+    """Transform a dataset.
+
     Args:
         features_sens: Sensitive features.
         features_nonsens: Nonsensitive features.
@@ -257,7 +259,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
         dataset: Dataset to be transformed.
 
     Returns:
-
+        Dataframe of transformed features.
     """
     k = flags['clusters']
     _, p = features_sens.shape
@@ -292,7 +294,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
 
 
 class ZemelArgs(PreAlgoArgs):
-    """Arguments for the Zemel algorithm"""
+    """Arguments for the Zemel algorithm."""
 
     clusters: int
     Ax: float
@@ -305,7 +307,7 @@ class ZemelArgs(PreAlgoArgs):
 
 
 def main():
-    """main method to run model"""
+    """Main method to run model."""
     args = ZemelArgs()
     args.parse_args()
 

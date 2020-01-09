@@ -1,4 +1,4 @@
-"""Functions that are common to PyTorch models"""
+"""Functions that are common to PyTorch models."""
 from typing import Tuple, TYPE_CHECKING
 
 import numpy as np
@@ -34,27 +34,32 @@ def _get_info(
 
 
 class TestDataset(Dataset):
-    """Shared Dataset for pytorch models without labels"""
+    """Shared Dataset for pytorch models without labels."""
 
     def __init__(self, data: TestTuple):
+        """Init TestDataset."""
         super().__init__()
         self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(data)
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
+        """Implement __getitem__ magic method."""
         return self.x[index, ...], self.s[index, ...]
 
     def __len__(self) -> int:
+        """Implement __len__ magic method."""
         return self.num
 
     @property
     def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]"]:
+        """Get tuple of x names and s names."""
         return self.x_names, self.s_names
 
 
 class CustomDataset(Dataset):
-    """Shared Dataset for pytorch models"""
+    """Shared Dataset for pytorch models."""
 
     def __init__(self, data: DataTuple):
+        """Init CutomDataset."""
         super().__init__()
         test = data.remove_y()
         self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(test)
@@ -63,18 +68,21 @@ class CustomDataset(Dataset):
         self.y_names = data.y.columns
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Implement __getitem__ magic method."""
         return self.x[index, ...], self.s[index, ...], self.y[index, ...]
 
     def __len__(self) -> int:
+        """Implement __len__ magic method."""
         return self.num
 
     @property
     def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]", "pd.Index[str]"]:
+        """Get tuple of x names, s names and y names."""
         return self.x_names, self.s_names, self.y_names
 
 
 def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) -> Tensor:
-    """
+    """Calculate MMD betweer 2 tensors of equal size.
 
     Args:
         data_first:
@@ -82,7 +90,7 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
         sigma:
 
     Returns:
-
+        Tensor of MMD in each dim.
     """
     xx_gm = data_first @ data_first.t()
     xy_gm = data_first @ data_second.t()

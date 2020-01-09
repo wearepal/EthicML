@@ -1,4 +1,4 @@
-"""Implementation of logistic regression (actually just a wrapper around sklearn)"""
+"""Implementation of logistic regression (actually just a wrapper around sklearn)."""
 import random
 
 import numpy as np
@@ -27,8 +27,7 @@ def train_and_predict(
     C: float,
     kernel: str,
 ):
-    """Train a logistic regression model and compute predictions on the given test data"""
-
+    """Train a logistic regression model and compute predictions on the given test data."""
     random.seed(888)
     np.random.seed(888)
 
@@ -62,7 +61,7 @@ def train_and_predict(
 
 
 def main():
-    """This function runs the Agarwal model as a standalone program"""
+    """This function runs the Agarwal model as a standalone program."""
     interface = InAlgoInterface()
     train, test = interface.load_data()
     classifier, fairness_, eps, iters, C, kernel = interface.remaining_args()
