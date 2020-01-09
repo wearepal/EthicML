@@ -61,14 +61,11 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
 
             # ========================== generate commandline arguments ===========================
             transformed_train_paths = PathTuple(
-                x=tmp_path / "transform_train_x.feather",
-                s=tmp_path / "transform_train_s.feather",
-                y=tmp_path / "transform_train_y.feather",
+                data_path=tmp_path / "transform_train.npz",
                 name=train.name if train.name is not None else "",
             )
             transformed_test_paths = TestPathTuple(
-                x=tmp_path / "transform_test_x.feather",
-                s=tmp_path / "transform_test_s.feather",
+                data_path=tmp_path / "transform_test.npz",
                 name=test.name if test.name is not None else "",
             )
             cmd = self._script_command(

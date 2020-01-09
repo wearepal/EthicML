@@ -17,6 +17,7 @@ from typing import (
 from typing_extensions import Literal, Final
 
 import pandas as pd
+import numpy as np
 from pandas.testing import assert_index_equal
 
 __all__ = [
@@ -34,6 +35,7 @@ __all__ = [
     "concat_dt",
     "concat_tt",
     "load_prediction",
+    "save_helper",
 ]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -79,9 +81,10 @@ class TestTuple:
         # create the directory if it doesn't already exist
         data_dir.mkdir(parents=True, exist_ok=True)
 
+        # SUGGESTION: maybe the file names should be completely random to avoid collisions
+        data_path = data_dir / f"data_{identifier}.npz"
         return TestPathTuple(
-            x=_save_helper(data_dir, self.x, identifier, "x"),
-            s=_save_helper(data_dir, self.s, identifier, "s"),
+            data_path=save_helper(data_path, dict(x=self.x, s=self.s)),
             name=self.name if self.name is not None else "",
         )
 
@@ -141,10 +144,10 @@ class DataTuple(TestTuple):
         # create the directory if it doesn't already exist
         data_dir.mkdir(parents=True, exist_ok=True)
 
+        # SUGGESTION: maybe the file names should be completely random to avoid collisions
+        data_path = data_dir / f"data_{identifier}.npz"
         return PathTuple(
-            x=_save_helper(data_dir, self.x, identifier, "x"),
-            s=_save_helper(data_dir, self.s, identifier, "s"),
-            y=_save_helper(data_dir, self.y, identifier, "y"),
+            data_path=save_helper(data_path, dict(x=self.x, s=self.s, y=self.y)),
             name=self.name if self.name is not None else "",
         )
 
@@ -196,14 +199,16 @@ class DataTuple(TestTuple):
 class TestPathTuple:
     """For algorithms that run in their own process, we pass around paths to the data."""
 
-    x: Path  # path to file with features
-    s: Path  # path to file with sensitive attributes
+    data_path: Path  # path to file with features
     name: str  # name of the dataset
 
     def load_from_feather(self) -> TestTuple:
         """Load a dataframe from a feather file."""
+        data = np.load(self.data_path)
         return TestTuple(
-            x=_load_feather(self.x), s=_load_feather(self.s), name=self.name if self.name else None
+            x=pd.DataFrame(data['x'], columns=data['x_names']),
+            s=pd.DataFrame(data['s'], columns=data['s_names']),
+            name=self.name if self.name else None,
         )
 
 
@@ -211,14 +216,13 @@ class TestPathTuple:
 class PathTuple(TestPathTuple):
     """For algorithms that run in their own process, we pass around paths to the data."""
 
-    y: Path  # path to file with class labels
-
     def load_from_feather(self) -> DataTuple:
         """Load a dataframe from a feather file."""
+        data = np.load(self.data_path)
         return DataTuple(
-            x=_load_feather(self.x),
-            s=_load_feather(self.s),
-            y=_load_feather(self.y),
+            x=pd.DataFrame(data['x'], columns=data['x_names']),
+            s=pd.DataFrame(data['s'], columns=data['s_names']),
+            y=pd.DataFrame(data['y'], columns=data['y_names']),
             name=self.name if self.name else None,
         )
 
@@ -256,11 +260,13 @@ class SoftPrediction(Prediction):
         return self._soft
 
 
-def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
-    # SUGGESTION: maybe the file names should be completely random to avoid collisions
-    data_path = data_dir / f"data_{prefix}_{key}.feather"
+def save_helper(data_path: Path, data: Dict[str, pd.DataFrame]) -> Path:
     # write the file
-    data.to_feather(data_path)
+    as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
+    column_names = {
+        f"{entry}_names": np.array(values.columns.tolist()) for entry, values in data.items()
+    }
+    np.savez(data_path, **as_numpy, **column_names)
     return data_path
 
 
@@ -317,17 +323,12 @@ def concat_tt(
     )
 
 
-def _load_feather(output_path: Path) -> pd.DataFrame:
-    """Load a dataframe from a feather file."""
-    with output_path.open("rb") as file_obj:
-        df = pd.read_feather(file_obj)
-    return df
-
-
 def load_prediction(output_path: Path) -> Prediction:
     """Load a prediction from a path."""
-    df = _load_feather(output_path)
-    return Prediction(hard=df[df.columns[0]])
+    with output_path.open("rb") as file_obj:
+        df = np.load(file_obj)
+    preds = df["pred"]
+    return Prediction(hard=pd.Series(preds))
 
 
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name

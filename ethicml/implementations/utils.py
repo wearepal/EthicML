@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import tap
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
+from ethicml.utility import DataTuple, TestTuple, PathTuple, TestPathTuple, save_helper
 
 
 class AlgoArgs(tap.Tap):
@@ -17,12 +17,9 @@ class AlgoArgs(tap.Tap):
     """
 
     # paths to the files with the data
-    train_x: str
-    train_s: str
-    train_y: str
+    train_data_path: str
     train_name: str
-    test_x: str
-    test_s: str
+    test_data_path: str
     test_name: str
 
 
@@ -30,12 +27,9 @@ class PreAlgoArgs(AlgoArgs):
     """ArgumentParser for pre-processing algorithms."""
 
     # paths to where the processed inputs should be stored
-    new_train_x: str
-    new_train_s: str
-    new_train_y: str
+    new_train: str
     new_train_name: str
-    new_test_x: str
-    new_test_s: str
+    new_test: str
     new_test_name: str
 
 
@@ -53,15 +47,13 @@ def save_predictions(predictions: Union[np.ndarray, pd.DataFrame], args: InAlgoA
     else:
         df = predictions
     pred_path = Path(args.pred_path)
-    df.to_feather(pred_path)
+    np.savez(pred_path, pred=df.to_numpy())
 
 
 def load_data_from_flags(flags: AlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags."""
-    train_paths = PathTuple(
-        x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name
-    )
-    test_paths = TestPathTuple(x=Path(flags.test_x), s=Path(flags.test_s), name=flags.test_name)
+    train_paths = PathTuple(data_path=Path(flags.train_data_path), name=flags.train_name)
+    test_paths = TestPathTuple(data_path=Path(flags.test_data_path), name=flags.test_name)
     return train_paths.load_from_feather(), test_paths.load_from_feather()
 
 
@@ -71,14 +63,5 @@ def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoA
     assert isinstance(transforms[1], TestTuple)
 
     train, test = transforms
-
-    def _save(data: pd.DataFrame, path: str) -> None:
-        # write the file
-        data.columns = data.columns.astype(str)
-        data.to_feather(Path(path))
-
-    _save(train.x, args.new_train_x)
-    _save(train.s, args.new_train_s)
-    _save(train.y, args.new_train_y)
-    _save(test.x, args.new_test_x)
-    _save(test.s, args.new_test_s)
+    save_helper(Path(args.new_train), dict(x=train.x, s=train.s, y=train.y))
+    save_helper(Path(args.new_test), dict(x=test.x, s=test.s))

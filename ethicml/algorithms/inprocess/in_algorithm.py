@@ -68,7 +68,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
-            pred_path = tmp_path / "predictions.feather"
+            pred_path = tmp_path / "predictions.npz"
             cmd = self._script_command(train_paths, test_paths, pred_path)
             await self._call_script(cmd)  # wait for scrip to run
             return load_prediction(pred_path)

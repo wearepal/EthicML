@@ -9,7 +9,7 @@ import numpy as np
 
 import pytest
 
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, PathTuple
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
 
@@ -19,15 +19,17 @@ def test_simple_saving() -> None:
     tests that a DataTuple can be saved
     """
     data_tuple = DataTuple(
-        x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0]), "a2": np.array([1, 1, 0, 1])}),
+        x=pd.DataFrame(
+            {"a1": np.array([3.2, 9.4, np.nan, 0.0])}
+        ),  # , "a2": np.array([1, 1, 0, 1])}),
         s=pd.DataFrame(
             {
                 "b1": np.array([1.8, -0.3, 1e10]),
-                "b2": np.array([1, 1, -1]),
-                "b3": np.array([0, 1, 0]),
+                # "b2": np.array([1, 1, -1]),
+                # "b3": np.array([0, 1, 0]),
             }
         ),
-        y=pd.DataFrame({"c1": np.array([-2, -3, np.nan]), "c3": np.array([0, 1, 0])}),
+        y=pd.DataFrame({"c1": np.array([-2, -3, 0]), "c3": np.array([0, 1, 0])}),
         name="test data",
     )
 
@@ -37,14 +39,14 @@ def test_simple_saving() -> None:
         def __init__(self) -> None:
             super().__init__(name="Check equality")
 
-        def _script_command(self, train_paths, _, pred_path):
+        def _script_command(self, train_paths: PathTuple, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones"""
             loaded = train_paths.load_from_feather()
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
             pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
             # the following command copies the x of the training data to the pred_path location
-            return ["-c", f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
+            return ["-c", f"import shutil; shutil.copy('{train_paths.data_path}', '{pred_path}')"]
 
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard)

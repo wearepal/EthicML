@@ -24,18 +24,12 @@ def flag_interface(
 
     # paths to output files
     flags_list += [
-        "--new_train_x",
-        str(new_train_paths.x),
-        "--new_train_s",
-        str(new_train_paths.s),
-        "--new_train_y",
-        str(new_train_paths.y),
+        "--new_train",
+        str(new_train_paths.data_path),
         "--new_train_name",
         new_train_paths.name,
-        "--new_test_x",
-        str(new_test_paths.x),
-        "--new_test_s",
-        str(new_test_paths.s),
+        "--new_test",
+        str(new_test_paths.data_path),
         "--new_test_name",
         new_test_paths.name,
     ]
