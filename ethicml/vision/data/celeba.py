@@ -4,10 +4,10 @@ Modifies the Pytorch CelebA dataset by enabling the use of sensitive attributes
 and biased subset sampling.
 """
 import os
-from pathlib import Path
-from typing import List, Tuple
-from typing_extensions import Literal
 import warnings
+from pathlib import Path
+from typing import Tuple, Optional, Callable, Sequence
+from typing_extensions import Literal
 
 import pandas as pd
 from PIL import Image
@@ -16,10 +16,11 @@ import torch
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_file_from_google_drive
-from torchvision.transforms import ToTensor
 
 from ethicml.preprocessing import get_biased_subset, SequentialSplit
 from ethicml.utility import DataTuple
+
+__all__ = ["CelebA"]
 
 
 _CELEBATTRS = Literal[
@@ -67,7 +68,7 @@ _CELEBATTRS = Literal[
 
 
 class CelebA(VisionDataset):
-    """Large-scale CelebFaces Attributes (CelebA) Dataset"""
+    """Large-scale CelebFaces Attributes (CelebA) Dataset."""
 
     base_folder = "celeba"
 
@@ -95,36 +96,35 @@ class CelebA(VisionDataset):
         biased: bool,
         mixing_factor: float,
         unbiased_pcnt: float,
-        sens_attrs: List[_CELEBATTRS],
+        sens_attrs: Sequence[_CELEBATTRS],
         target_attr_name: _CELEBATTRS,
-        transform=None,
-        target_transform=None,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
         download: bool = False,
         seed: int = 42,
     ):
-        """Large-scale CelebFaces Attributes (CelebA) Dataset
+        """Large-scale CelebFaces Attributes (CelebA) Dataset.
 
         <http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html>
         Adapted from torchvision.datasets to enable the loading of data triplets and biased/unbiased
-        subsets while removing superfluous (for our purposes) elements of the dataset (e.g. facial landmarks)
+        subsets while removing superfluous (for our purposes) elements of the dataset (e.g. facial
+        landmarks).
 
         Args:
-            root (string): Root directory where images are downloaded to.
-            biased (string): Wheher to artifically bias the dataset according to the
-            mixing factor. See ':func:get_biased_subset()' for more details.
-            mixing_factor(float): Mixing factor used to generate the biased subset of the data.
-            sens_attrs (string): Attribute(s) to set as the sensitive attribute. Biased sampling cannot
-            be performed if multiple sensitive attributes are specified.
-            unbiased_pcnt (float): Percentage of the dataset to set aside as the 'unbiased' split.
-            target_attr_name (string): Attribute to set as the target attribute.
-            transform (callable, optional): A function/transform that  takes in an PIL image
-                and returns a transformed version. E.g, ``transforms.ToTensor``
-            target_transform (callable, optional): A function/transform that takes in the
-                target and transforms it.
-            download (bool, optional): If true, downloads the dataset from the internet and
-                puts it in root directory. If dataset is already downloaded, it is not
-                downloaded again.
-            seed (int, optional): Random seed used to sample biased subset.
+            root: Root directory where images are downloaded to.
+            biased: Wheher to artifically bias the dataset according to the mixing factor. See
+                    :func:`get_biased_subset()` for more details.
+            mixing_factor: Mixing factor used to generate the biased subset of the data.
+            sens_attrs: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+                        performed if multiple sensitive attributes are specified.
+            unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
+            target_attr_name: Attribute to set as the target attribute.
+            transform: A function/transform that  takes in an PIL image and returns a transformed
+                       version. E.g, `transforms.ToTensor`
+            target_transform: A function/transform that takes in the target and transforms it.
+            download: If true, downloads the dataset from the internet and puts it in root
+                      directory. If dataset is already downloaded, it is not downloaded again.
+            seed: Random seed used to sample biased subset.
         """
         super().__init__(root, transform=transform, target_transform=target_transform)
 
@@ -181,7 +181,7 @@ class CelebA(VisionDataset):
             warnings.warn("Same attribute specified for both the sensitive and target attribute.")
 
         target_attr = all_data[[target_attr_name]]
-        target_attr = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
+        target_attr: pd.DataFrame = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
 
         filename = all_data[["filenames"]]
 
@@ -237,10 +237,10 @@ class CelebA(VisionDataset):
 
         with zipfile.ZipFile(
             os.path.join(self.root, self.base_folder, "img_align_celeba.zip"), "r"
-        ) as f:
-            f.extractall(os.path.join(self.root, self.base_folder))
+        ) as fhandle:
+            fhandle.extractall(os.path.join(self.root, self.base_folder))
 
-    def __getitem__(self, index) -> Tuple[Tensor, Tensor, Tensor]:
+    def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
         """Fetch the data sample at the given index.
 
         Args:
@@ -250,24 +250,24 @@ class CelebA(VisionDataset):
             Tuple[1]: Tuple containing the sample along
             with its sensitive and target attribute labels.
         """
-        X = Image.open(
+        x = Image.open(
             os.path.join(self.root, self.base_folder, "img_align_celeba", self.filename[index])
         )
-        S = self.sens_attr[index]
+        s = self.sens_attr[index]
         target = self.target_attr[index]
 
         if self.transform is not None:
-            X = self.transform(X)
+            x = self.transform(x)
 
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        return X, S, target
+        return x, s, target
 
     def __len__(self) -> int:
-        """Length (sample count) of the dataset
+        """Length (sample count) of the dataset.
 
         Returns:
-            int: Integer indicating the length of the dataset.
+            Integer indicating the length of the dataset.
         """
         return len(self.sens_attr)

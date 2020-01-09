@@ -1,25 +1,21 @@
-"""Transformations that act differentlly depending on the label.
-"""
+"""Transformations that act differentlly depending on the label."""
 
-import random
 from typing import List
 
 import numpy as np
 import torch
 from torch import Tensor
-from skimage import color
-from torchvision import transforms
+from torch import jit
 
 __all__ = ["LdAugmentation", "LdColorizer"]
 
 
-class LdAugmentation(torch.jit.ScriptModule):
-    """Base class for label-dependent augmentations.
-    """
+class LdAugmentation(jit.ScriptModule):
+    """Base class for label-dependent augmentations."""
 
-    @torch.jit.script_method
+    @jit.script_method
     def _augment(self, data: Tensor, labels: Tensor) -> Tensor:
-        """Augment the input data in a label-dependent fashion
+        """Augment the input data in a label-dependent fashion.
 
         Args:
             data: Tensor. Input data to be augmented.
@@ -30,7 +26,7 @@ class LdAugmentation(torch.jit.ScriptModule):
         return data
 
     def __call__(self, data: Tensor, labels: Tensor) -> Tensor:
-        """Calls the augment method on the the input data.
+        """Apply the augment method to the input data.
 
         Args:
             data: Tensor. Input data to be augmented.
@@ -42,8 +38,9 @@ class LdAugmentation(torch.jit.ScriptModule):
 
 
 class LdColorizer(LdAugmentation):
+    """Transform that colorizes images."""
 
-    __constants__ = ["color_space", "binarize", "black", "background", "seed"]
+    __constants__ = ["min_val", "max_val", "binarize", "black", "background", "seed"]
 
     def __init__(
         self,
@@ -53,27 +50,29 @@ class LdColorizer(LdAugmentation):
         binarize: bool = False,
         background: bool = False,
         black: bool = True,
-        seed: bool = 42,
+        seed: int = 42,
         greyscale: bool = False,
     ):
-        """Colorizes a grayscale image by sampling colors from multivariate normal distributions
-        centered on predefined means and standard deviation determined by the scale argument.
+        """Colorizes a grayscale image by sampling colors from multivariate normal distributions.
+
+        The distribution is centered on predefined means and standard deviation determined by the
+        scale argument.
 
         Args:
-            min_val (float, optional): Minimum value the input data can take (needed for clamping). Defaults to 0..
-            max_val (float, optional): Maximum value the input data can take (needed for clamping). Defaults to 1..
-            scale (float, optional): Standard deviation of the multivariate normal distributions from which
-            the colors are drawn. Lower values correspond to higher bias. Defaults to 0.02.
-            binarize (bool, optional): Whether the binarize the grayscale data before colorisation. Defaults to False.
-            background (bool, optional): Whether to color the background instead of the foreground. Defaults to False.
-            black (bool, optional): Whether not to invert the black. Defaults to True.
-            seed (bool, optional): Random seed used for sampling colors. Defaults to 42.
-            greyscale (bool, optional): Whether to greyscale the colorised images. Defaults to False.
+            min_val: Minimum value the input data can take (needed for clamping). Defaults to 0.
+            max_val: Maximum value the input data can take (needed for clamping). Defaults to 1.
+            scale: Standard deviation of the multivariate normal distributions from which
+                the colors are drawn. Lower values correspond to higher bias. Defaults to 0.02.
+            binarize: Whether the binarize the grayscale data before colorisation. Defaults to False
+            background: Whether to color the background instead of the foreground. Defaults to False
+            black: Whether not to invert the black. Defaults to True.
+            seed: Random seed used for sampling colors. Defaults to 42.
+            greyscale: Whether to greyscale the colorised images. Defaults to False.
         """
         super(LdColorizer, self).__init__()
-        self.min_val
-        self.max_val
-        self.scale = scale
+        self.min_val = min_val
+        self.max_val = max_val
+        self.scale = scale * np.eye(3)
         self.binarize = binarize
         self.background = background
         self.black = black
@@ -82,7 +81,6 @@ class LdColorizer(LdAugmentation):
         # create a local random state that won't affect the global random state of the training
         self.random_state = np.random.RandomState(seed)
 
-        self.color_space = color_space
         colors = [
             (0, 255, 255),
             (0, 0, 255),  # blue
@@ -97,18 +95,12 @@ class LdColorizer(LdAugmentation):
         ]  # yellow
 
         self.palette = [np.divide(color, 255) for color in colors]
-        self.scale *= np.eye(3)
 
     def _sample_color(self, mean_color_values: np.ndarray) -> np.ndarray:
-        if self.color_space == "hsv":
-            return np.clip(self.random_state.normal(mean_color_values, self.scale), 0, 1)
-        else:
-            return np.clip(
-                self.random_state.multivariate_normal(mean_color_values, self.scale), 0, 1
-            )
+        return np.clip(self.random_state.multivariate_normal(mean_color_values, self.scale), 0, 1)
 
     def _augment(self, data: Tensor, labels: Tensor) -> Tensor:
-        """
+        """Apply the transformation.
 
         Args:
             data (Tensor): (Grayscale) data samples to be colorized.
