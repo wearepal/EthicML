@@ -1,6 +1,4 @@
-"""
-Implementation for Louizos et al Variational Fair Autoencoder
-"""
+"""Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 
 from typing import List, Optional, Any, Tuple
@@ -13,9 +11,9 @@ from ethicml.implementations.vfae_modules.decoder import Decoder
 
 
 class VFAENetwork(nn.Module):
-    """
-    Implements a generative model with two layers of stochastic variables,
-    where both are conditional, i.e.:
+    """Implements a generative model with two layers of stochastic variables.
+
+    Where both are conditional, i.e.:
 
     p(x, z1, z2, y | s) = p(z2) p(y) p(z1 | z2, y) p(x | z1, s)
 
@@ -32,6 +30,7 @@ class VFAENetwork(nn.Module):
         z2_enc_size: List[int],
         z1_dec_size: List[int],
     ):
+        """Init VFAE Network."""
         super(VFAENetwork, self).__init__()
         torch.manual_seed(888)
 
@@ -45,17 +44,20 @@ class VFAENetwork(nn.Module):
         self.ypred = nn.Linear(latent_dims, 1)
 
     def encode_z1(self, x: Tensor, s: Tensor) -> Tuple[Tensor, Tensor]:
+        """Encode Z1."""
         return self.z1_encoder(torch.cat((x, s), 1))
 
     def encode_z2(self, z1: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
+        """Encode Z2."""
         return self.z2_encoder(torch.cat((z1, y), 1))
 
     def decode_z1(self, z2: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
+        """Decode Z1."""
         return self.z1_decoder(torch.cat((z2, y), 1))
 
     @staticmethod
     def reparameterize(mean: Tensor, logvar: Tensor) -> Tensor:
-        """reparametrization trick - Leaving as a method to try and control reproducability"""
+        """Reparametrization trick - Leaving as a method to try and control reproducability."""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps.mul(std).add_(mean)  # type: ignore[attr-defined]
@@ -69,6 +71,7 @@ class VFAENetwork(nn.Module):
         Tensor,
         Optional[Tensor],
     ]:
+        """Forward pass for network."""
         z1_mu, z1_logvar = self.encode_z1(x, s)
         # z1 = F.sigmoid(reparameterize(z1_mu, z1_logvar))
         z1 = self.reparameterize(z1_mu, z1_logvar)

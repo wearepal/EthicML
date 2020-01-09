@@ -1,6 +1,4 @@
-"""
-Implementation for Louizos et al Variational Fair Autoencoder
-"""
+"""Implementation for Louizos et al Variational Fair Autoencoder."""
 
 from typing import Optional
 import torch
@@ -13,7 +11,7 @@ from ethicml.implementations.pytorch_common import quadratic_time_mmd
 def kullback_leibler(
     mu1: Tensor, logvar1: Tensor, mu2: Optional[Tensor] = None, logvar2: Optional[Tensor] = None
 ) -> Tensor:
-    """
+    """KL Divergence.
 
     Args:
         mu1:
@@ -22,7 +20,7 @@ def kullback_leibler(
         logvar2:
 
     Returns:
-
+        Tensorof divergence in each dim.
     """
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
     logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
@@ -34,7 +32,7 @@ def kullback_leibler(
 
 
 def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_dec, y_pred):
-    """
+    """Loss function for VFAE.
 
     Args:
         flags:
@@ -46,7 +44,7 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         y_pred:
 
     Returns:
-
+        Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
     """
     z1, z1_mu, z1_logvar = z1_triplet
     if flags["supervised"]:

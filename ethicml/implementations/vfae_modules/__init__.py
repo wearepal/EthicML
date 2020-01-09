@@ -1,5 +1,3 @@
-"""
-I go off docstrings more and more
-"""
+"""Modules used within the VFAE implementation."""
 
 from . import vfae_network, utils

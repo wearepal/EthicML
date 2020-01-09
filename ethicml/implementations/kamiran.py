@@ -1,13 +1,12 @@
-"""
-Implementatioon of Kamiran and Calders 2012
+"""Implementatioon of Kamiran and Calders 2012.
 
 Heavily based on AIF360
 https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/reweighing.py
 
-    References:
-        .. [4] F. Kamiran and T. Calders,  "Data Preprocessing Techniques for
-           Classification without Discrimination," Knowledge and Information
-           Systems, 2012.
+References:
+    .. [4] F. Kamiran and T. Calders,  "Data Preprocessing Techniques for
+       Classification without Discrimination," Knowledge and Information
+       Systems, 2012.
 """
 
 import pandas as pd
@@ -38,7 +37,7 @@ def _obtain_conditionings(dataset: DataTuple):
 
 
 def compute_weights(train: DataTuple) -> pd.DataFrame:
-    """Compute weights for all samples"""
+    """Compute weights for all samples."""
     np.random.seed(888)
     (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
 
@@ -76,7 +75,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
 
 
 def train_and_predict(train, test, classifier, C: float, kernel: str):
-    """Train a logistic regression model and compute predictions on the given test data"""
+    """Train a logistic regression model and compute predictions on the given test data."""
     if classifier == "SVM":
         model = select_svm(C, kernel)
     else:
@@ -90,7 +89,7 @@ def train_and_predict(train, test, classifier, C: float, kernel: str):
 
 
 def main():
-    """This function runs the Kamiran&Calders method as a standalone program"""
+    """This function runs the Kamiran&Calders method as a standalone program."""
     interface = InAlgoInterface()
     train, test = interface.load_data()
     classifier, C, kernel = interface.remaining_args()

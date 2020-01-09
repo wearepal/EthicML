@@ -1,6 +1,4 @@
-"""
-Implementation for Louizos et al Variational Fair Autoencoder
-"""
+"""Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 
 import torch
@@ -8,9 +6,7 @@ from torch import nn
 
 
 class _OneHotEncoder(nn.Module):
-    """
-    One Hot Encode the output based on feature groups
-    """
+    """One Hot Encode the output based on feature groups."""
 
     def __init__(self, n_dims, index_dim=1):
         super().__init__()
@@ -27,16 +23,16 @@ class _OneHotEncoder(nn.Module):
 
 
 class Categorical(nn.Module):
-    """
-    Group a category together
-    """
+    """Group a category together."""
 
     def __init__(self, in_feat, dims):
+        """Init Categorical object."""
         super().__init__()
         self.layer = nn.Sequential(nn.Linear(in_feat, dims), nn.Softmax(dim=-1))
         self.ohe = _OneHotEncoder(n_dims=dims)
 
     def forward(self, x):
+        """Forward pass."""
         out = self.layer(x)
         if not self.training:
             out = self.ohe(out)

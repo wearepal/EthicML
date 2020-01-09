@@ -1,6 +1,4 @@
-"""
-Useful functions used in implementations
-"""
+"""Useful functions used in implementations."""
 import sys
 from pathlib import Path
 from typing import Tuple, Union, List, Optional
@@ -13,7 +11,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, Tes
 
 
 class PreAlgoArgs(tap.Tap):
-    """ArgumentParser that already has arguments for the paths
+    """ArgumentParser that already has arguments for the paths.
 
     This is a quick way to create a parser that can parse the filenames for the data. This class
     can be used by pre-algorithms to implement a commandline interface.
@@ -39,13 +37,14 @@ class PreAlgoArgs(tap.Tap):
 
 
 class InAlgoInterface:
-    """Commandline "interface" for in-process algorithms"""
+    """Commandline "interface" for in-process algorithms."""
 
     def __init__(self, args: Optional[List[str]] = None):
+        """Init InProcess Algorithm."""
         self.args: List[str] = sys.argv[1:] if args is None else args
 
     def load_data(self) -> Tuple[DataTuple, TestTuple]:
-        """Load the data from the files"""
+        """Load the data from the files."""
         train_paths = PathTuple(
             x=Path(self.args[0]), s=Path(self.args[1]), y=Path(self.args[2]), name=self.args[3]
         )
@@ -53,7 +52,7 @@ class InAlgoInterface:
         return train_paths.load_from_feather(), test_paths.load_from_feather()
 
     def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
-        """Save the data to the file that was specified in the commandline arguments"""
+        """Save the data to the file that was specified in the commandline arguments."""
         if not isinstance(predictions, pd.DataFrame):
             df = pd.DataFrame(predictions, columns=["pred"])
         else:
@@ -62,12 +61,12 @@ class InAlgoInterface:
         df.to_feather(pred_path)
 
     def remaining_args(self) -> List[str]:
-        """Additional commandline arguments beyond the data paths and the prediction path"""
+        """Additional commandline arguments beyond the data paths and the prediction path."""
         return self.args[8:]
 
 
 def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
-    """Load data from the paths specified in the flags"""
+    """Load data from the paths specified in the flags."""
     train_paths = PathTuple(
         x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name
     )
@@ -76,7 +75,7 @@ def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
 
 
 def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoArgs):
-    """Save the data to the file that was specified in the commandline arguments"""
+    """Save the data to the file that was specified in the commandline arguments."""
     assert isinstance(transforms[0], DataTuple)
     assert isinstance(transforms[1], TestTuple)
 

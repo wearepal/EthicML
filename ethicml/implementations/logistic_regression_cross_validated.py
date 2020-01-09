@@ -1,4 +1,4 @@
-"""Implementation of logistic regression (actually just a wrapper around sklearn)"""
+"""Implementation of logistic regression (actually just a wrapper around sklearn)."""
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.model_selection import KFold
 
@@ -9,7 +9,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 def train_and_predict(train: DataTuple, test: TestTuple) -> pd.DataFrame:
-    """Train a logistic regression model and compute predictions on the given test data"""
+    """Train a logistic regression model and compute predictions on the given test data."""
     folder = KFold(n_splits=3, random_state=888, shuffle=False)
     clf = LogisticRegressionCV(
         cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto'
@@ -19,7 +19,7 @@ def train_and_predict(train: DataTuple, test: TestTuple) -> pd.DataFrame:
 
 
 def main():
-    """This function runs the cross-validated logistic regression model as a standalone program"""
+    """This function runs the cross-validated logistic regression model as a standalone program."""
     interface = InAlgoInterface()
     train, test = interface.load_data()
     interface.save_predictions(train_and_predict(train, test))

@@ -1,6 +1,4 @@
-"""
-Implementation of VFAE
-"""
+"""Implementation of VFAE."""
 from typing import Any, Dict, List, Tuple
 
 import pandas as pd
@@ -18,9 +16,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 def get_dataset_obj_by_name(name: str) -> Dataset:
-    """
-    Given a dataset name, get the corresponding dataset object
-    """
+    """Given a dataset name, get the corresponding dataset object."""
     lookup: Dict[str, Dataset] = {
         "Adult": Adult(),
         "Compas": Compas(),
@@ -40,14 +36,15 @@ def get_dataset_obj_by_name(name: str) -> Dataset:
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: Any
 ) -> Tuple[DataTuple, TestTuple]:
-    """
-    train the model and transform the dataset
+    """Train the model and transform the dataset.
+
     Args:
         train:
         test:
         flags:
 
     Returns:
+        Tuple of Encoded Train Dataset and Test Dataset.
     """
     dataset = get_dataset_obj_by_name(flags['dataset'])
 
@@ -97,8 +94,8 @@ def train_and_transform(
 def train_model(
     epoch: int, model: VFAENetwork, train_loader: DataLoader, optimizer: Adam, flags: Dict[str, Any]
 ) -> None:
-    """
-    Train the model
+    """Train the model.
+
     Args:
         epoch:
         model:
@@ -107,9 +104,8 @@ def train_model(
         flags:
 
     Returns:
-
+        None
     """
-
     model.train()
     train_loss = 0
     for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):
@@ -152,6 +148,8 @@ def train_model(
 
 
 class VfaeArgs(PreAlgoArgs):
+    """Args object of VFAE."""
+
     supervised: bool
     fairness: str
     batch_size: int
@@ -163,7 +161,7 @@ class VfaeArgs(PreAlgoArgs):
 
 
 def main():
-    """main method to run model"""
+    """Main method to run model."""
     args = VfaeArgs(explicit_bool=True)
     args.parse_args()
 

@@ -1,6 +1,4 @@
-"""
-Implementation for Louizos et al Variational Fair Autoencoder
-"""
+"""Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 
 from itertools import groupby
@@ -14,11 +12,10 @@ from ethicml.implementations.vfae_modules.categorical import Categorical
 
 
 class Decoder(nn.Module):
-    """
-    Decoder for VFAE
-    """
+    """Decoder for VFAE."""
 
     def __init__(self, dataset: Dataset, deploy: bool = False):
+        """Init Decoder."""
         super().__init__()
         self._deploy = deploy
         self.features: List[str] = dataset.feature_split["x"]
@@ -54,6 +51,7 @@ class Decoder(nn.Module):
         )
 
     def forward(self, x: Tensor, s: Tensor) -> Tensor:  # type: ignore[override]
+        """Forward pass."""
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s), 1))
         decoded = torch.cat(
