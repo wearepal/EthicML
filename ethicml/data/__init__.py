@@ -1,6 +1,4 @@
-"""
-This module contains items related to data, such as raw csv's and data objects
-"""
+"""This module contains items related to data, such as raw csv's and data objects."""
 
 from .adult import Adult
 from .compas import Compas

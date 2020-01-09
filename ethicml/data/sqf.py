@@ -1,14 +1,13 @@
-"""
-Class to describe features of the SQF dataset
-"""
+"""Class to describe features of the SQF dataset."""
 
 from ethicml.data.dataset import Dataset
 
 
 class Sqf(Dataset):
-    """Stop, question and frisk dataset"""
+    """Stop, question and frisk dataset."""
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
+        """Init SQF dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
@@ -183,8 +182,10 @@ class Sqf(Dataset):
 
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return f"SQF {self.split}"
 
     @property
     def filename(self) -> str:
+        """Getter for filename."""
         return "sqf.csv"

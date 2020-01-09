@@ -1,6 +1,4 @@
-"""
-Abstract Base Class for all datasets that come with the framework
-"""
+"""Abstract Base Class for all datasets that come with the framework."""
 
 from abc import ABC, abstractmethod
 from typing import Dict, List
@@ -11,7 +9,7 @@ from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
 
 class Dataset(ABC):
-    """Base class for datasets"""
+    """Base class for datasets."""
 
     _features: List[str]
     _class_label_prefix: List[str]
@@ -22,6 +20,7 @@ class Dataset(ABC):
     _disc_features: List[str]
 
     def __init__(self) -> None:
+        """Init Dataset object."""
         self._features: List[str] = []
         self._class_label_prefix: List[str] = []
         self._class_labels: List[str] = []
@@ -36,29 +35,31 @@ class Dataset(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
-        """Name of the dataset"""
+        """Name of the dataset."""
 
     @property
     @abstractmethod
     def filename(self) -> str:
-        """File from which to load the data"""
+        """File from which to load the data."""
 
     @property
     def filepath(self) -> Path:
+        """Filepath from which to load the data."""
         return self._filepath
 
     @filepath.setter
     def filepath(self, loc: Path) -> None:
+        """Setter for the filepath."""
         self._filepath = loc
 
     @property
     def ordered_features(self) -> Dict[str, List[str]]:
-        """
-        Return a dictionary that has separate entries for the features, the labels and the
-        sensitive attributes, but the x features are ordered so first are the discrete features,
-        then the continuous
-        """
+        """Return an order features dictionary.
 
+        This should have separate entries for the features, the labels and the
+        sensitive attributes, but the x features are ordered so first are the discrete features,
+        then the continuous.
+        """
         return {
             "x": self.discrete_features + self.continuous_features,
             "s": self._sens_attrs,
@@ -67,9 +68,9 @@ class Dataset(ABC):
 
     @property
     def feature_split(self) -> Dict[str, List[str]]:
-        """
-        Return a dictionary that has separate entries for the features, the labels and the
-        sensitive attributes.
+        """Return a feature split dictionary.
+
+        This should have separate entries for the features, the labels and the sensitive attributes.
         """
         if self.discrete_only:
             self.features_to_remove += self.continuous_features
@@ -82,7 +83,7 @@ class Dataset(ABC):
 
     @property
     def continuous_features(self) -> List[str]:
-        """List of features that are continuous"""
+        """List of features that are continuous."""
         return self._cont_features
 
     @continuous_features.setter
@@ -91,7 +92,7 @@ class Dataset(ABC):
 
     @property
     def features(self) -> List[str]:
-        """List of all features"""
+        """List of all features."""
         return self._features
 
     @features.setter
@@ -100,7 +101,7 @@ class Dataset(ABC):
 
     @property
     def s_prefix(self) -> List[str]:
-        """List of prefixes of the sensitive attribute"""
+        """List of prefixes of the sensitive attribute."""
         return self._s_prefix
 
     @s_prefix.setter
@@ -110,7 +111,7 @@ class Dataset(ABC):
 
     @property
     def sens_attrs(self) -> List[str]:
-        """List of sensitive attributes"""
+        """List of sensitive attributes."""
         return self._sens_attrs
 
     @sens_attrs.setter
@@ -119,7 +120,7 @@ class Dataset(ABC):
 
     @property
     def class_labels(self) -> List[str]:
-        """List of class labels"""
+        """List of class labels."""
         return self._class_labels
 
     @class_labels.setter
@@ -128,7 +129,7 @@ class Dataset(ABC):
 
     @property
     def class_label_prefix(self) -> List[str]:
-        """List of prefixes of class labels"""
+        """List of prefixes of class labels."""
         return self._class_label_prefix
 
     @class_label_prefix.setter
@@ -138,7 +139,7 @@ class Dataset(ABC):
 
     @property
     def discrete_features(self) -> List[str]:
-        """List of features that are discrete"""
+        """List of features that are discrete."""
         return get_discrete_features(
             self.features, self.features_to_remove, self.continuous_features
         )

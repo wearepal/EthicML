@@ -1,14 +1,13 @@
-"""
-Class to describe features of the German dataset
-"""
+"""Class to describe features of the German dataset."""
 
 from .dataset import Dataset
 
 
 class German(Dataset):
-    """German credit dataset"""
+    """German credit dataset."""
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
+        """Init German dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
@@ -94,8 +93,10 @@ class German(Dataset):
 
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return f"German {self.split}"
 
     @property
     def filename(self) -> str:
+        """Getter for filename."""
         return "german.csv"

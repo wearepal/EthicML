@@ -1,17 +1,16 @@
-"""
-Class to describe features of the Compas dataset
-"""
+"""Class to describe features of the Compas dataset."""
 from typing_extensions import Literal
 
 from ethicml.data.dataset import Dataset
 
 
 class Compas(Dataset):
-    """Compas (or ProPublica) dataset"""
+    """Compas (or ProPublica) dataset."""
 
     def __init__(
         self, split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
     ):
+        """Init Compas dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
@@ -448,8 +447,10 @@ class Compas(Dataset):
 
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return f"Compas {self.split}"
 
     @property
     def filename(self) -> str:
+        """Getter for file name."""
         return "compas-recidivism.csv"

@@ -1,17 +1,15 @@
-"""
-Activations are applied to
-"""
+"""Base Class for decision / activation functions."""
 
 from abc import ABC, abstractmethod
 import numpy
 
 
 class Activation(ABC):
-    """Base class for decision functions"""
+    """Base class for decision functions."""
 
     @abstractmethod
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
-        """Apply the decision function to a soft prediction
+        """Apply the decision function to a soft prediction.
 
         Args:
             soft_output: soft prediction (i.e. a probability or logits)
@@ -22,4 +20,4 @@ class Activation(ABC):
 
     @abstractmethod
     def get_name(self) -> str:
-        """Name of activation function"""
+        """Name of activation function."""

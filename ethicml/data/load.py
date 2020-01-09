@@ -1,6 +1,4 @@
-"""
-Loads Data from .csv files
-"""
+"""Loads Data from .csv files."""
 
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -12,7 +10,7 @@ from .dataset import Dataset
 
 
 def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
-    """Load dataset from its CSV file
+    """Load dataset from its CSV file.
 
     Args:
         dataset: dataset object
@@ -39,7 +37,7 @@ def create_data_obj(
     y_columns: List[str],
     additional_to_drop: Optional[List[str]] = None,
 ) -> ConfigurableDataset:
-    """Create a `ConfigurableDataset` from the given file
+    """Create a `ConfigurableDataset` from the given file.
 
     Args:
         filepath: path to a CSV file
