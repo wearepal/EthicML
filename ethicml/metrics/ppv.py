@@ -1,6 +1,4 @@
-"""
-For assessing PPV
-"""
+"""For assessing PPV."""
 
 import pandas as pd
 

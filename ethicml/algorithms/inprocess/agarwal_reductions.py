@@ -1,6 +1,4 @@
-"""
-implementation of Agarwal model
-"""
+"""implementation of Agarwal model."""
 from pathlib import Path
 from typing import List, Set, Optional
 

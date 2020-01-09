@@ -1,6 +1,4 @@
-"""
-Zemel's Learned Fair Representations
-"""
+"""Zemel's Learned Fair Representations."""
 from typing import Dict, Union, Tuple, List
 
 from ethicml.utility.data_structures import TestTuple, DataTuple, PathTuple, TestPathTuple

@@ -1,6 +1,4 @@
-"""
-Wrapper for calling the fair GP model
-"""
+"""Wrapper for calling the fair GP model."""
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory

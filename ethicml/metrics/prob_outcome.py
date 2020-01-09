@@ -1,6 +1,4 @@
-"""
-For assessing mean of logits
-"""
+"""For assessing mean of logits."""
 
 import pandas as pd
 

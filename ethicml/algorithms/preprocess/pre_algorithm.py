@@ -1,6 +1,4 @@
-"""
-Abstract Base Class of all algorithms in the framework
-"""
+"""Abstract Base Class of all algorithms in the framework."""
 
 from pathlib import Path
 from tempfile import TemporaryDirectory

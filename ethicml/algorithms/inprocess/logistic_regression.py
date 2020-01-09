@@ -1,6 +1,4 @@
-"""
-Wrapper around Sci-Kit Learn Logistic Regression
-"""
+"""Wrapper around Sci-Kit Learn Logistic Regression."""
 from pathlib import Path
 from typing import Optional, List
 

@@ -1,6 +1,4 @@
-"""
-For assessing NPV
-"""
+"""For assessing NPV."""
 
 import pandas as pd
 

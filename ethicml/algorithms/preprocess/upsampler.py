@@ -1,6 +1,4 @@
-"""
-Simple upsampler that makes subgroups the same size as the majority group
-"""
+"""Simple upsampler that makes subgroups the same size as the majority group."""
 
 from typing import List, Tuple, Dict
 

@@ -1,6 +1,4 @@
-"""
-Abstract Base Class of all post-processing algorithms in the framework
-"""
+"""Abstract Base Class of all post-processing algorithms in the framework."""
 
 from abc import abstractmethod
 import pandas as pd

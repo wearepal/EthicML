@@ -1,6 +1,4 @@
-"""
-Base class for Algorithms
-"""
+"""Base class for Algorithms."""
 import sys
 from abc import ABC, abstractmethod, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any

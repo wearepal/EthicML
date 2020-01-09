@@ -1,6 +1,4 @@
-"""
-For assessing ProbNeg
-"""
+"""For assessing ProbNeg."""
 
 import pandas as pd
 

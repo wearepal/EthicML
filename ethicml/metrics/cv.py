@@ -1,6 +1,4 @@
-"""
-For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))
-"""
+"""For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))."""
 
 import pandas as pd
 

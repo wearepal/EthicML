@@ -1,6 +1,4 @@
-"""
-Variational Fair Auto-Encoder by Louizos et al
-"""
+"""Variational Fair Auto-Encoder by Louizos et al."""
 
 from typing import List, Tuple, Dict, Union, Optional
 

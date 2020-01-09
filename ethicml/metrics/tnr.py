@@ -1,6 +1,4 @@
-"""
-For assessing TNR
-"""
+"""For assessing TNR."""
 
 import pandas as pd
 

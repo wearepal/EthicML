@@ -1,6 +1,4 @@
-"""
-For assessing TPR
-"""
+"""For assessing TPR."""
 
 import pandas as pd
 

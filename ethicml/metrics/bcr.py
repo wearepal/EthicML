@@ -1,6 +1,4 @@
-"""
-For assessing Balanced Classification Rate (BCR)
-"""
+"""For assessing Balanced Classification Rate (BCR)."""
 
 import pandas as pd
 

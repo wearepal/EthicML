@@ -1,6 +1,4 @@
-"""
-For assessing Nomralized Mutual Information
-"""
+"""For assessing Nomralized Mutual Information."""
 
 import pandas as pd
 

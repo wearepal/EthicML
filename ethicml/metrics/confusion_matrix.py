@@ -1,6 +1,4 @@
-"""
-Applies sci-kit learn's confusion matrix
-"""
+"""Applies sci-kit learn's confusion matrix."""
 
 from typing import Tuple
 import numpy as np

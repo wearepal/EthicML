@@ -1,6 +1,4 @@
-"""
-Simply returns the majority label from the train set
-"""
+"""Simply returns the majority label from the train set."""
 
 import pandas as pd
 

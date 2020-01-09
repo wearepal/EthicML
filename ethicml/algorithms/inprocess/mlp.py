@@ -1,6 +1,4 @@
-"""
-Wrapper for SKLearn implementation of MLP
-"""
+"""Wrapper for SKLearn implementation of MLP."""
 from pathlib import Path
 from typing import Optional, Tuple, List
 
