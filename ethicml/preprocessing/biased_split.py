@@ -1,4 +1,4 @@
-"""Generate biased subsets"""
+"""Generate biased subsets."""
 from typing import Tuple, Sequence, Dict
 
 import pandas as pd
@@ -17,7 +17,7 @@ __all__ = [
 
 
 class BiasedSubset(DataSplitter):
-    """Split the given data into a biased subset and a normal subset"""
+    """Split the given data into a biased subset and a normal subset."""
 
     def __init__(
         self,
@@ -26,7 +26,8 @@ class BiasedSubset(DataSplitter):
         seed: int = 42,
         data_efficient: bool = True,
     ):
-        """
+        """Init BiasedSplit.
+
         Args:
             mixing_factors: List of mixing factors; they are chosen based on the split ID
             unbiased_pcnt: how much of the data should be reserved for the unbiased subset
@@ -42,6 +43,7 @@ class BiasedSubset(DataSplitter):
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        """Do BiasedSplit."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_subset(
             data, mixing_factor, self.unbiased_pcnt, self.seed, self.data_efficient
@@ -56,7 +58,7 @@ def get_biased_subset(
     seed: int = 42,
     data_efficient: bool = True,
 ) -> Tuple[DataTuple, DataTuple]:
-    """Split the given data into a biased subset and a normal subset
+    """Split the given data into a biased subset and a normal subset.
 
     The two subsets don't generally sum up to the whole set.
 
@@ -116,7 +118,7 @@ def get_biased_subset(
 
 
 class BiasedDebiasedSubsets(DataSplitter):
-    """Split the given data into a biased subset and a debiased subset"""
+    """Split the given data into a biased subset and a debiased subset."""
 
     def __init__(
         self,
@@ -125,7 +127,8 @@ class BiasedDebiasedSubsets(DataSplitter):
         seed: int = 42,
         fixed_unbiased: bool = True,
     ):
-        """
+        """Init BiasedDebiasedSplit.
+
         Args:
             mixing_factors: List of mixing factors; they are chosen based on the split ID
             unbiased_pcnt: how much of the data should be reserved for the unbiased subset
@@ -141,6 +144,7 @@ class BiasedDebiasedSubsets(DataSplitter):
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        """Do Biased and Debiased Split."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_and_debiased_subsets(
             data, mixing_factor, self.unbiased_pcnt, self.seed, self.fixed_unbiased
@@ -155,7 +159,7 @@ def get_biased_and_debiased_subsets(
     seed: int = 42,
     fixed_unbiased: bool = True,
 ) -> Tuple[DataTuple, DataTuple]:
-    """Split the given data into a biased subset and a debiased subset
+    """Split the given data into a biased subset and a debiased subset.
 
     In contrast to :func:`get_biased_subset()`, this function makes the unbiased subset *really*
     unbiased.
@@ -250,7 +254,7 @@ def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTu
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
-    """Get the subset where s and y are equal and the subset where they are opposite"""
+    """Get the subset where s and y are equal and the subset where they are opposite."""
     s_name = make_valid_variable_name(s_name)
     y_name = make_valid_variable_name(y_name)
     s_values = np.unique(data.s.to_numpy())

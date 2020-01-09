@@ -1,4 +1,4 @@
-"""Split into train and test data"""
+"""Split into train and test data."""
 from abc import ABC, abstractmethod
 import itertools
 from typing import Tuple, List, Iterator, Dict
@@ -21,13 +21,13 @@ __all__ = [
 
 
 class DataSplitter(ABC):
-    """Base class for classes that split data"""
+    """Base class for classes that split data."""
 
     @abstractmethod
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
-        """Split the given data
+        """Split the given data.
 
         Args:
             data: the data to split
@@ -43,11 +43,13 @@ class SequentialSplit(DataSplitter):
     """Take the first N samples for train set and the rest for test set; no shuffle."""
 
     def __init__(self, train_percentage: float):
+        """Init Sequential split."""
         self.train_percentage = train_percentage
 
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        """Do Sequential split."""
         del split_id
         train_len = round(self.train_percentage * len(data))
 
@@ -64,7 +66,7 @@ class SequentialSplit(DataSplitter):
 def train_test_split(
     data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0
 ) -> Tuple[DataTuple, DataTuple]:
-    """Split a data tuple into two datatuple along the rows of the DataFrames
+    """Split a data tuple into two datatuple along the rows of the DataFrames.
 
     Args:
         data: data tuple to split
@@ -133,10 +135,11 @@ def train_test_split(
 
 
 class RandomSplit(DataSplitter):
-    """Standard train test split"""
+    """Standard train test split."""
 
     def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
-        """
+        """Init RandomSplit.
+
         Args:
             train_percentage: how much of the data to use for the train split
             start_seed: random seed for the first split
@@ -151,17 +154,19 @@ class RandomSplit(DataSplitter):
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        """Do standard split."""
         random_seed = self._get_seed(split_id)
         split_info: Dict[str, float] = {'seed': random_seed}
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
 class ProportionalSplit(RandomSplit):
-    """Split into train and test while preserving the proportion of s and y"""
+    """Split into train and test while preserving the proportion of s and y."""
 
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        """Do proportional split."""
         random_seed = self._get_seed(split_id)
 
         # local random state that won't affect the global state
@@ -219,10 +224,7 @@ class ProportionalSplit(RandomSplit):
 
 
 def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
-    """
-    So much love to sklearn for making their source code open
-    """
-
+    """So much love to sklearn for making their source code open."""
     indices: np.ndarray[np.int64] = np.arange(data.x.shape[0])
 
     fold_sizes: np.ndarray[np.int32] = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)
