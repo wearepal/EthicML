@@ -343,7 +343,7 @@ def compute_odds(labels, predictions, sensitive):
 
 
 def _fix_labels(labels):
-    """Make sure that labels are either 0 or 1
+    """Make sure that labels are either 0 or 1.
 
     Args"
         labels: the labels as a list of numpy arrays
@@ -449,7 +449,7 @@ def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train):
 
 
 def _num_inducing(num_train):
-    """Adaptive number of inducing inputs
+    """Adaptive number of inducing inputs.
 
     num_train == 4,000 => num_inducing == 1121
     num_train == 20,000 => num_inducing == 2507
@@ -458,7 +458,7 @@ def _num_inducing(num_train):
 
 
 def _num_epochs(num_train):
-    """Adaptive number of epochs
+    """Adaptive number of epochs.
 
     num_train == 4,000 => num_epochs == 125.7
     num_train == 20,000 => num_epochs == 84

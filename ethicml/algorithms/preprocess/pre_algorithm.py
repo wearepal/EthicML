@@ -22,7 +22,7 @@ class PreAlgorithm(Algorithm):
 
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data
+        """Generate fair features with the given data.
 
         Args:
             train: training data

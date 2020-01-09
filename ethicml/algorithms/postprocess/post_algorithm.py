@@ -20,7 +20,7 @@ class PostAlgorithm(Algorithm):
         test_predictions: pd.DataFrame,
         test: TestTuple,
     ) -> pd.DataFrame:
-        """Make predictions fair
+        """Make predictions fair.
 
         Args:
             train_predictions: predictions on a training set

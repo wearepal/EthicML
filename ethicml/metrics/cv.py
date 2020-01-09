@@ -33,7 +33,7 @@ class CV(Metric):
 
 
 class AbsCV(CV):
-    """Absolute value of Calder-Verwer
+    """Absolute value of Calder-Verwer.
 
     This metric is supposed to make it easier to compare results.
     """

@@ -7,7 +7,7 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class Corels(InAlgorithm):
-    """CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset
+    """CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset.
 
     This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.
 

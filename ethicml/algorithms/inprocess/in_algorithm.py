@@ -24,7 +24,7 @@ class InAlgorithm(Algorithm):
 
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run Algorithm on the given data
+        """Run Algorithm on the given data.
 
         Args:
             train: training data

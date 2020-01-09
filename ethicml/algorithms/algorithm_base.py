@@ -37,7 +37,7 @@ class AlgorithmAsync(metaclass=ABCMeta):
     async def _call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
     ) -> None:
-        """This function calls a (Python) script as a separate process
+        """This function calls a (Python) script as a separate process.
 
         An exception is thrown if the called script failed.
 
