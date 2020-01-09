@@ -1,6 +1,4 @@
-"""
-Useful methods that are used in some of the data objects
-"""
+"""Useful methods that are used in some of the data objects."""
 
 from typing import List
 
@@ -8,7 +6,9 @@ from typing import List
 def get_concatenated_features(
     s_prefix: List[str], y_prefix: List[str], continuous_features: List[str], discrete_only: bool
 ) -> List[str]:
-    """
+    """Absolutely no idea why this is here.
+
+    It's not used anywhere. Mark for deletion.
 
     Args:
         s_prefix:
@@ -17,13 +17,13 @@ def get_concatenated_features(
         discrete_only:
 
     Returns:
-
+        list of features prepended with the sensitive label and class label.
     """
     return s_prefix + y_prefix + continuous_features if discrete_only else s_prefix + y_prefix
 
 
 def filter_features_by_prefixes(features: List[str], prefixes: List[str]) -> List[str]:
-    """Filter the features by prefixes
+    """Filter the features by prefixes.
 
     Args:
         features: list of features names
@@ -47,15 +47,15 @@ def filter_features_by_prefixes(features: List[str], prefixes: List[str]) -> Lis
 def get_discrete_features(
     all_feats: List[str], feats_to_remove: List[str], cont_feats: List[str]
 ) -> List[str]:
-    """
+    """Get a list of the discrete features in a dataset.
 
     Args:
-        all_feats:
-        feats_to_remove:
-        cont_feats:
+        all_feats: List of all features in the dataset.
+        feats_to_remove: List of features that aren't used.
+        cont_feats: List of continuous features in the dataset.
 
     Returns:
-
+        List of features not marked as continuous or to be removed.
     """
     return [
         item

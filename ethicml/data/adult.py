@@ -1,21 +1,18 @@
-"""
-Class to describe features of the Adult dataset
-"""
+"""Class to describe features of the Adult dataset."""
 from typing_extensions import Literal
 
 from .dataset import Dataset
 
 
 class Adult(Dataset):
-    """
-    UCL Adult dataset
-    """
+    """UCI Adult dataset."""
 
     def __init__(
         self,
         split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
         discrete_only: bool = False,
     ):
+        """Inot Adult dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
@@ -217,8 +214,10 @@ class Adult(Dataset):
 
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return f"Adult {self.split}"
 
     @property
     def filename(self) -> str:
+        """Getter for filename."""
         return "adult.csv"

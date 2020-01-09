@@ -1,8 +1,11 @@
+"""Transparently show how the UCI Adult dataset was generated from the raw download."""
+
 import pandas as pd
 import numpy as np
 
 
 def run_generate_adult():
+    """Generate the UCI Adult dataset from scratch."""
     # Load the data
     train = pd.read_csv("./raw/adult.data", header=-1)
     test = pd.read_csv("./raw/adult.test", skiprows=[0], header=-1)

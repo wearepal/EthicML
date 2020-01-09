@@ -1,16 +1,13 @@
-"""
-Class to describe features of the Adult dataset
-"""
+"""Class to describe features of the Adult dataset."""
 
 from .dataset import Dataset
 
 
 class Credit(Dataset):
-    """
-    UCL Credit Card dataset
-    """
+    """UCL Credit Card dataset."""
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
+        """Init credit dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only
@@ -80,8 +77,10 @@ class Credit(Dataset):
 
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return f"Credit {self.split}"
 
     @property
     def filename(self) -> str:
+        """Getter for file name."""
         return "UCI_Credit_Card.csv"
