@@ -1,5 +1,6 @@
-"""
-Method for calculating the HSIC - an independence criterion. a score of 0 denotes independence
+"""Method for calculating the HSIC - an independence criterion.
+
+a score of 0 denotes independence
 """
 import math
 import pandas as pd
@@ -48,16 +49,13 @@ def hsic(
 
 
 class Hsic(Metric):
-    """
-    see module string
-    """
+    """See module string."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """
-        We add the ability to take the average of hsic sscore as for
-        larger datasets it will kill your machine
-        """
+        """We add the ability to take the average of hsic score.
 
+        As for larger datasets it will kill your machine
+        """
         s_cols = actual.s.columns
         sens_labels = np.array(actual.s[s_cols].to_numpy())
 

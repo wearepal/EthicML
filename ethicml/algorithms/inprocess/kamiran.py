@@ -13,9 +13,7 @@ VALID_MODELS = {"LR", "SVM"}
 
 
 class Kamiran(InAlgorithmAsync):
-    """
-    Kamiran and Calders 2012
-    """
+    """Kamiran and Calders 2012."""
 
     def __init__(
         self, classifier: str = "LR", C: Optional[float] = None, kernel: Optional[str] = None

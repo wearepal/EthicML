@@ -15,8 +15,7 @@ class Metric(ABC):
 
     @abstractmethod
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """
-        Compute score
+        """Compute score.
 
         Args:
             prediction: predicted labels
@@ -34,7 +33,5 @@ class Metric(ABC):
 
     @property
     def apply_per_sensitive(self) -> bool:
-        """
-        Whether the metric can be applied per sensitive attribute
-        """
+        """Whether the metric can be applied per sensitive attribute."""
         return True

@@ -11,8 +11,9 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 
 class Kamishima(InstalledModel):
-    """
-    Model that calls Kamishima's code. Based on Algo-Fairness
+    """Model that calls Kamishima's code.
+
+    Based on Algo-Fairness
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
     """
 

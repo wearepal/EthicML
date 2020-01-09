@@ -10,8 +10,7 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple
 def conventional_interface(
     train_paths: PathTuple, test_paths: TestPathTuple, *args: Any
 ) -> List[str]:
-    """
-    Generate the commandline arguments that are expected by the scripts that follow the convention.
+    """Generate the commandline arguments that are expected by the scripts following the convention.
 
     The agreed upon order is:
     x (train), s (train), y (train), x (test), s (test), predictions.
@@ -33,7 +32,7 @@ def conventional_interface(
 def settings_for_svm_lr(
     classifier: str, C: Optional[float], kernel: Optional[str]
 ) -> Tuple[float, str]:
-    """if necessary get the default settings for the C and kernel parameter of SVM and LR."""
+    """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
     if C is None:
         if classifier == "LR":
             C = LogisticRegression().C

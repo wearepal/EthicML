@@ -25,8 +25,7 @@ class AlgorithmAsync(metaclass=ABCMeta):
 
     @property
     def _executable(self) -> str:
-        """
-        Path to a (Python) executable
+        """Path to a (Python) executable.
 
         By default, the Python executable that called this script is used.
         """

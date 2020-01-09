@@ -22,9 +22,7 @@ VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
 class Agarwal(InAlgorithmAsync):
-    """
-    Agarwal class
-    """
+    """Agarwal class."""
 
     def __init__(
         self,

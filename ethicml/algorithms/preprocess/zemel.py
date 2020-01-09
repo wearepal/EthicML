@@ -7,9 +7,7 @@ from .interface import flag_interface
 
 
 class Zemel(PreAlgorithmAsync):
-    """
-    AIF360 implementation of Zemel's LFR
-    """
+    """AIF360 implementation of Zemel's LFR."""
 
     def __init__(
         self,

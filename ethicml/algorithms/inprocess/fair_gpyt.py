@@ -19,14 +19,13 @@ SEED = 888
 
 
 class GPyT(InstalledModel):
-    """
-    Normal GP model
-    """
+    """Normal GP model."""
 
     basename = "GPyT"
 
     def __init__(self, s_as_input=True, flags=None, code_dir=None):
-        """
+        """Instantiate the model.
+
         Args:
             s_as_input: if True, use s as an input feature
             flags: (optional) a dictionary that can overwrite *any* flag
@@ -109,7 +108,8 @@ class GPyTDemPar(GPyT):
         precision_target=1.0,
         **kwargs,
     ):
-        """
+        """Instantiate the model.
+
         Args:
             s_as_input: should the sensitive attribute be part of the input?
             target_acceptance: which acceptance rate to target

@@ -8,9 +8,7 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple,
 
 
 class VFAE(PreAlgorithmAsync):
-    """
-    VFAE Object - see implementation file for details
-    """
+    """VFAE Object - see implementation file for details."""
 
     def __init__(
         self,
