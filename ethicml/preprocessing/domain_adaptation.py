@@ -1,6 +1,4 @@
-"""
-Set of scripts for splitting the train and test datasets based on conditions
-"""
+"""Set of scripts for splitting the train and test datasets based on conditions."""
 
 import re
 from typing import Tuple
@@ -11,7 +9,7 @@ __all__ = ['dataset_from_cond', 'domain_split', 'query_dt']
 
 
 def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
-    """Return the dataframe that meets some condition"""
+    """Return the dataframe that meets some condition."""
     original_column_names = dataset.columns
     # make column names query-friendly
     dataset = dataset.rename(axis="columns", mapper=make_valid_variable_name)
@@ -21,7 +19,7 @@ def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
 
 
 def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
-    """Query a datatuple"""
+    """Query a datatuple."""
     assert isinstance(query_str, str)
     assert isinstance(datatup, DataTuple)
 
@@ -32,8 +30,7 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
 
 
 def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTuple, DataTuple]:
-    """
-    Splits a datatuple based on a condition
+    """Splits a datatuple based on a condition.
 
     Args:
         datatup: DataTuple
@@ -77,7 +74,7 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
 
 
 def make_valid_variable_name(name: str) -> str:
-    """Convert a string into a valid Python variable name"""
+    """Convert a string into a valid Python variable name."""
     # Ensure that it's a string
     name = str(name)
 
