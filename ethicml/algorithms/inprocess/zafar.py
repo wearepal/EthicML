@@ -73,6 +73,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     """Zafar without fairness."""
 
     def __init__(self) -> None:
+        """Init ZafarBaseline."""
         super().__init__(sub_dir=SUB_DIR_IMPACT)
 
     def _create_command_line(
@@ -82,6 +83,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "ZafarBaseline"
 
 
@@ -89,6 +91,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, gamma: float = 0.5):
+        """Init ZafarAccuracy."""
         super().__init__(sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
@@ -99,6 +102,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"ZafarAccuracy, γ={self.gamma}"
 
 
@@ -106,6 +110,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, c: float = 0.001):
+        """Init ZafarFairness."""
         super().__init__(sub_dir=SUB_DIR_IMPACT)
         self._c = c
 
@@ -116,6 +121,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"ZafarFairness, c={self._c}"
 
 
@@ -125,6 +131,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _mode = "fnr"  # class level constant
 
     def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
+        """Init Zafar."""
         super().__init__(sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu
@@ -146,6 +153,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"ZafarEqOpp, τ={self._tau}, μ={self._mu}"
 
 
@@ -156,4 +164,5 @@ class ZafarEqOdds(ZafarEqOpp):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"ZafarEqOdds, τ={self._tau}, μ={self._mu}"

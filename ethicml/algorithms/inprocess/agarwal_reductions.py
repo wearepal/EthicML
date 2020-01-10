@@ -33,6 +33,7 @@ class Agarwal(InAlgorithmAsync):
         C: Optional[float] = None,
         kernel: Optional[str] = None,
     ):
+        """Init Agarwal."""
         if fairness not in VALID_FAIRNESS:
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
         if classifier not in VALID_MODELS:
@@ -45,7 +46,7 @@ class Agarwal(InAlgorithmAsync):
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-
+        """Run the algorithm."""
         return agarwal.train_and_predict(
             train=train,
             test=test,
@@ -77,4 +78,5 @@ class Agarwal(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"Agarwal {self.classifier}"

@@ -93,4 +93,5 @@ class InstalledModel(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         raise NotImplementedError

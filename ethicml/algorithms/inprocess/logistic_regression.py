@@ -19,10 +19,12 @@ class LR(InAlgorithmAsync):
     """Logistic regression with hard predictions."""
 
     def __init__(self, C: Optional[float] = None):
+        """Init LR."""
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         return logistic_regression.train_and_predict(train, test, self.C)
 
     def _script_command(
@@ -34,6 +36,7 @@ class LR(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"Logistic Regression, C={self.C}"
 
 
@@ -41,10 +44,12 @@ class LRProb(InAlgorithmAsync):
     """Logistic regression with soft output."""
 
     def __init__(self, C: Optional[int] = None):
+        """Init LRProb."""
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         return logistic_regression_probability.train_and_predict(train, test, self.C)
 
     def _script_command(
@@ -56,6 +61,7 @@ class LRProb(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"Logistic Regression Prob, C={self.C}"
 
 
@@ -63,6 +69,7 @@ class LRCV(InAlgorithmAsync):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         return logistic_regression_cross_validated.train_and_predict(train, test)
 
     def _script_command(
@@ -74,4 +81,5 @@ class LRCV(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "LRCV"

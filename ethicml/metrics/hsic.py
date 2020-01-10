@@ -93,8 +93,10 @@ class Hsic(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "HSIC"
 
     @property
     def apply_per_sensitive(self) -> bool:
+        """Can this metric be applied per sensitive attribute group?"""
         return False

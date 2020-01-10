@@ -2,6 +2,7 @@
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
+from overrides import overrides
 from scipy.optimize import linprog, OptimizeResult
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
@@ -14,6 +15,7 @@ class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
     def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1):
+        """Init for Hardt."""
         super().__init__()
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label
@@ -26,6 +28,7 @@ class Hardt(PostAlgorithm):
         test_predictions: pd.DataFrame,
         test: TestTuple,
     ) -> pd.DataFrame:
+        """Run the algorithm."""
         model_params = self._fit(train_predictions, train)
         return self._predict(model_params, test_predictions, test)
 
@@ -170,4 +173,5 @@ class Hardt(PostAlgorithm):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "Hardt"

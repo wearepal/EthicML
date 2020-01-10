@@ -11,10 +11,12 @@ class ProbPos(Metric):
     """Probability of positive prediction."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         _, f_pos, _, t_pos = confusion_matrix(prediction, actual, pos_cls=self.positive_class)
 
         return (t_pos + f_pos) / prediction.size
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "prob_pos"

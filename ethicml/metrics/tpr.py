@@ -11,10 +11,12 @@ class TPR(Metric):
     """True positive rate."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         _, _, f_neg, t_pos = confusion_matrix(prediction, actual, self.positive_class)
 
         return t_pos / (t_pos + f_neg)
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "TPR"

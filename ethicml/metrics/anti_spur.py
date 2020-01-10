@@ -13,6 +13,7 @@ class AS(Metric):
     """
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         preds = prediction.to_numpy()
         sens = actual.s.to_numpy()
         labels = actual.y.to_numpy()
@@ -21,4 +22,5 @@ class AS(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "anti_spurious"

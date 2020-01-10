@@ -15,6 +15,7 @@ class Upsampler(PreAlgorithmAsync):
     """
 
     def __init__(self, strategy: str = "uniform"):
+        """Init Upsampler."""
         super().__init__()
 
         assert strategy in ["uniform", "preferential", "naive"]
@@ -33,10 +34,12 @@ class Upsampler(PreAlgorithmAsync):
         return ["-m", "ethicml.implementations.upsampler"] + args
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Run the algorithm."""
         from ...implementations import upsampler
 
         return upsampler.train_and_transform(train, test, self.flags)
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"Upsample {self.strategy}"

@@ -19,6 +19,7 @@ class SklearnMetric(Metric):
         name: str,
         pos_class: Optional[int] = None,
     ):
+        """Init SKLearnMetric."""
         if pos_class is not None:
             super().__init__(pos_class=pos_class)
         else:
@@ -27,10 +28,12 @@ class SklearnMetric(Metric):
         self._name = name
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         return self._metric(actual.y, prediction)
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return self._name
 
 
@@ -38,6 +41,7 @@ class Accuracy(SklearnMetric):
     """Classification accuracy."""
 
     def __init__(self, pos_class: Optional[int] = None):
+        """Init Accuracy."""
         super().__init__(accuracy_score, "Accuracy", pos_class=pos_class)
 
 
@@ -45,4 +49,5 @@ class F1(SklearnMetric):
     """F1 score: harmonic mean of precision and recall."""
 
     def __init__(self, pos_class: Optional[int] = None):
+        """Init F1."""
         super().__init__(f1_score, "F1", pos_class=pos_class)

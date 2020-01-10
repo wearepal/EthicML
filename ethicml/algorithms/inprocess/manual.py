@@ -15,6 +15,7 @@ class Corels(InAlgorithm):
     """
 
     def run(self, _: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
         age = test.x["age-num"].to_numpy()
@@ -29,4 +30,5 @@ class Corels(InAlgorithm):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "CORELS"

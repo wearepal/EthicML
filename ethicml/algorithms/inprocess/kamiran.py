@@ -18,6 +18,7 @@ class Kamiran(InAlgorithmAsync):
     def __init__(
         self, classifier: str = "LR", C: Optional[float] = None, kernel: Optional[str] = None
     ):
+        """Init Kamiran."""
         super().__init__()
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
@@ -25,6 +26,7 @@ class Kamiran(InAlgorithmAsync):
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
@@ -40,4 +42,5 @@ class Kamiran(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return f"Kamiran & Calders {self.classifier}"
