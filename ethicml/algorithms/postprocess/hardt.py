@@ -2,7 +2,6 @@
 import numpy as np
 from numpy.random import RandomState
 import pandas as pd
-from overrides import overrides
 from scipy.optimize import linprog, OptimizeResult
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
