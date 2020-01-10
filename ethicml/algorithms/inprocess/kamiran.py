@@ -4,6 +4,7 @@ from typing import List, Optional
 
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
 from ethicml.implementations import kamiran
@@ -25,8 +26,8 @@ class Kamiran(InAlgorithmAsync):
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return kamiran.train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )

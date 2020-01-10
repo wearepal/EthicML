@@ -1,6 +1,7 @@
 """Beutel's algorithm."""
 from typing import List, Sequence, Tuple
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import (
     DataTuple,
     TestTuple,
@@ -46,8 +47,8 @@ class Beutel(PreAlgorithmAsync):
         self.adv_weight = adv_weight
         self.validation_pcnt = validation_pcnt
 
+    @implements(PreAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run the algorithm."""
         from ...implementations import beutel  # only import this on demand because of pytorch
 
         # SUGGESTION: it would be great if BeutelSettings could already be created in the init

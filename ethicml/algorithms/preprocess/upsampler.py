@@ -2,6 +2,7 @@
 
 from typing import List, Tuple, Dict
 
+from ethicml.common import implements
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.utility import PathTuple, TestPathTuple, TestTuple, DataTuple
@@ -33,8 +34,8 @@ class Upsampler(PreAlgorithmAsync):
 
         return ["-m", "ethicml.implementations.upsampler"] + args
 
+    @implements(PreAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run the algorithm."""
         from ...implementations import upsampler
 
         return upsampler.train_and_transform(train, test, self.flags)

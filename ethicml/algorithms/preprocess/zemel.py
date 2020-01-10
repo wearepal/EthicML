@@ -1,6 +1,7 @@
 """Zemel's Learned Fair Representations."""
 from typing import Dict, Union, Tuple, List
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import TestTuple, DataTuple, PathTuple, TestPathTuple
 from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
@@ -33,8 +34,8 @@ class Zemel(PreAlgorithmAsync):
             "threshold": threshold,
         }
 
+    @implements(PreAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run the algorithm."""
         from ...implementations import zemel
 
         return zemel.train_and_transform(train, test, self.flags)

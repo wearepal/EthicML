@@ -4,6 +4,7 @@ from typing import Callable, Optional
 import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
 
@@ -27,8 +28,8 @@ class SklearnMetric(Metric):
         self._metric = sklearn_metric
         self._name = name
 
+    @implements(Metric)
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """Get the score for this metric."""
         return self._metric(actual.y, prediction)
 
     @property

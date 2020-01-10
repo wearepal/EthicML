@@ -5,6 +5,7 @@ from typing import Optional, List, Union
 from sklearn.svm import SVC
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.implementations import svm
 from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
@@ -20,8 +21,8 @@ class SVM(InAlgorithmAsync):
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
-        """Run the algorithm."""
         return svm.train_and_predict(train, test, self.C, self.kernel)
 
     def _script_command(

@@ -5,6 +5,7 @@ from tempfile import TemporaryDirectory
 from typing import Tuple, List
 from abc import abstractmethod
 
+from ethicml.common import implements
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
     DataTuple,
@@ -36,12 +37,17 @@ class PreAlgorithm(Algorithm):
 class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
     """Pre-Algorithm that can be run blocking and asynchronously."""
 
+    @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run the algorithm."""
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data asynchronously."""
+        """Generate fair features with the given data asynchronously.
+
+        Args:
+            train: training data
+            test: test data
+        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # write data to files

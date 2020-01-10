@@ -5,6 +5,7 @@ from typing import Optional, List
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.implementations import (
     logistic_regression,
@@ -23,8 +24,8 @@ class LR(InAlgorithmAsync):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return logistic_regression.train_and_predict(train, test, self.C)
 
     def _script_command(
@@ -48,8 +49,8 @@ class LRProb(InAlgorithmAsync):
         super().__init__()
         self.C = LogisticRegression().C if C is None else C
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return logistic_regression_probability.train_and_predict(train, test, self.C)
 
     def _script_command(
@@ -68,8 +69,8 @@ class LRProb(InAlgorithmAsync):
 class LRCV(InAlgorithmAsync):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return logistic_regression_cross_validated.train_and_predict(train, test)
 
     def _script_command(

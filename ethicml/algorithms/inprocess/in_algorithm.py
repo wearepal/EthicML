@@ -6,6 +6,7 @@ from abc import abstractmethod
 
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
     DataTuple,
@@ -38,12 +39,17 @@ class InAlgorithm(Algorithm):
 class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously."""
 
+    @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run Algorithm on the given data asynchronously."""
+        """Run Algorithm on the given data asynchronously.
+
+        Args:
+            train: training data
+            test: test data
+        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_paths, test_paths = write_as_feather(train, test, tmp_path)
