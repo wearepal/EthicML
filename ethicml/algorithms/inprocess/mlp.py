@@ -25,6 +25,7 @@ class MLP(InAlgorithmAsync):
         hidden_layer_sizes: Optional[Tuple[int]] = None,
         activation: Optional[ActivationType] = None,
     ):
+        """Init MLP."""
         super().__init__()
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
@@ -35,6 +36,7 @@ class MLP(InAlgorithmAsync):
         )
 
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm."""
         return mlp.train_and_predict(train, test, self.hidden_layer_sizes, self.activation)
 
     def _script_command(
@@ -48,4 +50,5 @@ class MLP(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "MLP"

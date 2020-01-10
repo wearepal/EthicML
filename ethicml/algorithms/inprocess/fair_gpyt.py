@@ -40,6 +40,7 @@ class GPyT(InstalledModel):
         self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm asynchronously."""
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -89,6 +90,7 @@ class GPyT(InstalledModel):
 
     @property
     def name(self):
+        """Getter for the algorithm name."""
         return f"{self.basename}_in_{self.s_as_input}"
 
 
@@ -181,6 +183,7 @@ class GPyTDemPar(GPyT):
 
     @property
     def name(self):
+        """Getter for the algorithm name."""
         return self.__name
 
 
@@ -198,6 +201,7 @@ class GPyTEqOdds(GPyT):
         tpr1=None,
         **kwargs,
     ):
+        """Init GP with eq. odds."""
         super().__init__(**kwargs)
         if self.s_as_input and average_prediction:
             self.__name = "{self.basename}_eq_odds_av_True"
@@ -249,6 +253,7 @@ class GPyTEqOdds(GPyT):
         )
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run the algorithm asynchronously."""
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -315,6 +320,7 @@ class GPyTEqOdds(GPyT):
 
     @property
     def name(self):
+        """Getter for algorithm name."""
         return self.__name
 
 

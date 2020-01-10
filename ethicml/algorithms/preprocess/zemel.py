@@ -20,6 +20,7 @@ class Zemel(PreAlgorithmAsync):
         maxfun: int = 5000,
         epsilon: float = 1e-5,
     ) -> None:
+        """Init Zemel."""
         super().__init__()
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
@@ -33,6 +34,7 @@ class Zemel(PreAlgorithmAsync):
         }
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Run the algorithm."""
         from ...implementations import zemel
 
         return zemel.train_and_transform(train, test, self.flags)
@@ -49,4 +51,5 @@ class Zemel(PreAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "Zemel"

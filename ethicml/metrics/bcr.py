@@ -12,6 +12,7 @@ class BCR(Metric):
     """Balanced Classification Rate."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         tpr_metric = TPR()
         tpr = tpr_metric.score(prediction, actual)
 
@@ -22,4 +23,5 @@ class BCR(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "BCR"

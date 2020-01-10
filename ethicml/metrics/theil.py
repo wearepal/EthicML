@@ -15,6 +15,7 @@ class Theil(Metric):
     """Theil Index."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         y_true_df = actual.y
         act_col = y_true_df.columns[0]
         y_pos_label = y_true_df[act_col].max()
@@ -30,4 +31,5 @@ class Theil(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "Theil_Index"

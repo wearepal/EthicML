@@ -30,6 +30,7 @@ class Beutel(PreAlgorithmAsync):
         adv_weight: float = 1.0,
         validation_pcnt: float = 0.1,
     ):
+        """Init Beutel."""
         # pylint: disable=too-many-arguments
         super().__init__()
         self.fairness = fairness
@@ -46,6 +47,7 @@ class Beutel(PreAlgorithmAsync):
         self.validation_pcnt = validation_pcnt
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Run the algorithm."""
         from ...implementations import beutel  # only import this on demand because of pytorch
 
         # SUGGESTION: it would be great if BeutelSettings could already be created in the init
@@ -77,4 +79,5 @@ class Beutel(PreAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "Beutel"

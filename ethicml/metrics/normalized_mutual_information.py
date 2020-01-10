@@ -1,4 +1,4 @@
-"""For assessing Nomralized Mutual Information."""
+"""For assessing Nomalized Mutual Information."""
 
 import pandas as pd
 
@@ -12,12 +12,14 @@ class NMI(Metric):
     """Normalized Mutual Information."""
 
     def __init__(self, pos_class: int = 1, base: str = "y"):
+        """Init NMI."""
         super().__init__(pos_class=pos_class)
         if base not in ["s", "y"]:
             raise NotImplementedError("Can only calculate NMI of predictions with regard to y or s")
         self.base = base
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         if self.base == "y":
             base_values = actual.y.to_numpy().flatten()
         else:
@@ -26,4 +28,5 @@ class NMI(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return f"NMI preds and {self.base}"

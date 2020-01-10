@@ -11,10 +11,12 @@ class PPV(Metric):
     """Positive predictive value."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         _, f_pos, _, t_pos = confusion_matrix(prediction, actual, self.positive_class)
 
         return t_pos / (t_pos + f_pos)
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "PPV"

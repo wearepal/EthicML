@@ -18,6 +18,7 @@ class Kamishima(InstalledModel):
     """
 
     def __init__(self, eta: float = 1.0):
+        """Init Kamishima."""
         super().__init__(
             dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
@@ -28,7 +29,6 @@ class Kamishima(InstalledModel):
     @staticmethod
     def create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: str) -> None:
         """Create a text file with the data."""
-
         if isinstance(data, DataTuple):
             result = (
                 pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
@@ -41,6 +41,7 @@ class Kamishima(InstalledModel):
         np.savetxt(file_path, result)
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run algorithm asynchronously."""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")
@@ -90,4 +91,5 @@ class Kamishima(InstalledModel):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "Kamishima"

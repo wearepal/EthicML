@@ -37,6 +37,7 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
     """Pre-Algorithm that can be run blocking and asynchronously."""
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Run the algorithm."""
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:

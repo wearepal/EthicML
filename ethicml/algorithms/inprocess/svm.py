@@ -15,11 +15,13 @@ class SVM(InAlgorithmAsync):
     """Support Vector Machine."""
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
+        """Init SVM."""
         super().__init__()
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 
     def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
+        """Run the algorithm."""
         return svm.train_and_predict(train, test, self.C, self.kernel)
 
     def _script_command(
@@ -33,4 +35,5 @@ class SVM(InAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "SVM"

@@ -11,6 +11,7 @@ class CV(Metric):
     """Calder-Verwer."""
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         from ethicml.evaluators.per_sensitive_attribute import (
             metric_per_sensitive_attribute,
             diff_per_sensitive_attribute,
@@ -23,10 +24,12 @@ class CV(Metric):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "CV"
 
     @property
     def apply_per_sensitive(self) -> bool:
+        """Can this metric be applied per sensitive attribute group?"""
         return False
 
 
@@ -37,6 +40,7 @@ class AbsCV(CV):
     """
 
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+        """Get the score for this metric."""
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)
         if cv_score > 1:
@@ -45,4 +49,5 @@ class AbsCV(CV):
 
     @property
     def name(self) -> str:
+        """Getter for the metric name."""
         return "CV absolute"

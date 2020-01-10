@@ -21,6 +21,7 @@ class VFAE(PreAlgorithmAsync):
         z2_enc_size: Optional[List[int]] = None,
         z1_dec_size: Optional[List[int]] = None,
     ):
+        """Init VFAE."""
         # pylint: disable=too-many-arguments
         super().__init__()
 
@@ -43,6 +44,7 @@ class VFAE(PreAlgorithmAsync):
         }
 
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Run the algorithm."""
         from ...implementations.vfae import train_and_transform
 
         test = TestTuple(x=test.x, s=test.s, name=test.name)
@@ -61,4 +63,5 @@ class VFAE(PreAlgorithmAsync):
 
     @property
     def name(self) -> str:
+        """Getter for algorithm name."""
         return "VFAE"
