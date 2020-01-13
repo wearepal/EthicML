@@ -103,4 +103,4 @@ jobs:
         pip install pydocstyle
     - name: Check docstrings with pydocstyle
       run: |
-        pydocstyle --convention=google --ignore-decorator=implements|overload ethicml
+        pydocstyle --convention=google --ignore-decorator="implements|overload" ethicml
