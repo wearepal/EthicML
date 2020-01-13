@@ -4,6 +4,7 @@ from typing import List, Set, Optional
 
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.implementations import agarwal
 from ethicml.utility.data_structures import (
@@ -45,8 +46,8 @@ class Agarwal(InAlgorithmAsync):
         self.iters = iters
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return agarwal.train_and_predict(
             train=train,
             test=test,

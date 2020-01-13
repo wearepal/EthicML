@@ -2,6 +2,7 @@
 
 from typing import List, Tuple, Dict, Union, Optional
 
+from ethicml.common import implements
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
 from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.utility.data_structures import PathTuple, TestPathTuple, DataTuple, TestTuple
@@ -43,8 +44,8 @@ class VFAE(PreAlgorithmAsync):
             "z1_dec_size": z1_dec_size,
         }
 
+    @implements(PreAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run the algorithm."""
         from ...implementations.vfae import train_and_transform
 
         test = TestTuple(x=test.x, s=test.s, name=test.name)

@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
 
@@ -12,8 +13,8 @@ class AS(Metric):
     Computes :math:`P(\hat{y}=y|y\neq s)`.
     """
 
+    @implements(Metric)
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """Get the score for this metric."""
         preds = prediction.to_numpy()
         sens = actual.s.to_numpy()
         labels = actual.y.to_numpy()

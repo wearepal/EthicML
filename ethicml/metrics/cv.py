@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.metrics.prob_pos import ProbPos
 from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
@@ -10,8 +11,8 @@ from .metric import Metric
 class CV(Metric):
     """Calder-Verwer."""
 
+    @implements(Metric)
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """Get the score for this metric."""
         from ethicml.evaluators.per_sensitive_attribute import (
             metric_per_sensitive_attribute,
             diff_per_sensitive_attribute,
@@ -39,8 +40,8 @@ class AbsCV(CV):
     This metric is supposed to make it easier to compare results.
     """
 
+    @implements(Metric)
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """Get the score for this metric."""
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)
         if cv_score > 1:

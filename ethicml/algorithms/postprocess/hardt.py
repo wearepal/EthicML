@@ -4,6 +4,7 @@ from numpy.random import RandomState
 import pandas as pd
 from scipy.optimize import linprog, OptimizeResult
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple, TestTuple
 from ethicml.metrics import TPR, TNR
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
@@ -20,6 +21,7 @@ class Hardt(PostAlgorithm):
         self._favorable_label = favorable_label
         self._random = RandomState(seed=888)
 
+    @implements(PostAlgorithm)
     def run(
         self,
         train_predictions: pd.DataFrame,
@@ -27,7 +29,6 @@ class Hardt(PostAlgorithm):
         test_predictions: pd.DataFrame,
         test: TestTuple,
     ) -> pd.DataFrame:
-        """Run the algorithm."""
         model_params = self._fit(train_predictions, train)
         return self._predict(model_params, test_predictions, test)
 

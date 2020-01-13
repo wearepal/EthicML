@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.utility.data_structures import DataTuple, TestTuple
 
@@ -14,8 +15,8 @@ class Corels(InAlgorithm):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
+    @implements(InAlgorithm)
     def run(self, _: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
         age = test.x["age-num"].to_numpy()

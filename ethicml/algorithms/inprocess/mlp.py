@@ -5,6 +5,7 @@ from typing import Optional, Tuple, List
 from sklearn.neural_network import MLPClassifier
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.implementations import mlp
 from ethicml.utility.data_structures import (
@@ -35,8 +36,8 @@ class MLP(InAlgorithmAsync):
             MLPClassifier().activation if activation is None else activation
         )
 
+    @implements(InAlgorithmAsync)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run the algorithm."""
         return mlp.train_and_predict(train, test, self.hidden_layer_sizes, self.activation)
 
     def _script_command(

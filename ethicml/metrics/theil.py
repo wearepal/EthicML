@@ -7,6 +7,7 @@ in turn based on the paper https://arxiv.org/abs/1807.00787
 import numpy as np
 import pandas as pd
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple
 from .metric import Metric
 
@@ -14,8 +15,8 @@ from .metric import Metric
 class Theil(Metric):
     """Theil Index."""
 
+    @implements(Metric)
     def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        """Get the score for this metric."""
         y_true_df = actual.y
         act_col = y_true_df.columns[0]
         y_pos_label = y_true_df[act_col].max()

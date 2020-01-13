@@ -13,7 +13,9 @@ print('')
 
 # pydocstyle
 print("############### pydocstyle #################")
-subprocess.call(["pydocstyle", "--convention=google", "ethicml"])
+subprocess.call(
+    ["pydocstyle", "--convention=google", "--ignore-decorators=implements", "-e", "ethicml"]
+)
 print("")
 
 # pylint
