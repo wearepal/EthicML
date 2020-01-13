@@ -269,6 +269,7 @@ async def evaluate_models_parallel(
 
     Args:
         datasets: list of dataset objects
+        preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute

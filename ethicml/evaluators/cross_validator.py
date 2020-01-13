@@ -115,7 +115,7 @@ class _ResultsAccumulator:
     def __call__(
         self, parameter_setting: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
     ) -> Dict[str, float]:
-        """Compute the scores for the given predictions and append to the list of results"""
+        """Compute the scores for the given predictions and append to the list of results."""
         # compute all measures
         # TODO: this should also compute diffs and ratios
         scores = {measure.name: measure.score(preds, test) for measure in self._measures}
