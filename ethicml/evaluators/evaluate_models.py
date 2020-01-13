@@ -246,7 +246,7 @@ def evaluate_models(
     return results
 
 
-def evaluate_models_parallel(
+async def evaluate_models_parallel(
     datasets: List[Dataset],
     inprocess_models: Sequence[InAlgorithm] = (),
     metrics: Sequence[Metric] = (),
@@ -260,7 +260,6 @@ def evaluate_models_parallel(
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
-        max_parallel: Max number of threads ot run in parallel
         datasets: list of dataset objects
         inprocess_models: list of inprocess model objects
         metrics: list of metric objects
@@ -269,6 +268,7 @@ def evaluate_models_parallel(
         test_mode: if True, only use a small subset of the data so that the models run faster
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
+        max_parallel: Max number of threads ot run in parallel
     """
     # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
@@ -299,7 +299,7 @@ def evaluate_models_parallel(
             split_info.update({'split_id': split_id})
             test_data.append((test, dataset.name, split_info))
 
-    all_predictions = run_in_parallel(list(inprocess_models), data_splits, max_parallel)
+    all_predictions = await run_in_parallel(list(inprocess_models), data_splits, max_parallel)
 
     # transpose `all_results`
     all_predictions_t = [list(i) for i in zip(*all_predictions)]

@@ -134,13 +134,13 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
 
     hyperparams: Dict[str, List[float]] = {'C': [0.001, 0.01]}
 
-    lr_cv = CrossValidator(LR, hyperparams, folds=2, parallel=True, max_parallel=1)
+    lr_cv = CrossValidator(LR, hyperparams, folds=2, max_parallel=1)
 
     assert lr_cv is not None
     assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
-    cv_results: CVResults = lr_cv.run(train, measures=[measure])
+    cv_results: CVResults = run_blocking(lr_cv.run_async(train, measures=[measure]))
 
     assert cv_results.best_hyper_params(measure)['C'] == 0.01
     best_model = cv_results.best(measure)

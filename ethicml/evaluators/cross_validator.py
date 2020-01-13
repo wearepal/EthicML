@@ -16,9 +16,9 @@ from .parallelism import run_in_parallel
 class ResultTuple(NamedTuple):
     """Result of one experiment."""
 
-    params: Dict[str, Any]
-    fold_id: int
-    scores: Dict[str, float]
+    params: Dict[str, Any]  # the parameter setting used for this run
+    fold_id: int  # the ID of the fold
+    scores: Dict[str, float]  # the achieved scores
 
 
 class CVResults:
@@ -107,6 +107,23 @@ class CVResults:
         return mean_vals[best_hyp_string]
 
 
+class _ResultsAccumulator:
+    def __init__(self, measures: Optional[List[Metric]] = None):
+        self._measures = [Accuracy(), AbsCV()] if measures is None else measures
+        self.results: List[ResultTuple] = []
+
+    def __call__(
+        self, parameter_setting: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
+    ) -> Dict[str, float]:
+        """Compute the scores for the given predictions and append to the list of results"""
+        # compute all measures
+        # TODO: this should also compute diffs and ratios
+        scores = {measure.name: measure.score(preds, test) for measure in self._measures}
+        # store the result
+        self.results.append(ResultTuple(parameter_setting, fold_id, scores))
+        return scores
+
+
 class CrossValidator:
     """Object used to run cross-validation on a model."""
 
@@ -115,7 +132,6 @@ class CrossValidator:
         model: Type[InAlgorithm],
         hyperparams: Dict[str, List[Any]],
         folds: int = 3,
-        parallel: bool = False,
         max_parallel: int = 0,
     ):
         """Init CrossValidator.
@@ -125,60 +141,50 @@ class CrossValidator:
             hyperparams: a dictionary where the keys are the names of hyperparameters and the values
                          are lists of possible values for the hyperparameters
             folds: the number of folds
-            parallel: if True, run the algorithms in parallel
             max_parallel: the maximum number of parallel processes; if set to 0, use the default
                           which is the number of available CPUs
         """
         self.model = model
         self.hyperparams = hyperparams
         self.folds = folds
-        self.parallel = parallel
         self.max_parallel = max_parallel
 
         keys, values = zip(*hyperparams.items())
         self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
+    async def run_async(
+        self, train: DataTuple, measures: Optional[List[Metric]] = None
+    ) -> CVResults:
+        """Run the cross validation experiments asynchronously."""
+        compute_scores_and_append = _ResultsAccumulator(measures)
+        # instantiate all models
+        models = [
+            self.model(**experiment)  # type: ignore[call-arg]
+            for experiment in self.experiments
+        ]
+        # create all folds
+        data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
+        # convert to right format
+        pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
+        # run everything in parallel
+        all_results = await run_in_parallel(models, pair_folds, self.max_parallel)
+
+        # finally, iterate over all results, compute scores and store them
+        for preds_for_dataset, experiment in zip(all_results, self.experiments):
+            for i, (preds, (train_fold, val)) in enumerate(zip(preds_for_dataset, data_folds)):
+                compute_scores_and_append(experiment, preds, val, i)
+        return CVResults(compute_scores_and_append.results, self.model)
+
     def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
         """Run the cross validation experiments."""
-        measures_ = [Accuracy(), AbsCV()] if measures is None else measures
-
-        results: List[ResultTuple] = []
-
-        def _compute_scores_and_append(
-            experiment: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
-        ) -> Dict[str, float]:
-            # compute all measures
-            # TODO: this should also compute diffs and ratios
-            scores = {measure.name: measure.score(preds, test) for measure in measures_}
-            # store the result
-            results.append(ResultTuple(experiment, fold_id, scores))
-            return scores
-
-        if self.parallel:
-            # instantiate all models
-            models = [
-                self.model(**experiment)  # type: ignore[call-arg]
-                for experiment in self.experiments
-            ]
-            # create all folds
-            data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
-            # convert to right format
-            pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
-            # run everything in parallel
-            all_results = run_in_parallel(models, pair_folds, self.max_parallel)
-
-            # finally, iterate over all results, compute scores and store them
-            for preds_for_dataset, experiment in zip(all_results, self.experiments):
-                for i, (preds, (train_fold, val)) in enumerate(zip(preds_for_dataset, data_folds)):
-                    _compute_scores_and_append(experiment, preds, val, i)
-        else:
-            for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
-                # run the models one by one and *immediately* report the scores on the measures
-                for experiment in self.experiments:
-                    # instantiate model and run it
-                    model = self.model(**experiment)  # type: ignore[call-arg]
-                    preds = model.run(train_fold, val)
-                    scores = _compute_scores_and_append(experiment, preds, val, i)
-                    score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
-                    print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
-        return CVResults(results, self.model)
+        compute_scores_and_append = _ResultsAccumulator(measures)
+        for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
+            # run the models one by one and *immediately* report the scores on the measures
+            for experiment in self.experiments:
+                # instantiate model and run it
+                model = self.model(**experiment)  # type: ignore[call-arg]
+                preds = model.run(train_fold, val)
+                scores = compute_scores_and_append(experiment, preds, val, i)
+                score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
+                print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
+        return CVResults(compute_scores_and_append.results, self.model)
