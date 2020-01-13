@@ -6,8 +6,10 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.common import implements
+from ethicml.utility import DataTuple, TestTuple
+from .installed_model import InstalledModel
+from .in_algorithm import InAlgorithmAsync
 
 
 class Kamishima(InstalledModel):
@@ -40,8 +42,8 @@ class Kamishima(InstalledModel):
             )
         np.savetxt(file_path, result)
 
+    @implements(InAlgorithmAsync)
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        """Run algorithm asynchronously."""
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")

@@ -39,6 +39,12 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+        """Generate fair features with the given data by running as a blocking function.
+
+        Args:
+            train: training data
+            test: test data
+        """
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:

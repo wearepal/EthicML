@@ -41,6 +41,12 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+        """Run this asynchronous Algorithm as blocking on the given data.
+
+        Args:
+            train: training data
+            test: test data
+        """
         return run_blocking(self.run_async(train, test))
 
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:

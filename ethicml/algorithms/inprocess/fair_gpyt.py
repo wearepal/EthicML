@@ -8,8 +8,9 @@ import numpy as np
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple
+from .in_algorithm import InAlgorithmAsync
+from .installed_model import InstalledModel
 
 REPO_URL = "https://github.com/predictive-analytics-lab/fair-gpytorch.git"
 PRED_FNAME = "predictions.npz"
@@ -40,7 +41,7 @@ class GPyT(InstalledModel):
         self.s_as_input = s_as_input
         self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
-    @implements(InstalledModel)
+    @implements(InAlgorithmAsync)
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
@@ -253,7 +254,7 @@ class GPyTEqOdds(GPyT):
             p_s1=p_s[1],
         )
 
-    @implements(InstalledModel)
+    @implements(InAlgorithmAsync)
     async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
