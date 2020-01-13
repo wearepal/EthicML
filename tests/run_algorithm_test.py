@@ -95,6 +95,7 @@ def test_run_alg_suite():
     parallel_results = run_blocking(
         evaluate_models_parallel(
             datasets,
+            preprocess_models,
             inprocess_models,
             metrics,
             per_sens_metrics,
@@ -115,9 +116,7 @@ def test_run_alg_suite():
         delete_prev=True,
         topic="pytest",
     )
-    pd.testing.assert_frame_equal(
-        parallel_results.data, results.data.query("transform == \"no_transform\"")
-    )
+    pd.testing.assert_frame_equal(parallel_results.data, results.data, check_like=True)
 
     files = os.listdir(Path(".") / "results")
     file_names = [

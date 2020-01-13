@@ -1,6 +1,6 @@
 """Runs given metrics on given algorithms for given datasets."""
 from pathlib import Path
-from typing import List, Dict, Union, Sequence, Optional, Tuple
+from typing import List, Dict, Union, Sequence, Optional, Tuple, NamedTuple
 from collections import OrderedDict
 
 import pandas as pd
@@ -246,8 +246,16 @@ def evaluate_models(
     return results
 
 
+class _DataInfo(NamedTuple):
+    test: DataTuple
+    dataset_name: str
+    transform_name: str
+    split_info: Dict[str, float]
+
+
 async def evaluate_models_parallel(
     datasets: List[Dataset],
+    preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
@@ -278,14 +286,14 @@ async def evaluate_models_parallel(
     else:
         train_test_split = splitter
 
-    transform_name = "no_transform"
+    default_transform_name = "no_transform"
     columns = ["dataset", "transform", "model", "split_id"]
 
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
 
     data_splits: List[TrainTestPair] = []
-    test_data: List[Tuple[DataTuple, str, Dict[str, float]]] = []
+    test_data: List[_DataInfo] = []
     for dataset in datasets:
         for split_id in range(repeats):
             train: DataTuple
@@ -297,9 +305,22 @@ async def evaluate_models_parallel(
             train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
             split_info.update({'split_id': split_id})
-            test_data.append((test, dataset.name, split_info))
+            test_data.append(_DataInfo(test, dataset.name, default_transform_name, split_info))
 
-    all_predictions = await run_in_parallel(list(inprocess_models), data_splits, max_parallel)
+    # run all preprocess models
+    all_transformed = await run_in_parallel(preprocess_models, data_splits, max_parallel)
+
+    # append the transformed data to `data_splits`
+    for transformed, pre_model in zip(all_transformed, preprocess_models):
+        for (transf_train, transf_test), data_info in zip(transformed, test_data):
+            data_splits.append(TrainTestPair(transf_train, transf_test))
+            test_data.append(
+                _DataInfo(
+                    data_info.test, data_info.dataset_name, pre_model.name, data_info.split_info
+                )
+            )
+
+    all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
 
     # transpose `all_results`
     all_predictions_t = [list(i) for i in zip(*all_predictions)]
@@ -307,23 +328,23 @@ async def evaluate_models_parallel(
     all_results = Results()
 
     # compute metrics, collect them and write them to files
-    for preds_for_model, (test, dataset_name, split_info) in zip(all_predictions_t, test_data):
+    for preds_for_model, data_info in zip(all_predictions_t, test_data):
         results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
         predictions: pd.DataFrame
         for predictions, model in zip(preds_for_model, inprocess_models):
             temp_res: Dict[str, Union[str, float]] = {
-                "dataset": dataset_name,
-                "transform": transform_name,
+                "dataset": data_info.dataset_name,
+                "transform": data_info.transform_name,
                 "model": model.name,
                 **split_info,
             }
 
-            temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+            temp_res.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 
             results_df = results_df.append(temp_res, ignore_index=True, sort=False)
 
         # write results to CSV files and load previous results from the files if they already exist
-        path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
+        path_to_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
         results: Results = Results(results_df)
         # put old results before new results -> prepend=True
         results.append_from_file(path_to_file, prepend=True)

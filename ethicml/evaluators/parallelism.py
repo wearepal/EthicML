@@ -1,7 +1,21 @@
 """Collection of functions that enable parallelism."""
 import os
 import asyncio
-from typing import List, Tuple, Dict, Union, Sequence, overload, Generic, TypeVar, Type
+from typing import (
+    Any,
+    Callable,
+    Coroutine,
+    Dict,
+    Generic,
+    List,
+    Sequence,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+    cast,
+    overload,
+)
 from collections import OrderedDict
 from dataclasses import dataclass
 
@@ -9,57 +23,34 @@ import pandas as pd
 from tqdm import tqdm
 
 from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple
-from ethicml.algorithms import Algorithm
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync
 
+__all__ = ["arrange_in_parallel", "run_in_parallel"]
 
-_T = TypeVar("_T", InAlgorithm, InAlgorithmAsync, PreAlgorithm, PreAlgorithmAsync)
-_AT = TypeVar("_AT", InAlgorithmAsync, PreAlgorithmAsync)
-_RT = TypeVar("_RT", pd.DataFrame, Tuple[DataTuple, TestTuple])
-# _T = TypeVar("_T", InAlgorithmAsync, PreAlgorithmAsync, covariant=True)
+_AT = TypeVar("_AT", InAlgorithmAsync, PreAlgorithmAsync)  # async algorithm type
+_ST = TypeVar("_ST", InAlgorithm, PreAlgorithm)  # sync algorithm type
+_RT = TypeVar("_RT", pd.DataFrame, Tuple[DataTuple, TestTuple])  # return type
+
+RunType = Callable[[DataTuple, TestTuple], Coroutine[Any, Any, _RT]]
+BlockingRunType = Callable[[DataTuple, TestTuple], _RT]
 
 
 @dataclass
-class _Task(Generic[_AT]):
+class _Task(Generic[_RT]):
     algo_id: int
     data_id: int
-    algo: _AT
+    algo: Tuple[RunType[_RT], str]
     train_test_pair: TrainTestPair
 
 
-# ReturnType = Union[pd.DataFrame, Tuple[DataTuple, TestTuple]]
-AnyAsync = Union[InAlgorithmAsync, PreAlgorithmAsync]
-AnyAlgo = Union[InAlgorithm, PreAlgorithm]
-InAsyncSeq = Sequence[InAlgorithmAsync]
-PreAsyncSeq = Sequence[PreAlgorithmAsync]
-InSeq = Sequence[InAlgorithm]
-PreSeq = Sequence[PreAlgorithm]
-InResult = List[List[pd.DataFrame]]
-PreResult = List[List[Tuple[DataTuple, TestTuple]]]
-
-
-@overload
 async def arrange_in_parallel(
-    algos: InAsyncSeq,
-    data: List[TrainTestPair],
-    max_parallel: int = 0,
-) -> InResult: ...
-@overload
-async def arrange_in_parallel(
-    algos: PreAsyncSeq,
-    data: List[TrainTestPair],
-    max_parallel: int = 0,
-) -> PreResult: ...
-async def arrange_in_parallel(
-    algos: Union[InAsyncSeq, PreAsyncSeq],
-    data: List[TrainTestPair],
-    max_parallel: int = 0,
-) -> Union[InResult, PreResult]:
+    algos: Sequence[Tuple[RunType[_RT], str]], data: List[TrainTestPair], max_parallel: int,
+) -> List[List[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
     Args:
-        algos: list of algorithms that implement the `run_async` function
+        algos: list of tuples consisting of a `run_async` function of an algorithm and a name
         data: list of pairs of data tuples (train and test)
         max_parallel: how many processes can run in parallel at most. if zero (or negative), then
                       there is no maximum
@@ -70,35 +61,12 @@ async def arrange_in_parallel(
     assert len(data) >= 1
     assert isinstance(data[0][0], DataTuple)
     assert isinstance(data[0][1], TestTuple)
-
-    if isinstance(algos, list) and isinstance(algos[0], InAlgorithmAsync):
-        in_result_dict: Dict[Tuple[int, int], pd.DataFrame] = {}
-        in_algos: InAsyncSeq = algos
-        await _queue_and_start_workers(in_result_dict, in_algos, data, max_parallel)
-        # turn dictionary into a list; the outer list is over the algos, the inner over the datasets
-        # NOTE: if you want to change the return type, be warned that CrossValidator depends on it
-        return [[in_result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
-    if isinstance(algos, list) and isinstance(algos[0], PreAlgorithmAsync):
-        pre_result_dict: Dict[Tuple[int, int], Tuple[DataTuple, TestTuple]] = {}
-        await _queue_and_start_workers(pre_result_dict, algos, data, max_parallel)
-        return [[pre_result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
-    raise ValueError("Unsupported algorithms")
-
-
-async def _queue_and_start_workers(
-    result_dict: Dict[Tuple[int, int], _RT],
-    algos: Sequence[_AT],
-    data: List[TrainTestPair],
-    max_parallel: int,
-) -> None:
     # ================================== create queue of tasks ====================================
-    task_queue: asyncio.Queue[_Task[_AT]] = asyncio.Queue()
+    task_queue: asyncio.Queue[_Task[_RT]] = asyncio.Queue()
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for i, algo in enumerate(algos):
         for j, data_item in enumerate(data):
             task_queue.put_nowait(_Task(i, j, algo, data_item))
-        if not isinstance(algo, (InAlgorithmAsync, PreAlgorithmAsync)):
-            raise RuntimeError(f"Algorithm \"{algo.name}\" is not asynchronous!")
 
     num_tasks = len(algos) * len(data)
     pbar: tqdm = tqdm(total=num_tasks)
@@ -107,6 +75,7 @@ async def _queue_and_start_workers(
     num_cpus = os.cpu_count()
     default_num_workers: int = num_cpus if num_cpus is not None else 1
     num_workers = max_parallel if max_parallel > 0 else default_num_workers
+    result_dict: Dict[Tuple[int, int], _RT] = {}
     workers = [
         _eval_worker(worker_id, task_queue, result_dict, pbar) for worker_id in range(num_workers)
     ]
@@ -115,45 +84,56 @@ async def _queue_and_start_workers(
     # confirm that the queue is empty
     assert task_queue.empty()
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
+    # turn dictionary into a list; the outer list is over the algos, the inner over the datasets
+    # NOTE: if you want to change the return type, be warned that CrossValidator depends on it
+    return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
 
 
 async def _eval_worker(
     worker_id: int,
-    task_queue: "asyncio.Queue[_Task[_AT]]",
+    task_queue: "asyncio.Queue[_Task[_RT]]",
     result_dict: Dict[Tuple[int, int], _RT],
     pbar: tqdm,
 ) -> None:
     while not task_queue.empty():
         # get a work item out of the queue
         task = task_queue.get_nowait()
+        (run_algo, algo_name) = task.algo
         train, test = task.train_test_pair
         # do some logging
         logging: OrderedDict[str, str] = OrderedDict()
-        logging['model'] = task.algo.name
+        logging['model'] = algo_name
         logging['dataset'] = train.name if train.name is not None else ""
         logging['worker_id'] = str(worker_id)
         pbar.set_postfix(ordered_dict=logging)
         # do the work
-        result: _RT
-        if isinstance(task.algo, InAlgorithmAsync):
-            result = await task.algo.run_async(train, test)  # type: ignore[assignment]
-        else:
-            result = await task.algo.run_async(train, test)  # type: ignore[assignment]
+        result: _RT = await run_algo(train, test)
         # put result into results dictionary
         result_dict[(task.algo_id, task.data_id)] = result
         pbar.update()
         # notify the queue that the work item has been processed
         task_queue.task_done()
 
+
+InSeq = Sequence[InAlgorithm]
+PreSeq = Sequence[PreAlgorithm]
+InResult = List[List[pd.DataFrame]]
+PreResult = List[List[Tuple[DataTuple, TestTuple]]]
+
+
 @overload
 async def run_in_parallel(
     algos: InSeq, data: List[TrainTestPair], max_parallel: int = 0,
-) -> InResult: ...
+) -> InResult:
+    ...
+
 
 @overload
 async def run_in_parallel(
     algos: PreSeq, data: List[TrainTestPair], max_parallel: int = 0,
-) -> PreResult: ...
+) -> PreResult:
+    ...
+
 
 async def run_in_parallel(
     algos: Union[InSeq, PreSeq], data: List[TrainTestPair], max_parallel: int = 0,
@@ -168,53 +148,72 @@ async def run_in_parallel(
     Returns:
         list of the results
     """
-    results: Union[InResult, PreResult] = []
+    if isinstance(algos[0], InAlgorithm):  # pylint: disable=no-else-return  # mypy needs this
+        in_algos = cast(Sequence[InAlgorithm], algos)
+        # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
+        in_async_algos, async_idx, in_blocking_algos = _filter(in_algos, InAlgorithmAsync)  # type: ignore[misc]
+        return await _generic_run_in_parallel(
+            async_algos=[(algo.run_async, algo.name) for algo in in_async_algos],
+            async_idx=async_idx,
+            blocking_algos=[(algo.run, algo.name) for algo in in_blocking_algos],
+            data=data,
+            max_parallel=max_parallel,
+        )
+    elif isinstance(algos[0], PreAlgorithm):
+        pre_algos = cast(Sequence[PreAlgorithm], algos)
+        # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
+        pre_async_algos, async_idx, pre_blocking_algos = _filter(pre_algos, PreAlgorithmAsync)  # type: ignore[misc]
+        return await _generic_run_in_parallel(
+            async_algos=[(algo.run_async, algo.name) for algo in pre_async_algos],
+            async_idx=async_idx,
+            blocking_algos=[(algo.run, algo.name) for algo in pre_blocking_algos],
+            data=data,
+            max_parallel=max_parallel,
+        )
 
 
-def _filter(algos: Sequence[Algorithm], algo_type: Type[_T]) -> Tuple[List[_T], List[int]]:
-    filtered_algos: List[_T] = []
+def _filter(algos: Sequence[_ST], algo_type: Type[_AT]) -> Tuple[List[_AT], List[int], List[_ST]]:
+    filtered_algos: List[_AT] = []
     filtered_idx: List[int] = []
+    remaining_algos: List[_ST] = []
     for i, algo in enumerate(algos):
         if isinstance(algo, algo_type):
             filtered_algos.append(algo)
             filtered_idx.append(i)
-    return filtered_algos, filtered_idx
+        else:
+            remaining_algos.append(algo)
+    return filtered_algos, filtered_idx, remaining_algos
 
 
-
-async def _split_run_merge(
-    results: List[_RT], algos: Sequence[_AT], data: List[TrainTestPair], max_parallel: int
-) -> None:
+async def _generic_run_in_parallel(
+    async_algos: Sequence[Tuple[RunType[_RT], str]],
+    async_idx: List[int],
+    blocking_algos: Sequence[Tuple[BlockingRunType[_RT], str]],
+    data: List[TrainTestPair],
+    max_parallel: int,
+) -> List[List[_RT]]:
+    """Generic version of `run_in_parallel` that allows us to do this with type safety."""
     # Filter out those algorithms that actually can run in their own process.
     # This is unfortunately really complicated because we have to keep track of the indices
     # in order to reassemble the returned list correctly.
-    async_algos: List[_AT] = []
-    async_idx: List[int] = []
-    blocking_algos: List[AnyAlgo] = []
-    blocking_idx: List[int] = []
-    for i, algo in enumerate(algos):
-        if isinstance(algo, (InAlgorithmAsync, PreAlgorithmAsync)):
-            async_algos.append(algo)
-            async_idx.append(i)
-        else:
-            blocking_algos.append(algo)
-            blocking_idx.append(i)
 
     # first start the asynchronous results
     async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
 
     # then get the blocking results
     # for each algorithm, first loop over all available datasets and then go on to the next algo
-    blocking_results = [[algo.run(train, test) for train, test in data] for algo in blocking_algos]
+    blocking_results = [
+        [algo(train, test) for train, test in data] for algo, name in blocking_algos
+    ]
 
     # then wait for the asynchronous results to come in
-    async_results: Union[InResult, PreResult] = await async_coroutines
+    async_results = await async_coroutines
 
     # now reassemble everything in the right order
-    results: Union[InResult, PreResult] = []
+    results: List[List[_RT]] = []
     async_counter = 0
     blocking_counter = 0
-    for i in range(len(algos)):
+    for i in range(len(async_algos) + len(blocking_algos)):
         if i in async_idx:
             results.append(async_results[async_counter])
             async_counter += 1
