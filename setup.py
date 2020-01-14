@@ -35,6 +35,7 @@ setup(
         "numpy >= 1.14.2",
         "pandas >= 0.24.0",
         "pipenv >= 2018.11.26",
+        "pillow < 7.0",
         "pyarrow >= 0.11",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
@@ -43,7 +44,12 @@ setup(
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
-        'ci': ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch >= 1.1.0, <= 1.1.0.post2"],
+        'ci': [
+            "pytest >= 3.3.2",
+            "pytest-cov >= 2.6.0",
+            "torch >= 1.1.0, <= 1.1.0.post2",
+            "torchvision == 0.3.0",
+        ],
         # use `pip install EthicML[dev]` to install development packages
         'dev': ["black", "mypy", "pydocstyle", "pylint", "pytest", "pytest-cov", "pre-commit"],
     },
