@@ -171,7 +171,7 @@ class CrossValidator:
 
         # finally, iterate over all results, compute scores and store them
         for preds_for_dataset, experiment in zip(all_results, self.experiments):
-            for i, (preds, (train_fold, val)) in enumerate(zip(preds_for_dataset, data_folds)):
+            for i, (preds, (_, val)) in enumerate(zip(preds_for_dataset, data_folds)):
                 compute_scores_and_append(experiment, preds, val, i)
         return CVResults(compute_scores_and_append.results, self.model)
 

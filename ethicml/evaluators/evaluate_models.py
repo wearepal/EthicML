@@ -1,6 +1,6 @@
 """Runs given metrics on given algorithms for given datasets."""
 from pathlib import Path
-from typing import List, Dict, Union, Sequence, Optional, Tuple, NamedTuple
+from typing import List, Dict, Union, Sequence, Optional, NamedTuple
 from collections import OrderedDict
 
 import pandas as pd
@@ -101,6 +101,19 @@ def _result_path(
     return outdir / f"{base_name}{dataset_name}_{transform_name}.csv"
 
 
+def _delete_previous_results(
+    outdir: Path, datasets: List[Dataset], transforms: Sequence[PreAlgorithm], topic: Optional[str]
+) -> None:
+    for dataset in datasets:
+        transform_list = ["no_transform"]
+        for preprocess_model in transforms:
+            transform_list.append(preprocess_model.name)
+        for transform_name in transform_list:
+            path_to_file: Path = _result_path(outdir, dataset.name, transform_name, topic)
+            if path_to_file.exists():
+                path_to_file.unlink()
+
+
 def evaluate_models(
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
@@ -117,13 +130,13 @@ def evaluate_models(
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
-        repeats: number of repeats to perform for the experiments
         datasets: list of dataset objects
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
         postprocess_models: list of postprocess model objects
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
+        repeats: number of repeats to perform for the experiments
         test_mode: if True, only use a small subset of the data so that the models run faster
         delete_prev:  False by default. If True, delete saved results in directory
         splitter: (optional) custom train-test splitter
@@ -149,14 +162,7 @@ def evaluate_models(
     outdir.mkdir(exist_ok=True)
 
     if delete_prev:
-        for dataset in datasets:
-            transform_list = ["no_transform"]
-            for preprocess_model in preprocess_models:
-                transform_list.append(preprocess_model.name)
-            for transform_name in transform_list:
-                path_to_file: Path = _result_path(outdir, dataset.name, transform_name, topic)
-                if path_to_file.exists():
-                    path_to_file.unlink()
+        _delete_previous_results(outdir, datasets, preprocess_models, topic)
 
     pbar = tqdm(total=total_experiments)
     for dataset in datasets:
@@ -253,17 +259,19 @@ class _DataInfo(NamedTuple):
     split_info: Dict[str, float]
 
 
-async def evaluate_models_parallel(
+async def evaluate_models_async(
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
+    postprocess_models: Sequence[PostAlgorithm] = (),
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 1,
     test_mode: bool = False,
+    delete_prev: bool = False,
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
-    max_parallel: int = 0,
+    max_parallel: int = 1,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
@@ -271,15 +279,18 @@ async def evaluate_models_parallel(
         datasets: list of dataset objects
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
+        postprocess_models: list of postprocess model objects
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         repeats: number of repeats to perform for the experiments
         test_mode: if True, only use a small subset of the data so that the models run faster
+        delete_prev:  False by default. If True, delete saved results in directory
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
-        max_parallel: Max number of threads ot run in parallel
+        max_parallel: max number of threads ot run in parallel (default: 1)
     """
     # pylint: disable=too-many-arguments
+    del postprocess_models  # not used at the moment
     per_sens_metrics_check(per_sens_metrics)
     train_test_split: DataSplitter
     if splitter is None:
@@ -293,6 +304,10 @@ async def evaluate_models_parallel(
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
 
+    if delete_prev:
+        _delete_previous_results(outdir, datasets, preprocess_models, topic)
+
+    # ======================================= prepare data ========================================
     data_splits: List[TrainTestPair] = []
     test_data: List[_DataInfo] = []
     for dataset in datasets:
@@ -308,6 +323,7 @@ async def evaluate_models_parallel(
             split_info.update({'split_id': split_id})
             test_data.append(_DataInfo(test, dataset.name, default_transform_name, split_info))
 
+    # ===================================== preprocess models =====================================
     # run all preprocess models
     all_transformed = await run_in_parallel(preprocess_models, data_splits, max_parallel)
 
@@ -321,28 +337,32 @@ async def evaluate_models_parallel(
                 )
             )
 
+    # ===================================== inprocess models ======================================
     all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
 
-    # transpose `all_results`
-    all_predictions_t = [list(i) for i in zip(*all_predictions)]
+    # ====================================== compute metrics ======================================
+    # transpose `all_results` so that the order in the results dataframe is correct
+    num_cols = len(all_predictions[0])
+    all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
 
     all_results = Results()
 
     # compute metrics, collect them and write them to files
-    for preds_for_model, data_info in zip(all_predictions_t, test_data):
+    for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
+        # ============================= handle results of one dataset =============================
         results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
         predictions: pd.DataFrame
-        for predictions, model in zip(preds_for_model, inprocess_models):
-            temp_res: Dict[str, Union[str, float]] = {
+        for predictions, model in zip(preds_for_dataset, inprocess_models):
+            # construct a row of the results dataframe
+            df_row: Dict[str, Union[str, float]] = {
                 "dataset": data_info.dataset_name,
                 "transform": data_info.transform_name,
                 "model": model.name,
                 **split_info,
             }
+            df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 
-            temp_res.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
-
-            results_df = results_df.append(temp_res, ignore_index=True, sort=False)
+            results_df = results_df.append(df_row, ignore_index=True, sort=False)
 
         # write results to CSV files and load previous results from the files if they already exist
         path_to_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)

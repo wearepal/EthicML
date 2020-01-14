@@ -34,6 +34,7 @@ _RT = TypeVar("_RT", pd.DataFrame, Tuple[DataTuple, TestTuple])  # return type
 
 RunType = Callable[[DataTuple, TestTuple], Coroutine[Any, Any, _RT]]
 BlockingRunType = Callable[[DataTuple, TestTuple], _RT]
+DataSeq = Sequence[TrainTestPair]
 
 
 @dataclass
@@ -45,7 +46,7 @@ class _Task(Generic[_RT]):
 
 
 async def arrange_in_parallel(
-    algos: Sequence[Tuple[RunType[_RT], str]], data: List[TrainTestPair], max_parallel: int,
+    algos: Sequence[Tuple[RunType[_RT], str]], data: DataSeq, max_parallel: int = 0,
 ) -> List[List[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
@@ -122,21 +123,17 @@ PreResult = List[List[Tuple[DataTuple, TestTuple]]]
 
 
 @overload
-async def run_in_parallel(
-    algos: InSeq, data: List[TrainTestPair], max_parallel: int = 0,
-) -> InResult:
+async def run_in_parallel(algos: InSeq, data: DataSeq, max_parallel: int = 0) -> InResult:
     ...
 
 
 @overload
-async def run_in_parallel(
-    algos: PreSeq, data: List[TrainTestPair], max_parallel: int = 0,
-) -> PreResult:
+async def run_in_parallel(algos: PreSeq, data: DataSeq, max_parallel: int = 0) -> PreResult:
     ...
 
 
 async def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: List[TrainTestPair], max_parallel: int = 0,
+    algos: Union[InSeq, PreSeq], data: DataSeq, max_parallel: int = 0,
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
@@ -173,6 +170,9 @@ async def run_in_parallel(
 
 
 def _filter(algos: Sequence[_ST], algo_type: Type[_AT]) -> Tuple[List[_AT], List[int], List[_ST]]:
+    # Filter out those algorithms that actually can run in their own process.
+    # This is unfortunately really complicated because we have to keep track of the indices
+    # in order to reassemble the returned list correctly.
     filtered_algos: List[_AT] = []
     filtered_idx: List[int] = []
     remaining_algos: List[_ST] = []
@@ -189,22 +189,16 @@ async def _generic_run_in_parallel(
     async_algos: Sequence[Tuple[RunType[_RT], str]],
     async_idx: List[int],
     blocking_algos: Sequence[Tuple[BlockingRunType[_RT], str]],
-    data: List[TrainTestPair],
+    data: DataSeq,
     max_parallel: int,
 ) -> List[List[_RT]]:
     """Generic version of `run_in_parallel` that allows us to do this with type safety."""
-    # Filter out those algorithms that actually can run in their own process.
-    # This is unfortunately really complicated because we have to keep track of the indices
-    # in order to reassemble the returned list correctly.
-
     # first start the asynchronous results
     async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
 
     # then get the blocking results
     # for each algorithm, first loop over all available datasets and then go on to the next algo
-    blocking_results = [
-        [algo(train, test) for train, test in data] for algo, name in blocking_algos
-    ]
+    blocking_results = [[run(train, test) for train, test in data] for run, name in blocking_algos]
 
     # then wait for the asynchronous results to come in
     async_results = await async_coroutines

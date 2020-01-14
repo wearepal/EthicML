@@ -38,7 +38,6 @@ setup(
         "pyarrow >= 0.11",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
-        # "tornado == 4.5.3",
         "tqdm >= 4.31.1",
         "typed-argument-parser == 1.4",
         "typing-extensions >= 3.7.2",

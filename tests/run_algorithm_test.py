@@ -4,7 +4,7 @@ Test that an algorithm can run against some data
 import os
 from pathlib import Path
 from typing import Tuple, List
-import numpy as np  # import needed for mypy
+import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
 import pytest
 
@@ -20,7 +20,7 @@ from ethicml.evaluators import (
     evaluate_models,
     MetricNotApplicable,
     load_results,
-    evaluate_models_parallel,
+    evaluate_models_async,
 )
 from ethicml.preprocessing import train_test_split
 
@@ -93,10 +93,11 @@ def test_run_alg_suite():
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
     parallel_results = run_blocking(
-        evaluate_models_parallel(
+        evaluate_models_async(
             datasets,
             preprocess_models,
             inprocess_models,
+            postprocess_models,
             metrics,
             per_sens_metrics,
             repeats=1,
