@@ -24,5 +24,5 @@ def test_label_dependent_transforms(transform):
         greyscale=False,
     )
 
-TODO: make better assertions
-    augmented_data = colorizer(data, labels)
+    #   TODO: test with meaningful assertions
+    colorizer(data, labels)
