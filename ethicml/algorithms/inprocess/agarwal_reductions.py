@@ -1,21 +1,15 @@
 """implementation of Agarwal model."""
 from pathlib import Path
-from typing import List, Set, Optional
+from typing import List, Set, Optional, Union, Dict
 
-import pandas as pd
-
-from ethicml.common import implements
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.implementations import agarwal
 from ethicml.utility.data_structures import (
     PathTuple,
     TestPathTuple,
-    DataTuple,
-    TestTuple,
     FairnessType,
     ClassifierType,
 )
-from .shared import conventional_interface, settings_for_svm_lr
+from .shared import settings_for_svm_lr, flag_interface
+from .in_algorithm import InAlgorithmAsync
 
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
@@ -40,44 +34,23 @@ class Agarwal(InAlgorithmAsync):
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
         super().__init__()
-        self.classifier = classifier
-        self.fairness = fairness
-        self.eps = eps
-        self.iters = iters
-        self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
-
-    @implements(InAlgorithmAsync)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        return agarwal.train_and_predict(
-            train=train,
-            test=test,
-            classifier=self.classifier,
-            fairness=self.fairness,
-            eps=self.eps,
-            iters=self.iters,
-            C=self.C,
-            kernel=self.kernel,
-        )
+        chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
+        self.flags: Dict[str, Union[str, float, int]] = {
+            "classifier": classifier,
+            "fairness": fairness,
+            "eps": eps,
+            "iters": iters,
+            "C": chosen_c,
+            "kernel": chosen_kernel,
+        }
 
     def _script_command(
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
-
-        script = ["-m", agarwal.train_and_predict.__module__]
-        args = conventional_interface(
-            train_paths,
-            test_paths,
-            pred_path,
-            str(self.classifier),
-            str(self.fairness),
-            str(self.eps),
-            str(self.iters),
-            str(self.C),
-            self.kernel,
-        )
-        return script + args
+        args = flag_interface(train_paths, test_paths, pred_path, self.flags)
+        return ["-m", "ethicml.implementations.agarwal"] + args
 
     @property
     def name(self) -> str:
         """Getter for algorithm name."""
-        return f"Agarwal {self.classifier}"
+        return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"

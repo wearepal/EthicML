@@ -1,24 +1,23 @@
 """Wrapper for SKLearn implementation of MLP."""
-from pathlib import Path
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, Dict
 
 from sklearn.neural_network import MLPClassifier
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.implementations import mlp
-from ethicml.utility.data_structures import (
-    ActivationType,
-    DataTuple,
-    TestTuple,
-    PathTuple,
-    TestPathTuple,
-)
-from .shared import conventional_interface
+from ethicml.utility.data_structures import ActivationType, DataTuple, TestTuple
+from .in_algorithm import InAlgorithm
 
 
-class MLP(InAlgorithmAsync):
+ACTIVATIONS: Dict[str, ActivationType] = {
+    "identity": "identity",
+    "logistic": "logistic",
+    "tanh": "tanh",
+    "relu": "relu",
+}
+
+
+class MLP(InAlgorithm):
     """Multi-layer Perceptron."""
 
     def __init__(
@@ -36,20 +35,22 @@ class MLP(InAlgorithmAsync):
             MLPClassifier().activation if activation is None else activation
         )
 
-    @implements(InAlgorithmAsync)
+    @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        return mlp.train_and_predict(train, test, self.hidden_layer_sizes, self.activation)
-
-    def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
-    ) -> List[str]:
-        script = ["-m", mlp.train_and_predict.__module__]
-        args = conventional_interface(
-            train_paths, test_paths, pred_path, str(self.hidden_layer_sizes), str(self.activation)
-        )
-        return script + args
+        clf = select_mlp(self.hidden_layer_sizes, self.activation)
+        clf.fit(train.x, train.y.to_numpy().ravel())
+        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
     @property
     def name(self) -> str:
         """Getter for algorithm name."""
         return "MLP"
+
+
+def select_mlp(hidden_layer_sizes: Tuple[int], activation: ActivationType) -> MLPClassifier:
+    """Create MLP model for the given parameters."""
+    assert activation in ACTIVATIONS
+
+    return MLPClassifier(
+        hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=888
+    )

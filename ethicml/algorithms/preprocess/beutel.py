@@ -1,14 +1,7 @@
 """Beutel's algorithm."""
-from typing import List, Sequence, Tuple
+from typing import List, Sequence, Union, Dict
 
-from ethicml.common import implements
-from ethicml.utility.data_structures import (
-    DataTuple,
-    TestTuple,
-    PathTuple,
-    TestPathTuple,
-    FairnessType,
-)
+from ethicml.utility.data_structures import PathTuple, TestPathTuple, FairnessType
 from .pre_algorithm import PreAlgorithmAsync
 from .interface import flag_interface
 
@@ -34,39 +27,20 @@ class Beutel(PreAlgorithmAsync):
         """Init Beutel."""
         # pylint: disable=too-many-arguments
         super().__init__()
-        self.fairness = fairness
-        self.enc_size = enc_size
-        self.adv_size = adv_size
-        self.pred_size = pred_size
-        self.enc_activation = enc_activation
-        self.adv_activation = adv_activation
-        self.batch_size = batch_size
-        self.y_loss = y_loss
-        self.s_loss = s_loss
-        self.epochs = epochs
-        self.adv_weight = adv_weight
-        self.validation_pcnt = validation_pcnt
-
-    @implements(PreAlgorithmAsync)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        from ...implementations import beutel  # only import this on demand because of pytorch
-
-        # SUGGESTION: it would be great if BeutelSettings could already be created in the init
-        flags = beutel.BeutelSettings(
-            fairness=self.fairness,
-            enc_size=self.enc_size,
-            adv_size=self.adv_size,
-            pred_size=self.pred_size,
-            enc_activation=self.enc_activation,
-            adv_activation=self.adv_activation,
-            batch_size=self.batch_size,
-            y_loss=self.y_loss,
-            s_loss=self.s_loss,
-            epochs=self.epochs,
-            adv_weight=self.adv_weight,
-            validation_pcnt=self.validation_pcnt,
-        )
-        return beutel.train_and_transform(train, test, flags)
+        self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
+            "fairness": fairness,
+            "enc_size": enc_size,
+            "adv_size": adv_size,
+            "pred_size": pred_size,
+            "enc_activation": enc_activation,
+            "adv_activation": adv_activation,
+            "batch_size": batch_size,
+            "y_loss": y_loss,
+            "s_loss": s_loss,
+            "epochs": epochs,
+            "adv_weight": adv_weight,
+            "validation_pcnt": validation_pcnt,
+        }
 
     def _script_command(
         self,
@@ -75,7 +49,7 @@ class Beutel(PreAlgorithmAsync):
         new_train_paths: PathTuple,
         new_test_paths: TestPathTuple,
     ) -> List[str]:
-        args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, vars(self))
+        args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.beutel"] + args
 
     @property

@@ -75,7 +75,7 @@ def test_run_parallel():
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """test empty evaluate"""
-    empty_result = evaluate_models([Toy()], repeats=3)
+    empty_result = evaluate_models([Toy()], repeats=3, delete_prev=True)
     expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(empty_result.data, expected_result)
