@@ -4,7 +4,7 @@ subprocess.call(
     [
         "pydocstyle",
         "--convention=google",
-        "--ignore-decorators=implements",
+        "--ignore-decorators=implements|overload",
         "--count",
         "-e",
         "ethicml",

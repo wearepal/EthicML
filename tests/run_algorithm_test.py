@@ -4,12 +4,13 @@ Test that an algorithm can run against some data
 import os
 from pathlib import Path
 from typing import Tuple, List
-import numpy as np  # import needed for mypy
+import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
 import pytest
 
+from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import LR, SVM, Majority, InAlgorithm
-from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
+from ethicml.algorithms.postprocess import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
 from ethicml.metrics import Accuracy, CV, TPR, Metric
 from ethicml.utility import DataTuple, TrainTestPair
@@ -19,7 +20,7 @@ from ethicml.evaluators import (
     evaluate_models,
     MetricNotApplicable,
     load_results,
-    evaluate_models_parallel,
+    evaluate_models_async,
 )
 from ethicml.preprocessing import train_test_split
 
@@ -47,8 +48,12 @@ def test_run_parallel():
     """test run parallel"""
     data0 = get_train_test()
     data1 = get_train_test()
-    result = run_in_parallel(
-        [LR(), SVM(), Majority()], [TrainTestPair(*data0), TrainTestPair(*data1)], max_parallel=2
+    result = run_blocking(
+        run_in_parallel(
+            [LR(), SVM(), Majority()],
+            [TrainTestPair(*data0), TrainTestPair(*data1)],
+            max_parallel=2,
+        )
     )
     # LR
     assert count_true(result[0][0].values == 1) == 211
@@ -87,14 +92,18 @@ def test_run_alg_suite():
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
-    parallel_results = evaluate_models_parallel(
-        datasets,
-        inprocess_models,
-        metrics,
-        per_sens_metrics,
-        repeats=1,
-        test_mode=True,
-        topic="pytest",
+    parallel_results = run_blocking(
+        evaluate_models_async(
+            datasets,
+            preprocess_models,
+            inprocess_models,
+            postprocess_models,
+            metrics,
+            per_sens_metrics,
+            repeats=1,
+            test_mode=True,
+            topic="pytest",
+        )
     )
     results = evaluate_models(
         datasets,
@@ -108,9 +117,7 @@ def test_run_alg_suite():
         delete_prev=True,
         topic="pytest",
     )
-    pd.testing.assert_frame_equal(
-        parallel_results.data, results.data.query("transform == \"no_transform\"")
-    )
+    pd.testing.assert_frame_equal(parallel_results.data, results.data, check_like=True)
 
     files = os.listdir(Path(".") / "results")
     file_names = [
