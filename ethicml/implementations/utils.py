@@ -1,7 +1,6 @@
 """Useful functions used in implementations."""
-import sys
 from pathlib import Path
-from typing import Tuple, Union, List, Optional
+from typing import Tuple, Union
 
 import pandas as pd
 import numpy as np
@@ -10,8 +9,8 @@ import tap
 from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
 
 
-class PreAlgoArgs(tap.Tap):
-    """ArgumentParser that already has arguments for the paths.
+class AlgoArgs(tap.Tap):
+    """ArgumentParser that already has arguments for the input data paths.
 
     This is a quick way to create a parser that can parse the filenames for the data. This class
     can be used by pre-algorithms to implement a commandline interface.
@@ -26,6 +25,10 @@ class PreAlgoArgs(tap.Tap):
     test_s: str
     test_name: str
 
+
+class PreAlgoArgs(AlgoArgs):
+    """ArgumentParser for pre-processing algorithms."""
+
     # paths to where the processed inputs should be stored
     new_train_x: str
     new_train_s: str
@@ -36,36 +39,24 @@ class PreAlgoArgs(tap.Tap):
     new_test_name: str
 
 
-class InAlgoInterface:
-    """Commandline "interface" for in-process algorithms."""
+class InAlgoArgs(AlgoArgs):
+    """ArgumentParser that already has arguments for the paths needed for InAlgorithms."""
 
-    def __init__(self, args: Optional[List[str]] = None):
-        """Init InProcess Algorithm."""
-        self.args: List[str] = sys.argv[1:] if args is None else args
-
-    def load_data(self) -> Tuple[DataTuple, TestTuple]:
-        """Load the data from the files."""
-        train_paths = PathTuple(
-            x=Path(self.args[0]), s=Path(self.args[1]), y=Path(self.args[2]), name=self.args[3]
-        )
-        test_paths = TestPathTuple(x=Path(self.args[4]), s=Path(self.args[5]), name=self.args[6])
-        return train_paths.load_from_feather(), test_paths.load_from_feather()
-
-    def save_predictions(self, predictions: Union[np.ndarray, pd.DataFrame]):
-        """Save the data to the file that was specified in the commandline arguments."""
-        if not isinstance(predictions, pd.DataFrame):
-            df = pd.DataFrame(predictions, columns=["pred"])
-        else:
-            df = predictions
-        pred_path = Path(self.args[7])
-        df.to_feather(pred_path)
-
-    def remaining_args(self) -> List[str]:
-        """Additional commandline arguments beyond the data paths and the prediction path."""
-        return self.args[8:]
+    # path to where the predictions should be stored
+    pred_path: str
 
 
-def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
+def save_predictions(predictions: Union[np.ndarray, pd.DataFrame], args: InAlgoArgs):
+    """Save the data to the file that was specified in the commandline arguments."""
+    if not isinstance(predictions, pd.DataFrame):
+        df = pd.DataFrame(predictions, columns=["pred"])
+    else:
+        df = predictions
+    pred_path = Path(args.pred_path)
+    df.to_feather(pred_path)
+
+
+def load_data_from_flags(flags: AlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags."""
     train_paths = PathTuple(
         x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name

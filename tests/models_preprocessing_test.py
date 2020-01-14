@@ -1,4 +1,4 @@
-"""EthicML tests"""
+"""Test preprocessing models"""
 from typing import Tuple
 import pandas as pd
 
@@ -14,29 +14,6 @@ from ethicml.algorithms.preprocess import (
 )
 from ethicml.utility import DataTuple, TestTuple
 from tests.run_algorithm_test import get_train_test
-
-
-def test_beutel():
-    """test beutel"""
-    train, test = get_train_test()
-
-    beut_model: PreAlgorithm = Beutel()
-    assert beut_model is not None
-    assert beut_model.name == "Beutel"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = beut_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert len(new_train) == len(train)
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
 
 
 def test_vfae():
@@ -70,6 +47,8 @@ def test_vfae():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
+    assert new_test.name == "VFAE: " + str(test.name)
+    assert new_train.name == "VFAE: " + str(train.name)
 
     predictions = svm_model.run_test(new_train, new_test)
     assert predictions.values[predictions.values == 1].shape[0] == 201
@@ -90,29 +69,6 @@ def test_vfae():
     predictions = svm_model.run_test(new_train, new_test)
     assert predictions.values[predictions.values == 1].shape[0] == 207
     assert predictions.values[predictions.values == -1].shape[0] == 193
-
-
-def test_zemel():
-    """test zemel"""
-    train, test = get_train_test()
-
-    zemel_model: PreAlgorithm = Zemel()
-    assert zemel_model is not None
-    assert zemel_model.name == "Zemel"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = zemel_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
 
 
 def test_threaded_zemel():
@@ -146,8 +102,8 @@ def test_threaded_zemel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
-    assert new_train.name == train.name
+    assert new_test.name == "Zemel: " + str(test.name)
+    assert new_train.name == "Zemel: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -191,7 +147,7 @@ def test_threaded_beutel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
+    assert new_test.name == "Beutel: " + str(test.name)
     assert new_train.name == "Beutel: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
@@ -201,31 +157,6 @@ def test_threaded_beutel():
     predictions = svm_model.run_test(new_train, new_test)
     assert predictions.values[predictions.values == 1].shape[0] == 201
     assert predictions.values[predictions.values == -1].shape[0] == 199
-
-
-def test_threaded_vfae():
-    """test threaded vfae"""
-    train, test = get_train_test()
-
-    model: PreAlgorithmAsync = VFAE(dataset="Toy")
-    assert model is not None
-    assert model.name == "VFAE"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "VFAE: " + str(test.name)
-    assert new_train.name == "VFAE: " + str(train.name)
-
-    classifier: InAlgorithm = SVM()
-    assert classifier is not None
-    assert classifier.name == "SVM"
-
-    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 193
-    assert predictions.values[predictions.values == -1].shape[0] == 207
 
 
 def test_threaded_custom_beutel():
@@ -316,28 +247,3 @@ def test_upsampler():
     predictions = lr_model.run_test(new_train, new_test)
     assert predictions.values[predictions.values == 1].shape[0] == 148
     assert predictions.values[predictions.values == -1].shape[0] == 252
-
-
-def test_async_upsampler():
-    """test async upsampler"""
-    train, test = get_train_test()
-
-    upsampler: PreAlgorithmAsync = Upsampler()
-    assert upsampler is not None
-    assert upsampler.name == "Upsample uniform"
-
-    new_train: DataTuple
-    new_test: TestTuple
-    new_train, new_test = run_blocking(upsampler.run_async(train, test))
-
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Upsample uniform: " + str(test.name)
-    assert new_train.name == "Upsample uniform: " + str(train.name)
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 227
-    assert predictions.values[predictions.values == -1].shape[0] == 173

@@ -2,7 +2,7 @@
 
 https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
 """
-from typing import List, Tuple, Dict, Optional, Union
+from typing import List, Tuple, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -14,6 +14,19 @@ from ethicml.utility.data_structures import DataTuple, TestTuple
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
 # pylint: disable=invalid-name
+
+
+class ZemelArgs(PreAlgoArgs):
+    """Arguments for the Zemel algorithm."""
+
+    clusters: int
+    Ax: float
+    Ay: float
+    Az: float
+    max_iter: int
+    maxfun: int
+    epsilon: float
+    threshold: float
 
 
 def distances(x: np.ndarray, v: np.ndarray, alpha: np.ndarray) -> np.ndarray:
@@ -179,7 +192,7 @@ lfr_optim_ob.iters = 0  # type: ignore[attr-defined]
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: Dict[str, Union[int, float]]
+    train: DataTuple, test: TestTuple, flags: ZemelArgs
 ) -> (Tuple[DataTuple, TestTuple]):
     """Train the Zemel model and return the transformed features of the train and test sets."""
     np.random.seed(888)
@@ -192,11 +205,11 @@ def train_and_transform(
     ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
 
     model_inits = np.random.uniform(
-        size=int(features_dim * 2 + flags['clusters'] + features_dim * flags['clusters'])
+        size=int(features_dim * 2 + flags.clusters + features_dim * flags.clusters)
     )
     bnd: List[Tuple[Optional[int], Optional[int]]] = []
     for i, _ in enumerate(model_inits):
-        if i < features_dim * 2 or i >= features_dim * 2 + flags['clusters']:
+        if i < features_dim * 2 or i >= features_dim * 2 + flags.clusters:
             bnd.append((None, None))
         else:
             bnd.append((0, 1))
@@ -204,22 +217,22 @@ def train_and_transform(
     learned_model = optim.fmin_l_bfgs_b(
         lfr_optim_ob,
         x0=model_inits,
-        epsilon=flags['epsilon'],
+        epsilon=flags.epsilon,
         args=(
             training_sensitive,
             training_nonsensitive,
             ytrain_sensitive[:, 0],
             ytrain_nonsensitive[:, 0],
-            flags['clusters'],
-            flags['Ax'],
-            flags['Ay'],
-            flags['Az'],
+            flags.clusters,
+            flags.Ax,
+            flags.Ay,
+            flags.Az,
             0,
         ),
         bounds=bnd,
         approx_grad=True,
-        maxfun=flags['maxfun'],
-        maxiter=flags['max_iter'],
+        maxfun=flags.maxfun,
+        maxiter=flags.max_iter,
         disp=False,
     )[0]
 
@@ -247,7 +260,7 @@ def train_and_transform(
     )
 
 
-def transform(features_sens, features_nonsens, learned_model, dataset, flags):
+def transform(features_sens, features_nonsens, learned_model, dataset, flags: ZemelArgs):
     """Transform a dataset.
 
     Args:
@@ -261,7 +274,7 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     Returns:
         Dataframe of transformed features.
     """
-    k = flags['clusters']
+    k = flags.clusters
     _, p = features_sens.shape
     alphaoptim0 = learned_model[:p]
     alphaoptim1 = learned_model[p : 2 * p]
@@ -293,26 +306,13 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags):
     return pd.DataFrame(transformed_features, columns=dataset.x.columns)
 
 
-class ZemelArgs(PreAlgoArgs):
-    """Arguments for the Zemel algorithm."""
-
-    clusters: int
-    Ax: float
-    Ay: float
-    Az: float
-    max_iter: int
-    maxfun: int
-    epsilon: float
-    threshold: float
-
-
 def main():
     """Main method to run model."""
     args = ZemelArgs()
     args.parse_args()
 
     train, test = load_data_from_flags(args)
-    save_transformations(train_and_transform(train, test, args.as_dict()), args)
+    save_transformations(train_and_transform(train, test, args), args)
 
 
 if __name__ == "__main__":

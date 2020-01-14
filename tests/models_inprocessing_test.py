@@ -1,6 +1,6 @@
 """EthicML Tests"""
 import sys
-from typing import List, Dict, Any, NamedTuple
+from typing import List, Dict, Any, NamedTuple, Tuple
 from pathlib import Path
 import pandas as pd
 import pytest
@@ -29,11 +29,12 @@ from ethicml.algorithms.inprocess import (
     ZafarFairness,
     Agarwal,
 )
-from ethicml.evaluators import CrossValidator, CVResults
+from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
 from ethicml.metrics import Accuracy, AbsCV
 from ethicml.utility import Heaviside, DataTuple, TrainTestPair, PathTuple, TestPathTuple
-from ethicml.data import load_data, Compas
+from ethicml.data import load_data, Compas, Toy
 from ethicml.preprocessing import train_test_split, query_dt
+from ethicml.metrics import Metric
 from tests.run_algorithm_test import get_train_test, count_true
 
 
@@ -51,6 +52,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="Majority", model=Majority(), num_pos=0, num_neg=400),
     InprocessTest(name="MLP", model=MLP(), num_pos=200, num_neg=200),
     InprocessTest(name="Logistic Regression, C=1.0", model=LR(), num_pos=211, num_neg=189),
+    InprocessTest(name="LRCV", model=LRCV(), num_pos=211, num_neg=189),
 ]
 
 
@@ -347,23 +349,6 @@ def test_gpyt_creation():
 #     assert predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
 
 
-def test_threaded_svm():
-    """test threaded svm"""
-    train, test = get_train_test()
-
-    model: InAlgorithmAsync = SVM()
-    assert model is not None
-    assert model.name == "SVM"
-
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
-
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 201
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 199
-
-
 def test_local_installed_lr(toy_train_test: TrainTestPair):
     """test local installed lr"""
     train, test = toy_train_test
@@ -400,97 +385,78 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 def test_agarwal():
     """test agarwal"""
     train, test = get_train_test()
-    model: InAlgorithm = Agarwal()
-    assert model is not None
-    assert model.name == "Agarwal LR"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 146
-    assert predictions.values[predictions.values == -1].shape[0] == 254
+    agarwal_variants: List[InAlgorithmAsync] = []
+    model_names: List[str] = []
+    expected_results: List[Tuple[int, int]] = []
 
-    model = Agarwal(fairness="EqOd")
-    predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 150
-    assert predictions.values[predictions.values == -1].shape[0] == 250
+    agarwal_variants.append(Agarwal())
+    model_names.append("Agarwal, LR, DP")
+    expected_results.append((146, 254))
 
-    model = Agarwal(classifier="SVM")
-    predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 119
-    assert predictions.values[predictions.values == -1].shape[0] == 281
+    agarwal_variants.append(Agarwal(fairness="EqOd"))
+    model_names.append("Agarwal, LR, EqOd")
+    expected_results.append((150, 250))
 
-    model = Agarwal(classifier="SVM", kernel='linear')
-    predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 141
-    assert predictions.values[predictions.values == -1].shape[0] == 259
+    agarwal_variants.append(Agarwal(classifier="SVM"))
+    model_names.append("Agarwal, SVM, DP")
+    expected_results.append((119, 281))
 
-    model = Agarwal(classifier="SVM", fairness="EqOd")
-    predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 157
-    assert predictions.values[predictions.values == -1].shape[0] == 243
+    agarwal_variants.append(Agarwal(classifier="SVM", kernel='linear'))
+    model_names.append("Agarwal, SVM, DP")
+    expected_results.append((141, 259))
 
-    model = Agarwal(classifier="SVM", fairness="EqOd", kernel="linear")
-    predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 150
-    assert predictions.values[predictions.values == -1].shape[0] == 250
+    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd"))
+    model_names.append("Agarwal, SVM, EqOd")
+    expected_results.append((157, 243))
+
+    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd", kernel="linear"))
+    model_names.append("Agarwal, SVM, EqOd")
+    expected_results.append((150, 250))
+
+    results = run_blocking(
+        run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
+    )
+
+    for model, results_for_model, model_name, (pred_true, pred_false) in zip(
+        agarwal_variants, results, model_names, expected_results
+    ):
+        assert model.name == model_name
+        assert count_true(results_for_model[0].to_numpy() == 1) == pred_true, model_name
+        assert count_true(results_for_model[0].to_numpy() == -1) == pred_false, model_name
 
 
 def test_threaded_agarwal():
-    train, test = get_train_test()
-    model = Agarwal(classifier="SVM", fairness="EqOd")
-    predictions = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 157
-    assert predictions.values[predictions.values == -1].shape[0] == 243
+    """test threaded agarwal"""
+    models: List[InAlgorithmAsync] = [Agarwal(classifier="SVM", fairness="EqOd")]
+
+    class AssertResult(Metric):
+        def score(self, prediction, actual):
+            return (
+                count_true(prediction.values == 1) == 157
+                and count_true(prediction.values == -1) == 243
+            )
+
+        @property
+        def name(self):
+            return "assert_result"
+
+    results = run_blocking(
+        evaluate_models_async(datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()])
+    )
+    assert results.data["assert_result"].iloc[0] == True
 
 
-def test_threaded_lr():
-    """test threaded lr"""
-    train, test = get_train_test()
-
-    model: InAlgorithmAsync = LR()
-    assert model.name == "Logistic Regression, C=1.0"
-
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
-
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
-
-
-def test_threaded_lr_cross_validated():
-    """test threaded lr cross validated"""
+def test_lr_prob():
+    """test lr prob"""
     train, test = get_train_test()
 
-    model: InAlgorithmAsync = LRCV()
-    assert model.name == "LRCV"
-
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
-
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
-
-
-def test_threaded_lr_prob():
-    """test threaded lr prob"""
-    train, test = get_train_test()
-
-    model: InAlgorithmAsync = LRProb()
+    model: InAlgorithm = LRProb()
     assert model.name == "Logistic Regression Prob, C=1.0"
 
     heavi = Heaviside()
 
-    predictions_non_threaded: pd.DataFrame = model.run(train, test)
-    predictions_non_threaded = predictions_non_threaded.apply(heavi.apply)
-    predictions_non_threaded = predictions_non_threaded.replace(0, -1)
-
-    assert predictions_non_threaded.values[predictions_non_threaded.values == 1].shape[0] == 211
-    assert predictions_non_threaded.values[predictions_non_threaded.values == -1].shape[0] == 189
-
-    predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
+    predictions: pd.DataFrame = model.run(train, test)
     predictions = predictions.apply(heavi.apply)
     predictions = predictions.replace(0, -1)
     assert predictions.values[predictions.values == 1].shape[0] == 211
@@ -501,15 +467,11 @@ def test_kamiran(toy_train_test: TrainTestPair):
     """test kamiran"""
     train, test = toy_train_test
 
-    kamiran_model: InAlgorithmAsync = Kamiran()
+    kamiran_model: InAlgorithm = Kamiran()
     assert kamiran_model is not None
     assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: pd.DataFrame = kamiran_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 210
-    assert predictions.values[predictions.values == -1].shape[0] == 190
-
-    predictions = run_blocking(kamiran_model.run_async(train, test))
     assert predictions.values[predictions.values == 1].shape[0] == 210
     assert predictions.values[predictions.values == -1].shape[0] == 190
 

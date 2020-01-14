@@ -145,6 +145,8 @@ async def run_in_parallel(
     Returns:
         list of the results
     """
+    if not algos:
+        return cast(List[List[pd.DataFrame]], [[]])
     if isinstance(algos[0], InAlgorithm):  # pylint: disable=no-else-return  # mypy needs this
         in_algos = cast(Sequence[InAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
@@ -194,14 +196,18 @@ async def _generic_run_in_parallel(
 ) -> List[List[_RT]]:
     """Generic version of `run_in_parallel` that allows us to do this with type safety."""
     # first start the asynchronous results
-    async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
+    if async_algos:
+        async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
 
     # then get the blocking results
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     blocking_results = [[run(train, test) for train, test in data] for run, name in blocking_algos]
 
     # then wait for the asynchronous results to come in
-    async_results = await async_coroutines
+    if async_algos:
+        async_results = await async_coroutines
+    else:
+        async_results = []
 
     # now reassemble everything in the right order
     results: List[List[_RT]] = []

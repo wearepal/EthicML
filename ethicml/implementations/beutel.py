@@ -3,7 +3,7 @@
 # pylint: disable=arguments-differ
 
 import random
-from typing import List, Any, Tuple, Sequence, NamedTuple
+from typing import List, Any, Tuple, Sequence
 import pandas as pd
 import numpy as np
 import torch
@@ -23,13 +23,13 @@ STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
-class BeutelSettings(NamedTuple):
-    """Settings for the Beutel algorithm. This is basically a type-safe flag-object."""
+class BeutelArgs(PreAlgoArgs):
+    """Args for the Beutel Implementation."""
 
     fairness: FairnessType
-    enc_size: Sequence[int]
-    adv_size: Sequence[int]
-    pred_size: Sequence[int]
+    enc_size: List[int]
+    adv_size: List[int]
+    pred_size: List[int]
     enc_activation: str
     adv_activation: str
     batch_size: int
@@ -48,9 +48,7 @@ def set_seed(seed: int):
     torch.cuda.manual_seed_all(seed)  # type: ignore[attr-defined]
 
 
-def build_networks(
-    flags: BeutelSettings, train_data: CustomDataset, enc_activation, adv_activation
-):
+def build_networks(flags: BeutelArgs, train_data: CustomDataset, enc_activation, adv_activation):
     """Build the networks we use.
 
     Pulled into a separate function to make the code a bit neater.
@@ -79,7 +77,7 @@ def build_networks(
 
 
 def make_dataset_and_loader(
-    data: DataTuple, flags: BeutelSettings
+    data: DataTuple, flags: BeutelArgs
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader.
 
@@ -98,7 +96,7 @@ def make_dataset_and_loader(
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: BeutelSettings
+    train: DataTuple, test: TestTuple, flags: BeutelArgs
 ) -> Tuple[DataTuple, TestTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
     set_seed(888)
@@ -199,7 +197,7 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
     scheduler.step(iteration)
 
 
-def get_mask(flags: BeutelSettings, s_pred, class_label):
+def get_mask(flags: BeutelArgs, s_pred, class_label):
     """Get a mask to enforce different fairness types."""
     if flags.fairness == "EqOp":
         mask = class_label.ge(0.5)
@@ -391,48 +389,11 @@ class Model(nn.Module):
         return encoded, s_hat, y_hat
 
 
-class BeutelArgs(PreAlgoArgs):
-    """Args for the Beutel Implementation."""
-
-    fairness: FairnessType
-    enc_size: List[int]
-    adv_size: List[int]
-    pred_size: List[int]
-    enc_activation: str
-    adv_activation: str
-    batch_size: int
-    y_loss: str
-    s_loss: str
-    epochs: int
-    adv_weight: float
-    validation_pcnt: float
-
-
 def main():
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
-    args = BeutelArgs()
-
-    # model parameters
-    args.parse_args()
-    # convert args object to a dictionary and load the feather files from the paths
+    args = BeutelArgs().parse_args()
     train, test = load_data_from_flags(args)
-
-    # make the argparse object type-safe (is there an easier way to do this?)
-    flags = BeutelSettings(
-        fairness=args.fairness,
-        enc_size=args.enc_size,
-        adv_size=args.adv_size,
-        pred_size=args.pred_size,
-        enc_activation=args.enc_activation,
-        adv_activation=args.adv_activation,
-        batch_size=args.batch_size,
-        y_loss=args.y_loss,
-        s_loss=args.s_loss,
-        epochs=args.epochs,
-        adv_weight=args.adv_weight,
-        validation_pcnt=args.validation_pcnt,
-    )
-    save_transformations(train_and_transform(train, test, flags), args)
+    save_transformations(train_and_transform(train, test, args), args)
 
 
 if __name__ == "__main__":
