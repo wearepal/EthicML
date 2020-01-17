@@ -1,6 +1,14 @@
 """Useful methods that are used in some of the data objects."""
 
+from itertools import groupby
 from typing import List
+
+__all__ = [
+    "get_concatenated_features",
+    "filter_features_by_prefixes",
+    "get_discrete_features",
+    "group_disc_feat_indexes",
+]
 
 
 def get_concatenated_features(
@@ -62,3 +70,26 @@ def get_discrete_features(
         for item in filter_features_by_prefixes(all_feats, feats_to_remove)
         if item not in cont_feats
     ]
+
+
+def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
+    """Group discrete features names according to the first segment of their name.
+
+    Returns a list of their corresponding slices (assumes order is maintained).
+    """
+
+    def _first_segment(feature_name: str) -> str:
+        return feature_name.split(prefix_sep)[0]
+
+    group_iter = groupby(disc_feat_names, _first_segment)
+
+    feature_slices: List[slice] = []
+    start_idx = 0
+    for _, group in group_iter:
+        print(group)
+        len_group = len(list(group))
+        indexes = slice(start_idx, start_idx + len_group)
+        feature_slices.append(indexes)
+        start_idx += len_group
+
+    return feature_slices

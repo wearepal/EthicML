@@ -16,6 +16,7 @@ from ethicml.data import (
     Sqf,
     Toy,
     NonBinaryToy,
+    group_disc_feat_indexes,
 )
 from ethicml.utility import DataTuple, concat_dt
 from ethicml.preprocessing import domain_split, query_dt
@@ -297,3 +298,14 @@ def test_concat():
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=['a'], data=[[1], [4]]))
     pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=['b'], data=[[2], [5]]))
     pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=['c'], data=[[3], [6]]))
+
+
+def test_group_prefixes():
+    """test group prefixes"""
+    names = ["a_asf", "a_fds", "good_lhdf", "good_dsdw", "sas"]
+    grouped_indexes = group_disc_feat_indexes(names, prefix_sep="_")
+
+    assert len(grouped_indexes) == 3
+    assert grouped_indexes[0] == slice(0, 2)
+    assert grouped_indexes[1] == slice(2, 4)
+    assert grouped_indexes[2] == slice(4, 5)
