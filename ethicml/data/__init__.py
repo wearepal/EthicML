@@ -10,3 +10,4 @@ from .load import load_data, create_data_obj
 from .non_binary_toy import NonBinaryToy
 from .sqf import Sqf
 from .toy import Toy
+from .util import *
