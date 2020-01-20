@@ -189,3 +189,7 @@ class Sqf(Dataset):
     def filename(self) -> str:
         """Getter for filename."""
         return "sqf.csv"
+
+    def __len__(self) -> int:
+        """Length of the dataset."""
+        return 12347

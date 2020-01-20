@@ -12,11 +12,11 @@ from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 
 __all__ = [
-    'DataSplitter',
-    'ProportionalSplit',
-    'SequentialSplit',
-    'RandomSplit',
-    'train_test_split',
+    "DataSplitter",
+    "ProportionalSplit",
+    "SequentialSplit",
+    "RandomSplit",
+    "train_test_split",
 ]
 
 
@@ -156,7 +156,7 @@ class RandomSplit(DataSplitter):
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Do standard split."""
         random_seed = self._get_seed(split_id)
-        split_info: Dict[str, float] = {'seed': random_seed}
+        split_info: Dict[str, float] = {"seed": random_seed}
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
@@ -219,7 +219,7 @@ class ProportionalSplit(RandomSplit):
         num_groups = len(s_vals) * len(y_vals)
         assert expected_train_len - num_groups <= len(train) <= expected_train_len + num_groups
 
-        split_info: Dict[str, float] = {'seed': random_seed}
+        split_info: Dict[str, float] = {"seed": random_seed}
         return train, test, split_info
 
 

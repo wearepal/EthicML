@@ -100,3 +100,7 @@ class German(Dataset):
     def filename(self) -> str:
         """Getter for filename."""
         return "german.csv"
+
+    def __len__(self) -> int:
+        """Length of the dataset."""
+        return 1000

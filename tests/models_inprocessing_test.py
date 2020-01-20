@@ -92,7 +92,7 @@ def test_cv_svm():
     """test cv svm"""
     train, test = get_train_test()
 
-    hyperparams: Dict[str, List[Any]] = {'C': [1, 10, 100], 'kernel': ['rbf', 'linear']}
+    hyperparams: Dict[str, List[Any]] = {"C": [1, 10, 100], "kernel": ["rbf", "linear"]}
 
     svm_cv = CrossValidator(SVM, hyperparams, folds=3)
 
@@ -112,7 +112,7 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     """test cv lr"""
     train, test = toy_train_test
 
-    hyperparams: Dict[str, List[float]] = {'C': [0.01, 0.1, 1.0]}
+    hyperparams: Dict[str, List[float]] = {"C": [0.01, 0.1, 1.0]}
 
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
@@ -122,7 +122,7 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     measure = Accuracy()
     cv_results: CVResults = lr_cv.run(train, measures=[measure])
 
-    assert cv_results.best_hyper_params(measure)['C'] == 0.1
+    assert cv_results.best_hyper_params(measure)["C"] == 0.1
     best_model = cv_results.best(measure)
 
     predictions: pd.DataFrame = best_model.run(train, test)
@@ -134,7 +134,7 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
     """test parallel cv lr"""
     train, test = toy_train_test
 
-    hyperparams: Dict[str, List[float]] = {'C': [0.001, 0.01]}
+    hyperparams: Dict[str, List[float]] = {"C": [0.001, 0.01]}
 
     lr_cv = CrossValidator(LR, hyperparams, folds=2, max_parallel=1)
 
@@ -144,7 +144,7 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
     measure = Accuracy()
     cv_results: CVResults = run_blocking(lr_cv.run_async(train, measures=[measure]))
 
-    assert cv_results.best_hyper_params(measure)['C'] == 0.01
+    assert cv_results.best_hyper_params(measure)["C"] == 0.01
     best_model = cv_results.best(measure)
 
     predictions: pd.DataFrame = best_model.run(train, test)
@@ -156,7 +156,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     """test fair cv lr"""
     train, _ = toy_train_test
 
-    hyperparams: Dict[str, List[float]] = {'C': [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
+    hyperparams: Dict[str, List[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
@@ -170,9 +170,9 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
     print(best_result)
 
-    assert best_result.params['C'] == 1e-5
-    assert best_result.scores['Accuracy'] == approx(0.8475, rel=1e-4)
-    assert best_result.scores['CV absolute'] == approx(0.6654, rel=1e-4)
+    assert best_result.params["C"] == 1e-5
+    assert best_result.scores["Accuracy"] == approx(0.8475, rel=1e-4)
+    assert best_result.scores["CV absolute"] == approx(0.6654, rel=1e-4)
 
 
 # @pytest.fixture(scope="module")
@@ -233,7 +233,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert predictions.values[predictions.values == 1].shape[0] == 206
     assert predictions.values[predictions.values == -1].shape[0] == 194
 
-    hyperparams: Dict[str, List[float]] = {'gamma': [1, 1e-1, 1e-2]}
+    hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
     model = zafar_models[0]
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
@@ -247,9 +247,9 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
-    assert best_result.params['gamma'] == 1
-    assert best_result.scores['Accuracy'] == approx(0.7094, rel=1e-4)
-    assert best_result.scores['CV absolute'] == approx(0.9822, rel=1e-4)
+    assert best_result.params["gamma"] == 1
+    assert best_result.scores["Accuracy"] == approx(0.7094, rel=1e-4)
+    assert best_result.scores["CV absolute"] == approx(0.9822, rel=1e-4)
 
     model = zafar_models[1]()
     assert model.name == "ZafarBaseline"
@@ -277,7 +277,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert predictions.values[predictions.values == 1].shape[0] == 215
     assert predictions.values[predictions.values == -1].shape[0] == 185
 
-    hyperparams = {'c': [1, 1e-1, 1e-2]}
+    hyperparams = {"c": [1, 1e-1, 1e-2]}
 
     model = zafar_models[2]
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
@@ -291,9 +291,9 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
-    assert best_result.params['c'] == 0.01
-    assert best_result.scores['Accuracy'] == approx(0.7156, rel=1e-4)
-    assert best_result.scores['CV absolute'] == approx(0.9756, rel=1e-4)
+    assert best_result.params["c"] == 0.01
+    assert best_result.scores["Accuracy"] == approx(0.7156, rel=1e-4)
+    assert best_result.scores["CV absolute"] == approx(0.9756, rel=1e-4)
 
     # ==================== Zafar Equality of Opportunity ========================
     zafar_eq_opp: InAlgorithm = ZafarEqOpp()
@@ -402,7 +402,7 @@ def test_agarwal():
     model_names.append("Agarwal, SVM, DP")
     expected_results.append((119, 281))
 
-    agarwal_variants.append(Agarwal(classifier="SVM", kernel='linear'))
+    agarwal_variants.append(Agarwal(classifier="SVM", kernel="linear"))
     model_names.append("Agarwal, SVM, DP")
     expected_results.append((141, 259))
 

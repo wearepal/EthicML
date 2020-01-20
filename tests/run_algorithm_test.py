@@ -88,7 +88,7 @@ def test_run_alg_suite():
     dataset.sens_attrs = ["race_White"]
     datasets: List[Dataset] = [dataset, Toy()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel='linear')]
+    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel="linear")]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
@@ -121,22 +121,22 @@ def test_run_alg_suite():
 
     files = os.listdir(Path(".") / "results")
     file_names = [
-        'pytest_Adult Race_Upsample uniform.csv',
-        'pytest_Adult Race_no_transform.csv',
-        'pytest_Toy_Upsample uniform.csv',
-        'pytest_Toy_no_transform.csv',
+        "pytest_Adult Race_Upsample uniform.csv",
+        "pytest_Adult Race_no_transform.csv",
+        "pytest_Toy_Upsample uniform.csv",
+        "pytest_Toy_no_transform.csv",
     ]
     assert len(files) == 4
     assert sorted(files) == file_names
 
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
-        assert (written_file['seed'][0], written_file['seed'][1]) == (0, 0)
+        assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
         assert written_file.shape == (2, 15)
 
     reloaded = load_results("Adult Race", "Upsample uniform", "pytest")
     assert reloaded is not None
-    read = pd.read_csv(Path(".") / "results" / 'pytest_Adult Race_Upsample uniform.csv')
+    read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race_Upsample uniform.csv")
     read = read.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded.data, read)
 
@@ -146,7 +146,7 @@ def test_run_alg_suite_wrong_metrics():
     """test run alg suite wrong metrics"""
     datasets: List[Dataset] = [Toy(), Adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [SVM(kernel='linear'), LR()]
+    inprocess_models: List[InAlgorithm] = [SVM(kernel="linear"), LR()]
     postprocess_models: List[PostAlgorithm] = []
     metrics: List[Metric] = [Accuracy(), CV()]
     per_sens_metrics: List[Metric] = [Accuracy(), TPR(), CV()]

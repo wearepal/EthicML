@@ -10,7 +10,7 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 def flag_interface(
-    train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path, flags: Dict[str, Any],
+    train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path, flags: Dict[str, Any]
 ) -> List[str]:
     """Generate the commandline arguments that are expected."""
     flags_list: List[str] = []
@@ -45,7 +45,7 @@ def settings_for_svm_lr(
         elif classifier == "SVM":
             C = SVC().C
         else:
-            raise NotImplementedError(f"Unsupported classifier \"{classifier}\".")
+            raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
         if classifier == "SVM":

@@ -20,7 +20,7 @@ class LR(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class='auto')
+        clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class="auto")
         clf.fit(train.x, train.y.to_numpy().ravel())
         return pd.DataFrame(clf.predict(test.x), columns=["preds"])
 
@@ -40,7 +40,7 @@ class LRProb(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
-        clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class='auto')
+        clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class="auto")
         clf.fit(train.x, train.y.to_numpy().ravel())
         return pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"])
 
@@ -57,7 +57,7 @@ class LRCV(InAlgorithm):
     def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
         folder = KFold(n_splits=3, random_state=888, shuffle=False)
         clf = LogisticRegressionCV(
-            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class='auto'
+            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         return pd.DataFrame(clf.predict(test.x), columns=["preds"])

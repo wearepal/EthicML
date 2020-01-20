@@ -17,14 +17,14 @@ per_sens_metrics = [Accuracy(), TPR(), ProbPos()]
 
 
 def run_experiments(train, test, exp_name, seed):
-    svm_hyperparams = {'C': [10 ** x for x in range(0, 6)], 'kernel': ['linear']}
+    svm_hyperparams = {"C": [10 ** x for x in range(0, 6)], "kernel": ["linear"]}
     svm_cv = CrossValidator(SVM, svm_hyperparams, folds=3)
     svm_cv.run(train)
     best_svm = svm_cv.best(Accuracy())
     best_svm_hyperparams = svm_cv.best_hyper_params(Accuracy())
     print(f"seed_{seed}_svm_CV_completed")
 
-    lr_hyperparams = {'C': [10 ** x for x in range(-4, 4)]}
+    lr_hyperparams = {"C": [10 ** x for x in range(-4, 4)]}
     lr_cv = CrossValidator(LR, lr_hyperparams, folds=3)
     lr_cv.run(train)
     best_lr = lr_cv.best(Accuracy())
@@ -41,16 +41,16 @@ def run_experiments(train, test, exp_name, seed):
         Kamiran(**best_svm_hyperparams, classifier="SVM"),
     ]
 
-    columns = ['dataset', 'transform', 'model', 'repeat']
+    columns = ["dataset", "transform", "model", "repeat"]
     columns += [metric.name for metric in metrics]
     results = pd.DataFrame(columns=columns)
 
     for model in models:
         temp_res = {
-            'dataset': "Adult",
-            'transform': exp_name,
-            'model': model.name,
-            'repeat': f"{seed}",
+            "dataset": "Adult",
+            "transform": exp_name,
+            "model": model.name,
+            "repeat": f"{seed}",
         }
 
         predictions: pd.DataFrame
@@ -59,7 +59,7 @@ def run_experiments(train, test, exp_name, seed):
         results = results.append(temp_res, ignore_index=True)
         print(f"seed_{seed}_{model.name}_completed")
 
-    outdir = Path('..') / 'results'  # OS-independent way of saying '../results'
+    outdir = Path("..") / "results"  # OS-independent way of saying '../results'
     outdir.mkdir(exist_ok=True)
     path_to_file = outdir / f"seed_{seed}_{exp_name}_reduced.csv"
     exists = os.path.isfile(path_to_file)
@@ -74,14 +74,14 @@ def main():
 
     data_loc = Path(".") / "data" / "weight_100_decoder_1e-4" / f"seed_{SEED}"
     train_tilde_dataset: Dataset = create_data_obj(
-        data_loc / f'seed_{SEED}_stylingtraintilde_50000.csv',
+        data_loc / f"seed_{SEED}_stylingtraintilde_50000.csv",
         s_columns=["sensitive"],
         y_columns=["label"],
     )
     train_tilde_data: DataTuple = load_data(train_tilde_dataset)
 
     test_tilde_dataset: Dataset = create_data_obj(
-        data_loc / f'seed_{SEED}_stylingtesttilde_50000.csv',
+        data_loc / f"seed_{SEED}_stylingtesttilde_50000.csv",
         s_columns=["sensitive"],
         y_columns=["label"],
     )
@@ -89,7 +89,7 @@ def main():
 
     run_experiments(train_tilde_data, test_tilde_data, "tilde", SEED)
 
-    print(f'finished seed {SEED}')
+    print(f"finished seed {SEED}")
 
 
 if __name__ == "__main__":
