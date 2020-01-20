@@ -1,5 +1,6 @@
 """Class to describe features of the German dataset."""
 
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -101,6 +102,6 @@ class German(Dataset):
         """Getter for filename."""
         return "german.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 1000

@@ -1,5 +1,6 @@
 """Class to describe features of the Adult dataset."""
 
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -85,6 +86,6 @@ class Credit(Dataset):
         """Getter for file name."""
         return "UCI_Credit_Card.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 30000

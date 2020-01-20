@@ -148,5 +148,6 @@ class Dataset(ABC):
     def discrete_features(self, feats: List[str]) -> None:
         self._disc_features = feats
 
+    @abstractmethod
     def __len__(self) -> int:
-        """Length of the dataset."""
+        """Number of elements in the dataset."""
