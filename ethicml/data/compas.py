@@ -1,7 +1,8 @@
 """Class to describe features of the Compas dataset."""
 from typing_extensions import Literal
 
-from ethicml.data.dataset import Dataset
+from ethicml.common import implements
+from .dataset import Dataset
 
 
 class Compas(Dataset):
@@ -455,6 +456,6 @@ class Compas(Dataset):
         """Getter for file name."""
         return "compas-recidivism.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 6167

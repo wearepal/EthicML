@@ -1,5 +1,7 @@
 """Class to describe features of the toy dataset with more than 2 classes."""
 from typing import List, Dict
+
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -30,6 +32,6 @@ class NonBinaryToy(Dataset):
         """Get the split of the dataset features."""
         return {"x": ["x1", "x2"], "s": ["sens"], "y": ["label"]}
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 100

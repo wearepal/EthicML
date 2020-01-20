@@ -1,5 +1,7 @@
 """Class to that can be used to wrap your own dataset in a way EthicML can understand."""
 from typing import Dict, List
+
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -45,3 +47,7 @@ class ConfigurableDataset(Dataset):
     def feature_split(self, value: Dict[str, List[str]]) -> None:
         """Setter for split of features."""
         self._feature_split = value
+
+    @implements(Dataset)
+    def __len__(self) -> int:
+        return 0
