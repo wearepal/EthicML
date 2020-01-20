@@ -1,6 +1,7 @@
 """Class to describe features of the Adult dataset."""
 from typing_extensions import Literal
 
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -222,6 +223,6 @@ class Adult(Dataset):
         """Getter for filename."""
         return "adult.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 45222

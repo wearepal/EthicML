@@ -1,5 +1,7 @@
 """Class to describe features of the Test dataset."""
 from typing import List, Dict
+
+from ethicml.common import implements
 from .dataset import Dataset
 
 
@@ -30,6 +32,6 @@ class Toy(Dataset):
         """Get split of the features."""
         return {"x": ["a1", "a2"], "s": ["s"], "y": ["y"]}
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 2000

@@ -1,6 +1,7 @@
 """Class to describe features of the SQF dataset."""
 
-from ethicml.data.dataset import Dataset
+from ethicml.common import implements
+from .dataset import Dataset
 
 
 class Sqf(Dataset):
@@ -190,6 +191,6 @@ class Sqf(Dataset):
         """Getter for filename."""
         return "sqf.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
-        """Length of the dataset."""
         return 12347
