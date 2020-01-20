@@ -180,16 +180,16 @@ def single_plot(
         the legend object if something was plotted; False otherwise
     """
     results_df = results.data
-    mask_for_dataset = results_df.index.get_level_values('dataset') == dataset
-    mask_for_transform = results_df.index.get_level_values('transform') == transform
+    mask_for_dataset = results_df.index.get_level_values("dataset") == dataset
+    mask_for_transform = results_df.index.get_level_values("transform") == transform
     matching_results = results_df.loc[mask_for_dataset & mask_for_transform]
 
     if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).any().any():
         return False  # nothing to plot
 
     entries: List[DataEntry] = []
-    for count, model in enumerate(results_df.index.to_frame()['model'].unique()):
-        mask_for_model = results_df.index.get_level_values('model') == model
+    for count, model in enumerate(results_df.index.to_frame()["model"].unique()):
+        mask_for_model = results_df.index.get_level_values("model") == model
         data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
@@ -238,7 +238,7 @@ def plot_results(
     def _get_columns(metric: Metric) -> List[str]:
         cols = [col for col in results_df.columns if metric.name in col]
         if not cols:
-            raise ValueError(f"No matching columns found for Metric \"{metric.name}\".")
+            raise ValueError(f'No matching columns found for Metric "{metric.name}".')
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
         # case, we *only* want ratios and differences; not the plain result
         if len(cols) > 1:
@@ -250,14 +250,14 @@ def plot_results(
         cols_x = _get_columns(metric_x)
     else:
         if metric_x not in results_df.columns:
-            raise ValueError(f"No column named \"{metric_x}\".")
+            raise ValueError(f'No column named "{metric_x}".')
         cols_x = [metric_x]
 
     if isinstance(metric_y, Metric):
         cols_y = _get_columns(metric_y)
     else:
         if metric_y not in results_df.columns:
-            raise ValueError(f"No column named \"{metric_y}\".")
+            raise ValueError(f'No column named "{metric_y}".')
         cols_y = [metric_y]
 
     # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
@@ -265,9 +265,9 @@ def plot_results(
     possible_pairs = list(itertools.product(cols_x, cols_y))
 
     figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
-    for dataset in results_df.index.to_frame()['dataset'].unique():
+    for dataset in results_df.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
-        for transform in results_df.index.to_frame()['transform'].unique():
+        for transform in results_df.index.to_frame()["transform"].unique():
             transform_: str = str(transform)
             for x_axis, y_axis in possible_pairs:
                 fig: plt.Figure
@@ -289,7 +289,7 @@ def plot_results(
                     metric_b = y_axis.replace("/", "_over_")
                     fig.savefig(
                         directory / f"{dataset} {transform} {metric_a} {metric_b}.pdf",
-                        bbox_inches='tight',
+                        bbox_inches="tight",
                     )
                 plt.close(fig)
                 figure_list += [(fig, plot)]

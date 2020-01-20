@@ -7,7 +7,7 @@ from typing import Any, Callable, Type, TypeVar
 ROOT_DIR: str = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir))
 ROOT_PATH: Path = Path(__file__).parent.resolve()
 
-_F = TypeVar('_F', bound=Callable[..., Any])
+_F = TypeVar("_F", bound=Callable[..., Any])
 
 
 class implements:  # pylint: disable=invalid-name

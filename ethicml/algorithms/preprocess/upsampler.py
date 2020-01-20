@@ -146,17 +146,17 @@ def upsample(
             weight = all_data.loc[s_y_mask][y_col].count()
             selected.append(
                 all_data.loc[s_y_mask]
-                .sort_values(by=['preds'], ascending=ascending)
+                .sort_values(by=["preds"], ascending=ascending)
                 .iloc[: int(percentages[key] * weight)]
             )
 
         upsampled_dataframes: pd.DataFrame
         for i, df in enumerate(selected):
             if i == 0:
-                upsampled_dataframes = df.drop(['preds'], axis="columns")
+                upsampled_dataframes = df.drop(["preds"], axis="columns")
             else:
                 upsampled_dataframes = pd.concat(
-                    [upsampled_dataframes, df.drop(['preds'], axis="columns")], axis="index"
+                    [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
                 ).reset_index(drop=True)
         upsampled_datatuple = DataTuple(
             x=upsampled_dataframes[x_columns],

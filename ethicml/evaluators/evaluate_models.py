@@ -181,10 +181,10 @@ def evaluate_models(
 
             # ========================== begin: run preprocessing models ==========================
             for pre_process_method in preprocess_models:
-                logging: 'OrderedDict[str, str]' = OrderedDict()
-                logging['model'] = pre_process_method.name
-                logging['dataset'] = dataset.name
-                logging['repeat'] = str(split_id)
+                logging: "OrderedDict[str, str]" = OrderedDict()
+                logging["model"] = pre_process_method.name
+                logging["dataset"] = dataset.name
+                logging["repeat"] = str(split_id)
                 pbar.set_postfix(ordered_dict=logging)
 
                 new_train, new_test = pre_process_method.run(train, test)
@@ -205,10 +205,10 @@ def evaluate_models(
                 # ========================== begin: run inprocess models ==========================
                 for model in inprocess_models:
                     logging = OrderedDict()
-                    logging['model'] = model.name
-                    logging['dataset'] = dataset.name
-                    logging['transform'] = transform_name
-                    logging['repeat'] = str(split_id)
+                    logging["model"] = model.name
+                    logging["dataset"] = dataset.name
+                    logging["transform"] = transform_name
+                    logging["repeat"] = str(split_id)
                     pbar.set_postfix(ordered_dict=logging)
 
                     temp_res: Dict[str, Union[str, float]] = {
@@ -320,7 +320,7 @@ async def evaluate_models_async(
                 train = train.get_subset()
             train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
-            split_info.update({'split_id': split_id})
+            split_info.update({"split_id": split_id})
             test_data.append(_DataInfo(test, dataset.name, default_transform_name, split_info))
 
     # ===================================== preprocess models =====================================

@@ -29,3 +29,7 @@ class Toy(Dataset):
     def feature_split(self) -> Dict[str, List[str]]:
         """Get split of the features."""
         return {"x": ["a1", "a2"], "s": ["s"], "y": ["y"]}
+
+    def __len__(self) -> int:
+        """Length of the dataset."""
+        return 2000

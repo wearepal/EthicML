@@ -19,16 +19,16 @@ def test_simple_saving() -> None:
     tests that a DataTuple can be saved
     """
     data_tuple = DataTuple(
-        x=pd.DataFrame({'a1': np.array([3.2, 9.4, np.nan, 0.0]), 'a2': np.array([1, 1, 0, 1])}),
+        x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0]), "a2": np.array([1, 1, 0, 1])}),
         s=pd.DataFrame(
             {
-                'b1': np.array([1.8, -0.3, 1e10]),
-                'b2': np.array([1, 1, -1]),
-                'b3': np.array([0, 1, 0]),
+                "b1": np.array([1.8, -0.3, 1e10]),
+                "b2": np.array([1, 1, -1]),
+                "b3": np.array([0, 1, 0]),
             }
         ),
-        y=pd.DataFrame({'c1': np.array([-2, -3, np.nan]), 'c3': np.array([0, 1, 0])}),
-        name='test data',
+        y=pd.DataFrame({"c1": np.array([-2, -3, np.nan]), "c3": np.array([0, 1, 0])}),
+        name="test data",
     )
 
     class CheckEquality(InAlgorithmAsync):
@@ -45,7 +45,7 @@ def test_simple_saving() -> None:
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
             pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
             # the following command copies the x of the training data to the pred_path location
-            return ['-c', f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
+            return ["-c", f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_frame_equal(data_tuple.x, data_x)
@@ -56,9 +56,9 @@ def test_dataset_name_none() -> None:
     tests that a DataTuple can be saved without the name property
     """
     datatup = DataTuple(
-        x=pd.DataFrame([3.0], columns=['a1']),
-        s=pd.DataFrame([4.0], columns=['b2']),
-        y=pd.DataFrame([6.0], columns=['c3']),
+        x=pd.DataFrame([3.0], columns=["a1"]),
+        s=pd.DataFrame([4.0], columns=["b2"]),
+        y=pd.DataFrame([6.0], columns=["c3"]),
         name=None,
     )
     with TemporaryDirectory() as tmpdir:
@@ -78,7 +78,7 @@ def test_dataset_name_with_spaces() -> None:
     """
     name = "This is a very@#$%^&*((())) complicated name"
     datatup = TestTuple(
-        x=pd.DataFrame([3.0], columns=['a1']), s=pd.DataFrame([4.0], columns=['b2']), name=name
+        x=pd.DataFrame([3.0], columns=["a1"]), s=pd.DataFrame([4.0], columns=["b2"]), name=name
     )
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
@@ -95,9 +95,9 @@ def test_apply_to_joined_df() -> None:
     tests apply_to_joined_df_function
     """
     datatup = DataTuple(
-        x=pd.DataFrame([3.0], columns=['a1']),
-        s=pd.DataFrame([4.0], columns=['b2']),
-        y=pd.DataFrame([6.0], columns=['c3']),
+        x=pd.DataFrame([3.0], columns=["a1"]),
+        s=pd.DataFrame([4.0], columns=["b2"]),
+        y=pd.DataFrame([6.0], columns=["c3"]),
         name=None,
     )
 
@@ -113,18 +113,18 @@ def test_apply_to_joined_df() -> None:
 def test_data_tuple_len() -> None:
     """test DataTuple len property"""
     datatup_unequal_len = DataTuple(
-        x=pd.DataFrame([3.0, 2.0], columns=['a1']),
-        s=pd.DataFrame([4.0], columns=['b2']),
-        y=pd.DataFrame([6.0], columns=['c3']),
+        x=pd.DataFrame([3.0, 2.0], columns=["a1"]),
+        s=pd.DataFrame([4.0], columns=["b2"]),
+        y=pd.DataFrame([6.0], columns=["c3"]),
         name=None,
     )
     with pytest.raises(AssertionError):
         len(datatup_unequal_len)
 
     datatup_equal_len = DataTuple(
-        x=pd.DataFrame([3.0, 2.0, 1.0], columns=['a1']),
-        s=pd.DataFrame([4.0, 5.0, 9.0], columns=['b2']),
-        y=pd.DataFrame([6.0, 4.2, 6.7], columns=['c3']),
+        x=pd.DataFrame([3.0, 2.0, 1.0], columns=["a1"]),
+        s=pd.DataFrame([4.0, 5.0, 9.0], columns=["b2"]),
+        y=pd.DataFrame([6.0, 4.2, 6.7], columns=["c3"]),
         name=None,
     )
     assert len(datatup_equal_len) == 3

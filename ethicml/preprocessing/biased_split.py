@@ -9,10 +9,10 @@ from ethicml.utility.data_structures import concat_dt, DataTuple
 from .train_test_split import ProportionalSplit, DataSplitter
 
 __all__ = [
-    'BiasedDebiasedSubsets',
-    'BiasedSubset',
-    'get_biased_and_debiased_subsets',
-    'get_biased_subset',
+    "BiasedDebiasedSubsets",
+    "BiasedSubset",
+    "get_biased_and_debiased_subsets",
+    "get_biased_subset",
 ]
 
 
@@ -48,7 +48,7 @@ class BiasedSubset(DataSplitter):
         biased, unbiased = get_biased_subset(
             data, mixing_factor, self.unbiased_pcnt, self.seed, self.data_efficient
         )
-        return biased, unbiased, {'mix_fact': mixing_factor}
+        return biased, unbiased, {"mix_fact": mixing_factor}
 
 
 def get_biased_subset(
@@ -105,7 +105,7 @@ def get_biased_subset(
     sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
     biased_subset = concat_dt(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
+        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
     )
 
     if mix_fact == 0:
@@ -149,7 +149,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         biased, unbiased = get_biased_and_debiased_subsets(
             data, mixing_factor, self.unbiased_pcnt, self.seed, self.fixed_unbiased
         )
-        return biased, unbiased, {'mix_fact': mixing_factor}
+        return biased, unbiased, {"mix_fact": mixing_factor}
 
 
 def get_biased_and_debiased_subsets(
@@ -221,7 +221,7 @@ def get_biased_and_debiased_subsets(
         )
 
     biased_subset = concat_dt(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis='index', ignore_index=True
+        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
     )
 
     # the debiased set is constructed from two sets of the same size
@@ -233,7 +233,7 @@ def get_biased_and_debiased_subsets(
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset = concat_dt(
-        [debiased_subset_part1, debiased_subset_part2], axis='index', ignore_index=True
+        [debiased_subset_part1, debiased_subset_part2], axis="index", ignore_index=True
     )
 
     # s and y should not be correlated in the debiased subset

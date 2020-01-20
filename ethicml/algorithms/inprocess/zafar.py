@@ -79,7 +79,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
-        return ["main.py", train_name, test_name, predictions_name, 'baseline', '0']
+        return ["main.py", train_name, test_name, predictions_name, "baseline", "0"]
 
     @property
     def name(self) -> str:
