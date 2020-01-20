@@ -86,7 +86,6 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     feature_slices: List[slice] = []
     start_idx = 0
     for _, group in group_iter:
-        print(group)
         len_group = len(list(group))
         indexes = slice(start_idx, start_idx + len_group)
         feature_slices.append(indexes)
