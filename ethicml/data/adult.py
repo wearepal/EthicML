@@ -221,3 +221,6 @@ class Adult(Dataset):
     def filename(self) -> str:
         """Getter for filename."""
         return "adult.csv"
+
+    def __len__(self):
+        return 45222

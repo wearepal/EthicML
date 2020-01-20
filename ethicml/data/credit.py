@@ -1,4 +1,4 @@
-"""Class to describe features of the Adult dataset."""
+ """Class to describe features of the Adult dataset."""
 
 from .dataset import Dataset
 
@@ -84,3 +84,6 @@ class Credit(Dataset):
     def filename(self) -> str:
         """Getter for file name."""
         return "UCI_Credit_Card.csv"
+
+    def __len__(self):
+        return 30000

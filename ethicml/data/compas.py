@@ -454,3 +454,6 @@ class Compas(Dataset):
     def filename(self) -> str:
         """Getter for file name."""
         return "compas-recidivism.csv"
+
+    def __len__(self):
+        return 6167
