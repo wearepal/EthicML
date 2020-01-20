@@ -2,12 +2,7 @@
 from pathlib import Path
 from typing import List, Set, Optional, Union, Dict
 
-from ethicml.utility.data_structures import (
-    PathTuple,
-    TestPathTuple,
-    FairnessType,
-    ClassifierType,
-)
+from ethicml.utility.data_structures import PathTuple, TestPathTuple, FairnessType, ClassifierType
 from .shared import settings_for_svm_lr, flag_interface
 from .in_algorithm import InAlgorithmAsync
 

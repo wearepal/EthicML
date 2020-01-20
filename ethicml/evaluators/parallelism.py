@@ -46,7 +46,7 @@ class _Task(Generic[_RT]):
 
 
 async def arrange_in_parallel(
-    algos: Sequence[Tuple[RunType[_RT], str]], data: DataSeq, max_parallel: int = 0,
+    algos: Sequence[Tuple[RunType[_RT], str]], data: DataSeq, max_parallel: int = 0
 ) -> List[List[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
@@ -103,9 +103,9 @@ async def _eval_worker(
         train, test = task.train_test_pair
         # do some logging
         logging: OrderedDict[str, str] = OrderedDict()
-        logging['model'] = algo_name
-        logging['dataset'] = train.name if train.name is not None else ""
-        logging['worker_id'] = str(worker_id)
+        logging["model"] = algo_name
+        logging["dataset"] = train.name if train.name is not None else ""
+        logging["worker_id"] = str(worker_id)
         pbar.set_postfix(ordered_dict=logging)
         # do the work
         result: _RT = await run_algo(train, test)
@@ -133,7 +133,7 @@ async def run_in_parallel(algos: PreSeq, data: DataSeq, max_parallel: int = 0) -
 
 
 async def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: DataSeq, max_parallel: int = 0,
+    algos: Union[InSeq, PreSeq], data: DataSeq, max_parallel: int = 0
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
@@ -150,7 +150,9 @@ async def run_in_parallel(
     if isinstance(algos[0], InAlgorithm):  # pylint: disable=no-else-return  # mypy needs this
         in_algos = cast(Sequence[InAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
-        in_async_algos, async_idx, in_blocking_algos = _filter(in_algos, InAlgorithmAsync)  # type: ignore[misc]
+        in_async_algos, async_idx, in_blocking_algos = _filter(
+            in_algos, InAlgorithmAsync
+        )  # type: ignore[misc]
         return await _generic_run_in_parallel(
             async_algos=[(algo.run_async, algo.name) for algo in in_async_algos],
             async_idx=async_idx,
@@ -161,7 +163,9 @@ async def run_in_parallel(
     elif isinstance(algos[0], PreAlgorithm):
         pre_algos = cast(Sequence[PreAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
-        pre_async_algos, async_idx, pre_blocking_algos = _filter(pre_algos, PreAlgorithmAsync)  # type: ignore[misc]
+        pre_async_algos, async_idx, pre_blocking_algos = _filter(
+            pre_algos, PreAlgorithmAsync
+        )  # type: ignore[misc]
         return await _generic_run_in_parallel(
             async_algos=[(algo.run_async, algo.name) for algo in pre_async_algos],
             async_idx=async_idx,

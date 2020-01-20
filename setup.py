@@ -28,7 +28,7 @@ setup(
     package_data={"ethicml.data": ["csvs/*.csv"], "ethicml": ["py.typed"]},
     python_requires=">=3.6",
     install_requires=[
-        "dataclasses;python_version<\"3.7\"",  # dataclasses are in the stdlib in python>=3.7
+        'dataclasses;python_version<"3.7"',  # dataclasses are in the stdlib in python>=3.7
         "fairlearn >= 0.4.0",
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2",
@@ -44,14 +44,14 @@ setup(
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
-        'ci': [
+        "ci": [
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
             "torch >= 1.1.0, <= 1.1.0.post2",
             "torchvision == 0.3.0",
         ],
         # use `pip install EthicML[dev]` to install development packages
-        'dev': ["black", "mypy", "pydocstyle", "pylint", "pytest", "pytest-cov", "pre-commit"],
+        "dev": ["black", "mypy", "pydocstyle", "pylint", "pytest", "pytest-cov", "pre-commit"],
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",

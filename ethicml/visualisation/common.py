@@ -61,7 +61,7 @@ def common_plotting_settings(
         return plot.legend(handles, labels)
     if plot_def.legend_pos == "outside":
         return plot.legend(
-            handles, labels, loc='upper left', bbox_to_anchor=(1, plot_def.legend_yanchor)
+            handles, labels, loc="upper left", bbox_to_anchor=(1, plot_def.legend_yanchor)
         )
     return None
 
@@ -93,8 +93,8 @@ def errorbox(
     colors += ["#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
     pale_colors = ["#aec7e8", "#ffbb78", "#98df8a", "#ff9896", "#c5b0d5"]
     pale_colors += ["#c49c94", "#f7b6d2", "#c7c7c7", "#dbdb8d", "#9edae5"]
-    shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
-    hatch_pattern = ['O', 'o', '|', '-', '/', '\\', '+', 'x', '*']
+    shapes = ["o", "X", "D", "s", "^", "v", "<", ">", "*", "p", "P"]
+    hatch_pattern = ["O", "o", "|", "-", "/", "\\", "+", "x", "*"]
 
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
     filled_counter = firstcolor
@@ -149,8 +149,8 @@ def errorbox(
                 ystd,
                 bottom=ymean - 0.5 * ystd,
                 width=xstd,
-                align='center',
-                color='none',
+                align="center",
+                color="none",
                 edgecolor=color,
                 linewidth=3,
                 zorder=3 + 2 * i_shp,
@@ -198,7 +198,7 @@ def scatter(
         markersize: size of the markers
         connect_dots: if True, connect the data points with a line
     """
-    shapes = ['o', 'X', 'D', 's', '^', 'v', '<', '>', '*', 'p', 'P']
+    shapes = ["o", "X", "D", "s", "^", "v", "<", ">", "*", "p", "P"]
     colors10 = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
     colors10 += ["#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
@@ -210,7 +210,7 @@ def scatter(
             shp_index = filled_counter
             filled_counter += 1
         else:
-            additional_params = dict(markerfacecolor='none')
+            additional_params = dict(markerfacecolor="none")
             shp_index = i + startindex - filled_counter
         plot.plot(
             entry.values[xaxis_measure].to_numpy(),

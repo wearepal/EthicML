@@ -433,7 +433,7 @@ def _flags(parameters, data_path, save_dir, s_as_input, model_name, num_train):
             save_dir=save_dir,  # "/home/ubuntu/out2/",
             plot="",
             logging_steps=1,
-            gpus='0',
+            gpus="0",
             preds_path=PRED_FNAME,  # save the predictions into `predictions.npz`
             num_samples=20,
             optimize_inducing=True,

@@ -48,16 +48,16 @@ def test_plot_evals():
     results: Results = evaluate_models(
         datasets=[Adult(), Toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
-        inprocess_models=[LR(), SVM(kernel='linear'), Kamiran()],
+        inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],
         metrics=[Accuracy(), CV()],
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,
         test_mode=True,
         delete_prev=True,
     )
-    assert results.data['seed'][0] == results.data['seed'][1] == results.data['seed'][2] == 0
-    assert results.data['seed'][3] == results.data['seed'][4] == results.data['seed'][5] == 2410
-    assert results.data['seed'][6] == results.data['seed'][7] == results.data['seed'][8] == 4820
+    assert results.data["seed"][0] == results.data["seed"][1] == results.data["seed"][2] == 0
+    assert results.data["seed"][3] == results.data["seed"][4] == results.data["seed"][5] == 2410
+    assert results.data["seed"][6] == results.data["seed"][7] == results.data["seed"][8] == 4820
 
     figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]
 

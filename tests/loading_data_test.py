@@ -53,8 +53,8 @@ def test_discrete_data():
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert len(Adult().discrete_features) == 96
-    assert len(Adult(split='Race').discrete_features) == 93
-    assert len(Adult(split='Nationality').discrete_features) == 57
+    assert len(Adult(split="Race").discrete_features) == 93
+    assert len(Adult(split="Nationality").discrete_features) == 57
 
 
 def test_load_data_as_a_function():
@@ -62,9 +62,9 @@ def test_load_data_as_a_function():
     data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
-    assert data_obj.feature_split['x'] == ['a1', 'a2']
-    assert data_obj.feature_split['s'] == ['s']
-    assert data_obj.feature_split['y'] == ['y']
+    assert data_obj.feature_split["x"] == ["a1", "a2"]
+    assert data_obj.feature_split["s"] == ["s"]
+    assert data_obj.feature_split["y"] == ["y"]
     assert data_obj.filename == "toy.csv"
 
 
@@ -141,7 +141,7 @@ def test_load_compas_explicitly_sex():
 def test_load_compas_feature_length():
     """test load compas feature length"""
     data: DataTuple = load_data(Compas())
-    assert len(Compas().ordered_features['x']) == 400
+    assert len(Compas().ordered_features["x"]) == 400
     assert len(Compas().discrete_features) == 395
     assert len(Compas().continuous_features) == 5
     assert data.s.shape == (6167, 1)
@@ -151,7 +151,7 @@ def test_load_compas_feature_length():
 def test_load_credit_feature_length():
     """test load credit feature length"""
     data: DataTuple = load_data(Credit())
-    assert len(Credit().ordered_features['x']) == 26
+    assert len(Credit().ordered_features["x"]) == 26
     assert len(Credit().discrete_features) == 6
     assert len(Credit().continuous_features) == 20
     assert data.s.shape == (30000, 1)
@@ -234,8 +234,8 @@ def test_domain_adapt_adult():
     data: DataTuple = load_data(Adult())
     train, test = domain_split(
         datatup=data,
-        tr_cond='education_Masters == 0. & education_Doctorate == 0.',
-        te_cond='education_Masters == 1. | education_Doctorate == 1.',
+        tr_cond="education_Masters == 0. & education_Doctorate == 0.",
+        te_cond="education_Masters == 1. | education_Doctorate == 1.",
     )
     assert (39106, 101) == train.x.shape
     assert (39106, 1) == train.s.shape
@@ -247,7 +247,7 @@ def test_domain_adapt_adult():
 
     data = load_data(Adult())
     train, test = domain_split(
-        datatup=data, tr_cond='education_Masters == 0.', te_cond='education_Masters == 1.'
+        datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
     assert (40194, 101) == train.x.shape
     assert (40194, 1) == train.s.shape
@@ -260,8 +260,8 @@ def test_domain_adapt_adult():
     data = load_data(Adult())
     train, test = domain_split(
         datatup=data,
-        tr_cond='education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.',
-        te_cond='education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.',
+        tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
+        te_cond="education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.",
     )
     assert (23966, 101) == train.x.shape
     assert (23966, 1) == train.s.shape
@@ -274,11 +274,11 @@ def test_domain_adapt_adult():
 
 def test_query():
     """test query"""
-    x: pd.DataFrame = pd.DataFrame(columns=['0a', 'b'], data=[[0, 1], [2, 3], [4, 5]])
-    s: pd.DataFrame = pd.DataFrame(columns=['c='], data=[[6], [7], [8]])
-    y: pd.DataFrame = pd.DataFrame(columns=['d'], data=[[9], [10], [11]])
-    data = DataTuple(x=x, s=s, y=y, name='test_data')
-    selected = query_dt(data, '_0a == 0 & c_eq_ == 6 & d == 9')
+    x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])
+    s: pd.DataFrame = pd.DataFrame(columns=["c="], data=[[6], [7], [8]])
+    y: pd.DataFrame = pd.DataFrame(columns=["d"], data=[[9], [10], [11]])
+    data = DataTuple(x=x, s=s, y=y, name="test_data")
+    selected = query_dt(data, "_0a == 0 & c_eq_ == 6 & d == 9")
     pd.testing.assert_frame_equal(selected.x, x.head(1))
     pd.testing.assert_frame_equal(selected.s, s.head(1))
     pd.testing.assert_frame_equal(selected.y, y.head(1))
@@ -286,18 +286,18 @@ def test_query():
 
 def test_concat():
     """test concat"""
-    x: pd.DataFrame = pd.DataFrame(columns=['a'], data=[[1]])
-    s: pd.DataFrame = pd.DataFrame(columns=['b'], data=[[2]])
-    y: pd.DataFrame = pd.DataFrame(columns=['c'], data=[[3]])
-    data1 = DataTuple(x=x, s=s, y=y, name='test_data')
-    x = pd.DataFrame(columns=['a'], data=[[4]])
-    s = pd.DataFrame(columns=['b'], data=[[5]])
-    y = pd.DataFrame(columns=['c'], data=[[6]])
-    data2 = DataTuple(x=x, s=s, y=y, name='test_tuple')
-    data3 = concat_dt([data1, data2], axis='index', ignore_index=True)
-    pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=['a'], data=[[1], [4]]))
-    pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=['b'], data=[[2], [5]]))
-    pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=['c'], data=[[3], [6]]))
+    x: pd.DataFrame = pd.DataFrame(columns=["a"], data=[[1]])
+    s: pd.DataFrame = pd.DataFrame(columns=["b"], data=[[2]])
+    y: pd.DataFrame = pd.DataFrame(columns=["c"], data=[[3]])
+    data1 = DataTuple(x=x, s=s, y=y, name="test_data")
+    x = pd.DataFrame(columns=["a"], data=[[4]])
+    s = pd.DataFrame(columns=["b"], data=[[5]])
+    y = pd.DataFrame(columns=["c"], data=[[6]])
+    data2 = DataTuple(x=x, s=s, y=y, name="test_tuple")
+    data3 = concat_dt([data1, data2], axis="index", ignore_index=True)
+    pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=["a"], data=[[1], [4]]))
+    pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=["b"], data=[[2], [5]]))
+    pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=["c"], data=[[3], [6]]))
 
 
 def test_group_prefixes():

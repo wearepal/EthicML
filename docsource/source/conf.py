@@ -13,17 +13,17 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'EthicML'
-copyright = '2019, O. Thomas, T. Kehrenberg'
-author = 'O. Thomas, T. Kehrenberg'
+project = "EthicML"
+copyright = "2019, O. Thomas, T. Kehrenberg"
+author = "O. Thomas, T. Kehrenberg"
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0-alpha3'
+release = "0.1.0-alpha3"
 
 
 # -- General configuration ---------------------------------------------------
@@ -44,15 +44,15 @@ add_module_names = False
 # ones.
 extensions = [
     # Need the autodoc and autosummary packages to generate our docs.
-    'sphinx.ext.autodoc',
+    "sphinx.ext.autodoc",
     # 'sphinx.ext.autosummary',
     # The Napoleon extension allows for nicer argument formatting.
-    'sphinx.ext.napoleon',
-    'autodocsumm',
+    "sphinx.ext.napoleon",
+    "autodocsumm",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -65,10 +65,10 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'  # 'alabaster'
-pygments_style = 'sphinx'  # syntax highlighting style to use
+html_theme = "sphinx_rtd_theme"  # 'alabaster'
+pygments_style = "sphinx"  # syntax highlighting style to use
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]

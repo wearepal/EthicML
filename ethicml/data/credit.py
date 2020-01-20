@@ -1,4 +1,4 @@
- """Class to describe features of the Adult dataset."""
+"""Class to describe features of the Adult dataset."""
 
 from .dataset import Dataset
 
