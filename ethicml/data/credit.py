@@ -85,5 +85,6 @@ class Credit(Dataset):
         """Getter for file name."""
         return "UCI_Credit_Card.csv"
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Length of the dataset. """
         return 30000

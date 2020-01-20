@@ -30,5 +30,6 @@ class NonBinaryToy(Dataset):
         """Get the split of the dataset features."""
         return {"x": ["x1", "x2"], "s": ["sens"], "y": ["label"]}
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Length of the dataset. """
         return 100

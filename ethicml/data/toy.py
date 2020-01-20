@@ -30,5 +30,6 @@ class Toy(Dataset):
         """Get split of the features."""
         return {"x": ["a1", "a2"], "s": ["s"], "y": ["y"]}
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Length of the dataset. """
         return 2000
