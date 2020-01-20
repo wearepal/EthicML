@@ -86,5 +86,5 @@ class Credit(Dataset):
         return "UCI_Credit_Card.csv"
 
     def __len__(self) -> int:
-        """Length of the dataset. """
+        """Length of the dataset."""
         return 30000

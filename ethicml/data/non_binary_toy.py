@@ -31,5 +31,5 @@ class NonBinaryToy(Dataset):
         return {"x": ["x1", "x2"], "s": ["sens"], "y": ["label"]}
 
     def __len__(self) -> int:
-        """Length of the dataset. """
+        """Length of the dataset."""
         return 100

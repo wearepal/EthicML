@@ -191,5 +191,5 @@ class Sqf(Dataset):
         return "sqf.csv"
 
     def __len__(self) -> int:
-        """Length of the dataset. """
+        """Length of the dataset."""
         return 12347
