@@ -173,7 +173,7 @@ def generate_proportional_split_indexes(
     s_vals: List[int] = list(map(int, data.s[s_col].unique()))
     y_vals: List[int] = list(map(int, data.y[y_col].unique()))
 
-    train_empty: List[int] = []  # this is necessary because mypy is silly
+    train_empty: List[int] = []
     test_empty: List[int] = []
     train_indexes: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
     test_indexes: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
