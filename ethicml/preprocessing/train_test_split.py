@@ -173,10 +173,8 @@ def generate_proportional_split_indexes(
     s_vals: List[int] = list(map(int, data.s[s_col].unique()))
     y_vals: List[int] = list(map(int, data.y[y_col].unique()))
 
-    train_empty: List[int] = []
-    test_empty: List[int] = []
-    train_indexes: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
-    test_indexes: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
+    train_indexes: List[int] = []  # this is necessary because mypy is silly
+    test_indexes: List[int] = []
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
@@ -188,8 +186,11 @@ def generate_proportional_split_indexes(
         random.shuffle(idx)
         split_indexes: int = round(len(idx) * train_percentage)
         # append index subsets to the list of train indices
-        train_indexes = np.concatenate([train_indexes, idx[:split_indexes]], axis=0)
-        test_indexes = np.concatenate([test_indexes, idx[split_indexes:]], axis=0)
+        train_indexes.append(idx[:split_indexes])
+        test_indexes.append(idx[split_indexes:])
+
+    train_indexes = np.concatenate(train_indexes, axis=0)
+    test_indexes = np.concatenate(test_indexes, axis=0)
 
     num_groups = len(s_vals) * len(y_vals)
     expected_train_len = round(len(data) * train_percentage)
