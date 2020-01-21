@@ -194,8 +194,8 @@ def generate_proportional_split_indexes(
     num_groups = len(s_vals) * len(y_vals)
     expected_train_len = round(len(data) * train_percentage)
     # assert that we (at least approximately) achieved the specified `train_percentage`
-    assert expected_train_len - num_groups <= len(train_indexes) <= expected_train_len + num_groups
     # the maximum error occurs when all the group splits favor train or all favor test
+    assert expected_train_len - num_groups <= len(train_indexes) <= expected_train_len + num_groups
 
     return train_indexes, test_indexes
 
