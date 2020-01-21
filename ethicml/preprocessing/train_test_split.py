@@ -160,6 +160,46 @@ class RandomSplit(DataSplitter):
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
+def generate_proportional_split_indexes(
+    data: DataTuple, train_percentage, random_seed: int = 42
+) -> Tuple["np.ndarray[np.int64]", "np.ndarray[np.int64]"]:
+    """Generate the indexes of the train and test splits using a proportional sampling scheme."""
+    # local random state that won't affect the global state
+    random = RandomState(seed=random_seed)
+
+    s_col = data.s.columns[0]
+    y_col = data.y.columns[0]
+
+    s_vals: List[int] = list(map(int, data.s[s_col].unique()))
+    y_vals: List[int] = list(map(int, data.y[y_col].unique()))
+
+    train_empty: List[int] = []  # this is necessary because mypy is silly
+    test_empty: List[int] = []
+    train_indexes: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
+    test_indexes: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
+
+    # iterate over all combinations of s and y
+    for s, y in itertools.product(s_vals, y_vals):
+        # find all indices for this group
+        idx: np.ndarray[np.int64]
+        idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+
+        # shuffle and take subsets
+        random.shuffle(idx)
+        split_indexes: int = round(len(idx) * train_percentage)
+        # append index subsets to the list of train indices
+        train_indexes = np.concatenate([train_indexes, idx[:split_indexes]], axis=0)
+        test_indexes = np.concatenate([test_indexes, idx[split_indexes:]], axis=0)
+
+    num_groups = len(s_vals) * len(y_vals)
+    expected_train_len = round(len(data) * train_percentage)
+    # assert that we (at least approximately) achieved the specified `train_percentage`
+    assert expected_train_len - num_groups <= len(train_indexes) <= expected_train_len + num_groups
+    # the maximum error occurs when all the group splits favor train or all favor test
+
+    return train_indexes, test_indexes
+
+
 class ProportionalSplit(RandomSplit):
     """Split into train and test while preserving the proportion of s and y."""
 
@@ -168,58 +208,29 @@ class ProportionalSplit(RandomSplit):
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Do proportional split."""
         random_seed = self._get_seed(split_id)
-
-        # local random state that won't affect the global state
-        random = RandomState(seed=random_seed)
-
-        s_col = data.s.columns[0]
-        y_col = data.y.columns[0]
-
-        s_vals: List[int] = list(map(int, data.s[s_col].unique()))
-        y_vals: List[int] = list(map(int, data.y[y_col].unique()))
-
-        train_empty: List[int] = []  # this is necessary because mypy is silly
-        test_empty: List[int] = []
-        train_idx: np.ndarray[np.int64] = np.array(train_empty, dtype=np.int64)
-        test_idx: np.ndarray[np.int64] = np.array(test_empty, dtype=np.int64)
-
-        # iterate over all combinations of s and y
-        for s, y in itertools.product(s_vals, y_vals):
-            # find all indices for this group
-            idx: np.ndarray[np.int64]
-            idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
-
-            # shuffle and take subsets
-            random.shuffle(idx)
-            split_idx: int = round(len(idx) * self.train_percentage)
-            # append index subsets to the list of train indices
-            train_idx = np.concatenate([train_idx, idx[:split_idx]], axis=0)
-            test_idx = np.concatenate([test_idx, idx[split_idx:]], axis=0)
+        train_indexes, test_indexes = generate_proportional_split_indexes(
+            data, train_percentage=self.train_percentage, random_seed=random_seed
+        )
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_idx].reset_index(drop=True),
-            s=data.s.iloc[train_idx].reset_index(drop=True),
-            y=data.y.iloc[train_idx].reset_index(drop=True),
+            x=data.x.iloc[train_indexes].reset_index(drop=True),
+            s=data.s.iloc[train_indexes].reset_index(drop=True),
+            y=data.y.iloc[train_indexes].reset_index(drop=True),
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_idx].reset_index(drop=True),
-            s=data.s.iloc[test_idx].reset_index(drop=True),
-            y=data.y.iloc[test_idx].reset_index(drop=True),
+            x=data.x.iloc[test_indexes].reset_index(drop=True),
+            s=data.s.iloc[test_indexes].reset_index(drop=True),
+            y=data.y.iloc[test_indexes].reset_index(drop=True),
             name=f"{data.name} - Test",
         )
 
         # assert that no data points got lost anywhere
         assert len(data) == len(train) + len(test)
 
-        # assert that we (at least approximately) achieved the specified `train_percentage`
-        expected_train_len = round(len(data) * self.train_percentage)
-        # the maximum error occurs when all the group splits favor train or all favor test
-        num_groups = len(s_vals) * len(y_vals)
-        assert expected_train_len - num_groups <= len(train) <= expected_train_len + num_groups
-
         split_info: Dict[str, float] = {"seed": random_seed}
+
         return train, test, split_info
 
 
