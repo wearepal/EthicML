@@ -159,8 +159,7 @@ class CelebA(VisionDataset):
             all_data = all_data.loc[((all_data[sens_attrs] + 1) // 2).sum(axis="columns") == 1]
             self.s_dim = len(sens_attrs)
             # perform the reverse operation of one-hot encoding
-            data_only_sens = all_data[sens_attrs]
-            data_only_sens.columns = list(range(self.s_dim))
+            data_only_sens = pd.DataFrame(all_data[sens_attrs], columns=list(range(self.s_dim)))
             sens_attr = data_only_sens.idxmax(axis="columns").to_frame(name=",".join(sens_attrs))
         else:
             sens_attr_name = sens_attrs[0].capitalize()
@@ -270,4 +269,4 @@ class CelebA(VisionDataset):
         Returns:
             Integer indicating the length of the dataset.
         """
-        return len(self.sens_attr)
+        return self.sens_attr.size(0)
