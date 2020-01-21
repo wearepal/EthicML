@@ -161,7 +161,7 @@ class RandomSplit(DataSplitter):
 
 
 def generate_proportional_split_indexes(
-    data: DataTuple, train_percentage, random_seed: int = 42
+    data: DataTuple, train_percentage: float, random_seed: int = 42
 ) -> Tuple["np.ndarray[np.int64]", "np.ndarray[np.int64]"]:
     """Generate the indexes of the train and test splits using a proportional sampling scheme."""
     # local random state that won't affect the global state
