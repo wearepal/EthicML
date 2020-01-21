@@ -173,13 +173,12 @@ def generate_proportional_split_indexes(
     s_vals: List[int] = list(map(int, data.s[s_col].unique()))
     y_vals: List[int] = list(map(int, data.y[y_col].unique()))
 
-    train_indexes: List[int] = []  # this is necessary because mypy is silly
-    test_indexes: List[int] = []
+    train_indexes: List[np.ndarray[np.int64]] = []
+    test_indexes: List[np.ndarray[np.int64]] = []
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
         # find all indices for this group
-        idx: np.ndarray[np.int64]
         idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
 
         # shuffle and take subsets
@@ -189,16 +188,18 @@ def generate_proportional_split_indexes(
         train_indexes.append(idx[:split_indexes])
         test_indexes.append(idx[split_indexes:])
 
-    train_indexes = np.concatenate(train_indexes, axis=0)
-    test_indexes = np.concatenate(test_indexes, axis=0)
+    train_indexes_ = np.concatenate(train_indexes, axis=0)
+    test_indexes_ = np.concatenate(test_indexes, axis=0)
+    del train_indexes
+    del test_indexes
 
     num_groups = len(s_vals) * len(y_vals)
     expected_train_len = round(len(data) * train_percentage)
     # assert that we (at least approximately) achieved the specified `train_percentage`
     # the maximum error occurs when all the group splits favor train or all favor test
-    assert expected_train_len - num_groups <= len(train_indexes) <= expected_train_len + num_groups
+    assert expected_train_len - num_groups <= len(train_indexes_) <= expected_train_len + num_groups
 
-    return train_indexes, test_indexes
+    return train_indexes_, test_indexes_
 
 
 class ProportionalSplit(RandomSplit):
