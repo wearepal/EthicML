@@ -6,7 +6,7 @@ and biased subset sampling.
 import os
 import warnings
 from pathlib import Path
-from typing import Tuple, Optional, Callable, Sequence
+from typing import Tuple, Optional, Callable, List, Sequence
 from typing_extensions import Literal
 
 import pandas as pd
@@ -149,6 +149,7 @@ class CelebA(VisionDataset):
         all_data = all_data.reset_index(drop=False).rename(columns={"index": "filenames"})
 
         attr_names = list(attrs.columns)
+        sens_names: List[str] = list(map(str, sens_attrs))
 
         # Multiple attributes have been designated as sensitive
         # Note that in this case biased dataset sampling cannot be performed
@@ -156,10 +157,10 @@ class CelebA(VisionDataset):
             if any(sens_attr_name not in attr_names for sens_attr_name in sens_attrs):
                 raise ValueError(f"at least one of {sens_attrs} does not exist as an attribute.")
             # only use those samples where exactly one of the specified attributes is true
-            all_data = all_data.loc[((all_data[sens_attrs] + 1) // 2).sum(axis="columns") == 1]
+            all_data = all_data.loc[((all_data[sens_names] + 1) // 2).sum(axis="columns") == 1]
             self.s_dim = len(sens_attrs)
             # perform the reverse operation of one-hot encoding
-            data_only_sens = pd.DataFrame(all_data[sens_attrs], columns=list(range(self.s_dim)))
+            data_only_sens = pd.DataFrame(all_data[sens_names], columns=list(range(self.s_dim)))
             sens_attr = data_only_sens.idxmax(axis="columns").to_frame(name=",".join(sens_attrs))
         else:
             sens_attr_name = sens_attrs[0].capitalize()
