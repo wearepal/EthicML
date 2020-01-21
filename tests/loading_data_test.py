@@ -215,7 +215,11 @@ def test_race_feature_split():
 
 def test_load_adult_drop_native():
     """test load adult drop native"""
-    data: DataTuple = load_data(Adult("Sex", drop_native=True))
+    adult = Adult("Sex", drop_native=True)
+    assert "native-country_United-States" in adult.discrete_features
+    assert "native-country_Canada" not in adult.discrete_features
+
+    data: DataTuple = load_data(adult)
     assert (45222, 61) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
