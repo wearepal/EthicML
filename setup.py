@@ -51,7 +51,16 @@ setup(
             "torchvision == 0.3.0",
         ],
         # use `pip install EthicML[dev]` to install development packages
-        "dev": ["black", "mypy", "pydocstyle", "pylint", "pytest", "pytest-cov", "pre-commit"],
+        "dev": [
+            "black",
+            "data-science-types",
+            "mypy",
+            "pydocstyle",
+            "pylint",
+            "pytest",
+            "pytest-cov",
+            "pre-commit",
+        ],
     },
     classifiers=[  # classifiers can be found here: https://pypi.org/classifiers/
         "Programming Language :: Python :: 3",

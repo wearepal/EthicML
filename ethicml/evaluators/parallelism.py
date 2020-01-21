@@ -151,8 +151,8 @@ async def run_in_parallel(
         in_algos = cast(Sequence[InAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
         in_async_algos, async_idx, in_blocking_algos = _filter(
-            in_algos, InAlgorithmAsync
-        )  # type: ignore[misc]
+            in_algos, InAlgorithmAsync  # type: ignore[misc]
+        )
         return await _generic_run_in_parallel(
             async_algos=[(algo.run_async, algo.name) for algo in in_async_algos],
             async_idx=async_idx,
@@ -164,8 +164,8 @@ async def run_in_parallel(
         pre_algos = cast(Sequence[PreAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
         pre_async_algos, async_idx, pre_blocking_algos = _filter(
-            pre_algos, PreAlgorithmAsync
-        )  # type: ignore[misc]
+            pre_algos, PreAlgorithmAsync  # type: ignore[misc]
+        )
         return await _generic_run_in_parallel(
             async_algos=[(algo.run_async, algo.name) for algo in pre_async_algos],
             async_idx=async_idx,

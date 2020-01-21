@@ -122,11 +122,13 @@ class LdColorizer(LdAugmentation):
         if self.binarize:
             data = (data > 0.5).float()
 
-        color_tensor = Tensor(colors_per_sample).unsqueeze(-1).unsqueeze(-1)
+        color_tensor = (
+            Tensor(colors_per_sample).unsqueeze(-1).unsqueeze(-1)
+        )  # type: ignore[call-arg]
         if self.background:
             if self.black:
                 # colorful background, black digits
-                augmented_data = (1 - data) * color_tensor
+                augmented_data = (1 - data) * color_tensor  # type: ignore[operator]
             else:
                 # colorful background, white digits
                 augmented_data = torch.clamp(data + color_tensor, 0, 1)
@@ -136,7 +138,7 @@ class LdColorizer(LdAugmentation):
                 augmented_data = data * color_tensor
             else:
                 # white background, colorful digits
-                augmented_data = 1 - data * (1 - color_tensor)
+                augmented_data = 1 - data * (1 - color_tensor)  # type: ignore[operator, assignment]
 
         if self.greyscale:
             augmented_data = augmented_data.mean(dim=1, keepdim=True)
