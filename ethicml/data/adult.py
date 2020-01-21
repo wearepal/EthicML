@@ -12,6 +12,7 @@ class Adult(Dataset):
         self,
         split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
         discrete_only: bool = False,
+        drop_native: bool = False,
     ):
         """Inot Adult dataset."""
         super().__init__()
@@ -212,6 +213,8 @@ class Adult(Dataset):
             self.class_label_prefix = ["salary"]
         else:
             raise NotImplementedError
+        if drop_native:
+            self._drop_native()
 
     @property
     def name(self) -> str:
@@ -226,3 +229,14 @@ class Adult(Dataset):
     @implements(Dataset)
     def __len__(self) -> int:
         return 45222
+
+    def _drop_native(self) -> None:
+        """Drop all features that encode the native country except the one for the US."""
+        new_features = [
+            col
+            for col in self.features
+            if not col.startswith("nat") or col == "native-country_United-States"
+        ]
+        assert len(new_features) == 65  # 61 input features + 4 label features
+        # setting `features` to the new list of features also removes them from `discrete_features`
+        self.features = new_features
