@@ -8,6 +8,7 @@ from numpy.random import RandomState
 import pandas as pd
 from pandas.testing import assert_index_equal
 
+from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 
@@ -46,10 +47,10 @@ class SequentialSplit(DataSplitter):
         """Init Sequential split."""
         self.train_percentage = train_percentage
 
+    @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
-        """Do Sequential split."""
         del split_id
         train_len = round(self.train_percentage * len(data))
 
@@ -151,10 +152,10 @@ class RandomSplit(DataSplitter):
     def _get_seed(self, split_id: int) -> int:
         return self.start_seed + 2410 * split_id
 
+    @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
-        """Do standard split."""
         random_seed = self._get_seed(split_id)
         split_info: Dict[str, float] = {"seed": random_seed}
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
@@ -205,10 +206,10 @@ def generate_proportional_split_indexes(
 class ProportionalSplit(RandomSplit):
     """Split into train and test while preserving the proportion of s and y."""
 
+    @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
-        """Do proportional split."""
         random_seed = self._get_seed(split_id)
         train_indexes, test_indexes = generate_proportional_split_indexes(
             data, train_percentage=self.train_percentage, random_seed=random_seed
