@@ -5,7 +5,7 @@ from sklearn.svm import SVC, LinearSVC
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, Prediction
 from .in_algorithm import InAlgorithm
 
 
@@ -19,10 +19,10 @@ class SVM(InAlgorithm):
         self.kernel = SVC().kernel if kernel is None else kernel
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> Prediction:
         clf = select_svm(self.C, self.kernel)
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return Prediction(hard=pd.Series(clf.predict(test.x)))
 
     @property
     def name(self) -> str:

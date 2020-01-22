@@ -8,7 +8,7 @@ from pytest import approx
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
-    # Agarwal,
+    Agarwal,
     Corels,
     GPyT,
     InAlgorithm,
@@ -27,11 +27,17 @@ from ethicml.algorithms.inprocess import (
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
-    Agarwal,
 )
 from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
 from ethicml.metrics import Accuracy, AbsCV
-from ethicml.utility import Heaviside, DataTuple, TrainTestPair, PathTuple, TestPathTuple
+from ethicml.utility import (
+    DataTuple,
+    Heaviside,
+    PathTuple,
+    Prediction,
+    TestPathTuple,
+    TrainTestPair,
+)
 from ethicml.data import load_data, Compas, Toy
 from ethicml.preprocessing import train_test_split, query_dt
 from ethicml.metrics import Metric
@@ -65,9 +71,9 @@ def test_inprocess(name: str, model: InAlgorithm, num_pos: int, num_neg: int):
     assert model is not None
     assert model.name == name
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert count_true(predictions.values == 1) == num_pos
-    assert count_true(predictions.values == -1) == num_neg
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == -1) == num_neg
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
@@ -83,9 +89,9 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
     data: DataTuple = load_data(Compas())
     train, test = train_test_split(data)
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 428
-    assert predictions.values[predictions.values == 0].shape[0] == 806
+    predictions: Prediction = model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 428
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 806
 
 
 def test_cv_svm():
@@ -103,9 +109,9 @@ def test_cv_svm():
 
     best_model = cv_results.best(Accuracy())
 
-    predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Prediction = best_model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
 
 def test_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -125,9 +131,9 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert cv_results.best_hyper_params(measure)["C"] == 0.1
     best_model = cv_results.best(measure)
 
-    predictions: pd.DataFrame = best_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Prediction = best_model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
 
 def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -147,9 +153,9 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert cv_results.best_hyper_params(measure)["C"] == 0.01
     best_model = cv_results.best(measure)
 
-    predictions: pd.DataFrame = best_model.run(train, test)
-    assert count_true(predictions.values == 1) == 212
-    assert count_true(predictions.values == -1) == 188
+    predictions: Prediction = best_model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == 212
+    assert count_true(predictions.hard.values == -1) == 188
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -191,9 +197,9 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 #     assert model is not None
 
-#     predictions: pd.DataFrame = run_blocking(model.run_async(train, test))
-#     assert predictions.values[predictions.values == 1].shape[0] == 208
-#     assert predictions.values[predictions.values == -1].shape[0] == 192
+#     predictions: Prediction = run_blocking(model.run_async(train, test))
+#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
+#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
 
 
 @pytest.fixture(scope="module")
@@ -225,13 +231,13 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
 
     assert model is not None
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 206
-    assert predictions.values[predictions.values == -1].shape[0] == 194
+    predictions: Prediction = model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 206
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 194
 
     predictions = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 206
-    assert predictions.values[predictions.values == -1].shape[0] == 194
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 206
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 194
 
     hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
@@ -257,12 +263,12 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert model is not None
 
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
     predictions = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
 
     model = zafar_models[2]()
     assert model.name == "ZafarFairness, c=0.001"
@@ -270,12 +276,12 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert model is not None
 
     predictions = model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 215
-    assert predictions.values[predictions.values == -1].shape[0] == 185
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 215
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 185
 
     predictions = run_blocking(model.run_async(train, test))
-    assert predictions.values[predictions.values == 1].shape[0] == 215
-    assert predictions.values[predictions.values == -1].shape[0] == 185
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 215
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 185
 
     hyperparams = {"c": [1, 1e-1, 1e-2]}
 
@@ -300,14 +306,14 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
 
     predictions = zafar_eq_opp.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 217
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 217
 
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
     assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
 
     predictions = zafar_eq_odds.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 189
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 189
 
 
 def test_gpyt_creation():
@@ -334,19 +340,19 @@ def test_gpyt_creation():
 #     eq_odds: InAlgorithmAsync = gpyt_models[2]
 #
 #     assert baseline.name == "GPyT_in_True"
-#     predictions: pd.DataFrame = run_blocking(baseline.run_async(train, test))
-#     assert predictions.values[predictions.values == 1].shape[0] == approx(210, rel=0.1)
-#     assert predictions.values[predictions.values == -1].shape[0] == approx(190, rel=0.1)
+#     predictions: Prediction = run_blocking(baseline.run_async(train, test))
+#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == approx(210, rel=0.1)
+#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == approx(190, rel=0.1)
 #
 #     assert dem_par.name == "GPyT_dem_par_in_True"
 #     predictions = run_blocking(dem_par.run_async(train, test))
-#     assert predictions.values[predictions.values == 1].shape[0] == approx(182, rel=0.1)
-#     assert predictions.values[predictions.values == -1].shape[0] == approx(218, rel=0.1)
+#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == approx(182, rel=0.1)
+#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == approx(218, rel=0.1)
 #
 #     assert eq_odds.name == "GPyT_eq_odds_in_True_tpr_1.0"
 #     predictions = run_blocking(eq_odds.run_async(train, test))
-#     assert predictions.values[predictions.values == 1].shape[0] == approx(179, rel=0.1)
-#     assert predictions.values[predictions.values == -1].shape[0] == approx(221, rel=0.1)
+#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == approx(179, rel=0.1)
+#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == approx(221, rel=0.1)
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
@@ -377,9 +383,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert model is not None
     assert model.name == "local installed LR"
 
-    predictions: pd.DataFrame = model.run(train, test)
-    assert count_true(predictions.values == 1) == 211
-    assert count_true(predictions.values == -1) == 189
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == 211
+    assert count_true(predictions.hard.values == -1) == 189
 
 
 def test_agarwal():
@@ -422,8 +428,8 @@ def test_agarwal():
         agarwal_variants, results, model_names, expected_results
     ):
         assert model.name == model_name
-        assert count_true(results_for_model[0].to_numpy() == 1) == pred_true, model_name
-        assert count_true(results_for_model[0].to_numpy() == -1) == pred_false, model_name
+        assert count_true(results_for_model[0].hard.to_numpy() == 1) == pred_true, model_name
+        assert count_true(results_for_model[0].hard.to_numpy() == -1) == pred_false, model_name
 
 
 def test_threaded_agarwal():
@@ -433,8 +439,8 @@ def test_threaded_agarwal():
     class AssertResult(Metric):
         def score(self, prediction, actual):
             return (
-                count_true(prediction.values == 1) == 157
-                and count_true(prediction.values == -1) == 243
+                count_true(prediction.hard.values == 1) == 157
+                and count_true(prediction.hard.values == -1) == 243
             )
 
         @property
@@ -456,11 +462,11 @@ def test_lr_prob():
 
     heavi = Heaviside()
 
-    predictions: pd.DataFrame = model.run(train, test)
-    predictions = predictions.apply(heavi.apply)
-    predictions = predictions.replace(0, -1)
-    assert predictions.values[predictions.values == 1].shape[0] == 211
-    assert predictions.values[predictions.values == -1].shape[0] == 189
+    predictions: Prediction = model.run(train, test)
+    hard_predictions = pd.Series(heavi.apply(predictions.hard.to_numpy()))
+    hard_predictions = hard_predictions.replace(0, -1)
+    assert hard_predictions.values[hard_predictions.values == 1].shape[0] == 211
+    assert hard_predictions.values[hard_predictions.values == -1].shape[0] == 189
 
 
 def test_kamiran(toy_train_test: TrainTestPair):
@@ -471,9 +477,9 @@ def test_kamiran(toy_train_test: TrainTestPair):
     assert kamiran_model is not None
     assert kamiran_model.name == "Kamiran & Calders LR"
 
-    predictions: pd.DataFrame = kamiran_model.run(train, test)
-    assert predictions.values[predictions.values == 1].shape[0] == 210
-    assert predictions.values[predictions.values == -1].shape[0] == 190
+    predictions: Prediction = kamiran_model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 210
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 190
 
     # remove all samples with s=0 & y=1 from the data
     train_no_s0y1 = query_dt(train, "s != 0 | y != 1")

@@ -127,7 +127,7 @@ def upsample(
         selected: List[pd.DataFrame] = []
 
         all_data = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
-        all_data = pd.concat([all_data, rank], axis="columns")
+        all_data = pd.concat([all_data, pd.DataFrame(rank.hard, columns=["preds"])], axis="columns")
 
         for key, val in data.items():
 

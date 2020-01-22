@@ -1,6 +1,5 @@
 """Test preprocessing models"""
 from typing import Tuple
-import pandas as pd
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
@@ -12,7 +11,7 @@ from ethicml.algorithms.preprocess import (
     VFAE,
     Upsampler,
 )
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, Prediction
 from tests.run_algorithm_test import get_train_test
 
 
@@ -34,9 +33,9 @@ def test_vfae():
     assert svm_model is not None
     assert svm_model.name == "SVM"
 
-    predictions: pd.DataFrame = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    predictions: Prediction = svm_model.run_test(new_train, new_test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
     vfae_model = VFAE(dataset="Toy", supervised=True, epochs=10, fairness="Eq. Opp", batch_size=100)
     assert vfae_model is not None
@@ -51,8 +50,8 @@ def test_vfae():
     assert new_train.name == "VFAE: " + str(train.name)
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
     vfae_model = VFAE(
         dataset="Toy", supervised=False, epochs=10, fairness="Eq. Opp", batch_size=100
@@ -67,8 +66,8 @@ def test_vfae():
     assert new_test.x.shape[0] == test.x.shape[0]
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 207
-    assert predictions.values[predictions.values == -1].shape[0] == 193
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 207
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 193
 
 
 def test_threaded_zemel():
@@ -89,9 +88,9 @@ def test_threaded_zemel():
     assert classifier is not None
     assert classifier.name == "SVM"
 
-    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
+    predictions: Prediction = classifier.run_test(new_train, new_test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 182
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 218
 
     beut_model: PreAlgorithm = Zemel()
     assert beut_model is not None
@@ -110,8 +109,8 @@ def test_threaded_zemel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 182
-    assert predictions.values[predictions.values == -1].shape[0] == 218
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 182
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 218
 
 
 def test_threaded_beutel():
@@ -134,9 +133,9 @@ def test_threaded_beutel():
     assert classifier is not None
     assert classifier.name == "SVM"
 
-    predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    predictions: Prediction = classifier.run_test(new_train, new_test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
@@ -155,8 +154,8 @@ def test_threaded_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 201
-    assert predictions.values[predictions.values == -1].shape[0] == 199
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
 
 def test_threaded_custom_beutel():
@@ -178,8 +177,8 @@ def test_threaded_custom_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train_nt, new_test_nt)
-    assert predictions.values[predictions.values == 1].shape[0] == 202
-    assert predictions.values[predictions.values == -1].shape[0] == 198
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 202
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 198
 
     model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
     assert model is not None
@@ -197,9 +196,9 @@ def test_threaded_custom_beutel():
     assert classifier is not None
     assert classifier.name == "SVM"
 
-    treaded_predictions: pd.DataFrame = classifier.run_test(new_train, new_test)
-    assert treaded_predictions.values[treaded_predictions.values == 1].shape[0] == 202
-    assert treaded_predictions.values[treaded_predictions.values == -1].shape[0] == 198
+    treaded_predictions: Prediction = classifier.run_test(new_train, new_test)
+    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 1].shape[0] == 202
+    assert treaded_predictions.hard.values[treaded_predictions.hard.values == -1].shape[0] == 198
 
 
 def test_upsampler():
@@ -223,8 +222,8 @@ def test_upsampler():
     assert lr_model.name == "Logistic Regression, C=1.0"
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 209
-    assert predictions.values[predictions.values == -1].shape[0] == 191
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 209
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 191
 
     upsampler = Upsampler(strategy="uniform")
     new_train, new_test = upsampler.run(train, test)
@@ -234,8 +233,8 @@ def test_upsampler():
     assert new_train.name == train.name
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 215
-    assert predictions.values[predictions.values == -1].shape[0] == 185
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 215
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 185
 
     upsampler = Upsampler(strategy="preferential")
     new_train, new_test = upsampler.run(train, test)
@@ -245,5 +244,5 @@ def test_upsampler():
     assert new_train.name == train.name
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.values[predictions.values == 1].shape[0] == 148
-    assert predictions.values[predictions.values == -1].shape[0] == 252
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 148
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 252

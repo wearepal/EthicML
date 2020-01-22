@@ -8,7 +8,7 @@ from abc import abstractmethod
 import pandas as pd
 
 from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
@@ -43,7 +43,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         with file_path.open("w") as out_file:
             json.dump(out, out_file)
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
         label_converter = LabelBinarizer()
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -59,8 +59,8 @@ class _ZafarAlgorithmBase(InstalledModel):
             predictions = predictions_path.open().read()
             predictions = json.loads(predictions)
 
-        predictions_correct = pd.DataFrame([0 if x == -1 else 1 for x in predictions])
-        return label_converter.post_only_labels(predictions_correct)
+        predictions_correct = pd.Series([0 if x == -1 else 1 for x in predictions])
+        return Prediction(hard=label_converter.post_only_labels(predictions_correct))
 
     @abstractmethod
     def _create_command_line(

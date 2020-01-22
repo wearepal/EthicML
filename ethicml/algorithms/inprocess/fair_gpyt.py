@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, Prediction
 from .in_algorithm import InAlgorithmAsync
 from .installed_model import InstalledModel
 
@@ -42,7 +42,7 @@ class GPyT(InstalledModel):
         self.flag_overwrites: Dict[str, Any] = {} if flags is None else flags
 
     @implements(InAlgorithmAsync)
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -75,7 +75,7 @@ class GPyT(InstalledModel):
                 pred_mean = output["pred_mean"]
 
         predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=["preds"])
+        return Prediction(hard=pd.Series(predictions))
 
     async def _run_gpyt(self, flags):
         """Generate command to run GPyT."""
@@ -255,7 +255,7 @@ class GPyTEqOdds(GPyT):
         )
 
     @implements(InAlgorithmAsync)
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
         (ytrain,), label_converter = _fix_labels([train.y.to_numpy()])
         raw_data = dict(
             xtrain=train.x.to_numpy(),
@@ -318,7 +318,7 @@ class GPyTEqOdds(GPyT):
 
         # Convert the result to the expected format
         predictions = label_converter((pred_mean > 0.5).astype(raw_data["ytrain"].dtype)[:, 0])
-        return pd.DataFrame(predictions, columns=["preds"])
+        return Prediction(hard=pd.Series(predictions))
 
     @property
     def name(self):

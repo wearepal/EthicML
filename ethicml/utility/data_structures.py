@@ -174,7 +174,7 @@ class TestPathTuple:
     def load_from_feather(self) -> TestTuple:
         """Load a dataframe from a feather file."""
         return TestTuple(
-            x=load_feather(self.x), s=load_feather(self.s), name=self.name if self.name else None
+            x=_load_feather(self.x), s=_load_feather(self.s), name=self.name if self.name else None
         )
 
 
@@ -187,11 +187,18 @@ class PathTuple(TestPathTuple):
     def load_from_feather(self) -> DataTuple:
         """Load a dataframe from a feather file."""
         return DataTuple(
-            x=load_feather(self.x),
-            s=load_feather(self.s),
-            y=load_feather(self.y),
+            x=_load_feather(self.x),
+            s=_load_feather(self.s),
+            y=_load_feather(self.y),
             name=self.name if self.name else None,
         )
+
+
+@dataclass(frozen=True)
+class Prediction:
+    """Prediction of an algorithm."""
+
+    hard: pd.Series  # hard predictions (e.g. 0 and 1)
 
 
 def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
@@ -255,11 +262,17 @@ def concat_tt(
     )
 
 
-def load_feather(output_path: Path) -> pd.DataFrame:
+def _load_feather(output_path: Path) -> pd.DataFrame:
     """Load a dataframe from a feather file."""
     with output_path.open("rb") as file_obj:
         df = pd.read_feather(file_obj)
     return df
+
+
+def load_prediction(output_path: Path) -> Prediction:
+    """Load a prediction from a path."""
+    df = _load_feather(output_path)
+    return Prediction(hard=df[df.columns[0]])
 
 
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name

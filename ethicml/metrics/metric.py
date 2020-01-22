@@ -2,9 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-import pandas as pd
-
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction
 
 
 class Metric(ABC):
@@ -15,7 +13,7 @@ class Metric(ABC):
         self.positive_class = pos_class
 
     @abstractmethod
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """Compute score.
 
         Args:
