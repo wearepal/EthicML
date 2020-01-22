@@ -157,7 +157,7 @@
             
   <div class="section" id="module-ethicml.visualisation">
 <span id="ethicml-visualisation"></span><h1>ethicml.visualisation<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this headline">¶</a></h1>
-<p>This module contains tools for plotting results</p>
+<p>This module contains tools for plotting results.</p>
 <p><strong>Functions</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -166,26 +166,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_results" title="ethicml.visualisation.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a>(results, metric_y, …)</p></td>
-<td><p>Plot the given result with boxes that represent mean and standard deviation</p></td>
+<td><p>Plot the given result with boxes that represent mean and standard deviation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_2d_plot" title="ethicml.visualisation.save_2d_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_2d_plot</span></code></a>(data, filepath)</p></td>
-<td><p>Make 2D plot</p></td>
+<td><p>Make 2D plot.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.save_jointplot" title="ethicml.visualisation.save_jointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_jointplot</span></code></a>(data, filepath, dims, int] =)</p></td>
-<td><p>Make joint plot</p></td>
+<td><p>Make joint plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_label_plot" title="ethicml.visualisation.save_label_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_label_plot</span></code></a>(data, filename)</p></td>
-<td><p>Make label plot</p></td>
+<td><p>Make label plot.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot" title="ethicml.visualisation.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a>(plot, results, xaxis, str], …)</p></td>
-<td><p>This is essentially a wrapper around the <cite>errorbox</cite> function</p></td>
+<td><p>Provide the functionality of the individual plotting functions through a nice interface.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="function">
 <dt id="ethicml.visualisation.plot_results">
 <code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">results: ethicml.utility.data_structures.Results, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', save: bool = True, dpi: int = 300</em><span class="sig-paren">)</span> &#x2192; List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]<a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the given result with boxes that represent mean and standard deviation</p>
+<dd><p>Plot the given result with boxes that represent mean and standard deviation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -207,25 +207,25 @@
 <dl class="function">
 <dt id="ethicml.visualisation.save_2d_plot">
 <code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make 2D plot</p>
+<dd><p>Make 2D plot.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethicml.visualisation.save_jointplot">
 <code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em>, <em class="sig-param">dims: Tuple[int</em>, <em class="sig-param">int] = (0</em>, <em class="sig-param">1)</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make joint plot</p>
+<dd><p>Make joint plot.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethicml.visualisation.save_label_plot">
 <code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Make label plot</p>
+<dd><p>Make label plot.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethicml.visualisation.single_plot">
 <code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: ethicml.utility.data_structures.Results, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: str, ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', legend_pos: Optional[typing_extensions.Literal['inside', 'outside'][inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6</em><span class="sig-paren">)</span> &#x2192; Union[None, typing_extensions.Literal[False][False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is essentially a wrapper around the <cite>errorbox</cite> function</p>
+<dd><p>Provide the functionality of the individual plotting functions through a nice interface.</p>
 <p>This function can also be used to create figures with multiple plots on them, because it does
 not generate a Figure object itself.</p>
 <dl class="field-list simple">
@@ -243,9 +243,8 @@ not generate a Figure object itself.</p>
 <li><p><strong>markersize</strong> – size of marker</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>Returns</dt><dd><p>the legend object if something was plotted; False otherwise</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the legend object if something was plotted; False otherwise</p>
 </dd>
 </dl>
 </dd></dl>
