@@ -215,7 +215,8 @@ def test_race_feature_split():
 
 def test_load_adult_drop_native():
     """test load adult drop native"""
-    adult = Adult("Sex", drop_native=True)
+    adult = Adult("Sex", binarize_nationality=True)
+    assert adult.name == "Adult Sex, binary nationality"
     assert "native-country_United-States" in adult.discrete_features
     assert "native-country_Canada" not in adult.discrete_features
 

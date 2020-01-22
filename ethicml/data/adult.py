@@ -12,7 +12,7 @@ class Adult(Dataset):
         self,
         split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
         discrete_only: bool = False,
-        drop_native: bool = False,
+        binarize_nationality: bool = False,
     ):
         """Inot Adult dataset."""
         super().__init__()
@@ -213,13 +213,15 @@ class Adult(Dataset):
             self.class_label_prefix = ["salary"]
         else:
             raise NotImplementedError
-        if drop_native:
+        self.__name = f"Adult {self.split}"
+        if binarize_nationality:
             self._drop_native()
+            self.__name += ", binary nationality"
 
     @property
     def name(self) -> str:
         """Getter for dataset name."""
-        return f"Adult {self.split}"
+        return self.__name
 
     @property
     def filename(self) -> str:
