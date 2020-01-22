@@ -158,7 +158,7 @@
             
   <div class="section" id="module-ethicml.algorithms.preprocess">
 <span id="ethicml-algorithms-preprocess"></span><h1>ethicml.algorithms.preprocess<a class="headerlink" href="#module-ethicml.algorithms.preprocess" title="Permalink to this headline">¶</a></h1>
-<p>Pre-process algorithms take the training data and transform it</p>
+<p>Pre-process algorithms take the training data and transform it.</p>
 <p><strong>Classes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -167,22 +167,22 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Beutel" title="ethicml.algorithms.preprocess.Beutel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Beutel</span></code></a>(fairness, , ][DP, EqOp, EqOd] =, …)</p></td>
-<td><p>Beutel’s adversarially learned fair representations</p></td>
+<td><p>Beutel’s adversarially learned fair representations.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithm" title="ethicml.algorithms.preprocess.PreAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PreAlgorithm</span></code></a></p></td>
-<td><p>Abstract Base Class for all algorithms that do pre-processing</p></td>
+<td><p>Abstract Base Class for all algorithms that do pre-processing.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.PreAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PreAlgorithmAsync</span></code></a></p></td>
-<td><p>Pre-Algorithm that can be run blocking and asynchronously</p></td>
+<td><p>Pre-Algorithm that can be run blocking and asynchronously.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler" title="ethicml.algorithms.preprocess.Upsampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upsampler</span></code></a>(strategy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler" title="ethicml.algorithms.preprocess.Upsampler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Upsampler</span></code></a>(strategy, , ][uniform, …)</p></td>
 <td><p>Upsampler algorithm.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE" title="ethicml.algorithms.preprocess.VFAE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VFAE</span></code></a>(dataset, supervised, epochs, …)</p></td>
-<td><p>VFAE Object - see implementation file for details</p></td>
+<td><p>VFAE Object - see implementation file for details.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel" title="ethicml.algorithms.preprocess.Zemel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Zemel</span></code></a>(threshold, clusters, Ax, Ay, Az, …)</p></td>
-<td><p>AIF360 implementation of Zemel’s LFR</p></td>
+<td><p>AIF360 implementation of Zemel’s LFR.</p></td>
 </tr>
 </tbody>
 </table>
@@ -190,7 +190,8 @@
 <dt id="ethicml.algorithms.preprocess.Beutel">
 <em class="property">class </em><code class="sig-name descname">Beutel</code><span class="sig-paren">(</span><em class="sig-param">fairness: typing_extensions.Literal['DP'</em>, <em class="sig-param">'EqOp'</em>, <em class="sig-param">'EqOd'][DP</em>, <em class="sig-param">EqOp</em>, <em class="sig-param">EqOd] = 'DP'</em>, <em class="sig-param">enc_size: Sequence[int] = (40</em>, <em class="sig-param">)</em>, <em class="sig-param">adv_size: Sequence[int] = (40</em>, <em class="sig-param">)</em>, <em class="sig-param">pred_size: Sequence[int] = (40</em>, <em class="sig-param">)</em>, <em class="sig-param">enc_activation: str = 'Sigmoid()'</em>, <em class="sig-param">adv_activation: str = 'Sigmoid()'</em>, <em class="sig-param">batch_size: int = 64</em>, <em class="sig-param">y_loss: str = 'BCELoss()'</em>, <em class="sig-param">s_loss: str = 'BCELoss()'</em>, <em class="sig-param">epochs: int = 50</em>, <em class="sig-param">adv_weight: float = 1.0</em>, <em class="sig-param">validation_pcnt: float = 0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Beutel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
-<p>Beutel’s adversarially learned fair representations</p>
+<p>Beutel’s adversarially learned fair representations.</p>
+<p>Init Beutel.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -199,7 +200,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Beutel.name" title="ethicml.algorithms.preprocess.Beutel.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -211,26 +212,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Beutel.run" title="ethicml.algorithms.preprocess.Beutel.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
+<td><p>Generate fair features with the given data by running as a blocking function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Beutel.run_async" title="ethicml.algorithms.preprocess.Beutel.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data asynchronously</p></td>
+<td><p>Generate fair features with the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Beutel.run_test" title="ethicml.algorithms.preprocess.Beutel.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Beutel.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.Beutel.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Beutel.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Beutel.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data by running as a blocking function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -244,13 +245,21 @@
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Beutel.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Beutel.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data asynchronously</p>
+<dd><p>Generate fair features with the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Beutel.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Beutel.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -259,7 +268,7 @@
 <dt id="ethicml.algorithms.preprocess.PreAlgorithm">
 <em class="property">class </em><code class="sig-name descname">PreAlgorithm</code><a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
-<p>Abstract Base Class for all algorithms that do pre-processing</p>
+<p>Abstract Base Class for all algorithms that do pre-processing.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -268,7 +277,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithm.name" title="ethicml.algorithms.preprocess.PreAlgorithm.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
@@ -280,23 +289,23 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithm.run" title="ethicml.algorithms.preprocess.PreAlgorithm.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
+<td><p>Generate fair features with the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithm.run_test" title="ethicml.algorithms.preprocess.PreAlgorithm.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithm.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithm.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithm.run">
 <em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithm.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -310,7 +319,7 @@
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithm.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithm.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -319,7 +328,7 @@
 <dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync">
 <em class="property">class </em><code class="sig-name descname">PreAlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></p>
-<p>Pre-Algorithm that can be run blocking and asynchronously</p>
+<p>Pre-Algorithm that can be run blocking and asynchronously.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -328,7 +337,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.name" title="ethicml.algorithms.preprocess.PreAlgorithmAsync.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
@@ -340,26 +349,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run" title="ethicml.algorithms.preprocess.PreAlgorithmAsync.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
+<td><p>Generate fair features with the given data by running as a blocking function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_async" title="ethicml.algorithms.preprocess.PreAlgorithmAsync.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data asynchronously</p></td>
+<td><p>Generate fair features with the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test" title="ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data by running as a blocking function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -373,64 +382,7 @@
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test">
-<code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ethicml.algorithms.preprocess.Upsampler">
-<em class="property">class </em><code class="sig-name descname">Upsampler</code><span class="sig-paren">(</span><em class="sig-param">strategy: str = 'uniform'</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
-<p>Upsampler algorithm.</p>
-<p>Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
-of samples.</p>
-<p><strong>Attributes</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.name" title="ethicml.algorithms.preprocess.Upsampler.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Methods</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.run" title="ethicml.algorithms.preprocess.Upsampler.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.run_async" title="ethicml.algorithms.preprocess.Upsampler.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.run_test" title="ethicml.algorithms.preprocess.Upsampler.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ethicml.algorithms.preprocess.Upsampler.name">
-<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ethicml.algorithms.preprocess.Upsampler.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -442,15 +394,72 @@ of samples.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.preprocess.Upsampler.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data asynchronously</p>
+<dt id="ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test">
+<code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ethicml.algorithms.preprocess.Upsampler">
+<em class="property">class </em><code class="sig-name descname">Upsampler</code><span class="sig-paren">(</span><em class="sig-param">strategy: typing_extensions.Literal['uniform'</em>, <em class="sig-param">'preferential'</em>, <em class="sig-param">'naive'][uniform</em>, <em class="sig-param">preferential</em>, <em class="sig-param">naive] = 'uniform'</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></p>
+<p>Upsampler algorithm.</p>
+<p>Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
+of samples.</p>
+<p>Init Upsampler.</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.name" title="ethicml.algorithms.preprocess.Upsampler.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Getter for algorithm name.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methods</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.run" title="ethicml.algorithms.preprocess.Upsampler.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
+<td><p>Generate fair features with the given data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Upsampler.run_test" title="ethicml.algorithms.preprocess.Upsampler.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ethicml.algorithms.preprocess.Upsampler.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for algorithm name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.algorithms.preprocess.Upsampler.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate fair features with the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Upsampler.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Upsampler.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -459,7 +468,8 @@ of samples.</p>
 <dt id="ethicml.algorithms.preprocess.VFAE">
 <em class="property">class </em><code class="sig-name descname">VFAE</code><span class="sig-paren">(</span><em class="sig-param">dataset: str</em>, <em class="sig-param">supervised: bool = True</em>, <em class="sig-param">epochs: int = 10</em>, <em class="sig-param">batch_size: int = 32</em>, <em class="sig-param">fairness: str = 'DI'</em>, <em class="sig-param">z1_enc_size: Optional[List[int]] = None</em>, <em class="sig-param">z2_enc_size: Optional[List[int]] = None</em>, <em class="sig-param">z1_dec_size: Optional[List[int]] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.VFAE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
-<p>VFAE Object - see implementation file for details</p>
+<p>VFAE Object - see implementation file for details.</p>
+<p>Init VFAE.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -468,7 +478,7 @@ of samples.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE.name" title="ethicml.algorithms.preprocess.VFAE.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -480,26 +490,26 @@ of samples.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE.run" title="ethicml.algorithms.preprocess.VFAE.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
+<td><p>Generate fair features with the given data by running as a blocking function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE.run_async" title="ethicml.algorithms.preprocess.VFAE.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data asynchronously</p></td>
+<td><p>Generate fair features with the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.VFAE.run_test" title="ethicml.algorithms.preprocess.VFAE.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.VFAE.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.VFAE.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.VFAE.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.VFAE.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data by running as a blocking function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -513,13 +523,21 @@ of samples.</p>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.VFAE.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.VFAE.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data asynchronously</p>
+<dd><p>Generate fair features with the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.VFAE.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.VFAE.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -528,7 +546,8 @@ of samples.</p>
 <dt id="ethicml.algorithms.preprocess.Zemel">
 <em class="property">class </em><code class="sig-name descname">Zemel</code><span class="sig-paren">(</span><em class="sig-param">threshold: float = 0.5</em>, <em class="sig-param">clusters: int = 2</em>, <em class="sig-param">Ax: float = 0.01</em>, <em class="sig-param">Ay: float = 0.1</em>, <em class="sig-param">Az: float = 0.5</em>, <em class="sig-param">max_iter: int = 5000</em>, <em class="sig-param">maxfun: int = 5000</em>, <em class="sig-param">epsilon: float = 1e-05</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></p>
-<p>AIF360 implementation of Zemel’s LFR</p>
+<p>AIF360 implementation of Zemel’s LFR.</p>
+<p>Init Zemel.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -537,7 +556,7 @@ of samples.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel.name" title="ethicml.algorithms.preprocess.Zemel.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -549,26 +568,26 @@ of samples.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel.run" title="ethicml.algorithms.preprocess.Zemel.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data</p></td>
+<td><p>Generate fair features with the given data by running as a blocking function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel.run_async" title="ethicml.algorithms.preprocess.Zemel.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Generate fair features with the given data asynchronously</p></td>
+<td><p>Generate fair features with the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.preprocess.Zemel.run_test" title="ethicml.algorithms.preprocess.Zemel.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Zemel.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Zemel.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data</p>
+<dd><p>Generate fair features with the given data by running as a blocking function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -582,13 +601,21 @@ of samples.</p>
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Zemel.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate fair features with the given data asynchronously</p>
+<dd><p>Generate fair features with the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.preprocess.Zemel.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]<a class="headerlink" href="#ethicml.algorithms.preprocess.Zemel.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>

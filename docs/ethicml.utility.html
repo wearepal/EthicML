@@ -158,7 +158,7 @@
             
   <div class="section" id="module-ethicml.utility">
 <span id="ethicml-utility"></span><h1>ethicml.utility<a class="headerlink" href="#module-ethicml.utility" title="Permalink to this headline">¶</a></h1>
-<p>This module contains kind of useful things that don’t really belong anywhere else (just yet)</p>
+<p>This module contains kind of useful things that don’t really belong anywhere else (just yet).</p>
 <p><strong>Classes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -167,28 +167,28 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation" title="ethicml.utility.Activation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Activation</span></code></a></p></td>
-<td><p>Base class for decision functions</p></td>
+<td><p>Base class for decision functions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataTuple</span></code></a>(y, x, s, name)</p></td>
-<td><p>A tuple of dataframes for the features, the sensitive attribute and the class labels</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataTuple</span></code></a>(x, s, y, name)</p></td>
+<td><p>A tuple of dataframes for the features, the sensitive attribute and the class labels.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside" title="ethicml.utility.Heaviside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Heaviside</span></code></a></p></td>
-<td><p>Decision function that accepts predictions with score of 50% or above</p></td>
+<td><p>Decision function that accepts predictions with score of 50% or above.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.PathTuple" title="ethicml.utility.PathTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PathTuple</span></code></a>(x, s, name, y)</p></td>
-<td><p>For algorithms that run in their own process, we pass around paths to the data</p></td>
+<td><p>For algorithms that run in their own process, we pass around paths to the data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.Results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Results</span></code></a>(data_frame)</p></td>
-<td><p>Container for results from <cite>evaluate_models</cite></p></td>
+<td><p>Container for results from <cite>evaluate_models</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TestPathTuple" title="ethicml.utility.TestPathTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestPathTuple</span></code></a>(x, s, name)</p></td>
-<td><p>For algorithms that run in their own process, we pass around paths to the data</p></td>
+<td><p>For algorithms that run in their own process, we pass around paths to the data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple" title="ethicml.utility.TestTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTuple</span></code></a>(x, s, name)</p></td>
-<td><p>A tuple of dataframes for the features and the sensitive attribute</p></td>
+<td><p>A tuple of dataframes for the features and the sensitive attribute.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair" title="ethicml.utility.TrainTestPair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainTestPair</span></code></a></p></td>
-<td><p>2-Tuple of train and test data</p></td>
+<td><p>2-Tuple of train and test data.</p></td>
 </tr>
 </tbody>
 </table>
@@ -200,13 +200,13 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.concat_dt" title="ethicml.utility.concat_dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_dt</span></code></a>(datatup_list, axis, ][columns, …)</p></td>
-<td><p>Concatenate the data tuples in the given list</p></td>
+<td><p>Concatenate the data tuples in the given list.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.concat_tt" title="ethicml.utility.concat_tt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_tt</span></code></a>(datatup_list, axis, ][columns, …)</p></td>
-<td><p>Concatenate the test tuples in the given list</p></td>
+<td><p>Concatenate the test tuples in the given list.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.load_feather" title="ethicml.utility.load_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_feather</span></code></a>(output_path)</p></td>
-<td><p>Load a dataframe from a feather file</p></td>
+<td><p>Load a dataframe from a feather file.</p></td>
 </tr>
 </tbody>
 </table>
@@ -214,7 +214,7 @@
 <dt id="ethicml.utility.Activation">
 <em class="property">class </em><code class="sig-name descname">Activation</code><a class="headerlink" href="#ethicml.utility.Activation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<p>Base class for decision functions</p>
+<p>Base class for decision functions.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -223,17 +223,17 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation.apply" title="ethicml.utility.Activation.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(soft_output)</p></td>
-<td><p>Apply the decision function to a soft prediction</p></td>
+<td><p>Apply the decision function to a soft prediction.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Activation.get_name" title="ethicml.utility.Activation.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
-<td><p>Name of activation function</p></td>
+<td><p>Name of activation function.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.Activation.apply">
 <em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">soft_output: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#ethicml.utility.Activation.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the decision function to a soft prediction</p>
+<dd><p>Apply the decision function to a soft prediction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>soft_output</strong> – soft prediction (i.e. a probability or logits)</p>
@@ -247,16 +247,17 @@
 <dl class="method">
 <dt id="ethicml.utility.Activation.get_name">
 <em class="property">abstract </em><code class="sig-name descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#ethicml.utility.Activation.get_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of activation function</p>
+<dd><p>Name of activation function.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="ethicml.utility.DataTuple">
-<em class="property">class </em><code class="sig-name descname">DataTuple</code><span class="sig-paren">(</span><em class="sig-param">y: pandas.core.frame.DataFrame</em>, <em class="sig-param">x: pandas.core.frame.DataFrame</em>, <em class="sig-param">s: pandas.core.frame.DataFrame</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.DataTuple" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.TestTuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.DataTupleValues</span></code></p>
-<p>A tuple of dataframes for the features, the sensitive attribute and the class labels</p>
+<em class="property">class </em><code class="sig-name descname">DataTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pandas.core.frame.DataFrame</em>, <em class="sig-param">s: pandas.core.frame.DataFrame</em>, <em class="sig-param">y: pandas.core.frame.DataFrame</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.DataTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.TestTuple</span></code></p>
+<p>A tuple of dataframes for the features, the sensitive attribute and the class labels.</p>
+<p>Init for DataTuple Class.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -265,32 +266,53 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.apply_to_joined_df" title="ethicml.utility.DataTuple.apply_to_joined_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_to_joined_df</span></code></a>(mapper, …)</p></td>
-<td><p>Concatenate the dataframes in the DataTuple and then apply a function to it</p></td>
+<td><p>Concatenate the dataframes in the DataTuple and then apply a function to it.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.get_subset" title="ethicml.utility.DataTuple.get_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subset</span></code></a>(num)</p></td>
-<td><p>Get the first elements of the dataset</p></td>
+<td><p>Get the first elements of the dataset.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.remove_y" title="ethicml.utility.DataTuple.remove_y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_y</span></code></a>()</p></td>
-<td><p>Convert the DataTuple instance to a TestTuple instance</p></td>
+<td><p>Convert the DataTuple instance to a TestTuple instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.replace" title="ethicml.utility.DataTuple.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*, x, s, y, name)</p></td>
-<td><p>Create a copy of the DataTuple but change the given values</p></td>
+<td><p>Create a copy of the DataTuple but change the given values.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.write_as_feather" title="ethicml.utility.DataTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
-<td><p>Write the DataTuple to Feather files and return the file paths as a PathTuple</p></td>
+<td><p>Write the DataTuple to Feather files and return the file paths as a PathTuple.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.name" title="ethicml.utility.DataTuple.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Getter for name property.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.s" title="ethicml.utility.DataTuple.s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s</span></code></a></p></td>
+<td><p>Getter for property s.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.x" title="ethicml.utility.DataTuple.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>Getter for property x.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple.y" title="ethicml.utility.DataTuple.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>Getter for property y.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.DataTuple.apply_to_joined_df">
 <code class="sig-name descname">apply_to_joined_df</code><span class="sig-paren">(</span><em class="sig-param">mapper: Callable[[pandas.core.frame.DataFrame], pandas.core.frame.DataFrame]</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.apply_to_joined_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenate the dataframes in the DataTuple and then apply a function to it</p>
+<dd><p>Concatenate the dataframes in the DataTuple and then apply a function to it.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.DataTuple.get_subset">
 <code class="sig-name descname">get_subset</code><span class="sig-paren">(</span><em class="sig-param">num: int = 500</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.get_subset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the first elements of the dataset</p>
+<dd><p>Get the first elements of the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>num</strong> – how many samples to take for subset</p>
@@ -302,21 +324,33 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="ethicml.utility.DataTuple.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.utility.DataTuple.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for name property.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethicml.utility.DataTuple.remove_y">
 <code class="sig-name descname">remove_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.DataTuple.remove_y" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the DataTuple instance to a TestTuple instance</p>
+<dd><p>Convert the DataTuple instance to a TestTuple instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.DataTuple.replace">
 <code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">x: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">s: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">y: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.DataTuple.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a copy of the DataTuple but change the given values</p>
+<dd><p>Create a copy of the DataTuple but change the given values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.DataTuple.s">
+<em class="property">property </em><code class="sig-name descname">s</code><a class="headerlink" href="#ethicml.utility.DataTuple.s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for property s.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.DataTuple.write_as_feather">
 <code class="sig-name descname">write_as_feather</code><span class="sig-paren">(</span><em class="sig-param">data_dir: pathlib.Path</em>, <em class="sig-param">identifier: str</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.PathTuple<a class="headerlink" href="#ethicml.utility.DataTuple.write_as_feather" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the DataTuple to Feather files and return the file paths as a PathTuple</p>
+<dd><p>Write the DataTuple to Feather files and return the file paths as a PathTuple.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -330,13 +364,25 @@
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="ethicml.utility.DataTuple.x">
+<em class="property">property </em><code class="sig-name descname">x</code><a class="headerlink" href="#ethicml.utility.DataTuple.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for property x.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.DataTuple.y">
+<em class="property">property </em><code class="sig-name descname">y</code><a class="headerlink" href="#ethicml.utility.DataTuple.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for property y.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="ethicml.utility.Heaviside">
 <em class="property">class </em><code class="sig-name descname">Heaviside</code><a class="headerlink" href="#ethicml.utility.Heaviside" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.activation.Activation</span></code></p>
-<p>Decision function that accepts predictions with score of 50% or above</p>
+<p>Decision function that accepts predictions with score of 50% or above.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -345,31 +391,23 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside.apply" title="ethicml.utility.Heaviside.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(soft_output)</p></td>
-<td><p>Apply the decision function to a soft prediction</p></td>
+<td><p>Apply the decision function to each element of an ndarray.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside.get_name" title="ethicml.utility.Heaviside.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>()</p></td>
-<td><p>Name of activation function</p></td>
+<td><p>Getter for name of decision function.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.Heaviside.apply">
 <code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">soft_output: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="headerlink" href="#ethicml.utility.Heaviside.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply the decision function to a soft prediction</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>soft_output</strong> – soft prediction (i.e. a probability or logits)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>decision</p>
-</dd>
-</dl>
+<dd><p>Apply the decision function to each element of an ndarray.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.Heaviside.get_name">
 <code class="sig-name descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#ethicml.utility.Heaviside.get_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of activation function</p>
+<dd><p>Getter for name of decision function.</p>
 </dd></dl>
 
 </dd></dl>
@@ -378,7 +416,7 @@
 <dt id="ethicml.utility.PathTuple">
 <em class="property">class </em><code class="sig-name descname">PathTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pathlib.Path</em>, <em class="sig-param">s: pathlib.Path</em>, <em class="sig-param">name: str</em>, <em class="sig-param">y: pathlib.Path</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.PathTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.utility.data_structures.TestPathTuple</span></code></p>
-<p>For algorithms that run in their own process, we pass around paths to the data</p>
+<p>For algorithms that run in their own process, we pass around paths to the data.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -387,14 +425,14 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.PathTuple.load_from_feather" title="ethicml.utility.PathTuple.load_from_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_feather</span></code></a>()</p></td>
-<td><p>Load a dataframe from a feather file</p></td>
+<td><p>Load a dataframe from a feather file.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.PathTuple.load_from_feather">
 <code class="sig-name descname">load_from_feather</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.PathTuple.load_from_feather" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a dataframe from a feather file</p>
+<dd><p>Load a dataframe from a feather file.</p>
 </dd></dl>
 
 </dd></dl>
@@ -403,7 +441,8 @@
 <dt id="ethicml.utility.Results">
 <em class="property">class </em><code class="sig-name descname">Results</code><span class="sig-paren">(</span><em class="sig-param">data_frame: Optional[pandas.core.frame.DataFrame] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.Results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Container for results from <cite>evaluate_models</cite></p>
+<p>Container for results from <cite>evaluate_models</cite>.</p>
+<p>Initialise Results object.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -412,35 +451,56 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.append_df" title="ethicml.utility.Results.append_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_df</span></code></a>(data_frame, prepend)</p></td>
-<td><p>Append (or prepend) a DataFrame to this object</p></td>
+<td><p>Append (or prepend) a DataFrame to this object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Results.append_from_file" title="ethicml.utility.Results.append_from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_from_file</span></code></a>(csv_file, prepend)</p></td>
-<td><p>Append results from a CSV file</p></td>
+<td><p>Append results from a CSV file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.from_file" title="ethicml.utility.Results.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a>(csv_file)</p></td>
-<td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite></p></td>
+<td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Results.map_over_index" title="ethicml.utility.Results.map_over_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_over_index</span></code></a>(mapper, str, str, str]], …)</p></td>
-<td><p>Change the values of the index with a transformation function</p></td>
+<td><p>Change the values of the index with a transformation function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.save_as_csv" title="ethicml.utility.Results.save_as_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_as_csv</span></code></a>(file_path)</p></td>
+<td><p>Save to csv.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Results.data" title="ethicml.utility.Results.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>Getter for data property.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.Results.append_df">
 <code class="sig-name descname">append_df</code><span class="sig-paren">(</span><em class="sig-param">data_frame: pandas.core.frame.DataFrame</em>, <em class="sig-param">prepend: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.utility.Results.append_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append (or prepend) a DataFrame to this object</p>
+<dd><p>Append (or prepend) a DataFrame to this object.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.Results.append_from_file">
 <code class="sig-name descname">append_from_file</code><span class="sig-paren">(</span><em class="sig-param">csv_file: pathlib.Path</em>, <em class="sig-param">prepend: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#ethicml.utility.Results.append_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append results from a CSV file</p>
+<dd><p>Append results from a CSV file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.Results.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#ethicml.utility.Results.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for data property.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.Results.from_file">
 <em class="property">classmethod </em><code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">csv_file: pathlib.Path</em><span class="sig-paren">)</span> &#x2192; Optional[ethicml.utility.data_structures.Results]<a class="headerlink" href="#ethicml.utility.Results.from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load results from a CSV file that was created by <cite>evaluate_models</cite></p>
+<dd><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>csv_file</strong> – path to a CSV file with results</p>
@@ -454,7 +514,13 @@
 <dl class="method">
 <dt id="ethicml.utility.Results.map_over_index">
 <code class="sig-name descname">map_over_index</code><span class="sig-paren">(</span><em class="sig-param">mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.utility.Results.map_over_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the values of the index with a transformation function</p>
+<dd><p>Change the values of the index with a transformation function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.Results.save_as_csv">
+<code class="sig-name descname">save_as_csv</code><span class="sig-paren">(</span><em class="sig-param">file_path: pathlib.Path</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.utility.Results.save_as_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save to csv.</p>
 </dd></dl>
 
 </dd></dl>
@@ -463,7 +529,7 @@
 <dt id="ethicml.utility.TestPathTuple">
 <em class="property">class </em><code class="sig-name descname">TestPathTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pathlib.Path</em>, <em class="sig-param">s: pathlib.Path</em>, <em class="sig-param">name: str</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TestPathTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>For algorithms that run in their own process, we pass around paths to the data</p>
+<p>For algorithms that run in their own process, we pass around paths to the data.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -472,14 +538,14 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestPathTuple.load_from_feather" title="ethicml.utility.TestPathTuple.load_from_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_feather</span></code></a>()</p></td>
-<td><p>Load a dataframe from a feather file</p></td>
+<td><p>Load a dataframe from a feather file.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.utility.TestPathTuple.load_from_feather">
 <code class="sig-name descname">load_from_feather</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.TestPathTuple.load_from_feather" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a dataframe from a feather file</p>
+<dd><p>Load a dataframe from a feather file.</p>
 </dd></dl>
 
 </dd></dl>
@@ -488,7 +554,26 @@
 <dt id="ethicml.utility.TestTuple">
 <em class="property">class </em><code class="sig-name descname">TestTuple</code><span class="sig-paren">(</span><em class="sig-param">x: pandas.core.frame.DataFrame</em>, <em class="sig-param">s: pandas.core.frame.DataFrame</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TestTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A tuple of dataframes for the features and the sensitive attribute</p>
+<p>A tuple of dataframes for the features and the sensitive attribute.</p>
+<p>Init function for TestTuple object.</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.name" title="ethicml.utility.TestTuple.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Getter for name property.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.s" title="ethicml.utility.TestTuple.s"><code class="xref py py-obj docutils literal notranslate"><span class="pre">s</span></code></a></p></td>
+<td><p>Getter for property s.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.x" title="ethicml.utility.TestTuple.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>Getter for property x.</p></td>
+</tr>
+</tbody>
+</table>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -497,23 +582,35 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.replace" title="ethicml.utility.TestTuple.replace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace</span></code></a>(*, x, s, name)</p></td>
-<td><p>Create a copy of the TestTuple but change the given values</p></td>
+<td><p>Create a copy of the TestTuple but change the given values.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple.write_as_feather" title="ethicml.utility.TestTuple.write_as_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_as_feather</span></code></a>(data_dir, identifier)</p></td>
-<td><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple</p></td>
+<td><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
+<dt id="ethicml.utility.TestTuple.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.utility.TestTuple.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for name property.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethicml.utility.TestTuple.replace">
 <code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param">*</em>, <em class="sig-param">x: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">s: Optional[pandas.core.frame.DataFrame] = None</em>, <em class="sig-param">name: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.TestTuple.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a copy of the TestTuple but change the given values</p>
+<dd><p>Create a copy of the TestTuple but change the given values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethicml.utility.TestTuple.s">
+<em class="property">property </em><code class="sig-name descname">s</code><a class="headerlink" href="#ethicml.utility.TestTuple.s" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for property s.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.utility.TestTuple.write_as_feather">
 <code class="sig-name descname">write_as_feather</code><span class="sig-paren">(</span><em class="sig-param">data_dir: pathlib.Path</em>, <em class="sig-param">identifier: str</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestPathTuple<a class="headerlink" href="#ethicml.utility.TestTuple.write_as_feather" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple</p>
+<dd><p>Write the TestTuple to Feather files and return the file paths as a TestPathTuple.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -527,13 +624,19 @@
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="ethicml.utility.TestTuple.x">
+<em class="property">property </em><code class="sig-name descname">x</code><a class="headerlink" href="#ethicml.utility.TestTuple.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for property x.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="ethicml.utility.TrainTestPair">
 <em class="property">class </em><code class="sig-name descname">TrainTestPair</code><a class="headerlink" href="#ethicml.utility.TrainTestPair" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<p>2-Tuple of train and test data</p>
+<p>2-Tuple of train and test data.</p>
 <p>Create new instance of TrainTestPair(train, test)</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
@@ -595,19 +698,19 @@
 <dl class="function">
 <dt id="ethicml.utility.concat_dt">
 <code class="sig-name descname">concat_dt</code><span class="sig-paren">(</span><em class="sig-param">datatup_list: List[ethicml.utility.data_structures.DataTuple], axis: typing_extensions.Literal['columns', 'index'][columns, index] = 'index', ignore_index: bool = False</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.utility.concat_dt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenate the data tuples in the given list</p>
+<dd><p>Concatenate the data tuples in the given list.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethicml.utility.concat_tt">
 <code class="sig-name descname">concat_tt</code><span class="sig-paren">(</span><em class="sig-param">datatup_list: List[ethicml.utility.data_structures.TestTuple], axis: typing_extensions.Literal['columns', 'index'][columns, index] = 'index', ignore_index: bool = False</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.TestTuple<a class="headerlink" href="#ethicml.utility.concat_tt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenate the test tuples in the given list</p>
+<dd><p>Concatenate the test tuples in the given list.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethicml.utility.load_feather">
 <code class="sig-name descname">load_feather</code><span class="sig-paren">(</span><em class="sig-param">output_path: pathlib.Path</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.utility.load_feather" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a dataframe from a feather file</p>
+<dd><p>Load a dataframe from a feather file.</p>
 </dd></dl>
 
 </div>
