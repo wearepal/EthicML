@@ -1,7 +1,6 @@
 """Evaluator for a metric per sensitive attribute class."""
 
 from typing import Dict, List
-import dataclasses
 import pandas as pd
 
 from ethicml.utility.data_structures import DataTuple, Prediction
@@ -47,8 +46,8 @@ def metric_per_sensitive_attribute(
                     ),
                     name=actual.name,
                 )
-                pred_y = dataclasses.replace(
-                    prediction, hard=prediction.hard.loc[mask].reset_index(drop=True)
+                pred_y = Prediction(
+                    hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
                 )
                 key = s_col + "_" + str(unique_s)
                 per_sensitive_attr[key] = metric.score(pred_y, subset)
