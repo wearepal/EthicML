@@ -198,6 +198,8 @@ async def _generic_run_in_parallel(
     max_parallel: int,
 ) -> List[List[_RT]]:
     """Generic version of `run_in_parallel` that allows us to do this with type safety."""
+    if not data:
+        return []
     # first start the asynchronous results
     if async_algos:
         async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)

@@ -184,7 +184,7 @@ def single_plot(
     mask_for_transform = results_df.index.get_level_values("transform") == transform
     matching_results = results_df.loc[mask_for_dataset & mask_for_transform]
 
-    if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).any().any():
+    if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).all().all():
         return False  # nothing to plot
 
     entries: List[DataEntry] = []

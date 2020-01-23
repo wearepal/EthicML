@@ -20,7 +20,6 @@ from ethicml.metrics import (
     BCR,
     CV,
     F1,
-    GetInfo,
     Metric,
     NMI,
     PPV,
@@ -103,17 +102,6 @@ def test_proboutcome_per_sens_attr():
         "s_0": pytest.approx(0.372, abs=0.001),
         "s_1": pytest.approx(0.661, abs=0.001),
     }
-
-
-def test_get_info():
-    """test get info"""
-    train, test = get_train_test()
-    model: LRCV = LRCV()
-    predictions: Prediction = model.run(train, test)
-    metric: Metric = GetInfo(key="C")
-    assert metric.name == "C"
-    score = metric.score(predictions, test)
-    assert score == pytest.approx(0.359, abs=0.001)
 
 
 def test_probneg_per_sens_attr():
@@ -409,6 +397,15 @@ def test_run_metrics():
     assert results["TPR_s_0-s_1"] == approx(abs(0.842857 - 0.886525), RTOL)
     assert results["TPR_s_0/s_1"] == approx(0.842857 / 0.886525, RTOL)
     assert results["CV"] == approx(0.665)
+
+
+def test_get_info():
+    """test get info"""
+    train, test = get_train_test()
+    model: LRCV = LRCV()
+    predictions: Prediction = model.run(train, test)
+    results = run_metrics(predictions, test, [], [])
+    assert results["C"] == approx(0.359, abs=0.001)
 
 
 def test_nmi_diff_non_binary_race():

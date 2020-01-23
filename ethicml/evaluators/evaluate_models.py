@@ -70,6 +70,8 @@ def run_metrics(
         per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
+    for key, value in predictions.info.items():
+        result[key] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
@@ -342,7 +344,7 @@ async def evaluate_models_async(
 
     # ====================================== compute metrics ======================================
     # transpose `all_results` so that the order in the results dataframe is correct
-    num_cols = len(all_predictions[0])
+    num_cols = len(all_predictions[0]) if all_predictions else 0
     all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
 
     all_results = Results()
