@@ -1,7 +1,6 @@
 import pytest
 
 import torch
-from torch.utils.data import DataLoader, random_split
 
 from ethicml.vision import LdColorizer
 
@@ -14,9 +13,9 @@ def test_label_dependent_transforms(transform):
     labels = torch.randint(low=0, high=10, size=(9,))
 
     colorizer = LdColorizer(
+        scale=0.02,
         min_val=0.0,
         max_val=1.0,
-        scale=0.02,
         binarize=False,
         background=False,
         black=False,
@@ -24,5 +23,4 @@ def test_label_dependent_transforms(transform):
         greyscale=False,
     )
 
-    #   TODO: test with meaningful assertions
     colorizer(data, labels)
