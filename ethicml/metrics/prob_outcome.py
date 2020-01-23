@@ -1,7 +1,7 @@
 """For assessing mean of logits."""
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction
 from .metric import Metric
 
 
@@ -10,7 +10,8 @@ class ProbOutcome(Metric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        return prediction.hard.to_numpy().sum() / prediction.hard.size
+        assert isinstance(prediction, SoftPrediction), "this metric only makes sense with probs"
+        return prediction.soft.to_numpy().sum() / prediction.hard.size
 
     @property
     def name(self) -> str:

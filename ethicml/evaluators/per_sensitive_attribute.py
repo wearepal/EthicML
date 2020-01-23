@@ -3,7 +3,7 @@
 from typing import Dict, List
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction
 from ..metrics.metric import Metric
 
 
@@ -46,9 +46,15 @@ def metric_per_sensitive_attribute(
                     ),
                     name=actual.name,
                 )
-                pred_y = Prediction(
-                    hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
-                )
+                pred_y: Prediction
+                if isinstance(prediction, SoftPrediction):
+                    pred_y = SoftPrediction(
+                        soft=prediction.soft.loc[mask].reset_index(drop=True), info=prediction.info
+                    )
+                else:
+                    pred_y = Prediction(
+                        hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
+                    )
                 key = s_col + "_" + str(unique_s)
                 per_sensitive_attr[key] = metric.score(pred_y, subset)
 

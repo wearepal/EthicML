@@ -5,7 +5,7 @@ import pytest
 from pytest import approx
 
 from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from ethicml.data import Adult, NonBinaryToy, load_data
 from ethicml.evaluators import (
     diff_per_sensitive_attribute,
@@ -95,8 +95,8 @@ def test_probpos_per_sens_attr():
 def test_proboutcome_per_sens_attr():
     """test proboutcome per sens attr"""
     train, test = get_train_test()
-    model: InAlgorithm = LRProb()
-    predictions: Prediction = model.run(train, test)
+    model: LRProb = LRProb()
+    predictions: SoftPrediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbOutcome())
     assert acc_per_sens == {
         "s_0": pytest.approx(0.372, abs=0.001),
