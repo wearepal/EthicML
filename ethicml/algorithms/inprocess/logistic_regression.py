@@ -60,7 +60,7 @@ class LRCV(InAlgorithm):
             cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return Prediction(hard=pd.Series(clf.predict(test.x)))
+        return Prediction(hard=pd.Series(clf.predict(test.x)), info=dict(C=clf.C_[0]))
 
     @property
     def name(self) -> str:

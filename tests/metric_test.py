@@ -4,7 +4,7 @@ from typing import Tuple
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
+from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran, LRCV
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from ethicml.data import Adult, NonBinaryToy, load_data
 from ethicml.evaluators import (
@@ -20,6 +20,7 @@ from ethicml.metrics import (
     BCR,
     CV,
     F1,
+    GetInfo,
     Metric,
     NMI,
     PPV,
@@ -102,6 +103,17 @@ def test_proboutcome_per_sens_attr():
         "s_0": pytest.approx(0.372, abs=0.001),
         "s_1": pytest.approx(0.661, abs=0.001),
     }
+
+
+def test_get_info():
+    """test get info"""
+    train, test = get_train_test()
+    model: LRCV = LRCV()
+    predictions: Prediction = model.run(train, test)
+    metric: Metric = GetInfo(key="C")
+    assert metric.name == "C"
+    score = metric.score(predictions, test)
+    assert score == pytest.approx(0.359, abs=0.001)
 
 
 def test_probneg_per_sens_attr():
