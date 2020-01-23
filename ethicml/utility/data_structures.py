@@ -1,11 +1,28 @@
 """Data structures that are used throughout the code."""
 from pathlib import Path
 from dataclasses import dataclass
-from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator
+from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator, Dict
 from typing_extensions import Literal, Final
 
 import pandas as pd
 from pandas.testing import assert_index_equal
+
+__all__ = [
+    "ActivationType",
+    "ClassifierType",
+    "DataTuple",
+    "FairnessType",
+    "PathTuple",
+    "Prediction",
+    "Results",
+    "SoftPrediction",
+    "TestPathTuple",
+    "TestTuple",
+    "TrainTestPair",
+    "concat_dt",
+    "concat_tt",
+    "load_prediction",
+]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
 
@@ -174,7 +191,7 @@ class TestPathTuple:
     def load_from_feather(self) -> TestTuple:
         """Load a dataframe from a feather file."""
         return TestTuple(
-            x=load_feather(self.x), s=load_feather(self.s), name=self.name if self.name else None
+            x=_load_feather(self.x), s=_load_feather(self.s), name=self.name if self.name else None
         )
 
 
@@ -187,11 +204,44 @@ class PathTuple(TestPathTuple):
     def load_from_feather(self) -> DataTuple:
         """Load a dataframe from a feather file."""
         return DataTuple(
-            x=load_feather(self.x),
-            s=load_feather(self.s),
-            y=load_feather(self.y),
+            x=_load_feather(self.x),
+            s=_load_feather(self.s),
+            y=_load_feather(self.y),
             name=self.name if self.name else None,
         )
+
+
+class Prediction:
+    """Prediction of an algorithm."""
+
+    def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
+        """Init the prediction class."""
+        self._hard = hard
+        self._info = info if info is not None else {}
+
+    @property
+    def hard(self) -> pd.Series:
+        """Hard predictions (e.g. 0 and 1)."""
+        return self._hard
+
+    @property
+    def info(self) -> Dict[str, float]:
+        """Additional info about the prediction."""
+        return self._info
+
+
+class SoftPrediction(Prediction):
+    """Prediction of an algorithm that makes soft predictions."""
+
+    def __init__(self, soft: pd.Series, info: Optional[Dict[str, float]] = None):
+        """Init the soft prediction class."""
+        super().__init__(hard=soft.ge(0.5).astype(int), info=info)
+        self._soft = soft
+
+    @property
+    def soft(self) -> pd.Series:
+        """Soft predictions (e.g. 0.2 and 0.8)."""
+        return self._soft
 
 
 def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
@@ -255,11 +305,17 @@ def concat_tt(
     )
 
 
-def load_feather(output_path: Path) -> pd.DataFrame:
+def _load_feather(output_path: Path) -> pd.DataFrame:
     """Load a dataframe from a feather file."""
     with output_path.open("rb") as file_obj:
         df = pd.read_feather(file_obj)
     return df
+
+
+def load_prediction(output_path: Path) -> Prediction:
+    """Load a prediction from a path."""
+    df = _load_feather(output_path)
+    return Prediction(hard=df[df.columns[0]])
 
 
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name

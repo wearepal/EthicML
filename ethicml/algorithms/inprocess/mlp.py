@@ -5,7 +5,7 @@ from sklearn.neural_network import MLPClassifier
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import ActivationType, DataTuple, TestTuple
+from ethicml.utility.data_structures import ActivationType, DataTuple, TestTuple, Prediction
 from .in_algorithm import InAlgorithm
 
 
@@ -36,10 +36,10 @@ class MLP(InAlgorithm):
         )
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, self.activation)
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return Prediction(hard=pd.Series(clf.predict(test.x)))
 
     @property
     def name(self) -> str:

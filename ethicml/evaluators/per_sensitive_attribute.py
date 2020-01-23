@@ -3,7 +3,7 @@
 from typing import Dict, List
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction
 from ..metrics.metric import Metric
 
 
@@ -12,7 +12,7 @@ class MetricNotApplicable(Exception):
 
 
 def metric_per_sensitive_attribute(
-    predictions: pd.DataFrame, actual: DataTuple, metric: Metric
+    prediction: Prediction, actual: DataTuple, metric: Metric
 ) -> Dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
@@ -28,31 +28,35 @@ def metric_per_sensitive_attribute(
 
     s_columns: List[str] = list(actual.s.columns)
     y_columns: List[str] = list(actual.y.columns)
-    pred_column: List[str] = list(predictions.columns)
     assert len(y_columns) == 1
 
     for y_col in y_columns:
         for s_col in s_columns:
             for unique_s in actual.s[s_col].unique():
-                for p_col in pred_column:
-                    mask: pd.Series = (actual.s[s_col] == unique_s)
-                    subset = DataTuple(
-                        x=pd.DataFrame(
-                            actual.x.loc[mask][actual.x.columns], columns=actual.x.columns
-                        ).reset_index(drop=True),
-                        s=pd.DataFrame(actual.s.loc[mask][s_col], columns=[s_col]).reset_index(
-                            drop=True
-                        ),
-                        y=pd.DataFrame(actual.y.loc[mask][y_col], columns=[y_col]).reset_index(
-                            drop=True
-                        ),
-                        name=actual.name,
+                mask: pd.Series = (actual.s[s_col] == unique_s)
+                subset = DataTuple(
+                    x=pd.DataFrame(
+                        actual.x.loc[mask][actual.x.columns], columns=actual.x.columns
+                    ).reset_index(drop=True),
+                    s=pd.DataFrame(actual.s.loc[mask][s_col], columns=[s_col]).reset_index(
+                        drop=True
+                    ),
+                    y=pd.DataFrame(actual.y.loc[mask][y_col], columns=[y_col]).reset_index(
+                        drop=True
+                    ),
+                    name=actual.name,
+                )
+                pred_y: Prediction
+                if isinstance(prediction, SoftPrediction):
+                    pred_y = SoftPrediction(
+                        soft=prediction.soft.loc[mask].reset_index(drop=True), info=prediction.info
                     )
-                    pred_y = pd.DataFrame(
-                        predictions.loc[mask][p_col], columns=[p_col]
-                    ).reset_index(drop=True)
-                    key = s_col + "_" + str(unique_s)
-                    per_sensitive_attr[key] = metric.score(pred_y, subset)
+                else:
+                    pred_y = Prediction(
+                        hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
+                    )
+                key = s_col + "_" + str(unique_s)
+                per_sensitive_attr[key] = metric.score(pred_y, subset)
 
     return per_sensitive_attr
 

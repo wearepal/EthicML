@@ -1,9 +1,9 @@
 """Anti-spurious."""
 
-import pandas as pd
+import numpy as np
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction
 from .metric import Metric
 
 
@@ -14,8 +14,8 @@ class AS(Metric):
     """
 
     @implements(Metric)
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
-        preds = prediction.to_numpy()
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+        preds = prediction.hard.to_numpy()[:, np.newaxis]
         sens = actual.s.to_numpy()
         labels = actual.y.to_numpy()
         s_uneq_y = sens != labels

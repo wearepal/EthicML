@@ -1,9 +1,8 @@
 """Abstract Base Class of all post-processing algorithms in the framework."""
 
 from abc import abstractmethod
-import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ..algorithm_base import Algorithm
 
 
@@ -13,11 +12,11 @@ class PostAlgorithm(Algorithm):
     @abstractmethod
     def run(
         self,
-        train_predictions: pd.DataFrame,
+        train_predictions: Prediction,
         train: DataTuple,
-        test_predictions: pd.DataFrame,
+        test_predictions: Prediction,
         test: TestTuple,
-    ) -> pd.DataFrame:
+    ) -> Prediction:
         """Make predictions fair.
 
         Args:

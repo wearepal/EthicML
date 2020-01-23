@@ -4,10 +4,9 @@ from itertools import product
 from statistics import mean
 from typing import Dict, List, Tuple, Any, Type, NamedTuple, Optional
 
-import pandas as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple, TrainTestPair
+from ethicml.utility.data_structures import DataTuple, TrainTestPair, Prediction
 from ethicml.metrics import Accuracy, Metric, AbsCV
 from ethicml.preprocessing.train_test_split import fold_data
 from .parallelism import run_in_parallel
@@ -113,7 +112,7 @@ class _ResultsAccumulator:
         self.results: List[ResultTuple] = []
 
     def __call__(
-        self, parameter_setting: Dict[str, Any], preds: pd.DataFrame, test: DataTuple, fold_id: int
+        self, parameter_setting: Dict[str, Any], preds: Prediction, test: DataTuple, fold_id: int
     ) -> Dict[str, float]:
         """Compute the scores for the given predictions and append to the list of results."""
         # compute all measures

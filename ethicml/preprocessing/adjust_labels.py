@@ -41,20 +41,19 @@ class LabelBinarizer:
 
         return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
 
-    def post_only_labels(self, labels: pd.DataFrame) -> pd.DataFrame:
+    def post_only_labels(self, labels: pd.Series) -> pd.Series:
         """Inverse of adjust but only for a DataFrame instead of a DataTuple."""
-        y_col = labels.columns[0]
-        assert labels[y_col].nunique() == 2
+        assert labels.nunique() == 2
 
         # make copy of the labels
         labels_copy = labels.copy()
 
-        y_col = labels_copy.columns[0]
-        labels_copy[y_col].replace(0, self.min_val, inplace=True)
-        labels_copy[y_col].replace(1, self.max_val, inplace=True)
+        labels_copy.replace(0, self.min_val, inplace=True)
+        labels_copy.replace(1, self.max_val, inplace=True)
         return labels_copy
 
     def post(self, dataset: DataTuple) -> DataTuple:
         """Inverse of adjust."""
-        transformed_y = self.post_only_labels(dataset.y)
-        return dataset.replace(y=transformed_y)
+        y_col = dataset.y.columns[0]
+        transformed_y = self.post_only_labels(dataset.y[y_col])
+        return dataset.replace(y=pd.DataFrame(transformed_y, columns=[y_col]))

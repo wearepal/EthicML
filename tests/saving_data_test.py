@@ -48,7 +48,7 @@ def test_simple_saving() -> None:
             return ["-c", f'import shutil; shutil.copy("{train_paths.x}", "{pred_path}")']
 
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
-    pd.testing.assert_frame_equal(data_tuple.x, data_x)
+    pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard)
 
 
 def test_dataset_name_none() -> None:
