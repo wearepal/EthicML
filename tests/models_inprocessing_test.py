@@ -457,13 +457,14 @@ def test_lr_prob():
     """test lr prob"""
     train, test = get_train_test()
 
-    model: InAlgorithm = LRProb()
+    model: LRProb = LRProb()
     assert model.name == "Logistic Regression Prob, C=1.0"
 
     heavi = Heaviside()
 
     predictions: Prediction = model.run(train, test)
-    hard_predictions = pd.Series(heavi.apply(predictions.hard.to_numpy()))
+    hard_predictions = pd.Series(heavi.apply(predictions.soft.to_numpy()))
+    pd.testing.assert_series_equal(hard_predictions, predictions.hard)
     hard_predictions = hard_predictions.replace(0, -1)
     assert hard_predictions.values[hard_predictions.values == 1].shape[0] == 211
     assert hard_predictions.values[hard_predictions.values == -1].shape[0] == 189

@@ -6,7 +6,7 @@ from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction, SoftPrediction
 from .in_algorithm import InAlgorithm
 
 
@@ -39,10 +39,10 @@ class LRProb(InAlgorithm):
         self.C = LogisticRegression().C if C is None else C
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:
         clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class="auto")
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return Prediction(hard=pd.Series(clf.predict_proba(test.x)[:, 1]))
+        return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
 
     @property
     def name(self) -> str:
