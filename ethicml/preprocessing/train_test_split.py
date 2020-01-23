@@ -248,7 +248,7 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
     for i, fold_size in enumerate(fold_sizes):
         start, stop = current, current + fold_size
         val_inds: np.ndarray[np.int64] = indices[start:stop]
-        train_inds = [i for i in indices if i not in val_inds]  # Pretty sure this is inefficient
+        train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)
         train_s = data.s.iloc[train_inds].reset_index(drop=True)
