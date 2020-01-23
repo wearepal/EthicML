@@ -40,7 +40,7 @@ class LdAugmentation(jit.ScriptModule):
 class LdColorizer(LdAugmentation):
     """Transform that colorizes images."""
 
-    __constants__ = ["min_val", "max_val", "binarize", "black", "background", "seed"]
+    __constants__ = ["min_val", "max_val", "binarize", "black", "background"]
 
     def __init__(
         self,
