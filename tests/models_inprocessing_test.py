@@ -35,6 +35,7 @@ from ethicml.utility import (
     Heaviside,
     PathTuple,
     Prediction,
+    SoftPrediction,
     TestPathTuple,
     TrainTestPair,
 )
@@ -462,7 +463,7 @@ def test_lr_prob():
 
     heavi = Heaviside()
 
-    predictions: Prediction = model.run(train, test)
+    predictions: SoftPrediction = model.run(train, test)
     hard_predictions = pd.Series(heavi.apply(predictions.soft.to_numpy()))
     pd.testing.assert_series_equal(hard_predictions, predictions.hard)
     hard_predictions = hard_predictions.replace(0, -1)
