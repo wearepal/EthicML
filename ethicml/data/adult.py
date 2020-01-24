@@ -12,6 +12,7 @@ class Adult(Dataset):
         self,
         split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
         discrete_only: bool = False,
+        binarize_nationality: bool = False,
     ):
         """Inot Adult dataset."""
         super().__init__()
@@ -212,11 +213,15 @@ class Adult(Dataset):
             self.class_label_prefix = ["salary"]
         else:
             raise NotImplementedError
+        self.__name = f"Adult {self.split}"
+        if binarize_nationality:
+            self._drop_native()
+            self.__name += ", binary nationality"
 
     @property
     def name(self) -> str:
         """Getter for dataset name."""
-        return f"Adult {self.split}"
+        return self.__name
 
     @property
     def filename(self) -> str:
@@ -226,3 +231,14 @@ class Adult(Dataset):
     @implements(Dataset)
     def __len__(self) -> int:
         return 45222
+
+    def _drop_native(self) -> None:
+        """Drop all features that encode the native country except the one for the US."""
+        new_features = [
+            col
+            for col in self.features
+            if not col.startswith("nat") or col == "native-country_United-States"
+        ]
+        assert len(new_features) == 65  # 61 input features + 4 label features
+        # setting `features` to the new list of features also removes them from `discrete_features`
+        self.features = new_features

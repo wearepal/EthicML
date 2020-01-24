@@ -149,7 +149,7 @@ class CelebA(VisionDataset):
         all_data = all_data.reset_index(drop=False).rename(columns={"index": "filenames"})
 
         attr_names = list(attrs.columns)
-        sens_names: List[str] = list(map(str, sens_attrs))
+        sens_names: List[str] = list(sens_attrs)
 
         # Multiple attributes have been designated as sensitive
         # Note that in this case biased dataset sampling cannot be performed

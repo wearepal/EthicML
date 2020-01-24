@@ -42,6 +42,7 @@ API
    ethicml.metrics
    ethicml.preprocessing
    ethicml.utility
+   ethicml.vision
    ethicml.visualisation
 
 

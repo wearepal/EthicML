@@ -9,7 +9,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair, Results
+from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair, Results, Prediction
 from .parallelism import run_in_parallel
 from ..data.dataset import Dataset
 from ..data.load import load_data
@@ -45,7 +45,7 @@ def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
 
 
 def run_metrics(
-    predictions: pd.DataFrame,
+    predictions: Prediction,
     actual: DataTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
@@ -219,7 +219,7 @@ def evaluate_models(
                         **split_info,
                     }
 
-                    predictions: pd.DataFrame
+                    predictions: Prediction
                     predictions = model.run(transformed_train, transformed_test)
 
                     temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
@@ -351,7 +351,7 @@ async def evaluate_models_async(
     for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
         # ============================= handle results of one dataset =============================
         results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
-        predictions: pd.DataFrame
+        predictions: Prediction
         for predictions, model in zip(preds_for_dataset, inprocess_models):
             # construct a row of the results dataframe
             df_row: Dict[str, Union[str, float]] = {

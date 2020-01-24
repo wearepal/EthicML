@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple, ClassifierType
+from ethicml.utility import DataTuple, TestTuple, ClassifierType, Prediction
 from .shared import settings_for_svm_lr
 from .in_algorithm import InAlgorithm
 from .svm import select_svm
@@ -31,7 +31,7 @@ class Kamiran(InAlgorithm):
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         return train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
@@ -102,7 +102,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
 
 def train_and_predict(
     train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str
-) -> pd.DataFrame:
+) -> Prediction:
     """Train a logistic regression model and compute predictions on the given test data."""
     if classifier == "SVM":
         model = select_svm(C, kernel)
@@ -113,4 +113,4 @@ def train_and_predict(
         train.y.to_numpy().ravel(),
         sample_weight=compute_weights(train)["instance weights"],
     )
-    return pd.DataFrame(model.predict(test.x), columns=["preds"])
+    return Prediction(hard=pd.Series(model.predict(test.x)))

@@ -19,10 +19,9 @@ from typing import (
 from collections import OrderedDict
 from dataclasses import dataclass
 
-import pandas as pd
 from tqdm import tqdm
 
-from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple
+from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple, Prediction
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync
 
@@ -30,7 +29,7 @@ __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
 _AT = TypeVar("_AT", InAlgorithmAsync, PreAlgorithmAsync)  # async algorithm type
 _ST = TypeVar("_ST", InAlgorithm, PreAlgorithm)  # sync algorithm type
-_RT = TypeVar("_RT", pd.DataFrame, Tuple[DataTuple, TestTuple])  # return type
+_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple])  # return type
 
 RunType = Callable[[DataTuple, TestTuple], Coroutine[Any, Any, _RT]]
 BlockingRunType = Callable[[DataTuple, TestTuple], _RT]
@@ -118,7 +117,7 @@ async def _eval_worker(
 
 InSeq = Sequence[InAlgorithm]
 PreSeq = Sequence[PreAlgorithm]
-InResult = List[List[pd.DataFrame]]
+InResult = List[List[Prediction]]
 PreResult = List[List[Tuple[DataTuple, TestTuple]]]
 
 
@@ -146,7 +145,7 @@ async def run_in_parallel(
         list of the results
     """
     if not algos:
-        return cast(List[List[pd.DataFrame]], [[]])
+        return cast(List[List[Prediction]], [[]])
     if isinstance(algos[0], InAlgorithm):  # pylint: disable=no-else-return  # mypy needs this
         in_algos = cast(Sequence[InAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374

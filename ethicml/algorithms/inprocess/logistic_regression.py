@@ -6,7 +6,7 @@ from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction, SoftPrediction
 from .in_algorithm import InAlgorithm
 
 
@@ -19,10 +19,10 @@ class LR(InAlgorithm):
         self.C = LogisticRegression().C if C is None else C
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class="auto")
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return Prediction(hard=pd.Series(clf.predict(test.x)))
 
     @property
     def name(self) -> str:
@@ -39,10 +39,10 @@ class LRProb(InAlgorithm):
         self.C = LogisticRegression().C if C is None else C
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:
         clf = LogisticRegression(solver="liblinear", random_state=888, C=self.C, multi_class="auto")
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return pd.DataFrame(clf.predict_proba(test.x)[:, 1], columns=["preds"])
+        return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
 
     @property
     def name(self) -> str:
@@ -54,13 +54,13 @@ class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         folder = KFold(n_splits=3, random_state=888, shuffle=False)
         clf = LogisticRegressionCV(
             cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return pd.DataFrame(clf.predict(test.x), columns=["preds"])
+        return Prediction(hard=pd.Series(clf.predict(test.x)), info=dict(C=clf.C_[0]))
 
     @property
     def name(self) -> str:

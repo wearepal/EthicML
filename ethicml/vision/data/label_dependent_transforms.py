@@ -1,4 +1,4 @@
-"""Transformations that act differentlly depending on the label."""
+"""Transformations that act differently depending on the label."""
 
 from abc import abstractmethod, ABC
 from typing import List, TypeVar
@@ -18,10 +18,11 @@ class LdAugmentation(ABC):
         """Augment the input data in a label-dependent fashion.
 
         Args:
-            data: Tensor. Input data to be augmented.
-            labels: Tensor. Labels on which the augmentations are conditioned.
+            data: Input data to be augmented.
+            labels: Labels on which the augmentations are conditioned.
 
-        Returns: Tensor. Augmented data.
+        Returns:
+            Augmented data.
         """
         pass
 
@@ -29,10 +30,11 @@ class LdAugmentation(ABC):
         """Apply the augment method to the input data.
 
         Args:
-            data: Tensor. Input data to be augmented.
-            labels: Tensor. Labels on which the augmentations are conditioned.
+            data: Input data to be augmented.
+            labels: Labels on which the augmentations are conditioned.
 
-        Returns: Tensor. Augmented data.
+        Returns:
+            Augmented data.
         """
         return self._augment(data, labels)
 
@@ -60,7 +62,7 @@ class LdColorizer(LdAugmentation):
             min_val: Minimum value the input data can take (needed for clamping). Defaults to 0.
             max_val: Maximum value the input data can take (needed for clamping). Defaults to 1.
             scale: Standard deviation of the multivariate normal distributions from which
-                the colors are drawn. Lower values correspond to higher bias. Defaults to 0.02.
+                   the colors are drawn. Lower values correspond to higher bias. Defaults to 0.02.
             binarize: Whether the binarize the grayscale data before colorisation. Defaults to False
             background: Whether to color the background instead of the foreground. Defaults to False
             black: Whether not to invert the black. Defaults to True.
@@ -101,12 +103,12 @@ class LdColorizer(LdAugmentation):
         """Apply the transformation.
 
         Args:
-            data (Tensor): (Grayscale) data samples to be colorized.
-            labels (Tensor): Index indicating the colour distribution
-            from which to sample for each data sample.
+            data: (Grayscale) data samples to be colorized.
+            labels: Index indicating the colour distribution from which to sample for each data
+                    sample.
 
         Returns:
-            Tensor: Colorized tensor.
+            Colorized tensor.
         """
         labels = labels.numpy()
 
