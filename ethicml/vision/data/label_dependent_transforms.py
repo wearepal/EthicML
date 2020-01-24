@@ -1,19 +1,19 @@
 """Transformations that act differently depending on the label."""
 
+from abc import abstractmethod, ABC
 from typing import List
 
 import numpy as np
 import torch
 from torch import Tensor
-from torch import jit
 
 __all__ = ["LdAugmentation", "LdColorizer"]
 
 
-class LdAugmentation(jit.ScriptModule):
+class LdAugmentation(ABC):
     """Base class for label-dependent augmentations."""
 
-    @jit.script_method
+    @abstractmethod
     def _augment(self, data: Tensor, labels: Tensor) -> Tensor:
         """Augment the input data in a label-dependent fashion.
 
@@ -24,7 +24,7 @@ class LdAugmentation(jit.ScriptModule):
         Returns:
             Augmented data.
         """
-        return data
+        pass
 
     def __call__(self, data: Tensor, labels: Tensor) -> Tensor:
         """Apply the augment method to the input data.
@@ -42,13 +42,11 @@ class LdAugmentation(jit.ScriptModule):
 class LdColorizer(LdAugmentation):
     """Transform that colorizes images."""
 
-    __constants__ = ["min_val", "max_val", "binarize", "black", "background", "seed"]
-
     def __init__(
         self,
+        scale: float,
         min_val: float = 0.0,
         max_val: float = 1.0,
-        scale: float = 0.02,
         binarize: bool = False,
         background: bool = False,
         black: bool = True,
