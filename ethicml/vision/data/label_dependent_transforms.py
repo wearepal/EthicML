@@ -1,7 +1,6 @@
 """Transformations that act differentlly depending on the label."""
 
 from abc import abstractmethod, ABC
-from typing import List, TypeVar
 
 import numpy as np
 import torch
