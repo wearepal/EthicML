@@ -1,6 +1,6 @@
 """Transformations that act differentlly depending on the label."""
 
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import List, TypeVar
 
 import numpy as np
@@ -9,10 +9,8 @@ from torch import Tensor
 
 __all__ = ["LdAugmentation", "LdColorizer"]
 
-_T = TypeVar("_T", bound="LdAugmentation")
 
-
-class LdAugmentation:
+class LdAugmentation(ABC):
     """Base class for label-dependent augmentations."""
 
     @abstractmethod
@@ -96,7 +94,6 @@ class LdColorizer(LdAugmentation):
 
         self.palette = [np.divide(color, 255) for color in colors]
 
-    @torch.jit.ignore
     def _sample_color(self, mean_color_values: np.ndarray) -> np.ndarray:
         return np.clip(self.random_state.multivariate_normal(mean_color_values, self.scale), 0, 1)
 
@@ -125,11 +122,11 @@ class LdColorizer(LdAugmentation):
 
         color_tensor = (
             Tensor(colors_per_sample).unsqueeze(-1).unsqueeze(-1)
-        )   # type: ignore[call-arg]
+        )  # type: ignore[call-arg]
         if self.background:
             if self.black:
                 # colorful background, black digits
-                augmented_data = (1 - data) * color_tensor   # type: ignore[operator]
+                augmented_data = (1 - data) * color_tensor  # type: ignore[operator]
             else:
                 # colorful background, white digits
                 augmented_data = torch.clamp(data + color_tensor, 0, 1)
