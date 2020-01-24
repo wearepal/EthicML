@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, Prediction
 from .installed_model import InstalledModel
 from .in_algorithm import InAlgorithmAsync
 
@@ -43,7 +43,7 @@ class Kamishima(InstalledModel):
         np.savetxt(file_path, result)
 
     @implements(InAlgorithmAsync)
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")
@@ -85,11 +85,11 @@ class Kamishima(InstalledModel):
             # except RuntimeError:
             #     predictions = np.ones_like(test.y.to_numpy())
 
-        to_return = pd.DataFrame(predictions, columns=["preds"])
+        to_return = pd.Series(predictions)
 
-        if to_return["preds"].min() != to_return["preds"].max():
-            to_return = to_return.replace(to_return["preds"].min(), min_class_label)
-        return to_return
+        if to_return.min() != to_return.max():
+            to_return = to_return.replace(to_return.min(), min_class_label)
+        return Prediction(hard=to_return)
 
     @property
     def name(self) -> str:

@@ -5,7 +5,7 @@ import pandas as pd
 from scipy.optimize import linprog, OptimizeResult
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ethicml.metrics import TPR, TNR
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
 from .post_algorithm import PostAlgorithm
@@ -24,15 +24,15 @@ class Hardt(PostAlgorithm):
     @implements(PostAlgorithm)
     def run(
         self,
-        train_predictions: pd.DataFrame,
+        train_predictions: Prediction,
         train: DataTuple,
-        test_predictions: pd.DataFrame,
+        test_predictions: Prediction,
         test: TestTuple,
-    ) -> pd.DataFrame:
+    ) -> Prediction:
         model_params = self._fit(train_predictions, train)
         return self._predict(model_params, test_predictions, test)
 
-    def _fit(self, train_predictions: pd.DataFrame, train: DataTuple) -> OptimizeResult:
+    def _fit(self, train_predictions: Prediction, train: DataTuple) -> OptimizeResult:
         # compute basic statistics
         fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()
         fraction_s1 = 1 - fraction_s0
@@ -83,7 +83,7 @@ class Hardt(PostAlgorithm):
         mask_s1 = train.s[train.s.columns[0]].to_numpy() == 1
         mask_s0 = train.s[train.s.columns[0]].to_numpy() == 0
 
-        train_preds_numpy: np.ndarray = train_predictions[train_predictions.columns[0]].to_numpy()
+        train_preds_numpy: np.ndarray = train_predictions.hard.to_numpy()
 
         sconst = np.ravel(train_preds_numpy[mask_s1] == self._favorable_label)
         sflip = np.ravel(train_preds_numpy[mask_s1] == self._unfavorable_label)
@@ -132,15 +132,15 @@ class Hardt(PostAlgorithm):
         return linprog(coeffs, A_ub=inequalilty_constraint_matrix, b_ub=b_ub, A_eq=a_eq, b_eq=b_eq)
 
     def _predict(
-        self, model_params: OptimizeResult, test_predictions: pd.DataFrame, test: TestTuple
-    ) -> pd.DataFrame:
+        self, model_params: OptimizeResult, test_predictions: Prediction, test: TestTuple
+    ) -> Prediction:
         sp2p, sn2p, op2p, on2p = model_params.x
 
         # Create boolean conditioning vectors for protected groups
         mask_s1 = test.s[test.s.columns[0]].to_numpy() == 1
         mask_s0 = test.s[test.s.columns[0]].to_numpy() == 0
 
-        test_preds_numpy: np.ndarray = test_predictions[test_predictions.columns[0]].to_numpy()
+        test_preds_numpy: np.ndarray = test_predictions.hard.to_numpy()
 
         # Randomly flip labels according to the probabilities in model_params
         self_fair_pred = test_preds_numpy[test.s[test.s.columns[0]].to_numpy() == 0].copy()
@@ -169,7 +169,7 @@ class Hardt(PostAlgorithm):
         new_labels[mask_s1] = self_fair_pred
         new_labels[mask_s0] = othr_fair_pred
 
-        return pd.DataFrame(new_labels, columns=["preds"])
+        return Prediction(hard=pd.Series(new_labels))
 
     @property
     def name(self) -> str:

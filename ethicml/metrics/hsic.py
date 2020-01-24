@@ -3,11 +3,10 @@
 a score of 0 denotes independence
 """
 import math
-import pandas as pd
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction
 from ethicml.metrics.metric import Metric
 
 
@@ -51,17 +50,18 @@ def hsic(
 class Hsic(Metric):
     """See module string."""
 
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """We add the ability to take the average of hsic score.
 
         As for larger datasets it will kill your machine
         """
+        preds = prediction.hard.to_numpy()[:, np.newaxis]
         s_cols = actual.s.columns
         sens_labels = np.array(actual.s[s_cols].to_numpy())
 
         batchs_size = 5000
 
-        together = np.hstack((prediction.to_numpy(), sens_labels)).transpose()
+        together = np.hstack((preds, sens_labels)).transpose()
 
         random = RandomState(seed=888)
         col_idx = random.permutation(together.shape[1])
@@ -71,7 +71,7 @@ class Hsic(Metric):
         prediction_shuffled = together[0]
         label_shuffled = together[1]
 
-        num_batches_float = prediction.shape[0] / batchs_size
+        num_batches_float = preds.shape[0] / batchs_size
         num_batches: int = int(math.ceil(num_batches_float))
 
         batches = []

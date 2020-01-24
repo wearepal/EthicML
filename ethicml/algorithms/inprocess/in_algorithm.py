@@ -4,8 +4,6 @@ from tempfile import TemporaryDirectory
 from typing import List
 from abc import abstractmethod
 
-import pandas as pd
-
 from ethicml.common import implements
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.utility.data_structures import (
@@ -13,8 +11,9 @@ from ethicml.utility.data_structures import (
     TestTuple,
     PathTuple,
     TestPathTuple,
+    Prediction,
     write_as_feather,
-    load_feather,
+    load_prediction,
 )
 
 
@@ -22,7 +21,7 @@ class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
     @abstractmethod
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data.
 
         Args:
@@ -30,7 +29,7 @@ class InAlgorithm(Algorithm):
             test: test data
         """
 
-    def run_test(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run with reduced training set so that it finishes quicker."""
         train_testing = train.get_subset()
         return self.run(train_testing, test)
@@ -40,7 +39,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously."""
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run this asynchronous Algorithm as blocking on the given data.
 
         Args:
@@ -49,7 +48,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         """
         return run_blocking(self.run_async(train, test))
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> pd.DataFrame:
+    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data asynchronously.
 
         Args:
@@ -62,7 +61,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
             pred_path = tmp_path / "predictions.feather"
             cmd = self._script_command(train_paths, test_paths, pred_path)
             await self._call_script(cmd)  # wait for scrip to run
-            return load_feather(pred_path)
+            return load_prediction(pred_path)
 
     @abstractmethod
     def _script_command(

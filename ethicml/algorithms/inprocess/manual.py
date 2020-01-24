@@ -4,7 +4,7 @@ import numpy as np
 
 from ethicml.common import implements
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 
 
 class Corels(InAlgorithm):
@@ -16,7 +16,7 @@ class Corels(InAlgorithm):
     """
 
     @implements(InAlgorithm)
-    def run(self, _: DataTuple, test: TestTuple) -> pd.DataFrame:
+    def run(self, _: DataTuple, test: TestTuple) -> Prediction:
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
         age = test.x["age-num"].to_numpy()
@@ -27,7 +27,7 @@ class Corels(InAlgorithm):
         condition2 = (age >= 21) & (age <= 23) & (priors >= 2) & (priors <= 3)
         condition3 = priors > 3
         pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
-        return pd.DataFrame(pred, columns=["preds"])
+        return Prediction(hard=pd.Series(pred))
 
     @property
     def name(self) -> str:

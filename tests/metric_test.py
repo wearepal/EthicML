@@ -1,12 +1,11 @@
 """Test that we can get some metrics on predictions"""
 
 from typing import Tuple
-import pandas as pd
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran
-from ethicml.utility import DataTuple
+from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran, LRCV
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from ethicml.data import Adult, NonBinaryToy, load_data
 from ethicml.evaluators import (
     diff_per_sensitive_attribute,
@@ -21,6 +20,7 @@ from ethicml.metrics import (
     BCR,
     CV,
     F1,
+    GetInfo,
     Metric,
     NMI,
     PPV,
@@ -47,7 +47,7 @@ def test_get_score_of_predictions(name: str, metric: Metric, expected_value: flo
     """test get acc of predictions"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     assert metric.name == name
     score = metric.score(predictions, test)
     assert score == approx(expected_value, abs=0.001)
@@ -57,7 +57,7 @@ def test_mni_preds_and_s():
     """test mni preds and s"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     acc: Metric = NMI(base="s")
     assert acc.name == "NMI preds and s"
     score = acc.score(predictions, test)
@@ -68,7 +68,7 @@ def test_accuracy_per_sens_attr():
     """test accuracy per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     assert acc_per_sens == {"s_0": 0.905, "s_1": 0.875}
 
@@ -77,7 +77,7 @@ def test_anti_spurious() -> None:
     """test anti-spurious"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     metric: Metric = AS()
     assert metric.name == "anti_spurious"
     score = metric.score(predictions, test)
@@ -88,7 +88,7 @@ def test_probpos_per_sens_attr():
     """test probpos per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
     assert acc_per_sens == {"s_0": 0.335, "s_1": 0.67}
 
@@ -96,8 +96,8 @@ def test_probpos_per_sens_attr():
 def test_proboutcome_per_sens_attr():
     """test proboutcome per sens attr"""
     train, test = get_train_test()
-    model: InAlgorithm = LRProb()
-    predictions: pd.DataFrame = model.run(train, test)
+    model: LRProb = LRProb()
+    predictions: SoftPrediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbOutcome())
     assert acc_per_sens == {
         "s_0": pytest.approx(0.372, abs=0.001),
@@ -105,11 +105,22 @@ def test_proboutcome_per_sens_attr():
     }
 
 
+def test_get_info():
+    """test get info"""
+    train, test = get_train_test()
+    model: LRCV = LRCV()
+    predictions: Prediction = model.run(train, test)
+    metric: Metric = GetInfo(key="C")
+    assert metric.name == "C"
+    score = metric.score(predictions, test)
+    assert score == pytest.approx(0.359, abs=0.001)
+
+
 def test_probneg_per_sens_attr():
     """test probneg per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbNeg())
     assert acc_per_sens == {"s_0": 0.665, "s_1": 0.33}
 
@@ -120,7 +131,7 @@ def test_acc_per_nonbinary_sens():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
 
     test_dict = {
@@ -217,7 +228,7 @@ def test_acc_per_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
     test_dict = {
         "race_Amer-Indian-Eskimo_0": pytest.approx(0.78, abs=0.01),
@@ -240,7 +251,7 @@ def test_tpr_diff():
     """test tpr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {"s_0": pytest.approx(0.84, abs=0.01), "s_1": pytest.approx(0.88, abs=0.01)}
@@ -253,7 +264,7 @@ def test_get_nmi_of_predictions():
     """test get nmi of predictions"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     nmi: Metric = NMI()
     assert nmi.name == "NMI preds and y"
     score = nmi.score(predictions, test)
@@ -264,7 +275,7 @@ def test_nmi_diff():
     """test nmi diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, NMI())
     assert NMI().name == "NMI preds and y"
     assert nmis == {"s_0": pytest.approx(0.52, abs=0.01), "s_1": pytest.approx(0.42, abs=0.01)}
@@ -276,7 +287,7 @@ def test_ppv_diff():
     """test ppv diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, PPV())
     assert PPV().name == "PPV"
     assert results == {"s_0": pytest.approx(0.88, abs=0.01), "s_1": pytest.approx(0.93, abs=0.01)}
@@ -288,7 +299,7 @@ def test_npv_diff():
     """test npv diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, NPV())
     assert NPV().name == "NPV"
     assert results == {"s_0": pytest.approx(0.91, abs=0.01), "s_1": pytest.approx(0.75, abs=0.01)}
@@ -300,7 +311,7 @@ def test_bcr_diff():
     """test bcr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, BCR())
     assert BCR().name == "BCR"
     assert results == {"s_0": pytest.approx(0.89, abs=0.01), "s_1": pytest.approx(0.86, abs=0.01)}
@@ -312,7 +323,7 @@ def test_cv():
     """test cv"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     cross_val = CV()
     score = cross_val.score(predictions, test)
     assert CV().name == "CV"
@@ -323,7 +334,7 @@ def test_theil():
     """test theil"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     theil = Theil()
     score = theil.score(predictions, test)
     assert Theil().name == "Theil_Index"
@@ -346,7 +357,7 @@ def test_theil_per_sens_attr():
     """test theil per sens attr"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     theil_per_sens = metric_per_sensitive_attribute(predictions, test, Theil())
     assert theil_per_sens == {
         "s_0": pytest.approx(0.07, abs=0.01),
@@ -358,7 +369,7 @@ def test_hsic():
     """test hsic"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     hsic = Hsic()
     score = hsic.score(predictions, test)
     assert Hsic().name == "HSIC"
@@ -369,7 +380,7 @@ def test_use_appropriate_metric():
     """test use appropriate metric"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     with pytest.raises(MetricNotApplicable):
         metric_per_sensitive_attribute(predictions, test, CV())
 
@@ -378,7 +389,7 @@ def test_tnr_diff():
     """test tnr diff"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, TNR())
     assert NMI().name == "NMI preds and y"
     assert nmis == {"s_0": pytest.approx(0.93, abs=0.01), "s_1": pytest.approx(0.84, abs=0.01)}
@@ -390,7 +401,7 @@ def test_run_metrics():
     """test run metrics"""
     train, test = get_train_test()
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run(train, test)
+    predictions: Prediction = model.run(train, test)
     results = run_metrics(predictions, test, [CV()], [TPR()])
     assert len(results) == 5
     assert results["TPR_s_0"] == approx(0.842857, RTOL)
@@ -406,7 +417,7 @@ def test_nmi_diff_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     nmis = metric_per_sensitive_attribute(predictions, test, NMI())
     assert NMI().name == "NMI preds and y"
     test_dict = {
@@ -459,7 +470,7 @@ def test_tpr_diff_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
@@ -512,7 +523,7 @@ def test_tpr_ratio_non_binary_race():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
@@ -565,7 +576,7 @@ def test_nb_acc():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     acc_score = Accuracy().score(predictions, test)
     assert acc_score == 0.1
     accs = metric_per_sensitive_attribute(predictions, test, Accuracy())
@@ -584,7 +595,7 @@ def test_nb_tpr():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     tpr_score = TPR(pos_class=1).score(predictions, test)
     assert tpr_score == 0.0
     tpr_score = TPR(pos_class=2).score(predictions, test)
@@ -605,7 +616,7 @@ def test_nb_tpr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k, z) for k, z in zip(predictions.values, test.y.values) if k != z]))
+    print(list([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z]))
 
     tpr_score = TPR(pos_class=1).score(predictions, test)
     assert tpr_score == 1.0
@@ -631,7 +642,7 @@ def test_nb_tnr():
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
-    predictions: pd.DataFrame = model.run_test(train, test)
+    predictions: Prediction = model.run_test(train, test)
     tnr_score = TNR(pos_class=1).score(predictions, test)
     assert tnr_score == 1.0
     tnr_score = TNR(pos_class=2).score(predictions, test)
@@ -652,7 +663,7 @@ def test_nb_tnr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k, z) for k, z in zip(predictions.values, test.y.values) if k != z]))
+    print(list([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z]))
 
     tnr_score = TNR(pos_class=1).score(predictions, test)
     assert tnr_score == 1.0

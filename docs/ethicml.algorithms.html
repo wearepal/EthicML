@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">ethicml.vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
 </ul>
 
@@ -158,7 +159,7 @@
             
   <div class="section" id="module-ethicml.algorithms">
 <span id="ethicml-algorithms"></span><h1>ethicml.algorithms<a class="headerlink" href="#module-ethicml.algorithms" title="Permalink to this headline">¶</a></h1>
-<p>Definitions of algorithms</p>
+<p>Definitions of algorithms.</p>
 <p><strong>Classes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -167,10 +168,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
-<td><p>Base class for Algorithms</p></td>
+<td><p>Base class for Algorithms.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync" title="ethicml.algorithms.AlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmAsync</span></code></a></p></td>
-<td><p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
+<td><p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -182,7 +183,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.run_blocking" title="ethicml.algorithms.run_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_blocking</span></code></a>(promise, Any, _T])</p></td>
-<td><p>Run an asynchronous process as a blocking process</p></td>
+<td><p>Run an asynchronous process as a blocking process.</p></td>
 </tr>
 </tbody>
 </table>
@@ -190,7 +191,7 @@
 <dt id="ethicml.algorithms.Algorithm">
 <em class="property">class </em><code class="sig-name descname">Algorithm</code><a class="headerlink" href="#ethicml.algorithms.Algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<p>Base class for Algorithms</p>
+<p>Base class for Algorithms.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -199,14 +200,14 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.Algorithm.name" title="ethicml.algorithms.Algorithm.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.Algorithm.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.Algorithm.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 </dd></dl>
@@ -215,7 +216,7 @@
 <dt id="ethicml.algorithms.AlgorithmAsync">
 <em class="property">class </em><code class="sig-name descname">AlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p>
+<p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -224,14 +225,14 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync.name" title="ethicml.algorithms.AlgorithmAsync.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.AlgorithmAsync.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 </dd></dl>
@@ -239,7 +240,7 @@
 <dl class="function">
 <dt id="ethicml.algorithms.run_blocking">
 <code class="sig-name descname">run_blocking</code><span class="sig-paren">(</span><em class="sig-param">promise: Coroutine[Any, Any, _T]</em><span class="sig-paren">)</span> &#x2192; _T<a class="headerlink" href="#ethicml.algorithms.run_blocking" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run an asynchronous process as a blocking process</p>
+<dd><p>Run an asynchronous process as a blocking process.</p>
 </dd></dl>
 
 </div>

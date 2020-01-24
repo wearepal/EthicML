@@ -122,14 +122,6 @@ def test_load_german_ordered():
     assert (1000, 1) == data.y.shape
 
 
-def test_load_adult_explicitly_sex():
-    """test load adult explicitly sex"""
-    data: DataTuple = load_data(Adult("Sex"))
-    assert (45222, 101) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
-
-
 def test_load_compas_explicitly_sex():
     """test load compas explicitly sex"""
     data: DataTuple = load_data(Compas("Sex"))
@@ -156,6 +148,14 @@ def test_load_credit_feature_length():
     assert len(Credit().continuous_features) == 20
     assert data.s.shape == (30000, 1)
     assert data.y.shape == (30000, 1)
+
+
+def test_load_adult_explicitly_sex():
+    """test load adult explicitly sex"""
+    data: DataTuple = load_data(Adult("Sex"))
+    assert (45222, 101) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert (45222, 1) == data.y.shape
 
 
 def test_load_adult_race():
@@ -211,6 +211,21 @@ def test_race_feature_split():
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
+
+
+def test_load_adult_drop_native():
+    """test load adult drop native"""
+    adult = Adult("Sex", binarize_nationality=True)
+    assert adult.name == "Adult Sex, binary nationality"
+    assert "native-country_United-States" in adult.discrete_features
+    assert "native-country_Canada" not in adult.discrete_features
+
+    data: DataTuple = load_data(adult)
+    assert (45222, 61) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "native-country_United-States" in data.x.columns
+    assert "native-country_Canada" not in data.x.columns
 
 
 def test_additional_columns_load():

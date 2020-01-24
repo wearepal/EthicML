@@ -1,11 +1,9 @@
 """For assessing Nomalized Mutual Information."""
 
-import pandas as pd
-
 from sklearn.metrics import normalized_mutual_info_score as nmis
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction
 from .metric import Metric
 
 
@@ -16,16 +14,18 @@ class NMI(Metric):
         """Init NMI."""
         super().__init__(pos_class=pos_class)
         if base not in ["s", "y"]:
-            raise NotImplementedError("Can only calculate NMI of predictions with regard to y or s")
+            raise NotImplementedError(
+                "Can only calculate NMI of prediction.hards with regard to y or s"
+            )
         self.base = base
 
     @implements(Metric)
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
         if self.base == "y":
             base_values = actual.y.to_numpy().flatten()
         else:
             base_values = actual.s.to_numpy().flatten()
-        return nmis(base_values, prediction.to_numpy().flatten(), average_method="geometric")
+        return nmis(base_values, prediction.hard.to_numpy().flatten(), average_method="geometric")
 
     @property
     def name(self) -> str:

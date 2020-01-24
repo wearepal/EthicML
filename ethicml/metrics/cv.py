@@ -1,10 +1,8 @@
 """For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))."""
 
-import pandas as pd
-
 from ethicml.common import implements
 from ethicml.metrics.prob_pos import ProbPos
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility.data_structures import DataTuple, Prediction
 from .metric import Metric
 
 
@@ -12,7 +10,7 @@ class CV(Metric):
     """Calder-Verwer."""
 
     @implements(Metric)
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
         from ethicml.evaluators.per_sensitive_attribute import (
             metric_per_sensitive_attribute,
             diff_per_sensitive_attribute,
@@ -41,7 +39,7 @@ class AbsCV(CV):
     """
 
     @implements(Metric)
-    def score(self, prediction: pd.DataFrame, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)
         if cv_score > 1:

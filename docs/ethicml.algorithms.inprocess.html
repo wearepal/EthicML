@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">ethicml.vision</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">ethicml.visualisation</a></li>
 </ul>
 
@@ -158,7 +159,7 @@
             
   <div class="section" id="module-ethicml.algorithms.inprocess">
 <span id="ethicml-algorithms-inprocess"></span><h1>ethicml.algorithms.inprocess<a class="headerlink" href="#module-ethicml.algorithms.inprocess" title="Permalink to this headline">¶</a></h1>
-<p>In-process algorithms take training data and make predictions</p>
+<p>In-process algorithms take training data and make predictions.</p>
 <p><strong>Classes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -167,67 +168,67 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal" title="ethicml.algorithms.inprocess.Agarwal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Agarwal</span></code></a>(fairness, , ][DP, EqOp, EqOd] =, …)</p></td>
-<td><p>Agarwal class</p></td>
+<td><p>Agarwal class.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm" title="ethicml.algorithms.inprocess.InAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a></p></td>
-<td><p>Abstract Base Class for algorithms that run in the middle of the pipeline</p></td>
+<td><p>Abstract Base Class for algorithms that run in the middle of the pipeline.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="ethicml.algorithms.inprocess.InAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithmAsync</span></code></a></p></td>
-<td><p>In-Algorithm that can be run blocking and asynchronously</p></td>
+<td><p>In-Algorithm that can be run blocking and asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel" title="ethicml.algorithms.inprocess.InstalledModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InstalledModel</span></code></a>(dir_name, top_dir, url, …)</p></td>
-<td><p>the model that does the magic</p></td>
+<td><p>the model that does the magic.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT" title="ethicml.algorithms.inprocess.GPyT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyT</span></code></a>([s_as_input, flags, code_dir])</p></td>
-<td><p>Normal GP model</p></td>
+<td><p>Normal GP model.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar" title="ethicml.algorithms.inprocess.GPyTDemPar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyTDemPar</span></code></a>([target_acceptance, …])</p></td>
-<td><p>GP algorithm which enforces demographic parity</p></td>
+<td><p>GP algorithm which enforces demographic parity.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds" title="ethicml.algorithms.inprocess.GPyTEqOdds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GPyTEqOdds</span></code></a>([average_prediction, tpr, …])</p></td>
-<td><p>GP algorithm which enforces equality of opportunity</p></td>
+<td><p>GP algorithm which enforces equality of opportunity.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima" title="ethicml.algorithms.inprocess.Kamishima"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kamishima</span></code></a>(eta)</p></td>
 <td><p>Model that calls Kamishima’s code.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran" title="ethicml.algorithms.inprocess.Kamiran"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kamiran</span></code></a>(classifier, C, kernel)</p></td>
-<td><p>Kamiran and Calders 2012</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran" title="ethicml.algorithms.inprocess.Kamiran"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Kamiran</span></code></a>(classifier, ][LR, SVM] =, C, kernel)</p></td>
+<td><p>Kamiran and Calders 2012.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR" title="ethicml.algorithms.inprocess.LR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LR</span></code></a>(C)</p></td>
-<td><p>Logistic regression with hard predictions</p></td>
+<td><p>Logistic regression with hard predictions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV" title="ethicml.algorithms.inprocess.LRCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRCV</span></code></a></p></td>
-<td><p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p></td>
+<td><p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb" title="ethicml.algorithms.inprocess.LRProb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LRProb</span></code></a>(C)</p></td>
-<td><p>Logistic regression with soft output</p></td>
+<td><p>Logistic regression with soft output.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM" title="ethicml.algorithms.inprocess.SVM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SVM</span></code></a>(C, kernel)</p></td>
-<td><p>Support Vector Machine</p></td>
+<td><p>Support Vector Machine.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority" title="ethicml.algorithms.inprocess.Majority"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Majority</span></code></a></p></td>
-<td><p>Simply returns the majority label from the train set</p></td>
+<td><p>Simply returns the majority label from the train set.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP" title="ethicml.algorithms.inprocess.MLP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MLP</span></code></a>(hidden_layer_sizes, activation, , , …)</p></td>
-<td><p>Multi-layer Perceptron</p></td>
+<td><p>Multi-layer Perceptron.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels" title="ethicml.algorithms.inprocess.Corels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Corels</span></code></a></p></td>
-<td><p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p></td>
+<td><p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="ethicml.algorithms.inprocess.ZafarAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarAccuracy</span></code></a>(gamma)</p></td>
-<td><p>Zafar with fairness</p></td>
+<td><p>Zafar with fairness.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline" title="ethicml.algorithms.inprocess.ZafarBaseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarBaseline</span></code></a>()</p></td>
-<td><p>Zafar without fairness</p></td>
+<td><p>Zafar without fairness.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds" title="ethicml.algorithms.inprocess.ZafarEqOdds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarEqOdds</span></code></a>(tau, mu, eps)</p></td>
-<td><p>Zafar for Equalised Odds</p></td>
+<td><p>Zafar for Equalised Odds.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp" title="ethicml.algorithms.inprocess.ZafarEqOpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarEqOpp</span></code></a>(tau, mu, eps)</p></td>
-<td><p>Zafar for Equality of Opportunity</p></td>
+<td><p>Zafar for Equality of Opportunity.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness" title="ethicml.algorithms.inprocess.ZafarFairness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ZafarFairness</span></code></a>(c)</p></td>
-<td><p>Zafar with fairness</p></td>
+<td><p>Zafar with fairness.</p></td>
 </tr>
 </tbody>
 </table>
@@ -235,7 +236,8 @@
 <dt id="ethicml.algorithms.inprocess.Agarwal">
 <em class="property">class </em><code class="sig-name descname">Agarwal</code><span class="sig-paren">(</span><em class="sig-param">fairness: typing_extensions.Literal['DP'</em>, <em class="sig-param">'EqOp'</em>, <em class="sig-param">'EqOd'][DP</em>, <em class="sig-param">EqOp</em>, <em class="sig-param">EqOd] = 'DP'</em>, <em class="sig-param">classifier: typing_extensions.Literal['LR'</em>, <em class="sig-param">'SVM'][LR</em>, <em class="sig-param">SVM] = 'LR'</em>, <em class="sig-param">eps: float = 0.1</em>, <em class="sig-param">iters: int = 50</em>, <em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Agarwal class</p>
+<p>Agarwal class.</p>
+<p>Init Agarwal.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -244,7 +246,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.name" title="ethicml.algorithms.inprocess.Agarwal.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -256,26 +258,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run" title="ethicml.algorithms.inprocess.Agarwal.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run_async" title="ethicml.algorithms.inprocess.Agarwal.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Agarwal.run_test" title="ethicml.algorithms.inprocess.Agarwal.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Agarwal.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Agarwal.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -289,13 +291,21 @@
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Agarwal.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Agarwal.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Agarwal.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -304,7 +314,7 @@
 <dt id="ethicml.algorithms.inprocess.InAlgorithm">
 <em class="property">class </em><code class="sig-name descname">InAlgorithm</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
-<p>Abstract Base Class for algorithms that run in the middle of the pipeline</p>
+<p>Abstract Base Class for algorithms that run in the middle of the pipeline.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -313,7 +323,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.name" title="ethicml.algorithms.inprocess.InAlgorithm.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
@@ -325,23 +335,23 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.run" title="ethicml.algorithms.inprocess.InAlgorithm.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithm.run_test" title="ethicml.algorithms.inprocess.InAlgorithm.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithm.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithm.run">
 <em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -355,7 +365,7 @@
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithm.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithm.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -364,7 +374,7 @@
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync">
 <em class="property">class </em><code class="sig-name descname">InAlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></p>
-<p>In-Algorithm that can be run blocking and asynchronously</p>
+<p>In-Algorithm that can be run blocking and asynchronously.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -373,7 +383,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.name" title="ethicml.algorithms.inprocess.InAlgorithmAsync.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
@@ -385,26 +395,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_async" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_test" title="ethicml.algorithms.inprocess.InAlgorithmAsync.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync.name">
 <em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -418,13 +428,21 @@
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InAlgorithmAsync.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InAlgorithmAsync.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -433,8 +451,8 @@
 <dt id="ethicml.algorithms.inprocess.InstalledModel">
 <em class="property">class </em><code class="sig-name descname">InstalledModel</code><span class="sig-paren">(</span><em class="sig-param">dir_name: str</em>, <em class="sig-param">top_dir: str</em>, <em class="sig-param">url: Optional[str] = None</em>, <em class="sig-param">executable: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>the model that does the magic</p>
-<p>Download code from given URL and create a Pip environment with the Pipfile found in the code</p>
+<p>the model that does the magic.</p>
+<p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -454,7 +472,7 @@ simply the last part of the repository URL)</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.name" title="ethicml.algorithms.inprocess.InstalledModel.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -466,35 +484,35 @@ simply the last part of the repository URL)</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.remove" title="ethicml.algorithms.inprocess.InstalledModel.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run" title="ethicml.algorithms.inprocess.InstalledModel.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run_async" title="ethicml.algorithms.inprocess.InstalledModel.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.InstalledModel.run_test" title="ethicml.algorithms.inprocess.InstalledModel.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -508,13 +526,21 @@ simply the last part of the repository URL)</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.InstalledModel.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.InstalledModel.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -523,7 +549,8 @@ simply the last part of the repository URL)</p></li>
 <dt id="ethicml.algorithms.inprocess.GPyT">
 <em class="property">class </em><code class="sig-name descname">GPyT</code><span class="sig-paren">(</span><em class="sig-param">s_as_input=True</em>, <em class="sig-param">flags=None</em>, <em class="sig-param">code_dir=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.installed_model.InstalledModel</span></code></p>
-<p>Normal GP model</p>
+<p>Normal GP model.</p>
+<p>Instantiate the model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -542,7 +569,7 @@ then the code is downloaded from GitHub</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.name" title="ethicml.algorithms.inprocess.GPyT.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for the algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -554,35 +581,35 @@ then the code is downloaded from GitHub</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.remove" title="ethicml.algorithms.inprocess.GPyT.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run" title="ethicml.algorithms.inprocess.GPyT.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run_async" title="ethicml.algorithms.inprocess.GPyT.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyT.run_test" title="ethicml.algorithms.inprocess.GPyT.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for the algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -596,13 +623,21 @@ then the code is downloaded from GitHub</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyT.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyT.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -611,7 +646,8 @@ then the code is downloaded from GitHub</p></li>
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar">
 <em class="property">class </em><code class="sig-name descname">GPyTDemPar</code><span class="sig-paren">(</span><em class="sig-param">target_acceptance=None</em>, <em class="sig-param">average_prediction=False</em>, <em class="sig-param">target_mode=2</em>, <em class="sig-param">marginal=False</em>, <em class="sig-param">precision_target=1.0</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.fair_gpyt.GPyT</span></code></p>
-<p>GP algorithm which enforces demographic parity</p>
+<p>GP algorithm which enforces demographic parity.</p>
+<p>Instantiate the model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -633,7 +669,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.name" title="ethicml.algorithms.inprocess.GPyTDemPar.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for the algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -645,35 +681,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.remove" title="ethicml.algorithms.inprocess.GPyTDemPar.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run" title="ethicml.algorithms.inprocess.GPyTDemPar.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_async" title="ethicml.algorithms.inprocess.GPyTDemPar.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_test" title="ethicml.algorithms.inprocess.GPyTDemPar.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for the algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -687,13 +723,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTDemPar.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTDemPar.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -702,7 +746,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds">
 <em class="property">class </em><code class="sig-name descname">GPyTEqOdds</code><span class="sig-paren">(</span><em class="sig-param">average_prediction=False</em>, <em class="sig-param">tpr=None</em>, <em class="sig-param">marginal=False</em>, <em class="sig-param">tnr0=None</em>, <em class="sig-param">tnr1=None</em>, <em class="sig-param">tpr0=None</em>, <em class="sig-param">tpr1=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.fair_gpyt.GPyT</span></code></p>
-<p>GP algorithm which enforces equality of opportunity</p>
+<p>GP algorithm which enforces equality of opportunity.</p>
+<p>Init GP with eq. odds.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -711,7 +756,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.name" title="ethicml.algorithms.inprocess.GPyTEqOdds.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -723,35 +768,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.remove" title="ethicml.algorithms.inprocess.GPyTEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run" title="ethicml.algorithms.inprocess.GPyTEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_async" title="ethicml.algorithms.inprocess.GPyTEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_test" title="ethicml.algorithms.inprocess.GPyTEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -765,13 +810,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.GPyTEqOdds.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.GPyTEqOdds.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -780,8 +833,10 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.Kamishima">
 <em class="property">class </em><code class="sig-name descname">Kamishima</code><span class="sig-paren">(</span><em class="sig-param">eta: float = 1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.installed_model.InstalledModel</span></code></p>
-<p>Model that calls Kamishima’s code. Based on Algo-Fairness
+<p>Model that calls Kamishima’s code.</p>
+<p>Based on Algo-Fairness
 <a class="reference external" href="https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py">https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py</a></p>
+<p>Init Kamishima.</p>
 <p><strong>Methods</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -790,19 +845,19 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format" title="ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_file_in_kamishima_format</span></code></a>(data, …)</p></td>
-<td><p>Create a text file with the data</p></td>
+<td><p>Create a text file with the data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.remove" title="ethicml.algorithms.inprocess.Kamishima.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run" title="ethicml.algorithms.inprocess.Kamishima.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run_async" title="ethicml.algorithms.inprocess.Kamishima.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.run_test" title="ethicml.algorithms.inprocess.Kamishima.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
@@ -814,32 +869,32 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamishima.name" title="ethicml.algorithms.inprocess.Kamishima.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format">
 <em class="property">static </em><code class="sig-name descname">create_file_in_kamishima_format</code><span class="sig-paren">(</span><em class="sig-param">data: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], file_path: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a text file with the data</p>
+<dd><p>Create a text file with the data.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -853,22 +908,31 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamishima.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamishima.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.Kamiran">
-<em class="property">class </em><code class="sig-name descname">Kamiran</code><span class="sig-paren">(</span><em class="sig-param">classifier: str = 'LR'</em>, <em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Kamiran and Calders 2012</p>
+<em class="property">class </em><code class="sig-name descname">Kamiran</code><span class="sig-paren">(</span><em class="sig-param">classifier: typing_extensions.Literal['LR'</em>, <em class="sig-param">'SVM'][LR</em>, <em class="sig-param">SVM] = 'LR'</em>, <em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Kamiran and Calders 2012.</p>
+<p>Init Kamiran.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -877,7 +941,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.name" title="ethicml.algorithms.inprocess.Kamiran.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -889,26 +953,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run" title="ethicml.algorithms.inprocess.Kamiran.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run_async" title="ethicml.algorithms.inprocess.Kamiran.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run_test" title="ethicml.algorithms.inprocess.Kamiran.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Kamiran.run_test" title="ethicml.algorithms.inprocess.Kamiran.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamiran.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamiran.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -920,15 +981,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.Kamiran.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.Kamiran.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Kamiran.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -936,8 +991,9 @@ predictions</p></li>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.LR">
 <em class="property">class </em><code class="sig-name descname">LR</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[float] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LR" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Logistic regression with hard predictions</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Logistic regression with hard predictions.</p>
+<p>Init LR.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -946,7 +1002,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.name" title="ethicml.algorithms.inprocess.LR.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -958,26 +1014,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run" title="ethicml.algorithms.inprocess.LR.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run_async" title="ethicml.algorithms.inprocess.LR.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run_test" title="ethicml.algorithms.inprocess.LR.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LR.run_test" title="ethicml.algorithms.inprocess.LR.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LR.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LR.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LR.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LR.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -989,15 +1042,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.LR.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LR.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.LR.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LR.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1005,8 +1052,8 @@ predictions</p></li>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.LRCV">
 <em class="property">class </em><code class="sig-name descname">LRCV</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1015,7 +1062,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.name" title="ethicml.algorithms.inprocess.LRCV.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1027,26 +1074,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run" title="ethicml.algorithms.inprocess.LRCV.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run_async" title="ethicml.algorithms.inprocess.LRCV.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run_test" title="ethicml.algorithms.inprocess.LRCV.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRCV.run_test" title="ethicml.algorithms.inprocess.LRCV.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRCV.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRCV.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1058,15 +1102,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.LRCV.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRCV.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRCV.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1074,8 +1112,9 @@ predictions</p></li>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.LRProb">
 <em class="property">class </em><code class="sig-name descname">LRProb</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[int] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Logistic regression with soft output</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Logistic regression with soft output.</p>
+<p>Init LRProb.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1084,7 +1123,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.name" title="ethicml.algorithms.inprocess.LRProb.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1096,26 +1135,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run" title="ethicml.algorithms.inprocess.LRProb.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run_async" title="ethicml.algorithms.inprocess.LRProb.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run_test" title="ethicml.algorithms.inprocess.LRProb.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.LRProb.run_test" title="ethicml.algorithms.inprocess.LRProb.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRProb.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRProb.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1127,15 +1163,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.LRProb.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.LRProb.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.LRProb.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1143,8 +1173,9 @@ predictions</p></li>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.SVM">
 <em class="property">class </em><code class="sig-name descname">SVM</code><span class="sig-paren">(</span><em class="sig-param">C: Optional[float] = None</em>, <em class="sig-param">kernel: Optional[str] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.SVM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Support Vector Machine</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Support Vector Machine.</p>
+<p>Init SVM.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1153,7 +1184,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.name" title="ethicml.algorithms.inprocess.SVM.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1165,26 +1196,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run" title="ethicml.algorithms.inprocess.SVM.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test, …)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run_async" title="ethicml.algorithms.inprocess.SVM.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run_test" title="ethicml.algorithms.inprocess.SVM.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.SVM.run_test" title="ethicml.algorithms.inprocess.SVM.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.SVM.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.SVM.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.SVM.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple, test: Union[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.SVM.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1196,15 +1224,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.SVM.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.SVM.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.SVM.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.SVM.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1213,7 +1235,7 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.Majority">
 <em class="property">class </em><code class="sig-name descname">Majority</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
-<p>Simply returns the majority label from the train set</p>
+<p>Simply returns the majority label from the train set.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1222,7 +1244,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.name" title="ethicml.algorithms.inprocess.Majority.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1234,23 +1256,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.run" title="ethicml.algorithms.inprocess.Majority.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Majority.run_test" title="ethicml.algorithms.inprocess.Majority.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Majority.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Majority.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Majority.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Majority.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1264,7 +1286,7 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Majority.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Majority.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1272,8 +1294,9 @@ predictions</p></li>
 <dl class="class">
 <dt id="ethicml.algorithms.inprocess.MLP">
 <em class="property">class </em><code class="sig-name descname">MLP</code><span class="sig-paren">(</span><em class="sig-param">hidden_layer_sizes: Optional[Tuple[int]] = None</em>, <em class="sig-param">activation: Optional[typing_extensions.Literal['identity'</em>, <em class="sig-param">'logistic'</em>, <em class="sig-param">'tanh'</em>, <em class="sig-param">'relu'][identity</em>, <em class="sig-param">logistic</em>, <em class="sig-param">tanh</em>, <em class="sig-param">relu]] = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.MLP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></p>
-<p>Multi-layer Perceptron</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
+<p>Multi-layer Perceptron.</p>
+<p>Init MLP.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1282,7 +1305,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.name" title="ethicml.algorithms.inprocess.MLP.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1294,26 +1317,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run" title="ethicml.algorithms.inprocess.MLP.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run_async" title="ethicml.algorithms.inprocess.MLP.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run_test" title="ethicml.algorithms.inprocess.MLP.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.MLP.run_test" title="ethicml.algorithms.inprocess.MLP.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.MLP.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.MLP.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.MLP.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.MLP.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1325,15 +1345,9 @@ predictions</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.algorithms.inprocess.MLP.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.MLP.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="ethicml.algorithms.inprocess.MLP.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.MLP.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1342,7 +1356,7 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.Corels">
 <em class="property">class </em><code class="sig-name descname">Corels</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Corels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></p>
-<p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset</p>
+<p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset.</p>
 <p>This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.</p>
 <p>From this paper: <a class="reference external" href="https://arxiv.org/abs/1704.01701">https://arxiv.org/abs/1704.01701</a></p>
 <p><strong>Attributes</strong></p>
@@ -1353,7 +1367,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.name" title="ethicml.algorithms.inprocess.Corels.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1365,23 +1379,23 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.run" title="ethicml.algorithms.inprocess.Corels.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(_, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run Algorithm on the given data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.Corels.run_test" title="ethicml.algorithms.inprocess.Corels.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Corels.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.Corels.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Corels.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">_: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Corels.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1395,7 +1409,7 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.Corels.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.Corels.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1404,7 +1418,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy">
 <em class="property">class </em><code class="sig-name descname">ZafarAccuracy</code><span class="sig-paren">(</span><em class="sig-param">gamma: float = 0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
-<p>Zafar with fairness</p>
+<p>Zafar with fairness.</p>
+<p>Init ZafarAccuracy.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1413,7 +1428,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.name" title="ethicml.algorithms.inprocess.ZafarAccuracy.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1425,35 +1440,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.remove" title="ethicml.algorithms.inprocess.ZafarAccuracy.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run" title="ethicml.algorithms.inprocess.ZafarAccuracy.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_async" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_test" title="ethicml.algorithms.inprocess.ZafarAccuracy.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1467,13 +1482,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarAccuracy.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarAccuracy.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1482,7 +1505,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline">
 <em class="property">class </em><code class="sig-name descname">ZafarBaseline</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
-<p>Zafar without fairness</p>
+<p>Zafar without fairness.</p>
+<p>Init ZafarBaseline.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1491,7 +1515,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.name" title="ethicml.algorithms.inprocess.ZafarBaseline.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1503,35 +1527,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.remove" title="ethicml.algorithms.inprocess.ZafarBaseline.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run" title="ethicml.algorithms.inprocess.ZafarBaseline.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_async" title="ethicml.algorithms.inprocess.ZafarBaseline.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_test" title="ethicml.algorithms.inprocess.ZafarBaseline.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1545,13 +1569,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarBaseline.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarBaseline.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1560,7 +1592,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds">
 <em class="property">class </em><code class="sig-name descname">ZafarEqOdds</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar.ZafarEqOpp</span></code></p>
-<p>Zafar for Equalised Odds</p>
+<p>Zafar for Equalised Odds.</p>
+<p>Init Zafar.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1569,7 +1602,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.name" title="ethicml.algorithms.inprocess.ZafarEqOdds.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1581,35 +1614,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.remove" title="ethicml.algorithms.inprocess.ZafarEqOdds.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run" title="ethicml.algorithms.inprocess.ZafarEqOdds.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_async" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_test" title="ethicml.algorithms.inprocess.ZafarEqOdds.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1623,13 +1656,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOdds.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOdds.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1638,7 +1679,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp">
 <em class="property">class </em><code class="sig-name descname">ZafarEqOpp</code><span class="sig-paren">(</span><em class="sig-param">tau: float = 5.0</em>, <em class="sig-param">mu: float = 1.2</em>, <em class="sig-param">eps: float = 0.0001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
-<p>Zafar for Equality of Opportunity</p>
+<p>Zafar for Equality of Opportunity.</p>
+<p>Init Zafar.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1647,7 +1689,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.name" title="ethicml.algorithms.inprocess.ZafarEqOpp.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1659,35 +1701,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.remove" title="ethicml.algorithms.inprocess.ZafarEqOpp.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run" title="ethicml.algorithms.inprocess.ZafarEqOpp.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_async" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_test" title="ethicml.algorithms.inprocess.ZafarEqOpp.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1701,13 +1743,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarEqOpp.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarEqOpp.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1716,7 +1766,8 @@ predictions</p></li>
 <dt id="ethicml.algorithms.inprocess.ZafarFairness">
 <em class="property">class </em><code class="sig-name descname">ZafarFairness</code><span class="sig-paren">(</span><em class="sig-param">c: float = 0.001</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
-<p>Zafar with fairness</p>
+<p>Zafar with fairness.</p>
+<p>Init ZafarFairness.</p>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -1725,7 +1776,7 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.name" title="ethicml.algorithms.inprocess.ZafarFairness.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm</p></td>
+<td><p>Getter for algorithm name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1737,35 +1788,35 @@ predictions</p></li>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.remove" title="ethicml.algorithms.inprocess.ZafarFairness.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>()</p></td>
-<td><p>Removes the directory that we created in _clone_directory()</p></td>
+<td><p>Removes the directory that we created in _clone_directory().</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run" title="ethicml.algorithms.inprocess.ZafarFairness.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data</p></td>
+<td><p>Run this asynchronous Algorithm as blocking on the given data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_async" title="ethicml.algorithms.inprocess.ZafarFairness.run_async"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_async</span></code></a>(train, test)</p></td>
-<td><p>Run Algorithm on the given data asynchronously</p></td>
+<td><p>Run Algorithm on the given data asynchronously.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.ZafarFairness.run_test" title="ethicml.algorithms.inprocess.ZafarFairness.run_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_test</span></code></a>(train, test)</p></td>
-<td><p>Run with reduced training set so that it finishes quicker</p></td>
+<td><p>Run with reduced training set so that it finishes quicker.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm</p>
+<dd><p>Getter for algorithm name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Removes the directory that we created in _clone_directory()</p>
+<dd><p>Removes the directory that we created in _clone_directory().</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.run">
 <code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data</p>
+<dd><p>Run this asynchronous Algorithm as blocking on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1779,13 +1830,21 @@ predictions</p></li>
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.run_async">
 <em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.run_async" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Algorithm on the given data asynchronously</p>
+<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> – training data</p></li>
+<li><p><strong>test</strong> – test data</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="ethicml.algorithms.inprocess.ZafarFairness.run_test">
 <code class="sig-name descname">run_test</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.inprocess.ZafarFairness.run_test" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker</p>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
 </dd></dl>
 
 </dd></dl>

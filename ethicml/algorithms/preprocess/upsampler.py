@@ -7,7 +7,7 @@ import pandas as pd
 
 from ethicml.common import implements
 from ethicml.algorithms.inprocess import LRProb
-from ethicml.utility import TestTuple, DataTuple
+from ethicml.utility import TestTuple, DataTuple, SoftPrediction
 from .pre_algorithm import PreAlgorithm
 
 
@@ -122,12 +122,12 @@ def upsample(
 
     if strategy == "preferential":
         ranker = LRProb()
-        rank = ranker.run(dataset, dataset)
+        rank: SoftPrediction = ranker.run(dataset, dataset)
 
         selected: List[pd.DataFrame] = []
 
         all_data = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
-        all_data = pd.concat([all_data, rank], axis="columns")
+        all_data = pd.concat([all_data, pd.DataFrame(rank.soft, columns=["preds"])], axis="columns")
 
         for key, val in data.items():
 
