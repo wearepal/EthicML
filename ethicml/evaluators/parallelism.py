@@ -200,17 +200,28 @@ async def _generic_run_in_parallel(
     """Generic version of `run_in_parallel` that allows us to do this with type safety."""
     if not data:
         return []
-    # first start the asynchronous results
-    if async_algos:
-        async_coroutines = arrange_in_parallel(async_algos, data, max_parallel)
 
-    # then get the blocking results
+    print("synchronous algorithms...")
+    # first get the blocking results
+    pbar = tqdm(total=len(blocking_algos) * len(data))
+    blocking_results: List[List[_RT]] = []
     # for each algorithm, first loop over all available datasets and then go on to the next algo
-    blocking_results = [[run(train, test) for train, test in data] for run, name in blocking_algos]
+    for run, name in blocking_algos:
+        temp_results: List[_RT] = []
+        for train, test in data:
+            logging = OrderedDict()
+            logging["model"] = name
+            logging["dataset"] = train.name if train.name is not None else ""
+            pbar.set_postfix(ordered_dict=logging)
+            temp_results.append(run(train, test))
+            pbar.update()
+        blocking_results.append(temp_results)
+    pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
-    # then wait for the asynchronous results to come in
+    print("asynchronous algorithms...")
+    # then start the asynchronous results
     if async_algos:
-        async_results = await async_coroutines
+        async_results = await arrange_in_parallel(async_algos, data, max_parallel)
     else:
         async_results = []
 
