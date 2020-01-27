@@ -13,10 +13,11 @@ from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 
 __all__ = [
+    "BalancedTestSplit",
     "DataSplitter",
     "ProportionalSplit",
-    "SequentialSplit",
     "RandomSplit",
+    "SequentialSplit",
     "train_test_split",
 ]
 
@@ -233,6 +234,75 @@ class ProportionalSplit(RandomSplit):
         assert len(data) == len(train) + len(test)
 
         split_info: Dict[str, float] = {"seed": random_seed}
+
+        return train, test, split_info
+
+
+class BalancedTestSplit(RandomSplit):
+    """Split data such that the test set is balanced and the training set is proportional."""
+
+    @implements(DataSplitter)
+    def __call__(
+        self, data: DataTuple, split_id: int = 0
+    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+        random_seed = self._get_seed(split_id)
+        random = RandomState(seed=random_seed)
+
+        s_col = data.s.columns[0]
+        y_col = data.y.columns[0]
+
+        s_vals: List[int] = list(map(int, data.s[s_col].unique()))
+        y_vals: List[int] = list(map(int, data.y[y_col].unique()))
+
+        train_indexes: List[np.ndarray[np.int64]] = []
+        test_indexes: List[np.ndarray[np.int64]] = []
+
+        num_test: Dict[Tuple[int, int], int] = {}
+        # find out how many samples are available for the test set
+        for s, y in itertools.product(s_vals, y_vals):
+            # find all indices for this group
+            idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+            # how many elements are in this "quadrant"
+            quadrant_size = len(idx)
+            # compute how many elements would be available for the test set
+            num_test[(s, y)] = round(quadrant_size * (1 - self.train_percentage))
+
+        # compute how much we should take for the test set to make it balanced
+        num_test_balanced = {y: min(num_test[(s, y)] for s in s_vals) for y in y_vals}
+
+        num_dropped = 0
+        # iterate over all combinations of s and y
+        for s, y in itertools.product(s_vals, y_vals):
+            # find all indices for this group
+            idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+
+            # shuffle and take subsets
+            random.shuffle(idx)
+            split_indexes: int = round(len(idx) * self.train_percentage)
+            # append index subsets to the list of train indices
+            train_indexes.append(idx[:split_indexes])
+            test_indexes.append(idx[split_indexes : (split_indexes + num_test_balanced[y])])
+            num_dropped += num_test[(s, y)] - num_test_balanced[y]
+
+        train_idx = np.concatenate(train_indexes, axis=0)
+        test_idx = np.concatenate(test_indexes, axis=0)
+
+        train: DataTuple = DataTuple(
+            x=data.x.iloc[train_idx].reset_index(drop=True),
+            s=data.s.iloc[train_idx].reset_index(drop=True),
+            y=data.y.iloc[train_idx].reset_index(drop=True),
+            name=f"{data.name} - Train",
+        )
+
+        test: DataTuple = DataTuple(
+            x=data.x.iloc[test_idx].reset_index(drop=True),
+            s=data.s.iloc[test_idx].reset_index(drop=True),
+            y=data.y.iloc[test_idx].reset_index(drop=True),
+            name=f"{data.name} - Test",
+        )
+
+        unbalanced_test_len = round(len(data) * (1 - self.train_percentage))
+        split_info = {"seed": random_seed, "percent_dropped": num_dropped / unbalanced_test_len}
 
         return train, test, split_info
 
