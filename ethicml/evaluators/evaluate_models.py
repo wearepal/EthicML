@@ -362,7 +362,7 @@ async def evaluate_models_async(
                 "dataset": data_info.dataset_name,
                 "transform": data_info.transform_name,
                 "model": model.name,
-                **split_info,
+                **data_info.split_info,
             }
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 
