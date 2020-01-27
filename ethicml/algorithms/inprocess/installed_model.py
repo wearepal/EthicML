@@ -5,6 +5,7 @@ Say you find a paper from a few years ago with code. It's not unreasonable that 
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
 in its own venv and makes everyone happy.
 """
+import sys
 import os
 from pathlib import Path
 from typing import List, Optional
@@ -77,7 +78,7 @@ class InstalledModel(InAlgorithmAsync):
             environ["PIPENV_YES"] = "true"
             environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
-            subprocess.check_call("pipenv install", env=environ, shell=True)
+            subprocess.check_call([sys.executable, "-m", "pipenv", "install"], env=environ)
 
     def remove(self) -> None:
         """Removes the directory that we created in _clone_directory()."""
