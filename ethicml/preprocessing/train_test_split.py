@@ -286,8 +286,6 @@ class BalancedTestSplit(RandomSplit):
 
         train_idx = np.concatenate(train_indexes, axis=0)
         test_idx = np.concatenate(test_indexes, axis=0)
-        del train_indexes
-        del test_indexes
 
         train: DataTuple = DataTuple(
             x=data.x.iloc[train_idx].reset_index(drop=True),
