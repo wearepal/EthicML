@@ -182,7 +182,6 @@ def single_plot(
     results_df = results.data
     mask_for_dataset = results_df.index.get_level_values("dataset") == dataset
     mask_for_transform = results_df.index.get_level_values("transform") == transform
-    matching_results = results_df.loc[mask_for_dataset & mask_for_transform]
 
     entries: List[DataEntry] = []
     for count, model in enumerate(results_df.index.to_frame()["model"].unique()):
