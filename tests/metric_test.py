@@ -1,6 +1,6 @@
 """Test that we can get some metrics on predictions"""
 
-from typing import Tuple
+from typing import Tuple, NamedTuple
 import pytest
 from pytest import approx
 
@@ -17,6 +17,7 @@ from ethicml.evaluators import (
 from ethicml.metrics import (
     Accuracy,
     AS,
+    BalancedAccuracy,
     BCR,
     CV,
     F1,
@@ -39,9 +40,23 @@ from tests.run_algorithm_test import get_train_test
 RTOL = 1e-5  # relative tolerance when comparing two floats
 
 
-@pytest.mark.parametrize(
-    "name,metric,expected_value", [("Accuracy", Accuracy(), 0.89), ("F1", F1(), 0.893)]
-)
+class MetricTest(NamedTuple):
+    """Define a test for a metric."""
+
+    name: str
+    metric: Metric
+    expected_value: float
+
+
+METRIC_TESTS = [
+    MetricTest(metric=Accuracy(), name="Accuracy", expected_value=0.89),
+    MetricTest(metric=F1(), name="F1", expected_value=0.893),
+    MetricTest(metric=BalancedAccuracy(), name="Balanced Accuracy", expected_value=0.891),
+    MetricTest(metric=NMI(base="s"), name="NMI preds and s", expected_value=0.083),
+]
+
+
+@pytest.mark.parametrize("name,metric,expected_value", METRIC_TESTS)
 def test_get_score_of_predictions(name: str, metric: Metric, expected_value: float) -> None:
     """test get acc of predictions"""
     train, test = get_train_test()
@@ -50,17 +65,6 @@ def test_get_score_of_predictions(name: str, metric: Metric, expected_value: flo
     assert metric.name == name
     score = metric.score(predictions, test)
     assert score == approx(expected_value, abs=0.001)
-
-
-def test_mni_preds_and_s():
-    """test mni preds and s"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    acc: Metric = NMI(base="s")
-    assert acc.name == "NMI preds and s"
-    score = acc.score(predictions, test)
-    assert score == pytest.approx(0.083, abs=0.001)
 
 
 def test_accuracy_per_sens_attr():
