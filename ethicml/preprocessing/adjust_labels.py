@@ -36,8 +36,8 @@ class LabelBinarizer:
 
         y_col = dataset.y.columns[0]
 
-        dataset.y[y_col].replace(self.min_val, 0, inplace=True)
-        dataset.y[y_col].replace(self.max_val, 1, inplace=True)
+        dataset.y[y_col] = dataset.y[y_col].replace(self.min_val, 0)
+        dataset.y[y_col] = dataset.y[y_col].replace(self.max_val, 1)
 
         return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
 
@@ -48,8 +48,8 @@ class LabelBinarizer:
         # make copy of the labels
         labels_copy = labels.copy()
 
-        labels_copy.replace(0, self.min_val, inplace=True)
-        labels_copy.replace(1, self.max_val, inplace=True)
+        labels_copy = labels_copy.replace(0, self.min_val)
+        labels_copy = labels_copy.replace(1, self.max_val)
         return labels_copy
 
     def post(self, dataset: DataTuple) -> DataTuple:

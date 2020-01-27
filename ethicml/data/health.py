@@ -1,19 +1,27 @@
+"""Class to describe features of the Heritage Health dataset."""
+from ethicml.common import implements
 from ethicml.data import Dataset
 
 
 class Health(Dataset):
+    """Heritage Health Dataset."""
+
     @property
     def name(self) -> str:
+        """Getter for dataset name."""
         return "Health"
 
     @property
     def filename(self) -> str:
+        """Getter for filename."""
         return "health.csv"
 
+    @implements(Dataset)
     def __len__(self) -> int:
         return 171067
 
     def __init__(self, split: str = "Sex", discrete_only: bool = False):
+        """Init Heritage Health dataset."""
         super().__init__()
         self.split = split
         self.discrete_only = discrete_only

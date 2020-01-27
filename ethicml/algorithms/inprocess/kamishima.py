@@ -86,6 +86,7 @@ class Kamishima(InstalledModel):
             #     predictions = np.ones_like(test.y.to_numpy())
 
         to_return = pd.Series(predictions)
+        to_return = to_return.astype(int)
 
         if to_return.min() != to_return.max():
             to_return = to_return.replace(to_return.min(), min_class_label)
