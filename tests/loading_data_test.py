@@ -18,6 +18,7 @@ from ethicml.data import (
     NonBinaryToy,
     group_disc_feat_indexes,
 )
+from ethicml.data.health import Health
 from ethicml.utility import DataTuple, concat_dt
 from ethicml.preprocessing import domain_split, query_dt
 
@@ -96,6 +97,15 @@ def test_load_compas():
     assert data.name == "Compas Sex"
 
 
+def test_load_health():
+    """test load health dataset"""
+    data: DataTuple = load_data(Health())
+    assert (171067, 130) == data.x.shape
+    assert (171067, 1) == data.s.shape
+    assert (171067, 1) == data.y.shape
+    assert data.name == "Health"
+
+
 def test_load_sqf():
     """test load sqf"""
     data: DataTuple = load_data(Sqf())
@@ -138,6 +148,16 @@ def test_load_compas_feature_length():
     assert len(Compas().continuous_features) == 5
     assert data.s.shape == (6167, 1)
     assert data.y.shape == (6167, 1)
+
+
+def test_load_health_feature_length():
+    """test load health feature length"""
+    data: DataTuple = load_data(Health())
+    assert len(Health().ordered_features["x"]) == 130
+    assert len(Health().discrete_features) == 12
+    assert len(Health().continuous_features) == 118
+    assert data.s.shape == (171067, 1)
+    assert data.y.shape == (171067, 1)
 
 
 def test_load_credit_feature_length():

@@ -84,7 +84,7 @@ class Dataset(ABC):
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return self._cont_features
+        return filter_features_by_prefixes(self._cont_features, self.features_to_remove)
 
     @continuous_features.setter
     def continuous_features(self, feats: List[str]) -> None:
