@@ -10,12 +10,14 @@ import pandas as pd
 from ethicml.utility import DataTuple
 from ethicml.data import load_data, Toy, Adult
 from ethicml.preprocessing import (
+    BalancedTestSplit,
     ProportionalSplit,
     SequentialSplit,
     train_test_split,
     bin_cont_feats,
     get_biased_subset,
     get_biased_and_debiased_subsets,
+    query_dt,
 )
 
 from .run_algorithm_test import count_true
@@ -355,3 +357,32 @@ def test_biased_split_nonbinary():
 
     biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
     assert len(biased1) == approx(len(subset), abs=4)
+
+
+def test_balanced_test_split():
+    """test biased split sizes"""
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=["x"]),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["y"]),
+        name="TestData",
+    )
+    # visual representation of the data:
+    # y: ...111111111111111111111111111111111111111111111111111111111111111000000000000000000000000
+    # s: ...111111111111111111111111111111111111111000000000000000000000000111111111111000000000000
+
+    train_percentage = 0.75
+    train, test, split_info = BalancedTestSplit(train_percentage=train_percentage)(data)
+
+    # check that the split for training set was proportional
+    assert count_true(train.s.to_numpy() == 0) == round(train_percentage * 250)
+    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 375), abs=1)
+
+    # check that the test set is balanced
+    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 125)
+    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 125)
+    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 125)
+    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 125)
+
+    # check how many samples were droppped
+    assert split_info["percent_dropped"] == 0.5
