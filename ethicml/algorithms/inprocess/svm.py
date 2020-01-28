@@ -32,7 +32,6 @@ class SVM(InAlgorithm):
 
 def select_svm(C: float, kernel: str) -> SVC:
     """Select the appropriate SVM model for the given parameters."""
-    print(kernel)
     if kernel == "linear":
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=888)
     return SVC(C=C, kernel=kernel, gamma="auto", random_state=888)

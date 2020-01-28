@@ -10,7 +10,8 @@ class ProbOutcome(Metric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        assert isinstance(prediction, SoftPrediction), "this metric only makes sense with probs"
+        if not isinstance(prediction, SoftPrediction):
+            return float("nan")  # this metric only makes sense with probs
         return prediction.soft.to_numpy().sum() / prediction.hard.size
 
     @property

@@ -59,6 +59,8 @@ def run_metrics(
         per_sens_metrics: list of metrics that are computed per sensitive attribute
     """
     result: Dict[str, float] = {}
+    if predictions.hard.isna().any():
+        return {"algorithm_failed": 1.0}
     for metric in metrics:
         result[metric.name] = metric.score(predictions, actual)
 
@@ -70,6 +72,8 @@ def run_metrics(
         per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
+    for key, value in predictions.info.items():
+        result[key] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
@@ -342,7 +346,7 @@ async def evaluate_models_async(
 
     # ====================================== compute metrics ======================================
     # transpose `all_results` so that the order in the results dataframe is correct
-    num_cols = len(all_predictions[0])
+    num_cols = len(all_predictions[0]) if all_predictions else 0
     all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
 
     all_results = Results()
@@ -358,7 +362,7 @@ async def evaluate_models_async(
                 "dataset": data_info.dataset_name,
                 "transform": data_info.transform_name,
                 "model": model.name,
-                **split_info,
+                **data_info.split_info,
             }
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 

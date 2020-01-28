@@ -182,17 +182,20 @@ def single_plot(
     results_df = results.data
     mask_for_dataset = results_df.index.get_level_values("dataset") == dataset
     mask_for_transform = results_df.index.get_level_values("transform") == transform
-    matching_results = results_df.loc[mask_for_dataset & mask_for_transform]
-
-    if pd.isnull(matching_results[[xaxis[0], yaxis[0]]]).any().any():
-        return False  # nothing to plot
 
     entries: List[DataEntry] = []
-    for count, model in enumerate(results_df.index.to_frame()["model"].unique()):
+    count = 0
+    for model in results_df.index.to_frame()["model"].unique():
         mask_for_model = results_df.index.get_level_values("model") == model
         data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+        if data[[xaxis[0], yaxis[0]]].isnull().any().any():
+            continue  # this entry has missing values
         model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
         entries.append(DataEntry(model_label, data, count % 2 == 0))
+        count += 1
+
+    if not entries:
+        return False  # nothing to plot
 
     title = f"{dataset}, {transform}"
     plot_def = PlotDef(

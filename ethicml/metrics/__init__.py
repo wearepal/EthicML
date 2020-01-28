@@ -11,10 +11,10 @@ Some example code
 """
 from .accuracy import *
 from .anti_spur import AS
+from .balanced_accuracy import BalancedAccuracy
 from .bcr import BCR
 from .confusion_matrix import confusion_matrix, LabelOutOfBounds
 from .cv import CV, AbsCV
-from .get_info import GetInfo
 from .hsic import Hsic
 from .metric import Metric
 from .normalized_mutual_information import NMI
