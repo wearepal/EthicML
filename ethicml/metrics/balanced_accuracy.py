@@ -18,4 +18,5 @@ class BalancedAccuracy(Metric):
 
     @property
     def name(self) -> str:
+        """Name of the algorithm."""
         return "Balanced Accuracy"

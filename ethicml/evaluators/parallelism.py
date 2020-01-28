@@ -201,7 +201,7 @@ async def _generic_run_in_parallel(
     if not data:
         return []
 
-    print("synchronous algorithms...")
+    print("synchronous algorithms...", flush=True)  # flush to avoid conflict with tqdm
     # first get the blocking results
     pbar = tqdm(total=len(blocking_algos) * len(data))
     blocking_results: List[List[_RT]] = []
@@ -218,7 +218,7 @@ async def _generic_run_in_parallel(
         blocking_results.append(temp_results)
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
-    print("asynchronous algorithms...")
+    print("asynchronous algorithms...", flush=True)  # flush to avoid conflict with tqdm
     # then start the asynchronous results
     if async_algos:
         async_results = await arrange_in_parallel(async_algos, data, max_parallel)
