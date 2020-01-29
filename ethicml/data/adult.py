@@ -10,7 +10,7 @@ class Adult(Dataset):
 
     def __init__(
         self,
-        split: Literal["Sex", "Race", "Race-Sex", "Custom", "Nationality"] = "Sex",
+        split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
         discrete_only: bool = False,
         binarize_nationality: bool = False,
     ):
@@ -147,6 +147,11 @@ class Adult(Dataset):
                 "race_Other",
                 "race_White",
             ]
+            self.s_prefix = ["race"]
+            self.class_labels = ["salary_>50K"]
+            self.class_label_prefix = ["salary"]
+        elif split == "Race-Binary":
+            self.sens_attrs = ["race_White"]
             self.s_prefix = ["race"]
             self.class_labels = ["salary_>50K"]
             self.class_label_prefix = ["salary"]

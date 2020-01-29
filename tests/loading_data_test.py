@@ -186,6 +186,15 @@ def test_load_adult_race():
     assert (45222, 1) == data.y.shape
 
 
+def test_load_adult_race_binary():
+    """test load adult race binary"""
+    data: DataTuple = load_data(Adult("Race-Binary"))
+    assert (45222, 98) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert data.name == "Adult Race-Binary"
+
+
 def test_load_compas_race():
     """test load compas race"""
     data: DataTuple = load_data(Compas("Race"))
