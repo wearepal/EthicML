@@ -18,6 +18,7 @@ from ethicml.data import (
     NonBinaryToy,
     group_disc_feat_indexes,
 )
+from ethicml.data.crime import Crime
 from ethicml.data.health import Health
 from ethicml.utility import DataTuple, concat_dt
 from ethicml.preprocessing import domain_split, query_dt
@@ -106,6 +107,15 @@ def test_load_health():
     assert data.name == "Health"
 
 
+def test_load_crime():
+    """test load crime dataset"""
+    data: DataTuple = load_data(Crime())
+    assert (1993, 136) == data.x.shape
+    assert (1993, 1) == data.s.shape
+    assert (1993, 1) == data.y.shape
+    assert data.name == "Crime Race-Binary"
+
+
 def test_load_sqf():
     """test load sqf"""
     data: DataTuple = load_data(Sqf())
@@ -158,6 +168,16 @@ def test_load_health_feature_length():
     assert len(Health().continuous_features) == 118
     assert data.s.shape == (171067, 1)
     assert data.y.shape == (171067, 1)
+
+
+def test_load_crime_feature_length():
+    """test load crime feature length"""
+    data: DataTuple = load_data(Crime())
+    assert len(Crime().ordered_features["x"]) == 136
+    assert len(Crime().discrete_features) == 46
+    assert len(Crime().continuous_features) == 90
+    assert data.s.shape == (1993, 1)
+    assert data.y.shape == (1993, 1)
 
 
 def test_load_credit_feature_length():
