@@ -1,4 +1,4 @@
-"""Class to describe features of the Adult dataset."""
+"""Class to describe features of the Communities and Crime dataset."""
 from typing_extensions import Literal
 
 from ethicml.common import implements
