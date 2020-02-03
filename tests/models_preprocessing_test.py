@@ -18,7 +18,7 @@ from ethicml.algorithms.preprocess import (
     Zemel,
 )
 from ethicml.utility import DataTuple, TestTuple, Prediction
-from ethicml.preprocessing import query_dt
+from ethicml.preprocessing import query_dt, train_test_split
 from tests.run_algorithm_test import get_train_test
 
 
@@ -263,6 +263,7 @@ def test_calders():
         y=pd.DataFrame([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, columns=["y"]),
         name="TestData",
     )
+    data, _ = train_test_split(data, train_percentage=1.0)
     assert len(query_dt(data, "s == 0 & y == 0")) == 15
     assert len(query_dt(data, "s == 0 & y == 1")) == 10
     assert len(query_dt(data, "s == 1 & y == 0")) == 25
