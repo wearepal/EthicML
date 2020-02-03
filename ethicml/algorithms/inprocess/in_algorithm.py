@@ -20,6 +20,11 @@ from ethicml.utility.data_structures import (
 class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
+    def __init__(self, is_fairness_algo: bool = True):
+        """Initialize the base class."""
+        super().__init__()
+        self.__is_fairness_algo = is_fairness_algo
+
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data.
@@ -33,6 +38,11 @@ class InAlgorithm(Algorithm):
         """Run with reduced training set so that it finishes quicker."""
         train_testing = train.get_subset()
         return self.run(train_testing, test)
+
+    @property
+    def is_fairness_algo(self) -> bool:
+        """True if this class corresponds to a fair algorithm."""
+        return self.__is_fairness_algo
 
 
 class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):

@@ -14,7 +14,7 @@ class SVM(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         """Init SVM."""
-        super().__init__()
+        super().__init__(is_fairness_algo=False)
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 

@@ -15,7 +15,7 @@ class LR(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None):
         """Init LR."""
-        super().__init__()
+        super().__init__(is_fairness_algo=False)
         self.C = LogisticRegression().C if C is None else C
 
     @implements(InAlgorithm)
@@ -35,7 +35,7 @@ class LRProb(InAlgorithm):
 
     def __init__(self, C: Optional[int] = None):
         """Init LRProb."""
-        super().__init__()
+        super().__init__(is_fairness_algo=False)
         self.C = LogisticRegression().C if C is None else C
 
     @implements(InAlgorithm)
@@ -52,6 +52,10 @@ class LRProb(InAlgorithm):
 
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
+
+    def __init__(self) -> None:
+        """Init LRCV."""
+        super().__init__(is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
