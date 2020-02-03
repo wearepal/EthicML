@@ -130,6 +130,7 @@ def evaluate_models(
     delete_prev: bool = False,
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
+    fair_pipeline: bool = True,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
@@ -145,6 +146,7 @@ def evaluate_models(
         delete_prev:  False by default. If True, delete saved results in directory
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
+        fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
     """
     # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
@@ -208,6 +210,14 @@ def evaluate_models(
 
                 # ========================== begin: run inprocess models ==========================
                 for model in inprocess_models:
+                    if (
+                        not fair_pipeline
+                        and transform_name != "no_transform"
+                        and model.is_fairness_algo
+                    ):
+                        pbar.update()
+                        continue
+
                     logging = OrderedDict()
                     logging["model"] = model.name
                     logging["dataset"] = dataset.name
@@ -223,8 +233,7 @@ def evaluate_models(
                         **split_info,
                     }
 
-                    predictions: Prediction
-                    predictions = model.run(transformed_train, transformed_test)
+                    predictions: Prediction = model.run(transformed_train, transformed_test)
 
                     temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 

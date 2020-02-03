@@ -10,6 +10,10 @@ from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 class Majority(InAlgorithm):
     """Simply returns the majority label from the train set."""
 
+    def __init__(self) -> None:
+        """Init Majority."""
+        super().__init__(is_fairness_algo=False)
+
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         maj = train.y.mode().to_numpy()
