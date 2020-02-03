@@ -1,17 +1,24 @@
 """Test preprocessing models"""
 from typing import Tuple
 
+import pandas as pd
+import numpy as np
+
+from pytest import approx
+
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
 from ethicml.algorithms.preprocess import (
+    Beutel,
+    Calders,
     PreAlgorithm,
     PreAlgorithmAsync,
-    Beutel,
-    Zemel,
-    VFAE,
     Upsampler,
+    VFAE,
+    Zemel,
 )
 from ethicml.utility import DataTuple, TestTuple, Prediction
+from ethicml.preprocessing import query_dt, train_test_split
 from tests.run_algorithm_test import get_train_test
 
 
@@ -246,3 +253,34 @@ def test_upsampler():
     predictions = lr_model.run_test(new_train, new_test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 148
     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 252
+
+
+def test_calders():
+    """test calders"""
+    data = DataTuple(
+        x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
+        s=pd.DataFrame([1] * 75 + [0] * 25, columns=["s"]),
+        y=pd.DataFrame([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, columns=["y"]),
+        name="TestData",
+    )
+    data, _ = train_test_split(data, train_percentage=1.0)
+    assert len(query_dt(data, "s == 0 & y == 0")) == 15
+    assert len(query_dt(data, "s == 0 & y == 1")) == 10
+    assert len(query_dt(data, "s == 1 & y == 0")) == 25
+    assert len(query_dt(data, "s == 1 & y == 1")) == 50
+    assert query_dt(data, "s == 1 & y == 0").x.min().min() == approx(0.50, abs=0.01)
+
+    calders: PreAlgorithm = Calders(preferable_class=1, disadvantaged_group=0)
+    new_train, new_test = calders.run(data, data.remove_y())
+
+    pd.testing.assert_frame_equal(new_test.x, data.x)
+    pd.testing.assert_frame_equal(new_test.s, data.s)
+
+    assert len(query_dt(new_train, "s == 0 & y == 0")) == 10
+    assert len(query_dt(new_train, "s == 0 & y == 1")) == 15
+    assert len(query_dt(new_train, "s == 1 & y == 0")) == 30
+    assert len(query_dt(new_train, "s == 1 & y == 1")) == 45
+
+    assert len(data) == len(new_train)
+    assert query_dt(new_train, "s == 1 & y == 1").x.min().min() == 0
+    assert query_dt(new_train, "s == 1 & y == 0").x.min().min() == approx(0.45, abs=0.01)
