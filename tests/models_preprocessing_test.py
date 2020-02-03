@@ -2,6 +2,9 @@
 from typing import Tuple
 
 import pandas as pd
+import numpy as np
+
+from pytest import approx
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
@@ -255,22 +258,28 @@ def test_upsampler():
 def test_calders():
     """test calders"""
     data = DataTuple(
-        x=pd.DataFrame([0] * 1000, columns=["x"]),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
+        x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
+        s=pd.DataFrame([1] * 75 + [0] * 25, columns=["s"]),
+        y=pd.DataFrame([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, columns=["y"]),
         name="TestData",
     )
-    # visual representation of the data:
-    # y: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
-    # s: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
-    calders: PreAlgorithm = Calders()
+    assert len(query_dt(data, "s == 0 & y == 0")) == 15
+    assert len(query_dt(data, "s == 0 & y == 1")) == 10
+    assert len(query_dt(data, "s == 1 & y == 0")) == 25
+    assert len(query_dt(data, "s == 1 & y == 1")) == 50
+    assert query_dt(data, "s == 1 & y == 0").x.min().min() == approx(0.50, abs=0.01)
 
+    calders: PreAlgorithm = Calders(preferable_class=1, disadvantaged_group=0)
     new_train, new_test = calders.run(data, data.remove_y())
 
     pd.testing.assert_frame_equal(new_test.x, data.x)
     pd.testing.assert_frame_equal(new_test.s, data.s)
 
-    assert len(query_dt(new_train, "s == 0 & y == 0")) == 200
-    assert len(query_dt(new_train, "s == 0 & y == 1")) == 50
-    assert len(query_dt(new_train, "s == 1 & y == 0")) == 100
-    assert len(query_dt(new_train, "s == 1 & y == 1")) == 500
+    assert len(query_dt(new_train, "s == 0 & y == 0")) == 10
+    assert len(query_dt(new_train, "s == 0 & y == 1")) == 15
+    assert len(query_dt(new_train, "s == 1 & y == 0")) == 30
+    assert len(query_dt(new_train, "s == 1 & y == 1")) == 45
+
+    assert len(data) == len(new_train)
+    assert query_dt(new_train, "s == 1 & y == 1").x.min().min() == 0
+    assert query_dt(new_train, "s == 1 & y == 0").x.min().min() == approx(0.45, abs=0.01)

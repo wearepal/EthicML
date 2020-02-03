@@ -8,15 +8,17 @@ from .pre_algorithm import PreAlgorithm
 
 
 class Calders(PreAlgorithm):
-    """Upsampler algorithm.
+    """Massaging algorithm from Kamiran&Calders 2012."""
 
-    Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
-    of samples.
-    """
+    def __init__(self, preferable_class: int, disadvantaged_group: int):
+        """Init object."""
+        super().__init__()
+        self.preferable_class = preferable_class
+        self.disadvantaged_group = disadvantaged_group
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        return calders_algorithm(train, test)
+        return _calders_algorithm(train, test, self.preferable_class, self.disadvantaged_group)
 
     @property
     def name(self) -> str:
@@ -24,8 +26,9 @@ class Calders(PreAlgorithm):
         return "Calders"
 
 
-def calders_algorithm(dataset: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-    """Massaging."""
+def _calders_algorithm(
+    dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int
+) -> Tuple[DataTuple, TestTuple]:
     s_col = dataset.s.columns[0]
     y_col = dataset.y.columns[0]
 
@@ -36,6 +39,9 @@ def calders_algorithm(dataset: DataTuple, test: TestTuple) -> Tuple[DataTuple, T
     assert len(y_vals) == 2
     s_0, s_1 = s_vals
     y_0, y_1 = y_vals
+
+    bad_class = y_0 if good_class == y_1 else y_1
+    advantaged_group = s_0 if disadvantaged_group == s_1 else s_1
 
     groups = ((s_0, y_0), (s_0, y_1), (s_1, y_0), (s_1, y_1))
     data: Dict[Tuple[int, int], DataTuple] = {}
@@ -48,33 +54,27 @@ def calders_algorithm(dataset: DataTuple, test: TestTuple) -> Tuple[DataTuple, T
             name=dataset.name,
         )
 
-    # find the smallest quadrant (i.e. the minimum in `groups` according to the length of the data)
-    min_group_id = min(range(len(groups)), key=lambda group_id: len(data[groups[group_id]]))
-    # mapping that maps each group to its opposite (that is, s0->s1 and y0->y1 and so on)
-    opposite_groups = {0: 3, 1: 2, 2: 1, 3: 0}
-    opp_group_id = opposite_groups[min_group_id]
+    dis_group = (disadvantaged_group, bad_class)
+    adv_group = (advantaged_group, good_class)
 
-    min_group = groups[min_group_id]
-    opp_group = groups[opp_group_id]
-
-    massaging_candidates = concat_dt([data[min_group], data[opp_group]])
+    massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
 
     ranker = LRProb()
     rank: SoftPrediction = ranker.run(dataset, massaging_candidates)
 
-    min_group_len = len(data[min_group])
-    opp_group_len = len(data[opp_group])
+    dis_group_len = len(data[dis_group])
+    adv_group_len = len(data[adv_group])
 
-    min_group_rank = rank.soft.iloc[:min_group_len]
-    opp_group_rank = rank.soft.iloc[min_group_len:].reset_index(drop=True)
-    assert len(opp_group_rank) == opp_group_len
+    dis_group_rank = rank.soft.iloc[:dis_group_len]
+    adv_group_rank = rank.soft.iloc[dis_group_len:].reset_index(drop=True)
+    assert len(adv_group_rank) == adv_group_len
 
     # sort the ranking
-    min_group_rank.sort_values(ascending=False, inplace=True)
-    opp_group_rank.sort_values(inplace=True)
+    dis_group_rank.sort_values(ascending=False, inplace=True)
+    adv_group_rank.sort_values(inplace=True)
 
     # use the rank to sort the data
-    for group, ranking in [(min_group, min_group_rank), (opp_group, opp_group_rank)]:
+    for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
         data[group] = DataTuple(
             x=unsorted_data.x.reindex(index=ranking.index).reset_index(drop=True),
@@ -83,15 +83,16 @@ def calders_algorithm(dataset: DataTuple, test: TestTuple) -> Tuple[DataTuple, T
             name=unsorted_data.name,
         )
 
-    all_for_s_min = sum(len(quadrant) for (s, y), quadrant in data.items() if s == min_group[0])
-    all_for_s_opp = sum(len(quadrant) for (s, y), quadrant in data.items() if s == opp_group[0])
+    all_disadvantaged = len(data[(disadvantaged_group, good_class)]) + dis_group_len
+    all_advantaged = adv_group_len + len(data[(advantaged_group, bad_class)])
+    dis_group_good_len = all_disadvantaged - dis_group_len
 
+    # ensure that the ratio of good_class to bad_class is the same in both groups.
+    # for this, we have to swap some labels
     num_to_swap = round(
-        (opp_group_len * all_for_s_min - (all_for_s_min - min_group_len) * all_for_s_opp) / len(dataset)
+        (adv_group_len * all_disadvantaged - dis_group_good_len * all_advantaged) / len(dataset)
     )
-
-    temp = data[min_group].y.iloc[:num_to_swap]
-    data[min_group].y.iloc[:num_to_swap] = data[opp_group].y.iloc[:num_to_swap]
-    data[opp_group].y.iloc[:num_to_swap] = temp
+    data[dis_group].y.iloc[:num_to_swap] = good_class
+    data[adv_group].y.iloc[:num_to_swap] = bad_class
 
     return concat_dt(list(data.values())), test
