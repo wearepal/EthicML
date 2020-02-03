@@ -1,17 +1,21 @@
 """Test preprocessing models"""
 from typing import Tuple
 
+import pandas as pd
+
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
 from ethicml.algorithms.preprocess import (
+    Beutel,
+    Calders,
     PreAlgorithm,
     PreAlgorithmAsync,
-    Beutel,
-    Zemel,
-    VFAE,
     Upsampler,
+    VFAE,
+    Zemel,
 )
 from ethicml.utility import DataTuple, TestTuple, Prediction
+from ethicml.preprocessing import query_dt
 from tests.run_algorithm_test import get_train_test
 
 
@@ -246,3 +250,27 @@ def test_upsampler():
     predictions = lr_model.run_test(new_train, new_test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 148
     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 252
+
+
+def test_calders():
+    """test calders"""
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=["x"]),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
+        name="TestData",
+    )
+    # visual representation of the data:
+    # y: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
+    # s: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
+    calders: PreAlgorithm = Calders()
+
+    new_train, new_test = calders.run(data, data.remove_y())
+
+    pd.testing.assert_frame_equal(new_test.x, data.x)
+    pd.testing.assert_frame_equal(new_test.s, data.s)
+
+    assert len(query_dt(new_train, "s == 0 & y == 0")) == 200
+    assert len(query_dt(new_train, "s == 0 & y == 1")) == 50
+    assert len(query_dt(new_train, "s == 1 & y == 0")) == 100
+    assert len(query_dt(new_train, "s == 1 & y == 1")) == 500

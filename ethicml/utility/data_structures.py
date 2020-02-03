@@ -1,7 +1,7 @@
 """Data structures that are used throughout the code."""
 from pathlib import Path
 from dataclasses import dataclass
-from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator, Dict
+from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator, Dict, Sequence
 from typing_extensions import Literal, Final
 
 import pandas as pd
@@ -273,7 +273,7 @@ def write_as_feather(
 
 
 def concat_dt(
-    datatup_list: List[DataTuple], axis: AxisType = "index", ignore_index: bool = False
+    datatup_list: Sequence[DataTuple], axis: AxisType = "index", ignore_index: bool = False
 ) -> DataTuple:
     """Concatenate the data tuples in the given list."""
     return DataTuple(
