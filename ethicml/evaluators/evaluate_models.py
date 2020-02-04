@@ -284,6 +284,7 @@ async def evaluate_models_async(
     delete_prev: bool = False,
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
+    fair_pipeline: bool = True,
     max_parallel: int = 1,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -300,19 +301,18 @@ async def evaluate_models_async(
         delete_prev:  False by default. If True, delete saved results in directory
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
+        fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
         max_parallel: max number of threads ot run in parallel (default: 1)
     """
     # pylint: disable=too-many-arguments
     del postprocess_models  # not used at the moment
     per_sens_metrics_check(per_sens_metrics)
-    train_test_split: DataSplitter
     if splitter is None:
-        train_test_split = RandomSplit(train_percentage=0.8, start_seed=0)
+        train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=0)
     else:
         train_test_split = splitter
 
     default_transform_name = "no_transform"
-    columns = ["dataset", "transform", "model", "split_id"]
 
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
@@ -322,7 +322,7 @@ async def evaluate_models_async(
 
     # ======================================= prepare data ========================================
     data_splits: List[TrainTestPair] = []
-    test_data: List[_DataInfo] = []
+    test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
     for dataset in datasets:
         for split_id in range(repeats):
             train: DataTuple
@@ -336,24 +336,57 @@ async def evaluate_models_async(
             split_info.update({"split_id": split_id})
             test_data.append(_DataInfo(test, dataset.name, default_transform_name, split_info))
 
+    # ============================= inprocess models on untransformed =============================
+    all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
+    all_results = _gather_metrics(
+        all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
+    )
+
     # ===================================== preprocess models =====================================
     # run all preprocess models
     all_transformed = await run_in_parallel(preprocess_models, data_splits, max_parallel)
 
-    # append the transformed data to `data_splits`
+    # append the transformed data to `transformed_data`
+    transformed_data: List[TrainTestPair] = []
+    transformed_test: List[_DataInfo] = []
     for transformed, pre_model in zip(all_transformed, preprocess_models):
         for (transf_train, transf_test), data_info in zip(transformed, test_data):
-            data_splits.append(TrainTestPair(transf_train, transf_test))
-            test_data.append(
+            transformed_data.append(TrainTestPair(transf_train, transf_test))
+            transformed_test.append(
                 _DataInfo(
                     data_info.test, data_info.dataset_name, pre_model.name, data_info.split_info
                 )
             )
 
-    # ===================================== inprocess models ======================================
-    all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
+    # ============================= inprocess models on transformed ===============================
+    if fair_pipeline:
+        run_on_transformed = inprocess_models
+    else:
+        # if not fair pipeline, run only the non-fair models on the transformed data
+        run_on_transformed = [model for model in inprocess_models if not model.is_fairness_algo]
 
-    # ====================================== compute metrics ======================================
+    transf_preds = await run_in_parallel(run_on_transformed, transformed_data, max_parallel)
+    transf_results = _gather_metrics(
+        transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
+    )
+
+    # ======================================= merge results =======================================
+    all_results.append_df(transf_results.data)
+    return all_results
+
+
+def _gather_metrics(
+    all_predictions: List[List[Prediction]],
+    test_data: Sequence[_DataInfo],
+    inprocess_models: Sequence[InAlgorithm],
+    metrics: Sequence[Metric],
+    per_sens_metrics: Sequence[Metric],
+    outdir: Path,
+    topic: Optional[str],
+) -> Results:
+    """Take a list of lists of predictions and compute all metrics."""
+    columns = ["dataset", "transform", "model", "split_id"]
+
     # transpose `all_results` so that the order in the results dataframe is correct
     num_cols = len(all_predictions[0]) if all_predictions else 0
     all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
