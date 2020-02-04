@@ -192,18 +192,26 @@ def test_load_credit_feature_length():
 
 def test_load_adult_explicitly_sex():
     """test load adult explicitly sex"""
-    data: DataTuple = load_data(Adult("Sex"))
+    adult_sex = Adult("Sex")
+    data: DataTuple = load_data(adult_sex)
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
+    assert adult_sex.disc_feature_groups is not None
+    assert "sex" not in adult_sex.disc_feature_groups
+    assert "salary" not in adult_sex.disc_feature_groups
 
 
 def test_load_adult_race():
     """test load adult race"""
-    data: DataTuple = load_data(Adult("Race"))
+    adult_race = Adult("Race")
+    data: DataTuple = load_data(adult_race)
     assert (45222, 98) == data.x.shape
     assert (45222, 5) == data.s.shape
     assert (45222, 1) == data.y.shape
+    assert adult_race.disc_feature_groups is not None
+    assert "race" not in adult_race.disc_feature_groups
+    assert "salary" not in adult_race.disc_feature_groups
 
 
 def test_load_adult_race_binary():

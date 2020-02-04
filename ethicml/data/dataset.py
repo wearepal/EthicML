@@ -1,7 +1,7 @@
 """Abstract Base Class for all datasets that come with the framework."""
 
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Optional
 from pathlib import Path
 
 from ethicml.common import ROOT_PATH
@@ -19,7 +19,7 @@ class Dataset(ABC):
     _cont_features: List[str]
     _disc_features: List[str]
 
-    def __init__(self) -> None:
+    def __init__(self, disc_feature_groups: Optional[Dict[str, List[str]]] = None) -> None:
         """Init Dataset object."""
         self._features: List[str] = []
         self._class_label_prefix: List[str] = []
@@ -31,6 +31,7 @@ class Dataset(ABC):
         self.features_to_remove: List[str] = []
         self.discrete_only: bool = False
         self._filepath: Path = ROOT_PATH / "data" / "csvs" / self.filename
+        self._disc_feature_groups = disc_feature_groups
 
     @property
     @abstractmethod
@@ -147,6 +148,15 @@ class Dataset(ABC):
     @discrete_features.setter
     def discrete_features(self, feats: List[str]) -> None:
         self._disc_features = feats
+
+    @property
+    def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
+        """Dictionary of feature groups."""
+        if self._disc_feature_groups is None:
+            return None
+        return {
+            k: v for k, v in self._disc_feature_groups.items() if k not in self.features_to_remove
+        }
 
     @abstractmethod
     def __len__(self) -> int:
