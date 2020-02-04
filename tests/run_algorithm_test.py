@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import LR, SVM, Majority, InAlgorithm
+from ethicml.algorithms.inprocess import LR, SVM, Majority, InAlgorithm, Kamiran
 from ethicml.algorithms.postprocess import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
 from ethicml.metrics import Accuracy, CV, TPR, Metric
@@ -161,3 +161,50 @@ def test_run_alg_suite_wrong_metrics():
             repeats=1,
             test_mode=True,
         )
+
+
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_no_pipeline():
+    """test run alg suite no pipeline"""
+    datasets: List[Dataset] = [Toy(), Adult()]
+    preprocess_models: List[PreAlgorithm] = [Upsampler()]
+    inprocess_models: List[InAlgorithm] = [Kamiran(classifier="LR"), LR()]
+    postprocess_models: List[PostAlgorithm] = []
+    metrics: List[Metric] = [Accuracy(), CV()]
+    per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
+
+    parallel_results = run_blocking(
+        evaluate_models_async(
+            datasets,
+            preprocess_models,
+            inprocess_models,
+            postprocess_models,
+            metrics,
+            per_sens_metrics,
+            repeats=1,
+            test_mode=True,
+            topic="pytest",
+            fair_pipeline=False,
+        )
+    )
+    results = evaluate_models(
+        datasets,
+        preprocess_models,
+        inprocess_models,
+        postprocess_models,
+        metrics,
+        per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        topic="pytest",
+        fair_pipeline=False,
+        delete_prev=True,
+    )
+    pd.testing.assert_frame_equal(parallel_results.data, results.data, check_like=True)
+
+    num_datasets = 2
+    num_preprocess = 1
+    num_fair_inprocess = 1
+    num_unfair_inprocess = 1
+    expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
+    assert len(results.data) == expected_num
