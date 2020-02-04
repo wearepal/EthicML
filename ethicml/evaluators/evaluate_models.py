@@ -170,7 +170,7 @@ def evaluate_models(
     if delete_prev:
         _delete_previous_results(outdir, datasets, preprocess_models, topic)
 
-    pbar = tqdm(total=total_experiments)
+    pbar = tqdm(total=total_experiments, smoothing=0)
     for dataset in datasets:
         # ================================== begin: one repeat ====================================
         for split_id in range(repeats):

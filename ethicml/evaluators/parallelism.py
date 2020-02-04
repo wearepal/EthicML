@@ -69,7 +69,7 @@ async def arrange_in_parallel(
             task_queue.put_nowait(_Task(i, j, algo, data_item))
 
     num_tasks = len(algos) * len(data)
-    pbar: tqdm = tqdm(total=num_tasks)
+    pbar: tqdm = tqdm(total=num_tasks, smoothing=0)
 
     # ===================================== create workers ========================================
     num_cpus = os.cpu_count()
@@ -203,7 +203,7 @@ async def _generic_run_in_parallel(
 
     print("synchronous algorithms...", flush=True)  # flush to avoid conflict with tqdm
     # first get the blocking results
-    pbar = tqdm(total=len(blocking_algos) * len(data))
+    pbar = tqdm(total=len(blocking_algos) * len(data), smoothing=0)
     blocking_results: List[List[_RT]] = []
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for run, name in blocking_algos:
