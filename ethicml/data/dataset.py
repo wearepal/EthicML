@@ -155,9 +155,7 @@ class Dataset(ABC):
         if self._disc_feature_groups is None:
             return None
         return {
-            k: v
-            for k, v in self._disc_feature_groups.items()
-            if k not in (self.s_prefix + self.class_label_prefix)
+            k: v for k, v in self._disc_feature_groups.items() if k not in self.features_to_remove
         }
 
     @abstractmethod
