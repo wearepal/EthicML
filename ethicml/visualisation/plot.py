@@ -153,7 +153,7 @@ def single_plot(
     xaxis: Tuple[str, str],
     yaxis: Tuple[str, str],
     dataset: str,
-    transform: str,
+    transform: Optional[str],
     ptype: PlotType = "box",
     legend_pos: Optional[LegendType] = "outside",
     legend_yanchor: float = 1.0,
@@ -170,7 +170,7 @@ def single_plot(
         xaxis: name of column that's plotted on the x-axis
         yaxis: name of column that's plotted on the y-axis
         dataset: string that identifies the dataset
-        transform: string that identifies the preprocessing method
+        transform: string that identifies the preprocessing method, or None
         ptype: plot type
         legend_pos: position of the legend (or None for no legend)
         legend_yanchor: position in the vertical direction where the legend should begin
@@ -181,23 +181,28 @@ def single_plot(
     """
     results_df = results.data
     mask_for_dataset = results_df.index.get_level_values("dataset") == dataset
-    mask_for_transform = results_df.index.get_level_values("transform") == transform
+    if transform is not None:
+        transforms: List[str] = [transform]
+    else:
+        transforms = [str(t) for t in results_df.index.to_frame()["transform"].unique()]
 
     entries: List[DataEntry] = []
     count = 0
     for model in results_df.index.to_frame()["model"].unique():
         mask_for_model = results_df.index.get_level_values("model") == model
-        data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
-        if data[[xaxis[0], yaxis[0]]].isnull().any().any():
-            continue  # this entry has missing values
-        model_label = f"{model} ({transform})" if transform != "no_transform" else str(model)
-        entries.append(DataEntry(model_label, data, count % 2 == 0))
-        count += 1
+        for transform_ in transforms:
+            mask_for_transform = results_df.index.get_level_values("transform") == transform_
+            data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+            if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
+                continue  # this entry has missing values
+            model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
+            entries.append(DataEntry(model_label, data, count % 2 == 0))
+            count += 1
 
     if not entries:
         return False  # nothing to plot
 
-    title = f"{dataset}, {transform}"
+    title = f"{dataset}, {transform}" if transform is not None else str(dataset)
     plot_def = PlotDef(
         title=title, entries=entries, legend_pos=legend_pos, legend_yanchor=legend_yanchor
     )
@@ -219,6 +224,7 @@ def plot_results(
     ptype: PlotType = "box",
     save: bool = True,
     dpi: int = 300,
+    transforms_separately: bool = True,
 ) -> List[Tuple[plt.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
@@ -229,7 +235,7 @@ def plot_results(
         ptype: plot type
         save: if True, save the plot as a PDF
         dpi: DPI of the plots
-        use_cross: if True, use crosses with error bars instead of boxes
+        transforms_separately: if True, each transform gets its own plot
 
     Returns:
         A list of all figures and plots
@@ -267,11 +273,16 @@ def plot_results(
     # this preserves the order of x and y
     possible_pairs = list(itertools.product(cols_x, cols_y))
 
+    transforms: List[Optional[str]]
+    if transforms_separately:
+        transforms = [str(t) for t in results_df.index.to_frame()["transform"].unique()]
+    else:
+        transforms = [None]
+
     figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
     for dataset in results_df.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
-        for transform in results_df.index.to_frame()["transform"].unique():
-            transform_: str = str(transform)
+        for transform in transforms:
             for x_axis, y_axis in possible_pairs:
                 fig: plt.Figure
                 plot: plt.Axes
@@ -280,7 +291,7 @@ def plot_results(
                 xtuple = (x_axis, x_axis.replace("_", " "))
                 ytuple = (y_axis, y_axis.replace("_", " "))
                 legend = single_plot(
-                    plot, results, xtuple, ytuple, dataset_, transform_, ptype=ptype
+                    plot, results, xtuple, ytuple, dataset_, transform, ptype=ptype
                 )
 
                 if legend is False:  # use "is" here because otherwise any falsy value would match
