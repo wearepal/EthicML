@@ -145,13 +145,13 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=2, max_parallel=1)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
     cv_results: CVResults = run_blocking(lr_cv.run_async(train, measures=[measure]))
 
     assert cv_results.best_hyper_params(measure)["C"] == 0.01
     best_model = cv_results.best(measure)
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert count_true(predictions.hard.values == 1) == 212
@@ -319,11 +319,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     class _LocalInstalledLR(InstalledModel):
         def __init__(self):
-            super().__init__(dir_name=".", top_dir="", executable=sys.executable)
-
-        @property
-        def name(self) -> str:
-            return "local installed LR"
+            super().__init__(
+                name="local installed LR", dir_name=".", top_dir="", executable=sys.executable
+            )
 
         def _script_command(
             self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path

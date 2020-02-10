@@ -126,7 +126,7 @@ def test_threaded_beutel():
 
     model: PreAlgorithmAsync = Beutel()
     assert model is not None
-    assert model.name == "Beutel"
+    assert model.name == "Beutel DP"
 
     new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
@@ -171,7 +171,7 @@ def test_threaded_custom_beutel():
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
     assert beut_model is not None
-    assert beut_model.name == "Beutel"
+    assert beut_model.name == "Beutel EqOp"
 
     new_train_test_non_thread: Tuple[DataTuple, TestTuple] = beut_model.run(train, test)
     new_train_nt, new_test_nt = new_train_test_non_thread
