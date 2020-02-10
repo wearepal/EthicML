@@ -26,7 +26,7 @@ class Beutel(PreAlgorithmAsync):
     ):
         """Init Beutel."""
         # pylint: disable=too-many-arguments
-        super().__init__()
+        super().__init__(name=f"Beutel {fairness}")
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
             "fairness": fairness,
             "enc_size": enc_size,
@@ -51,8 +51,3 @@ class Beutel(PreAlgorithmAsync):
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.beutel"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Beutel"

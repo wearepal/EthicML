@@ -28,7 +28,7 @@ class Agarwal(InAlgorithmAsync):
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
-        super().__init__()
+        super().__init__(name=f"Agarwal, {classifier}, {fairness}")
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {
             "classifier": classifier,
@@ -44,8 +44,3 @@ class Agarwal(InAlgorithmAsync):
     ) -> (List[str]):
         args = flag_interface(train_paths, test_paths, pred_path, self.flags)
         return ["-m", "ethicml.implementations.agarwal"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"

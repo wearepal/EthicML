@@ -26,7 +26,7 @@ class MLP(InAlgorithm):
         activation: Optional[ActivationType] = None,
     ):
         """Init MLP."""
-        super().__init__(is_fairness_algo=False)
+        super().__init__(name="MLP", is_fairness_algo=False)
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
         else:
@@ -40,11 +40,6 @@ class MLP(InAlgorithm):
         clf = select_mlp(self.hidden_layer_sizes, self.activation)
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "MLP"
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int], activation: ActivationType) -> MLPClassifier:

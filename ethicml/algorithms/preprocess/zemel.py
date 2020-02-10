@@ -21,7 +21,7 @@ class Zemel(PreAlgorithmAsync):
         epsilon: float = 1e-5,
     ) -> None:
         """Init Zemel."""
-        super().__init__()
+        super().__init__(name="Zemel")
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
             "Ax": Ax,
@@ -42,8 +42,3 @@ class Zemel(PreAlgorithmAsync):
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.zemel"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Zemel"

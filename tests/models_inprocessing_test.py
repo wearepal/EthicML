@@ -103,11 +103,11 @@ def test_cv_svm():
     svm_cv = CrossValidator(SVM, hyperparams, folds=3)
 
     assert svm_cv is not None
-    assert isinstance(svm_cv.model(), InAlgorithm)
 
     cv_results = svm_cv.run(train)
 
     best_model = cv_results.best(Accuracy())
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
@@ -123,13 +123,13 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
     cv_results: CVResults = lr_cv.run(train, measures=[measure])
 
     assert cv_results.best_hyper_params(measure)["C"] == 0.1
     best_model = cv_results.best(measure)
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
@@ -167,7 +167,6 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()
@@ -245,7 +244,6 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
-    assert isinstance(zafar_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()
@@ -289,7 +287,6 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
-    assert isinstance(zafar_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()

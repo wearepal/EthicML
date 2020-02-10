@@ -24,7 +24,7 @@ class Kamiran(InAlgorithm):
         kernel: Optional[str] = None,
     ):
         """Init Kamiran."""
-        super().__init__()
+        super().__init__(name=f"Kamiran & Calders {classifier}")
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
@@ -35,11 +35,6 @@ class Kamiran(InAlgorithm):
         return train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Kamiran & Calders {self.classifier}"
 
 
 def _obtain_conditionings(

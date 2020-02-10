@@ -1,6 +1,6 @@
 """Base class for Algorithms."""
 import sys
-from abc import ABC, abstractmethod, ABCMeta
+from abc import ABC, ABCMeta
 from typing import List, Optional, Dict, Coroutine, TypeVar, Any
 import asyncio
 from pathlib import Path
@@ -9,19 +9,17 @@ from pathlib import Path
 class Algorithm(ABC):
     """Base class for Algorithms."""
 
+    def __init__(self, name: str):
+        self.__name = name
+
     @property
-    @abstractmethod
     def name(self) -> str:
         """Name of the algorithm."""
+        return self.__name
 
 
-class AlgorithmAsync(metaclass=ABCMeta):
+class AlgorithmAsync(metaclass=ABCMeta):  # pylint: disable=too-few-public-methods
     """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
-
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        """Name of the algorithm."""
 
     @property
     def _executable(self) -> str:

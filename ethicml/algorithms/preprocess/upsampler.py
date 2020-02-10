@@ -20,7 +20,7 @@ class Upsampler(PreAlgorithm):
 
     def __init__(self, strategy: Literal["uniform", "preferential", "naive"] = "uniform"):
         """Init Upsampler."""
-        super().__init__()
+        super().__init__(name=f"Upsample {strategy}")
 
         assert strategy in ["uniform", "preferential", "naive"]
         self.strategy = strategy
@@ -28,11 +28,6 @@ class Upsampler(PreAlgorithm):
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         return upsample(train, test, self.strategy)
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Upsample {self.strategy}"
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:

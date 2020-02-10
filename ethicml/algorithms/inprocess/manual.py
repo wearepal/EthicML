@@ -15,6 +15,9 @@ class Corels(InAlgorithm):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
+    def __init__(self) -> None:
+        super().__init__(name="CORELS")
+
     @implements(InAlgorithm)
     def run(self, _: DataTuple, test: TestTuple) -> Prediction:
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
@@ -28,8 +31,3 @@ class Corels(InAlgorithm):
         condition3 = priors > 3
         pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
         return Prediction(hard=pd.Series(pred))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "CORELS"

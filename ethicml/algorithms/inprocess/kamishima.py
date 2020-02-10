@@ -22,6 +22,7 @@ class Kamishima(InstalledModel):
     def __init__(self, eta: float = 1.0):
         """Init Kamishima."""
         super().__init__(
+            name="Kamishima",
             dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
             top_dir="kamfadm",
@@ -91,8 +92,3 @@ class Kamishima(InstalledModel):
         if to_return.min() != to_return.max():
             to_return = to_return.replace(to_return.min(), min_class_label)
         return Prediction(hard=to_return)
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Kamishima"

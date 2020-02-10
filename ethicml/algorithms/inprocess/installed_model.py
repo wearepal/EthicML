@@ -23,6 +23,7 @@ class InstalledModel(InAlgorithmAsync):
 
     def __init__(
         self,
+        name: str,
         dir_name: str,
         top_dir: str,
         url: Optional[str] = None,
@@ -51,7 +52,7 @@ class InstalledModel(InAlgorithmAsync):
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
-        super().__init__()
+        super().__init__(name=name)
 
     @property
     def _code_path(self) -> Path:
@@ -91,8 +92,3 @@ class InstalledModel(InAlgorithmAsync):
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         return []  # pylint was complaining when I didn't return anything here...
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        raise NotImplementedError
