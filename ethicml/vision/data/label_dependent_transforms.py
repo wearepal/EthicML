@@ -123,7 +123,7 @@ class LdColorizer(LdTransformation):
             data = (data > 0.5).float()
 
         color_tensor = (
-            torch.as_tensor(colors_per_sample).unsqueeze(-1).unsqueeze(-1)
+            torch.as_tensor(colors_per_sample, dtype=torch.float32).unsqueeze(-1).unsqueeze(-1)
         )  # type: ignore[call-arg]
         if self.background:
             if self.black:

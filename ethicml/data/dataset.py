@@ -18,6 +18,7 @@ class Dataset(ABC):
     _sens_attrs: List[str]
     _cont_features: List[str]
     _disc_features: List[str]
+    _disc_feature_groups: Optional[Dict[str, List[str]]]
 
     def __init__(self, disc_feature_groups: Optional[Dict[str, List[str]]] = None) -> None:
         """Init Dataset object."""
