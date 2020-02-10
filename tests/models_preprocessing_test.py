@@ -146,15 +146,15 @@ def test_threaded_beutel():
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
-    assert beut_model.name == "Beutel"
+    assert beut_model.name == "Beutel DP"
 
     new_train_test = beut_model.run(train, test)
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel DP: " + str(test.name)
+    assert new_train.name == "Beutel DP: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
