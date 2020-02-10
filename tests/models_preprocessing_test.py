@@ -133,8 +133,8 @@ def test_threaded_beutel():
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel DP: " + str(test.name)
+    assert new_train.name == "Beutel DP: " + str(train.name)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
@@ -189,15 +189,15 @@ def test_threaded_custom_beutel():
 
     model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
     assert model is not None
-    assert model.name == "Beutel"
+    assert model.name == "Beutel EqOp"
 
     new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel EqOp: " + str(test.name)
+    assert new_train.name == "Beutel EqOp: " + str(train.name)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
