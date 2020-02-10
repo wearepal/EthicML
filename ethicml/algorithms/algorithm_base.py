@@ -10,6 +10,11 @@ class Algorithm(ABC):
     """Base class for Algorithms."""
 
     def __init__(self, name: str):
+        """Base constructor for the Algorithm class.
+
+        Args:
+            name: name of the algorithm
+        """
         self.__name = name
 
     @property

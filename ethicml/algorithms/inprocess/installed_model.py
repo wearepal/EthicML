@@ -32,6 +32,7 @@ class InstalledModel(InAlgorithmAsync):
         """Download code from given URL and create Pip environment with Pipfile found in the code.
 
         Args:
+            name: name of the model
             dir_name: where to download the code to (can be chosen freely)
             top_dir: top directory of the repository where the Pipfile can be found (this is usually
                      simply the last part of the repository URL)

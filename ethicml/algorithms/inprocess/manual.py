@@ -16,6 +16,7 @@ class Corels(InAlgorithm):
     """
 
     def __init__(self) -> None:
+        """Constructor of the class."""
         super().__init__(name="CORELS")
 
     @implements(InAlgorithm)
