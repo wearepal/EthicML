@@ -170,7 +170,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.CelebA" title="ethicml.vision.CelebA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CelebA</span></code></a>(root, biased, mixing_factor, …)</p></td>
 <td><p>Large-scale CelebFaces Attributes (CelebA) Dataset.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation" title="ethicml.vision.LdAugmentation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdAugmentation</span></code></a>([optimize, _qualified_name, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation" title="ethicml.vision.LdTransformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdTransformation</span></code></a>([optimize, _qualified_name, …])</p></td>
 <td><p>Base class for label-dependent augmentations.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdColorizer" title="ethicml.vision.LdColorizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdColorizer</span></code></a>(min_val, max_val, scale, …)</p></td>
@@ -229,8 +229,8 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
 </dd></dl>
 
 <dl class="class">
-<dt id="ethicml.vision.LdAugmentation">
-<em class="property">class </em><code class="sig-name descname">LdAugmentation</code><span class="sig-paren">(</span><em class="sig-param">optimize=None</em>, <em class="sig-param">_qualified_name=None</em>, <em class="sig-param">_compilation_unit=None</em>, <em class="sig-param">_cpp_module=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation">
+<em class="property">class </em><code class="sig-name descname">LdTransformation</code><span class="sig-paren">(</span><em class="sig-param">optimize=None</em>, <em class="sig-param">_qualified_name=None</em>, <em class="sig-param">_compilation_unit=None</em>, <em class="sig-param">_cpp_module=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.jit.ScriptModule</span></code></p>
 <p>Base class for label-dependent augmentations.</p>
 <p><strong>Methods</strong></p>
@@ -240,82 +240,82 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.add_module" title="ethicml.vision.LdAugmentation.add_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_module</span></code></a>(name, module)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.add_module" title="ethicml.vision.LdTransformation.add_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_module</span></code></a>(name, module)</p></td>
 <td><p>Adds a child module to the current module.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.apply" title="ethicml.vision.LdAugmentation.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(fn)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.apply" title="ethicml.vision.LdTransformation.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(fn)</p></td>
 <td><p>Applies <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>) as well as self.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.buffers" title="ethicml.vision.LdAugmentation.buffers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffers</span></code></a>([recurse])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.buffers" title="ethicml.vision.LdTransformation.buffers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffers</span></code></a>([recurse])</p></td>
 <td><p>Returns an iterator over module buffers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.children" title="ethicml.vision.LdAugmentation.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.children" title="ethicml.vision.LdTransformation.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a>()</p></td>
 <td><p>Returns an iterator over immediate children modules.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.cpu" title="ethicml.vision.LdAugmentation.cpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.cpu" title="ethicml.vision.LdTransformation.cpu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu</span></code></a>()</p></td>
 <td><p>Moves all model parameters and buffers to the CPU.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.cuda" title="ethicml.vision.LdAugmentation.cuda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code></a>([device])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.cuda" title="ethicml.vision.LdTransformation.cuda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code></a>([device])</p></td>
 <td><p>Moves all model parameters and buffers to the GPU.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.double" title="ethicml.vision.LdAugmentation.double"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.double" title="ethicml.vision.LdTransformation.double"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code></a>()</p></td>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.eval" title="ethicml.vision.LdAugmentation.eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.eval" title="ethicml.vision.LdTransformation.eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code></a>()</p></td>
 <td><p>Sets the module in evaluation mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.extra_repr" title="ethicml.vision.LdAugmentation.extra_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extra_repr</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.extra_repr" title="ethicml.vision.LdTransformation.extra_repr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extra_repr</span></code></a>()</p></td>
 <td><p>Set the extra representation of the module</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.float" title="ethicml.vision.LdAugmentation.float"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.float" title="ethicml.vision.LdTransformation.float"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>()</p></td>
 <td><p>Casts all floating point parameters and buffers to float datatype.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.half" title="ethicml.vision.LdAugmentation.half"><code class="xref py py-obj docutils literal notranslate"><span class="pre">half</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.half" title="ethicml.vision.LdTransformation.half"><code class="xref py py-obj docutils literal notranslate"><span class="pre">half</span></code></a>()</p></td>
 <td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">half</span></code> datatype.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.load_state_dict" title="ethicml.vision.LdAugmentation.load_state_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state_dict</span></code></a>(state_dict[, strict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.load_state_dict" title="ethicml.vision.LdTransformation.load_state_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state_dict</span></code></a>(state_dict[, strict])</p></td>
 <td><p>Copies parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into this module and its descendants.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.modules" title="ethicml.vision.LdAugmentation.modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modules</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.modules" title="ethicml.vision.LdTransformation.modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modules</span></code></a>()</p></td>
 <td><p>Returns an iterator over all modules in the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.named_buffers" title="ethicml.vision.LdAugmentation.named_buffers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_buffers</span></code></a>([prefix, recurse])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.named_buffers" title="ethicml.vision.LdTransformation.named_buffers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_buffers</span></code></a>([prefix, recurse])</p></td>
 <td><p>Returns an iterator over module buffers, yielding both the name of the buffer as well as the buffer itself.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.named_children" title="ethicml.vision.LdAugmentation.named_children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_children</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.named_children" title="ethicml.vision.LdTransformation.named_children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_children</span></code></a>()</p></td>
 <td><p>Returns an iterator over immediate children modules, yielding both the name of the module as well as the module itself.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.named_modules" title="ethicml.vision.LdAugmentation.named_modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_modules</span></code></a>([memo, prefix])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.named_modules" title="ethicml.vision.LdTransformation.named_modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_modules</span></code></a>([memo, prefix])</p></td>
 <td><p>Returns an iterator over all modules in the network, yielding both the name of the module as well as the module itself.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.named_parameters" title="ethicml.vision.LdAugmentation.named_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_parameters</span></code></a>([prefix, recurse])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.named_parameters" title="ethicml.vision.LdTransformation.named_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_parameters</span></code></a>([prefix, recurse])</p></td>
 <td><p>Returns an iterator over module parameters, yielding both the name of the parameter as well as the parameter itself.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.parameters" title="ethicml.vision.LdAugmentation.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>([recurse])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.parameters" title="ethicml.vision.LdTransformation.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>([recurse])</p></td>
 <td><p>Returns an iterator over module parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.register_buffer" title="ethicml.vision.LdAugmentation.register_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_buffer</span></code></a>(name, tensor)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.register_buffer" title="ethicml.vision.LdTransformation.register_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_buffer</span></code></a>(name, tensor)</p></td>
 <td><p>Adds a persistent buffer to the module.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.register_parameter" title="ethicml.vision.LdAugmentation.register_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_parameter</span></code></a>(name, param)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.register_parameter" title="ethicml.vision.LdTransformation.register_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_parameter</span></code></a>(name, param)</p></td>
 <td><p>Adds a parameter to the module.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.save" title="ethicml.vision.LdAugmentation.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(f[, _extra_files])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.save" title="ethicml.vision.LdTransformation.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(f[, _extra_files])</p></td>
 <td><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.jit.save</span></code> for details.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.state_dict" title="ethicml.vision.LdAugmentation.state_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code></a>([destination, prefix, keep_vars])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.state_dict" title="ethicml.vision.LdTransformation.state_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code></a>([destination, prefix, keep_vars])</p></td>
 <td><p>Returns a dictionary containing a whole state of the module.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.to" title="ethicml.vision.LdAugmentation.to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.to" title="ethicml.vision.LdTransformation.to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Moves and/or casts the parameters and buffers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.train" title="ethicml.vision.LdAugmentation.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>([mode])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.train" title="ethicml.vision.LdTransformation.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>([mode])</p></td>
 <td><p>Sets the module in training mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.type" title="ethicml.vision.LdAugmentation.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(dst_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.type" title="ethicml.vision.LdTransformation.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(dst_type)</p></td>
 <td><p>Casts all parameters and buffers to <code class="xref py py-attr docutils literal notranslate"><span class="pre">dst_type</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.zero_grad" title="ethicml.vision.LdAugmentation.zero_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_grad</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.zero_grad" title="ethicml.vision.LdTransformation.zero_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_grad</span></code></a>()</p></td>
 <td><p>Sets gradients of all model parameters to zero.</p></td>
 </tr>
 </tbody>
@@ -327,17 +327,17 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.code" title="ethicml.vision.LdAugmentation.code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.code" title="ethicml.vision.LdTransformation.code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">code</span></code></a></p></td>
 <td><p>Returns a pretty-printed representation (as valid Python syntax) of the internal graph for the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdAugmentation.graph" title="ethicml.vision.LdAugmentation.graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation.graph" title="ethicml.vision.LdTransformation.graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph</span></code></a></p></td>
 <td><p>Returns a string representation of the internal graph for the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.add_module">
-<code class="sig-name descname">add_module</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">module</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.add_module" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.add_module">
+<code class="sig-name descname">add_module</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">module</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.add_module" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a child module to the current module.</p>
 <p>The module can be accessed as an attribute using the given name.</p>
 <dl class="field-list simple">
@@ -352,8 +352,8 @@ accessed from this module using the given name</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.apply" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.apply">
+<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>)
 as well as self. Typical use includes initializing the parameters of a model
 (see also <span class="xref std std-ref">torch-nn-init</span>).</p>
@@ -394,8 +394,8 @@ as well as self. Typical use includes initializing the parameters of a model
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.buffers">
-<code class="sig-name descname">buffers</code><span class="sig-paren">(</span><em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.buffers" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.buffers">
+<code class="sig-name descname">buffers</code><span class="sig-paren">(</span><em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.buffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module buffers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -417,8 +417,8 @@ are direct members of this module.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.children">
-<code class="sig-name descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.children" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.children">
+<code class="sig-name descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over immediate children modules.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields</dt>
@@ -428,16 +428,16 @@ are direct members of this module.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.code">
-<em class="property">property </em><code class="sig-name descname">code</code><a class="headerlink" href="#ethicml.vision.LdAugmentation.code" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.code">
+<em class="property">property </em><code class="sig-name descname">code</code><a class="headerlink" href="#ethicml.vision.LdTransformation.code" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a pretty-printed representation (as valid Python syntax) of
 the internal graph for the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method. See <a href="#id1"><span class="problematic" id="id2">`Inspecting Code`_</span></a>
 for details.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.cpu">
-<code class="sig-name descname">cpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.cpu" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.cpu">
+<code class="sig-name descname">cpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.cpu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the CPU.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -447,8 +447,8 @@ for details.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.cuda">
-<code class="sig-name descname">cuda</code><span class="sig-paren">(</span><em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.cuda" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.cuda">
+<code class="sig-name descname">cuda</code><span class="sig-paren">(</span><em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.cuda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves all model parameters and buffers to the GPU.</p>
 <p>This also makes associated parameters and buffers different objects. So
 it should be called before constructing optimizer if the module will
@@ -465,8 +465,8 @@ copied to that device</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.double">
-<code class="sig-name descname">double</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.double" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.double">
+<code class="sig-name descname">double</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.double" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -476,8 +476,8 @@ copied to that device</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.eval">
-<code class="sig-name descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.eval" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.eval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the module in evaluation mode.</p>
 <p>This has any effect only on certain modules. See documentations of
 particular modules for details of their behaviors in training/evaluation
@@ -492,8 +492,8 @@ etc.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.extra_repr">
-<code class="sig-name descname">extra_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.extra_repr" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.extra_repr">
+<code class="sig-name descname">extra_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.extra_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the extra representation of the module</p>
 <p>To print customized extra information, you should reimplement
 this method in your own modules. Both single-line and multi-line
@@ -501,8 +501,8 @@ strings are acceptable.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.float">
-<code class="sig-name descname">float</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.float" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.float">
+<code class="sig-name descname">float</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.float" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to float datatype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -512,15 +512,15 @@ strings are acceptable.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.graph">
-<em class="property">property </em><code class="sig-name descname">graph</code><a class="headerlink" href="#ethicml.vision.LdAugmentation.graph" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.graph">
+<em class="property">property </em><code class="sig-name descname">graph</code><a class="headerlink" href="#ethicml.vision.LdTransformation.graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a string representation of the internal graph for the
 <code class="docutils literal notranslate"><span class="pre">forward</span></code> method. See <a href="#id3"><span class="problematic" id="id4">`Interpreting Graphs`_</span></a> for details.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.half">
-<code class="sig-name descname">half</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.half" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.half">
+<code class="sig-name descname">half</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.half" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">half</span></code> datatype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -530,11 +530,11 @@ strings are acceptable.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.load_state_dict">
-<code class="sig-name descname">load_state_dict</code><span class="sig-paren">(</span><em class="sig-param">state_dict</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.load_state_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Copies parameters and buffers from <a class="reference internal" href="#ethicml.vision.LdAugmentation.state_dict" title="ethicml.vision.LdAugmentation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> into
+<dt id="ethicml.vision.LdTransformation.load_state_dict">
+<code class="sig-name descname">load_state_dict</code><span class="sig-paren">(</span><em class="sig-param">state_dict</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.load_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies parameters and buffers from <a class="reference internal" href="#ethicml.vision.LdTransformation.state_dict" title="ethicml.vision.LdTransformation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> into
 this module and its descendants. If <code class="xref py py-attr docutils literal notranslate"><span class="pre">strict</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then
-the keys of <a class="reference internal" href="#ethicml.vision.LdAugmentation.state_dict" title="ethicml.vision.LdAugmentation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> must exactly match the keys returned
+the keys of <a class="reference internal" href="#ethicml.vision.LdTransformation.state_dict" title="ethicml.vision.LdTransformation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> must exactly match the keys returned
 by this module’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -542,7 +542,7 @@ by this module’s <code class="xref py py-meth docutils literal notranslate"><s
 <li><p><strong>state_dict</strong> (<em>dict</em>) – a dict containing parameters and
 persistent buffers.</p></li>
 <li><p><strong>strict</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to strictly enforce that the keys
-in <a class="reference internal" href="#ethicml.vision.LdAugmentation.state_dict" title="ethicml.vision.LdAugmentation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> match the keys returned by this module’s
+in <a class="reference internal" href="#ethicml.vision.LdTransformation.state_dict" title="ethicml.vision.LdTransformation.state_dict"><code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code></a> match the keys returned by this module’s
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> function. Default: <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
 </ul>
 </dd>
@@ -554,8 +554,8 @@ in <a class="reference internal" href="#ethicml.vision.LdAugmentation.state_dict
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.modules">
-<code class="sig-name descname">modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.modules" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.modules">
+<code class="sig-name descname">modules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.modules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over all modules in the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Yields</dt>
@@ -583,8 +583,8 @@ example, <code class="docutils literal notranslate"><span class="pre">l</span></
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.named_buffers">
-<code class="sig-name descname">named_buffers</code><span class="sig-paren">(</span><em class="sig-param">prefix=''</em>, <em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.named_buffers" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.named_buffers">
+<code class="sig-name descname">named_buffers</code><span class="sig-paren">(</span><em class="sig-param">prefix=''</em>, <em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.named_buffers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module buffers, yielding both the
 name of the buffer as well as the buffer itself.</p>
 <dl class="field-list simple">
@@ -609,8 +609,8 @@ are direct members of this module.</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.named_children">
-<code class="sig-name descname">named_children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.named_children" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.named_children">
+<code class="sig-name descname">named_children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.named_children" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over immediate children modules, yielding both
 the name of the module as well as the module itself.</p>
 <dl class="field-list simple">
@@ -627,8 +627,8 @@ the name of the module as well as the module itself.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.named_modules">
-<code class="sig-name descname">named_modules</code><span class="sig-paren">(</span><em class="sig-param">memo=None</em>, <em class="sig-param">prefix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.named_modules" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.named_modules">
+<code class="sig-name descname">named_modules</code><span class="sig-paren">(</span><em class="sig-param">memo=None</em>, <em class="sig-param">prefix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.named_modules" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over all modules in the network, yielding
 both the name of the module as well as the module itself.</p>
 <dl class="field-list simple">
@@ -657,8 +657,8 @@ example, <code class="docutils literal notranslate"><span class="pre">l</span></
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.named_parameters">
-<code class="sig-name descname">named_parameters</code><span class="sig-paren">(</span><em class="sig-param">prefix=''</em>, <em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.named_parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.named_parameters">
+<code class="sig-name descname">named_parameters</code><span class="sig-paren">(</span><em class="sig-param">prefix=''</em>, <em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.named_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module parameters, yielding both the
 name of the parameter as well as the parameter itself.</p>
 <dl class="field-list simple">
@@ -683,8 +683,8 @@ are direct members of this module.</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.parameters">
-<code class="sig-name descname">parameters</code><span class="sig-paren">(</span><em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.parameters">
+<code class="sig-name descname">parameters</code><span class="sig-paren">(</span><em class="sig-param">recurse=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an iterator over module parameters.</p>
 <p>This is typically passed to an optimizer.</p>
 <dl class="field-list simple">
@@ -707,8 +707,8 @@ are direct members of this module.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.register_buffer">
-<code class="sig-name descname">register_buffer</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.register_buffer" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.register_buffer">
+<code class="sig-name descname">register_buffer</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">tensor</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.register_buffer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a persistent buffer to the module.</p>
 <p>This is typically used to register a buffer that should not to be
 considered a model parameter. For example, BatchNorm’s <code class="docutils literal notranslate"><span class="pre">running_mean</span></code>
@@ -730,8 +730,8 @@ from this module using the given name</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.register_parameter">
-<code class="sig-name descname">register_parameter</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">param</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.register_parameter" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.register_parameter">
+<code class="sig-name descname">register_parameter</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">param</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.register_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a parameter to the module.</p>
 <p>The parameter can be accessed as an attribute using given name.</p>
 <dl class="field-list simple">
@@ -746,14 +746,14 @@ from this module using the given name</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.save">
-<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">_extra_files=ExtraFilesMap{}</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.save" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">_extra_files=ExtraFilesMap{}</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.jit.save</span></code> for details.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.state_dict">
-<code class="sig-name descname">state_dict</code><span class="sig-paren">(</span><em class="sig-param">destination=None</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">keep_vars=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.state_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.state_dict">
+<code class="sig-name descname">state_dict</code><span class="sig-paren">(</span><em class="sig-param">destination=None</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">keep_vars=False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.state_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary containing a whole state of the module.</p>
 <p>Both parameters and persistent buffers (e.g. running averages) are
 included. Keys are corresponding parameter and buffer names.</p>
@@ -770,8 +770,8 @@ included. Keys are corresponding parameter and buffer names.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.to">
-<code class="sig-name descname">to</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.to" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.to">
+<code class="sig-name descname">to</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Moves and/or casts the parameters and buffers.</p>
 <p>This can be called as</p>
 <dl class="function">
@@ -848,8 +848,8 @@ dtype and device for all parameters and buffers in this module</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">mode=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.train" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">mode=True</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the module in training mode.</p>
 <p>This has any effect only on certain modules. See documentations of
 particular modules for details of their behaviors in training/evaluation
@@ -867,8 +867,8 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.type">
-<code class="sig-name descname">type</code><span class="sig-paren">(</span><em class="sig-param">dst_type</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.type" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.type">
+<code class="sig-name descname">type</code><span class="sig-paren">(</span><em class="sig-param">dst_type</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Casts all parameters and buffers to <code class="xref py py-attr docutils literal notranslate"><span class="pre">dst_type</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -881,8 +881,8 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 </dd></dl>
 
 <dl class="method">
-<dt id="ethicml.vision.LdAugmentation.zero_grad">
-<code class="sig-name descname">zero_grad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdAugmentation.zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.vision.LdTransformation.zero_grad">
+<code class="sig-name descname">zero_grad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformation.zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets gradients of all model parameters to zero.</p>
 </dd></dl>
 
@@ -891,7 +891,7 @@ mode (<code class="docutils literal notranslate"><span class="pre">False</span><
 <dl class="class">
 <dt id="ethicml.vision.LdColorizer">
 <em class="property">class </em><code class="sig-name descname">LdColorizer</code><span class="sig-paren">(</span><em class="sig-param">min_val: float = 0.0</em>, <em class="sig-param">max_val: float = 1.0</em>, <em class="sig-param">scale: float = 0.02</em>, <em class="sig-param">binarize: bool = False</em>, <em class="sig-param">background: bool = False</em>, <em class="sig-param">black: bool = True</em>, <em class="sig-param">seed: int = 42</em>, <em class="sig-param">greyscale: bool = False</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdColorizer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.vision.data.label_dependent_transforms.LdAugmentation</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.vision.data.label_dependent_transforms.LdTransformation</span></code></p>
 <p>Transform that colorizes images.</p>
 <p>Colorizes a grayscale image by sampling colors from multivariate normal distributions.</p>
 <p>The distribution is centered on predefined means and standard deviation determined by the

@@ -7,14 +7,14 @@ import numpy as np
 import torch
 from torch import Tensor
 
-__all__ = ["LdAugmentation", "LdColorizer"]
+__all__ = ["LdTransformation", "LdColorizer"]
 
 
-class LdAugmentation(ABC):
+class LdTransformation(ABC):
     """Base class for label-dependent augmentations."""
 
     @abstractmethod
-    def _augment(self, data: Tensor, labels: Tensor) -> Tensor:
+    def _transform(self, data: Tensor, labels: Tensor) -> Tensor:
         """Augment the input data in a label-dependent fashion.
 
         Args:
@@ -36,10 +36,10 @@ class LdAugmentation(ABC):
         Returns:
             Augmented data.
         """
-        return self._augment(data, labels)
+        return self._transform(data, labels)
 
 
-class LdColorizer(LdAugmentation):
+class LdColorizer(LdTransformation):
     """Transform that colorizes images."""
 
     def __init__(
@@ -99,7 +99,7 @@ class LdColorizer(LdAugmentation):
     def _sample_color(self, mean_color_values: np.ndarray) -> np.ndarray:
         return np.clip(self.random_state.multivariate_normal(mean_color_values, self.scale), 0, 1)
 
-    def _augment(self, data: Tensor, labels: Tensor) -> Tensor:
+    def _transform(self, data: Tensor, labels: Tensor) -> Tensor:
         """Apply the transformation.
 
         Args:
@@ -123,24 +123,24 @@ class LdColorizer(LdAugmentation):
             data = (data > 0.5).float()
 
         color_tensor = (
-            Tensor(colors_per_sample).unsqueeze(-1).unsqueeze(-1)
+            torch.as_tensor(colors_per_sample, dtype=torch.float32).unsqueeze(-1).unsqueeze(-1)
         )  # type: ignore[call-arg]
         if self.background:
             if self.black:
                 # colorful background, black digits
-                augmented_data = (1 - data) * color_tensor  # type: ignore[operator]
+                transformed_data = (1 - data) * color_tensor  # type: ignore[operator]
             else:
                 # colorful background, white digits
-                augmented_data = torch.clamp(data + color_tensor, 0, 1)
+                transformed_data = torch.clamp(data + color_tensor, 0, 1)
         else:
             if self.black:
                 # black background, colorful digits
-                augmented_data = data * color_tensor
+                transformed_data = data * color_tensor
             else:
                 # white background, colorful digits
-                augmented_data = 1 - data * (1 - color_tensor)  # type: ignore[operator, assignment]
+                transformed_data = 1 - data * (1 - color_tensor)  # type: ignore[operator, assignment]
 
         if self.greyscale:
-            augmented_data = augmented_data.mean(dim=1, keepdim=True)
+            transformed_data = transformed_data.mean(dim=1, keepdim=True)
 
-        return augmented_data
+        return transformed_data
