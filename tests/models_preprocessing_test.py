@@ -126,15 +126,15 @@ def test_threaded_beutel():
 
     model: PreAlgorithmAsync = Beutel()
     assert model is not None
-    assert model.name == "Beutel"
+    assert model.name == "Beutel DP"
 
     new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel DP: " + str(test.name)
+    assert new_train.name == "Beutel DP: " + str(train.name)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
@@ -146,15 +146,15 @@ def test_threaded_beutel():
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
-    assert beut_model.name == "Beutel"
+    assert beut_model.name == "Beutel DP"
 
     new_train_test = beut_model.run(train, test)
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel DP: " + str(test.name)
+    assert new_train.name == "Beutel DP: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -171,7 +171,7 @@ def test_threaded_custom_beutel():
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
     assert beut_model is not None
-    assert beut_model.name == "Beutel"
+    assert beut_model.name == "Beutel EqOp"
 
     new_train_test_non_thread: Tuple[DataTuple, TestTuple] = beut_model.run(train, test)
     new_train_nt, new_test_nt = new_train_test_non_thread
@@ -189,15 +189,15 @@ def test_threaded_custom_beutel():
 
     model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
     assert model is not None
-    assert model.name == "Beutel"
+    assert model.name == "Beutel EqOp"
 
     new_train_test: Tuple[DataTuple, TestTuple] = run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel: " + str(test.name)
-    assert new_train.name == "Beutel: " + str(train.name)
+    assert new_test.name == "Beutel EqOp: " + str(test.name)
+    assert new_train.name == "Beutel EqOp: " + str(train.name)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None

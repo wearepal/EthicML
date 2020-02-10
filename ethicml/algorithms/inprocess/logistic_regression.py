@@ -15,8 +15,8 @@ class LR(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None):
         """Init LR."""
-        super().__init__(is_fairness_algo=False)
         self.C = LogisticRegression().C if C is None else C
+        super().__init__(name=f"Logistic Regression, C={self.C}", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -24,19 +24,14 @@ class LR(InAlgorithm):
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Logistic Regression, C={self.C}"
-
 
 class LRProb(InAlgorithm):
     """Logistic regression with soft output."""
 
     def __init__(self, C: Optional[int] = None):
         """Init LRProb."""
-        super().__init__(is_fairness_algo=False)
         self.C = LogisticRegression().C if C is None else C
+        super().__init__(name=f"Logistic Regression Prob, C={self.C}", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:
@@ -44,18 +39,13 @@ class LRProb(InAlgorithm):
         clf.fit(train.x, train.y.to_numpy().ravel())
         return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
 
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Logistic Regression Prob, C={self.C}"
-
 
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     def __init__(self) -> None:
         """Init LRCV."""
-        super().__init__(is_fairness_algo=False)
+        super().__init__(name="LRCV", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -65,8 +55,3 @@ class LRCV(InAlgorithm):
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)), info=dict(C=clf.C_[0]))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "LRCV"

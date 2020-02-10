@@ -34,9 +34,8 @@ def test_simple_saving() -> None:
     class CheckEquality(InAlgorithmAsync):
         """Dummy algorithm class for testing whether writing and reading feather files works"""
 
-        @property
-        def name(self) -> str:
-            return "Check equality"
+        def __init__(self) -> None:
+            super().__init__(name="Check equality")
 
         def _script_command(self, train_paths, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones"""

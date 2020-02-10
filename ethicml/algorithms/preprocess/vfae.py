@@ -23,7 +23,7 @@ class VFAE(PreAlgorithmAsync):
     ):
         """Init VFAE."""
         # pylint: disable=too-many-arguments
-        super().__init__()
+        super().__init__(name="VFAE")
 
         if z1_enc_size is None:
             z1_enc_size = [100]
@@ -52,8 +52,3 @@ class VFAE(PreAlgorithmAsync):
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.vfae"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "VFAE"
