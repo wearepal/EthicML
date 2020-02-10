@@ -259,3 +259,5 @@ class Adult(Dataset):
         assert len(new_features) == 65  # 61 input features + 4 label features
         # setting `features` to the new list of features also removes them from `discrete_features`
         self.features = new_features
+        self.disc_feature_groups["native-country"].clear()
+        self.disc_feature_groups["native-country"].append("native-country_United-States")
