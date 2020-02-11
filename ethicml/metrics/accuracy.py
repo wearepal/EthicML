@@ -32,11 +32,6 @@ class SklearnMetric(Metric):
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         return self._metric(actual.y, prediction.hard)
 
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return self._name
-
 
 class Accuracy(SklearnMetric):
     """Classification accuracy."""

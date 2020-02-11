@@ -10,6 +10,8 @@ from .metric import Metric
 class BCR(Metric):
     """Balanced Classification Rate."""
 
+    _name: str = "BCR"
+
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         tpr_metric = TPR()
@@ -19,8 +21,3 @@ class BCR(Metric):
         tnr = tnr_metric.score(prediction, actual)
 
         return (tpr + tnr) / 2
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "BCR"
