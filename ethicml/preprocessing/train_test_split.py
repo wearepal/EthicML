@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 import itertools
 from typing import Tuple, List, Iterator, Dict
+from typing_extensions import Literal
 
 import numpy as np
 from numpy.random import RandomState
@@ -241,6 +242,22 @@ class ProportionalSplit(RandomSplit):
 class BalancedTestSplit(RandomSplit):
     """Split data such that the test set is balanced and the training set is proportional."""
 
+    def __init__(
+        self,
+        balance_type: Literal["P(s|y)=0.5", "P(y|s)=0.5", "P(s,y)=0.25"] = "P(s|y)=0.5",
+        train_percentage: float = 0.8,
+        start_seed: int = 0,
+    ):
+        """Init BalancedTestSplit.
+
+        Args:
+            balance_type: how to do the balancing
+            train_percentage: how much of the data to use for the train split
+            start_seed: random seed for the first split
+        """
+        super().__init__(start_seed=start_seed, train_percentage=train_percentage)
+        self.balance_type = balance_type
+
     @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
@@ -268,7 +285,17 @@ class BalancedTestSplit(RandomSplit):
             num_test[(s, y)] = round(quadrant_size * (1 - self.train_percentage))
 
         # compute how much we should take for the test set to make it balanced
-        num_test_balanced = {y: min(num_test[(s, y)] for s in s_vals) for y in y_vals}
+        if self.balance_type == "P(s|y)=0.5":
+            minimize_over_s = {y: min(num_test[(s, y)] for s in s_vals) for y in y_vals}
+            num_test_balanced = {(s, y): minimize_over_s[y] for s in s_vals for y in y_vals}
+        elif self.balance_type == "P(y|s)=0.5":
+            minimize_over_y = {s: min(num_test[(s, y)] for y in y_vals) for s in s_vals}
+            num_test_balanced = {(s, y): minimize_over_y[s] for s in s_vals for y in y_vals}
+        elif self.balance_type == "P(s,y)=0.25":
+            smallest_quadrant = min(num_test[(s, y)] for s in s_vals for y in y_vals)
+            num_test_balanced = {(s, y): smallest_quadrant for s in s_vals for y in y_vals}
+        else:
+            raise ValueError("Unknown balance_type")
 
         num_dropped = 0
         # iterate over all combinations of s and y
@@ -281,8 +308,8 @@ class BalancedTestSplit(RandomSplit):
             split_indexes: int = round(len(idx) * self.train_percentage)
             # append index subsets to the list of train indices
             train_indexes.append(idx[:split_indexes])
-            test_indexes.append(idx[split_indexes : (split_indexes + num_test_balanced[y])])
-            num_dropped += num_test[(s, y)] - num_test_balanced[y]
+            test_indexes.append(idx[split_indexes : (split_indexes + num_test_balanced[(s, y)])])
+            num_dropped += num_test[(s, y)] - num_test_balanced[(s, y)]
 
         train_idx = np.concatenate(train_indexes, axis=0)
         test_idx = np.concatenate(test_indexes, axis=0)
@@ -302,7 +329,11 @@ class BalancedTestSplit(RandomSplit):
         )
 
         unbalanced_test_len = round(len(data) * (1 - self.train_percentage))
-        split_info = {"seed": random_seed, "percent_dropped": num_dropped / unbalanced_test_len}
+        split_info = {
+            "seed": random_seed,
+            "percent_dropped": num_dropped / unbalanced_test_len,
+            self.balance_type: 1,
+        }
 
         return train, test, split_info
 

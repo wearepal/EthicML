@@ -4,7 +4,7 @@ Test preprocessing capabilities
 import math
 from typing import Tuple
 
-from pytest import approx
+from pytest import approx, fixture
 import pandas as pd
 
 from ethicml.utility import DataTuple
@@ -359,30 +359,77 @@ def test_biased_split_nonbinary():
     assert len(biased1) == approx(len(subset), abs=4)
 
 
-def test_balanced_test_split():
-    """test biased split sizes"""
+@fixture(scope="module")
+def simple_data() -> DataTuple:
+    """Simple data for testing splitting methods."""
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["x"]),
         s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["y"]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
         name="TestData",
     )
     # visual representation of the data:
-    # y: ...111111111111111111111111111111111111111111111111111111111111111000000000000000000000000
-    # s: ...111111111111111111111111111111111111111000000000000000000000000111111111111000000000000
+    # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
+    # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
+    return data
 
+
+def test_balanced_test_split(simple_data: DataTuple):
+    """test biased split sizes"""
     train_percentage = 0.75
-    train, test, split_info = BalancedTestSplit(train_percentage=train_percentage)(data)
+    train, test, split_info = BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
     # check that the split for training set was proportional
-    assert count_true(train.s.to_numpy() == 0) == round(train_percentage * 250)
-    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 375), abs=1)
+    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
-    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 125)
-    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 125)
-    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 125)
-    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 125)
+    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 150)
+    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 150)
+    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
 
     # check how many samples were droppped
-    assert split_info["percent_dropped"] == 0.5
+    assert split_info["percent_dropped"] == 0.496
+
+
+def test_balanced_test_split_by_s(simple_data: DataTuple):
+    """test biased split sizes"""
+    train_percentage = 0.75
+    train, test, split_info = BalancedTestSplit(
+        balance_type="P(y|s)=0.5", train_percentage=train_percentage
+    )(simple_data)
+
+    # check that the split for training set was proportional
+    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
+
+    # check that the test set is balanced
+    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 250)
+    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 250)
+
+    # check how many samples were droppped
+    assert split_info["percent_dropped"] == 0.304
+
+
+def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
+    """test biased split sizes"""
+    train_percentage = 0.75
+    train, test, split_info = BalancedTestSplit(
+        balance_type="P(s,y)=0.25", train_percentage=train_percentage
+    )(simple_data)
+
+    # check that the split for training set was proportional
+    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
+
+    # check that the test set is balanced
+    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
+
+    # check how many samples were droppped
+    assert split_info["percent_dropped"] == 0.6
