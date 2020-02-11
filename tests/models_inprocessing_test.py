@@ -393,15 +393,13 @@ def test_threaded_agarwal():
     models: List[InAlgorithmAsync] = [Agarwal(classifier="SVM", fairness="EqOd")]
 
     class AssertResult(Metric):
+        _name = "assert_result"
+
         def score(self, prediction, actual):
             return (
                 count_true(prediction.hard.values == 1) == 157
                 and count_true(prediction.hard.values == -1) == 243
             )
-
-        @property
-        def name(self):
-            return "assert_result"
 
     results = run_blocking(
         evaluate_models_async(datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()])

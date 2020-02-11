@@ -8,13 +8,10 @@ from .metric import Metric
 class ProbOutcome(Metric):
     """Mean of logits."""
 
+    _name: str = "prob_outcome"
+
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         if not isinstance(prediction, SoftPrediction):
             return float("nan")  # this metric only makes sense with probs
         return prediction.soft.to_numpy().sum() / prediction.hard.size
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "prob_outcome"

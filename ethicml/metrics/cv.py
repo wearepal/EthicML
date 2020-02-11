@@ -9,6 +9,8 @@ from .metric import Metric
 class CV(Metric):
     """Calder-Verwer."""
 
+    _name: str = "CV"
+
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         from ethicml.evaluators.per_sensitive_attribute import (
@@ -22,11 +24,6 @@ class CV(Metric):
         return 1 - list(diffs.values())[0]
 
     @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "CV"
-
-    @property
     def apply_per_sensitive(self) -> bool:
         """Can this metric be applied per sensitive attribute group?"""
         return False
@@ -38,6 +35,8 @@ class AbsCV(CV):
     This metric is supposed to make it easier to compare results.
     """
 
+    _name: str = "CV absolute"
+
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         cv_score = super().score(prediction, actual)
@@ -45,8 +44,3 @@ class AbsCV(CV):
         if cv_score > 1:
             return 2 - cv_score
         return cv_score
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "CV absolute"

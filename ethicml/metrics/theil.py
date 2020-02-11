@@ -13,6 +13,8 @@ from .metric import Metric
 class Theil(Metric):
     """Theil Index."""
 
+    _name: str = "Theil_Index"
+
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         y_true_df = actual.y
@@ -27,8 +29,3 @@ class Theil(Metric):
 
         # moving the b inside the log allows for 0 values
         return float(np.mean(np.log((var_b / np.mean(var_b)) ** var_b) / np.mean(var_b)))
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "Theil_Index"
