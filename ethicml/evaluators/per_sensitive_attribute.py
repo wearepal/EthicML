@@ -106,6 +106,6 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
             min_val = min(i_value, j_value)
             max_val = max(i_value, j_value)
 
-            ratio_per_sens[key] = min_val / max_val
+            ratio_per_sens[key] = min_val / max_val if max_val != 0 else float("nan")
 
     return ratio_per_sens
