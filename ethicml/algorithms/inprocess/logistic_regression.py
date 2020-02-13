@@ -49,7 +49,7 @@ class LRCV(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        folder = KFold(n_splits=3, random_state=888, shuffle=False)
+        folder = KFold(n_splits=3, shuffle=False)
         clf = LogisticRegressionCV(
             cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class="auto"
         )
