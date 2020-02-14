@@ -158,6 +158,7 @@ def single_plot(
     legend_pos: Optional[LegendType] = "outside",
     legend_yanchor: float = 1.0,
     markersize: int = 6,
+    alternating_style: bool = True,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
     """Provide the functionality of the individual plotting functions through a nice interface.
 
@@ -196,7 +197,7 @@ def single_plot(
             if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
                 continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
-            entries.append(DataEntry(model_label, data, count % 2 == 0))
+            entries.append(DataEntry(model_label, data, (not alternating_style) or count % 2 == 0))
             count += 1
 
     if not entries:
