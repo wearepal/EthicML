@@ -208,3 +208,14 @@ def test_run_alg_suite_no_pipeline():
     num_unfair_inprocess = 1
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results.data) == expected_num
+
+    assert len(results.filter(["Kamiran & Calders LR"])) == 2  # result for Toy and for Adult
+    assert len(results.filter(["Toy"], index="dataset")) == 3  # results for Kamiran, LR, Upsampler
+    different_name = results.filter_and_map({"Kamiran & Calders LR": "Kamiran & Calders"})
+    assert len(different_name.filter(["Kamiran & Calders LR"])) == 0
+    assert len(different_name.filter(["Kamiran & Calders"])) == 2
+
+    pd.testing.assert_frame_equal(
+        results.filter(["Kamiran & Calders LR"]).data,
+        results.query("model == 'Kamiran & Calders LR'").data,
+    )
