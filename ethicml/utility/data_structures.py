@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    Union,
 )
 from typing_extensions import Literal, Final
 
@@ -446,3 +447,9 @@ class Results:
         return self.filter(mapping).map_over_index(
             lambda index: (index[0], index[1], mapping[index[2]], index[3])
         )
+
+    def aggregate(
+        self, metrics: List[str], aggregator: Union[str, Tuple[str]] = ("mean", "std")
+    ) -> pd.DataFrame:
+        """Aggregate results over the repeats."""
+        return self._data.groupby(["dataset", "transform", "model"]).agg(aggregator)[metrics]
