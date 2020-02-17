@@ -1,7 +1,18 @@
 """Data structures that are used throughout the code."""
 from pathlib import Path
 from dataclasses import dataclass
-from typing import Tuple, List, Optional, NamedTuple, Callable, Iterator, Dict, Sequence
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Mapping,
+    NamedTuple,
+    Optional,
+    Sequence,
+    Tuple,
+)
 from typing_extensions import Literal, Final
 
 import pandas as pd
@@ -374,6 +385,10 @@ class Results:
         """Overwrite __str__ magic method."""
         return str(self._data)
 
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self._data)
+
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object."""
         if data_frame.index.names != self.columns:
@@ -410,8 +425,24 @@ class Results:
 
     def map_over_index(
         self, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]
-    ) -> pd.DataFrame:
+    ) -> "Results":
         """Change the values of the index with a transformation function."""
         results_mapped = self._data.copy()
         results_mapped.index = results_mapped.index.map(mapper)
-        return results_mapped
+        return Results(results_mapped)
+
+    def filter(
+        self, values: Iterable, index: Literal["dataset", "transform", "model"] = "model"
+    ) -> "Results":
+        """Filter the entries based on the given values."""
+        return Results(self._data.loc[self._data.index.get_level_values(index).isin(list(values))])
+
+    def query(self, query_str: str) -> "Results":
+        """Query the underlying dataframe."""
+        return Results(self._data.query(query_str))
+
+    def filter_and_map(self, mapping: Mapping[str, str]) -> "Results":
+        """Filter entries and change the index with a mapping."""
+        return self.filter(mapping).map_over_index(
+            lambda index: (index[0], index[1], mapping[index[2]], index[3])
+        )
