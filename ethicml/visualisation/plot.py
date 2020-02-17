@@ -159,6 +159,7 @@ def single_plot(
     legend_yanchor: float = 1.0,
     markersize: int = 6,
     alternating_style: bool = True,
+    count_skipped_entries: bool = False,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
     """Provide the functionality of the individual plotting functions through a nice interface.
 
@@ -176,6 +177,8 @@ def single_plot(
         legend_pos: position of the legend (or None for no legend)
         legend_yanchor: position in the vertical direction where the legend should begin
         markersize: size of marker
+        alternating_style: if True, entries for scatter plots are done in alternating style
+        count_skipped_entries: if True, skipped entries are still counted towards the color style
 
     Returns:
         the legend object if something was plotted; False otherwise
@@ -189,12 +192,15 @@ def single_plot(
 
     entries: List[DataEntry] = []
     count = 0
+    skipped_entries = 0
     for model in results_df.index.to_frame()["model"].unique():
         mask_for_model = results_df.index.get_level_values("model") == model
         for transform_ in transforms:
             mask_for_transform = results_df.index.get_level_values("transform") == transform_
             data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
             if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
+                if count_skipped_entries and count == 0:
+                    skipped_entries += 1
                 continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
             entries.append(DataEntry(model_label, data, (not alternating_style) or count % 2 == 0))
@@ -212,7 +218,7 @@ def single_plot(
     if ptype == "cross":
         return errorbox(plot, plot_def, xaxis, yaxis, 0, 0, markersize, use_cross=True)
     if ptype == "scatter":
-        return scatter(plot, plot_def, xaxis, yaxis, 0, markersize, connect_dots=False)
+        return scatter(plot, plot_def, xaxis, yaxis, skipped_entries, markersize, connect_dots=False)
     if ptype == "line":
         return scatter(plot, plot_def, xaxis, yaxis, 0, markersize, connect_dots=True)
     raise ValueError(f"Unknown plot type '{ptype}'")
