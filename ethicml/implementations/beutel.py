@@ -8,7 +8,6 @@ import pandas as pd
 import numpy as np
 import torch
 from torch import nn, Tensor
-from torch.autograd import Function
 from torch.optim.lr_scheduler import ExponentialLR
 from torch.optim import Adam
 
@@ -16,7 +15,8 @@ from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
 from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
-from .pytorch_common import CustomDataset, TestDataset
+from .pytorch_common import CustomDataset, TestDataset, grad_reverse
+
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -149,7 +149,7 @@ def train_and_transform(
             loss = y_loss_fn(y_pred, class_label)
 
             if flags.fairness == "EqOp":
-                mask = class_label.ge(0.5)
+                mask = class_label >= 0.5
             elif flags.fairness == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
             elif flags.fairness == "DP":
@@ -245,26 +245,6 @@ def encode_testset(
 
     return TestTuple(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
 
-
-class GradReverse(Function):
-    """Gradient reversal layer."""
-
-    @staticmethod
-    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore[override]
-        """Forward pass."""
-        ctx.lambda_ = lambda_
-        return x.view_as(x)
-
-    @staticmethod
-    def backward(ctx, grad_output):
-        """Backward pass with Gradient reversed / inverted."""
-        return grad_output.neg().mul(ctx.lambda_), None
-
-
-def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
-    return GradReverse.apply(features, lambda_)  # type: ignore[attr-defined]
-
-
 class Encoder(nn.Module):
     """Encoder of the GAN."""
 
@@ -324,7 +304,7 @@ class Adversary(nn.Module):
 
     def forward(self, x: Tensor, y: Tensor) -> Tensor:  # type: ignore[override]
         """Forward pass."""
-        x = _grad_reverse(x, lambda_=self.adv_weight)
+        x = grad_reverse(x, lambda_=self.adv_weight)
 
         if self.fairness == "EqOp":
             mask = y.ge(0.5)

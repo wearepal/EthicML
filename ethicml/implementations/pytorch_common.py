@@ -4,12 +4,16 @@ from typing import Tuple, TYPE_CHECKING
 import numpy as np
 import torch
 from torch import Tensor
+from torch.autograd import Function
 from torch.utils.data import Dataset
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
 
 if TYPE_CHECKING:
     import pandas as pd  # only needed for type checking
+
+
+__all__ = ["TestDataset", "CustomDataset", "quadratic_time_mmd", "GradReverse", "grad_reverse"]
 
 
 def _get_info(
@@ -119,3 +123,22 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
         - 2 * kernel_xy.sum() / (xx_num * yy_num)
     )
     return mmd2
+
+
+class GradReverse(Function):
+    """Gradient reversal layer."""
+
+    @staticmethod
+    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore[override]
+        """Forward pass."""
+        ctx.lambda_ = lambda_
+        return x.view_as(x)
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        """Backward pass with Gradient reversed / inverted."""
+        return grad_output.neg().mul(ctx.lambda_), None
+
+
+def grad_reverse(features: Tensor, lambda_: float) -> Tensor:
+    return GradReverse.apply(features, lambda_)  # type: ignore[attr-defined]
