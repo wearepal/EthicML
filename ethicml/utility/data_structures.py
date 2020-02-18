@@ -327,7 +327,7 @@ def load_prediction(output_path: Path) -> Prediction:
     """Load a prediction from a path."""
     with output_path.open("rb") as file_obj:
         df = np.load(file_obj)
-    preds = df["pred"]
+        preds = df["pred"]
     return Prediction(hard=pd.Series(preds))
 
 

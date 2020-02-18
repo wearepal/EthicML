@@ -329,9 +329,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
             script = "./tests/local_installed_lr.py"
             return [
                 script,
-                str(train_paths.x),
-                str(train_paths.y),
-                str(test_paths.x),
+                str(train_paths.data_path),
+                str(test_paths.data_path),
                 str(pred_path),
             ]
 

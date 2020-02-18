@@ -1,7 +1,6 @@
 """Methods that are shared among the inprocess algorithms."""
 from pathlib import Path
 from typing import List, Tuple, Optional, Any, Dict
-from dataclasses import asdict
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -10,23 +9,18 @@ from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 
 def flag_interface(
-    train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path, flags: Dict[str, Any]
+    train_path: PathTuple, test_path: TestPathTuple, pred_path: Path, flags: Dict[str, Any]
 ) -> List[str]:
     """Generate the commandline arguments that are expected."""
-    flags_list: List[str] = []
-
     # paths to training and test data
-    path_tuples = [train_paths, test_paths]
-    prefixes = ["--train_", "--test_"]
-    for path_tuple, prefix in zip(path_tuples, prefixes):
-        for key, path in asdict(path_tuple).items():
-            flags_list += [f"{prefix}{key}", str(path)]
+    data_flags = {"train_data_path": train_path.data_path, "train_name": train_path.name}
+    data_flags.update({"test_data_path": test_path.data_path, "test_name": test_path.name})
+    data_flags.update({"pred_path": pred_path})
+    data_flags.update(flags)
 
-    # paths to output files
-    flags_list += ["--pred_path", str(pred_path)]
-
+    flags_list: List[str] = []
     # model parameters
-    for key, values in flags.items():
+    for key, values in data_flags.items():
         flags_list.append(f"--{key}")
         if isinstance(values, (list, tuple)):
             flags_list += [str(value) for value in values]
