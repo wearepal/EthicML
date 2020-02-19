@@ -3,6 +3,7 @@ from itertools import groupby
 from typing import List
 
 import pandas as pd
+
 from ethicml.utility import DataTuple
 
 __all__ = ["bin_cont_feats"]

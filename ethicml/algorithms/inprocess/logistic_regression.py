@@ -6,7 +6,8 @@ from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction, SoftPrediction
+from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction, TestTuple
+
 from .in_algorithm import InAlgorithm
 
 

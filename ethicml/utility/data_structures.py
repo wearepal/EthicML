@@ -1,6 +1,6 @@
 """Data structures that are used throughout the code."""
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 from typing import (
     Callable,
     Dict,
@@ -14,10 +14,10 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Literal, Final
 
 import pandas as pd
 from pandas.testing import assert_index_equal
+from typing_extensions import Final, Literal
 
 __all__ = [
     "ActivationType",

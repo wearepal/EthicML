@@ -1,10 +1,12 @@
 """Loads Data from .csv files."""
 
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 import pandas as pd
 
 from ethicml.utility.data_structures import DataTuple
+
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
 

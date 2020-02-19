@@ -1,6 +1,7 @@
 """Implementation of Heaviside decision function."""
 
 import numpy
+
 from .activation import Activation
 
 

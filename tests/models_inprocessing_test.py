@@ -1,13 +1,18 @@
 """EthicML Tests"""
 import sys
-from typing import List, Dict, Any, NamedTuple, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, NamedTuple, Tuple
+
 import pandas as pd
 import pytest
 from pytest import approx
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
+    LR,
+    LRCV,
+    MLP,
+    SVM,
     Agarwal,
     Corels,
     InAlgorithm,
@@ -15,20 +20,18 @@ from ethicml.algorithms.inprocess import (
     InstalledModel,
     Kamiran,
     # Kamishima,
-    LR,
-    LRCV,
     LRProb,
     Majority,
-    MLP,
-    SVM,
     ZafarAccuracy,
     ZafarBaseline,
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
 )
+from ethicml.data import Compas, Toy, load_data
 from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
-from ethicml.metrics import Accuracy, AbsCV
+from ethicml.metrics import AbsCV, Accuracy, Metric
+from ethicml.preprocessing import query_dt, train_test_split
 from ethicml.utility import (
     DataTuple,
     Heaviside,
@@ -38,10 +41,7 @@ from ethicml.utility import (
     TestPathTuple,
     TrainTestPair,
 )
-from ethicml.data import load_data, Compas, Toy
-from ethicml.preprocessing import train_test_split, query_dt
-from ethicml.metrics import Metric
-from tests.run_algorithm_test import get_train_test, count_true
+from tests.run_algorithm_test import count_true, get_train_test
 
 
 class InprocessTest(NamedTuple):

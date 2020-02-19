@@ -3,6 +3,7 @@
 from ethicml.common import implements
 from ethicml.metrics.prob_pos import ProbPos
 from ethicml.utility.data_structures import DataTuple, Prediction
+
 from .metric import Metric
 
 

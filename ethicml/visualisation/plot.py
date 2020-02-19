@@ -1,16 +1,17 @@
 """Create plots of a dataset."""
-from pathlib import Path
-from typing import Tuple, List, Union, Optional
 import itertools
+from pathlib import Path
+from typing import List, Optional, Tuple, Union
 
-from typing_extensions import Literal
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+from typing_extensions import Literal
 
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple, Results
+
 from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter
 
 __all__ = ["plot_results", "single_plot", "save_2d_plot", "save_label_plot", "save_jointplot"]

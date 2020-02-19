@@ -1,12 +1,13 @@
 """Generate biased subsets."""
-from typing import Tuple, Sequence, Dict
+from typing import Dict, Sequence, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from ethicml.preprocessing.domain_adaptation import query_dt, make_valid_variable_name
-from ethicml.utility.data_structures import concat_dt, DataTuple
-from .train_test_split import ProportionalSplit, DataSplitter
+from ethicml.preprocessing.domain_adaptation import make_valid_variable_name, query_dt
+from ethicml.utility.data_structures import DataTuple, concat_dt
+
+from .train_test_split import DataSplitter, ProportionalSplit
 
 __all__ = [
     "BiasedDebiasedSubsets",

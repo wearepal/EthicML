@@ -1,7 +1,8 @@
 """Class to describe features of the toy dataset with more than 2 classes."""
-from typing import List, Dict
+from typing import Dict, List
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 

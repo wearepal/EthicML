@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # We follow Semantic Versioning (https://semver.org/)
 _MAJOR_VERSION = "0"

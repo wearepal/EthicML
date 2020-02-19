@@ -5,9 +5,10 @@ from itertools import groupby
 from typing import List
 
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 from ethicml.data.dataset import Dataset
+
 from .categorical import Categorical
 
 

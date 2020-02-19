@@ -1,24 +1,23 @@
 """Test preprocessing models"""
 from typing import Tuple
 
-import pandas as pd
 import numpy as np
-
+import pandas as pd
 from pytest import approx
 
 from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import InAlgorithm, SVM, LR
+from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm
 from ethicml.algorithms.preprocess import (
+    VFAE,
     Beutel,
     Calders,
     PreAlgorithm,
     PreAlgorithmAsync,
     Upsampler,
-    VFAE,
     Zemel,
 )
-from ethicml.utility import DataTuple, TestTuple, Prediction
 from ethicml.preprocessing import query_dt, train_test_split
+from ethicml.utility import DataTuple, Prediction, TestTuple
 from tests.run_algorithm_test import get_train_test
 
 

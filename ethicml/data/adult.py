@@ -1,8 +1,10 @@
 """Class to describe features of the Adult dataset."""
-from typing import List, Dict
+from typing import Dict, List
+
 from typing_extensions import Literal
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 

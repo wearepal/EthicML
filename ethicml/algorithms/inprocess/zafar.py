@@ -1,14 +1,15 @@
 """Algorithms by Zafar et al. for Demographic Parity."""
 import json
-from tempfile import TemporaryDirectory
-from pathlib import Path
-from typing import Dict, Any, Union, List, ClassVar
 from abc import abstractmethod
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import Any, ClassVar, Dict, List, Union
 
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
+from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+
 from .installed_model import InstalledModel
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"

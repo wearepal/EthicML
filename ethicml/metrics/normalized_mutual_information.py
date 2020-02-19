@@ -4,6 +4,7 @@ from sklearn.metrics import normalized_mutual_info_score as nmis
 
 from ethicml.common import implements
 from ethicml.utility.data_structures import DataTuple, Prediction
+
 from .metric import Metric
 
 

@@ -1,16 +1,17 @@
 import os
-from pathlib import Path
-import pandas as pd
 import sys
+from pathlib import Path
 
-from ethicml.algorithms.inprocess import SVM, Kamishima, Agarwal, LR
+import pandas as pd
+
+from ethicml.algorithms.inprocess import LR, SVM, Agarwal, Kamishima
 from ethicml.algorithms.inprocess.kamiran import Kamiran
-from ethicml.utility.data_structures import DataTuple
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import create_data_obj, load_data
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.evaluators.evaluate_models import run_metrics
-from ethicml.metrics import Accuracy, CV, ProbPos, TPR
+from ethicml.metrics import CV, TPR, Accuracy, ProbPos
+from ethicml.utility.data_structures import DataTuple
 
 metrics = [Accuracy(), CV()]
 per_sens_metrics = [Accuracy(), TPR(), ProbPos()]

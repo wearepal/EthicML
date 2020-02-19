@@ -1,6 +1,6 @@
 """Transformations that act differently depending on the label."""
 
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from typing import List
 
 import numpy as np

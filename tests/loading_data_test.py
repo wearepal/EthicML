@@ -2,26 +2,27 @@
 Test the loading data capability
 """
 from pathlib import Path
+
 import pandas as pd
 
 from ethicml.common import ROOT_PATH
 from ethicml.data import (
-    Dataset,
-    load_data,
-    create_data_obj,
     Adult,
     Compas,
     Credit,
+    Dataset,
     German,
+    NonBinaryToy,
     Sqf,
     Toy,
-    NonBinaryToy,
+    create_data_obj,
     group_disc_feat_indexes,
+    load_data,
 )
 from ethicml.data.crime import Crime
 from ethicml.data.health import Health
-from ethicml.utility import DataTuple, concat_dt
 from ethicml.preprocessing import domain_split, query_dt
+from ethicml.utility import DataTuple, concat_dt
 
 
 def test_can_load_test_data():

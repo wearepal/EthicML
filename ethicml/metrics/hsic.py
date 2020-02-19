@@ -3,11 +3,12 @@
 a score of 0 denotes independence
 """
 import math
+
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.utility.data_structures import DataTuple, Prediction
 from ethicml.metrics.metric import Metric
+from ethicml.utility.data_structures import DataTuple, Prediction
 
 
 def hsic(

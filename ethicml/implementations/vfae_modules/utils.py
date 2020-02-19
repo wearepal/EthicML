@@ -1,6 +1,7 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 
 from typing import Optional
+
 import torch
 import torch.nn.functional as F
 from torch import Tensor

@@ -1,8 +1,8 @@
 """Abstract Base Class for all datasets that come with the framework."""
 
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional
 from pathlib import Path
+from typing import Dict, List, Optional
 
 from ethicml.common import ROOT_PATH
 from ethicml.data.util import filter_features_by_prefixes, get_discrete_features

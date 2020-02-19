@@ -1,14 +1,15 @@
 """Kamiran and Calders 2012."""
 from typing import Optional, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, ClassifierType, Prediction
-from .shared import settings_for_svm_lr
+from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithm
+from .shared import settings_for_svm_lr
 from .svm import select_svm
 
 VALID_MODELS = {"LR", "SVM"}

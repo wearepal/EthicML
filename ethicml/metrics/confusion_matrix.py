@@ -1,6 +1,7 @@
 """Applies sci-kit learn's confusion matrix."""
 
 from typing import Tuple
+
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
 

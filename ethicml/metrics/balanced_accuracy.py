@@ -1,7 +1,8 @@
 """Accuracy that is balanced with respect to the class labels."""
 
 from ethicml.common import implements
-from ethicml.utility import Prediction, DataTuple
+from ethicml.utility import DataTuple, Prediction
+
 from .confusion_matrix import confusion_matrix
 from .metric import Metric
 

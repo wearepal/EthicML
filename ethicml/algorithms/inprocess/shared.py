@@ -1,7 +1,7 @@
 """Methods that are shared among the inprocess algorithms."""
-from pathlib import Path
-from typing import List, Tuple, Optional, Any, Dict
 from dataclasses import asdict
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC

@@ -1,6 +1,8 @@
 """Collection of functions that enable parallelism."""
-import os
 import asyncio
+import os
+from collections import OrderedDict
+from dataclasses import dataclass
 from typing import (
     Any,
     Callable,
@@ -16,14 +18,12 @@ from typing import (
     cast,
     overload,
 )
-from collections import OrderedDict
-from dataclasses import dataclass
 
 from tqdm import tqdm
 
-from ethicml.utility.data_structures import DataTuple, TrainTestPair, TestTuple, Prediction
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync
+from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple, TrainTestPair
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]
 

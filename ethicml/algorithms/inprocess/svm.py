@@ -1,11 +1,12 @@
 """Wrapper for SKLearn implementation of SVM."""
 from typing import Optional, Union
 
-from sklearn.svm import SVC, LinearSVC
 import pandas as pd
+from sklearn.svm import SVC, LinearSVC
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, Prediction
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithm
 
 

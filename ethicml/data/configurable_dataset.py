@@ -2,6 +2,7 @@
 from typing import Dict, List
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 

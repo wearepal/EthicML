@@ -1,11 +1,11 @@
 """Common plotting functions / datastructures."""
 
-from typing import Tuple, NamedTuple, List, Optional, Dict, Any
-from typing_extensions import Literal
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
+import matplotlib as mpl
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib as mpl
+from typing_extensions import Literal
 
 LegendType = Literal["inside", "outside"]  # pylint: disable=invalid-name
 PlotType = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name

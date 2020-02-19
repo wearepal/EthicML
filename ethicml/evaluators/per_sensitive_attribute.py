@@ -1,10 +1,11 @@
 """Evaluator for a metric per sensitive attribute class."""
 
 from typing import Dict, List
+
 import pandas as pd
 
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from ethicml.metrics import Metric
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
 __all__ = [
     "metric_per_sensitive_attribute",

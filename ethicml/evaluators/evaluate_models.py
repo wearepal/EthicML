@@ -1,7 +1,7 @@
 """Runs given metrics on given algorithms for given datasets."""
-from pathlib import Path
-from typing import List, Dict, Union, Sequence, Optional, NamedTuple
 from collections import OrderedDict
+from pathlib import Path
+from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 
 import pandas as pd
 from tqdm import tqdm
@@ -9,18 +9,19 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple, TrainTestPair, Results, Prediction
-from .parallelism import run_in_parallel
+from ethicml.utility.data_structures import DataTuple, Prediction, Results, TestTuple, TrainTestPair
+
 from ..data.dataset import Dataset
 from ..data.load import load_data
-from .per_sensitive_attribute import (
-    metric_per_sensitive_attribute,
-    MetricNotApplicable,
-    diff_per_sensitive_attribute,
-    ratio_per_sensitive_attribute,
-)
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import DataSplitter, RandomSplit
+from .parallelism import run_in_parallel
+from .per_sensitive_attribute import (
+    MetricNotApplicable,
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+    ratio_per_sensitive_attribute,
+)
 
 __all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
 

@@ -1,13 +1,15 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 
-from typing import List, Optional, Any, Tuple
+from typing import Any, List, Optional, Tuple
+
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 from ethicml.data.dataset import Dataset
-from .encoder import Encoder
+
 from .decoder import Decoder
+from .encoder import Encoder
 
 
 class VFAENetwork(nn.Module):
