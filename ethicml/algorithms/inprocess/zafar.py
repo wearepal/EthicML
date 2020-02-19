@@ -7,9 +7,9 @@ from abc import abstractmethod
 
 import pandas as pd
 
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
+from .installed_model import InstalledModel
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
 SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"

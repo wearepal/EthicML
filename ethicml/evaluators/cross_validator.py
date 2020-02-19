@@ -11,6 +11,8 @@ from ethicml.metrics import Accuracy, Metric, AbsCV
 from ethicml.preprocessing.train_test_split import fold_data
 from .parallelism import run_in_parallel
 
+__all__ = ["CrossValidator", "CVResults"]
+
 
 class ResultTuple(NamedTuple):
     """Result of one experiment."""

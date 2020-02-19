@@ -14,8 +14,8 @@ import subprocess
 
 import git
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from .in_algorithm import InAlgorithmAsync
 
 
 class InstalledModel(InAlgorithmAsync):

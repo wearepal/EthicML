@@ -22,6 +22,8 @@ from .per_sensitive_attribute import (
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import DataSplitter, RandomSplit
 
+__all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
+
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
     """Get all possible combinations of sensitive attribute and metrics."""

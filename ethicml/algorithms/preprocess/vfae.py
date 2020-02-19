@@ -2,9 +2,9 @@
 
 from typing import List, Dict, Union, Optional
 
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
-from ethicml.algorithms.preprocess.interface import flag_interface
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from .pre_algorithm import PreAlgorithmAsync
+from .interface import flag_interface
 
 
 class VFAE(PreAlgorithmAsync):

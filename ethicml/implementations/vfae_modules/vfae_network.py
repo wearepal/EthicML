@@ -6,8 +6,8 @@ import torch
 from torch import nn, Tensor
 
 from ethicml.data.dataset import Dataset
-from ethicml.implementations.vfae_modules.encoder import Encoder
-from ethicml.implementations.vfae_modules.decoder import Decoder
+from .encoder import Encoder
+from .decoder import Decoder
 
 
 class VFAENetwork(nn.Module):
