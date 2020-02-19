@@ -1,6 +1,7 @@
 """This module contains items related to data, such as raw csv's and data objects."""
 
 from .adult import Adult
+from .celeba import Celeba
 from .compas import Compas
 from .configurable_dataset import ConfigurableDataset
 from .credit import Credit
