@@ -2,15 +2,15 @@
 
 https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
 """
-from typing import List, Tuple, Optional, Union
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 
 from ethicml.utility.data_structures import DataTuple, TestTuple
-from .utils import load_data_from_flags, save_transformations, PreAlgoArgs
 
+from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us
 # pylint: disable=invalid-name

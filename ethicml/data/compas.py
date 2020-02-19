@@ -2,6 +2,7 @@
 from typing_extensions import Literal
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 

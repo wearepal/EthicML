@@ -7,9 +7,10 @@ import numpy as np
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, Prediction
-from .installed_model import InstalledModel
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithmAsync
+from .installed_model import InstalledModel
 
 
 class Kamishima(InstalledModel):

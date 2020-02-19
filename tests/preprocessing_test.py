@@ -4,21 +4,21 @@ Test preprocessing capabilities
 import math
 from typing import Tuple
 
-from pytest import approx, fixture
 import pandas as pd
+from pytest import approx, fixture
 
-from ethicml.utility import DataTuple
-from ethicml.data import load_data, Toy, Adult
+from ethicml.data import Adult, Toy, load_data
 from ethicml.preprocessing import (
     BalancedTestSplit,
     ProportionalSplit,
     SequentialSplit,
-    train_test_split,
     bin_cont_feats,
-    get_biased_subset,
     get_biased_and_debiased_subsets,
+    get_biased_subset,
     query_dt,
+    train_test_split,
 )
+from ethicml.utility import DataTuple
 
 from .run_algorithm_test import count_true
 

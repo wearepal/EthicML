@@ -4,14 +4,13 @@ Test the saving data capability
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-import pandas as pd
 import numpy as np
-
+import pandas as pd
 import pytest
 
-from ethicml.utility import DataTuple, TestTuple
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import InAlgorithmAsync
+from ethicml.utility import DataTuple, TestTuple
 
 
 def test_simple_saving() -> None:

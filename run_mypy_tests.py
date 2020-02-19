@@ -1,6 +1,7 @@
 """Run mypy and report how many errors there are."""
 
 import sys
+
 from mypy import api as mypy
 
 MAX_ALLOWED_ERRORS = 5

@@ -1,13 +1,13 @@
 """Wrapper for SKLearn implementation of MLP."""
-from typing import Optional, Tuple, Dict
+from typing import Dict, Optional, Tuple
 
-from sklearn.neural_network import MLPClassifier
 import pandas as pd
+from sklearn.neural_network import MLPClassifier
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import ActivationType, DataTuple, TestTuple, Prediction
-from .in_algorithm import InAlgorithm
+from ethicml.utility.data_structures import ActivationType, DataTuple, Prediction, TestTuple
 
+from .in_algorithm import InAlgorithm
 
 ACTIVATIONS: Dict[str, ActivationType] = {
     "identity": "identity",

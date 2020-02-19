@@ -1,6 +1,6 @@
 """Methods that define commandline interfaces."""
-from typing import List, Any, Dict
 from dataclasses import asdict
+from typing import Any, Dict, List
 
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
 

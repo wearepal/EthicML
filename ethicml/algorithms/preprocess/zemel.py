@@ -1,9 +1,10 @@
 """Zemel's Learned Fair Representations."""
-from typing import Dict, Union, List
+from typing import Dict, List, Union
 
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
-from .pre_algorithm import PreAlgorithmAsync
+
 from .interface import flag_interface
+from .pre_algorithm import PreAlgorithmAsync
 
 
 class Zemel(PreAlgorithmAsync):

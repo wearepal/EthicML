@@ -1,5 +1,5 @@
 """Functions that are common to PyTorch models."""
-from typing import Tuple, TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 import numpy as np
 import torch

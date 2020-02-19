@@ -3,26 +3,27 @@ Test that an algorithm can run against some data
 """
 import os
 from pathlib import Path
-from typing import Tuple, List
+from typing import List, Tuple
+
 import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
 import pytest
 
 from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import LR, SVM, Majority, InAlgorithm, Kamiran
+from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, Kamiran, Majority
 from ethicml.algorithms.postprocess import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
-from ethicml.metrics import Accuracy, CV, TPR, Metric
-from ethicml.utility import DataTuple, TrainTestPair
-from ethicml.data import load_data, Toy, Adult, Dataset
+from ethicml.data import Adult, Dataset, Toy, load_data
 from ethicml.evaluators import (
-    run_in_parallel,
-    evaluate_models,
     MetricNotApplicable,
-    load_results,
+    evaluate_models,
     evaluate_models_async,
+    load_results,
+    run_in_parallel,
 )
+from ethicml.metrics import CV, TPR, Accuracy, Metric
 from ethicml.preprocessing import train_test_split
+from ethicml.utility import DataTuple, TrainTestPair
 
 
 def get_train_test() -> Tuple[DataTuple, DataTuple]:

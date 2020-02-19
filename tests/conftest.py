@@ -1,14 +1,14 @@
 """
 This file is automatically imported by pytest (no need to import it) and defines shared fixtures
 """
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 import pytest
 
-from ethicml.utility import DataTuple, TrainTestPair
-from ethicml.data import load_data, Toy
+from ethicml.data import Toy, load_data
 from ethicml.preprocessing import train_test_split
+from ethicml.utility import DataTuple, TrainTestPair
 
 
 @pytest.fixture(scope="session")

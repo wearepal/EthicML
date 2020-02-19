@@ -1,9 +1,9 @@
 """Base class for Algorithms."""
+import asyncio
 import sys
 from abc import ABC, ABCMeta
-from typing import List, Optional, Dict, Coroutine, TypeVar, Any
-import asyncio
 from pathlib import Path
+from typing import Any, Coroutine, Dict, List, Optional, TypeVar
 
 __all__ = ["run_blocking", "Algorithm", "AlgorithmAsync"]
 

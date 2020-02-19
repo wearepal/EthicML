@@ -2,8 +2,8 @@
 import sys
 from pathlib import Path
 
-from sklearn.linear_model import LogisticRegression
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 
 
 def main():

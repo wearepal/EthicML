@@ -1,10 +1,11 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
 
-from typing import List, Dict, Union, Optional
+from typing import Dict, List, Optional, Union
 
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
-from .pre_algorithm import PreAlgorithmAsync
+
 from .interface import flag_interface
+from .pre_algorithm import PreAlgorithmAsync
 
 
 class VFAE(PreAlgorithmAsync):

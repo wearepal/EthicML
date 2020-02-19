@@ -3,17 +3,17 @@ import random
 
 import numpy as np
 import pandas as pd
-
 from fairlearn.reductions import (
-    ExponentiatedGradient,
+    ConditionalSelectionRate,
     DemographicParity,
     EqualizedOdds,
-    ConditionalSelectionRate,
+    ExponentiatedGradient,
 )
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType, ClassifierType
 from ethicml.algorithms.inprocess.svm import select_svm
+from ethicml.utility.data_structures import ClassifierType, DataTuple, FairnessType, TestTuple
+
 from .utils import InAlgoArgs, load_data_from_flags, save_predictions
 
 

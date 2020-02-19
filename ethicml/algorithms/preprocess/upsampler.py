@@ -1,13 +1,14 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
-from typing import List, Tuple, Dict, Optional
-from typing_extensions import Literal
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
+from typing_extensions import Literal
 
-from ethicml.common import implements
 from ethicml.algorithms.inprocess import LRProb
-from ethicml.utility import TestTuple, DataTuple, SoftPrediction
+from ethicml.common import implements
+from ethicml.utility import DataTuple, SoftPrediction, TestTuple
+
 from .pre_algorithm import PreAlgorithm
 
 

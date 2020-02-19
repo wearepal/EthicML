@@ -1,40 +1,41 @@
 """Test that we can get some metrics on predictions"""
 
-from typing import Tuple, NamedTuple
+from typing import NamedTuple, Tuple
+
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.inprocess import InAlgorithm, LRProb, SVM, LR, Kamiran, LRCV
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
+from ethicml.algorithms.inprocess import LR, LRCV, SVM, InAlgorithm, Kamiran, LRProb
 from ethicml.data import Adult, NonBinaryToy, load_data
 from ethicml.evaluators import (
+    MetricNotApplicable,
     diff_per_sensitive_attribute,
     metric_per_sensitive_attribute,
     ratio_per_sensitive_attribute,
     run_metrics,
-    MetricNotApplicable,
 )
 from ethicml.metrics import (
-    Accuracy,
     AS,
-    BalancedAccuracy,
     BCR,
     CV,
     F1,
-    Metric,
     NMI,
-    PPV,
     NPV,
+    PPV,
+    TNR,
+    TPR,
+    Accuracy,
+    BalancedAccuracy,
+    Hsic,
+    LabelOutOfBounds,
+    Metric,
     ProbNeg,
     ProbOutcome,
     ProbPos,
-    TNR,
-    TPR,
     Theil,
-    Hsic,
-    LabelOutOfBounds,
 )
 from ethicml.preprocessing import train_test_split
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from tests.run_algorithm_test import get_train_test
 
 RTOL = 1e-5  # relative tolerance when comparing two floats

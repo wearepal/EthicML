@@ -1,9 +1,10 @@
 """Beutel's algorithm."""
-from typing import List, Sequence, Union, Dict
+from typing import Dict, List, Sequence, Union
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, FairnessType
-from .pre_algorithm import PreAlgorithmAsync
+from ethicml.utility.data_structures import FairnessType, PathTuple, TestPathTuple
+
 from .interface import flag_interface
+from .pre_algorithm import PreAlgorithmAsync
 
 
 class Beutel(PreAlgorithmAsync):

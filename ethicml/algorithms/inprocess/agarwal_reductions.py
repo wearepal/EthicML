@@ -1,11 +1,11 @@
 """implementation of Agarwal model."""
 from pathlib import Path
-from typing import List, Set, Optional, Union, Dict
+from typing import Dict, List, Optional, Set, Union
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, FairnessType, ClassifierType
-from .shared import settings_for_svm_lr, flag_interface
+from ethicml.utility.data_structures import ClassifierType, FairnessType, PathTuple, TestPathTuple
+
 from .in_algorithm import InAlgorithmAsync
-
+from .shared import flag_interface, settings_for_svm_lr
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
 VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}

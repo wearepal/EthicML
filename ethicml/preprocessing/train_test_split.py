@@ -1,17 +1,17 @@
 """Split into train and test data."""
-from abc import ABC, abstractmethod
 import itertools
-from typing import Tuple, List, Iterator, Dict
-from typing_extensions import Literal
+from abc import ABC, abstractmethod
+from typing import Dict, Iterator, List, Tuple
 
 import numpy as np
-from numpy.random import RandomState
 import pandas as pd
+from numpy.random import RandomState
 from pandas.testing import assert_index_equal
+from typing_extensions import Literal
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
+from ethicml.utility.data_structures import DataTuple
 
 __all__ = [
     "BalancedTestSplit",

@@ -1,9 +1,10 @@
 """Manually specified (i.e. not learned) models."""
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
+from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithm
 
 

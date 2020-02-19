@@ -5,16 +5,17 @@ Say you find a paper from a few years ago with code. It's not unreasonable that 
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
 in its own venv and makes everyone happy.
 """
-import sys
 import os
-from pathlib import Path
-from typing import List, Optional
 import shutil
 import subprocess
+import sys
+from pathlib import Path
+from typing import List, Optional
 
 import git
 
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
+
 from .in_algorithm import InAlgorithmAsync
 
 
