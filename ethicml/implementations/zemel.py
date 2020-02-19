@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 
-from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
 from ethicml.utility.data_structures import DataTuple, TestTuple
+from .utils import load_data_from_flags, save_transformations, PreAlgoArgs
 
 
 # Disable pylint's naming convention complaints - this code wasn't implemented by us

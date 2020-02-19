@@ -3,8 +3,15 @@
 from typing import Dict, List
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction
-from ..metrics.metric import Metric
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
+from ethicml.metrics import Metric
+
+__all__ = [
+    "metric_per_sensitive_attribute",
+    "diff_per_sensitive_attribute",
+    "ratio_per_sensitive_attribute",
+    "MetricNotApplicable",
+]
 
 
 class MetricNotApplicable(Exception):

@@ -11,7 +11,9 @@ import matplotlib as mpl
 
 from ethicml.metrics import Metric
 from ethicml.utility.data_structures import DataTuple, Results
-from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType, PlotType, scatter
+from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter
+
+__all__ = ["plot_results", "single_plot", "save_2d_plot", "save_label_plot", "save_jointplot"]
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 

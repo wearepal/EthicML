@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 
 from ethicml.common import implements
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
+from .in_algorithm import InAlgorithm
 
 
 class Corels(InAlgorithm):
