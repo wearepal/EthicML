@@ -247,7 +247,7 @@ class Adult(Dataset):
     @property
     def filename(self) -> str:
         """Getter for filename."""
-        return "adult.csv"
+        return "adult.csv.zip"
 
     @implements(Dataset)
     def __len__(self) -> int:

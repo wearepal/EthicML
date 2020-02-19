@@ -8,6 +8,7 @@ import pandas as pd
 from ethicml.common import ROOT_PATH
 from ethicml.data import (
     Adult,
+    Celeba,
     Compas,
     Credit,
     Dataset,
@@ -288,7 +289,7 @@ def test_load_adult_drop_native():
 
 def test_additional_columns_load():
     """test additional columns load"""
-    data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv"
+    data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
         data_loc,
         s_columns=["race_White"],
@@ -382,3 +383,17 @@ def test_group_prefixes():
     assert grouped_indexes[0] == slice(0, 2)
     assert grouped_indexes[1] == slice(2, 4)
     assert grouped_indexes[2] == slice(4, 5)
+
+
+def test_celeba():
+    celeba = Celeba()
+    data = load_data(celeba)
+
+    assert celeba.name == "CelebA, s=Male, y=Smiling"
+
+    assert (202599, 39) == data.x.shape
+    assert (202599, 1) == data.s.shape
+    assert (202599, 1) == data.y.shape
+    assert len(data) == len(celeba)
+
+    assert data.x['filename'].iloc[0] == "000001.jpg"

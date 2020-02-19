@@ -14,7 +14,7 @@ class Health(Dataset):
     @property
     def filename(self) -> str:
         """Getter for filename."""
-        return "health.csv"
+        return "health.csv.zip"
 
     @implements(Dataset)
     def __len__(self) -> int:
