@@ -10,3 +10,4 @@ from .manual import *
 from .mlp import *
 from .svm import *
 from .zafar import *
+from .kamishima import Kamishima
