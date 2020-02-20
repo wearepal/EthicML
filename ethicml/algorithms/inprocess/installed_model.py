@@ -13,10 +13,11 @@ from pathlib import Path
 from typing import List, Optional
 
 import git
-
 from ethicml.utility.data_structures import PathTuple, TestPathTuple
 
 from .in_algorithm import InAlgorithmAsync
+
+__all__ = ["InstalledModel"]
 
 
 class InstalledModel(InAlgorithmAsync):

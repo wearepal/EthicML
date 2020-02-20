@@ -5,12 +5,13 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-
 from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithmAsync
 from .installed_model import InstalledModel
+
+__all__ = ["Kamishima"]
 
 
 class Kamishima(InstalledModel):

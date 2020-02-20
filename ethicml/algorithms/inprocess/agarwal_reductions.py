@@ -7,6 +7,9 @@ from ethicml.utility.data_structures import ClassifierType, FairnessType, PathTu
 from .in_algorithm import InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
 
+__all__ = ["Agarwal"]
+
+
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
 VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 

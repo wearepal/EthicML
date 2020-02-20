@@ -10,6 +10,8 @@ from ethicml.utility.data_structures import DataTuple, Prediction, SoftPredictio
 
 from .in_algorithm import InAlgorithm
 
+__all__ = ["LR", "LRCV", "LRProb"]
+
 
 class LR(InAlgorithm):
     """Logistic regression with hard predictions."""

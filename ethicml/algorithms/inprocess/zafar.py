@@ -6,11 +6,13 @@ from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, Union
 
 import pandas as pd
-
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
 
 from .installed_model import InstalledModel
+
+__all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
+
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
 SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"
