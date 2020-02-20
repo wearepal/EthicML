@@ -62,7 +62,7 @@ def run_metrics(
         per_sens_metrics: list of metrics that are computed per sensitive attribute
     """
     result: Dict[str, float] = {}
-    if predictions.hard.isna().any():
+    if predictions.hard.isna().any(axis=None):
         return {"algorithm_failed": 1.0}
     for metric in metrics:
         result[metric.name] = metric.score(predictions, actual)
