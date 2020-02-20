@@ -16,6 +16,8 @@ from ethicml.utility.data_structures import (
     write_as_feather,
 )
 
+__all__ = ["InAlgorithm", "InAlgorithmAsync"]
+
 
 class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""

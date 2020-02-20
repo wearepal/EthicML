@@ -2,12 +2,14 @@
 from typing import Dict, Optional, Tuple
 
 import pandas as pd
-from sklearn.neural_network import MLPClassifier
-
 from ethicml.common import implements
 from ethicml.utility.data_structures import ActivationType, DataTuple, Prediction, TestTuple
+from sklearn.neural_network import MLPClassifier
 
 from .in_algorithm import InAlgorithm
+
+__all__ = ["MLP"]
+
 
 ACTIVATIONS: Dict[str, ActivationType] = {
     "identity": "identity",

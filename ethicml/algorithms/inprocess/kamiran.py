@@ -3,14 +3,16 @@ from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
-
 from ethicml.common import implements
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
+from sklearn.linear_model import LogisticRegression
 
 from .in_algorithm import InAlgorithm
 from .shared import settings_for_svm_lr
 from .svm import select_svm
+
+__all__ = ["Kamiran", "compute_weights"]
+
 
 VALID_MODELS = {"LR", "SVM"}
 
@@ -33,7 +35,7 @@ class Kamiran(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        return train_and_predict(
+        return _train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
 
@@ -96,7 +98,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     return train_instance_weights
 
 
-def train_and_predict(
+def _train_and_predict(
     train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str
 ) -> Prediction:
     """Train a logistic regression model and compute predictions on the given test data."""
