@@ -11,7 +11,7 @@ from .in_algorithm import InAlgorithm
 from .shared import settings_for_svm_lr
 from .svm import select_svm
 
-__all__ = ["Kamiran", "compute_weights"]
+__all__ = ["Kamiran", "compute_instance_weights"]
 
 
 VALID_MODELS = {"LR", "SVM"}
@@ -60,7 +60,7 @@ def _obtain_conditionings(
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
-def compute_weights(train: DataTuple) -> pd.DataFrame:
+def compute_instance_weights(train: DataTuple) -> pd.DataFrame:
     """Compute weights for all samples."""
     np.random.seed(888)
     (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
@@ -109,6 +109,6 @@ def _train_and_predict(
     model.fit(
         train.x,
         train.y.to_numpy().ravel(),
-        sample_weight=compute_weights(train)["instance weights"],
+        sample_weight=compute_instance_weights(train)["instance weights"],
     )
     return Prediction(hard=pd.Series(model.predict(test.x)))
