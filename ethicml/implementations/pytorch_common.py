@@ -125,6 +125,7 @@ def compute_projection_gradients(
     model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float
 ) -> None:
     """Computes the adversarial gradient projection term.
+
     See Zhang et al. (2018), 'Mitigating Unwanted Biases with Adversarial Learning'
     for details.
 
