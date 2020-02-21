@@ -137,7 +137,7 @@ def compute_projection_gradients(
     grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
     grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
 
-    def _proj(a: Tensor, b: Tensor):
+    def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)
 
     grad_p = [p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a)]
