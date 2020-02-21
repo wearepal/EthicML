@@ -124,9 +124,9 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
 def compute_projection_gradients(
     model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float
 ) -> None:
-    """Computes the projection term.
+    """Computes the adversarial gradient projection term.
     See Zhang et al. (2018), 'Mitigating Unwanted Biases with Adversarial Learning'
-    for details
+    for details.
 
     Args:
         model (nn.Module): Model whose parameters the gradients are to be computed w.r.t.
