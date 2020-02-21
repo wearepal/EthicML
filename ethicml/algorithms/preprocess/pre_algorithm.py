@@ -7,7 +7,8 @@ from typing import List, Tuple
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.common import implements
-from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple, write_as_feather
+from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
+from ethicml.utility.data_structures import write_as_feather
 
 
 class PreAlgorithm(Algorithm):

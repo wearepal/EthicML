@@ -13,8 +13,8 @@ from ethicml.utility import (
     TestPathTuple,
     TestTuple,
     load_prediction,
-    write_as_feather,
 )
+from ethicml.utility.data_structures import write_as_feather
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]
 
