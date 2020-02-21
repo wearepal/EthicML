@@ -124,6 +124,16 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
 def compute_projection_gradients(
     model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float
 ) -> None:
+    """Computes the projection term.
+    See Zhang et al. (2018), 'Mitigating Unwanted Biases with Adversarial Learning'
+    for details
+
+    Args:
+        model (nn.Module): Model whose parameters the gradients are to be computed w.r.t.
+        loss_p (Tensor): Prediction loss.
+        loss_a (Tensor): Adversarial loss.
+        alpha (float): Pre-factor for adversarial loss.
+    """
     grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
     grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
 
