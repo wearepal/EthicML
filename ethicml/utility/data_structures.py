@@ -228,6 +228,7 @@ class Prediction:
 
     def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
         """Init the prediction class."""
+        assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
 
