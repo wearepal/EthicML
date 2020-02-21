@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Tuple
 
 import numpy as np
 import torch
+import torch.nn as nn
 from torch import Tensor
 from torch.utils.data import Dataset
 
@@ -119,3 +120,16 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
         - 2 * kernel_xy.sum() / (xx_num * yy_num)
     )
     return mmd2
+
+
+def compute_projection_gradients(model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float) -> None:
+    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
+    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
+
+    def _proj(a: Tensor, b: Tensor):
+        return b * torch.sum(a * b) / torch.sum(b * b)
+
+    grad_p = [p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a)]
+
+    for param, grad in zip(model.parameters(), grad_p):
+        param.grad = grad
