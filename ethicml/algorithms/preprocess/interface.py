@@ -2,7 +2,7 @@
 from dataclasses import asdict
 from typing import Any, Dict, List
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from ethicml.utility import PathTuple, TestPathTuple
 
 
 def flag_interface(

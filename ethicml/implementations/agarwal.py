@@ -12,7 +12,7 @@ from fairlearn.reductions import (
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility.data_structures import ClassifierType, DataTuple, FairnessType, TestTuple
+from ethicml.utility import ClassifierType, DataTuple, FairnessType, TestTuple
 
 from .utils import InAlgoArgs, load_data_from_flags, save_predictions
 

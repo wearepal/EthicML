@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
 
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 
 class LabelOutOfBounds(Exception):

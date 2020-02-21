@@ -1,11 +1,11 @@
 """For assessing Balanced Classification Rate (BCR)."""
 
 from ethicml.common import implements
-from ethicml.metrics.tnr import TNR
-from ethicml.metrics.tpr import TPR
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
+from .tnr import TNR
+from .tpr import TPR
 
 
 class BCR(Metric):

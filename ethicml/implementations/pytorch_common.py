@@ -4,9 +4,10 @@ from typing import TYPE_CHECKING, Tuple
 import numpy as np
 import torch
 import torch.nn as nn
-from ethicml.utility.data_structures import DataTuple, TestTuple
 from torch import Tensor
 from torch.utils.data import Dataset
+
+from ethicml.utility import DataTuple, TestTuple
 
 if TYPE_CHECKING:
     import pandas as pd  # only needed for type checking

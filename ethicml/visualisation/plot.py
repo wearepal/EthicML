@@ -10,7 +10,7 @@ import seaborn as sns
 from typing_extensions import Literal
 
 from ethicml.metrics import Metric
-from ethicml.utility.data_structures import DataTuple, Results
+from ethicml.utility import DataTuple, Results
 
 from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter
 

@@ -6,8 +6,9 @@ from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, Union
 
 import pandas as pd
+
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
-from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .installed_model import InstalledModel
 

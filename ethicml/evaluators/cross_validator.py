@@ -7,7 +7,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Type
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.metrics import AbsCV, Accuracy, Metric
 from ethicml.preprocessing.train_test_split import fold_data
-from ethicml.utility.data_structures import DataTuple, Prediction, TrainTestPair
+from ethicml.utility import DataTuple, Prediction, TrainTestPair
 
 from .parallelism import run_in_parallel
 

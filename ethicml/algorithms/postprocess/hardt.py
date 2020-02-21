@@ -7,7 +7,7 @@ from scipy.optimize import OptimizeResult, linprog
 from ethicml.common import implements
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
 from ethicml.metrics import TNR, TPR
-from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .post_algorithm import PostAlgorithm
 

@@ -19,7 +19,6 @@ from ethicml.algorithms.inprocess import (
     InAlgorithmAsync,
     InstalledModel,
     Kamiran,
-    # Kamishima,
     LRProb,
     Majority,
     ZafarAccuracy,

@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.preprocessing.domain_adaptation import make_valid_variable_name, query_dt
-from ethicml.utility.data_structures import DataTuple, concat_dt
+from ethicml.utility import DataTuple, concat_dt
 
 from .train_test_split import DataSplitter, ProportionalSplit
 

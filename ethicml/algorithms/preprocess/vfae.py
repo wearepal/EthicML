@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional, Union
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from ethicml.utility import PathTuple, TestPathTuple
 
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync

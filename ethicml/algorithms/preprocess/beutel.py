@@ -1,7 +1,7 @@
 """Beutel's algorithm."""
 from typing import Dict, List, Sequence, Union
 
-from ethicml.utility.data_structures import FairnessType, PathTuple, TestPathTuple
+from ethicml.utility import FairnessType, PathTuple, TestPathTuple
 
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync

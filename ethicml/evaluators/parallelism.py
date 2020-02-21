@@ -23,7 +23,7 @@ from tqdm import tqdm
 
 from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
 from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync
-from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple, TrainTestPair
+from ethicml.utility import DataTuple, Prediction, TestTuple, TrainTestPair
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]
 

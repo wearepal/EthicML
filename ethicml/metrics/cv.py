@@ -1,10 +1,10 @@
-"""For assessing Calder-Verwer metric: 1-(P(Y=1|S=1)-P(Y=1|S!=1))."""
+"""For assessing Calder-Verwer metric, :math:`1-(P(Y=1|S=1)-P(Y=1|S!=1))`."""
 
 from ethicml.common import implements
-from ethicml.metrics.prob_pos import ProbPos
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
+from .prob_pos import ProbPos
 
 
 class CV(Metric):
@@ -14,6 +14,7 @@ class CV(Metric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
+        # has to be imported on demand because otherwise we get circular imports
         from ethicml.evaluators.per_sensitive_attribute import (
             metric_per_sensitive_attribute,
             diff_per_sensitive_attribute,
