@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import tap
 
-from ethicml.utility.data_structures import DataTuple, PathTuple, TestPathTuple, TestTuple
+from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
 
 
 class AlgoArgs(tap.Tap):

@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 
-from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from ..algorithm_base import Algorithm
 

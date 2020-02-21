@@ -6,15 +6,15 @@ from typing import List
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.common import implements
-from ethicml.utility.data_structures import (
+from ethicml.utility import (
     DataTuple,
     PathTuple,
     Prediction,
     TestPathTuple,
     TestTuple,
     load_prediction,
-    write_as_feather,
 )
+from ethicml.utility.data_structures import write_as_feather
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]
 

@@ -1,8 +1,9 @@
 """Simply returns the majority label from the train set."""
 
 import pandas as pd
+
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm
 

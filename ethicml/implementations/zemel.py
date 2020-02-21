@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple
 
 from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
 

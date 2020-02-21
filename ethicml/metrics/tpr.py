@@ -1,7 +1,7 @@
 """For assessing TPR."""
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 from .confusion_matrix import confusion_matrix
 from .metric import Metric

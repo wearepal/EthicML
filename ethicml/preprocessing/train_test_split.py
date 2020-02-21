@@ -10,8 +10,8 @@ from pandas.testing import assert_index_equal
 from typing_extensions import Literal
 
 from ethicml.common import implements
+from ethicml.utility import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
-from ethicml.utility.data_structures import DataTuple
 
 __all__ = [
     "BalancedTestSplit",

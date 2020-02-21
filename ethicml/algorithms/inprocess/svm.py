@@ -2,9 +2,10 @@
 from typing import Optional, Union
 
 import pandas as pd
+from sklearn.svm import SVC, LinearSVC
+
 from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
-from sklearn.svm import SVC, LinearSVC
 
 from .in_algorithm import InAlgorithm
 
