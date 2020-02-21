@@ -3,9 +3,10 @@ from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
+
 from ethicml.common import implements
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
-from sklearn.linear_model import LogisticRegression
 
 from .in_algorithm import InAlgorithm
 from .shared import settings_for_svm_lr

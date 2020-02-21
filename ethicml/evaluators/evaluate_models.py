@@ -9,7 +9,7 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility.data_structures import DataTuple, Prediction, Results, TestTuple, TrainTestPair
+from ethicml.utility import DataTuple, Prediction, Results, TestTuple, TrainTestPair
 
 from ..data.dataset import Dataset
 from ..data.load import load_data

@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility import DataTuple
 
 __all__ = ["LabelBinarizer"]
 

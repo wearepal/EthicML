@@ -8,7 +8,7 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 
 from ethicml.data import Adult, Compas, Credit, Dataset, German, NonBinaryToy, Sqf, Toy
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import PreAlgoArgs, load_data_from_flags, save_transformations

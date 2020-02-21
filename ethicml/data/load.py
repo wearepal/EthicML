@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple
+from ethicml.utility import DataTuple
 
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset

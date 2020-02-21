@@ -3,9 +3,10 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+
+from ethicml.utility import PathTuple, TestPathTuple
 
 __all__ = ["flag_interface", "settings_for_svm_lr"]
 

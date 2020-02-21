@@ -3,7 +3,7 @@
 from ethicml.common import implements
 from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
 

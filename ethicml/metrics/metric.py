@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
 
 
 class Metric(ABC):
