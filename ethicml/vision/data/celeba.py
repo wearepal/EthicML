@@ -6,64 +6,22 @@ and biased subset sampling.
 import os
 import warnings
 from pathlib import Path
-from typing import Callable, List, Optional, Sequence, Tuple
+from typing import Callable, Optional, Tuple, cast
 
 import pandas as pd
+import numpy as np
 import torch
 from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_file_from_google_drive
-from typing_extensions import Literal
 
 from ethicml.preprocessing import SequentialSplit, get_biased_subset
 from ethicml.utility import DataTuple
+from ethicml import data as eml_data
+from ethicml.data.celeba import CELEBATTRS
 
-__all__ = ["CelebA"]
-
-
-_CELEBATTRS = Literal[
-    "5_o_Clock_Shadow",
-    "Arched_Eyebrows",
-    "Attractive",
-    "Bags_Under_Eyes",
-    "Bald",
-    "Bangs",
-    "Big_Lips",
-    "Big_Nose",
-    "Black_Hair",
-    "Blond_Hair",
-    "Blurry",
-    "Brown_Hair",
-    "Bushy_Eyebrows",
-    "Chubby",
-    "Double_Chin",
-    "Eyeglasses",
-    "Goatee",
-    "Gray_Hair",
-    "Heavy_Makeup",
-    "High_Cheekbones",
-    "Male",
-    "Mouth_Slightly_Open",
-    "Mustache",
-    "Narrow_Eyes",
-    "No_Beard",
-    "Oval_Face",
-    "Pale_Skin",
-    "Pointy_Nose",
-    "Receding_Hairline",
-    "Rosy_Cheeks",
-    "Sideburns",
-    "Smiling",
-    "Straight_Hair",
-    "Wavy_Hair",
-    "Wearing_Earrings",
-    "Wearing_Hat",
-    "Wearing_Lipstick",
-    "Wearing_Necklace",
-    "Wearing_Necktie",
-    "Young",
-]
+__all__ = ["CelebA", "create_celeba_dataset"]
 
 
 class CelebA(VisionDataset):
@@ -91,16 +49,11 @@ class CelebA(VisionDataset):
 
     def __init__(
         self,
+        data: DataTuple,
         root: str,
-        biased: bool,
-        mixing_factor: float,
-        unbiased_pcnt: float,
-        sens_attrs: Sequence[_CELEBATTRS],
-        target_attr_name: _CELEBATTRS,
         transform: Optional[Callable] = None,
         target_transform: Optional[Callable] = None,
         download: bool = False,
-        seed: int = 42,
     ):
         """Large-scale CelebFaces Attributes (CelebA) Dataset.
 
@@ -110,20 +63,13 @@ class CelebA(VisionDataset):
         landmarks).
 
         Args:
+            data: the requested filenames in the form of a data tuple
             root: Root directory where images are downloaded to.
-            biased: Wheher to artifically bias the dataset according to the mixing factor. See
-                    :func:`get_biased_subset()` for more details.
-            mixing_factor: Mixing factor used to generate the biased subset of the data.
-            sens_attrs: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
-                        performed if multiple sensitive attributes are specified.
-            unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
-            target_attr_name: Attribute to set as the target attribute.
             transform: A function/transform that  takes in an PIL image and returns a transformed
                        version. E.g, `transforms.ToTensor`
             target_transform: A function/transform that takes in the target and transforms it.
             download: If true, downloads the dataset from the internet and puts it in root
                       directory. If dataset is already downloaded, it is not downloaded again.
-            seed: Random seed used to sample biased subset.
         """
         super().__init__(root, transform=transform, target_transform=target_transform)
 
@@ -135,70 +81,16 @@ class CelebA(VisionDataset):
                 "Dataset not found or corrupted." + " You can use download=True to download it"
             )
 
-        base = Path(self.root) / self.base_folder
-        partition_file = base / "list_eval_partition.txt"
-        # partition: information about which samples belong to train, val or test
-        partition = pd.read_csv(
-            partition_file, delim_whitespace=True, header=None, index_col=0, names=["partition"]
-        )
-        # attrs: all attributes with filenames as index
-        attrs = pd.read_csv(base / "list_attr_celeba.txt", delim_whitespace=True, header=1)
-        all_data = pd.concat([partition, attrs], axis="columns", sort=False)
-        # the filenames are used for indexing; here we turn them into a regular column
-        all_data = all_data.reset_index(drop=False).rename(columns={"index": "filenames"})
+        sens_attr = data.s
+        sens_attr = (sens_attr + 1) // 2  # map from {-1, 1} to {0, 1}
+        self.s_dim = 1
 
-        attr_names = list(attrs.columns)
-        sens_names: List[str] = list(sens_attrs)
-
-        # Multiple attributes have been designated as sensitive
-        # Note that in this case biased dataset sampling cannot be performed
-        if len(sens_attrs) > 1:
-            if any(sens_attr_name not in attr_names for sens_attr_name in sens_attrs):
-                raise ValueError(f"at least one of {sens_attrs} does not exist as an attribute.")
-            # only use those samples where exactly one of the specified attributes is true
-            all_data = all_data.loc[((all_data[sens_names] + 1) // 2).sum(axis="columns") == 1]
-            self.s_dim = len(sens_attrs)
-            # perform the reverse operation of one-hot encoding
-            data_only_sens = pd.DataFrame(all_data[sens_names], columns=list(range(self.s_dim)))
-            sens_attr = data_only_sens.idxmax(axis="columns").to_frame(name=",".join(sens_attrs))
-        else:
-            sens_attr_name = sens_attrs[0].capitalize()
-            if sens_attr_name not in attr_names:
-                raise ValueError(f"{sens_attr_name} does not exist as an attribute.")
-            sens_attr = all_data[[sens_attr_name]]
-            sens_attr = (sens_attr + 1) // 2  # map from {-1, 1} to {0, 1}
-            self.s_dim = 1
-
-        target_attr_name = target_attr_name.capitalize()
-        if target_attr_name not in attr_names:
-            raise ValueError(f"{target_attr_name} does not exist as an attribute.")
-
-        if sens_attr_name == target_attr_name:
-            raise ValueError(f"{sens_attr_name} does not exist as an attribute.")
-
-        if sens_attr_name == target_attr_name:
-            warnings.warn("Same attribute specified for both the sensitive and target attribute.")
-
-        target_attr = all_data[[target_attr_name]]
+        target_attr = data.y
         target_attr: pd.DataFrame = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        filename = all_data[["filenames"]]
+        filename = data.x["filename"]
 
-        all_dt = DataTuple(x=filename, s=sens_attr, y=target_attr)
-
-        # NOTE: the sequential split does not shuffle
-        unbiased_dt, biased_dt, _ = SequentialSplit(train_percentage=unbiased_pcnt)(all_dt)
-
-        if biased:
-            if self.s_dim == 1:  # FIXME: biasing the dataset only works with binary s right now
-                biased_dt, _ = get_biased_subset(
-                    data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
-                )
-            filename, sens_attr, target_attr = biased_dt
-        else:
-            filename, sens_attr, target_attr = unbiased_dt
-
-        self.filename = filename.to_numpy()[:, 0]
+        self.filename: np.ndarray[np.str_] = filename.to_numpy()
         self.sens_attr = torch.as_tensor(sens_attr.to_numpy())
         self.target_attr = torch.as_tensor(target_attr.to_numpy())
 
@@ -270,3 +162,65 @@ class CelebA(VisionDataset):
             Integer indicating the length of the dataset.
         """
         return self.sens_attr.size(0)
+
+
+def create_celeba_dataset(
+    root: str,
+    biased: bool,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    sens_attr_name: CELEBATTRS,
+    target_attr_name: CELEBATTRS,
+    transform: Optional[Callable] = None,
+    target_transform: Optional[Callable] = None,
+    download: bool = False,
+    seed: int = 42,
+) -> CelebA:
+    """Create a CelebA dataset object.
+
+    Args:
+        root: Root directory where images are downloaded to.
+        biased: Wheher to artifically bias the dataset according to the mixing factor. See
+                :func:`get_biased_subset()` for more details.
+        mixing_factor: Mixing factor used to generate the biased subset of the data.
+        sens_attr_name: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+                        performed if multiple sensitive attributes are specified.
+        unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
+        target_attr_name: Attribute to set as the target attribute.
+        transform: A function/transform that  takes in an PIL image and returns a transformed
+                   version. E.g, `transforms.ToTensor`
+        target_transform: A function/transform that takes in the target and transforms it.
+        download: If true, downloads the dataset from the internet and puts it in root
+                  directory. If dataset is already downloaded, it is not downloaded again.
+        seed: Random seed used to sample biased subset.
+    """
+    sens_attr_name = cast(CELEBATTRS, sens_attr_name.capitalize())
+    target_attr_name = cast(CELEBATTRS, target_attr_name.capitalize())
+
+    all_dt = eml_data.load_data(eml_data.Celeba(label=target_attr_name, sens_attr=sens_attr_name))
+
+    if sens_attr_name == target_attr_name:
+        warnings.warn("Same attribute specified for both the sensitive and target attribute.")
+
+    # NOTE: the sequential split does not shuffle
+    unbiased_dt, biased_dt, _ = SequentialSplit(train_percentage=unbiased_pcnt)(all_dt)
+
+    if biased:
+        biased_dt, _ = get_biased_subset(
+            data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
+        )
+        return CelebA(
+            data=biased_dt,
+            root=root,
+            transform=transform,
+            target_transform=target_transform,
+            download=download,
+        )
+    else:
+        return CelebA(
+            data=unbiased_dt,
+            root=root,
+            transform=transform,
+            target_transform=target_transform,
+            download=download,
+        )
