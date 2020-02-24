@@ -1,4 +1,17 @@
 repos:
+-   repo: git@github.com:humitos/mirrors-autoflake.git
+    rev: v1.1
+    hooks:
+    - id: autoflake
+      args: ['--in-place', '--remove-all-unused-imports', '--remove-unused-variable']
+-   repo: https://github.com/asottile/seed-isort-config
+    rev: v2.0.0
+    hooks:
+    - id: seed-isort-config
+-   repo: https://github.com/timothycrosley/isort
+    rev: 4.3.21  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
+    hooks:
+    - id: isort
 -   repo: https://github.com/ambv/black
     rev: stable
     hooks:
