@@ -3,11 +3,12 @@
 a score of 0 denotes independence
 """
 import math
+
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.utility.data_structures import DataTuple, Prediction
 from ethicml.metrics.metric import Metric
+from ethicml.utility import DataTuple, Prediction
 
 
 def hsic(
@@ -50,6 +51,8 @@ def hsic(
 class Hsic(Metric):
     """See module string."""
 
+    _name: str = "HSIC"
+
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """We add the ability to take the average of hsic score.
 
@@ -90,11 +93,6 @@ class Hsic(Metric):
             start += batchs_size
 
         return np.mean(np.array(batches))
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "HSIC"
 
     @property
     def apply_per_sensitive(self) -> bool:

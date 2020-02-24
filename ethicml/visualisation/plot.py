@@ -1,17 +1,20 @@
 """Create plots of a dataset."""
-from pathlib import Path
-from typing import Tuple, List, Union, Optional
 import itertools
+from pathlib import Path
+from typing import List, Optional, Tuple, Union
 
-from typing_extensions import Literal
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib as mpl
+from typing_extensions import Literal
 
 from ethicml.metrics import Metric
-from ethicml.utility.data_structures import DataTuple, Results
-from ethicml.visualisation.common import errorbox, DataEntry, PlotDef, LegendType, PlotType, scatter
+from ethicml.utility import DataTuple, Results
+
+from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter
+
+__all__ = ["plot_results", "single_plot", "save_2d_plot", "save_label_plot", "save_jointplot"]
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
@@ -158,6 +161,8 @@ def single_plot(
     legend_pos: Optional[LegendType] = "outside",
     legend_yanchor: float = 1.0,
     markersize: int = 6,
+    alternating_style: bool = True,
+    include_nan_entries: bool = False,
 ) -> Union[None, Literal[False], mpl.legend.Legend]:
     """Provide the functionality of the individual plotting functions through a nice interface.
 
@@ -175,6 +180,8 @@ def single_plot(
         legend_pos: position of the legend (or None for no legend)
         legend_yanchor: position in the vertical direction where the legend should begin
         markersize: size of marker
+        alternating_style: if True, entries for scatter plots are done in alternating style
+        include_nan_entries: if True, entries with NaNs still appear in the legend
 
     Returns:
         the legend object if something was plotted; False otherwise
@@ -194,9 +201,10 @@ def single_plot(
             mask_for_transform = results_df.index.get_level_values("transform") == transform_
             data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
             if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
-                continue  # this entry has missing values
+                if not include_nan_entries:
+                    continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
-            entries.append(DataEntry(model_label, data, count % 2 == 0))
+            entries.append(DataEntry(model_label, data, (not alternating_style) or count % 2 == 0))
             count += 1
 
     if not entries:

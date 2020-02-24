@@ -1,13 +1,14 @@
 """Post-processing method by Hardt et al."""
 import numpy as np
-from numpy.random import RandomState
 import pandas as pd
-from scipy.optimize import linprog, OptimizeResult
+from numpy.random import RandomState
+from scipy.optimize import OptimizeResult, linprog
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
-from ethicml.metrics import TPR, TNR
 from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
+from ethicml.metrics import TNR, TPR
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
 from .post_algorithm import PostAlgorithm
 
 
@@ -16,7 +17,7 @@ class Hardt(PostAlgorithm):
 
     def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1):
         """Init for Hardt."""
-        super().__init__()
+        super().__init__(name="Hardt")
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label
         self._random = RandomState(seed=888)
@@ -170,8 +171,3 @@ class Hardt(PostAlgorithm):
         new_labels[mask_s0] = othr_fair_pred
 
         return Prediction(hard=pd.Series(new_labels))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Hardt"

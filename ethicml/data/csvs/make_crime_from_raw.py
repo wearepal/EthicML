@@ -1,7 +1,7 @@
 """Transparently show how the UCI Adult dataset was generated from the raw download."""
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 
 def run_generate_crime():

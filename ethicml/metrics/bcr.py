@@ -1,14 +1,17 @@
 """For assessing Balanced Classification Rate (BCR)."""
 
 from ethicml.common import implements
-from ethicml.metrics.tnr import TNR
-from ethicml.metrics.tpr import TPR
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
+
 from .metric import Metric
+from .tnr import TNR
+from .tpr import TPR
 
 
 class BCR(Metric):
     """Balanced Classification Rate."""
+
+    _name: str = "BCR"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -19,8 +22,3 @@ class BCR(Metric):
         tnr = tnr_metric.score(prediction, actual)
 
         return (tpr + tnr) / 2
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "BCR"

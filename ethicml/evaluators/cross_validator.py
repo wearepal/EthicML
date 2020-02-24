@@ -2,14 +2,16 @@
 from collections import defaultdict
 from itertools import product
 from statistics import mean
-from typing import Dict, List, Tuple, Any, Type, NamedTuple, Optional
-
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple, TrainTestPair, Prediction
-from ethicml.metrics import Accuracy, Metric, AbsCV
+from ethicml.metrics import AbsCV, Accuracy, Metric
 from ethicml.preprocessing.train_test_split import fold_data
+from ethicml.utility import DataTuple, Prediction, TrainTestPair
+
 from .parallelism import run_in_parallel
+
+__all__ = ["CrossValidator", "CVResults"]
 
 
 class ResultTuple(NamedTuple):

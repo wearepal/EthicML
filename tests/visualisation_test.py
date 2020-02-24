@@ -1,20 +1,19 @@
 """
 Testing for plotting functionality
 """
-from typing import Tuple, List
-
-from matplotlib import pyplot as plt
+from typing import List, Tuple
 
 import pytest
+from matplotlib import pyplot as plt
 
-from ethicml.algorithms.inprocess import SVM, LR, Kamiran
+from ethicml.algorithms.inprocess import LR, SVM, Kamiran
 from ethicml.algorithms.preprocess import Upsampler
+from ethicml.data import Adult, Toy, load_data
 from ethicml.evaluators import evaluate_models
-from ethicml.metrics import Accuracy, CV, TPR, ProbPos, NMI
-from ethicml.utility import DataTuple, Results
-from ethicml.data import load_data, Adult, Toy
+from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
 from ethicml.preprocessing import train_test_split
-from ethicml.visualisation import save_2d_plot, save_label_plot, save_jointplot, plot_results
+from ethicml.utility import DataTuple, Results
+from ethicml.visualisation import plot_results, save_2d_plot, save_jointplot, save_label_plot
 from tests.run_algorithm_test import get_train_test
 
 

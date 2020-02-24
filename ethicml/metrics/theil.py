@@ -5,13 +5,17 @@ in turn based on the paper https://arxiv.org/abs/1807.00787
 """
 
 import numpy as np
+
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
+
 from .metric import Metric
 
 
 class Theil(Metric):
     """Theil Index."""
+
+    _name: str = "Theil_Index"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -27,8 +31,3 @@ class Theil(Metric):
 
         # moving the b inside the log allows for 0 values
         return float(np.mean(np.log((var_b / np.mean(var_b)) ** var_b) / np.mean(var_b)))
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return "Theil_Index"

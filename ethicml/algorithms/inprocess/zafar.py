@@ -1,23 +1,28 @@
 """Algorithms by Zafar et al. for Demographic Parity."""
 import json
-from tempfile import TemporaryDirectory
-from pathlib import Path
-from typing import Dict, Any, Union, List
 from abc import abstractmethod
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import Any, ClassVar, Dict, List, Union
 
 import pandas as pd
 
-from ethicml.algorithms.inprocess.installed_model import InstalledModel
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
+from .installed_model import InstalledModel
+
+__all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
+
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
 SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"
 
 
 class _ZafarAlgorithmBase(InstalledModel):
-    def __init__(self, sub_dir: Path):
+    def __init__(self, name: str, sub_dir: Path):
         super().__init__(
+            name=name,
             dir_name="zafar",
             url="https://github.com/predictive-analytics-lab/fair-classification.git",
             top_dir="fair-classification",
@@ -74,17 +79,12 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 
     def __init__(self) -> None:
         """Init ZafarBaseline."""
-        super().__init__(sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
         return ["main.py", train_name, test_name, predictions_name, "baseline", "0"]
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "ZafarBaseline"
 
 
 class ZafarAccuracy(_ZafarAlgorithmBase):
@@ -92,7 +92,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 
     def __init__(self, gamma: float = 0.5):
         """Init ZafarAccuracy."""
-        super().__init__(sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
     def _create_command_line(
@@ -100,18 +100,13 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     ) -> List[str]:
         return ["main.py", train_name, test_name, predictions_name, "gamma", str(self.gamma)]
 
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"ZafarAccuracy, γ={self.gamma}"
-
 
 class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, c: float = 0.001):
         """Init ZafarFairness."""
-        super().__init__(sub_dir=SUB_DIR_IMPACT)
+        super().__init__(name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT)
         self._c = c
 
     def _create_command_line(
@@ -119,20 +114,16 @@ class ZafarFairness(_ZafarAlgorithmBase):
     ) -> List[str]:
         return ["main.py", train_name, test_name, predictions_name, "c", str(self._c)]
 
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"ZafarFairness, c={self._c}"
-
 
 class ZafarEqOpp(_ZafarAlgorithmBase):
     """Zafar for Equality of Opportunity."""
 
-    _mode = "fnr"  # class level constant
+    _mode: ClassVar[str] = "fnr"  # class level constant
+    _base_name: ClassVar[str] = "ZafarEqOpp"
 
     def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
         """Init Zafar."""
-        super().__init__(sub_dir=SUB_DIR_MISTREAT)
+        super().__init__(name=f"{self._base_name}, τ={tau}, μ={mu}", sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu
         self._eps = eps
@@ -151,18 +142,9 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
             str(self._eps),
         ]
 
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"ZafarEqOpp, τ={self._tau}, μ={self._mu}"
-
 
 class ZafarEqOdds(ZafarEqOpp):
     """Zafar for Equalised Odds."""
 
-    _mode = "fprfnr"
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"ZafarEqOdds, τ={self._tau}, μ={self._mu}"
+    _mode: ClassVar[str] = "fprfnr"
+    _base_name: ClassVar[str] = "ZafarEqOdds"

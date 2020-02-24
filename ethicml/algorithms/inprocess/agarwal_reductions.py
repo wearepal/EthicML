@@ -1,10 +1,13 @@
 """implementation of Agarwal model."""
 from pathlib import Path
-from typing import List, Set, Optional, Union, Dict
+from typing import Dict, List, Optional, Set, Union
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple, FairnessType, ClassifierType
-from .shared import settings_for_svm_lr, flag_interface
+from ethicml.utility import ClassifierType, FairnessType, PathTuple, TestPathTuple
+
 from .in_algorithm import InAlgorithmAsync
+from .shared import flag_interface, settings_for_svm_lr
+
+__all__ = ["Agarwal"]
 
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
@@ -28,7 +31,7 @@ class Agarwal(InAlgorithmAsync):
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
         if classifier not in VALID_MODELS:
             raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
-        super().__init__()
+        super().__init__(name=f"Agarwal, {classifier}, {fairness}")
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {
             "classifier": classifier,
@@ -44,8 +47,3 @@ class Agarwal(InAlgorithmAsync):
     ) -> (List[str]):
         args = flag_interface(train_paths, test_paths, pred_path, self.flags)
         return ["-m", "ethicml.implementations.agarwal"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"

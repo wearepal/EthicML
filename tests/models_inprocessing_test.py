@@ -1,34 +1,36 @@
 """EthicML Tests"""
 import sys
-from typing import List, Dict, Any, NamedTuple, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, NamedTuple, Tuple
+
 import pandas as pd
 import pytest
 from pytest import approx
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
+    LR,
+    LRCV,
+    MLP,
+    SVM,
     Agarwal,
     Corels,
     InAlgorithm,
     InAlgorithmAsync,
     InstalledModel,
     Kamiran,
-    # Kamishima,
-    LR,
-    LRCV,
     LRProb,
     Majority,
-    MLP,
-    SVM,
     ZafarAccuracy,
     ZafarBaseline,
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
 )
+from ethicml.data import Compas, Toy, load_data
 from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
-from ethicml.metrics import Accuracy, AbsCV
+from ethicml.metrics import AbsCV, Accuracy, Metric
+from ethicml.preprocessing import query_dt, train_test_split
 from ethicml.utility import (
     DataTuple,
     Heaviside,
@@ -38,10 +40,7 @@ from ethicml.utility import (
     TestPathTuple,
     TrainTestPair,
 )
-from ethicml.data import load_data, Compas, Toy
-from ethicml.preprocessing import train_test_split, query_dt
-from ethicml.metrics import Metric
-from tests.run_algorithm_test import get_train_test, count_true
+from tests.run_algorithm_test import count_true, get_train_test
 
 
 class InprocessTest(NamedTuple):
@@ -103,11 +102,11 @@ def test_cv_svm():
     svm_cv = CrossValidator(SVM, hyperparams, folds=3)
 
     assert svm_cv is not None
-    assert isinstance(svm_cv.model(), InAlgorithm)
 
     cv_results = svm_cv.run(train)
 
     best_model = cv_results.best(Accuracy())
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
@@ -123,13 +122,13 @@ def test_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
     cv_results: CVResults = lr_cv.run(train, measures=[measure])
 
     assert cv_results.best_hyper_params(measure)["C"] == 0.1
     best_model = cv_results.best(measure)
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
@@ -145,13 +144,13 @@ def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=2, max_parallel=1)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     measure = Accuracy()
     cv_results: CVResults = run_blocking(lr_cv.run_async(train, measures=[measure]))
 
     assert cv_results.best_hyper_params(measure)["C"] == 0.01
     best_model = cv_results.best(measure)
+    assert isinstance(best_model, InAlgorithm)
 
     predictions: Prediction = best_model.run(train, test)
     assert count_true(predictions.hard.values == 1) == 212
@@ -167,7 +166,6 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
-    assert isinstance(lr_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()
@@ -245,7 +243,6 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
-    assert isinstance(zafar_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()
@@ -289,7 +286,6 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     zafar_cv = CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
-    assert isinstance(zafar_cv.model(), InAlgorithm)
 
     primary = Accuracy()
     fair_measure = AbsCV()
@@ -322,11 +318,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     class _LocalInstalledLR(InstalledModel):
         def __init__(self):
-            super().__init__(dir_name=".", top_dir="", executable=sys.executable)
-
-        @property
-        def name(self) -> str:
-            return "local installed LR"
+            super().__init__(
+                name="local installed LR", dir_name=".", top_dir="", executable=sys.executable
+            )
 
         def _script_command(
             self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
@@ -398,15 +392,13 @@ def test_threaded_agarwal():
     models: List[InAlgorithmAsync] = [Agarwal(classifier="SVM", fairness="EqOd")]
 
     class AssertResult(Metric):
+        _name = "assert_result"
+
         def score(self, prediction, actual):
             return (
                 count_true(prediction.hard.values == 1) == 157
                 and count_true(prediction.hard.values == -1) == 243
             )
-
-        @property
-        def name(self):
-            return "assert_result"
 
     results = run_blocking(
         evaluate_models_async(datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()])

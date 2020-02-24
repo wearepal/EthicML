@@ -1,19 +1,14 @@
 """Abstract Base Class of all algorithms in the framework."""
 
+from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Tuple, List
-from abc import abstractmethod
+from typing import List, Tuple
 
-from ethicml.common import implements
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
-from ethicml.utility.data_structures import (
-    DataTuple,
-    TestTuple,
-    PathTuple,
-    TestPathTuple,
-    write_as_feather,
-)
+from ethicml.common import implements
+from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
+from ethicml.utility.data_structures import write_as_feather
 
 
 class PreAlgorithm(Algorithm):

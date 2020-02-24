@@ -7,9 +7,12 @@ import numpy as np
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, Prediction
-from .installed_model import InstalledModel
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithmAsync
+from .installed_model import InstalledModel
+
+__all__ = ["Kamishima"]
 
 
 class Kamishima(InstalledModel):
@@ -22,6 +25,7 @@ class Kamishima(InstalledModel):
     def __init__(self, eta: float = 1.0):
         """Init Kamishima."""
         super().__init__(
+            name="Kamishima",
             dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
             top_dir="kamfadm",
@@ -91,8 +95,3 @@ class Kamishima(InstalledModel):
         if to_return.min() != to_return.max():
             to_return = to_return.replace(to_return.min(), min_class_label)
         return Prediction(hard=to_return)
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Kamishima"

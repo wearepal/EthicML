@@ -4,15 +4,15 @@ from typing import Dict, List, Tuple
 import pandas as pd
 import torch
 from torch import optim
-from torch.utils.data import DataLoader
 from torch.optim import Adam
+from torch.utils.data import DataLoader
 
-from ethicml.data import Adult, Compas, Credit, German, NonBinaryToy, Sqf, Toy, Dataset
-from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
-from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
-from ethicml.implementations.vfae_modules.utils import loss_function
-from ethicml.implementations.vfae_modules.vfae_network import VFAENetwork
-from ethicml.utility.data_structures import DataTuple, TestTuple
+from ethicml.data import Adult, Compas, Credit, Dataset, German, NonBinaryToy, Sqf, Toy
+from ethicml.utility import DataTuple, TestTuple
+
+from .pytorch_common import CustomDataset, TestDataset
+from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
+from .vfae_modules import VFAENetwork, loss_function
 
 
 class VfaeArgs(PreAlgoArgs):

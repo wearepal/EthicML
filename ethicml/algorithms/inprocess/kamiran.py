@@ -1,15 +1,19 @@
 """Kamiran and Calders 2012."""
 from typing import Optional, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, ClassifierType, Prediction
-from .shared import settings_for_svm_lr
+from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithm
+from .shared import settings_for_svm_lr
 from .svm import select_svm
+
+__all__ = ["Kamiran", "compute_instance_weights"]
+
 
 VALID_MODELS = {"LR", "SVM"}
 
@@ -24,7 +28,7 @@ class Kamiran(InAlgorithm):
         kernel: Optional[str] = None,
     ):
         """Init Kamiran."""
-        super().__init__()
+        super().__init__(name=f"Kamiran & Calders {classifier}")
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
@@ -32,14 +36,9 @@ class Kamiran(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        return train_and_predict(
+        return _train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return f"Kamiran & Calders {self.classifier}"
 
 
 def _obtain_conditionings(
@@ -62,7 +61,7 @@ def _obtain_conditionings(
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
-def compute_weights(train: DataTuple) -> pd.DataFrame:
+def compute_instance_weights(train: DataTuple) -> pd.DataFrame:
     """Compute weights for all samples."""
     np.random.seed(888)
     (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
@@ -100,7 +99,7 @@ def compute_weights(train: DataTuple) -> pd.DataFrame:
     return train_instance_weights
 
 
-def train_and_predict(
+def _train_and_predict(
     train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str
 ) -> Prediction:
     """Train a logistic regression model and compute predictions on the given test data."""
@@ -111,6 +110,6 @@ def train_and_predict(
     model.fit(
         train.x,
         train.y.to_numpy().ravel(),
-        sample_weight=compute_weights(train)["instance weights"],
+        sample_weight=compute_instance_weights(train)["instance weights"],
     )
     return Prediction(hard=pd.Series(model.predict(test.x)))

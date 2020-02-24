@@ -7,6 +7,6 @@ from . import (
     metrics,
     preprocessing,
     utility,
-    visualisation,
     vision,
+    visualisation,
 )

@@ -2,11 +2,11 @@
 from pathlib import Path
 from typing import Tuple, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import tap
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, PathTuple, TestPathTuple
+from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
 
 
 class AlgoArgs(tap.Tap):

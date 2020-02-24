@@ -1,8 +1,8 @@
 """EthicML tests"""
 
-from ethicml.algorithms.inprocess import InAlgorithm, LR
+from ethicml.algorithms.inprocess import LR, InAlgorithm
 from ethicml.algorithms.postprocess import Hardt, PostAlgorithm
-from ethicml.utility import TrainTestPair, concat_tt, Prediction
+from ethicml.utility import Prediction, TrainTestPair, concat_tt
 
 from .run_algorithm_test import count_true
 

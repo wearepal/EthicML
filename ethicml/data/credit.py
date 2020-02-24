@@ -1,6 +1,7 @@
 """Class to describe features of the Adult dataset."""
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 

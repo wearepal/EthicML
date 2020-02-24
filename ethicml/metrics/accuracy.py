@@ -5,7 +5,8 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, f1_score
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
+
 from .metric import Metric
 
 __all__ = ["Accuracy", "F1", "SklearnMetric"]
@@ -31,11 +32,6 @@ class SklearnMetric(Metric):
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         return self._metric(actual.y, prediction.hard)
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return self._name
 
 
 class Accuracy(SklearnMetric):

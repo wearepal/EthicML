@@ -1,13 +1,17 @@
 """Class to describe features of the Adult dataset."""
-from typing import List
+from typing import Dict, List
+
 from typing_extensions import Literal
 
 from ethicml.common import implements
+
 from .dataset import Dataset
 
 
 class Adult(Dataset):
     """UCI Adult dataset."""
+
+    _disc_feature_groups: Dict[str, List[str]]
 
     def __init__(
         self,
@@ -259,3 +263,4 @@ class Adult(Dataset):
         assert len(new_features) == 65  # 61 input features + 4 label features
         # setting `features` to the new list of features also removes them from `discrete_features`
         self.features = new_features
+        self._disc_feature_groups["native-country"] = ["native-country_United-States"]

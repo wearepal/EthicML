@@ -1,10 +1,11 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
 
-from typing import List, Dict, Union, Optional
+from typing import Dict, List, Optional, Union
 
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithmAsync
-from ethicml.algorithms.preprocess.interface import flag_interface
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from ethicml.utility import PathTuple, TestPathTuple
+
+from .interface import flag_interface
+from .pre_algorithm import PreAlgorithmAsync
 
 
 class VFAE(PreAlgorithmAsync):
@@ -23,7 +24,7 @@ class VFAE(PreAlgorithmAsync):
     ):
         """Init VFAE."""
         # pylint: disable=too-many-arguments
-        super().__init__()
+        super().__init__(name="VFAE")
 
         if z1_enc_size is None:
             z1_enc_size = [100]
@@ -52,8 +53,3 @@ class VFAE(PreAlgorithmAsync):
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.vfae"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "VFAE"

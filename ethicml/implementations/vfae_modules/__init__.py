@@ -1,3 +1,4 @@
 """Modules used within the VFAE implementation."""
 
-from . import vfae_network, utils
+from .utils import loss_function
+from .vfae_network import VFAENetwork

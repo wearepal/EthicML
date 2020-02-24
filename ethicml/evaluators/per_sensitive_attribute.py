@@ -1,10 +1,18 @@
 """Evaluator for a metric per sensitive attribute class."""
 
 from typing import Dict, List
+
 import pandas as pd
 
-from ethicml.utility.data_structures import DataTuple, Prediction, SoftPrediction
-from ..metrics.metric import Metric
+from ethicml.metrics import Metric
+from ethicml.utility import DataTuple, Prediction, SoftPrediction
+
+__all__ = [
+    "metric_per_sensitive_attribute",
+    "diff_per_sensitive_attribute",
+    "ratio_per_sensitive_attribute",
+    "MetricNotApplicable",
+]
 
 
 class MetricNotApplicable(Exception):
@@ -106,6 +114,6 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
             min_val = min(i_value, j_value)
             max_val = max(i_value, j_value)
 
-            ratio_per_sens[key] = min_val / max_val
+            ratio_per_sens[key] = min_val / max_val if max_val != 0 else float("nan")
 
     return ratio_per_sens

@@ -5,17 +5,20 @@ Say you find a paper from a few years ago with code. It's not unreasonable that 
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
 in its own venv and makes everyone happy.
 """
-import sys
 import os
-from pathlib import Path
-from typing import List, Optional
 import shutil
 import subprocess
+import sys
+from pathlib import Path
+from typing import List, Optional
 
 import git
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
+from ethicml.utility import PathTuple, TestPathTuple
+
+from .in_algorithm import InAlgorithmAsync
+
+__all__ = ["InstalledModel"]
 
 
 class InstalledModel(InAlgorithmAsync):
@@ -23,6 +26,7 @@ class InstalledModel(InAlgorithmAsync):
 
     def __init__(
         self,
+        name: str,
         dir_name: str,
         top_dir: str,
         url: Optional[str] = None,
@@ -31,6 +35,7 @@ class InstalledModel(InAlgorithmAsync):
         """Download code from given URL and create Pip environment with Pipfile found in the code.
 
         Args:
+            name: name of the model
             dir_name: where to download the code to (can be chosen freely)
             top_dir: top directory of the repository where the Pipfile can be found (this is usually
                      simply the last part of the repository URL)
@@ -51,7 +56,7 @@ class InstalledModel(InAlgorithmAsync):
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
-        super().__init__()
+        super().__init__(name=name)
 
     @property
     def _code_path(self) -> Path:
@@ -91,8 +96,3 @@ class InstalledModel(InAlgorithmAsync):
         self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
     ) -> (List[str]):
         return []  # pylint was complaining when I didn't return anything here...
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        raise NotImplementedError

@@ -1,11 +1,12 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 
 from typing import Optional
+
 import torch
 import torch.nn.functional as F
 from torch import Tensor
 
-from ethicml.implementations.pytorch_common import quadratic_time_mmd
+from ..pytorch_common import quadratic_time_mmd
 
 
 def kullback_leibler(

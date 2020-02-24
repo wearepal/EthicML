@@ -3,7 +3,8 @@
 from sklearn.metrics import normalized_mutual_info_score as nmis
 
 from ethicml.common import implements
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility import DataTuple, Prediction
+
 from .metric import Metric
 
 
@@ -17,6 +18,7 @@ class NMI(Metric):
             raise NotImplementedError(
                 "Can only calculate NMI of prediction.hards with regard to y or s"
             )
+        self._name = f"NMI preds and {base}"
         self.base = base
 
     @implements(Metric)
@@ -26,8 +28,3 @@ class NMI(Metric):
         else:
             base_values = actual.s.to_numpy().flatten()
         return nmis(base_values, prediction.hard.to_numpy().flatten(), average_method="geometric")
-
-    @property
-    def name(self) -> str:
-        """Getter for the metric name."""
-        return f"NMI preds and {self.base}"

@@ -3,8 +3,11 @@
 import pandas as pd
 
 from ethicml.common import implements
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
+from .in_algorithm import InAlgorithm
+
+__all__ = ["Majority"]
 
 
 class Majority(InAlgorithm):
@@ -12,14 +15,9 @@ class Majority(InAlgorithm):
 
     def __init__(self) -> None:
         """Init Majority."""
-        super().__init__(is_fairness_algo=False)
+        super().__init__(name="Majority", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        maj = train.y.mode().to_numpy()
+        maj = train.y.mode().iloc[0].to_numpy()
         return Prediction(hard=pd.Series(maj.repeat(len(test.x))))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Majority"

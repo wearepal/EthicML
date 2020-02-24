@@ -6,18 +6,17 @@ and biased subset sampling.
 import os
 import warnings
 from pathlib import Path
-from typing import Tuple, Optional, Callable, List, Sequence
-from typing_extensions import Literal
+from typing import Callable, List, Optional, Sequence, Tuple
 
 import pandas as pd
-from PIL import Image
-
 import torch
+from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_file_from_google_drive
+from typing_extensions import Literal
 
-from ethicml.preprocessing import get_biased_subset, SequentialSplit
+from ethicml.preprocessing import SequentialSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
 __all__ = ["CelebA"]

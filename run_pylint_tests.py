@@ -3,6 +3,7 @@ To stop pylint breaking the build if <85% perfect
 """
 
 import sys
+
 from pylint.lint import Run
 
 RESULTS = Run(["./tests/"], do_exit=False)

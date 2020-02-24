@@ -1,10 +1,13 @@
 """Manually specified (i.e. not learned) models."""
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from ethicml.common import implements
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.utility.data_structures import DataTuple, TestTuple, Prediction
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
+from .in_algorithm import InAlgorithm
+
+__all__ = ["Corels"]
 
 
 class Corels(InAlgorithm):
@@ -14,6 +17,10 @@ class Corels(InAlgorithm):
 
     From this paper: https://arxiv.org/abs/1704.01701
     """
+
+    def __init__(self) -> None:
+        """Constructor of the class."""
+        super().__init__(name="CORELS")
 
     @implements(InAlgorithm)
     def run(self, _: DataTuple, test: TestTuple) -> Prediction:
@@ -28,8 +35,3 @@ class Corels(InAlgorithm):
         condition3 = priors > 3
         pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
         return Prediction(hard=pd.Series(pred))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "CORELS"

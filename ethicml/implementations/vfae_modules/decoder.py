@@ -5,10 +5,11 @@ from itertools import groupby
 from typing import List
 
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 from ethicml.data.dataset import Dataset
-from ethicml.implementations.vfae_modules.categorical import Categorical
+
+from .categorical import Categorical
 
 
 class Decoder(nn.Module):

@@ -3,20 +3,22 @@
 # pylint: disable=arguments-differ
 
 import random
-from typing import List, Any, Tuple, Sequence
-import pandas as pd
-import numpy as np
-import torch
-from torch import nn, Tensor
-from torch.autograd import Function
-from torch.optim.lr_scheduler import ExponentialLR
-from torch.optim import Adam
+from typing import Any, List, Sequence, Tuple
 
-from ethicml.utility.data_structures import DataTuple, TestTuple, FairnessType
-from ethicml.implementations.utils import load_data_from_flags, save_transformations, PreAlgoArgs
+import numpy as np
+import pandas as pd
+import torch
+from torch import Tensor, nn
+from torch.autograd import Function
+from torch.optim import Adam
+from torch.optim.lr_scheduler import ExponentialLR
+
+from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.train_test_split import train_test_split
-from ethicml.preprocessing.adjust_labels import assert_binary_labels, LabelBinarizer
+from ethicml.utility import DataTuple, FairnessType, TestTuple
+
 from .pytorch_common import CustomDataset, TestDataset
+from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 

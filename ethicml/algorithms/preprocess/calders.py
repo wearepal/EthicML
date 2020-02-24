@@ -1,9 +1,10 @@
 """Kamiran&Calders 2012, massaging."""
-from typing import List, Tuple, Dict
+from typing import Dict, List, Tuple
 
-from ethicml.common import implements
 from ethicml.algorithms.inprocess import LRProb
-from ethicml.utility import TestTuple, DataTuple, SoftPrediction, concat_dt
+from ethicml.common import implements
+from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
+
 from .pre_algorithm import PreAlgorithm
 
 
@@ -12,18 +13,13 @@ class Calders(PreAlgorithm):
 
     def __init__(self, preferable_class: int, disadvantaged_group: int):
         """Init object."""
-        super().__init__()
+        super().__init__(name="Calders")
         self.preferable_class = preferable_class
         self.disadvantaged_group = disadvantaged_group
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         return _calders_algorithm(train, test, self.preferable_class, self.disadvantaged_group)
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Calders"
 
 
 def _calders_algorithm(

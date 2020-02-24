@@ -2,7 +2,8 @@
 # pylint: disable=arguments-differ
 
 from typing import List, Tuple
-from torch import nn, Tensor
+
+from torch import Tensor, nn
 
 
 class Encoder(nn.Module):

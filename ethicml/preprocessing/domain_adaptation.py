@@ -2,8 +2,10 @@
 
 import re
 from typing import Tuple
+
 import pandas as pd
-from ethicml.utility.data_structures import DataTuple
+
+from ethicml.utility import DataTuple
 
 __all__ = ["dataset_from_cond", "domain_split", "query_dt"]
 

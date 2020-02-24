@@ -1,12 +1,15 @@
 """Wrapper for SKLearn implementation of SVM."""
 from typing import Optional, Union
 
-from sklearn.svm import SVC, LinearSVC
 import pandas as pd
+from sklearn.svm import SVC, LinearSVC
 
 from ethicml.common import implements
-from ethicml.utility import DataTuple, TestTuple, Prediction
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
 from .in_algorithm import InAlgorithm
+
+__all__ = ["SVM"]
 
 
 class SVM(InAlgorithm):
@@ -14,7 +17,8 @@ class SVM(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         """Init SVM."""
-        super().__init__(is_fairness_algo=False)
+        kernel_name = f" (kernel)" if kernel is not None else ""
+        super().__init__(name="SVM" + kernel_name, is_fairness_algo=False)
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
 
@@ -23,11 +27,6 @@ class SVM(InAlgorithm):
         clf = select_svm(self.C, self.kernel)
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)))
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "SVM"
 
 
 def select_svm(C: float, kernel: str) -> SVC:

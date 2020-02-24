@@ -1,9 +1,10 @@
 """Zemel's Learned Fair Representations."""
-from typing import Dict, Union, List
+from typing import Dict, List, Union
 
-from ethicml.utility.data_structures import PathTuple, TestPathTuple
-from .pre_algorithm import PreAlgorithmAsync
+from ethicml.utility import PathTuple, TestPathTuple
+
 from .interface import flag_interface
+from .pre_algorithm import PreAlgorithmAsync
 
 
 class Zemel(PreAlgorithmAsync):
@@ -21,7 +22,7 @@ class Zemel(PreAlgorithmAsync):
         epsilon: float = 1e-5,
     ) -> None:
         """Init Zemel."""
-        super().__init__()
+        super().__init__(name="Zemel")
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
             "Ax": Ax,
@@ -42,8 +43,3 @@ class Zemel(PreAlgorithmAsync):
     ) -> List[str]:
         args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
         return ["-m", "ethicml.implementations.zemel"] + args
-
-    @property
-    def name(self) -> str:
-        """Getter for algorithm name."""
-        return "Zemel"
