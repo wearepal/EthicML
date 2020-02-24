@@ -7,7 +7,7 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
-_CELEBATTRS = Literal[
+CELEBATTRS = Literal[
     "5_o_Clock_Shadow",
     "Arched_Eyebrows",
     "Attractive",
@@ -57,7 +57,7 @@ class Celeba(Dataset):
     _disc_feature_groups: Dict[str, List[str]]
 
     def __init__(
-        self, label: _CELEBATTRS = "Smiling", sens_attr: _CELEBATTRS = "Male",
+        self, label: CELEBATTRS = "Smiling", sens_attr: CELEBATTRS = "Male",
     ):
         """Init CelebA dataset."""
         disc_feature_groups = {

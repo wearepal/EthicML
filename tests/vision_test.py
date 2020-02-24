@@ -1,7 +1,8 @@
+"""Test for ethicml.vision."""
 import pytest
 import torch
 
-from ethicml.vision import LdColorizer
+from ethicml.vision import LdColorizer, CelebA, create_celeba_dataset
 
 
 @pytest.mark.parametrize("transform", [LdColorizer])
@@ -23,3 +24,35 @@ def test_label_dependent_transforms(transform):
     )
 
     colorizer(data, labels)
+
+
+def test_celeba():
+    """test celeba"""
+    # pylint: disable=protected-access
+
+    # turn off integrity checking for testing purposes
+    _check_integrity = CelebA._check_integrity
+    CelebA._check_integrity = lambda _: True  # type: ignore[assignment]
+
+    train_set = create_celeba_dataset(
+        root="non-existent",
+        biased=True,
+        mixing_factor=0.0,
+        unbiased_pcnt=0.4,
+        sens_attr_name="Male",
+        target_attr_name="Smiling",
+    )
+    test_set = create_celeba_dataset(
+        root="non-existent",
+        biased=False,
+        mixing_factor=0.0,
+        unbiased_pcnt=0.4,
+        sens_attr_name="Male",
+        target_attr_name="Smiling",
+    )
+
+    assert len(train_set) == 52725
+    assert len(test_set) == 81040
+
+    # restore integrity checking
+    CelebA._check_integrity = _check_integrity  # type: ignore[assignment]
