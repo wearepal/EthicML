@@ -1,14 +1,10 @@
-"""Class for loading CelebA.
+"""Class for loading GenFaces.
 
-Modifies the Pytorch CelebA dataset by enabling the use of sensitive attributes
-and biased subset sampling.
 """
-import os
 from pathlib import Path
 from typing import Callable, Optional, Tuple
 
 import numpy as np
-import pandas as pd
 import torch
 from PIL import Image
 from torch import Tensor
@@ -17,31 +13,15 @@ from torchvision.datasets.utils import check_integrity, download_file_from_googl
 
 from ethicml.utility import DataTuple
 
-__all__ = ["TorchCelebA"]
+__all__ = ["TorchGenFaces"]
 
 
-class TorchCelebA(VisionDataset):
-    """Large-scale CelebFaces Attributes (CelebA) Dataset."""
+class TorchGenFaces(VisionDataset):
+    """PyTorch Dataset for the AI Generated Faces Dataset."""
 
-    base_folder = "celeba"
-
-    file_list = [
-        (
-            "0B7EVK8r0v71pZjFTYXZWM3FlRnM",  # File ID
-            "00d2c5bc6d35e252742224ab0c1e8fcb",  # MD5 Hash
-            "img_align_celeba.zip",  # Filename
-        ),
-        (
-            "0B7EVK8r0v71pblRyaVFSWGxPY0U",
-            "75e246fa4810816ffd6ee81facbd244c",
-            "list_attr_celeba.txt",
-        ),
-        (
-            "0B7EVK8r0v71pY0NSMzRuSXJEVkk",
-            "d32c9cbf5e040fd4025c592c306e6668",
-            "list_eval_partition.txt",
-        ),
-    ]
+    base_folder = "genfaces"
+    file_id = "1rfwiDmsw37IDnMSWKx5gTc_CZ_Dh5d5g"
+    filename = "genfaces_info"
 
     def __init__(
         self,
@@ -51,15 +31,12 @@ class TorchCelebA(VisionDataset):
         target_transform: Optional[Callable] = None,
         download: bool = False,
     ):
-        """Large-scale CelebFaces Attributes (CelebA) Dataset.
+        """Dataset of AI-generated Faces.
 
-        <http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html>
-        Adapted from torchvision.datasets to enable the loading of data triplets and biased/unbiased
-        subsets while removing superfluous (for our purposes) elements of the dataset (e.g. facial
-        landmarks).
+        <https://generated.photos/faces>
 
         Args:
-            data: Data tuple with x containing the filepaths to the generated faces images.
+            data: A GenFaces dataset object.
             root: Root directory where images are downloaded to.
             transform: A function/transform that  takes in an PIL image and returns a transformed
                        version. E.g, `transforms.ToTensor`
@@ -78,17 +55,15 @@ class TorchCelebA(VisionDataset):
             )
 
         sens_attr = data.s
-        sens_attr = (sens_attr + 1) // 2  # map from {-1, 1} to {0, 1}
-        self.s_dim = 1
-
         target_attr = data.y
-        target_attr: pd.DataFrame = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        filename = data.x["filename"]
+        filename = data.x["id"]
 
         self.filename: np.ndarray[np.str_] = filename.to_numpy()
         self.sens_attr = torch.as_tensor(sens_attr.to_numpy())
         self.target_attr = torch.as_tensor(target_attr.to_numpy())
+
+        self._base = Path(self.root) / self.base_folder
 
     def _check_integrity(self) -> bool:
         """Check integrity of the data folder.
@@ -97,17 +72,14 @@ class TorchCelebA(VisionDataset):
             bool: Boolean indicating whether the file containing the celeba data
                   is readable.
         """
-        base = Path(self.root) / self.base_folder
-        for (_, md5, filename) in self.file_list:
-            fpath = base / filename
-            ext = fpath.suffix
-            # Allow original archive to be deleted (zip and 7z)
-            # Only need the extracted images
-            if ext not in [".zip", ".7z"] and not check_integrity(str(fpath), md5):
-                return False
+        fpath = self._base / self.filename
+        ext = fpath.suffix
+        # Allow original archive to be deleted (zip and 7z)
+        # Only need the extracted images
+        if ext not in [".zip", ".7z"] and not check_integrity(str(fpath)):
+            return False
 
-        # Should check a hash of the images
-        return (base / "img_align_celeba").is_dir()
+        return (self._base / "images").is_dir()
 
     def download(self) -> None:
         """Attempt to download data if files cannot be found in the base folder."""
@@ -117,15 +89,11 @@ class TorchCelebA(VisionDataset):
             print("Files already downloaded and verified")
             return
 
-        for (file_id, md5, filename) in self.file_list:
-            download_file_from_google_drive(
-                file_id, os.path.join(self.root, self.base_folder), filename, md5
-            )
+        fpath = self._base / self.filename
+        download_file_from_google_drive(fpath)
 
-        with zipfile.ZipFile(
-            os.path.join(self.root, self.base_folder, "img_align_celeba.zip"), "r"
-        ) as fhandle:
-            fhandle.extractall(os.path.join(self.root, self.base_folder))
+        with zipfile.ZipFile(fpath, "r") as fhandle:
+            fhandle.extractall(self._base)
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
         """Fetch the data sample at the given index.
@@ -137,9 +105,7 @@ class TorchCelebA(VisionDataset):
             Tuple[1]: Tuple containing the sample along
             with its sensitive and target attribute labels.
         """
-        x = Image.open(
-            os.path.join(self.root, self.base_folder, "img_align_celeba", self.filename[index])
-        )
+        x = Image.open(self._base / "images", self.filename[index])
         s = self.sens_attr[index]
         target = self.target_attr[index]
 
