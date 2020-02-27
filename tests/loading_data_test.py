@@ -13,6 +13,7 @@ from ethicml.data import (
     Credit,
     Dataset,
     German,
+    GenFaces,
     NonBinaryToy,
     Sqf,
     Toy,
@@ -386,7 +387,9 @@ def test_group_prefixes():
 
 
 def test_celeba():
-    celeba = CelebA()
+    """test celeba"""
+    celeba = CelebA(download_dir="non-existent")
+    assert not celeba.check_integrity()  # data should not be there
     data = load_data(celeba)
 
     assert celeba.name == "CelebA, s=Male, y=Smiling"
@@ -397,3 +400,19 @@ def test_celeba():
     assert len(data) == len(celeba)
 
     assert data.x["filename"].iloc[0] == "000001.jpg"
+
+
+def test_genfaces():
+    """test genfaces"""
+    celeba = GenFaces(download_dir="non-existent")
+    assert not celeba.check_integrity()  # data should not be there
+    data = load_data(celeba)
+
+    assert celeba.name == "GenFaces, s=gender, y=emotion"
+
+    assert (148285, 18) == data.x.shape
+    assert (148285, 1) == data.s.shape
+    assert (148285, 1) == data.y.shape
+    assert len(data) == len(celeba)
+
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"

@@ -1,4 +1,3 @@
 """Datasets for computer vision."""
-from .celeba import *
-from .genfaces import *
+from .image_dataset import *
 from .label_dependent_transforms import *

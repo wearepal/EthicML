@@ -1,67 +1,46 @@
+"""Generated faces."""
 import warnings
+from pathlib import Path
 from typing import Callable, Dict, List, Optional, cast
 
 from typing_extensions import Literal
 
 from ethicml.common import implements
 from ethicml.preprocessing import SequentialSplit, get_biased_subset
-from ethicml.vision import TorchGenFaces
+from ethicml.vision import TorchImageDataset
 
-from . import Dataset, load_data
+from .load import load_data
+from .image_dataset import ImageDataset
 
-__all__ = ["GENFACES_ATTRIBUTES", "GenFaces"]
+__all__ = ["GenfacesAttributes", "GenFaces", "create_genfaces_dataset"]
 
 
-GENFACES_ATTRIBUTES = Literal[
-    "gender_female",
-    "gender_male",
-    "age_infant",
-    "age_child",
-    "age_adult",
-    "age_young-adult",
-    "age_adult",
-    "age_elderly",
-    "ethnicity_asian",
-    "ethnicity_black",
-    "ethnicity_latino",
-    "ethnicity_white",
-    "eye_color_blue",
-    "eye_color_green",
-    "eye_color_brown",
-    "eye_color_gray",
-    "hair_color_black",
-    "hair_color_blond",
-    "hair_color_brown",
-    "hair_color_gray",
-    "hair_color_white",
-    "hair_length_long",
-    "hair_length_medium",
-    "hair_length_short",
-    "emotion_joy",
-    "emotion_neutral",
-    "emotion_surprise",
+GenfacesAttributes = Literal[
+    "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion",
 ]
 
+_BASE_FOLDER = "genfaces"
+_SUBDIR = "images"
+_FILE_ID = "1rfwiDmsw37IDnMSWKx5gTc_CZ_Dh5d5g"
+_ZIP_FILE = "genfaces_info.zip"
 
-class GenFaces(Dataset):
+
+class GenFaces(ImageDataset):
     """Generated Faces dataset."""
 
     _disc_feature_groups: Dict[str, List[str]]
 
     def __init__(
-        self, label: GENFACES_ATTRIBUTES = "emotion", sens_attr: GENFACES_ATTRIBUTES = "gender",
+        self,
+        download_dir: str,
+        label: GenfacesAttributes = "emotion",
+        sens_attr: GenfacesAttributes = "gender",
     ):
         """Init GenFaces dataset."""
+        self.root = Path(download_dir)
         disc_feature_groups = {
-            "gender": ["gender_female", "gender_male"],
-            "age": [
-                "age_infant",
-                "age_child",
-                "age_adult",
-                "age_young-adult",
-                "age_adult",
-                "age_elderly",
-            ],
+            "gender": ["gender_male"],
+            "age": ["age_young-adult"],
             "ethnicity": [
                 "ethnicity_asian",
                 "ethnicity_black",
@@ -77,39 +56,46 @@ class GenFaces(Dataset):
                 "hair_color_red",
             ],
             "hair_length": ["hair_length_long", "hair_length_medium", "hair_length_short"],
-            "emotion": ["emotion_joy", "emotion_neutral", "emotion_surprise"],
+            "emotion": ["emotion_joy"],
         }
-        super().__init__(disc_feature_groups=disc_feature_groups)
-        discrete_features: List[str] = []
-        for group in disc_feature_groups.values():
-            discrete_features += group
+        super().__init__(
+            name=f"GenFaces, s={sens_attr}, y={label}",
+            disc_feature_groups=disc_feature_groups,
+            continuous_features=["filename"],
+            length=148_285,
+            csv_file="genfaces.csv.zip",
+            img_dir=self.root / _BASE_FOLDER / _SUBDIR,
+        )
+        assert sens_attr in disc_feature_groups
+        assert label in disc_feature_groups
 
-        assert sens_attr in discrete_features
-        assert label in discrete_features
-        discrete_features.remove(sens_attr)
-        discrete_features.remove(label)
-        self.continuous_features = ["id"]
-        self.features = self.continuous_features + discrete_features
+        self.sens_attrs = disc_feature_groups[sens_attr]
+        self.s_prefix = [sens_attr]
+        self.class_labels = disc_feature_groups[label]
+        self.class_label_prefix = [label]
 
-        self.sens_attrs = [sens_attr]
-        self.s_prefix = []
-        self.class_labels = [label]
-        self.class_label_prefix = []
-        self.__name = f"GenFaces, s={sens_attr}, y={label}"
+    @implements(ImageDataset)
+    def check_integrity(self) -> bool:
+        base = self.root / _BASE_FOLDER
+        return (base / _SUBDIR).is_dir()
 
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return self.__name
+    @implements(ImageDataset)
+    def download(self) -> None:
+        """Attempt to download data if files cannot be found in the base folder."""
+        import zipfile
+        from torchvision.datasets.utils import download_file_from_google_drive
 
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "genfaces.csv.zip"
+        base = self.root / _BASE_FOLDER
 
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 148285
+        if self.check_integrity():
+            print("Files already downloaded and verified")
+            return
+
+        fpath = base / _ZIP_FILE
+        download_file_from_google_drive(fpath)
+
+        with zipfile.ZipFile(fpath, "r") as fhandle:
+            fhandle.extractall(str(base))
 
 
 def create_genfaces_dataset(
@@ -117,13 +103,13 @@ def create_genfaces_dataset(
     biased: bool,
     mixing_factor: float,
     unbiased_pcnt: float,
-    sens_attr_name: GENFACES_ATTRIBUTES,
-    target_attr_name: GENFACES_ATTRIBUTES,
+    sens_attr_name: GenfacesAttributes,
+    target_attr_name: GenfacesAttributes,
     transform: Optional[Callable] = None,
     target_transform: Optional[Callable] = None,
     download: bool = False,
     seed: int = 42,
-) -> TorchGenFaces:
+) -> TorchImageDataset:
     """Create a CelebA dataset object.
 
     Args:
@@ -142,10 +128,16 @@ def create_genfaces_dataset(
                   directory. If dataset is already downloaded, it is not downloaded again.
         seed: Random seed used to sample biased subset.
     """
-    sens_attr_name = cast(GENFACES_ATTRIBUTES, sens_attr_name.lower())
-    target_attr_name = cast(GENFACES_ATTRIBUTES, target_attr_name.lower())
+    sens_attr_name = cast(GenfacesAttributes, sens_attr_name.lower())
+    target_attr_name = cast(GenfacesAttributes, target_attr_name.lower())
 
-    all_dt = load_data(GenFaces(label=target_attr_name, sens_attr=sens_attr_name))
+    gen_faces = GenFaces(download_dir=root, label=target_attr_name, sens_attr=sens_attr_name)
+    if download:
+        gen_faces.download()
+    else:
+        gen_faces.check_integrity()
+    base_dir = gen_faces.img_dir
+    all_dt = load_data(gen_faces)
 
     if sens_attr_name == target_attr_name:
         warnings.warn("Same attribute specified for both the sensitive and target attribute.")
@@ -157,18 +149,10 @@ def create_genfaces_dataset(
         biased_dt, _ = get_biased_subset(
             data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
         )
-        return TorchGenFaces(
-            data=biased_dt,
-            root=root,
-            transform=transform,
-            target_transform=target_transform,
-            download=download,
+        return TorchImageDataset(
+            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform,
         )
     else:
-        return TorchGenFaces(
-            data=unbiased_dt,
-            root=root,
-            transform=transform,
-            target_transform=target_transform,
-            download=download,
+        return TorchImageDataset(
+            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform,
         )
