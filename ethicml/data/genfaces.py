@@ -91,9 +91,9 @@ class GenFaces(ImageDataset):
             print("Files already downloaded and verified")
             return
 
-        fpath = base / _ZIP_FILE
-        download_file_from_google_drive(fpath)
+        download_file_from_google_drive(_FILE_ID, str(base), _ZIP_FILE)
 
+        fpath = base / _ZIP_FILE
         with zipfile.ZipFile(fpath, "r") as fhandle:
             fhandle.extractall(str(base))
 
