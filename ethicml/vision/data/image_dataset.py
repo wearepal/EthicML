@@ -1,4 +1,4 @@
-"""Class for loading images
+"""Class for loading images.
 
 Modifies the Pytorch vision dataset by enabling the use of sensitive attributes
 and biased subset sampling.
