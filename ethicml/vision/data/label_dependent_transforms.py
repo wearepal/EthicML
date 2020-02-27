@@ -24,7 +24,6 @@ class LdTransformation(ABC):
         Returns:
             Augmented data.
         """
-        pass
 
     def __call__(self, data: Tensor, labels: Tensor) -> Tensor:
         """Apply the augment method to the input data.

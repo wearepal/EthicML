@@ -4,6 +4,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["Sqf"]
+
 
 class Sqf(Dataset):
     """Stop, question and frisk dataset."""

@@ -5,6 +5,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["NonBinaryToy"]
+
 
 class NonBinaryToy(Dataset):
     """Dataset with non-binary toy data for testing."""

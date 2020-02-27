@@ -5,6 +5,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["ConfigurableDataset"]
+
 
 class ConfigurableDataset(Dataset):
     """Dataset that is configurable."""

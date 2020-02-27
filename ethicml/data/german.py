@@ -4,6 +4,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["German"]
+
 
 class German(Dataset):
     """German credit dataset."""
