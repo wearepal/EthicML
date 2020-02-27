@@ -1,11 +1,18 @@
 """Class to describe attributes of the CelebA dataset."""
-from typing import Dict, List
+import warnings
+from typing import Callable, Dict, List, Optional, cast
 
 from typing_extensions import Literal
 
 from ethicml.common import implements
+from ethicml.preprocessing import SequentialSplit, get_biased_subset
+from ethicml.vision import TorchCelebA
 
+from .load import load_data
 from .dataset import Dataset
+
+__all__ = ["CELEBATTRS", "CelebA", "create_celeba_dataset"]
+
 
 CELEBATTRS = Literal[
     "5_o_Clock_Shadow",
@@ -51,7 +58,7 @@ CELEBATTRS = Literal[
 ]
 
 
-class Celeba(Dataset):
+class CelebA(Dataset):
     """CelebA dataset."""
 
     _disc_feature_groups: Dict[str, List[str]]
@@ -87,8 +94,7 @@ class Celeba(Dataset):
             "Rosy_Cheeks": ["Rosy_Cheeks"],
             "Sideburns": ["Sideburns"],
             "Smiling": ["Smiling"],
-            "Straight_Hair": ["Straight_Hair"],
-            "Wavy_Hair": ["Wavy_Hair"],
+            "hair_type": ["Straight_Hair", "Wavy_Hair"],
             "Wearing_Earrings": ["Wearing_Earrings"],
             "Wearing_Hat": ["Wearing_Hat"],
             "Wearing_Lipstick": ["Wearing_Lipstick"],
@@ -127,3 +133,65 @@ class Celeba(Dataset):
     @implements(Dataset)
     def __len__(self) -> int:
         return 202599
+
+
+def create_celeba_dataset(
+    root: str,
+    biased: bool,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    sens_attr_name: CELEBATTRS,
+    target_attr_name: CELEBATTRS,
+    transform: Optional[Callable] = None,
+    target_transform: Optional[Callable] = None,
+    download: bool = False,
+    seed: int = 42,
+) -> TorchCelebA:
+    """Create a CelebA dataset object.
+
+    Args:
+        root: Root directory where images are downloaded to.
+        biased: Wheher to artifically bias the dataset according to the mixing factor. See
+                :func:`get_biased_subset()` for more details.
+        mixing_factor: Mixing factor used to generate the biased subset of the data.
+        sens_attr_name: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+                        performed if multiple sensitive attributes are specified.
+        unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
+        target_attr_name: Attribute to set as the target attribute.
+        transform: A function/transform that  takes in an PIL image and returns a transformed
+                   version. E.g, `transforms.ToTensor`
+        target_transform: A function/transform that takes in the target and transforms it.
+        download: If true, downloads the dataset from the internet and puts it in root
+                  directory. If dataset is already downloaded, it is not downloaded again.
+        seed: Random seed used to sample biased subset.
+    """
+    sens_attr_name = cast(CELEBATTRS, sens_attr_name.capitalize())
+    target_attr_name = cast(CELEBATTRS, target_attr_name.capitalize())
+
+    all_dt = load_data(CelebA(label=target_attr_name, sens_attr=sens_attr_name))
+
+    if sens_attr_name == target_attr_name:
+        warnings.warn("Same attribute specified for both the sensitive and target attribute.")
+
+    # NOTE: the sequential split does not shuffle
+    unbiased_dt, biased_dt, _ = SequentialSplit(train_percentage=unbiased_pcnt)(all_dt)
+
+    if biased:
+        biased_dt, _ = get_biased_subset(
+            data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
+        )
+        return TorchCelebA(
+            data=biased_dt,
+            root=root,
+            transform=transform,
+            target_transform=target_transform,
+            download=download,
+        )
+    else:
+        return TorchCelebA(
+            data=unbiased_dt,
+            root=root,
+            transform=transform,
+            target_transform=target_transform,
+            download=download,
+        )

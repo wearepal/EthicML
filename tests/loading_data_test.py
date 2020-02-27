@@ -8,7 +8,7 @@ import pandas as pd
 from ethicml.common import ROOT_PATH
 from ethicml.data import (
     Adult,
-    Celeba,
+    CelebA,
     Compas,
     Credit,
     Dataset,
@@ -386,7 +386,7 @@ def test_group_prefixes():
 
 
 def test_celeba():
-    celeba = Celeba()
+    celeba = CelebA()
     data = load_data(celeba)
 
     assert celeba.name == "CelebA, s=Male, y=Smiling"
@@ -396,4 +396,4 @@ def test_celeba():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba)
 
-    assert data.x['filename'].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"

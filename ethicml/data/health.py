@@ -2,6 +2,8 @@
 from ethicml.common import implements
 from ethicml.data import Dataset
 
+__all__ = ["Health"]
+
 
 class Health(Dataset):
     """Heritage Health Dataset."""

@@ -7,6 +7,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["Adult"]
+
 
 class Adult(Dataset):
     """UCI Adult dataset."""

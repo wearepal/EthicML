@@ -2,7 +2,8 @@
 import pytest
 import torch
 
-from ethicml.vision import LdColorizer, CelebA, create_celeba_dataset
+from ethicml.data import create_celeba_dataset
+from ethicml.vision import LdColorizer, TorchCelebA
 
 
 @pytest.mark.parametrize("transform", [LdColorizer])
@@ -31,8 +32,8 @@ def test_celeba():
     # pylint: disable=protected-access
 
     # turn off integrity checking for testing purposes
-    _check_integrity = CelebA._check_integrity
-    CelebA._check_integrity = lambda _: True  # type: ignore[assignment]
+    _check_integrity = TorchCelebA._check_integrity
+    TorchCelebA._check_integrity = lambda _: True  # type: ignore[assignment]
 
     train_set = create_celeba_dataset(
         root="non-existent",
@@ -55,4 +56,4 @@ def test_celeba():
     assert len(test_set) == 81040
 
     # restore integrity checking
-    CelebA._check_integrity = _check_integrity  # type: ignore[assignment]
+    TorchCelebA._check_integrity = _check_integrity  # type: ignore[assignment]

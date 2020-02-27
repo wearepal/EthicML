@@ -7,6 +7,8 @@ from typing import Dict, List, Optional
 from ethicml.common import ROOT_PATH
 from ethicml.data.util import filter_features_by_prefixes, get_discrete_features
 
+__all__ = ["Dataset"]
+
 
 class Dataset(ABC):
     """Base class for datasets."""

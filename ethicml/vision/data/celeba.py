@@ -4,27 +4,24 @@ Modifies the Pytorch CelebA dataset by enabling the use of sensitive attributes
 and biased subset sampling.
 """
 import os
-import warnings
 from pathlib import Path
-from typing import Callable, Optional, Tuple, cast
+from typing import Callable, Optional, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 import torch
 from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_file_from_google_drive
 
-from ethicml.preprocessing import SequentialSplit, get_biased_subset
+from ethicml.common import implements
 from ethicml.utility import DataTuple
-from ethicml import data as eml_data
-from ethicml.data.celeba import CELEBATTRS
 
-__all__ = ["CelebA", "create_celeba_dataset"]
+__all__ = ["TorchCelebA"]
 
 
-class CelebA(VisionDataset):
+class TorchCelebA(VisionDataset):
     """Large-scale CelebFaces Attributes (CelebA) Dataset."""
 
     base_folder = "celeba"
@@ -63,7 +60,7 @@ class CelebA(VisionDataset):
         landmarks).
 
         Args:
-            data: the requested filenames in the form of a data tuple
+            data: A CelebA dataset object.
             root: Root directory where images are downloaded to.
             transform: A function/transform that  takes in an PIL image and returns a transformed
                        version. E.g, `transforms.ToTensor`
@@ -162,65 +159,3 @@ class CelebA(VisionDataset):
             Integer indicating the length of the dataset.
         """
         return self.sens_attr.size(0)
-
-
-def create_celeba_dataset(
-    root: str,
-    biased: bool,
-    mixing_factor: float,
-    unbiased_pcnt: float,
-    sens_attr_name: CELEBATTRS,
-    target_attr_name: CELEBATTRS,
-    transform: Optional[Callable] = None,
-    target_transform: Optional[Callable] = None,
-    download: bool = False,
-    seed: int = 42,
-) -> CelebA:
-    """Create a CelebA dataset object.
-
-    Args:
-        root: Root directory where images are downloaded to.
-        biased: Wheher to artifically bias the dataset according to the mixing factor. See
-                :func:`get_biased_subset()` for more details.
-        mixing_factor: Mixing factor used to generate the biased subset of the data.
-        sens_attr_name: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
-                        performed if multiple sensitive attributes are specified.
-        unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
-        target_attr_name: Attribute to set as the target attribute.
-        transform: A function/transform that  takes in an PIL image and returns a transformed
-                   version. E.g, `transforms.ToTensor`
-        target_transform: A function/transform that takes in the target and transforms it.
-        download: If true, downloads the dataset from the internet and puts it in root
-                  directory. If dataset is already downloaded, it is not downloaded again.
-        seed: Random seed used to sample biased subset.
-    """
-    sens_attr_name = cast(CELEBATTRS, sens_attr_name.capitalize())
-    target_attr_name = cast(CELEBATTRS, target_attr_name.capitalize())
-
-    all_dt = eml_data.load_data(eml_data.Celeba(label=target_attr_name, sens_attr=sens_attr_name))
-
-    if sens_attr_name == target_attr_name:
-        warnings.warn("Same attribute specified for both the sensitive and target attribute.")
-
-    # NOTE: the sequential split does not shuffle
-    unbiased_dt, biased_dt, _ = SequentialSplit(train_percentage=unbiased_pcnt)(all_dt)
-
-    if biased:
-        biased_dt, _ = get_biased_subset(
-            data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
-        )
-        return CelebA(
-            data=biased_dt,
-            root=root,
-            transform=transform,
-            target_transform=target_transform,
-            download=download,
-        )
-    else:
-        return CelebA(
-            data=unbiased_dt,
-            root=root,
-            transform=transform,
-            target_transform=target_transform,
-            download=download,
-        )

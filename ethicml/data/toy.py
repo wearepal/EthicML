@@ -5,6 +5,8 @@ from ethicml.common import implements
 
 from .dataset import Dataset
 
+__all__ = ["Toy"]
+
 
 class Toy(Dataset):
     """Dataset with toy data for testing."""

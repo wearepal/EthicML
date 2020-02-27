@@ -10,6 +10,8 @@ from ethicml.utility import DataTuple
 from .configurable_dataset import ConfigurableDataset
 from .dataset import Dataset
 
+__all__ = ["load_data", "create_data_obj"]
+
 
 def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     """Load dataset from its CSV file.
