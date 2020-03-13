@@ -15,6 +15,7 @@ from typing import (
     Union,
 )
 
+import numpy as np
 import pandas as pd
 from pandas.testing import assert_index_equal
 from typing_extensions import Final, Literal
@@ -33,7 +34,6 @@ __all__ = [
     "TrainTestPair",
     "concat_dt",
     "concat_tt",
-    "load_prediction",
 ]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -98,6 +98,20 @@ class TestTuple:
             s=s if s is not None else self.s,
             name=name if name is not None else self.name,
         )
+
+    def to_npz(self, data_path: Path) -> None:
+        """Save TestTuple as an npz file."""
+        write_as_npz(data_path, dict(x=self.x, s=self.s))
+
+    @classmethod
+    def from_npz(cls, data_path: Path) -> "TestTuple":
+        """Load test tuple from npz file."""
+        with data_path.open("rb") as data_file:
+            data = np.load(data_file)
+            return cls(
+                x=pd.DataFrame(data["x"], columns=data["x_names"]),
+                s=pd.DataFrame(data["s"], columns=data["s_names"]),
+            )
 
 
 class DataTuple(TestTuple):
@@ -191,6 +205,21 @@ class DataTuple(TestTuple):
         """
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
 
+    def to_npz(self, data_path: Path) -> None:
+        """Save DataTuple as an npz file."""
+        write_as_npz(data_path, dict(x=self.x, s=self.s, y=self.y))
+
+    @classmethod
+    def from_npz(cls, data_path: Path) -> "DataTuple":
+        """Load data tuple from npz file."""
+        with data_path.open("rb") as data_file:
+            data = np.load(data_file)
+            return cls(
+                x=pd.DataFrame(data["x"], columns=data["x_names"]),
+                s=pd.DataFrame(data["s"], columns=data["s_names"]),
+                y=pd.DataFrame(data["y"], columns=data["y_names"]),
+            )
+
 
 @dataclass(frozen=True)  # "frozen" means the objects are immutable
 class TestPathTuple:
@@ -242,6 +271,19 @@ class Prediction:
         """Additional info about the prediction."""
         return self._info
 
+    @staticmethod
+    def from_npz(npz_path: Path) -> "Prediction":
+        """Load prediction from npz file."""
+        with npz_path.open("rb") as npz_file:
+            data = np.load(npz_file)
+            if "soft" in data:
+                return SoftPrediction(soft=pd.Series(np.squeeze(data["soft"])))
+            return Prediction(hard=pd.Series(np.squeeze(data["hard"])))
+
+    def to_npz(self, npz_path: Path) -> None:
+        """Save prediction as npz file."""
+        np.savez(npz_path, hard=self.hard.to_numpy())
+
 
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
@@ -285,6 +327,15 @@ def write_as_feather(
     return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
 
 
+def write_as_npz(data_path: Path, data: Dict[str, pd.DataFrame]) -> None:
+    """Write the given dataframes to an npz file."""
+    as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
+    column_names = {
+        f"{entry}_names": np.array(values.columns.tolist()) for entry, values in data.items()
+    }
+    np.savez(data_path, **as_numpy, **column_names)
+
+
 def concat_dt(
     datatup_list: Sequence[DataTuple], axis: AxisType = "index", ignore_index: bool = False
 ) -> DataTuple:
@@ -323,12 +374,6 @@ def _load_feather(output_path: Path) -> pd.DataFrame:
     with output_path.open("rb") as file_obj:
         df = pd.read_feather(file_obj)
     return df
-
-
-def load_prediction(output_path: Path) -> Prediction:
-    """Load a prediction from a path."""
-    df = _load_feather(output_path)
-    return Prediction(hard=df[df.columns[0]])
 
 
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name

@@ -1,34 +1,26 @@
 """Methods that are shared among the inprocess algorithms."""
-from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-from ethicml.utility import PathTuple, TestPathTuple
-
 __all__ = ["flag_interface", "settings_for_svm_lr"]
 
 
 def flag_interface(
-    train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path, flags: Dict[str, Any]
+    train_path: Path, test_path: Path, pred_path: Path, flags: Dict[str, Any]
 ) -> List[str]:
     """Generate the commandline arguments that are expected."""
-    flags_list: List[str] = []
-
     # paths to training and test data
-    path_tuples = [train_paths, test_paths]
-    prefixes = ["--train_", "--test_"]
-    for path_tuple, prefix in zip(path_tuples, prefixes):
-        for key, path in asdict(path_tuple).items():
-            flags_list += [f"{prefix}{key}", str(path)]
-
+    data_flags: Dict[str, Any] = {"train": train_path, "test": test_path}
     # paths to output files
-    flags_list += ["--pred_path", str(pred_path)]
+    data_flags.update({"predictions": pred_path})
+    data_flags.update(flags)
 
+    flags_list: List[str] = []
     # model parameters
-    for key, values in flags.items():
+    for key, values in data_flags.items():
         flags_list.append(f"--{key}")
         if isinstance(values, (list, tuple)):
             flags_list += [str(value) for value in values]
