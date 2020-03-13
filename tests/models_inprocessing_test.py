@@ -21,6 +21,7 @@ from ethicml.algorithms.inprocess import (
     Kamiran,
     LRProb,
     Majority,
+    SVMAsync,
     ZafarAccuracy,
     ZafarBaseline,
     ZafarEqOdds,
@@ -111,6 +112,19 @@ def test_cv_svm():
     predictions: Prediction = best_model.run(train, test)
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 211
     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 189
+
+
+def test_threaded_svm():
+    """test threaded svm"""
+    train, test = get_train_test()
+
+    model: InAlgorithmAsync = SVMAsync()
+    assert model is not None
+    assert model.name == "SVM"
+
+    predictions: Prediction = run_blocking(model.run_async(train, test))
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 201
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 199
 
 
 def test_cv_lr(toy_train_test: TrainTestPair) -> None:
