@@ -62,9 +62,10 @@ def test_dataset_name_none() -> None:
     )
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
-        paths = datatup.write_as_feather(tmp_path, "pytest")
+        path = tmp_path / "pytest.npz"
+        datatup.to_npz(path)
         # reload from feather file
-        reloaded = paths.load_from_feather()
+        reloaded = DataTuple.from_npz(path)
     assert reloaded.name is None
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_frame_equal(datatup.s, reloaded.s)
@@ -81,9 +82,10 @@ def test_dataset_name_with_spaces() -> None:
     )
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
-        paths = datatup.write_as_feather(tmp_path, "pytest2")
+        path = tmp_path / "pytest2.npz"
+        datatup.to_npz(path)
         # reload from feather file
-        reloaded = paths.load_from_feather()
+        reloaded = TestTuple.from_npz(path)
     assert name == reloaded.name
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_frame_equal(datatup.s, reloaded.s)

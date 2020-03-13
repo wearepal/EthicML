@@ -1,47 +1,25 @@
 """Methods that define commandline interfaces."""
-from dataclasses import asdict
+from pathlib import Path
 from typing import Any, Dict, List
-
-from ethicml.utility import PathTuple, TestPathTuple
 
 
 def flag_interface(
-    train_paths: PathTuple,
-    test_paths: TestPathTuple,
-    new_train_paths: PathTuple,
-    new_test_paths: TestPathTuple,
+    train_path: Path,
+    test_path: Path,
+    new_train_path: Path,
+    new_test_path: Path,
     flags: Dict[str, Any],
 ) -> List[str]:
-    """Generate the commandline arguments that are expected."""
-    flags_list: List[str] = []
-
+    """Generate the commandline arguments that are expected by the script about to be called."""
     # paths to training and test data
-    path_tuples = [train_paths, test_paths]
-    prefixes = ["--train_", "--test_"]
-    for path_tuple, prefix in zip(path_tuples, prefixes):
-        for key, path in asdict(path_tuple).items():
-            flags_list += [f"{prefix}{key}", str(path)]
-
+    data_flags: Dict[str, Any] = {"train": train_path, "test": test_path}
     # paths to output files
-    flags_list += [
-        "--new_train_x",
-        str(new_train_paths.x),
-        "--new_train_s",
-        str(new_train_paths.s),
-        "--new_train_y",
-        str(new_train_paths.y),
-        "--new_train_name",
-        new_train_paths.name,
-        "--new_test_x",
-        str(new_test_paths.x),
-        "--new_test_s",
-        str(new_test_paths.s),
-        "--new_test_name",
-        new_test_paths.name,
-    ]
+    data_flags.update({"new_train": new_train_path, "new_test": new_test_path})
+    data_flags.update(flags)
 
+    flags_list: List[str] = []
     # model parameters
-    for key, values in flags.items():
+    for key, values in data_flags.items():
         flags_list.append(f"--{key}")
         if isinstance(values, (list, tuple)):
             flags_list += [str(value) for value in values]

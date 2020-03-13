@@ -1,8 +1,6 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
-
+from pathlib import Path
 from typing import Dict, List, Optional, Union
-
-from ethicml.utility import PathTuple, TestPathTuple
 
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
@@ -45,11 +43,7 @@ class VFAE(PreAlgorithmAsync):
         }
 
     def _script_command(
-        self,
-        train_paths: PathTuple,
-        test_paths: TestPathTuple,
-        new_train_paths: PathTuple,
-        new_test_paths: TestPathTuple,
+        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
     ) -> List[str]:
-        args = flag_interface(train_paths, test_paths, new_train_paths, new_test_paths, self.flags)
+        args = flag_interface(train_path, test_path, new_train_path, new_test_path, self.flags)
         return ["-m", "ethicml.implementations.vfae"] + args

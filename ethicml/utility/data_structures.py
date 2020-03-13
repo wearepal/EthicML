@@ -25,11 +25,9 @@ __all__ = [
     "ClassifierType",
     "DataTuple",
     "FairnessType",
-    "PathTuple",
     "Prediction",
     "Results",
     "SoftPrediction",
-    "TestPathTuple",
     "TestTuple",
     "TrainTestPair",
     "concat_dt",
@@ -67,24 +65,6 @@ class TestTuple:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
 
-    def write_as_feather(self, data_dir: Path, identifier: str) -> "TestPathTuple":
-        """Write the TestTuple to Feather files and return the file paths as a TestPathTuple.
-
-        Args:
-            data_dir: directory where the files should be stored
-            identifier: a string that ideally identifies the file uniquely, can be a UUID
-        Returns:
-            tuple of paths
-        """
-        # create the directory if it doesn't already exist
-        data_dir.mkdir(parents=True, exist_ok=True)
-
-        return TestPathTuple(
-            x=_save_helper(data_dir, self.x, identifier, "x"),
-            s=_save_helper(data_dir, self.s, identifier, "s"),
-            name=self.name if self.name is not None else "",
-        )
-
     def replace(
         self,
         *,
@@ -101,16 +81,22 @@ class TestTuple:
 
     def to_npz(self, data_path: Path) -> None:
         """Save TestTuple as an npz file."""
-        write_as_npz(data_path, dict(x=self.x, s=self.s))
+        write_as_npz(
+            data_path,
+            dict(x=self.x, s=self.s),
+            dict(name=np.array(self.name if self.name is not None else "")),
+        )
 
     @classmethod
     def from_npz(cls, data_path: Path) -> "TestTuple":
         """Load test tuple from npz file."""
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
+            name = data["name"].item()
             return cls(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.DataFrame(data["s"], columns=data["s_names"]),
+                name=name if name else None,
             )
 
 
@@ -142,25 +128,6 @@ class DataTuple(TestTuple):
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance."""
         return TestTuple(x=self.x, s=self.s, name=self.name)
-
-    def write_as_feather(self, data_dir: Path, identifier: str) -> "PathTuple":
-        """Write the DataTuple to Feather files and return the file paths as a PathTuple.
-
-        Args:
-            data_dir: directory where the files should be stored
-            identifier: a string that ideally identifies the file uniquely, can be a UUID
-        Returns:
-            tuple of paths
-        """
-        # create the directory if it doesn't already exist
-        data_dir.mkdir(parents=True, exist_ok=True)
-
-        return PathTuple(
-            x=_save_helper(data_dir, self.x, identifier, "x"),
-            s=_save_helper(data_dir, self.s, identifier, "s"),
-            y=_save_helper(data_dir, self.y, identifier, "y"),
-            name=self.name if self.name is not None else "",
-        )
 
     def replace(
         self,
@@ -207,49 +174,24 @@ class DataTuple(TestTuple):
 
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file."""
-        write_as_npz(data_path, dict(x=self.x, s=self.s, y=self.y))
+        write_as_npz(
+            data_path,
+            dict(x=self.x, s=self.s, y=self.y),
+            dict(name=np.array(self.name if self.name is not None else "")),
+        )
 
     @classmethod
     def from_npz(cls, data_path: Path) -> "DataTuple":
         """Load data tuple from npz file."""
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
+            name = data["name"].item()
             return cls(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.DataFrame(data["s"], columns=data["s_names"]),
                 y=pd.DataFrame(data["y"], columns=data["y_names"]),
+                name=name if name else None,
             )
-
-
-@dataclass(frozen=True)  # "frozen" means the objects are immutable
-class TestPathTuple:
-    """For algorithms that run in their own process, we pass around paths to the data."""
-
-    x: Path  # path to file with features
-    s: Path  # path to file with sensitive attributes
-    name: str  # name of the dataset
-
-    def load_from_feather(self) -> TestTuple:
-        """Load a dataframe from a feather file."""
-        return TestTuple(
-            x=_load_feather(self.x), s=_load_feather(self.s), name=self.name if self.name else None
-        )
-
-
-@dataclass(frozen=True)  # "frozen" means the objects are immutable
-class PathTuple(TestPathTuple):
-    """For algorithms that run in their own process, we pass around paths to the data."""
-
-    y: Path  # path to file with class labels
-
-    def load_from_feather(self) -> DataTuple:
-        """Load a dataframe from a feather file."""
-        return DataTuple(
-            x=_load_feather(self.x),
-            s=_load_feather(self.s),
-            y=_load_feather(self.y),
-            name=self.name if self.name else None,
-        )
 
 
 class Prediction:
@@ -299,41 +241,16 @@ class SoftPrediction(Prediction):
         return self._soft
 
 
-def _save_helper(data_dir: Path, data: pd.DataFrame, prefix: str, key: str) -> Path:
-    # SUGGESTION: maybe the file names should be completely random to avoid collisions
-    data_path = data_dir / f"data_{prefix}_{key}.feather"
-    # write the file
-    data.to_feather(data_path)
-    return data_path
-
-
-def write_as_feather(
-    train: DataTuple, test: TestTuple, data_dir: Path
-) -> (Tuple[PathTuple, TestPathTuple]):
-    """Write the given DataTuple to Feather files and return the file paths as PathTuples.
-
-    Args:
-        train: tuple with training data
-        test: tuple with test data
-        data_dir: directory where the files should be stored
-    Returns:
-        tuple of tuple of paths (one tuple for training, one for test)
-    """
-    # TODO: this should be an assert instead (requires changing code that calls this function)
-    if isinstance(test, DataTuple):
-        # because of polymorphism it can happen that `test` is a DataTuple posing as a TestTuple
-        # this causes problems though because it will write an additional file (the one with y)
-        test = test.remove_y()
-    return train.write_as_feather(data_dir, "train"), test.write_as_feather(data_dir, "test")
-
-
-def write_as_npz(data_path: Path, data: Dict[str, pd.DataFrame]) -> None:
+def write_as_npz(
+    data_path: Path, data: Dict[str, pd.DataFrame], extra: Optional[Dict[str, np.ndarray]] = None
+) -> None:
     """Write the given dataframes to an npz file."""
+    extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
     column_names = {
         f"{entry}_names": np.array(values.columns.tolist()) for entry, values in data.items()
     }
-    np.savez(data_path, **as_numpy, **column_names)
+    np.savez(data_path, **as_numpy, **column_names, **extra)
 
 
 def concat_dt(
@@ -367,13 +284,6 @@ def concat_tt(
         ),
         name=datatup_list[0].name,
     )
-
-
-def _load_feather(output_path: Path) -> pd.DataFrame:
-    """Load a dataframe from a feather file."""
-    with output_path.open("rb") as file_obj:
-        df = pd.read_feather(file_obj)
-    return df
 
 
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name

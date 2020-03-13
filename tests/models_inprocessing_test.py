@@ -35,10 +35,8 @@ from ethicml.preprocessing import query_dt, train_test_split
 from ethicml.utility import (
     DataTuple,
     Heaviside,
-    PathTuple,
     Prediction,
     SoftPrediction,
-    TestPathTuple,
     TrainTestPair,
 )
 from tests.run_algorithm_test import count_true, get_train_test
