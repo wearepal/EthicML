@@ -7,8 +7,7 @@ from typing import List, Tuple
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.common import implements
-from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
-from ethicml.utility.data_structures import write_as_feather
+from ethicml.utility import DataTuple, TestTuple
 
 
 class PreAlgorithm(Algorithm):
@@ -51,31 +50,24 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            # write data to files
-            train_paths, test_paths = write_as_feather(train, test, tmp_path)
+            # ================================ write data to files ================================
+            train_path, test_path = tmp_path / "train.npz", tmp_path / "test.npz"
+            train.to_npz(train_path)
+            test.to_npz(test_path)
 
             # ========================== generate commandline arguments ===========================
-            transformed_train_paths = PathTuple(
-                x=tmp_path / "transform_train_x.feather",
-                s=tmp_path / "transform_train_s.feather",
-                y=tmp_path / "transform_train_y.feather",
-                name=train.name if train.name is not None else "",
-            )
-            transformed_test_paths = TestPathTuple(
-                x=tmp_path / "transform_test_x.feather",
-                s=tmp_path / "transform_test_s.feather",
-                name=test.name if test.name is not None else "",
-            )
+            transformed_train_path = tmp_path / "transformed_train.npz"
+            transformed_test_path = tmp_path / "transformed_test.npz"
             cmd = self._script_command(
-                train_paths, test_paths, transformed_train_paths, transformed_test_paths
+                train_path, test_path, transformed_train_path, transformed_test_path
             )
 
             # ============================= run the generated command =============================
             await self._call_script(cmd)
 
             # ================================== load results =====================================
-            transformed_train = transformed_train_paths.load_from_feather()
-            transformed_test = transformed_test_paths.load_from_feather()
+            transformed_train = DataTuple.from_npz(transformed_train_path)
+            transformed_test = TestTuple.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         transformed_train = transformed_train.replace(
@@ -88,10 +80,6 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
 
     @abstractmethod
     def _script_command(
-        self,
-        train_paths: PathTuple,
-        test_paths: TestPathTuple,
-        new_train_paths: PathTuple,
-        new_test_paths: TestPathTuple,
+        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
     ) -> List[str]:
         """The command that will run the script."""

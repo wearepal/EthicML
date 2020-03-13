@@ -36,7 +36,6 @@ setup(
         "pandas >= 0.24.0",
         "pipenv >= 2018.11.26",
         "pillow < 7.0",
-        "pyarrow >= 0.11",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
         "tqdm >= 4.31.1",

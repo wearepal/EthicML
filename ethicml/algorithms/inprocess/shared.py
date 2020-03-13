@@ -11,7 +11,7 @@ __all__ = ["flag_interface", "settings_for_svm_lr"]
 def flag_interface(
     train_path: Path, test_path: Path, pred_path: Path, flags: Dict[str, Any]
 ) -> List[str]:
-    """Generate the commandline arguments that are expected."""
+    """Generate the commandline arguments that are expected by the script about to be called."""
     # paths to training and test data
     data_flags: Dict[str, Any] = {"train": train_path, "test": test_path}
     # paths to output files
