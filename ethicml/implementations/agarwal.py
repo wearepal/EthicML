@@ -1,4 +1,5 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
+from pathlib import Path
 import random
 
 import numpy as np
@@ -12,9 +13,9 @@ from fairlearn.reductions import (
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import ClassifierType, DataTuple, FairnessType, TestTuple
+from ethicml.utility import ClassifierType, DataTuple, FairnessType, TestTuple, Prediction
 
-from .utils import InAlgoArgs, load_data_from_flags, save_predictions
+from .utils import InAlgoArgs
 
 
 class AgarwalArgs(InAlgoArgs):
@@ -65,8 +66,8 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
 def main():
     """This function runs the Agarwal model as a standalone program."""
     args: AgarwalArgs = AgarwalArgs().parse_args()
-    train, test = load_data_from_flags(args)
-    save_predictions(train_and_predict(train, test, args), args)
+    train, test = DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
+    Prediction(hard=train_and_predict(train, test, args)["preds"]).to_npz(Path(args.predictions))
 
 
 if __name__ == "__main__":

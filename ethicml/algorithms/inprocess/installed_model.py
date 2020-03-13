@@ -14,8 +14,6 @@ from typing import List, Optional
 
 import git
 
-from ethicml.utility import PathTuple, TestPathTuple
-
 from .in_algorithm import InAlgorithmAsync
 
 __all__ = ["InstalledModel"]
@@ -92,7 +90,5 @@ class InstalledModel(InAlgorithmAsync):
         except OSError as excep:
             print("Error: %s - %s." % (excep.filename, excep.strerror))
 
-    def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
-    ) -> (List[str]):
+    def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         return []  # pylint was complaining when I didn't return anything here...

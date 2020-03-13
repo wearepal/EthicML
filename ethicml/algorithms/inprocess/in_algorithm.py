@@ -6,15 +6,7 @@ from typing import List
 
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
 from ethicml.common import implements
-from ethicml.utility import (
-    DataTuple,
-    PathTuple,
-    Prediction,
-    TestPathTuple,
-    TestTuple,
-    load_prediction,
-)
-from ethicml.utility.data_structures import write_as_feather
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]
 
@@ -69,14 +61,15 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            train_paths, test_paths = write_as_feather(train, test, tmp_path)
-            pred_path = tmp_path / "predictions.feather"
-            cmd = self._script_command(train_paths, test_paths, pred_path)
+            train_path = tmp_path / "train.npz"
+            test_path = tmp_path / "test.npz"
+            pred_path = tmp_path / "predictions.npz"
+            train.to_npz(train_path)
+            test.to_npz(test_path)
+            cmd = self._script_command(train_path, test_path, pred_path)
             await self._call_script(cmd)  # wait for scrip to run
-            return load_prediction(pred_path)
+            return Prediction.from_npz(pred_path)
 
     @abstractmethod
-    def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
-    ) -> (List[str]):
+    def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         """The command that will run the script."""

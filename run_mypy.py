@@ -4,7 +4,7 @@ import sys
 
 from mypy import api as mypy
 
-MAX_ALLOWED_ERRORS = 5
+MAX_ALLOWED_ERRORS = 10
 
 RESULTS = mypy.run(["./ethicml/"])
 print(RESULTS[0], end="")

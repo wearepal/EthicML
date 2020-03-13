@@ -1,8 +1,8 @@
-"""implementation of Agarwal model."""
+"""Implementation of Agarwal model."""
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Union
 
-from ethicml.utility import ClassifierType, FairnessType, PathTuple, TestPathTuple
+from ethicml.utility import ClassifierType, FairnessType
 
 from .in_algorithm import InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
@@ -42,8 +42,6 @@ class Agarwal(InAlgorithmAsync):
             "kernel": chosen_kernel,
         }
 
-    def _script_command(
-        self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
-    ) -> (List[str]):
-        args = flag_interface(train_paths, test_paths, pred_path, self.flags)
+    def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
+        args = flag_interface(train_path, test_path, pred_path, self.flags)
         return ["-m", "ethicml.implementations.agarwal"] + args

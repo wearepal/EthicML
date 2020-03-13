@@ -323,14 +323,13 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
             )
 
         def _script_command(
-            self, train_paths: PathTuple, test_paths: TestPathTuple, pred_path: Path
+            self, train_path: Path, test_path: Path, pred_path: Path
         ) -> (List[str]):
             script = "./tests/local_installed_lr.py"
             return [
                 script,
-                str(train_paths.x),
-                str(train_paths.y),
-                str(test_paths.x),
+                str(train_path),
+                str(test_path),
                 str(pred_path),
             ]
 

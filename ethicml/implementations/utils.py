@@ -1,16 +1,15 @@
 """Useful functions used in implementations."""
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Tuple
 
-import numpy as np
 import pandas as pd
 import tap
 
 from ethicml.utility import DataTuple, PathTuple, TestPathTuple, TestTuple
 
 
-class AlgoArgs(tap.Tap):
-    """ArgumentParser that already has arguments for the input data paths.
+class PreAlgoArgs(tap.Tap):
+    """ArgumentParser for pre-processing algorithms.
 
     This is a quick way to create a parser that can parse the filenames for the data. This class
     can be used by pre-algorithms to implement a commandline interface.
@@ -25,10 +24,6 @@ class AlgoArgs(tap.Tap):
     test_s: str
     test_name: str
 
-
-class PreAlgoArgs(AlgoArgs):
-    """ArgumentParser for pre-processing algorithms."""
-
     # paths to where the processed inputs should be stored
     new_train_x: str
     new_train_s: str
@@ -39,24 +34,17 @@ class PreAlgoArgs(AlgoArgs):
     new_test_name: str
 
 
-class InAlgoArgs(AlgoArgs):
+class InAlgoArgs(tap.Tap):
     """ArgumentParser that already has arguments for the paths needed for InAlgorithms."""
 
+    # paths to the files with the data
+    train: str
+    test: str
     # path to where the predictions should be stored
-    pred_path: str
+    predictions: str
 
 
-def save_predictions(predictions: Union[np.ndarray, pd.DataFrame], args: InAlgoArgs):
-    """Save the data to the file that was specified in the commandline arguments."""
-    if not isinstance(predictions, pd.DataFrame):
-        df = pd.DataFrame(predictions, columns=["pred"])
-    else:
-        df = predictions
-    pred_path = Path(args.pred_path)
-    df.to_feather(pred_path)
-
-
-def load_data_from_flags(flags: AlgoArgs) -> Tuple[DataTuple, TestTuple]:
+def load_data_from_flags(flags: PreAlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags."""
     train_paths = PathTuple(
         x=Path(flags.train_x), s=Path(flags.train_s), y=Path(flags.train_y), name=flags.train_name
