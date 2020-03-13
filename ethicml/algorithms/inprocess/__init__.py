@@ -9,5 +9,6 @@ from .majority import *
 from .manual import *
 from .mlp import *
 from .svm import *
+from .svm_async import *
 from .zafar import *
 from .kamishima import Kamishima
