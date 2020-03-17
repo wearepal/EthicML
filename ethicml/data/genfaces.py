@@ -6,7 +6,7 @@ from typing import Callable, Dict, List, Optional, cast
 from typing_extensions import Literal
 
 from ethicml.common import implements
-from ethicml.preprocessing import SequentialSplit, get_biased_subset
+from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
 from .load import load_data
@@ -142,8 +142,7 @@ def create_genfaces_dataset(
     if sens_attr_name == target_attr_name:
         warnings.warn("Same attribute specified for both the sensitive and target attribute.")
 
-    # NOTE: the sequential split does not shuffle
-    unbiased_dt, biased_dt, _ = SequentialSplit(train_percentage=unbiased_pcnt)(all_dt)
+    unbiased_dt, biased_dt, _ = ProportionalSplit(unbiased_pcnt, start_seed=seed)(all_dt)
 
     if biased:
         biased_dt, _ = get_biased_subset(
