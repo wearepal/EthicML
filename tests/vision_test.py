@@ -52,8 +52,8 @@ def test_celeba():
         target_attr_name="Smiling",
     )
 
-    assert len(train_set) == 52725
-    assert len(test_set) == 81040
+    assert len(train_set) == 52855
+    assert len(test_set) == 81039
 
     assert isinstance(train_set, TorchImageDataset)
     assert isinstance(test_set, TorchImageDataset)
@@ -87,7 +87,7 @@ def test_gen_faces():
         target_attr_name="emotion",
     )
 
-    assert len(train_set) == 32211
+    assert len(train_set) == 27928
     assert len(test_set) == 59314
 
     assert isinstance(train_set, TorchImageDataset)
