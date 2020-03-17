@@ -4,7 +4,7 @@ import sys
 
 from mypy import api as mypy
 
-MAX_ALLOWED_ERRORS = 10
+MAX_ALLOWED_ERRORS = 15
 
 # Also check types on the tests
 RESULTS = mypy.run(["./tests/"])

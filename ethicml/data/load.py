@@ -32,6 +32,18 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     s_data = dataframe[feature_split["s"]]
     y_data = dataframe[feature_split["y"]]
 
+    # if there any feature groups with only one feature, we add a second one which is the inverse
+    disc_feature_groups = dataset.disc_feature_groups
+    if disc_feature_groups is not None:
+        for group in disc_feature_groups.values():
+            assert len(group) > 1, "binary feature should be encoded as two features"
+            if len(group) == 2:
+                if group[0] in x_data.columns:
+                    existing_feature, non_existing_feature = group[0], group[1]
+                else:
+                    existing_feature, non_existing_feature = group[1], group[0]
+                x_data = x_data.assign(**{non_existing_feature: 1 - x_data[existing_feature]})
+
     return DataTuple(x=x_data, s=s_data, y=y_data, name=dataset.name)
 
 
