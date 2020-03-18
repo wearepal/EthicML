@@ -282,7 +282,18 @@ def test_load_adult_drop_native():
     assert "native-country_not_United-States" not in adult.discrete_features
     assert "native-country_Canada" not in adult.discrete_features
 
-    data: DataTuple = load_data(adult)
+    # without dummies
+    data: DataTuple = load_data(adult, ordered=True, generate_dummies=False)
+    assert (45222, 61) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "native-country_United-States" in data.x.columns
+    # the dummy feature is not in the actual dataframe:
+    assert "native-country_not_United-States" not in data.x.columns
+    assert "native-country_Canada" not in data.x.columns
+
+    # with dummies
+    data = load_data(adult, ordered=True, generate_dummies=True)
     assert (45222, 62) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
