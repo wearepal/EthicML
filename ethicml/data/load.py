@@ -13,12 +13,13 @@ from .dataset import Dataset
 __all__ = ["load_data", "create_data_obj"]
 
 
-def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
+def load_data(dataset: Dataset, ordered: bool = False, generate_dummies: bool = True) -> DataTuple:
     """Load dataset from its CSV file.
 
     Args:
         dataset: dataset object
-        ordered: if True return features such that discrete come first, then continuous
+        ordered: if True, return features such that discrete come first, then continuous
+        generate_dummies: if True, generate complementary features for standalone binary features
 
     Returns:
         DataTuple with dataframes of features, labels and sensitive attributes
@@ -32,17 +33,21 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     s_data = dataframe[feature_split["s"]]
     y_data = dataframe[feature_split["y"]]
 
-    # if there any feature groups with only one feature, we add a second one which is the inverse
-    disc_feature_groups = dataset.disc_feature_groups
-    if disc_feature_groups is not None:
-        for group in disc_feature_groups.values():
-            assert len(group) > 1, "binary feature should be encoded as two features"
-            if len(group) == 2:
-                if group[0] in x_data.columns:
-                    existing_feature, non_existing_feature = group[0], group[1]
-                else:
-                    existing_feature, non_existing_feature = group[1], group[0]
-                x_data = x_data.assign(**{non_existing_feature: 1 - x_data[existing_feature]})
+    if generate_dummies:
+        # check whether we have to generate some complementary columns for binary features
+        disc_feature_groups = dataset.disc_feature_groups
+        if disc_feature_groups is not None:
+            for group in disc_feature_groups.values():
+                if len(group) == 2:
+                    # check if one of the features is a dummy feature (not in the CSV file)
+                    if group[0] not in x_data.columns:
+                        existing_feature, non_existing_feature = group[1], group[0]
+                    elif group[1] not in x_data.columns:
+                        existing_feature, non_existing_feature = group[0], group[1]
+                    else:
+                        continue  # all features are present
+                    # the dummy feature is the inverse of the existing feature
+                    x_data = x_data.assign(**{non_existing_feature: 1 - x_data[existing_feature]})
 
     return DataTuple(x=x_data, s=s_data, y=y_data, name=dataset.name)
 
