@@ -257,12 +257,14 @@ class Adult(Dataset):
 
     def _drop_native(self) -> None:
         """Drop all features that encode the native country except the one for the US."""
-        new_features = [
-            col
-            for col in self.features
-            if not col.startswith("nat") or col == "native-country_United-States"
-        ]
-        assert len(new_features) == 65  # 61 input features + 4 label features
-        # setting `features` to the new list of features also removes them from `discrete_features`
-        self.features = new_features
+        # first set the native_country feature group to just the value that we want to keep
         self._disc_feature_groups["native-country"] = ["native-country_United-States"]
+        # then, regenerate the list of discrete features; just like it's done in the constructor
+        discrete_features: List[str] = []
+        for group in self._disc_feature_groups.values():
+            discrete_features += group
+        assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
+        # setting `features` to the new list of features also removes them from `discrete_features`
+        self.features = self.continuous_features + discrete_features
+        # then add a new dummy feature to the feature group. `load_data()` will create this
+        self._disc_feature_groups["native-country"].append("native-country_not_United-States")
