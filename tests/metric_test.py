@@ -33,8 +33,10 @@ from ethicml.metrics import (
     ProbOutcome,
     ProbPos,
     Theil,
+    Witsenhausen,
+    Yanovich,
 )
-from ethicml.preprocessing import train_test_split
+from ethicml.preprocessing import train_test_split, BalancedTestSplit
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 from tests.run_algorithm_test import get_train_test
 
@@ -258,22 +260,10 @@ def test_get_nmi_of_predictions():
     train, test = get_train_test()
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    nmi: Metric = NMI()
+    nmi: Metric = NMI(base="y")
     assert nmi.name == "NMI preds and y"
     score = nmi.score(predictions, test)
     assert score == pytest.approx(0.50, abs=0.01)
-
-
-def test_nmi_diff():
-    """test nmi diff"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    nmis = metric_per_sensitive_attribute(predictions, test, NMI())
-    assert NMI().name == "NMI preds and y"
-    assert nmis == {"s_0": pytest.approx(0.52, abs=0.01), "s_1": pytest.approx(0.42, abs=0.01)}
-    nmi_diff = diff_per_sensitive_attribute(nmis)
-    assert nmi_diff["s_0-s_1"] == pytest.approx(0.10, abs=0.01)
 
 
 def test_ppv_diff():
@@ -378,18 +368,6 @@ def test_use_appropriate_metric():
         metric_per_sensitive_attribute(predictions, test, CV())
 
 
-def test_tnr_diff():
-    """test tnr diff"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    nmis = metric_per_sensitive_attribute(predictions, test, TNR())
-    assert NMI().name == "NMI preds and y"
-    assert nmis == {"s_0": pytest.approx(0.93, abs=0.01), "s_1": pytest.approx(0.84, abs=0.01)}
-    nmi_diff = diff_per_sensitive_attribute(nmis)
-    assert nmi_diff["s_0-s_1"] == pytest.approx(0.09, abs=0.01)
-
-
 def test_run_metrics():
     """test run metrics"""
     train, test = get_train_test()
@@ -411,59 +389,6 @@ def test_get_info():
     predictions: Prediction = model.run(train, test)
     results = run_metrics(predictions, test, [], [])
     assert results["C"] == approx(0.359, abs=0.001)
-
-
-def test_nmi_diff_non_binary_race():
-    """test nmi diff non binary race"""
-    data: DataTuple = load_data(Adult("Race"))
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
-    train, test = train_test
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run_test(train, test)
-    nmis = metric_per_sensitive_attribute(predictions, test, NMI())
-    assert NMI().name == "NMI preds and y"
-    test_dict = {
-        "race_Amer-Indian-Eskimo_0": pytest.approx(0.14, abs=0.01),
-        "race_Amer-Indian-Eskimo_1": pytest.approx(0.41, abs=0.01),
-        "race_Asian-Pac-Islander_0": pytest.approx(0.14, abs=0.01),
-        "race_Asian-Pac-Islander_1": pytest.approx(0.10, abs=0.01),
-        "race_Black_0": pytest.approx(0.14, abs=0.01),
-        "race_Black_1": pytest.approx(0.15, abs=0.01),
-        "race_Other_0": pytest.approx(0.14, abs=0.01),
-        "race_Other_1": pytest.approx(0.18, abs=0.01),
-        "race_White_0": pytest.approx(0.16, abs=0.01),
-        "race_White_1": pytest.approx(0.14, abs=0.01),
-    }
-
-    for key in nmis:
-        assert nmis[key] == test_dict[key]
-
-    nmis_to_check = {
-        k: nmis[k]
-        for k in (
-            "race_Amer-Indian-Eskimo_1",
-            "race_Asian-Pac-Islander_1",
-            "race_Black_1",
-            "race_Other_1",
-            "race_White_1",
-        )
-    }
-    nmi_diff = diff_per_sensitive_attribute(nmis_to_check)
-    test_dict = {
-        "race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1": pytest.approx(0.31, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_Black_1": pytest.approx(0.26, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_Other_1": pytest.approx(0.23, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_White_1": pytest.approx(0.27, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_Black_1": pytest.approx(0.04, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_Other_1": pytest.approx(0.08, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_White_1": pytest.approx(0.03, abs=0.01),
-        "race_Black_1-race_Other_1": pytest.approx(0.03, abs=0.01),
-        "race_Black_1-race_White_1": pytest.approx(0.02, abs=0.01),
-        "race_Other_1-race_White_1": pytest.approx(0.04, abs=0.01),
-    }
-
-    for key in nmi_diff:
-        assert nmi_diff[key] == test_dict[key]
 
 
 def test_tpr_diff_non_binary_race():
@@ -683,3 +608,74 @@ def test_nb_tnr():
 
     tnrs = metric_per_sensitive_attribute(predictions, test, TNR())
     assert tnrs == {"sens_0": pytest.approx(1.0, abs=0.1), "sens_1": pytest.approx(1.0, abs=0.1)}
+
+
+def _compute_di(preds: Prediction, actual: DataTuple) -> float:
+    ratios = ratio_per_sensitive_attribute(metric_per_sensitive_attribute(preds, actual, ProbPos()))
+    return next(iter(ratios.values()))
+
+
+def _compute_inv_cv(preds: Prediction, actual: DataTuple) -> float:
+    diffs = diff_per_sensitive_attribute(metric_per_sensitive_attribute(preds, actual, ProbPos()))
+    return next(iter(diffs.values()))
+
+
+def test_dependence_measures(simple_data: DataTuple) -> None:
+    """test dependence measures"""
+    train_percentage = 0.75
+    unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(simple_data)
+
+    fair_prediction = Prediction(hard=balanced.y["y"])  # predict the balanced label
+    unfair_prediction = Prediction(hard=unbalanced.y["y"])  # predict the normal label
+    extremely_unfair_prediction = Prediction(hard=unbalanced.s["s"])  # predict s
+
+    # measure the dependence between s and the prediction in several ways
+    assert _compute_di(fair_prediction, balanced) == approx(1, abs=1e-15)
+    assert _compute_di(unfair_prediction, unbalanced) == approx(0.602, abs=3e-3)
+    assert _compute_di(extremely_unfair_prediction, unbalanced) == approx(0, abs=3e-3)
+    assert _compute_inv_cv(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert _compute_inv_cv(unfair_prediction, unbalanced) == approx(0.265, abs=3e-3)
+    assert _compute_inv_cv(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-3)
+    nmi = NMI()
+    assert nmi.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert nmi.score(unfair_prediction, unbalanced) == approx(0.0437, abs=3e-4)
+    assert nmi.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    yanovich = Yanovich()
+    assert yanovich.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert yanovich.score(unfair_prediction, unbalanced) == approx(0.0702, abs=3e-4)
+    assert yanovich.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    witsenhausen = Witsenhausen()
+    assert witsenhausen.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert witsenhausen.score(unfair_prediction, unbalanced) == approx(0.234, abs=3e-4)
+    assert witsenhausen.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+
+
+def test_dependence_measures_adult() -> None:
+    """test dependence measures"""
+    data = load_data(Adult(split="Sex"))
+    train_percentage = 0.75
+    unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)
+
+    fair_prediction = Prediction(hard=balanced.y["salary_>50K"])  # predict the balanced label
+    unfair_prediction = Prediction(hard=unbalanced.y["salary_>50K"])  # predict the normal label
+    extremely_unfair_prediction = Prediction(hard=unbalanced.s["sex_Male"])  # predict s
+
+    # measure the dependence between s and the prediction in several ways
+    assert _compute_di(fair_prediction, balanced) == approx(1, abs=1e-15)
+    assert _compute_di(unfair_prediction, unbalanced) == approx(0.364, abs=3e-3)
+    assert _compute_di(extremely_unfair_prediction, unbalanced) == approx(0, abs=3e-3)
+    assert _compute_inv_cv(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert _compute_inv_cv(unfair_prediction, unbalanced) == approx(0.199, abs=3e-3)
+    assert _compute_inv_cv(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-3)
+    nmi = NMI()
+    assert nmi.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert nmi.score(unfair_prediction, unbalanced) == approx(0.0432, abs=3e-4)
+    assert nmi.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    yanovich = Yanovich()
+    assert yanovich.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert yanovich.score(unfair_prediction, unbalanced) == approx(0.0396, abs=3e-4)
+    assert yanovich.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    witsenhausen = Witsenhausen()
+    assert witsenhausen.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert witsenhausen.score(unfair_prediction, unbalanced) == approx(0.216, abs=3e-4)
+    assert witsenhausen.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)

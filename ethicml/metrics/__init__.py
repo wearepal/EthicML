@@ -17,7 +17,7 @@ from .confusion_matrix import LabelOutOfBounds, confusion_matrix
 from .cv import CV, AbsCV
 from .hsic import Hsic
 from .metric import Metric
-from .normalized_mutual_information import NMI
+from .dependence_measures import *
 from .npv import NPV
 from .ppv import PPV
 from .prob_neg import ProbNeg
