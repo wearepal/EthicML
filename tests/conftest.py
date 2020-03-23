@@ -4,6 +4,7 @@ This file is automatically imported by pytest (no need to import it) and defines
 import shutil
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 from ethicml.data import Toy, load_data
@@ -46,3 +47,18 @@ def results_cleanup():
     res_dir = Path(".") / "results"
     if res_dir.exists():
         shutil.rmtree(res_dir)
+
+
+@pytest.fixture(scope="session")
+def simple_data() -> DataTuple:
+    """Simple data for testing splitting methods."""
+    data = DataTuple(
+        x=pd.DataFrame([0] * 1000, columns=["x"]),
+        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
+        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
+        name="TestData",
+    )
+    # visual representation of the data:
+    # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
+    # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
+    return data

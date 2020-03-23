@@ -250,6 +250,8 @@ def get_biased_and_debiased_subsets(
 
 
 def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
+    if len(data) == 0:
+        return data, data
     splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
     return splitter(data)[0:2]
 

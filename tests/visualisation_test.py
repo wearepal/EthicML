@@ -69,7 +69,7 @@ def test_plot_evals():
     figs_and_plots = plot_results(results, "Accuracy", "prob_pos_s_0")
     assert len(figs_and_plots) == 1 * 2 * 1 * 1
 
-    with pytest.raises(ValueError, match='No matching columns found for Metric "NMI preds and y".'):
+    with pytest.raises(ValueError, match='No matching columns found for Metric "NMI preds and s".'):
         plot_results(results, Accuracy(), NMI())
 
     with pytest.raises(ValueError, match='No column named "unknown metric".'):

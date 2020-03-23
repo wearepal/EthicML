@@ -5,7 +5,7 @@ import math
 from typing import Tuple
 
 import pandas as pd
-from pytest import approx, fixture
+from pytest import approx
 
 from ethicml.data import Adult, Toy, load_data
 from ethicml.preprocessing import (
@@ -357,21 +357,6 @@ def test_biased_split_nonbinary():
 
     biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
     assert len(biased1) == approx(len(subset), abs=4)
-
-
-@fixture(scope="module")
-def simple_data() -> DataTuple:
-    """Simple data for testing splitting methods."""
-    data = DataTuple(
-        x=pd.DataFrame([0] * 1000, columns=["x"]),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
-        name="TestData",
-    )
-    # visual representation of the data:
-    # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
-    # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
-    return data
 
 
 def test_balanced_test_split(simple_data: DataTuple):
