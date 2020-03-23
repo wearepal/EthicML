@@ -32,8 +32,8 @@ from ethicml.metrics import (
     ProbNeg,
     ProbOutcome,
     ProbPos,
+    RenyiCorrelation,
     Theil,
-    Witsenhausen,
     Yanovich,
 )
 from ethicml.preprocessing import train_test_split, BalancedTestSplit
@@ -644,10 +644,10 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
     assert yanovich.score(fair_prediction, balanced) == approx(0, abs=1e-15)
     assert yanovich.score(unfair_prediction, unbalanced) == approx(0.0702, abs=3e-4)
     assert yanovich.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
-    witsenhausen = Witsenhausen()
-    assert witsenhausen.score(fair_prediction, balanced) == approx(0, abs=1e-15)
-    assert witsenhausen.score(unfair_prediction, unbalanced) == approx(0.234, abs=3e-4)
-    assert witsenhausen.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    renyi = RenyiCorrelation()
+    assert renyi.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert renyi.score(unfair_prediction, unbalanced) == approx(0.234, abs=3e-4)
+    assert renyi.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
 
 
 def test_dependence_measures_adult() -> None:
@@ -675,7 +675,7 @@ def test_dependence_measures_adult() -> None:
     assert yanovich.score(fair_prediction, balanced) == approx(0, abs=1e-15)
     assert yanovich.score(unfair_prediction, unbalanced) == approx(0.0396, abs=3e-4)
     assert yanovich.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
-    witsenhausen = Witsenhausen()
-    assert witsenhausen.score(fair_prediction, balanced) == approx(0, abs=1e-15)
-    assert witsenhausen.score(unfair_prediction, unbalanced) == approx(0.216, abs=3e-4)
-    assert witsenhausen.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)
+    renyi = RenyiCorrelation()
+    assert renyi.score(fair_prediction, balanced) == approx(0, abs=1e-15)
+    assert renyi.score(unfair_prediction, unbalanced) == approx(0.216, abs=3e-4)
+    assert renyi.score(extremely_unfair_prediction, unbalanced) == approx(1, abs=3e-4)

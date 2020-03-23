@@ -10,7 +10,7 @@ from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
 
-__all__ = ["NMI", "Witsenhausen", "Yanovich"]
+__all__ = ["NMI", "RenyiCorrelation", "Yanovich"]
 
 
 class _DependenceMeasure(Metric):
@@ -62,83 +62,84 @@ class Yanovich(_DependenceMeasure):
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         base_values = actual.y if self.base == "y" else actual.s
-        return _yanovich(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
+        return self._dependence(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
+
+    @staticmethod
+    def _dependence(x: np.ndarray, y: np.ndarray) -> float:
+        x_vals = np.unique(x)
+        y_vals = np.unique(y)
+
+        total = len(x)
+        assert total == len(y)
+
+        joint = np.empty((len(x_vals), len(y_vals)))
+
+        for i, x_val in enumerate(x_vals):
+            for k, y_val in enumerate(y_vals):
+                # count how often x_val and y_val co-occur
+                joint[i, k] = _count_true((x == x_val) & (y == y_val)) / total
+
+        sum_sq_determinants = 0.0  # the sum of the squares of all second-order determinants
+        # find all 2x2 submatrices and compute their determinant
+        for i in range(len(x_vals)):
+            # i < j
+            for j in range(i + 1, len(x_vals)):
+                for k in range(len(y_vals)):
+                    # k < l
+                    for l in range(k + 1, len(y_vals)):
+                        determinant = joint[i, k] * joint[j, l] - joint[j, k] * joint[i, l]
+                        sum_sq_determinants += determinant ** 2
+
+        marginal = np.sum(joint, axis=1)
+
+        denominator = 0.0
+        for i in range(len(x_vals)):
+            # i < j
+            for j in range(i + 1, len(x_vals)):
+                denominator += marginal[i] ** 2 * marginal[j] ** 2
+
+        return sum_sq_determinants / denominator
+
+
+class RenyiCorrelation(_DependenceMeasure):
+    """Renyi correlation. Measures how dependent two random variables are.
+
+    As defined in this paper: https://link.springer.com/content/pdf/10.1007/BF02024507.pdf ,
+    titled "On Measures of Dependence" by Alfréd Rényi.
+    """
+
+    _base_name: ClassVar[str] = "Renyi"
+
+    @implements(Metric)
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+        base_values = actual.y if self.base == "y" else actual.s
+        return self._corr(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
+
+    @staticmethod
+    def _corr(x: np.ndarray, y: np.ndarray) -> float:
+        x_vals = np.unique(x)
+        y_vals = np.unique(y)
+
+        total = len(x)
+        assert total == len(y)
+
+        joint = np.empty((len(x_vals), len(y_vals)))
+
+        for i, x_val in enumerate(x_vals):
+            for k, y_val in enumerate(y_vals):
+                # count how often x_val and y_val co-occur
+                joint[i, k] = _count_true((x == x_val) & (y == y_val)) / total
+
+        marginal_rows = np.sum(joint, axis=0, keepdims=True)
+        marginal_cols = np.sum(joint, axis=1, keepdims=True)
+        q_matrix = joint / np.sqrt(marginal_rows) / np.sqrt(marginal_cols)
+        # singular value decomposition of Q
+        singulars = np.linalg.svd(q_matrix, compute_uv=False)
+
+        # return second-largest singular value
+        return singulars[1]
 
 
 def _count_true(mask: "np.ndarray[np.bool_]") -> int:
     """Count the number of elements that are True."""
     return mask.nonzero()[0].shape[0]
-
-
-def _yanovich(x: np.ndarray, y: np.ndarray) -> float:
-    x_vals = np.unique(x)
-    y_vals = np.unique(y)
-
-    total = len(x)
-    assert total == len(y)
-
-    joint = np.empty((len(x_vals), len(y_vals)))
-
-    for i, x_val in enumerate(x_vals):
-        for k, y_val in enumerate(y_vals):
-            # count how often x_val and y_val co-occur
-            joint[i, k] = _count_true((x == x_val) & (y == y_val)) / total
-
-    sum_sq_determinants = 0.0  # the sum of the squares of all second-order determinants
-    # find all 2x2 submatrices and compute their determinant
-    for i in range(len(x_vals)):
-        # i < j
-        for j in range(i + 1, len(x_vals)):
-            for k in range(len(y_vals)):
-                # k < l
-                for l in range(k + 1, len(y_vals)):
-                    determinant = joint[i, k] * joint[j, l] - joint[j, k] * joint[i, l]
-                    sum_sq_determinants += determinant ** 2
-
-    marginal = np.sum(joint, axis=1)
-
-    denominator = 0.0
-    for i in range(len(x_vals)):
-        # i < j
-        for j in range(i + 1, len(x_vals)):
-            denominator += marginal[i] ** 2 * marginal[j] ** 2
-
-    return sum_sq_determinants / denominator
-
-
-class Witsenhausen(_DependenceMeasure):
-    """Witsenhausen metric. Measures how dependent two random variables are.
-
-    As defined in this paper: http://proceedings.mlr.press/v97/mary19a/mary19a-supp.pdf
-    """
-
-    _base_name: ClassVar[str] = "Witsenhausen"
-
-    @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        base_values = actual.y if self.base == "y" else actual.s
-        return _witsenhausen(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
-
-
-def _witsenhausen(x: np.ndarray, y: np.ndarray) -> float:
-    x_vals = np.unique(x)
-    y_vals = np.unique(y)
-
-    total = len(x)
-    assert total == len(y)
-
-    joint = np.empty((len(x_vals), len(y_vals)))
-
-    for i, x_val in enumerate(x_vals):
-        for k, y_val in enumerate(y_vals):
-            # count how often x_val and y_val co-occur
-            joint[i, k] = _count_true((x == x_val) & (y == y_val)) / total
-
-    marginal_rows = np.sum(joint, axis=0, keepdims=True)
-    marginal_cols = np.sum(joint, axis=1, keepdims=True)
-    q_matrix = joint / np.sqrt(marginal_rows) / np.sqrt(marginal_cols)
-    # singular value decomposition of Q
-    singulars = np.linalg.svd(q_matrix, compute_uv=False)
-
-    # return second-largest singular value
-    return singulars[1]
