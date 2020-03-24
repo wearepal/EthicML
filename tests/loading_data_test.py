@@ -37,7 +37,7 @@ def test_load_data():
     """test loading data"""
     with pytest.deprecated_call():  # assert that this gives a deprecation warning
         data: DataTuple = Toy().load()
-    assert (2000, 2) == data.x.shape
+    assert (2000, 10) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
     assert data.name == "Toy"
@@ -66,20 +66,35 @@ def test_discrete_data():
 def test_load_data_as_a_function(data_root: Path):
     """test load data as a function"""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
+    data_obj: Dataset = create_data_obj(
+        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
+    )
     assert data_obj is not None
-    assert data_obj.feature_split["x"] == ["a1", "a2"]
-    assert data_obj.feature_split["s"] == ["s"]
-    assert data_obj.feature_split["y"] == ["y"]
+    assert data_obj.feature_split["x"] == [
+        "a1",
+        "a2",
+        "disc_1_a",
+        "disc_1_b",
+        "disc_1_c",
+        "disc_1_d",
+        "disc_1_e",
+        "disc_2_x",
+        "disc_2_y",
+        "disc_2_z",
+    ]
+    assert data_obj.feature_split["s"] == ["sensitive-attr"]
+    assert data_obj.feature_split["y"] == ["decision"]
     assert len(data_obj) == 2000
 
 
 def test_joining_2_load_functions(data_root: Path):
     """test joining 2 load functions"""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
+    data_obj: Dataset = create_data_obj(
+        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
+    )
     data: DataTuple = data_obj.load()
-    assert (2000, 2) == data.x.shape
+    assert (2000, 10) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
 

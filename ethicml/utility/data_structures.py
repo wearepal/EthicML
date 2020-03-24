@@ -202,6 +202,10 @@ class Prediction:
         self._hard = hard
         self._info = info if info is not None else {}
 
+    def __len__(self) -> int:
+        """Length of the predictions object."""
+        return len(self._hard)
+
     @property
     def hard(self) -> pd.Series:
         """Hard predictions (e.g. 0 and 1)."""

@@ -25,10 +25,10 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     # seperate out predictions on train set and predictions on test set
     pred_train = predictions.hard.iloc[: train.y.shape[0]]
     pred_test = predictions.hard.iloc[train.y.shape[0] :]
-    assert count_true(pred_test.values == 1) == 211
-    assert count_true(pred_test.values == -1) == 189
+    assert count_true(pred_test.values == 1) == 240
+    assert count_true(pred_test.values == 0) == 160
 
-    post_model: PostAlgorithm = Hardt(-1, 1)
+    post_model: PostAlgorithm = Hardt()
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == 111
-    assert count_true(fair_preds.hard.values == -1) == 289
+    assert count_true(fair_preds.hard.values == 1) == 209
+    assert count_true(fair_preds.hard.values == 0) == 191

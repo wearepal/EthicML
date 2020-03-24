@@ -57,20 +57,20 @@ def test_run_parallel():
         )
     )
     # LR
-    assert count_true(result[0][0].hard.values == 1) == 211
-    assert count_true(result[0][0].hard.values == -1) == 189
-    assert count_true(result[0][1].hard.values == 1) == 211
-    assert count_true(result[0][1].hard.values == -1) == 189
+    assert count_true(result[0][0].hard.values == 1) == 240
+    assert count_true(result[0][0].hard.values == 0) == 160
+    assert count_true(result[0][1].hard.values == 1) == 240
+    assert count_true(result[0][1].hard.values == 0) == 160
     # SVM
-    assert count_true(result[1][0].hard.values == 1) == 201
-    assert count_true(result[1][0].hard.values == -1) == 199
-    assert count_true(result[1][1].hard.values == 1) == 201
-    assert count_true(result[1][1].hard.values == -1) == 199
+    assert count_true(result[1][0].hard.values == 1) == 242
+    assert count_true(result[1][0].hard.values == 0) == 158
+    assert count_true(result[1][1].hard.values == 1) == 242
+    assert count_true(result[1][1].hard.values == 0) == 158
     # Majority
-    assert count_true(result[2][0].hard.values == 1) == 0
-    assert count_true(result[2][0].hard.values == -1) == 400
-    assert count_true(result[2][1].hard.values == 1) == 0
-    assert count_true(result[2][1].hard.values == -1) == 400
+    assert count_true(result[2][0].hard.values == 1) == 400
+    assert count_true(result[2][0].hard.values == 0) == 0
+    assert count_true(result[2][1].hard.values == 1) == 400
+    assert count_true(result[2][1].hard.values == 0) == 0
 
 
 @pytest.mark.usefixtures("results_cleanup")

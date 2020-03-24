@@ -144,7 +144,7 @@ class Hardt(PostAlgorithm):
         test_preds_numpy: np.ndarray = test_predictions.hard.to_numpy()
 
         # Randomly flip labels according to the probabilities in model_params
-        self_fair_pred = test_preds_numpy[test.s[test.s.columns[0]].to_numpy() == 0].copy()
+        self_fair_pred = test_preds_numpy[mask_s1].copy()
         self_pp_indices = (test_preds_numpy[mask_s1] == self._favorable_label).nonzero()[0]
         self_pn_indices = (test_preds_numpy[mask_s1] == self._unfavorable_label).nonzero()[0]
         self._random.shuffle(self_pp_indices)

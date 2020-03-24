@@ -31,8 +31,8 @@ def test_train_test_split():
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
-    assert train.x["a1"].values[0] == 2.7839204628851526
-    assert train.x["a2"].values[0] == 6.083679468491366
+    assert train.x["a1"].values[0] == 0.5441860961969084
+    assert train.x["a2"].values[0] == 0.07061557099576855
 
     assert train.x.shape[0] == train.s.shape[0]
     assert train.s.shape[0] == train.y.shape[0]
@@ -83,8 +83,8 @@ def test_prop_train_test_split():
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
-    assert train.x["a1"].values[0] == 2.9624320112634743
-    assert train.x["a2"].values[0] == 1.996089217523236
+    assert train.x["a1"].values[0] == 0.8780713549180117
+    assert train.x["a2"].values[0] == -1.2109706489106888
 
     assert train.x.shape[0] == train.s.shape[0]
     assert train.s.shape[0] == train.y.shape[0]
@@ -101,8 +101,12 @@ def test_prop_train_test_split():
     train, test, _ = ProportionalSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == 2000 - len_0_9
-    assert count_true(train.s.to_numpy() == 0) == round(0.9 * count_true(data.s.to_numpy() == 0))
-    assert count_true(train.y.to_numpy() == 0) == round(0.9 * count_true(data.y.to_numpy() == 0))
+    assert count_true(train.s.to_numpy() == 0) == approx(
+        round(0.9 * count_true(data.s.to_numpy() == 0)), abs=1
+    )
+    assert count_true(train.y.to_numpy() == 0) == approx(
+        round(0.9 * count_true(data.y.to_numpy() == 0)), abs=1
+    )
 
     len_0_7 = math.floor((2000 / 100) * 70)
     train, test, _ = ProportionalSplit(train_percentage=0.7)(data, split_id=0)
@@ -142,8 +146,8 @@ def test_random_seed():
     assert train_0 is not None
     assert test_0 is not None
     assert train_0.x.shape[0] > test_0.x.shape[0]
-    assert train_0.x["a1"].values[0] == 2.7839204628851526
-    assert train_0.x["a2"].values[0] == 6.083679468491366
+    assert train_0.x["a1"].values[0] == 0.5441860961969084
+    assert train_0.x["a2"].values[0] == 0.07061557099576855
 
     assert train_0.x.shape[0] == train_0.s.shape[0]
     assert train_0.s.shape[0] == train_0.y.shape[0]
@@ -153,8 +157,8 @@ def test_random_seed():
     assert train_1 is not None
     assert test_1 is not None
     assert train_1.x.shape[0] > test_1.x.shape[0]
-    assert train_1.x["a1"].values[0] == 2.6158100167119773
-    assert train_1.x["a2"].values[0] == -2.026281606912103
+    assert train_1.x["a1"].values[0] == 0.7644024336850825
+    assert train_1.x["a2"].values[0] == 0.2387960493204576
 
     assert train_1.x.shape[0] == train_1.s.shape[0]
     assert train_1.s.shape[0] == train_1.y.shape[0]
@@ -164,8 +168,8 @@ def test_random_seed():
     assert train_2 is not None
     assert test_2 is not None
     assert train_2.x.shape[0] > test_2.x.shape[0]
-    assert train_2.x["a1"].values[0] == 0.6431486026206228
-    assert train_2.x["a2"].values[0] == -0.09879806963941018
+    assert train_2.x["a1"].values[0] == -0.4948892431980233
+    assert train_2.x["a2"].values[0] == 0.238617175528856
 
     assert train_2.x.shape[0] == train_2.s.shape[0]
     assert train_2.s.shape[0] == train_2.y.shape[0]
@@ -175,8 +179,8 @@ def test_random_seed():
     assert train_3 is not None
     assert test_3 is not None
     assert train_3.x.shape[0] > test_3.x.shape[0]
-    assert train_3.x["a1"].values[0] == 0.8165458710908045
-    assert train_3.x["a2"].values[0] == -5.456548268244318
+    assert train_3.x["a1"].values[0] == -1.3027177064498083
+    assert train_3.x["a2"].values[0] == 0.08035915335156414
 
     assert train_3.x.shape[0] == train_3.s.shape[0]
     assert train_3.s.shape[0] == train_3.y.shape[0]
