@@ -68,6 +68,8 @@ class Yanovich(_DependenceMeasure):
     def _dependence(x: np.ndarray, y: np.ndarray) -> float:
         x_vals = np.unique(x)
         y_vals = np.unique(y)
+        if len(x_vals) < 2 or len(y_vals) < 2:
+            return 1.0
 
         total = len(x)
         assert total == len(y)
@@ -119,6 +121,8 @@ class RenyiCorrelation(_DependenceMeasure):
     def _corr(x: np.ndarray, y: np.ndarray) -> float:
         x_vals = np.unique(x)
         y_vals = np.unique(y)
+        if len(x_vals) < 2 or len(y_vals) < 2:
+            return 1.0
 
         total = len(x)
         assert total == len(y)
