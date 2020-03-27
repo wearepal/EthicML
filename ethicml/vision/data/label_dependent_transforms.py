@@ -1,7 +1,7 @@
 """Transformations that act differently depending on the label."""
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import torch
@@ -51,6 +51,7 @@ class LdColorizer(LdTransformation):
         black: bool = True,
         seed: int = 42,
         greyscale: bool = False,
+        color_indices: Optional[List[int]] = None,
     ):
         """Colorizes a grayscale image by sampling colors from multivariate normal distributions.
 
@@ -67,6 +68,7 @@ class LdColorizer(LdTransformation):
             black: Whether not to invert the black. Defaults to True.
             seed: Random seed used for sampling colors. Defaults to 42.
             greyscale: Whether to greyscale the colorised images. Defaults to False.
+            color_indices: Choose specific colors if you don't need all 10
         """
         super(LdColorizer, self).__init__()
         self.min_val = min_val
@@ -92,6 +94,8 @@ class LdColorizer(LdTransformation):
             (255, 0, 0),  # red
             (255, 255, 0),
         ]  # yellow
+        if color_indices:
+            colors = [colors[i] for i in color_indices]
 
         self.palette = [np.divide(color, 255) for color in colors]
 
