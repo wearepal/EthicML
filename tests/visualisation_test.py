@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 from ethicml.algorithms.inprocess import LR, SVM, Kamiran
 from ethicml.algorithms.preprocess import Upsampler
-from ethicml.data import Adult, Toy, load_data
+from ethicml.data import adult, toy, load_data
 from ethicml.evaluators import evaluate_models
 from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
 from ethicml.preprocessing import train_test_split
@@ -34,7 +34,7 @@ def test_joint_plot():
 @pytest.mark.usefixtures("plot_cleanup")
 def test_label_plot():
     """test label plot"""
-    data: DataTuple = load_data(Adult())
+    data: DataTuple = load_data(adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
 
@@ -45,7 +45,7 @@ def test_label_plot():
 def test_plot_evals():
     """test plot evals"""
     results: Results = evaluate_models(
-        datasets=[Adult(), Toy()],
+        datasets=[adult(), toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
         inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],
         metrics=[Accuracy(), CV()],

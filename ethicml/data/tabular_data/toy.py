@@ -1,40 +1,26 @@
 """Class to describe features of the Test dataset."""
-from typing import Dict, List
+from warnings import warn
 
-from ethicml.common import implements
+from ..dataset import Dataset
 
-from .dataset import Dataset
-
-__all__ = ["Toy"]
+__all__ = ["Toy", "toy"]
 
 
-class Toy(Dataset):
+def Toy() -> Dataset:  # pylint: disable=invalid-name
     """Dataset with toy data for testing."""
+    warn("The Toy class is deprecated. Use the function instead.", DeprecationWarning)
+    return toy()
 
-    cont_features: List[str]
-    disc_features: List[str]
 
-    def __init__(self) -> None:
-        """Init Toy dataset."""
-        super().__init__()
-        self.cont_features = ["a1", "a2"]
-        self.disc_features = []
-
-    @property
-    def name(self) -> str:
-        """Get dataset name."""
-        return "Toy"
-
-    @property
-    def filename(self) -> str:
-        """Get filename."""
-        return "toy.csv"
-
-    @property
-    def feature_split(self) -> Dict[str, List[str]]:
-        """Get split of the features."""
-        return {"x": ["a1", "a2"], "s": ["s"], "y": ["y"]}
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 2000
+def toy() -> Dataset:
+    """Dataset with toy data for testing."""
+    return Dataset(
+        name="Toy",
+        num_samples=2000,
+        filename_or_path="toy.csv",
+        features=["a1", "a2"],
+        cont_features=["a1", "a2"],
+        sens_attrs=["s"],
+        class_labels=["y"],
+        discrete_only=False,
+    )

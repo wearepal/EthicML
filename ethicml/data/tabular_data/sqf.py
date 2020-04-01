@@ -1,21 +1,13 @@
 """Class to describe features of the SQF dataset."""
+from ..dataset import Dataset
 
-from ethicml.common import implements
-
-from .dataset import Dataset
-
-__all__ = ["Sqf"]
+__all__ = ["sqf"]
 
 
-class Sqf(Dataset):
+def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
     """Stop, question and frisk dataset."""
-
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
-        """Init SQF dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "perstop",
             "sex",
             "race",
@@ -164,36 +156,34 @@ class Sqf(Dataset):
             "build_Z",
         ]
 
-        self.continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
+        continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
         if split == "Sex":
-            self.sens_attrs = ["sex"]
-            self.s_prefix = ["sex"]
-            self.class_labels = ["weapon"]
-            self.class_label_prefix = ["weapon"]
+            sens_attrs = ["sex"]
+            s_prefix = ["sex"]
+            class_labels = ["weapon"]
+            class_label_prefix = ["weapon"]
         elif split == "Race":
-            self.sens_attrs = ["race"]
-            self.s_prefix = ["race"]
-            self.class_labels = ["weapon"]
-            self.class_label_prefix = ["weapon"]
+            sens_attrs = ["race"]
+            s_prefix = ["race"]
+            class_labels = ["weapon"]
+            class_label_prefix = ["weapon"]
         elif split == "Race-Sex":
-            self.sens_attrs = ["sex", "race"]
-            self.s_prefix = ["race", "sex"]
-            self.class_labels = ["weapon"]
-            self.class_label_prefix = ["weapon"]
+            sens_attrs = ["sex", "race"]
+            s_prefix = ["race", "sex"]
+            class_labels = ["weapon"]
+            class_label_prefix = ["weapon"]
         else:
             raise NotImplementedError
-
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return f"SQF {self.split}"
-
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "sqf.csv"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 12347
+    return Dataset(
+        name=f"SQF {split}",
+        num_samples=12347,
+        filename_or_path="sqf.csv",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )

@@ -1,27 +1,15 @@
 """Class to describe features of the Communities and Crime dataset."""
 from typing_extensions import Literal
 
-from ethicml.common import implements
+from ..dataset import Dataset
 
-from .dataset import Dataset
-
-__all__ = ["Crime"]
+__all__ = ["crime"]
 
 
-class Crime(Dataset):
+def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = False,) -> Dataset:
     """UCI Communities and Crime dataset."""
-
-    def __init__(
-        self,
-        split: Literal["Race-Binary"] = "Race-Binary",
-        discrete_only: bool = False,
-        binarize_nationality: bool = False,
-    ):
-        """Init Crime dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "communityname",
             "fold",
             "population",
@@ -173,8 +161,10 @@ class Crime(Dataset):
             ">0.06black",
             "high_crime",
         ]
+        features_to_remove = ["communityname", "fold"]
+        features = [feature for feature in features if feature not in features_to_remove]
 
-        self.continuous_features = [
+        continuous_features = [
             "population",
             "householdsize",
             "racepctblack",
@@ -277,27 +267,22 @@ class Crime(Dataset):
             "ViolentCrimesPerPop",
         ]
 
-        self.features_to_remove = ["communityname", "fold"]
-
         if split == "Race-Binary":
-            self.sens_attrs = [">0.06black"]
-            self.s_prefix = [">0.06", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
-            self.class_labels = ["high_crime"]
-            self.class_label_prefix = ["high_crime", "Violent"]
+            sens_attrs = [">0.06black"]
+            s_prefix = [">0.06", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
+            class_labels = ["high_crime"]
+            class_label_prefix = ["high_crime", "Violent"]
         else:
             raise NotImplementedError
-        self.__name = f"Crime {self.split}"
-
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return self.__name
-
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "crime.csv"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 1994
+    return Dataset(
+        name=f"Crime {split}",
+        num_samples=1994,
+        filename_or_path="crime.csv",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )

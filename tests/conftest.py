@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from ethicml.common import ROOT_PATH
-from ethicml.data import Toy, load_data
+from ethicml.data import toy, load_data
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, TrainTestPair
 
@@ -17,7 +17,7 @@ from ethicml.utility import DataTuple, TrainTestPair
 @pytest.fixture(scope="session")
 def toy_train_test() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train: DataTuple
     test: DataTuple
     train, test = train_test_split(data)

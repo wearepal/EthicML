@@ -7,7 +7,7 @@ from typing import Tuple
 import pandas as pd
 from pytest import approx
 
-from ethicml.data import Adult, Toy, load_data
+from ethicml.data import adult, toy, load_data
 from ethicml.preprocessing import (
     BalancedTestSplit,
     ProportionalSplit,
@@ -25,7 +25,7 @@ from .run_algorithm_test import count_true
 
 def test_train_test_split():
     """test train test split"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     assert train is not None
@@ -76,7 +76,7 @@ def test_train_test_split():
 
 def test_prop_train_test_split():
     """test prop train test split"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train: DataTuple
     test: DataTuple
     train, test, _ = ProportionalSplit(train_percentage=0.8)(data, split_id=0)
@@ -136,7 +136,7 @@ def test_prop_train_test_split():
 
 def test_random_seed():
     """test random seed"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train_test_0: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train_0, test_0 = train_test_0
     assert train_0 is not None
@@ -184,7 +184,7 @@ def test_random_seed():
 
 def test_binning():
     """test binning"""
-    data: DataTuple = load_data(Adult())
+    data: DataTuple = load_data(adult())
 
     binned: DataTuple = bin_cont_feats(data)
 
@@ -194,7 +194,7 @@ def test_binning():
 
 def test_sequential_split():
     """test sequential split"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train: DataTuple
     test: DataTuple
     train, test, _ = SequentialSplit(train_percentage=0.8)(data)

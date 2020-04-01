@@ -1,27 +1,27 @@
-"""
-Test the loading data capability
-"""
+"""Test the loading data capability."""
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 from ethicml.data import (
     Adult,
-    CelebA,
     Compas,
-    Credit,
     Dataset,
-    GenFaces,
-    German,
-    NonBinaryToy,
-    Sqf,
     Toy,
+    adult,
+    celeba,
+    compas,
     create_data_obj,
+    credit,
+    crime,
+    genfaces,
+    german,
     group_disc_feat_indexes,
-    load_data,
+    health,
+    nonbinary_toy,
+    sqf,
 )
-from ethicml.data.tabular_data.crime import Crime
-from ethicml.data.tabular_data.health import Health
 from ethicml.preprocessing import domain_split, query_dt
 from ethicml.utility import DataTuple, concat_dt
 
@@ -35,7 +35,8 @@ def test_can_load_test_data(data_root: Path):
 
 def test_load_data():
     """test loading data"""
-    data: DataTuple = load_data(Toy())
+    with pytest.deprecated_call():  # assert that this gives a deprecation warning
+        data: DataTuple = Toy().load()
     assert (2000, 2) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
@@ -44,7 +45,7 @@ def test_load_data():
 
 def test_load_non_binary_data():
     """test load non binary data"""
-    data: DataTuple = load_data(NonBinaryToy())
+    data: DataTuple = nonbinary_toy().load()
     assert (100, 2) == data.x.shape
     assert (100, 1) == data.s.shape
     assert (100, 1) == data.y.shape
@@ -52,13 +53,14 @@ def test_load_non_binary_data():
 
 def test_discrete_data():
     """test discrete data"""
-    data: DataTuple = load_data(Adult())
+    with pytest.deprecated_call():  # assert that this gives a deprecation warning
+        data: DataTuple = Adult().load()
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
-    assert len(Adult().discrete_features) == 96
-    assert len(Adult(split="Race").discrete_features) == 93
-    assert len(Adult(split="Nationality").discrete_features) == 57
+    assert len(adult().discrete_features) == 96
+    assert len(adult(split="Race").discrete_features) == 93
+    assert len(adult(split="Nationality").discrete_features) == 57
 
 
 def test_load_data_as_a_function(data_root: Path):
@@ -69,14 +71,14 @@ def test_load_data_as_a_function(data_root: Path):
     assert data_obj.feature_split["x"] == ["a1", "a2"]
     assert data_obj.feature_split["s"] == ["s"]
     assert data_obj.feature_split["y"] == ["y"]
-    assert data_obj.filename == "toy.csv"
+    assert len(data_obj) == 2000
 
 
 def test_joining_2_load_functions(data_root: Path):
     """test joining 2 load functions"""
     data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
-    data: DataTuple = load_data(data_obj)
+    data: DataTuple = data_obj.load()
     assert (2000, 2) == data.x.shape
     assert (2000, 1) == data.s.shape
     assert (2000, 1) == data.y.shape
@@ -84,7 +86,7 @@ def test_joining_2_load_functions(data_root: Path):
 
 def test_load_adult():
     """test load adult"""
-    data: DataTuple = load_data(Adult())
+    data: DataTuple = adult().load()
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -93,7 +95,8 @@ def test_load_adult():
 
 def test_load_compas():
     """test load compas"""
-    data: DataTuple = load_data(Compas())
+    with pytest.deprecated_call():  # assert that this gives a deprecation warning
+        data: DataTuple = Compas().load()
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
@@ -102,7 +105,7 @@ def test_load_compas():
 
 def test_load_health():
     """test load health dataset"""
-    data: DataTuple = load_data(Health())
+    data: DataTuple = health().load()
     assert (171067, 130) == data.x.shape
     assert (171067, 1) == data.s.shape
     assert (171067, 1) == data.y.shape
@@ -111,7 +114,7 @@ def test_load_health():
 
 def test_load_crime():
     """test load crime dataset"""
-    data: DataTuple = load_data(Crime())
+    data: DataTuple = crime().load()
     assert (1993, 136) == data.x.shape
     assert (1993, 1) == data.s.shape
     assert (1993, 1) == data.y.shape
@@ -120,7 +123,7 @@ def test_load_crime():
 
 def test_load_sqf():
     """test load sqf"""
-    data: DataTuple = load_data(Sqf())
+    data: DataTuple = sqf().load()
     assert (12347, 144) == data.x.shape
     assert (12347, 1) == data.s.shape
     assert (12347, 1) == data.y.shape
@@ -129,7 +132,7 @@ def test_load_sqf():
 
 def test_load_german():
     """test load german"""
-    data: DataTuple = load_data(German())
+    data: DataTuple = german().load()
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
     assert (1000, 1) == data.y.shape
@@ -138,7 +141,7 @@ def test_load_german():
 
 def test_load_german_ordered():
     """test load german ordered"""
-    data: DataTuple = load_data(German(), ordered=True)
+    data: DataTuple = german().load(ordered=True)
     assert (1000, 57) == data.x.shape
     assert (1000, 1) == data.s.shape
     assert (1000, 1) == data.y.shape
@@ -146,7 +149,7 @@ def test_load_german_ordered():
 
 def test_load_compas_explicitly_sex():
     """test load compas explicitly sex"""
-    data: DataTuple = load_data(Compas("Sex"))
+    data: DataTuple = compas("Sex").load()
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
@@ -154,48 +157,48 @@ def test_load_compas_explicitly_sex():
 
 def test_load_compas_feature_length():
     """test load compas feature length"""
-    data: DataTuple = load_data(Compas())
-    assert len(Compas().ordered_features["x"]) == 400
-    assert len(Compas().discrete_features) == 395
-    assert len(Compas().continuous_features) == 5
+    data: DataTuple = compas().load()
+    assert len(compas().ordered_features["x"]) == 400
+    assert len(compas().discrete_features) == 395
+    assert len(compas().continuous_features) == 5
     assert data.s.shape == (6167, 1)
     assert data.y.shape == (6167, 1)
 
 
 def test_load_health_feature_length():
     """test load health feature length"""
-    data: DataTuple = load_data(Health())
-    assert len(Health().ordered_features["x"]) == 130
-    assert len(Health().discrete_features) == 12
-    assert len(Health().continuous_features) == 118
+    data: DataTuple = health().load()
+    assert len(health().ordered_features["x"]) == 130
+    assert len(health().discrete_features) == 12
+    assert len(health().continuous_features) == 118
     assert data.s.shape == (171067, 1)
     assert data.y.shape == (171067, 1)
 
 
 def test_load_crime_feature_length():
     """test load crime feature length"""
-    data: DataTuple = load_data(Crime())
-    assert len(Crime().ordered_features["x"]) == 136
-    assert len(Crime().discrete_features) == 46
-    assert len(Crime().continuous_features) == 90
+    data: DataTuple = crime().load()
+    assert len(crime().ordered_features["x"]) == 136
+    assert len(crime().discrete_features) == 46
+    assert len(crime().continuous_features) == 90
     assert data.s.shape == (1993, 1)
     assert data.y.shape == (1993, 1)
 
 
 def test_load_credit_feature_length():
     """test load credit feature length"""
-    data: DataTuple = load_data(Credit())
-    assert len(Credit().ordered_features["x"]) == 26
-    assert len(Credit().discrete_features) == 6
-    assert len(Credit().continuous_features) == 20
+    data: DataTuple = credit().load()
+    assert len(credit().ordered_features["x"]) == 26
+    assert len(credit().discrete_features) == 6
+    assert len(credit().continuous_features) == 20
     assert data.s.shape == (30000, 1)
     assert data.y.shape == (30000, 1)
 
 
 def test_load_adult_explicitly_sex():
     """test load adult explicitly sex"""
-    adult_sex = Adult("Sex")
-    data: DataTuple = load_data(adult_sex)
+    adult_sex = adult("Sex")
+    data: DataTuple = adult_sex.load()
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -206,8 +209,8 @@ def test_load_adult_explicitly_sex():
 
 def test_load_adult_race():
     """test load adult race"""
-    adult_race = Adult("Race")
-    data: DataTuple = load_data(adult_race)
+    adult_race = adult("Race")
+    data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
     assert (45222, 5) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -218,7 +221,7 @@ def test_load_adult_race():
 
 def test_load_adult_race_binary():
     """test load adult race binary"""
-    data: DataTuple = load_data(Adult("Race-Binary"))
+    data: DataTuple = adult("Race-Binary").load()
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -227,7 +230,7 @@ def test_load_adult_race_binary():
 
 def test_load_compas_race():
     """test load compas race"""
-    data: DataTuple = load_data(Compas("Race"))
+    data: DataTuple = compas("Race").load()
     assert (6167, 400) == data.x.shape
     assert (6167, 1) == data.s.shape
     assert (6167, 1) == data.y.shape
@@ -235,7 +238,7 @@ def test_load_compas_race():
 
 def test_load_adult_race_sex():
     """test load adult race sex"""
-    data: DataTuple = load_data(Adult("Race-Sex"))
+    data: DataTuple = adult("Race-Sex").load()
     assert (45222, 96) == data.x.shape
     assert (45222, 6) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -243,7 +246,7 @@ def test_load_adult_race_sex():
 
 def test_load_compas_race_sex():
     """test load compas race sex"""
-    data: DataTuple = load_data(Compas("Race-Sex"))
+    data: DataTuple = compas("Race-Sex").load()
     assert (6167, 399) == data.x.shape
     assert (6167, 2) == data.s.shape
     assert (6167, 1) == data.y.shape
@@ -251,7 +254,7 @@ def test_load_compas_race_sex():
 
 def test_load_adult_nationality():
     """test load adult nationality"""
-    data: DataTuple = load_data(Adult("Nationality"))
+    data: DataTuple = adult("Nationality").load()
     assert (45222, 62) == data.x.shape
     assert (45222, 41) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -259,13 +262,13 @@ def test_load_adult_nationality():
 
 def test_race_feature_split():
     """test race feature split"""
-    adult: Adult = Adult(split="Custom")
-    adult.sens_attrs = ["race_White"]
-    adult.s_prefix = ["race"]
-    adult.class_labels = ["salary_>50K"]
-    adult.class_label_prefix = ["salary"]
+    adult_data: Dataset = adult(split="Custom")
+    adult_data.sens_attrs = ["race_White"]
+    adult_data.s_prefix = ["race"]
+    adult_data.class_labels = ["salary_>50K"]
+    adult_data.class_label_prefix = ["salary"]
 
-    data: DataTuple = load_data(adult)
+    data: DataTuple = adult_data.load()
 
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -274,15 +277,15 @@ def test_race_feature_split():
 
 def test_load_adult_drop_native():
     """test load adult drop native"""
-    adult = Adult("Sex", binarize_nationality=True)
-    assert adult.name == "Adult Sex, binary nationality"
-    assert "native-country_United-States" in adult.discrete_features
+    adult_data = adult("Sex", binarize_nationality=True)
+    assert adult_data.name == "Adult Sex, binary nationality"
+    assert "native-country_United-States" in adult_data.discrete_features
     # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
-    assert "native-country_not_United-States" not in adult.discrete_features
-    assert "native-country_Canada" not in adult.discrete_features
+    assert "native-country_not_United-States" not in adult_data.discrete_features
+    assert "native-country_Canada" not in adult_data.discrete_features
 
     # without dummies
-    data: DataTuple = load_data(adult, ordered=True, generate_dummies=False)
+    data: DataTuple = adult_data.load(ordered=True, generate_dummies=False)
     assert (45222, 61) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -292,7 +295,7 @@ def test_load_adult_drop_native():
     assert "native-country_Canada" not in data.x.columns
 
     # with dummies
-    data = load_data(adult, ordered=True, generate_dummies=True)
+    data = adult_data.load(ordered=True, generate_dummies=True)
     assert (45222, 62) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -311,7 +314,7 @@ def test_additional_columns_load(data_root: Path):
         y_columns=["salary_>50K"],
         additional_to_drop=["race_Black", "salary_<=50K"],
     )
-    data: DataTuple = load_data(data_obj)
+    data: DataTuple = data_obj.load()
 
     assert (45222, 102) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -320,7 +323,7 @@ def test_additional_columns_load(data_root: Path):
 
 def test_domain_adapt_adult():
     """test domain adapt adult"""
-    data: DataTuple = load_data(Adult())
+    data: DataTuple = adult().load()
     train, test = domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
@@ -334,7 +337,7 @@ def test_domain_adapt_adult():
     assert (6116, 1) == test.s.shape
     assert (6116, 1) == test.y.shape
 
-    data = load_data(Adult())
+    data = adult().load()
     train, test = domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
@@ -346,7 +349,7 @@ def test_domain_adapt_adult():
     assert (5028, 1) == test.s.shape
     assert (5028, 1) == test.y.shape
 
-    data = load_data(Adult())
+    data = adult().load()
     train, test = domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
@@ -402,31 +405,35 @@ def test_group_prefixes():
 
 def test_celeba():
     """test celeba"""
-    celeba = CelebA(download_dir="non-existent")
-    assert not celeba.check_integrity()  # data should not be there
-    data = load_data(celeba)
+    celeba_data, _ = celeba(download_dir="non-existent")
+    assert celeba_data is None  # data should not be there
+    celeba_data, _ = celeba(download_dir="non-existent", check_integrity=False)
+    assert celeba_data is not None
+    data = celeba_data.load()
 
-    assert celeba.name == "CelebA, s=Male, y=Smiling"
+    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
 
     assert (202599, 39) == data.x.shape
     assert (202599, 1) == data.s.shape
     assert (202599, 1) == data.y.shape
-    assert len(data) == len(celeba)
+    assert len(data) == len(celeba_data)
 
     assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
 def test_genfaces():
     """test genfaces"""
-    celeba = GenFaces(download_dir="non-existent")
-    assert not celeba.check_integrity()  # data should not be there
-    data = load_data(celeba)
+    gen_faces, _ = genfaces(download_dir="non-existent")
+    assert gen_faces is None  # data should not be there
+    gen_faces, _ = genfaces(download_dir="non-existent", check_integrity=False)
+    assert gen_faces is not None
+    data = gen_faces.load()
 
-    assert celeba.name == "GenFaces, s=gender, y=emotion"
+    assert gen_faces.name == "GenFaces, s=gender, y=emotion"
 
     assert (148285, 18) == data.x.shape
     assert (148285, 1) == data.s.shape
     assert (148285, 1) == data.y.shape
-    assert len(data) == len(celeba)
+    assert len(data) == len(gen_faces)
 
     assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
