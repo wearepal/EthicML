@@ -7,8 +7,8 @@ import pandas as pd
 def run_generate_adult():
     """Generate the UCI Adult dataset from scratch."""
     # Load the data
-    train = pd.read_csv("./raw/adult.data", header=-1)
-    test = pd.read_csv("./raw/adult.test", skiprows=[0], header=-1)
+    train = pd.read_csv("raw/adult.data", header=-1)
+    test = pd.read_csv("raw/adult.test", skiprows=[0], header=-1)
 
     # Give data column names
     columns = [

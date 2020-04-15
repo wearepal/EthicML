@@ -1,8 +1,16 @@
 """Test for ethicml.vision."""
+
 import pytest
 import torch
+from torch.utils.data import DataLoader
 
-from ethicml.data import create_celeba_dataset, CelebA, GenFaces, create_genfaces_dataset
+from ethicml.data import (
+    CelebA,
+    GenFaces,
+    create_celeba_dataset,
+    create_cmnist_datasets,
+    create_genfaces_dataset,
+)
 from ethicml.vision import LdColorizer, TorchImageDataset
 
 
@@ -95,3 +103,23 @@ def test_gen_faces():
 
     # restore integrity checking
     GenFaces.check_integrity = check_integrity  # type: ignore[assignment]
+
+
+def test_cmnist(temp_dir):
+    train_set, test_set = create_cmnist_datasets(
+        root=str(temp_dir), scale=0.01, test_pcnt=0.2, download=True,
+    )
+
+    train_loader = DataLoader(train_set, batch_size=1)
+    test_loader = DataLoader(test_set, batch_size=1)
+
+    for i in range(5):
+        x, s, y = next(iter(train_loader))
+        assert x.shape == (1, 3, 28, 28)
+        assert s.shape == torch.Size([1])
+        assert y.shape == torch.Size([1])
+
+        x, s, y = next(iter(test_loader))
+        assert x.shape == (1, 3, 28, 28)
+        assert s.shape == torch.Size([1])
+        assert y.shape == torch.Size([1])

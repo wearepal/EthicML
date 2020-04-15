@@ -6,8 +6,8 @@ import pandas as pd
 
 from ethicml.algorithms.inprocess import LR, SVM, Agarwal, Kamishima
 from ethicml.algorithms.inprocess.kamiran import Kamiran
-from ethicml.data.dataset import Dataset
 from ethicml.data.load import create_data_obj, load_data
+from ethicml.data.tabular_data.dataset import Dataset
 from ethicml.evaluators.cross_validator import CrossValidator
 from ethicml.evaluators.evaluate_models import run_metrics
 from ethicml.metrics import CV, TPR, Accuracy, ProbPos

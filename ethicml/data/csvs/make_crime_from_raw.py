@@ -24,7 +24,7 @@ def run_generate_crime():
     # data.to_csv("./crime.csv", index=False)
 
     # Load the data
-    data = pd.read_csv("./raw/communities.data")
+    data = pd.read_csv("raw/communities.data")
 
     columns = [
         "state",

@@ -5,15 +5,14 @@ from pathlib import Path
 
 import pandas as pd
 
-from ethicml.common import ROOT_PATH
 from ethicml.data import (
     Adult,
     CelebA,
     Compas,
     Credit,
     Dataset,
-    German,
     GenFaces,
+    German,
     NonBinaryToy,
     Sqf,
     Toy,
@@ -21,15 +20,15 @@ from ethicml.data import (
     group_disc_feat_indexes,
     load_data,
 )
-from ethicml.data.crime import Crime
-from ethicml.data.health import Health
+from ethicml.data.tabular_data.crime import Crime
+from ethicml.data.tabular_data.health import Health
 from ethicml.preprocessing import domain_split, query_dt
 from ethicml.utility import DataTuple, concat_dt
 
 
-def test_can_load_test_data():
+def test_can_load_test_data(data_root: Path):
     """test whether we can load test data"""
-    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
+    data_loc = data_root / "toy.csv"
     data: pd.DataFrame = pd.read_csv(data_loc)
     assert data is not None
 
@@ -62,9 +61,9 @@ def test_discrete_data():
     assert len(Adult(split="Nationality").discrete_features) == 57
 
 
-def test_load_data_as_a_function():
+def test_load_data_as_a_function(data_root: Path):
     """test load data as a function"""
-    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
+    data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     assert data_obj is not None
     assert data_obj.feature_split["x"] == ["a1", "a2"]
@@ -73,9 +72,9 @@ def test_load_data_as_a_function():
     assert data_obj.filename == "toy.csv"
 
 
-def test_joining_2_load_functions():
+def test_joining_2_load_functions(data_root: Path):
     """test joining 2 load functions"""
-    data_loc: Path = ROOT_PATH / "data" / "csvs" / "toy.csv"
+    data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_columns=["s"], y_columns=["y"])
     data: DataTuple = load_data(data_obj)
     assert (2000, 2) == data.x.shape
@@ -303,9 +302,9 @@ def test_load_adult_drop_native():
     assert "native-country_Canada" not in data.x.columns
 
 
-def test_additional_columns_load():
+def test_additional_columns_load(data_root: Path):
     """test additional columns load"""
-    data_loc: Path = ROOT_PATH / "data" / "csvs" / "adult.csv.zip"
+    data_loc = data_root / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
         data_loc,
         s_columns=["race_White"],

@@ -1,0 +1,82 @@
+import random
+
+import numpy as np
+import torch
+from torch.utils.data import ConcatDataset, Subset
+from torchvision.datasets import MNIST
+from torchvision.transforms import transforms
+
+from ethicml.vision import LdColorizer, TorchImageDataset
+
+from .label_dependent_datasets import LdAugmentedDataset
+from .transforms import NoisyDequantize, Quantize
+
+__all__ = ["create_cmnist_datasets"]
+
+
+def create_cmnist_datasets(
+    *,
+    root: str,
+    scale: float,
+    test_pcnt: float,
+    download: bool = False,
+    seed: int = 42,
+    rotate_data: bool = False,
+    shift_data: bool = False,
+    padding: bool = False,
+    quant_level: int = 8,
+    input_noise: bool = False,
+) -> TorchImageDataset:
+
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.manual_seed(seed)
+
+    base_aug = [transforms.ToTensor()]
+    data_aug = []
+    if rotate_data:
+        data_aug.append(transforms.RandomAffine(degrees=15))
+    if shift_data:
+        data_aug.append(transforms.RandomAffine(degrees=0, translate=(0.11, 0.11)))
+    if padding > 0:
+        base_aug.insert(0, transforms.Pad(padding))
+    if quant_level != 8:
+        base_aug.append(Quantize(int(quant_level)))
+    if input_noise:
+        base_aug.append(NoisyDequantize(int(quant_level)))
+
+    mnist_train = MNIST(root=root, train=True, download=download)
+    mnist_test = MNIST(root=root, train=False, download=download)
+    all_data = ConcatDataset([mnist_train, mnist_test])
+
+    dataset_size = len(all_data)
+    indices = list(range(dataset_size))
+    split = int(np.floor((1 - test_pcnt) * dataset_size))
+
+    np.random.shuffle(indices)
+
+    train_indices, test_indices = indices[:split], indices[split:]
+
+    train_data = Subset(all_data, indices=train_indices)
+    test_data = Subset(all_data, indices=test_indices)
+
+    colorizer = LdColorizer(
+        scale=scale, background=False, black=True, binarize=True, greyscale=False,
+    )
+
+    train_data = LdAugmentedDataset(
+        train_data,
+        ld_augmentations=colorizer,
+        num_classes=10,
+        li_augmentation=False,
+        base_augmentations=data_aug + base_aug,
+    )
+    test_data = LdAugmentedDataset(
+        test_data,
+        ld_augmentations=colorizer,
+        num_classes=10,
+        li_augmentation=True,
+        base_augmentations=base_aug,
+    )
+
+    return train_data, test_data
