@@ -92,3 +92,8 @@ venv.bak/
 
 # project-specific
 results/*
+!/ethicml/data/csvs/adult.csv.zip
+
+!/ethicml/data/csvs/celeba.csv.zip
+!/ethicml/data/csvs/genfaces.csv.zip
+!/ethicml/data/csvs/health.csv.zip
