@@ -6,7 +6,7 @@ import pytest
 from pytest import approx
 
 from ethicml.algorithms.inprocess import LR, LRCV, SVM, InAlgorithm, Kamiran, LRProb
-from ethicml.data import Adult, NonBinaryToy, load_data
+from ethicml.data import adult, nonbinary_toy, load_data
 from ethicml.evaluators import (
     MetricNotApplicable,
     diff_per_sensitive_attribute,
@@ -122,7 +122,7 @@ def test_probneg_per_sens_attr():
 
 def test_acc_per_nonbinary_sens():
     """test acc per nonbinary sens"""
-    data: DataTuple = load_data(Adult("Nationality"))
+    data: DataTuple = load_data(adult("Nationality"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -219,7 +219,7 @@ def test_acc_per_nonbinary_sens():
 
 def test_acc_per_race():
     """test acc per race"""
-    data: DataTuple = load_data(Adult("Race"))
+    data: DataTuple = load_data(adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -393,7 +393,7 @@ def test_get_info():
 
 def test_tpr_diff_non_binary_race():
     """test tpr diff non binary race"""
-    data: DataTuple = load_data(Adult("Race"))
+    data: DataTuple = load_data(adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -446,7 +446,7 @@ def test_tpr_diff_non_binary_race():
 
 def test_tpr_ratio_non_binary_race():
     """test tpr ratio non binary race"""
-    data: DataTuple = load_data(Adult("Race"))
+    data: DataTuple = load_data(adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -499,7 +499,7 @@ def test_tpr_ratio_non_binary_race():
 
 def test_nb_acc():
     """test nb acc"""
-    data: DataTuple = load_data(NonBinaryToy())
+    data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -518,7 +518,7 @@ def test_nb_acc():
 
 def test_nb_tpr():
     """test nb tpr"""
-    data: DataTuple = load_data(NonBinaryToy())
+    data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -565,7 +565,7 @@ def test_nb_tpr():
 
 def test_nb_tnr():
     """test nb tnr"""
-    data: DataTuple = load_data(NonBinaryToy())
+    data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -652,7 +652,7 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
 
 def test_dependence_measures_adult() -> None:
     """test dependence measures"""
-    data = load_data(Adult(split="Sex"))
+    data = load_data(adult(split="Sex"))
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)
 

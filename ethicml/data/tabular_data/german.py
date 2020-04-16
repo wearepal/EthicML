@@ -1,21 +1,13 @@
 """Class to describe features of the German dataset."""
+from ..dataset import Dataset
 
-from ethicml.common import implements
-
-from .dataset import Dataset
-
-__all__ = ["German"]
+__all__ = ["german"]
 
 
-class German(Dataset):
+def german(split: str = "Sex", discrete_only: bool = False) -> Dataset:
     """German credit dataset."""
-
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
-        """Init German dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "month",
             "credit-amount",
             "investment-as-income-percentage",
@@ -77,7 +69,7 @@ class German(Dataset):
             "foreign-worker_A202",
         ]
 
-        self.continuous_features = [
+        continuous_features = [
             "month",
             "credit-amount",
             "investment-as-income-percentage",
@@ -88,23 +80,22 @@ class German(Dataset):
         ]
 
         if split == "Sex":
-            self.sens_attrs = ["sex"]
-            self.s_prefix = ["sex"]
-            self.class_labels = ["credit-label"]
-            self.class_label_prefix = ["credit-label"]
+            sens_attrs = ["sex"]
+            s_prefix = ["sex"]
+            class_labels = ["credit-label"]
+            class_label_prefix = ["credit-label"]
         else:
             raise NotImplementedError
 
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return f"German {self.split}"
-
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "german.csv"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 1000
+    return Dataset(
+        name=f"German {split}",
+        num_samples=1000,
+        filename_or_path="german.csv",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )

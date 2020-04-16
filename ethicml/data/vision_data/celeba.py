@@ -1,18 +1,16 @@
 """Class to describe attributes of the CelebA dataset."""
 import warnings
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, cast
+from typing import Callable, List, Optional, Tuple, cast
 
 from typing_extensions import Final, Literal
 
-from ethicml.common import implements
-from ethicml.data.load import load_data
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
-from .image_dataset import ImageDataset
+from ..dataset import Dataset
 
-__all__ = ["CelebAttrs", "CelebA", "create_celeba_dataset"]
+__all__ = ["CelebAttrs", "celeba", "create_celeba_dataset"]
 
 
 CelebAttrs = Literal[
@@ -75,16 +73,16 @@ _FILE_LIST: Final = [
 ]
 
 
-class CelebA(ImageDataset):
-    """CelebA dataset."""
-
-    _disc_feature_groups: Dict[str, List[str]]
-
-    def __init__(
-        self, download_dir: str, label: CelebAttrs = "Smiling", sens_attr: CelebAttrs = "Male"
-    ):
-        """Init CelebA dataset."""
-        self.root = Path(download_dir)
+def celeba(
+    download_dir: str,
+    label: CelebAttrs = "Smiling",
+    sens_attr: CelebAttrs = "Male",
+    download: bool = False,
+    check_integrity: bool = True,
+) -> Tuple[Optional[Dataset], Path]:
+    """Get CelebA dataset."""
+    root = Path(download_dir)
+    if True:  # pylint: disable=using-constant-test
         disc_feature_groups = {
             "beard": ["5_o_Clock_Shadow", "Goatee", "Mustache", "No_Beard"],
             "hair_color": ["Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair"],
@@ -120,56 +118,66 @@ class CelebA(ImageDataset):
             "Wearing_Necktie": ["Wearing_Necktie"],
             "Young": ["Young"],
         }
-        super().__init__(
-            name=f"CelebA, s={sens_attr}, y={label}",
-            disc_feature_groups=disc_feature_groups,
-            continuous_features=["filename"],
-            length=202599,
-            csv_file="celeba.csv.zip",
-            img_dir=self.root / _BASE_FOLDER / "img_align_celeba",
-        )
-        assert sens_attr in self.features
-        assert label in self.features
+        discrete_features: List[str] = []
+        for group in disc_feature_groups.values():
+            discrete_features += group
+        assert sens_attr in discrete_features
+        assert label in discrete_features
+        continuous_features = ["filename"]
 
-        self.sens_attrs = [sens_attr]
-        self.s_prefix = [sens_attr]
-        self.class_labels = [label]
-        self.class_label_prefix = [label]
+    img_dir = root / _BASE_FOLDER / "img_align_celeba"
+    if download:
+        _download(root)
+    elif check_integrity:
+        if not _check_integrity(root):
+            return None, img_dir
 
-    @implements(ImageDataset)
-    def check_integrity(self) -> bool:
-        from torchvision.datasets.utils import check_integrity
+    dataset_obj = Dataset(
+        name=f"CelebA, s={sens_attr}, y={label}",
+        sens_attrs=[sens_attr],
+        s_prefix=[sens_attr],
+        class_labels=[label],
+        class_label_prefix=[label],
+        disc_feature_groups=disc_feature_groups,
+        features=discrete_features + continuous_features,
+        cont_features=continuous_features,
+        num_samples=202599,
+        filename_or_path="celeba.csv.zip",
+        discrete_only=False,
+    )
+    return dataset_obj, img_dir
 
-        base = self.root / _BASE_FOLDER
-        for (_, md5, filename) in _FILE_LIST:
-            fpath = base / filename
-            ext = fpath.suffix
-            # Allow original archive to be deleted (zip and 7z)
-            # Only need the extracted images
-            if ext not in [".zip", ".7z"] and not check_integrity(str(fpath), md5):
-                return False
 
-        # Should check a hash of the images
-        return (base / "img_align_celeba").is_dir()
+def _check_integrity(base: Path) -> bool:
+    from torchvision.datasets.utils import check_integrity
 
-    @implements(ImageDataset)
-    def download(self) -> None:
-        """Attempt to download data if files cannot be found in the base folder."""
-        import zipfile
-        from torchvision.datasets.utils import download_file_from_google_drive
+    for (_, md5, filename) in _FILE_LIST:
+        fpath = base / filename
+        ext = fpath.suffix
+        # Allow original archive to be deleted (zip and 7z)
+        # Only need the extracted images
+        if ext not in [".zip", ".7z"] and not check_integrity(str(fpath), md5):
+            return False
 
-        base = self.root / _BASE_FOLDER
+    # Should check a hash of the images
+    return (base / "img_align_celeba").is_dir()
 
-        if self.check_integrity():
-            print("Files already downloaded and verified")
-            return
 
-        for (file_id, md5, filename) in _FILE_LIST:
-            download_file_from_google_drive(file_id, str(base), filename, md5)
+def _download(base: Path) -> None:
+    """Attempt to download data if files cannot be found in the base folder."""
+    import zipfile
+    from torchvision.datasets.utils import download_file_from_google_drive
 
-        with zipfile.ZipFile(base / "img_align_celeba.zip", "r") as fhandle:
-            fhandle.extractall(str(base))
+    if _check_integrity(base):
+        print("Files already downloaded and verified")
         return
+
+    for (file_id, md5, filename) in _FILE_LIST:
+        download_file_from_google_drive(file_id, str(base), filename, md5)
+
+    with zipfile.ZipFile(base / "img_align_celeba.zip", "r") as fhandle:
+        fhandle.extractall(str(base))
+    return
 
 
 def create_celeba_dataset(
@@ -183,6 +191,7 @@ def create_celeba_dataset(
     target_transform: Optional[Callable] = None,
     download: bool = False,
     seed: int = 42,
+    check_integrity: bool = True,
 ) -> TorchImageDataset:
     """Create a CelebA dataset object.
 
@@ -201,17 +210,20 @@ def create_celeba_dataset(
         download: If true, downloads the dataset from the internet and puts it in root
                   directory. If dataset is already downloaded, it is not downloaded again.
         seed: Random seed used to sample biased subset.
+        check_integrity: If True, check whether the data has been downloaded correctly.
     """
     sens_attr_name = cast(CelebAttrs, sens_attr_name.capitalize())
     target_attr_name = cast(CelebAttrs, target_attr_name.capitalize())
 
-    celeba = CelebA(download_dir=root, label=target_attr_name, sens_attr=sens_attr_name)
-    if download:
-        celeba.download()
-    else:
-        celeba.check_integrity()
-    base_dir = celeba.img_dir
-    all_dt = load_data(celeba)
+    dataset, base_dir = celeba(
+        download_dir=root,
+        label=target_attr_name,
+        sens_attr=sens_attr_name,
+        download=download,
+        check_integrity=check_integrity,
+    )
+    assert dataset is not None
+    all_dt = dataset.load()
 
     if sens_attr_name == target_attr_name:
         warnings.warn("Same attribute specified for both the sensitive and target attribute.")

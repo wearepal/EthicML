@@ -1,19 +1,20 @@
-"""Loads Data from .csv files."""
-
+"""Load Data from .csv files."""
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List, Optional
 
 import pandas as pd
 
-from ethicml.data.tabular_data.configurable_dataset import ConfigurableDataset
-from ethicml.data.tabular_data.dataset import Dataset
 from ethicml.utility import DataTuple
+
+from .dataset import Dataset
 
 __all__ = ["load_data", "create_data_obj"]
 
 
 def load_data(dataset: Dataset, ordered: bool = False, generate_dummies: bool = False) -> DataTuple:
     """Load dataset from its CSV file.
+
+    This function only exists for backwards compatibility. Use dataset.load() instead.
 
     Args:
         dataset: dataset object
@@ -23,42 +24,7 @@ def load_data(dataset: Dataset, ordered: bool = False, generate_dummies: bool = 
     Returns:
         DataTuple with dataframes of features, labels and sensitive attributes
     """
-    dataframe: pd.DataFrame = pd.read_csv(dataset.filepath)
-    assert isinstance(dataframe, pd.DataFrame)
-
-    feature_split = dataset.feature_split if not ordered else dataset.ordered_features
-
-    x_data = dataframe[feature_split["x"]]
-    s_data = dataframe[feature_split["s"]]
-    y_data = dataframe[feature_split["y"]]
-
-    if generate_dummies:
-        # check whether we have to generate some complementary columns for binary features
-        disc_feature_groups = dataset.disc_feature_groups
-        if disc_feature_groups is not None:
-            for group in disc_feature_groups.values():
-                assert len(group) > 1, "binary features should be encoded as two features"
-                if len(group) == 2:
-                    # check if one of the features is a dummy feature (not in the CSV file)
-                    if group[0] not in x_data.columns:
-                        existing_feature, non_existing_feature = group[1], group[0]
-                    elif group[1] not in x_data.columns:
-                        existing_feature, non_existing_feature = group[0], group[1]
-                    else:
-                        continue  # all features are present
-                    # the dummy feature is the inverse of the existing feature
-                    inverse: pd.Series = 1 - x_data[existing_feature]
-                    x_data = pd.concat(
-                        [x_data, inverse.to_frame(name=non_existing_feature)], axis="columns"
-                    )
-            # order the features correctly (first discrete features in the groups, then continuous)
-            if ordered:
-                discrete_features: List[str] = []
-                for group in disc_feature_groups.values():
-                    discrete_features += group
-                x_data = x_data[discrete_features + dataset.continuous_features]
-
-    return DataTuple(x=x_data, s=s_data, y=y_data, name=dataset.name)
+    return dataset.load(ordered=ordered, generate_dummies=generate_dummies)
 
 
 def create_data_obj(
@@ -66,7 +32,7 @@ def create_data_obj(
     s_columns: List[str],
     y_columns: List[str],
     additional_to_drop: Optional[List[str]] = None,
-) -> ConfigurableDataset:
+) -> Dataset:
     """Create a `ConfigurableDataset` from the given file.
 
     Args:
@@ -81,10 +47,6 @@ def create_data_obj(
     if additional_to_drop is None:
         additional_to_drop = []
 
-    conf: ConfigurableDataset = ConfigurableDataset()
-    conf.filename = filepath.name
-    conf.filepath = filepath
-
     dataframe: pd.DataFrame = pd.read_csv(filepath)
 
     columns: List[str] = [str(x) for x in dataframe.columns.to_numpy().tolist()]
@@ -95,7 +57,13 @@ def create_data_obj(
     for additional in additional_to_drop:
         columns.remove(additional)
 
-    feat_split: Dict[str, List[str]] = {"x": columns, "s": s_columns, "y": y_columns}
-    conf.feature_split = feat_split
-
-    return conf
+    return Dataset(
+        name=filepath.name,
+        num_samples=len(dataframe),
+        features=columns,
+        cont_features=[],
+        sens_attrs=s_columns,
+        class_labels=y_columns,
+        filename_or_path=filepath,
+        discrete_only=False,
+    )

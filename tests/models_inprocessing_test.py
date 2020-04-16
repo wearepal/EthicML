@@ -28,7 +28,7 @@ from ethicml.algorithms.inprocess import (
     ZafarEqOpp,
     ZafarFairness,
 )
-from ethicml.data import Compas, Toy, load_data
+from ethicml.data import compas, toy, load_data
 from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
 from ethicml.metrics import AbsCV, Accuracy, Metric
 from ethicml.preprocessing import query_dt, train_test_split
@@ -84,7 +84,7 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
     with pytest.raises(RuntimeError):
         model.run(train_toy, test_toy)
 
-    data: DataTuple = load_data(Compas())
+    data: DataTuple = load_data(compas())
     train, test = train_test_split(data)
 
     predictions: Prediction = model.run(train, test)
@@ -412,7 +412,7 @@ def test_threaded_agarwal():
             )
 
     results = run_blocking(
-        evaluate_models_async(datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()])
+        evaluate_models_async(datasets=[toy()], inprocess_models=models, metrics=[AssertResult()])
     )
     assert results.data["assert_result"].iloc[0] == True
 

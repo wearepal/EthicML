@@ -13,7 +13,7 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, Kamiran, Majority
 from ethicml.algorithms.postprocess import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
-from ethicml.data import Adult, Dataset, Toy, load_data
+from ethicml.data import adult, Dataset, toy, load_data
 from ethicml.evaluators import (
     MetricNotApplicable,
     evaluate_models,
@@ -28,7 +28,7 @@ from ethicml.utility import DataTuple, TrainTestPair
 
 def get_train_test() -> Tuple[DataTuple, DataTuple]:
     """Helper function for other tests which loads the Toy dataset and splits it into train-test"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     return train_test
 
@@ -76,7 +76,7 @@ def test_run_parallel():
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """test empty evaluate"""
-    empty_result = evaluate_models([Toy()], repeats=3, delete_prev=True)
+    empty_result = evaluate_models([toy()], repeats=3, delete_prev=True)
     expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(empty_result.data, expected_result)
@@ -85,9 +85,9 @@ def test_empty_evaluate():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
     """test run alg suite"""
-    dataset = Adult("Race")
+    dataset = adult("Race")
     dataset.sens_attrs = ["race_White"]
-    datasets: List[Dataset] = [dataset, Toy()]
+    datasets: List[Dataset] = [dataset, toy()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel="linear")]
     postprocess_models: List[PostAlgorithm] = []
@@ -145,7 +145,7 @@ def test_run_alg_suite():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_wrong_metrics():
     """test run alg suite wrong metrics"""
-    datasets: List[Dataset] = [Toy(), Adult()]
+    datasets: List[Dataset] = [toy(), adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [SVM(kernel="linear"), LR()]
     postprocess_models: List[PostAlgorithm] = []
@@ -167,7 +167,7 @@ def test_run_alg_suite_wrong_metrics():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
     """test run alg suite no pipeline"""
-    datasets: List[Dataset] = [Toy(), Adult()]
+    datasets: List[Dataset] = [toy(), adult()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [Kamiran(classifier="LR"), LR()]
     postprocess_models: List[PostAlgorithm] = []

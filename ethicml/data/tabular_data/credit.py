@@ -1,21 +1,13 @@
 """Class to describe features of the Adult dataset."""
+from ..dataset import Dataset
 
-from ethicml.common import implements
-
-from .dataset import Dataset
-
-__all__ = ["Credit"]
+__all__ = ["credit"]
 
 
-class Credit(Dataset):
+def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
     """UCL Credit Card dataset."""
-
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
-        """Init credit dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "LIMIT_BAL",
             "SEX",
             "EDUCATION_1",
@@ -46,7 +38,7 @@ class Credit(Dataset):
             "default-payment-next-month",
         ]
 
-        self.continuous_features = [
+        continuous_features = [
             "LIMIT_BAL",
             "AGE",
             "PAY_0",
@@ -70,25 +62,24 @@ class Credit(Dataset):
         ]
 
         if split == "Sex":
-            self.sens_attrs = ["SEX"]
-            self.s_prefix = ["SEX"]
-            self.class_labels = ["default-payment-next-month"]
-            self.class_label_prefix = ["default-payment-next-month"]
+            sens_attrs = ["SEX"]
+            s_prefix = ["SEX"]
+            class_labels = ["default-payment-next-month"]
+            class_label_prefix = ["default-payment-next-month"]
         elif split == "Custom":
             pass
         else:
             raise NotImplementedError
 
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return f"Credit {self.split}"
-
-    @property
-    def filename(self) -> str:
-        """Getter for file name."""
-        return "UCI_Credit_Card.csv"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 30000
+    return Dataset(
+        name=f"Credit {split}",
+        num_samples=30000,
+        filename_or_path="UCI_Credit_Card.csv",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )

@@ -6,15 +6,14 @@ from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 import pandas as pd
 from tqdm import tqdm
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.data.load import load_data
-from ethicml.data.tabular_data.dataset import Dataset
+from ethicml.algorithms.inprocess import InAlgorithm
+from ethicml.algorithms.postprocess import PostAlgorithm
+from ethicml.algorithms.preprocess import PreAlgorithm
+from ethicml.data import Dataset, load_data
+from ethicml.metrics import Metric
+from ethicml.preprocessing import DataSplitter, RandomSplit
 from ethicml.utility import DataTuple, Prediction, Results, TestTuple, TrainTestPair
 
-from ..metrics.metric import Metric
-from ..preprocessing.train_test_split import DataSplitter, RandomSplit
 from .parallelism import run_in_parallel
 from .per_sensitive_attribute import (
     MetricNotApplicable,

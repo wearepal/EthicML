@@ -1,27 +1,31 @@
 """Class to describe features of the Adult dataset."""
 from typing import Dict, List
+from warnings import warn
 
 from typing_extensions import Literal
 
-from ethicml.common import implements
+from ..dataset import Dataset
 
-from .dataset import Dataset
-
-__all__ = ["Adult"]
+__all__ = ["Adult", "adult"]
 
 
-class Adult(Dataset):
+def Adult(  # pylint: disable=invalid-name
+    split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
+    discrete_only: bool = False,
+    binarize_nationality: bool = False,
+) -> Dataset:
     """UCI Adult dataset."""
+    warn("The Adult class is deprecated. Use the function instead.", DeprecationWarning)
+    return adult(split, discrete_only, binarize_nationality)
 
-    _disc_feature_groups: Dict[str, List[str]]
 
-    def __init__(
-        self,
-        split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
-        discrete_only: bool = False,
-        binarize_nationality: bool = False,
-    ):
-        """Inot Adult dataset."""
+def adult(
+    split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
+    discrete_only: bool = False,
+    binarize_nationality: bool = False,
+) -> Dataset:
+    """UCI Adult dataset."""
+    if True:  # pylint: disable=using-constant-test
         disc_feature_groups = {
             "education": [
                 "education_10th",
@@ -136,47 +140,47 @@ class Adult(Dataset):
                 "workclass_Without-pay",
             ],
         }
-        super().__init__(disc_feature_groups=disc_feature_groups)
-        self.split = split
-        self.discrete_only = discrete_only
+
         discrete_features: List[str] = []
         for group in disc_feature_groups.values():
             discrete_features += group
 
-        self.continuous_features = [
+        continuous_features = [
             "age",
             "capital-gain",
             "capital-loss",
             "education-num",
             "hours-per-week",
         ]
-        self.features = self.continuous_features + discrete_features
 
         if split == "Sex":
-            self.sens_attrs = ["sex_Male"]
-            self.s_prefix = ["sex"]
-            self.class_labels = ["salary_>50K"]
-            self.class_label_prefix = ["salary"]
+            sens_attrs = ["sex_Male"]
+            s_prefix = ["sex"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         elif split == "Race":
-            self.sens_attrs = [
+            sens_attrs = [
                 "race_Amer-Indian-Eskimo",
                 "race_Asian-Pac-Islander",
                 "race_Black",
                 "race_Other",
                 "race_White",
             ]
-            self.s_prefix = ["race"]
-            self.class_labels = ["salary_>50K"]
-            self.class_label_prefix = ["salary"]
+            s_prefix = ["race"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         elif split == "Race-Binary":
-            self.sens_attrs = ["race_White"]
-            self.s_prefix = ["race"]
-            self.class_labels = ["salary_>50K"]
-            self.class_label_prefix = ["salary"]
+            sens_attrs = ["race_White"]
+            s_prefix = ["race"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         elif split == "Custom":
-            pass
+            sens_attrs = []
+            s_prefix = []
+            class_labels = []
+            class_label_prefix = []
         elif split == "Race-Sex":
-            self.sens_attrs = [
+            sens_attrs = [
                 "sex_Male",
                 "race_Amer-Indian-Eskimo",
                 "race_Asian-Pac-Islander",
@@ -184,11 +188,11 @@ class Adult(Dataset):
                 "race_Other",
                 "race_White",
             ]
-            self.s_prefix = ["race", "sex"]
-            self.class_labels = ["salary_>50K"]
-            self.class_label_prefix = ["salary"]
+            s_prefix = ["race", "sex"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         elif split == "Nationality":
-            self.sens_attrs = [
+            sens_attrs = [
                 "native-country_Cambodia",
                 "native-country_Canada",
                 "native-country_China",
@@ -231,40 +235,41 @@ class Adult(Dataset):
                 "native-country_Vietnam",
                 "native-country_Yugoslavia",
             ]
-            self.s_prefix = ["native-country"]
-            self.class_labels = ["salary_>50K"]
-            self.class_label_prefix = ["salary"]
+            s_prefix = ["native-country"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         else:
             raise NotImplementedError
-        self.__name = f"Adult {self.split}"
+
+        name = f"Adult {split}"
         if binarize_nationality:
-            self._drop_native()
-            self.__name += ", binary nationality"
+            discrete_features = _drop_native(disc_feature_groups)
+            name += ", binary nationality"
 
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return self.__name
+    return Dataset(
+        name=name,
+        num_samples=45222,
+        features=discrete_features + continuous_features,
+        cont_features=continuous_features,
+        sens_attrs=sens_attrs,
+        class_labels=class_labels,
+        filename_or_path="adult.csv.zip",
+        s_prefix=s_prefix,
+        class_label_prefix=class_label_prefix,
+        discrete_only=discrete_only,
+        disc_feature_groups=disc_feature_groups,
+    )
 
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "adult.csv.zip"
 
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 45222
-
-    def _drop_native(self) -> None:
-        """Drop all features that encode the native country except the one for the US."""
-        # first set the native_country feature group to just the value that we want to keep
-        self._disc_feature_groups["native-country"] = ["native-country_United-States"]
-        # then, regenerate the list of discrete features; just like it's done in the constructor
-        discrete_features: List[str] = []
-        for group in self._disc_feature_groups.values():
-            discrete_features += group
-        assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
-        # setting `features` to the new list of features also removes them from `discrete_features`
-        self.features = self.continuous_features + discrete_features
-        # then add a new dummy feature to the feature group. `load_data()` will create this
-        self._disc_feature_groups["native-country"].append("native-country_not_United-States")
+def _drop_native(disc_feature_groups: Dict[str, List[str]]) -> List[str]:
+    """Drop all features that encode the native country except the one for the US."""
+    # first set the native_country feature group to just the value that we want to keep
+    disc_feature_groups["native-country"] = ["native-country_United-States"]
+    # then, regenerate the list of discrete features; just like it's done in the constructor
+    discrete_features: List[str] = []
+    for group in disc_feature_groups.values():
+        discrete_features += group
+    assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
+    # then add a new dummy feature to the feature group. `load_data()` will create this for us
+    disc_feature_groups["native-country"].append("native-country_not_United-States")
+    return discrete_features

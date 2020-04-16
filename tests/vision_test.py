@@ -4,13 +4,7 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from ethicml.data import (
-    CelebA,
-    GenFaces,
-    create_celeba_dataset,
-    create_cmnist_datasets,
-    create_genfaces_dataset,
-)
+from ethicml.data import create_celeba_dataset, create_cmnist_datasets, create_genfaces_dataset
 from ethicml.vision import LdColorizer, TorchImageDataset
 
 
@@ -37,12 +31,6 @@ def test_label_dependent_transforms(transform):
 
 def test_celeba():
     """test celeba"""
-    # pylint: disable=protected-access
-
-    # turn off integrity checking for testing purposes
-    check_integrity = CelebA.check_integrity
-    CelebA.check_integrity = lambda _: True  # type: ignore[assignment]
-
     train_set = create_celeba_dataset(
         root="non-existent",
         biased=True,
@@ -50,6 +38,7 @@ def test_celeba():
         unbiased_pcnt=0.4,
         sens_attr_name="Male",
         target_attr_name="Smiling",
+        check_integrity=False,
     )
     test_set = create_celeba_dataset(
         root="non-existent",
@@ -58,6 +47,7 @@ def test_celeba():
         unbiased_pcnt=0.4,
         sens_attr_name="Male",
         target_attr_name="Smiling",
+        check_integrity=False,
     )
 
     assert len(train_set) == 52855
@@ -66,18 +56,9 @@ def test_celeba():
     assert isinstance(train_set, TorchImageDataset)
     assert isinstance(test_set, TorchImageDataset)
 
-    # restore integrity checking
-    CelebA.check_integrity = check_integrity  # type: ignore[assignment]
-
 
 def test_gen_faces():
     """test gen faces"""
-    # pylint: disable=protected-access
-
-    # turn off integrity checking for testing purposes
-    check_integrity = GenFaces.check_integrity
-    GenFaces.check_integrity = lambda _: True  # type: ignore[assignment]
-
     train_set = create_genfaces_dataset(
         root="non-existent",
         biased=True,
@@ -85,6 +66,7 @@ def test_gen_faces():
         unbiased_pcnt=0.4,
         sens_attr_name="gender",
         target_attr_name="emotion",
+        check_integrity=False,
     )
     test_set = create_genfaces_dataset(
         root="non-existent",
@@ -93,6 +75,7 @@ def test_gen_faces():
         unbiased_pcnt=0.4,
         sens_attr_name="gender",
         target_attr_name="emotion",
+        check_integrity=False,
     )
 
     assert len(train_set) == 27928
@@ -100,9 +83,6 @@ def test_gen_faces():
 
     assert isinstance(train_set, TorchImageDataset)
     assert isinstance(test_set, TorchImageDataset)
-
-    # restore integrity checking
-    GenFaces.check_integrity = check_integrity  # type: ignore[assignment]
 
 
 def test_cmnist(temp_dir):

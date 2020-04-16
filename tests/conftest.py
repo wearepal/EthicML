@@ -4,12 +4,13 @@ This file is automatically imported by pytest (no need to import it) and defines
 import shutil
 import tempfile
 from pathlib import Path
+from typing import Generator
 
 import pandas as pd
 import pytest
 
 from ethicml.common import ROOT_PATH
-from ethicml.data import Toy, load_data
+from ethicml.data import toy, load_data
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, TrainTestPair
 
@@ -17,7 +18,7 @@ from ethicml.utility import DataTuple, TrainTestPair
 @pytest.fixture(scope="session")
 def toy_train_test() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result"""
-    data: DataTuple = load_data(Toy())
+    data: DataTuple = load_data(toy())
     train: DataTuple
     test: DataTuple
     train, test = train_test_split(data)
@@ -72,7 +73,7 @@ def data_root() -> Path:
 
 
 @pytest.fixture(scope="function")
-def temp_dir() -> Path:
+def temp_dir() -> Generator[Path, None, None]:
     """
     Clean up after the tests by removing the `results` directory
     """

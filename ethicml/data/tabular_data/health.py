@@ -1,33 +1,13 @@
 """Class to describe features of the Heritage Health dataset."""
-from ethicml.common import implements
 from ethicml.data import Dataset
 
-__all__ = ["Health"]
+__all__ = ["health"]
 
 
-class Health(Dataset):
-    """Heritage Health Dataset."""
-
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return "Health"
-
-    @property
-    def filename(self) -> str:
-        """Getter for filename."""
-        return "health.csv.zip"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 171067
-
-    def __init__(self, split: str = "Sex", discrete_only: bool = False):
-        """Init Heritage Health dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
+    """Heritage Health dataset."""
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "MemberID_t",
             "YEAR_t",
             "ClaimsTruncated",
@@ -172,9 +152,10 @@ class Health(Dataset):
             "drugNull",
         ]
 
-        self.features_to_remove = ["MemberID_t", "YEAR_t", "trainset", "sexMISS", "age_MISS"]
+        features_to_remove = ["MemberID_t", "YEAR_t", "trainset", "sexMISS", "age_MISS"]
+        features = [feature for feature in features if feature not in features_to_remove]
 
-        self.continuous_features = [
+        continuous_features = [
             "no_Claims",
             "no_Providers",
             "no_Vendors",
@@ -301,9 +282,21 @@ class Health(Dataset):
         ]
 
         if split == "Sex":
-            self.sens_attrs = ["sexMALE"]
-            self.s_prefix = ["sex"]
-            self.class_labels = ["Charlson>0"]
-            self.class_label_prefix = ["Charlson"]
+            sens_attrs = ["sexMALE"]
+            s_prefix = ["sex"]
+            class_labels = ["Charlson>0"]
+            class_label_prefix = ["Charlson"]
         else:
             raise NotImplementedError
+    return Dataset(
+        name="Health",
+        num_samples=171067,
+        filename_or_path="health.csv.zip",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )

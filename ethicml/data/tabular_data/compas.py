@@ -1,24 +1,27 @@
 """Class to describe features of the Compas dataset."""
+from warnings import warn
+
 from typing_extensions import Literal
 
-from ethicml.common import implements
+from ..dataset import Dataset
 
-from .dataset import Dataset
-
-__all__ = ["Compas"]
+__all__ = ["Compas", "compas"]
 
 
-class Compas(Dataset):
+def Compas(  # pylint: disable=invalid-name
+    split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
+) -> Dataset:
+    """Get COMPAS (or ProPublica) dataset."""
+    warn("The Compas class is deprecated. Use the function instead.", DeprecationWarning)
+    return compas(split, discrete_only)
+
+
+def compas(
+    split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
+) -> Dataset:
     """Compas (or ProPublica) dataset."""
-
-    def __init__(
-        self, split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
-    ):
-        """Init Compas dataset."""
-        super().__init__()
-        self.split = split
-        self.discrete_only = discrete_only
-        self.features = [
+    if True:  # pylint: disable=using-constant-test
+        features = [
             "sex",
             "age-num",
             "race",
@@ -423,7 +426,7 @@ class Compas(Dataset):
             "c-charge-desc_arrest case no charge",
         ]
 
-        self.continuous_features = [
+        continuous_features = [
             "age-num",
             "juv-fel-count",
             "juv-misd-count",
@@ -432,33 +435,32 @@ class Compas(Dataset):
         ]
 
         if split == "Sex":
-            self.sens_attrs = ["sex"]
-            self.s_prefix = ["sex"]
-            self.class_labels = ["two-year-recid"]
-            self.class_label_prefix = ["two-year-recid"]
+            sens_attrs = ["sex"]
+            s_prefix = ["sex"]
+            class_labels = ["two-year-recid"]
+            class_label_prefix = ["two-year-recid"]
         elif split == "Race":
-            self.sens_attrs = ["race"]
-            self.s_prefix = ["race"]
-            self.class_labels = ["two-year-recid"]
-            self.class_label_prefix = ["two-year-recid"]
+            sens_attrs = ["race"]
+            s_prefix = ["race"]
+            class_labels = ["two-year-recid"]
+            class_label_prefix = ["two-year-recid"]
         elif split == "Race-Sex":
-            self.sens_attrs = ["sex", "race"]
-            self.s_prefix = ["race", "sex"]
-            self.class_labels = ["two-year-recid"]
-            self.class_label_prefix = ["two-year-recid"]
+            sens_attrs = ["sex", "race"]
+            s_prefix = ["race", "sex"]
+            class_labels = ["two-year-recid"]
+            class_label_prefix = ["two-year-recid"]
         else:
             raise NotImplementedError
 
-    @property
-    def name(self) -> str:
-        """Getter for dataset name."""
-        return f"Compas {self.split}"
-
-    @property
-    def filename(self) -> str:
-        """Getter for file name."""
-        return "compas-recidivism.csv"
-
-    @implements(Dataset)
-    def __len__(self) -> int:
-        return 6167
+    return Dataset(
+        name=f"Compas {split}",
+        num_samples=6167,
+        filename_or_path="compas-recidivism.csv",
+        features=features,
+        cont_features=continuous_features,
+        s_prefix=s_prefix,
+        sens_attrs=sens_attrs,
+        class_label_prefix=class_label_prefix,
+        class_labels=class_labels,
+        discrete_only=discrete_only,
+    )
