@@ -2,11 +2,13 @@
 This file is automatically imported by pytest (no need to import it) and defines shared fixtures
 """
 import shutil
+import tempfile
 from pathlib import Path
 
 import pandas as pd
 import pytest
 
+from ethicml.common import ROOT_PATH
 from ethicml.data import Toy, load_data
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, TrainTestPair
@@ -62,3 +64,17 @@ def simple_data() -> DataTuple:
     # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
     # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
     return data
+
+
+@pytest.fixture(scope="session")
+def data_root() -> Path:
+    return ROOT_PATH / "data" / "csvs"
+
+
+@pytest.fixture(scope="function")
+def temp_dir() -> Path:
+    """
+    Clean up after the tests by removing the `results` directory
+    """
+    with tempfile.TemporaryDirectory() as tmpdir:
+        yield Path(tmpdir)

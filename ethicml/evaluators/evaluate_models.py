@@ -9,10 +9,10 @@ from tqdm import tqdm
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.data.load import load_data
+from ethicml.data.tabular_data.dataset import Dataset
 from ethicml.utility import DataTuple, Prediction, Results, TestTuple, TrainTestPair
 
-from ..data.dataset import Dataset
-from ..data.load import load_data
 from ..metrics.metric import Metric
 from ..preprocessing.train_test_split import DataSplitter, RandomSplit
 from .parallelism import run_in_parallel

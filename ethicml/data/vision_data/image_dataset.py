@@ -4,8 +4,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from ethicml.common import implements
-
-from .dataset import Dataset
+from ethicml.data.tabular_data.dataset import Dataset
 
 __all__ = ["ImageDataset"]
 

@@ -6,10 +6,10 @@ from typing import Callable, Dict, List, Optional, cast
 from typing_extensions import Literal
 
 from ethicml.common import implements
+from ethicml.data.load import load_data
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
-from .load import load_data
 from .image_dataset import ImageDataset
 
 __all__ = ["GenfacesAttributes", "GenFaces", "create_genfaces_dataset"]
@@ -135,7 +135,7 @@ def create_genfaces_dataset(
     if download:
         gen_faces.download()
     else:
-        gen_faces.check_integrity()
+        assert gen_faces.check_integrity()
     base_dir = gen_faces.img_dir
     all_dt = load_data(gen_faces)
 

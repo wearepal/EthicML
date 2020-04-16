@@ -82,20 +82,20 @@ class CustomDataset(Dataset):
         return self.x_names, self.s_names, self.y_names
 
 
-def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) -> Tensor:
+def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     """Calculate MMD betweer 2 tensors of equal size.
 
     Args:
-        data_first:
-        data_second:
-        sigma:
+        x: Sample 1.
+        y: Sample 2.
+        sigma: Scale of the RBF kernel.
 
     Returns:
         Tensor of MMD in each dim.
     """
-    xx_gm = data_first @ data_first.t()
-    xy_gm = data_first @ data_second.t()
-    yy_gm = data_second @ data_second.t()
+    xx_gm = x @ x.t()
+    xy_gm = x @ y.t()
+    yy_gm = y @ y.t()
     x_sqnorms = torch.diagonal(xx_gm)
     y_sqnorms = torch.diagonal(yy_gm)
 

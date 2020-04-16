@@ -7,7 +7,7 @@ from typing import List
 import torch
 from torch import Tensor, nn
 
-from ethicml.data.dataset import Dataset
+from ethicml.data.tabular_data.dataset import Dataset
 
 from .categorical import Categorical
 

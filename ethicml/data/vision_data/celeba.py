@@ -1,15 +1,15 @@
 """Class to describe attributes of the CelebA dataset."""
 import warnings
-from typing import Callable, Dict, List, Optional, cast
 from pathlib import Path
+from typing import Callable, Dict, List, Optional, cast
 
-from typing_extensions import Literal, Final
+from typing_extensions import Final, Literal
 
 from ethicml.common import implements
+from ethicml.data.load import load_data
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
-from .load import load_data
 from .image_dataset import ImageDataset
 
 __all__ = ["CelebAttrs", "CelebA", "create_celeba_dataset"]

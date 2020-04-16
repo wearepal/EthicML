@@ -5,10 +5,9 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
+from ethicml.data.tabular_data.configurable_dataset import ConfigurableDataset
+from ethicml.data.tabular_data.dataset import Dataset
 from ethicml.utility import DataTuple
-
-from .configurable_dataset import ConfigurableDataset
-from .dataset import Dataset
 
 __all__ = ["load_data", "create_data_obj"]
 

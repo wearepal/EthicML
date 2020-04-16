@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 
 
-def run_generate_adult():
+def run_generate_adult() -> None:
     """Generate the UCI Adult dataset from scratch."""
     # Load the data
-    train = pd.read_csv("./raw/adult.data", header=-1)
-    test = pd.read_csv("./raw/adult.test", skiprows=[0], header=-1)
+    train = pd.read_csv("raw/adult.data", header=None)
+    test = pd.read_csv("raw/adult.test", skiprows=[0], header=None)
 
     # Give data column names
     columns = [
@@ -29,19 +29,19 @@ def run_generate_adult():
         "salary",
     ]
 
-    train.columns = columns
-    test.columns = columns
+    train.columns = pd.Index(columns)
+    test.columns = pd.Index(columns)
 
     # Concat the data
     all_data = pd.concat([train, test], axis=0)
 
     for col in all_data.columns:
-        if all_data[col].dtype == np.object:
+        if all_data[col].dtype == np.object:  # type: ignore[attr-defined]
             all_data[col] = all_data[col].str.strip()
 
     # Replace full stop in the label of the test set
-    all_data = all_data.replace("<=50K.", "<=50K")
-    all_data = all_data.replace(">50K.", ">50K")
+    all_data = all_data.replace("<=50K.", np.str_("<=50K"))
+    all_data = all_data.replace(">50K.", np.str_(">50K"))
 
     # Drop NaNs
     all_data = all_data.replace(r"^\s*\?+\s*$", np.nan, regex=True).dropna()

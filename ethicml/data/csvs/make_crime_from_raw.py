@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-def run_generate_crime():
+def run_generate_crime() -> None:
     """Generate the UCI Communities and Crime dataset from scratch."""
     # We use data from the UCI repository directly and show how the final csv is generated.
     # To use the .arff file from K&C 2012, first download the .arff file from
@@ -24,7 +24,7 @@ def run_generate_crime():
     # data.to_csv("./crime.csv", index=False)
 
     # Load the data
-    data = pd.read_csv("./raw/communities.data")
+    data = pd.read_csv("raw/communities.data")
 
     columns = [
         "state",
@@ -157,10 +157,10 @@ def run_generate_crime():
         "ViolentCrimesPerPop",
     ]
 
-    data.columns = columns
+    data.columns = pd.Index(columns)
 
     for col in data.columns:
-        if data[col].dtype == np.object:
+        if data[col].dtype == np.object:  # type: ignore[attr-defined]
             data[col] = data[col].str.strip()
 
     # Drop NaNs
