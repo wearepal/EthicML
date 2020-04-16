@@ -10,7 +10,7 @@ from .tabular_data.health import *
 from .tabular_data.non_binary_toy import *
 from .tabular_data.sqf import *
 from .tabular_data.toy import *
-from .tabular_data.util import *
+from .util import *
 from .vision_data.celeba import *
 from .vision_data.cmnist import *
 from .vision_data.genfaces import *

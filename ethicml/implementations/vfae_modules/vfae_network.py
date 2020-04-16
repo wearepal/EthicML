@@ -6,7 +6,7 @@ from typing import Any, List, Optional, Tuple
 import torch
 from torch import Tensor, nn
 
-from ethicml.data.tabular_data.dataset import Dataset
+from ethicml.data import Dataset
 
 from .decoder import Decoder
 from .encoder import Encoder
