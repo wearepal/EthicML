@@ -18,6 +18,7 @@ from ethicml.vision import LdColorizer
 
 from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
 from .transforms import NoisyDequantize, Quantize
+from .utils import train_test_split
 
 __all__ = ["create_cmnist_datasets"]
 
@@ -42,7 +43,7 @@ def create_cmnist_datasets(
     *,
     root: str,
     scale: float,
-    test_pcnt: float,
+    train_pcnt: float,
     download: bool = False,
     seed: int = 42,
     rotate_data: bool = False,
@@ -94,17 +95,7 @@ def create_cmnist_datasets(
         mnist_test = _filter_classes(dataset=mnist_test, classes_to_keep=classes_to_keep)
 
     all_data: ConcatDataset = ConcatDataset([mnist_train, mnist_test])
-
-    dataset_size = len(all_data)
-    indices = list(range(dataset_size))
-    split = int(np.floor((1 - test_pcnt) * dataset_size))
-
-    np.random.shuffle(np.array(indices))
-
-    train_indices, test_indices = indices[:split], indices[split:]
-
-    train_data = Subset(all_data, indices=train_indices)
-    test_data = Subset(all_data, indices=test_indices)
+    train_data, test_data = train_test_split(all_data, train_pcnt=train_pcnt)
 
     colorizer = LdColorizer(
         scale=scale, background=False, black=True, binarize=True, greyscale=False,
