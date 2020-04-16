@@ -5,13 +5,14 @@ but at test time the colour is random.
 """
 
 import random
-from typing import Tuple
+from typing import Optional, Sequence, Tuple
 
 import numpy as np
 import torch
 from torch.utils.data import ConcatDataset, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
+from typing_extensions import Literal
 
 from ethicml.vision import LdColorizer
 
@@ -19,6 +20,22 @@ from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
 from .transforms import NoisyDequantize, Quantize
 
 __all__ = ["create_cmnist_datasets"]
+
+
+_Labels = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+def _filter_classes(dataset: MNIST, classes_to_keep: Sequence[int]) -> Subset:
+    targets: np.ndarray[np.int64] = dataset.targets.numpy()
+    final_mask = np.zeros_like(targets, dtype=np.bool_)
+    for index, label in enumerate(classes_to_keep):
+        mask = targets == label
+        targets = np.where(mask, index, targets)
+        final_mask |= mask
+    dataset.targets = targets
+    inds = final_mask.nonzero()[0].tolist()
+
+    return Subset(dataset, inds)
 
 
 def create_cmnist_datasets(
@@ -33,8 +50,9 @@ def create_cmnist_datasets(
     padding: bool = False,
     quant_level: int = 8,
     input_noise: bool = False,
+    classes_to_keep: Optional[Sequence[_Labels]] = None,
 ) -> Tuple[LdTransformedDataset, LdTransformedDataset]:
-    """Create and return colourised MNIST train, test pair.
+    """Create and return colourised MNIST train/test pair.
 
     Args:
         root: Where the images are downloaded to.
@@ -47,7 +65,7 @@ def create_cmnist_datasets(
         padding: Whether or not to pad the training images.
         quant_level: the number of bins to quantize the data into.
         input_noise: Whether or not to add noise to the training images.
-
+        classes_to_keep: Which digit classes to keep. If None or empty then all classes will be kept.
     Returns: tuple of train and test data as a Dataset.
 
     """
@@ -70,6 +88,11 @@ def create_cmnist_datasets(
 
     mnist_train = MNIST(root=root, train=True, download=download)
     mnist_test = MNIST(root=root, train=False, download=download)
+
+    if classes_to_keep:
+        mnist_train = _filter_classes(dataset=mnist_train, classes_to_keep=classes_to_keep)
+        mnist_test = _filter_classes(dataset=mnist_test, classes_to_keep=classes_to_keep)
+
     all_data: ConcatDataset = ConcatDataset([mnist_train, mnist_test])
 
     dataset_size = len(all_data)

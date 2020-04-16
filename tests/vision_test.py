@@ -107,7 +107,7 @@ def test_gen_faces():
 
 def test_cmnist(temp_dir):
     train_set, test_set = create_cmnist_datasets(
-        root=str(temp_dir), scale=0.01, test_pcnt=0.2, download=True,
+        root=str(temp_dir), scale=0.01, test_pcnt=0.2, download=True, labels_to_keep=[0, 1]
     )
 
     train_loader = DataLoader(train_set, batch_size=1)
