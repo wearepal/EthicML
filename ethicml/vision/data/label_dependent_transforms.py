@@ -24,6 +24,7 @@ class LdTransformation(ABC):
         Returns:
             Augmented data.
         """
+        ...
 
     def __call__(self, data: Tensor, labels: Tensor) -> Tensor:
         """Apply the augment method to the input data.
@@ -107,7 +108,7 @@ class LdColorizer(LdTransformation):
 
         Args:
             data: (Grayscale) data samples to be colorized.
-            labels: Index indicating the colour distribution from which to sample for each data
+            labels: Index (0-9) indicating the colour distribution from which to sample for each data
                     sample.
 
         Returns:

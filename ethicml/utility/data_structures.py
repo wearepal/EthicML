@@ -1,5 +1,4 @@
 """Data structures that are used throughout the code."""
-from dataclasses import dataclass
 from pathlib import Path
 from typing import (
     Callable,

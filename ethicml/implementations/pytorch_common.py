@@ -82,20 +82,20 @@ class CustomDataset(Dataset):
         return self.x_names, self.s_names, self.y_names
 
 
-def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) -> Tensor:
+def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     """Calculate MMD betweer 2 tensors of equal size.
 
     Args:
-        data_first:
-        data_second:
-        sigma:
+        x: Sample 1.
+        y: Sample 2.
+        sigma: Scale of the RBF kernel.
 
     Returns:
         Tensor of MMD in each dim.
     """
-    xx_gm = data_first @ data_first.t()
-    xy_gm = data_first @ data_second.t()
-    yy_gm = data_second @ data_second.t()
+    xx_gm = x @ x.t()
+    xy_gm = x @ y.t()
+    yy_gm = y @ y.t()
     x_sqnorms = torch.diagonal(xx_gm)
     y_sqnorms = torch.diagonal(yy_gm)
 
@@ -119,6 +119,28 @@ def quadratic_time_mmd(data_first: Tensor, data_second: Tensor, sigma: float) ->
         + kernel_yy.sum() / (yy_num * yy_num)
         - 2 * kernel_xy.sum() / (xx_num * yy_num)
     )
+    return mmd2
+
+
+def linear_time_mmd(x: np.ndarray, y: np.ndarray, sigma: float = 0.1) -> float:
+    """Estimator and the idea of optimizing the ratio.
+    This is a O(n) estimate of MMD and is very useful when the number of samples is large.
+    Gretton, Sriperumbudur, Sejdinovic, Strathmann, and Pontil.
+    Optimal kernel choice for large-scale two-sample tests. NIPS 2012.
+    """
+    _num = (x.shape[0] // 2) * 2
+    gamma = 1 / (2 * sigma ** 2)
+
+    def rbf(x_, y_):
+        return torch.exp(-gamma * ((x_ - y_) ** 2).sum(dim=1))
+
+    rbf_1 = rbf(x[:_num:2, :], x[1:_num:2, :])
+    rbf_2 = rbf(y[:_num:2, :], y[1:_num:2, :])
+    rbf_3 = -rbf(x[:_num:2, :], y[1:_num:2, :])
+    rbf_4 = -rbf(x[1:_num:2, :], y[:_num:2, :])
+
+    mmd2 = (rbf_1 + rbf_2 + rbf_3 + rbf_4).mean()
+
     return mmd2
 
 

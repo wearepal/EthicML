@@ -3,11 +3,11 @@ import torch
 __all__ = ["NoisyDequantize", "Quantize"]
 
 
-class Augmentation:
+class Transformation:
     """Base class for label-dependent augmentations.
     """
 
-    def _augment(self, data: torch.Tensor) -> torch.Tensor:
+    def _transform(self, data: torch.Tensor) -> torch.Tensor:
         """Augment the input data
         Args:
             data: Tensor. Input data to be augmented.
@@ -23,23 +23,23 @@ class Augmentation:
         Returns:
             Tensor, augmented data
         """
-        return self._augment(data)
+        return self._transform(data)
 
 
-class NoisyDequantize(Augmentation):
+class NoisyDequantize(Transformation):
     def __init__(self, n_bits_x: int = 8):
         self.n_bins = 2 ** n_bits_x
 
-    def _augment(self, data: torch.Tensor) -> torch.Tensor:
+    def _transform(self, data: torch.Tensor) -> torch.Tensor:
         return torch.clamp(data + (torch.rand_like(data) / self.n_bins), min=0, max=1)
 
 
-class Quantize(Augmentation):
+class Quantize(Transformation):
     def __init__(self, n_bits_x: int = 8):
         self.n_bits_x = n_bits_x
         self.n_bins = 2 ** n_bits_x
 
-    def _augment(self, data: torch.Tensor) -> torch.Tensor:
+    def _transform(self, data: torch.Tensor) -> torch.Tensor:
         if self.n_bits_x < 8:
             # for n_bits_x=5, this turns the range (0, 1) to (0, 32) and floors it
             # the exact value 32 will only appear if there was an exact 1 in `data`

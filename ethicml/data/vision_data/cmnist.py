@@ -1,4 +1,6 @@
+"""Contains code for loading the coloured MNIST dataset."""
 import random
+from typing import Tuple
 
 import numpy as np
 import torch
@@ -6,9 +8,9 @@ from torch.utils.data import ConcatDataset, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
 
-from ethicml.vision import LdColorizer, TorchImageDataset
+from ethicml.vision import LdColorizer
 
-from .label_dependent_datasets import LdAugmentedDataset
+from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
 from .transforms import NoisyDequantize, Quantize
 
 __all__ = ["create_cmnist_datasets"]
@@ -26,7 +28,7 @@ def create_cmnist_datasets(
     padding: bool = False,
     quant_level: int = 8,
     input_noise: bool = False,
-) -> TorchImageDataset:
+) -> Tuple[LdTransformedDataset, LdTransformedDataset]:
 
     np.random.seed(seed)
     random.seed(seed)
@@ -63,20 +65,21 @@ def create_cmnist_datasets(
     colorizer = LdColorizer(
         scale=scale, background=False, black=True, binarize=True, greyscale=False,
     )
-
-    train_data = LdAugmentedDataset(
-        train_data,
-        ld_augmentations=colorizer,
-        num_classes=10,
-        li_augmentation=False,
-        base_augmentations=data_aug + base_aug,
+    train_data = DatasetWrapper(train_data, transform=base_aug + data_aug)
+    train_data = LdTransformedDataset(
+        dataset=train_data,
+        ld_transform=colorizer,
+        target_dim=10,
+        label_independent=False,
+        discrete_labels=True,
     )
-    test_data = LdAugmentedDataset(
+    test_data = DatasetWrapper(test_data, transform=base_aug)
+    test_data = LdTransformedDataset(
         test_data,
-        ld_augmentations=colorizer,
-        num_classes=10,
-        li_augmentation=True,
-        base_augmentations=base_aug,
+        ld_transform=colorizer,
+        target_dim=10,
+        label_independent=True,
+        discrete_labels=True,
     )
 
     return train_data, test_data
