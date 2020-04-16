@@ -122,29 +122,6 @@ def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     return mmd2
 
 
-def linear_time_mmd(x: np.ndarray, y: np.ndarray, sigma: float = 0.1) -> float:
-    """Estimator and the idea of optimizing the ratio.
-
-    This is a O(n) estimate of MMD and is very useful when the number of samples is large.
-    Gretton, Sriperumbudur, Sejdinovic, Strathmann, and Pontil.
-    Optimal kernel choice for large-scale two-sample tests. NIPS 2012.
-    """
-    _num = (x.shape[0] // 2) * 2
-    gamma = 1 / (2 * sigma ** 2)
-
-    def rbf(x_, y_):
-        return torch.exp(-gamma * ((x_ - y_) ** 2).sum(dim=1))
-
-    rbf_1 = rbf(x[:_num:2, :], x[1:_num:2, :])
-    rbf_2 = rbf(y[:_num:2, :], y[1:_num:2, :])
-    rbf_3 = -rbf(x[:_num:2, :], y[1:_num:2, :])
-    rbf_4 = -rbf(x[1:_num:2, :], y[:_num:2, :])
-
-    mmd2 = (rbf_1 + rbf_2 + rbf_3 + rbf_4).mean()
-
-    return mmd2
-
-
 def compute_projection_gradients(
     model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float
 ) -> None:
