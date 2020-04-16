@@ -22,7 +22,7 @@ from .transforms import NoisyDequantize, Quantize
 __all__ = ["create_cmnist_datasets"]
 
 
-_Labels = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+_Classes = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
 def _filter_classes(dataset: MNIST, classes_to_keep: Sequence[int]) -> Subset:
@@ -50,7 +50,7 @@ def create_cmnist_datasets(
     padding: bool = False,
     quant_level: int = 8,
     input_noise: bool = False,
-    classes_to_keep: Optional[Sequence[_Labels]] = None,
+    classes_to_keep: Optional[Sequence[_Classes]] = None,
 ) -> Tuple[LdTransformedDataset, LdTransformedDataset]:
     """Create and return colourised MNIST train/test pair.
 
