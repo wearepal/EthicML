@@ -161,8 +161,6 @@ def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = F
             ">0.06black",
             "high_crime",
         ]
-        features_to_remove = ["communityname", "fold"]
-        features = [feature for feature in features if feature not in features_to_remove]
 
         continuous_features = [
             "population",
@@ -267,6 +265,8 @@ def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = F
             "ViolentCrimesPerPop",
         ]
 
+        features_to_remove = ["communityname", "fold"]
+        features = [feature for feature in features if feature not in features_to_remove]
         if split == "Race-Binary":
             sens_attrs = [">0.06black"]
             s_prefix = [">0.06", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]

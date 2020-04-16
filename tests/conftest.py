@@ -4,6 +4,7 @@ This file is automatically imported by pytest (no need to import it) and defines
 import shutil
 import tempfile
 from pathlib import Path
+from typing import Generator
 
 import pandas as pd
 import pytest
@@ -72,7 +73,7 @@ def data_root() -> Path:
 
 
 @pytest.fixture(scope="function")
-def temp_dir() -> Path:
+def temp_dir() -> Generator[Path, None, None]:
     """
     Clean up after the tests by removing the `results` directory
     """

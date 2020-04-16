@@ -1,7 +1,7 @@
 """Class to describe attributes of the CelebA dataset."""
 import warnings
-from typing import Callable, Optional, cast, Tuple, List
 from pathlib import Path
+from typing import Callable, List, Optional, Tuple, cast
 
 from typing_extensions import Final, Literal
 

@@ -7,7 +7,7 @@ from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
-import ethicml as eml
+from ethicml.data import adult, compas, credit, Dataset, german, nonbinary_toy, sqf, toy
 from ethicml.utility import DataTuple, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
@@ -28,16 +28,16 @@ class VfaeArgs(PreAlgoArgs):
     z1_dec_size: List[int]
 
 
-def get_dataset_obj_by_name(name: str) -> eml.data.Dataset:
+def get_dataset_obj_by_name(name: str) -> Dataset:
     """Given a dataset name, get the corresponding dataset object."""
-    lookup: Dict[str, eml.data.Dataset] = {
-        "Adult": eml.data.adult(),
-        "Compas": eml.data.compas(),
-        "Credit": eml.data.credit(),
-        "German": eml.data.german(),
-        "NonBinaryToy": eml.data.nonbinary_toy(),
-        "SQF": eml.data.sqf(),
-        "Toy": eml.data.toy(),
+    lookup: Dict[str, Dataset] = {
+        "Adult": adult(),
+        "Compas": compas(),
+        "Credit": credit(),
+        "German": german(),
+        "NonBinaryToy": nonbinary_toy(),
+        "SQF": sqf(),
+        "Toy": toy(),
     }
 
     if name not in lookup:
