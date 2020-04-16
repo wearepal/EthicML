@@ -1,4 +1,4 @@
-""""""
+"""Script containing dataset wrapping classes."""
 from typing import Any, Callable, Iterator, Optional, Sequence, Sized, Tuple, TypeVar, Union, cast
 
 import numpy as np
@@ -29,11 +29,13 @@ class DatasetWrapper(Dataset):
     """Generic dataset wrapper."""
 
     def __init__(self, dataset: SizedItemGetter, transform: Optional[TransformType] = None):
+        """Initialise the dataset wrapper."""
         self.dataset = dataset
         self.transform = transform
 
     @property
     def transform(self) -> Optional[TransformType]:
+        """The transformation(s) to be applied to the data."""
         return self.__transform
 
     @transform.setter
@@ -65,6 +67,7 @@ class DatasetWrapper(Dataset):
             yield arg
 
     def __len__(self) -> int:
+        """Get the length of the wrapped dataset."""
         return len(self.dataset)
 
     def __getitem__(self, index: int) -> Sequence[Tensor]:
@@ -89,6 +92,7 @@ class LdTransformedDataset(DatasetWrapper):
         label_independent: bool = False,
         correlation: float = 1.0,
     ):
+        """Initialise the dataset wrapper."""
         super().__init__(dataset=dataset, transform=ld_transform)
 
         if not 0 <= correlation <= 1:
@@ -132,4 +136,5 @@ class LdTransformedDataset(DatasetWrapper):
         return x, s, y
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
+        """Get an item from the wrapped dataset along with the generated 's' value."""
         return self._subroutine(self.dataset[index])

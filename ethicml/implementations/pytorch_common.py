@@ -124,6 +124,7 @@ def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
 
 def linear_time_mmd(x: np.ndarray, y: np.ndarray, sigma: float = 0.1) -> float:
     """Estimator and the idea of optimizing the ratio.
+
     This is a O(n) estimate of MMD and is very useful when the number of samples is large.
     Gretton, Sriperumbudur, Sejdinovic, Strathmann, and Pontil.
     Optimal kernel choice for large-scale two-sample tests. NIPS 2012.

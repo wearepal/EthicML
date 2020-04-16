@@ -7,27 +7,27 @@ __all__ = ["NoisyDequantize", "Quantize"]
 
 
 class Transformation:
-    """Base class for label-dependent augmentations.
-    """
+    """Base class for tensor transformations."""
 
     def _transform(self, data: Tensor) -> Tensor:
-        """Augment the input data
+        """Transform the input data.
+
         Args:
             data: Tensor. Input data to be transformed.
 
         Returns:
-            Tensor, transformed data
+            Tensor, the data with the transformation applied.
         """
         return data
 
     def __call__(self, data: Tensor) -> Tensor:
-        """Calls the augment method on the the input data.
+        """Calls the _transfrom method on the the input data.
 
         Args:
-            data: Tensor. Input data to be augmented.
+            data: Tensor. Input data to be transformed.
 
         Returns:
-            Tensor, augmented data
+            Tensor, data with the transformation applied.
         """
         return self._transform(data)
 
