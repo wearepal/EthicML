@@ -58,7 +58,7 @@ def create_cmnist_datasets(
     Args:
         root: Where the images are downloaded to.
         scale: The amount of 'bias' in the colour. Lower is more biased.
-        test_pcnt: The percentage of data to make the test set.
+        train_pcnt: The percentage of data to make the test set.
         download: Whether or not to download the data.
         seed: Random seed for reproducing results.
         rotate_data: Whether or not to rotate the training images.
