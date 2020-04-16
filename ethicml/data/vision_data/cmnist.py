@@ -1,4 +1,11 @@
+"""Colourised MNIST dataset.
+
+In the training set the colour is a proxy for the class label,
+but at test time the colour is random.
+"""
+
 import random
+from typing import Tuple
 
 import numpy as np
 import torch
@@ -6,7 +13,7 @@ from torch.utils.data import ConcatDataset, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
 
-from ethicml.vision import LdColorizer, TorchImageDataset
+from ethicml.vision import LdColorizer
 
 from .label_dependent_datasets import LdAugmentedDataset
 from .transforms import NoisyDequantize, Quantize
@@ -26,8 +33,24 @@ def create_cmnist_datasets(
     padding: bool = False,
     quant_level: int = 8,
     input_noise: bool = False,
-) -> TorchImageDataset:
+) -> Tuple[LdAugmentedDataset, LdAugmentedDataset]:
+    """Create and return colourised MNIST train, test pair.
 
+    Args:
+        root: Where the images are downloaded to.
+        scale: The amount of 'bias' in the colour. Lower is more biased.
+        test_pcnt: The percentage of data to make the test set.
+        download: Whether or not to download the data.
+        seed: Random seed for reproducing results.
+        rotate_data: Whether or not to rotate the training images.
+        shift_data: Whether or not to shift the training images.
+        padding: Whether or not to pad the training images.
+        quant_level: the number of bins to quantize the data into.
+        input_noise: Whether or not to add noise to the training images.
+
+    Returns: tuple of train and test data as a Dataset.
+
+    """
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -47,13 +70,13 @@ def create_cmnist_datasets(
 
     mnist_train = MNIST(root=root, train=True, download=download)
     mnist_test = MNIST(root=root, train=False, download=download)
-    all_data = ConcatDataset([mnist_train, mnist_test])
+    all_data: ConcatDataset = ConcatDataset([mnist_train, mnist_test])
 
     dataset_size = len(all_data)
     indices = list(range(dataset_size))
     split = int(np.floor((1 - test_pcnt) * dataset_size))
 
-    np.random.shuffle(indices)
+    np.random.shuffle(np.array(indices))
 
     train_indices, test_indices = indices[:split], indices[split:]
 

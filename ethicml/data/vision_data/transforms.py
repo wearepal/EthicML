@@ -1,16 +1,19 @@
+"""Transforms to be applied to a dataset."""
+
 import torch
 
 __all__ = ["NoisyDequantize", "Quantize"]
 
 
 class Augmentation:
-    """Base class for label-dependent augmentations.
-    """
+    """Base class for label-dependent augmentations."""
 
     def _augment(self, data: torch.Tensor) -> torch.Tensor:
-        """Augment the input data
+        """Augment the input data.
+
         Args:
             data: Tensor. Input data to be augmented.
+
         Returns:
             Tensor, augmented data
         """
@@ -18,8 +21,10 @@ class Augmentation:
 
     def __call__(self, data: torch.Tensor) -> torch.Tensor:
         """Calls the augment method on the the input data.
+
         Args:
             data: Tensor. Input data to be augmented.
+
         Returns:
             Tensor, augmented data
         """
@@ -27,7 +32,10 @@ class Augmentation:
 
 
 class NoisyDequantize(Augmentation):
+    """Noisy quantize object."""
+
     def __init__(self, n_bits_x: int = 8):
+        """Create NoisyQuantize object."""
         self.n_bins = 2 ** n_bits_x
 
     def _augment(self, data: torch.Tensor) -> torch.Tensor:
@@ -35,7 +43,10 @@ class NoisyDequantize(Augmentation):
 
 
 class Quantize(Augmentation):
+    """Quantize transform."""
+
     def __init__(self, n_bits_x: int = 8):
+        """Create Quantize object."""
         self.n_bits_x = n_bits_x
         self.n_bins = 2 ** n_bits_x
 
