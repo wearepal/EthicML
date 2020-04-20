@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -209,7 +209,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.load_results" title="ethicml.evaluators.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a>(dataset_name, transform_name, …)</p></td>
 <td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.metric_per_sensitive_attribute" title="ethicml.evaluators.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a>(predictions, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.metric_per_sensitive_attribute" title="ethicml.evaluators.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a>(prediction, …)</p></td>
 <td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.ratio_per_sensitive_attribute" title="ethicml.evaluators.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a>(per_sens_res, …)</p></td>
@@ -223,9 +223,9 @@
 </tr>
 </tbody>
 </table>
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.evaluators.CVResults">
-<em class="property">class </em><code class="sig-name descname">CVResults</code><span class="sig-paren">(</span><em class="sig-param">results: List[ethicml.evaluators.cross_validator.ResultTuple], model: Type[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm]</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.CVResults" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">CVResults</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">List<span class="p">[</span>ethicml.evaluators.cross_validator.ResultTuple<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.CVResults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stores the results of a cross validation experiment.</p>
 <p>Init CVResults data store.</p>
@@ -250,37 +250,37 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CVResults.best">
-<code class="sig-name descname">best</code><span class="sig-paren">(</span><em class="sig-param">measure: ethicml.metrics.metric.Metric</em><span class="sig-paren">)</span> &#x2192; ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<a class="headerlink" href="#ethicml.evaluators.CVResults.best" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">best</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">measure</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em><span class="sig-paren">)</span> &#x2192; ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<a class="headerlink" href="#ethicml.evaluators.CVResults.best" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get best model.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CVResults.best_hyper_params">
-<code class="sig-name descname">best_hyper_params</code><span class="sig-paren">(</span><em class="sig-param">measure: ethicml.metrics.metric.Metric</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="headerlink" href="#ethicml.evaluators.CVResults.best_hyper_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">best_hyper_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">measure</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.CVResults.best_hyper_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get best hyper-params.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CVResults.get_best_in_top_k">
-<code class="sig-name descname">get_best_in_top_k</code><span class="sig-paren">(</span><em class="sig-param">primary: ethicml.metrics.metric.Metric</em>, <em class="sig-param">secondary: ethicml.metrics.metric.Metric</em>, <em class="sig-param">top_k: int</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.ResultTuple<a class="headerlink" href="#ethicml.evaluators.CVResults.get_best_in_top_k" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_best_in_top_k</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">primary</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em>, <em class="sig-param"><span class="n">secondary</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em>, <em class="sig-param"><span class="n">top_k</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.ResultTuple<a class="headerlink" href="#ethicml.evaluators.CVResults.get_best_in_top_k" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get best result in top K entries.</p>
 <p>First sort the results according to the primary metric, then take the best according to the
 secondary metric from the top K.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CVResults.get_best_result">
-<code class="sig-name descname">get_best_result</code><span class="sig-paren">(</span><em class="sig-param">measure: ethicml.metrics.metric.Metric</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.ResultTuple<a class="headerlink" href="#ethicml.evaluators.CVResults.get_best_result" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_best_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">measure</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.ResultTuple<a class="headerlink" href="#ethicml.evaluators.CVResults.get_best_result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the hyperparameter combination for the best performance of a measure.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.evaluators.CrossValidator">
-<em class="property">class </em><code class="sig-name descname">CrossValidator</code><span class="sig-paren">(</span><em class="sig-param">model: Type[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm], hyperparams: Dict[str, List[Any]], folds: int = 3, max_parallel: int = 0</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.CrossValidator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">CrossValidator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">hyperparams</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>Any<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">folds</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">3</span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.CrossValidator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object used to run cross-validation on a model.</p>
 <p>Init CrossValidator.</p>
@@ -311,26 +311,26 @@ which is the number of available CPUs</p></li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CrossValidator.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">measures: Optional[List[ethicml.metrics.metric.Metric]] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.CVResults<a class="headerlink" href="#ethicml.evaluators.CrossValidator.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">measures</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.CVResults<a class="headerlink" href="#ethicml.evaluators.CrossValidator.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the cross validation experiments.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.CrossValidator.run_async">
-<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">measures: Optional[List[ethicml.metrics.metric.Metric]] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.CVResults<a class="headerlink" href="#ethicml.evaluators.CrossValidator.run_async" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">run_async</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">measures</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; ethicml.evaluators.cross_validator.CVResults<a class="headerlink" href="#ethicml.evaluators.CrossValidator.run_async" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the cross validation experiments asynchronously.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="exception">
+<dl class="py exception">
 <dt id="ethicml.evaluators.MetricNotApplicable">
 <em class="property">exception </em><code class="sig-name descname">MetricNotApplicable</code><a class="headerlink" href="#ethicml.evaluators.MetricNotApplicable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.evaluators.MetricNotApplicable.with_traceback">
 <code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.MetricNotApplicable.with_traceback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception.with_traceback(tb) –
@@ -339,9 +339,9 @@ set self.__traceback__ to tb and return self.</p>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.arrange_in_parallel">
-<em class="property">async </em><code class="sig-name descname">arrange_in_parallel</code><span class="sig-paren">(</span><em class="sig-param">algos: Sequence[Tuple[Callable[[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple], Coroutine[Any, Any, _RT]], str]], data: Sequence[ethicml.utility.data_structures.TrainTestPair], max_parallel: int = 0</em><span class="sig-paren">)</span> &#x2192; List[List[_RT]]<a class="headerlink" href="#ethicml.evaluators.arrange_in_parallel" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">arrange_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>Tuple<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span>ethicml.utility.data_structures.DataTuple<span class="p">, </span>ethicml.utility.data_structures.TestTuple<span class="p">]</span><span class="p">, </span>Coroutine<span class="p">[</span>Any<span class="p">, </span>Any<span class="p">, </span>_RT<span class="p">]</span><span class="p">]</span><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>_RT<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.arrange_in_parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Arrange the given algorithms to run (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -358,9 +358,9 @@ there is no maximum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.diff_per_sensitive_attribute">
-<code class="sig-name descname">diff_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param">per_sens_res: Dict[str, float]</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.diff_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">diff_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">per_sens_res</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.diff_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the difference in the metrics per sensitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -372,9 +372,9 @@ there is no maximum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.evaluate_models">
-<code class="sig-name descname">evaluate_models</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], preprocess_models: Sequence[ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm] = (), inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), postprocess_models: Sequence[ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, delete_prev: bool = False, splitter: Optional[ethicml.preprocessing.train_test_split.DataSplitter] = None, topic: Optional[str] = None</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluate_models</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datasets</span><span class="p">:</span> <span class="n">List<span class="p">[</span>ethicml.data.dataset.Dataset<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">preprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">inprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">postprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">per_sens_metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">repeats</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">test_mode</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">delete_prev</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">splitter</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ethicml.preprocessing.train_test_split.DataSplitter<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">topic</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fair_pipeline</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate all the given models for all the given datasets and compute all the given metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -390,14 +390,15 @@ there is no maximum</p></li>
 <li><p><strong>delete_prev</strong> – False by default. If True, delete saved results in directory</p></li>
 <li><p><strong>splitter</strong> – (optional) custom train-test splitter</p></li>
 <li><p><strong>topic</strong> – (optional) a string that identifies the run; the string is prepended to the filename</p></li>
+<li><p><strong>fair_pipeline</strong> – if True, run fair inprocess algorithms on the output of preprocessing</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.evaluate_models_async">
-<em class="property">async </em><code class="sig-name descname">evaluate_models_async</code><span class="sig-paren">(</span><em class="sig-param">datasets: List[ethicml.data.dataset.Dataset], preprocess_models: Sequence[ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm] = (), inprocess_models: Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm] = (), postprocess_models: Sequence[ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm] = (), metrics: Sequence[ethicml.metrics.metric.Metric] = (), per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = (), repeats: int = 1, test_mode: bool = False, delete_prev: bool = False, splitter: Optional[ethicml.preprocessing.train_test_split.DataSplitter] = None, topic: Optional[str] = None, max_parallel: int = 1</em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models_async" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">evaluate_models_async</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datasets</span><span class="p">:</span> <span class="n">List<span class="p">[</span>ethicml.data.dataset.Dataset<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">preprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">inprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">postprocess_models</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">per_sens_metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">repeats</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">test_mode</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">delete_prev</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">splitter</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>ethicml.preprocessing.train_test_split.DataSplitter<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">topic</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fair_pipeline</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Results<a class="headerlink" href="#ethicml.evaluators.evaluate_models_async" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate all the given models for all the given datasets and compute all the given metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -413,15 +414,16 @@ there is no maximum</p></li>
 <li><p><strong>delete_prev</strong> – False by default. If True, delete saved results in directory</p></li>
 <li><p><strong>splitter</strong> – (optional) custom train-test splitter</p></li>
 <li><p><strong>topic</strong> – (optional) a string that identifies the run; the string is prepended to the filename</p></li>
+<li><p><strong>fair_pipeline</strong> – if True, run fair inprocess algorithms on the output of preprocessing</p></li>
 <li><p><strong>max_parallel</strong> – max number of threads ot run in parallel (default: 1)</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.load_results">
-<code class="sig-name descname">load_results</code><span class="sig-paren">(</span><em class="sig-param">dataset_name: str</em>, <em class="sig-param">transform_name: str</em>, <em class="sig-param">topic: Optional[str] = None</em>, <em class="sig-param">outdir: pathlib.Path = PosixPath('results')</em><span class="sig-paren">)</span> &#x2192; Optional[ethicml.utility.data_structures.Results]<a class="headerlink" href="#ethicml.evaluators.load_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">transform_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">topic</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">outdir</span><span class="p">:</span> <span class="n">pathlib.Path</span> <span class="o">=</span> <span class="default_value">PosixPath('results')</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>ethicml.utility.data_structures.Results<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.load_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -438,15 +440,15 @@ there is no maximum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.metric_per_sensitive_attribute">
-<code class="sig-name descname">metric_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param">predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">metric: ethicml.metrics.metric.Metric</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.metric_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">metric_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prediction</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">actual</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">metric</span><span class="p">:</span> <span class="n">ethicml.metrics.metric.Metric</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.metric_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.ratio_per_sensitive_attribute">
-<code class="sig-name descname">ratio_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param">per_sens_res: Dict[str, float]</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.ratio_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ratio_per_sensitive_attribute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">per_sens_res</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.ratio_per_sensitive_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -458,9 +460,9 @@ there is no maximum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.run_in_parallel">
-<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param">algos: Union[Sequence[ethicml.algorithms.inprocess.in_algorithm.InAlgorithm], Sequence[ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm]], data: Sequence[ethicml.utility.data_structures.TrainTestPair], max_parallel: int = 0</em><span class="sig-paren">)</span> &#x2192; Union[List[List[pandas.core.frame.DataFrame]], List[List[Tuple[ethicml.utility.data_structures.DataTuple, ethicml.utility.data_structures.TestTuple]]]]<a class="headerlink" href="#ethicml.evaluators.run_in_parallel" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Sequence<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span><span class="p">, </span>Sequence<span class="p">[</span>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>List<span class="p">[</span>ethicml.utility.data_structures.Prediction<span class="p">]</span><span class="p">]</span><span class="p">, </span>List<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span>ethicml.utility.data_structures.DataTuple<span class="p">, </span>ethicml.utility.data_structures.TestTuple<span class="p">]</span><span class="p">]</span><span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.run_in_parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the given algorithms (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -477,9 +479,9 @@ there is no maximum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.evaluators.run_metrics">
-<code class="sig-name descname">run_metrics</code><span class="sig-paren">(</span><em class="sig-param">predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">actual: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">metrics: Sequence[ethicml.metrics.metric.Metric] = ()</em>, <em class="sig-param">per_sens_metrics: Sequence[ethicml.metrics.metric.Metric] = ()</em><span class="sig-paren">)</span> &#x2192; Dict[str, float]<a class="headerlink" href="#ethicml.evaluators.run_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predictions</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">actual</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em>, <em class="sig-param"><span class="n">per_sens_metrics</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.metrics.metric.Metric<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">()</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.run_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run all the given metrics on the given predictions and return the results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

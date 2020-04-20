@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -183,9 +183,9 @@
 </tr>
 </tbody>
 </table>
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.visualisation.plot_results">
-<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">results: ethicml.utility.data_structures.Results, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', save: bool = True, dpi: int = 300</em><span class="sig-paren">)</span> &#x2192; List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]<a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Results</span></em>, <em class="sig-param"><span class="n">metric_y</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ethicml.metrics.metric.Metric<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">metric_x</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>ethicml.metrics.metric.Metric<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">ptype</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>box<span class="p">, </span>cross<span class="p">, </span>scatter<span class="p">, </span>line<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'box'</span></em>, <em class="sig-param"><span class="n">save</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">300</span></em>, <em class="sig-param"><span class="n">transforms_separately</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>matplotlib.figure.Figure<span class="p">, </span>matplotlib.axes._axes.Axes<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the given result with boxes that represent mean and standard deviation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -196,7 +196,7 @@
 <li><p><strong>ptype</strong> – plot type</p></li>
 <li><p><strong>save</strong> – if True, save the plot as a PDF</p></li>
 <li><p><strong>dpi</strong> – DPI of the plots</p></li>
-<li><p><strong>use_cross</strong> – if True, use crosses with error bars instead of boxes</p></li>
+<li><p><strong>transforms_separately</strong> – if True, each transform gets its own plot</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -205,27 +205,27 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.visualisation.save_2d_plot">
-<code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make 2D plot.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.visualisation.save_jointplot">
-<code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filepath: str</em>, <em class="sig-param">dims: Tuple[int</em>, <em class="sig-param">int] = (0</em>, <em class="sig-param">1)</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dims</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 1</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make joint plot.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.visualisation.save_label_plot">
-<code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param">data: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">filename: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make label plot.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.visualisation.single_plot">
-<code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: ethicml.utility.data_structures.Results, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: str, ptype: typing_extensions.Literal['box', 'cross', 'scatter', 'line'][box, cross, scatter, line] = 'box', legend_pos: Optional[typing_extensions.Literal['inside', 'outside'][inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6</em><span class="sig-paren">)</span> &#x2192; Union[None, typing_extensions.Literal[False][False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plot</span><span class="p">:</span> <span class="n">matplotlib.axes._axes.Axes</span></em>, <em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Results</span></em>, <em class="sig-param"><span class="n">xaxis</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">yaxis</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">ptype</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>box<span class="p">, </span>cross<span class="p">, </span>scatter<span class="p">, </span>line<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'box'</span></em>, <em class="sig-param"><span class="n">legend_pos</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Literal<span class="p">[</span>inside<span class="p">, </span>outside<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'outside'</span></em>, <em class="sig-param"><span class="n">legend_yanchor</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">markersize</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">6</span></em>, <em class="sig-param"><span class="n">alternating_style</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">include_nan_entries</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union[None, Literal[False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide the functionality of the individual plotting functions through a nice interface.</p>
 <p>This function can also be used to create figures with multiple plots on them, because it does
 not generate a Figure object itself.</p>
@@ -237,11 +237,13 @@ not generate a Figure object itself.</p>
 <li><p><strong>xaxis</strong> – name of column that’s plotted on the x-axis</p></li>
 <li><p><strong>yaxis</strong> – name of column that’s plotted on the y-axis</p></li>
 <li><p><strong>dataset</strong> – string that identifies the dataset</p></li>
-<li><p><strong>transform</strong> – string that identifies the preprocessing method</p></li>
+<li><p><strong>transform</strong> – string that identifies the preprocessing method, or None</p></li>
 <li><p><strong>ptype</strong> – plot type</p></li>
 <li><p><strong>legend_pos</strong> – position of the legend (or None for no legend)</p></li>
 <li><p><strong>legend_yanchor</strong> – position in the vertical direction where the legend should begin</p></li>
 <li><p><strong>markersize</strong> – size of marker</p></li>
+<li><p><strong>alternating_style</strong> – if True, entries for scatter plots are done in alternating style</p></li>
+<li><p><strong>include_nan_entries</strong> – if True, entries with NaNs still appear in the legend</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

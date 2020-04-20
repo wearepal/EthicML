@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -167,7 +167,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a>(name)</p></td>
 <td><p>Base class for Algorithms.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync" title="ethicml.algorithms.AlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmAsync</span></code></a></p></td>
@@ -187,11 +187,17 @@
 </tr>
 </tbody>
 </table>
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.algorithms.Algorithm">
-<em class="property">class </em><code class="sig-name descname">Algorithm</code><a class="headerlink" href="#ethicml.algorithms.Algorithm" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.Algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for Algorithms.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the algorithm</p>
+</dd>
+</dl>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -204,42 +210,24 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.algorithms.Algorithm.name">
-<em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.Algorithm.name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.Algorithm.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.algorithms.AlgorithmAsync">
 <em class="property">class </em><code class="sig-name descname">AlgorithmAsync</code><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.Algorithm" title="ethicml.algorithms.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
-<p><strong>Attributes</strong></p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.AlgorithmAsync.name" title="ethicml.algorithms.AlgorithmAsync.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Name of the algorithm.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="ethicml.algorithms.AlgorithmAsync.name">
-<em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.AlgorithmAsync.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="ethicml.algorithms.run_blocking">
-<code class="sig-name descname">run_blocking</code><span class="sig-paren">(</span><em class="sig-param">promise: Coroutine[Any, Any, _T]</em><span class="sig-paren">)</span> &#x2192; _T<a class="headerlink" href="#ethicml.algorithms.run_blocking" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_blocking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">promise</span><span class="p">:</span> <span class="n">Coroutine<span class="p">[</span>Any<span class="p">, </span>Any<span class="p">, </span>_T<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; _T<a class="headerlink" href="#ethicml.algorithms.run_blocking" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an asynchronous process as a blocking process.</p>
 </dd></dl>
 

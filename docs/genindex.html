@@ -22,11 +22,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -194,17 +194,15 @@
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Activation">Activation (class in ethicml.utility)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.add_module">add_module() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.add_module">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer.adjust">adjust() (LabelBinarizer method)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult">Adult (class in ethicml.data)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Adult">Adult() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.adult">adult() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal">Agarwal (class in ethicml.algorithms.inprocess)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.Results.aggregate">aggregate() (Results method)</a>
 </li>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.Algorithm">Algorithm (class in ethicml.algorithms)</a>
 </li>
@@ -219,17 +217,15 @@
       <ul>
         <li><a href="ethicml.utility.html#ethicml.utility.Heaviside.apply">(Heaviside method)</a>
 </li>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.apply">(LdTransformation method)</a>
-</li>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.apply">(LdColorizer method)</a>
-</li>
       </ul></li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.apply_per_sensitive">apply_per_sensitive() (AbsCV property)</a>
 
       <ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.apply_per_sensitive">(Accuracy property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.AS.apply_per_sensitive">(AS property)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.apply_per_sensitive">(Accuracy property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.apply_per_sensitive">(BalancedAccuracy property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.apply_per_sensitive">(BCR property)</a>
 </li>
@@ -253,13 +249,17 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.apply_per_sensitive">(ProbPos property)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.apply_per_sensitive">(RenyiCorrelation property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric.apply_per_sensitive">(SklearnMetric property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.apply_per_sensitive">(Theil property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.apply_per_sensitive">(TNR property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.apply_per_sensitive">(TPR property)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.apply_per_sensitive">(Theil property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich.apply_per_sensitive">(Yanovich property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -276,144 +276,74 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy">BalancedAccuracy (class in ethicml.metrics)</a>
+</li>
+      <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.BalancedTestSplit">BalancedTestSplit (class in ethicml.preprocessing)</a>
+</li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.BCR">BCR (class in ethicml.metrics)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CVResults.best">best() (CVResults method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CVResults.best_hyper_params">best_hyper_params() (CVResults method)</a>
 </li>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Beutel">Beutel (class in ethicml.algorithms.preprocess)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.BiasedDebiasedSubsets">BiasedDebiasedSubsets (class in ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.BiasedSubset">BiasedSubset (class in ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.bin_cont_feats">bin_cont_feats() (in module ethicml.preprocessing)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.buffers">buffers() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.buffers">(LdColorizer method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.vision.html#ethicml.vision.CelebA">CelebA (class in ethicml.vision)</a>
+      <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Calders">Calders (class in ethicml.algorithms.preprocess)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.children">children() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.children">(LdColorizer method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.celeba">celeba() (in module ethicml.data)</a>
 </li>
-      </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.class_label_prefix">class_label_prefix() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.class_label_prefix">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.class_label_prefix">class_label_prefix() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.class_label_prefix">(ConfigurableDataset property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Compas">Compas() (in module ethicml.data)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.class_label_prefix">(Credit property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.compas">compas() (in module ethicml.data)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.class_label_prefix">(Dataset property)</a>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.compute_instance_weights">compute_instance_weights() (in module ethicml.algorithms.inprocess)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.German.class_label_prefix">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.class_label_prefix">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.class_label_prefix">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.class_label_prefix">(Toy property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.class_labels">class_labels() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.class_labels">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.class_labels">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.class_labels">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.class_labels">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.class_labels">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.class_labels">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.class_labels">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.class_labels">(Toy property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.code">code() (LdTransformation property)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.code">(LdColorizer property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Compas">Compas (class in ethicml.data)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.concat_dt">concat_dt() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.concat_tt">concat_tt() (in module ethicml.utility)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset">ConfigurableDataset (class in ethicml.data)</a>
-</li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.confusion_matrix">confusion_matrix() (in module ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.continuous_features">continuous_features() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.continuous_features">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.continuous_features">continuous_features() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.continuous_features">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.continuous_features">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.continuous_features">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.continuous_features">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.continuous_features">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.continuous_features">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.continuous_features">(Toy property)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels">Corels (class in ethicml.algorithms.inprocess)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.count">count() (TrainTestPair method)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.cpu">cpu() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.cpu">(LdColorizer method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.create_celeba_dataset">create_celeba_dataset() (in module ethicml.data)</a>
 </li>
-      </ul></li>
+      <li><a href="ethicml.data.html#ethicml.data.create_cmnist_datasets">create_cmnist_datasets() (in module ethicml.data)</a>
+</li>
       <li><a href="ethicml.data.html#ethicml.data.create_data_obj">create_data_obj() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format">create_file_in_kamishima_format() (Kamishima static method)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Credit">Credit (class in ethicml.data)</a>
+      <li><a href="ethicml.data.html#ethicml.data.create_genfaces_dataset">create_genfaces_dataset() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.credit">credit() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.crime">crime() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CrossValidator">CrossValidator (class in ethicml.evaluators)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.cuda">cuda() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.cuda">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.CV">CV (class in ethicml.metrics)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CVResults">CVResults (class in ethicml.evaluators)</a>
@@ -432,41 +362,17 @@
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.DataSplitter">DataSplitter (class in ethicml.preprocessing)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple">DataTuple (class in ethicml.utility)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.diff_per_sensitive_attribute">diff_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.discrete_features">discrete_features() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.discrete_features">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.disc_feature_groups">disc_feature_groups() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.discrete_features">(ConfigurableDataset property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.discrete_features">discrete_features() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.discrete_features">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.discrete_features">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.discrete_features">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.discrete_features">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.discrete_features">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.discrete_features">(Toy property)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.domain_split">domain_split() (in module ethicml.preprocessing)</a>
-</li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.double">double() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.double">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.CelebA.download">download() (CelebA method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -474,46 +380,89 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.algorithms.html#module-ethicml.algorithms">ethicml.algorithms (module)</a>
-</li>
-      <li><a href="ethicml.algorithms.inprocess.html#module-ethicml.algorithms.inprocess">ethicml.algorithms.inprocess (module)</a>
-</li>
-      <li><a href="ethicml.algorithms.postprocess.html#module-ethicml.algorithms.postprocess">ethicml.algorithms.postprocess (module)</a>
-</li>
-      <li><a href="ethicml.algorithms.preprocess.html#module-ethicml.algorithms.preprocess">ethicml.algorithms.preprocess (module)</a>
-</li>
-      <li><a href="ethicml.data.html#module-ethicml.data">ethicml.data (module)</a>
-</li>
-      <li><a href="ethicml.evaluators.html#module-ethicml.evaluators">ethicml.evaluators (module)</a>
-</li>
-      <li><a href="ethicml.metrics.html#module-ethicml.metrics">ethicml.metrics (module)</a>
-</li>
-      <li><a href="ethicml.preprocessing.html#module-ethicml.preprocessing">ethicml.preprocessing (module)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#module-ethicml.utility">ethicml.utility (module)</a>
-</li>
-      <li><a href="ethicml.vision.html#module-ethicml.vision">ethicml.vision (module)</a>
-</li>
-      <li><a href="ethicml.visualisation.html#module-ethicml.visualisation">ethicml.visualisation (module)</a>
-</li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.eval">eval() (LdTransformation method)</a>
+      <li>
+    ethicml.algorithms
 
       <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.eval">(LdColorizer method)</a>
+        <li><a href="ethicml.algorithms.html#module-ethicml.algorithms">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.algorithms.inprocess
+
+      <ul>
+        <li><a href="ethicml.algorithms.inprocess.html#module-ethicml.algorithms.inprocess">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.algorithms.postprocess
+
+      <ul>
+        <li><a href="ethicml.algorithms.postprocess.html#module-ethicml.algorithms.postprocess">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.algorithms.preprocess
+
+      <ul>
+        <li><a href="ethicml.algorithms.preprocess.html#module-ethicml.algorithms.preprocess">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.data
+
+      <ul>
+        <li><a href="ethicml.data.html#module-ethicml.data">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.evaluators
+
+      <ul>
+        <li><a href="ethicml.evaluators.html#module-ethicml.evaluators">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    ethicml.metrics
+
+      <ul>
+        <li><a href="ethicml.metrics.html#module-ethicml.metrics">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.preprocessing
+
+      <ul>
+        <li><a href="ethicml.preprocessing.html#module-ethicml.preprocessing">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.utility
+
+      <ul>
+        <li><a href="ethicml.utility.html#module-ethicml.utility">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.vision
+
+      <ul>
+        <li><a href="ethicml.vision.html#module-ethicml.vision">module</a>
+</li>
+      </ul></li>
+      <li>
+    ethicml.visualisation
+
+      <ul>
+        <li><a href="ethicml.visualisation.html#module-ethicml.visualisation">module</a>
 </li>
       </ul></li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.evaluate_models">evaluate_models() (in module ethicml.evaluators)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.evaluate_models_async">evaluate_models_async() (in module ethicml.evaluators)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.extra_repr">extra_repr() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.extra_repr">(LdColorizer method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -522,105 +471,41 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.metrics.html#ethicml.metrics.F1">F1 (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.feature_split">feature_split() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.feature_split">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.feature_split">feature_split() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.feature_split">(ConfigurableDataset property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.features">features() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.feature_split">(Credit property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.filepath">filepath() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.feature_split">(Dataset property)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.Results.filter">filter() (Results method)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.German.feature_split">(German property)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.Results.filter_and_map">filter_and_map() (Results method)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.feature_split">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.feature_split">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.feature_split">(Toy property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.features">features() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.features">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.features">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.features">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.features">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.features">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.features">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.features">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.features">(Toy property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.filename">filename() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.filename">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.filename">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.filename">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.filename">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.filename">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.filename">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.filename">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.filename">(Toy property)</a>
-</li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.filepath">filepath() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.filepath">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.filepath">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.filepath">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.filepath">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.filepath">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.filepath">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.filepath">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.filepath">(Toy property)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.data.html#ethicml.data.filter_features_by_prefixes">filter_features_by_prefixes() (in module ethicml.data)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.float">float() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.float">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.Results.from_file">from_file() (Results class method)</a>
 </li>
+      <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.from_npz">from_npz() (DataTuple class method)</a>
+
+      <ul>
+        <li><a href="ethicml.utility.html#ethicml.utility.Prediction.from_npz">(Prediction static method)</a>
+</li>
+        <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction.from_npz">(SoftPrediction static method)</a>
+</li>
+        <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.from_npz">(TestTuple class method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.German">German (class in ethicml.data)</a>
+      <li><a href="ethicml.data.html#ethicml.data.genfaces">genfaces() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.german">german() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.CVResults.get_best_in_top_k">get_best_in_top_k() (CVResults method)</a>
 </li>
@@ -630,6 +515,8 @@
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.get_biased_subset">get_biased_subset() (in module ethicml.preprocessing)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.get_concatenated_features">get_concatenated_features() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.get_discrete_features">get_discrete_features() (in module ethicml.data)</a>
@@ -640,22 +527,8 @@
         <li><a href="ethicml.utility.html#ethicml.utility.Heaviside.get_name">(Heaviside method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.get_subset">get_subset() (DataTuple method)</a>
 </li>
-      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT">GPyT (class in ethicml.algorithms.inprocess)</a>
-</li>
-      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar">GPyTDemPar (class in ethicml.algorithms.inprocess)</a>
-</li>
-      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds">GPyTEqOdds (class in ethicml.algorithms.inprocess)</a>
-</li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.graph">graph() (LdTransformation property)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.graph">(LdColorizer property)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.data.html#ethicml.data.group_disc_feat_indexes">group_disc_feat_indexes() (in module ethicml.data)</a>
 </li>
   </ul></td>
@@ -664,15 +537,17 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.half">half() (LdTransformation method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.Prediction.hard">hard() (Prediction property)</a>
 
       <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.half">(LdColorizer method)</a>
+        <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction.hard">(SoftPrediction property)</a>
 </li>
       </ul></li>
+      <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.Hardt">Hardt (class in ethicml.algorithms.postprocess)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.Hardt">Hardt (class in ethicml.algorithms.postprocess)</a>
+      <li><a href="ethicml.data.html#ethicml.data.health">health() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Heaviside">Heaviside (class in ethicml.utility)</a>
 </li>
@@ -688,12 +563,56 @@
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithmAsync">InAlgorithmAsync (class in ethicml.algorithms.inprocess)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.index">index() (TrainTestPair method)</a>
 </li>
+      <li><a href="ethicml.utility.html#ethicml.utility.Prediction.info">info() (Prediction property)</a>
+
+      <ul>
+        <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction.info">(SoftPrediction property)</a>
+</li>
+      </ul></li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel">InstalledModel (class in ethicml.algorithms.inprocess)</a>
 </li>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal.is_fairness_algo">is_fairness_algo() (Agarwal property)</a>
+
+      <ul>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.is_fairness_algo">(Corels property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithm.is_fairness_algo">(InAlgorithm property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithmAsync.is_fairness_algo">(InAlgorithmAsync property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel.is_fairness_algo">(InstalledModel property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamiran.is_fairness_algo">(Kamiran property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamishima.is_fairness_algo">(Kamishima property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LR.is_fairness_algo">(LR property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRCV.is_fairness_algo">(LRCV property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRProb.is_fairness_algo">(LRProb property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority.is_fairness_algo">(Majority property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.is_fairness_algo">(MLP property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM.is_fairness_algo">(SVM property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync.is_fairness_algo">(SVMAsync property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarAccuracy.is_fairness_algo">(ZafarAccuracy property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarBaseline.is_fairness_algo">(ZafarBaseline property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarEqOdds.is_fairness_algo">(ZafarEqOdds property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarEqOpp.is_fairness_algo">(ZafarEqOpp property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarFairness.is_fairness_algo">(ZafarFairness property)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -716,34 +635,18 @@
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.LabelOutOfBounds">LabelOutOfBounds</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation">LdTransformation (class in ethicml.vision)</a>
-</li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.to">LdTransformation.to() (in module ethicml.vision)</a>, <a href="ethicml.vision.html#ethicml.vision.LdTransformation.to">[1]</a>, <a href="ethicml.vision.html#ethicml.vision.LdTransformation.to">[2]</a>
-</li>
       <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer">LdColorizer (class in ethicml.vision)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.to">LdColorizer.to() (in module ethicml.vision)</a>, <a href="ethicml.vision.html#ethicml.vision.LdColorizer.to">[1]</a>, <a href="ethicml.vision.html#ethicml.vision.LdColorizer.to">[2]</a>
+      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation">LdTransformation (class in ethicml.vision)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.load_data">load_data() (in module ethicml.data)</a>
-</li>
-      <li><a href="ethicml.utility.html#ethicml.utility.load_feather">load_feather() (in module ethicml.utility)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.load">load() (Dataset method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.PathTuple.load_from_feather">load_from_feather() (PathTuple method)</a>
-
-      <ul>
-        <li><a href="ethicml.utility.html#ethicml.utility.TestPathTuple.load_from_feather">(TestPathTuple method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.load_data">load_data() (in module ethicml.data)</a>
 </li>
-      </ul></li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.load_results">load_results() (in module ethicml.evaluators)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.load_state_dict">load_state_dict() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.load_state_dict">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LR">LR (class in ethicml.algorithms.inprocess)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRCV">LRCV (class in ethicml.algorithms.inprocess)</a>
@@ -764,16 +667,35 @@
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.metric_per_sensitive_attribute">metric_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.MetricNotApplicable">MetricNotApplicable</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP">MLP (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.modules">modules() (LdTransformation method)</a>
+      <li>
+    module
 
       <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.modules">(LdColorizer method)</a>
+        <li><a href="ethicml.algorithms.html#module-ethicml.algorithms">ethicml.algorithms</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#module-ethicml.algorithms.inprocess">ethicml.algorithms.inprocess</a>
+</li>
+        <li><a href="ethicml.algorithms.postprocess.html#module-ethicml.algorithms.postprocess">ethicml.algorithms.postprocess</a>
+</li>
+        <li><a href="ethicml.algorithms.preprocess.html#module-ethicml.algorithms.preprocess">ethicml.algorithms.preprocess</a>
+</li>
+        <li><a href="ethicml.data.html#module-ethicml.data">ethicml.data</a>
+</li>
+        <li><a href="ethicml.evaluators.html#module-ethicml.evaluators">ethicml.evaluators</a>
+</li>
+        <li><a href="ethicml.metrics.html#module-ethicml.metrics">ethicml.metrics</a>
+</li>
+        <li><a href="ethicml.preprocessing.html#module-ethicml.preprocessing">ethicml.preprocessing</a>
+</li>
+        <li><a href="ethicml.utility.html#module-ethicml.utility">ethicml.utility</a>
+</li>
+        <li><a href="ethicml.vision.html#module-ethicml.vision">ethicml.vision</a>
+</li>
+        <li><a href="ethicml.visualisation.html#module-ethicml.visualisation">ethicml.visualisation</a>
 </li>
       </ul></li>
   </ul></td>
@@ -785,45 +707,31 @@
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.name">name() (AbsCV property)</a>
 
       <ul>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.AS.name">(AS property)</a>
-</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.name">(Accuracy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Adult.name">(Adult property)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal.name">(Agarwal property)</a>
 </li>
         <li><a href="ethicml.algorithms.html#ethicml.algorithms.Algorithm.name">(Algorithm property)</a>
 </li>
-        <li><a href="ethicml.algorithms.html#ethicml.algorithms.AlgorithmAsync.name">(AlgorithmAsync property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AS.name">(AS property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.name">(BalancedAccuracy property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.name">(BCR property)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Beutel.name">(Beutel property)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.CV.name">(CV property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.name">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.name">(ConfigurableDataset property)</a>
+        <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Calders.name">(Calders property)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.name">(Corels property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.name">(Credit property)</a>
-</li>
-        <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.name">(DataTuple property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.CV.name">(CV property)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Dataset.name">(Dataset property)</a>
 </li>
+        <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.name">(DataTuple property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.F1.name">(F1 property)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT.name">(GPyT property)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar.name">(GPyTDemPar property)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds.name">(GPyTEqOdds property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.name">(German property)</a>
 </li>
         <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.Hardt.name">(Hardt property)</a>
 </li>
@@ -845,21 +753,19 @@
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRProb.name">(LRProb property)</a>
 </li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.name">(MLP property)</a>
-</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority.name">(Majority property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Metric.name">(Metric property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.name">(MLP property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.NMI.name">(NMI property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.name">(NPV property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.name">(NonBinaryToy property)</a>
+        <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.PostAlgorithm.name">(PostAlgorithm property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.name">(PPV property)</a>
-</li>
-        <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.PostAlgorithm.name">(PostAlgorithm property)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithm.name">(PreAlgorithm property)</a>
 </li>
@@ -871,25 +777,27 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.name">(ProbPos property)</a>
 </li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM.name">(SVM property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.name">(RenyiCorrelation property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric.name">(SklearnMetric property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.name">(Sqf property)</a>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM.name">(SVM property)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.name">(TNR property)</a>
-</li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.name">(TPR property)</a>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync.name">(SVMAsync property)</a>
 </li>
         <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.name">(TestTuple property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.name">(Theil property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.name">(Toy property)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.name">(TNR property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.name">(TPR property)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Upsampler.name">(Upsampler property)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.VFAE.name">(VFAE property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich.name">(Yanovich property)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarAccuracy.name">(ZafarAccuracy property)</a>
 </li>
@@ -906,33 +814,9 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.named_buffers">named_buffers() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.named_buffers">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.named_children">named_children() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.named_children">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.named_modules">named_modules() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.named_modules">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.named_parameters">named_parameters() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.named_parameters">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.NMI">NMI (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy">NonBinaryToy (class in ethicml.data)</a>
+      <li><a href="ethicml.data.html#ethicml.data.nonbinary_toy">nonbinary_toy() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.NPV">NPV (class in ethicml.metrics)</a>
 </li>
@@ -942,40 +826,14 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.ordered_features">ordered_features() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.ordered_features">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.ordered_features">ordered_features() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.ordered_features">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.ordered_features">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.ordered_features">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.ordered_features">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.ordered_features">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.ordered_features">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.ordered_features">(Toy property)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.parameters">parameters() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.parameters">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.utility.html#ethicml.utility.PathTuple">PathTuple (class in ethicml.utility)</a>
-</li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.plot_results">plot_results() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer.post">post() (LabelBinarizer method)</a>
@@ -984,13 +842,15 @@
 </li>
       <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.PostAlgorithm">PostAlgorithm (class in ethicml.algorithms.postprocess)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.metrics.html#ethicml.metrics.PPV">PPV (class in ethicml.metrics)</a>
 </li>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithm">PreAlgorithm (class in ethicml.algorithms.preprocess)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithmAsync">PreAlgorithmAsync (class in ethicml.algorithms.preprocess)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.Prediction">Prediction (class in ethicml.utility)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg">ProbNeg (class in ethicml.metrics)</a>
 </li>
@@ -1006,6 +866,10 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.utility.html#ethicml.utility.Results.query">query() (Results method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.query_dt">query_dt() (in module ethicml.preprocessing)</a>
 </li>
   </ul></td>
@@ -1018,27 +882,9 @@
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.ratio_per_sensitive_attribute">ratio_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.register_buffer">register_buffer() (LdTransformation method)</a>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel.remove">remove() (InstalledModel method)</a>
 
       <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.register_buffer">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.register_parameter">register_parameter() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.register_parameter">(LdColorizer method)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT.remove">remove() (GPyT method)</a>
-
-      <ul>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar.remove">(GPyTDemPar method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds.remove">(GPyTEqOdds method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel.remove">(InstalledModel method)</a>
-</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamishima.remove">(Kamishima method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarAccuracy.remove">(ZafarAccuracy method)</a>
@@ -1054,6 +900,8 @@
       </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.remove_y">remove_y() (DataTuple method)</a>
 </li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation">RenyiCorrelation (class in ethicml.metrics)</a>
+</li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.replace">replace() (DataTuple method)</a>
 
       <ul>
@@ -1067,15 +915,11 @@
       <ul>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Beutel.run">(Beutel method)</a>
 </li>
+        <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Calders.run">(Calders method)</a>
+</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.run">(Corels method)</a>
 </li>
         <li><a href="ethicml.evaluators.html#ethicml.evaluators.CrossValidator.run">(CrossValidator method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT.run">(GPyT method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar.run">(GPyTDemPar method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds.run">(GPyTEqOdds method)</a>
 </li>
         <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.Hardt.run">(Hardt method)</a>
 </li>
@@ -1095,9 +939,9 @@
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRProb.run">(LRProb method)</a>
 </li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.run">(MLP method)</a>
-</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority.run">(Majority method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.run">(MLP method)</a>
 </li>
         <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.PostAlgorithm.run">(PostAlgorithm method)</a>
 </li>
@@ -1106,6 +950,8 @@
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithmAsync.run">(PreAlgorithmAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM.run">(SVM method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync.run">(SVMAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Upsampler.run">(Upsampler method)</a>
 </li>
@@ -1133,12 +979,6 @@
 </li>
         <li><a href="ethicml.evaluators.html#ethicml.evaluators.CrossValidator.run_async">(CrossValidator method)</a>
 </li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT.run_async">(GPyT method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar.run_async">(GPyTDemPar method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds.run_async">(GPyTEqOdds method)</a>
-</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithmAsync.run_async">(InAlgorithmAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel.run_async">(InstalledModel method)</a>
@@ -1146,6 +986,8 @@
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamishima.run_async">(Kamishima method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_async">(PreAlgorithmAsync method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync.run_async">(SVMAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.VFAE.run_async">(VFAE method)</a>
 </li>
@@ -1173,13 +1015,9 @@
       <ul>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Beutel.run_test">(Beutel method)</a>
 </li>
+        <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Calders.run_test">(Calders method)</a>
+</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.run_test">(Corels method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyT.run_test">(GPyT method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTDemPar.run_test">(GPyTDemPar method)</a>
-</li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.GPyTEqOdds.run_test">(GPyTEqOdds method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithm.run_test">(InAlgorithm method)</a>
 </li>
@@ -1197,15 +1035,17 @@
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.LRProb.run_test">(LRProb method)</a>
 </li>
-        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.run_test">(MLP method)</a>
-</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority.run_test">(Majority method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.MLP.run_test">(MLP method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithm.run_test">(PreAlgorithm method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithmAsync.run_test">(PreAlgorithmAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM.run_test">(SVM method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync.run_test">(SVMAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Upsampler.run_test">(Upsampler method)</a>
 </li>
@@ -1236,32 +1076,8 @@
         <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.s">(TestTuple property)</a>
 </li>
       </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.s_prefix">s_prefix() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.s_prefix">(Compas property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.s_prefix">s_prefix() (Dataset property)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.s_prefix">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.s_prefix">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.s_prefix">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.s_prefix">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.s_prefix">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.s_prefix">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.s_prefix">(Toy property)</a>
-</li>
-      </ul></li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.save">save() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.save">(LdColorizer method)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_2d_plot">save_2d_plot() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Results.save_as_csv">save_as_csv() (Results method)</a>
@@ -1273,9 +1089,11 @@
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.score">score() (AbsCV method)</a>
 
       <ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.score">(Accuracy method)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.AS.score">(AS method)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.score">(Accuracy method)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.score">(BalancedAccuracy method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.score">(BCR method)</a>
 </li>
@@ -1299,52 +1117,36 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.score">(ProbPos method)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.score">(RenyiCorrelation method)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric.score">(SklearnMetric method)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.score">(Theil method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.score">(TNR method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.score">(TPR method)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.score">(Theil method)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich.score">(Yanovich method)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.Adult.sens_attrs">sens_attrs() (Adult property)</a>
-
-      <ul>
-        <li><a href="ethicml.data.html#ethicml.data.Compas.sens_attrs">(Compas property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.ConfigurableDataset.sens_attrs">(ConfigurableDataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Credit.sens_attrs">(Credit property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.sens_attrs">(Dataset property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.German.sens_attrs">(German property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.sens_attrs">(NonBinaryToy property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Sqf.sens_attrs">(Sqf property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Toy.sens_attrs">(Toy property)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.SequentialSplit">SequentialSplit (class in ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.single_plot">single_plot() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric">SklearnMetric (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Sqf">Sqf (class in ethicml.data)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction.soft">soft() (SoftPrediction property)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.state_dict">state_dict() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.state_dict">(LdColorizer method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction">SoftPrediction (class in ethicml.utility)</a>
 </li>
-      </ul></li>
+      <li><a href="ethicml.data.html#ethicml.data.sqf">sqf() (in module ethicml.data)</a>
+</li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM">SVM (class in ethicml.algorithms.inprocess)</a>
+</li>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync">SVMAsync (class in ethicml.algorithms.inprocess)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1352,9 +1154,7 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.test">test() (TrainTestPair property)</a>
-</li>
-      <li><a href="ethicml.utility.html#ethicml.utility.TestPathTuple">TestPathTuple (class in ethicml.utility)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.test">test (TrainTestPair attribute)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.TestTuple">TestTuple (class in ethicml.utility)</a>
 </li>
@@ -1362,36 +1162,32 @@
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.TNR">TNR (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.to">to() (LdTransformation method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.to_npz">to_npz() (DataTuple method)</a>
 
       <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.to">(LdColorizer method)</a>
+        <li><a href="ethicml.utility.html#ethicml.utility.Prediction.to_npz">(Prediction method)</a>
+</li>
+        <li><a href="ethicml.utility.html#ethicml.utility.SoftPrediction.to_npz">(SoftPrediction method)</a>
+</li>
+        <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.to_npz">(TestTuple method)</a>
 </li>
       </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Toy">Toy (class in ethicml.data)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.vision.html#ethicml.vision.TorchImageDataset">TorchImageDataset (class in ethicml.vision)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.Toy">Toy() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.toy">toy() (in module ethicml.data)</a>
+</li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.TPR">TPR (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.train">train() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.train">(LdColorizer method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.train">train (TrainTestPair attribute)</a>
 </li>
-        <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.train">(TrainTestPair property)</a>
-</li>
-      </ul></li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.train_test_split">train_test_split() (in module ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair">TrainTestPair (class in ethicml.utility)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.type">type() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.type">(LdColorizer method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1421,14 +1217,6 @@
 </li>
       </ul></li>
   </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.write_as_feather">write_as_feather() (DataTuple method)</a>
-
-      <ul>
-        <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.write_as_feather">(TestTuple method)</a>
-</li>
-      </ul></li>
-  </ul></td>
 </tr></table>
 
 <h2 id="X">X</h2>
@@ -1449,6 +1237,10 @@
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.y">y() (DataTuple property)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich">Yanovich (class in ethicml.metrics)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="Z">Z</h2>
@@ -1460,20 +1252,14 @@
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarEqOdds">ZafarEqOdds (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarEqOpp">ZafarEqOpp (class in ethicml.algorithms.inprocess)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarEqOpp">ZafarEqOpp (class in ethicml.algorithms.inprocess)</a>
+</li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.ZafarFairness">ZafarFairness (class in ethicml.algorithms.inprocess)</a>
 </li>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Zemel">Zemel (class in ethicml.algorithms.preprocess)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation.zero_grad">zero_grad() (LdTransformation method)</a>
-
-      <ul>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdColorizer.zero_grad">(LdColorizer method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
