@@ -9,6 +9,7 @@ from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
 from ..dataset import Dataset
+from ..util import flatten_dict
 
 __all__ = ["CelebAttrs", "celeba", "create_celeba_dataset"]
 
@@ -118,9 +119,7 @@ def celeba(
             "Wearing_Necktie": ["Wearing_Necktie"],
             "Young": ["Young"],
         }
-        discrete_features: List[str] = []
-        for group in disc_feature_groups.values():
-            discrete_features += group
+        discrete_features = flatten_dict(disc_feature_groups)
         assert sens_attr in discrete_features
         assert label in discrete_features
         continuous_features = ["filename"]

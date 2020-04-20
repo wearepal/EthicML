@@ -1,7 +1,6 @@
 """Useful methods that are used in some of the data objects."""
-
 from itertools import groupby
-from typing import List
+from typing import List, Mapping
 
 __all__ = [
     "get_concatenated_features",
@@ -92,3 +91,8 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
         start_idx += len_group
 
     return feature_slices
+
+
+def flatten_dict(dictionary: Mapping[str, List[str]]) -> List[str]:
+    """Flatten a dictionary of lists by joining all lists to one big list."""
+    return [x for inner_list in dictionary.values() for x in inner_list]

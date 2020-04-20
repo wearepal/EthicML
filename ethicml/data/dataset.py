@@ -7,7 +7,7 @@ from typing_extensions import final
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
-from .util import filter_features_by_prefixes, get_discrete_features
+from .util import filter_features_by_prefixes, get_discrete_features, flatten_dict
 
 __all__ = ["Dataset"]
 
@@ -186,9 +186,7 @@ class Dataset:
                         )
                 # order the features: first discrete features in the groups, then continuous
                 if ordered:
-                    discrete_features: List[str] = []
-                    for group in disc_feature_groups.values():
-                        discrete_features += group
+                    discrete_features = flatten_dict(disc_feature_groups)
                     x_data = x_data[discrete_features + self.continuous_features]
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)

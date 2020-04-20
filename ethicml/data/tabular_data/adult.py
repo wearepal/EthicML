@@ -5,6 +5,7 @@ from warnings import warn
 from typing_extensions import Literal
 
 from ..dataset import Dataset
+from ..util import flatten_dict
 
 __all__ = ["Adult", "adult"]
 
@@ -128,8 +129,8 @@ def adult(
                 "relationship_Unmarried",
                 "relationship_Wife",
             ],
-            "salary": ["salary_<=50K", "salary_>50K",],
-            "sex": ["sex_Female", "sex_Male",],
+            "salary": ["salary_<=50K", "salary_>50K"],
+            "sex": ["sex_Female", "sex_Male"],
             "workclass": [
                 "workclass_Federal-gov",
                 "workclass_Local-gov",
@@ -140,10 +141,7 @@ def adult(
                 "workclass_Without-pay",
             ],
         }
-
-        discrete_features: List[str] = []
-        for group in disc_feature_groups.values():
-            discrete_features += group
+        discrete_features = flatten_dict(disc_feature_groups)
 
         continuous_features = [
             "age",
@@ -266,9 +264,7 @@ def _drop_native(disc_feature_groups: Dict[str, List[str]]) -> List[str]:
     # first set the native_country feature group to just the value that we want to keep
     disc_feature_groups["native-country"] = ["native-country_United-States"]
     # then, regenerate the list of discrete features; just like it's done in the constructor
-    discrete_features: List[str] = []
-    for group in disc_feature_groups.values():
-        discrete_features += group
+    discrete_features = flatten_dict(disc_feature_groups)
     assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
     # then add a new dummy feature to the feature group. `load_data()` will create this for us
     disc_feature_groups["native-country"].append("native-country_not_United-States")

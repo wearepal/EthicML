@@ -161,6 +161,9 @@ def test_load_compas_feature_length():
     assert len(compas().ordered_features["x"]) == 400
     assert len(compas().discrete_features) == 395
     assert len(compas().continuous_features) == 5
+    disc_feature_groups = compas().disc_feature_groups
+    assert disc_feature_groups is not None
+    assert len(disc_feature_groups["c-charge-desc"]) == 389
     assert data.s.shape == (6167, 1)
     assert data.y.shape == (6167, 1)
 

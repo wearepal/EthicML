@@ -9,6 +9,7 @@ from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.vision import TorchImageDataset
 
 from ..dataset import Dataset
+from ..util import flatten_dict
 
 __all__ = ["GenfacesAttributes", "genfaces", "create_genfaces_dataset"]
 
@@ -47,9 +48,7 @@ def genfaces(
         "hair_length": ["hair_length_long", "hair_length_medium", "hair_length_short"],
         "emotion": ["emotion_joy"],
     }
-    discrete_features: List[str] = []
-    for group in disc_feature_groups.values():
-        discrete_features += group
+    discrete_features = flatten_dict(disc_feature_groups)
     assert sens_attr in disc_feature_groups
     assert label in disc_feature_groups
     continuous_features = ["filename"]
