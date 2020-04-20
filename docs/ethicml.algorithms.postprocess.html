@@ -21,11 +21,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -170,14 +170,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.Hardt" title="ethicml.algorithms.postprocess.Hardt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hardt</span></code></a>(unfavorable_label, favorable_label)</p></td>
 <td><p>Post-processing method by Hardt et al.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="ethicml.algorithms.postprocess.PostAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PostAlgorithm</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="ethicml.algorithms.postprocess.PostAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PostAlgorithm</span></code></a>(name)</p></td>
 <td><p>Abstract Base Class for all algorithms that do post-processing.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.algorithms.postprocess.Hardt">
-<em class="property">class </em><code class="sig-name descname">Hardt</code><span class="sig-paren">(</span><em class="sig-param">unfavorable_label: int = 0</em>, <em class="sig-param">favorable_label: int = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">Hardt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unfavorable_label</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">favorable_label</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></p>
 <p>Post-processing method by Hardt et al.</p>
 <p>Init for Hardt.</p>
@@ -189,7 +189,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.Hardt.name" title="ethicml.algorithms.postprocess.Hardt.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
-<td><p>Getter for algorithm name.</p></td>
+<td><p>Name of the algorithm.</p></td>
 </tr>
 </tbody>
 </table>
@@ -205,15 +205,15 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.algorithms.postprocess.Hardt.name">
 <em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Getter for algorithm name.</p>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.algorithms.postprocess.Hardt.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_predictions</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">test_predictions</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">test</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.TestTuple</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Prediction<a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -232,11 +232,17 @@
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="ethicml.algorithms.postprocess.PostAlgorithm">
-<em class="property">class </em><code class="sig-name descname">PostAlgorithm</code><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">PostAlgorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
 <p>Abstract Base Class for all algorithms that do post-processing.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the algorithm</p>
+</dd>
+</dl>
 <p><strong>Attributes</strong></p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -261,15 +267,15 @@
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.algorithms.postprocess.PostAlgorithm.name">
-<em class="property">abstract property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="ethicml.algorithms.postprocess.PostAlgorithm.run">
-<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">train_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">train: ethicml.utility.data_structures.DataTuple</em>, <em class="sig-param">test_predictions: pandas.core.frame.DataFrame</em>, <em class="sig-param">test: ethicml.utility.data_structures.TestTuple</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_predictions</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">test_predictions</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.Prediction</span></em>, <em class="sig-param"><span class="n">test</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.TestTuple</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.Prediction<a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
