@@ -4,6 +4,7 @@ from warnings import warn
 from typing_extensions import Literal
 
 from ..dataset import Dataset
+from ..util import flatten_dict
 
 __all__ = ["Compas", "compas"]
 
@@ -20,21 +21,13 @@ def compas(
     split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
 ) -> Dataset:
     """Compas (or ProPublica) dataset."""
-    if True:  # pylint: disable=using-constant-test
-        features = [
-            "sex",
-            "age-num",
-            "race",
-            "juv-fel-count",
-            "juv-misd-count",
-            "juv-other-count",
-            "priors-count",
-            "two-year-recid",
-            "age-cat_25 - 45",
-            "age-cat_Greater than 45",
-            "age-cat_Less than 25",
-            "c-charge-degree_F",
-            "c-charge-degree_M",
+    disc_feature_groups = {
+        "sex": ["sex"],
+        "race": ["race"],
+        "two-year-recid": ["two-year-recid"],
+        "age-cat": ["age-cat_25 - 45", "age-cat_Greater than 45", "age-cat_Less than 25"],
+        "c-charge-degree": ["c-charge-degree_F", "c-charge-degree_M"],
+        "c-charge-desc": [
             "c-charge-desc_Abuse Without Great Harm",
             "c-charge-desc_Agg Abuse Elderlly/Disabled Adult",
             "c-charge-desc_Agg Assault W/int Com Fel Dome",
@@ -424,43 +417,46 @@ def compas(
             "c-charge-desc_Violation of Injunction Order/Stalking/Cyberstalking",
             "c-charge-desc_Voyeurism",
             "c-charge-desc_arrest case no charge",
-        ]
+        ],
+    }
+    discrete_features = flatten_dict(disc_feature_groups)
 
-        continuous_features = [
-            "age-num",
-            "juv-fel-count",
-            "juv-misd-count",
-            "juv-other-count",
-            "priors-count",
-        ]
+    continuous_features = [
+        "age-num",
+        "juv-fel-count",
+        "juv-misd-count",
+        "juv-other-count",
+        "priors-count",
+    ]
 
-        if split == "Sex":
-            sens_attrs = ["sex"]
-            s_prefix = ["sex"]
-            class_labels = ["two-year-recid"]
-            class_label_prefix = ["two-year-recid"]
-        elif split == "Race":
-            sens_attrs = ["race"]
-            s_prefix = ["race"]
-            class_labels = ["two-year-recid"]
-            class_label_prefix = ["two-year-recid"]
-        elif split == "Race-Sex":
-            sens_attrs = ["sex", "race"]
-            s_prefix = ["race", "sex"]
-            class_labels = ["two-year-recid"]
-            class_label_prefix = ["two-year-recid"]
-        else:
-            raise NotImplementedError
+    if split == "Sex":
+        sens_attrs = ["sex"]
+        s_prefix = ["sex"]
+        class_labels = ["two-year-recid"]
+        class_label_prefix = ["two-year-recid"]
+    elif split == "Race":
+        sens_attrs = ["race"]
+        s_prefix = ["race"]
+        class_labels = ["two-year-recid"]
+        class_label_prefix = ["two-year-recid"]
+    elif split == "Race-Sex":
+        sens_attrs = ["sex", "race"]
+        s_prefix = ["race", "sex"]
+        class_labels = ["two-year-recid"]
+        class_label_prefix = ["two-year-recid"]
+    else:
+        raise NotImplementedError
 
     return Dataset(
         name=f"Compas {split}",
         num_samples=6167,
         filename_or_path="compas-recidivism.csv",
-        features=features,
+        features=discrete_features + continuous_features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
         sens_attrs=sens_attrs,
         class_label_prefix=class_label_prefix,
         class_labels=class_labels,
         discrete_only=discrete_only,
+        disc_feature_groups=disc_feature_groups,
     )
