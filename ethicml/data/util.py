@@ -95,7 +95,4 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
 
 def flatten_dict(dictionary: Mapping[str, List[str]]) -> List[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
-    flattened: List[str] = []
-    for group in dictionary.values():
-        flattened += group
-    return flattened
+    return [x for inner_list in dictionary.values() for x in inner_list]
