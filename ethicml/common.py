@@ -1,4 +1,4 @@
-"""Common variables / constants that make things run smoother."""
+"""Common variables / consts that make things run smoother."""
 
 import os
 from pathlib import Path
