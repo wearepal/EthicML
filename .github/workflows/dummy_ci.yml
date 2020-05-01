@@ -11,8 +11,6 @@ on:
     - .gitignore
     - CODEOWNERS
     - LICENSE
-    - '!**/*.py'
-    - '!.github/**'
 
 jobs:
   test_with_pytest:
