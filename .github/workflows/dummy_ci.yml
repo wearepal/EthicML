@@ -5,6 +5,12 @@ on:
     branches:
     - master
     paths:
+    - 'docs/**'
+    - 'docsource/**'
+    - '**/*.md'
+    - .gitignore
+    - CODEOWNERS
+    - LICENSE
     - '!**/*.py'
     - '!.github/**'
 
