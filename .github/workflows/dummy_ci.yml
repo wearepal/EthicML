@@ -1,4 +1,4 @@
-name: EthicML CI
+name: EthicML dummy CI
 
 on:
   pull_request:
