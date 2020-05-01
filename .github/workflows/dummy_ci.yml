@@ -1,0 +1,54 @@
+name: EthicML CI
+
+on:
+  pull_request:
+    branches:
+    - master
+    paths:
+    - '!**/*.py'
+
+jobs:
+  test_with_pytest:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Test with pytest
+      run: |
+        echo "pass!"
+
+  lint_with_pylint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Lint with pylint
+      run: |
+        echo "pass!"
+
+  format_with_black:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Format with black
+      run: |
+        echo "pass!"
+
+  type_check_with_mypy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Type check with mypy
+      run: |
+        echo "pass!"
+
+  check_docstrings:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check docstrings with pydocstyle
+      run: |
+        echo "pass!"
