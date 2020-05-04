@@ -47,7 +47,7 @@ Given that we're considering fairness, the base of the toolbox is the triplet {x
 
 All methods must assume S and Y are multi-class.
 
-We use a named tuple to contain the triplet
+We use a DataTuple class to contain the triplet
 
 ```python
 triplet = DataTuple(x: pandas.DataFrame, s: pandas.DataFrame, y: pandas.DataFrame)
