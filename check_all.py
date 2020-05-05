@@ -26,12 +26,12 @@ print("")
 
 # pylint
 print("############### pylint #################")
-PYLINT_RESULTS = pylint.Run(["./ethicml/"], do_exit=False)
+PYLINT_RESULTS = pylint.Run(["./ethicml/"], exit=False)
 print("")
 
 # pylint
 print("############### pylint tests #################")
-PYLINT_RESULTS = pylint.Run(["./tests/"], do_exit=False)
+PYLINT_RESULTS = pylint.Run(["./tests/"], exit=False)
 print("")
 
 # mypy
