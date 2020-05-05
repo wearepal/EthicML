@@ -293,7 +293,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert model.name == "local installed LR"
 
     predictions: Prediction = model.run(train, test)
-    expected_num_pos = 240
+    expected_num_pos = 44
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
