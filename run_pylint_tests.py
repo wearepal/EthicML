@@ -6,7 +6,7 @@ import sys
 
 from pylint.lint import Run
 
-RESULTS = Run(["./tests/"], do_exit=False)
+RESULTS = Run(["./tests/"], exit=False)
 SCORE = RESULTS.linter.stats["global_note"]
 print("Your code has been rated at {:.2f}/10".format(SCORE))
 

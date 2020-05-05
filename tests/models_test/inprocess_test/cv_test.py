@@ -1,4 +1,4 @@
-from typing import Dict, List, NamedTuple, Union
+from typing import Dict, List, NamedTuple, Type, Union
 
 import pytest
 
@@ -10,7 +10,7 @@ from ethicml.utility import Prediction, TrainTestPair
 
 
 class CvParam(NamedTuple):
-    model: InAlgorithm
+    model: Type[InAlgorithm]
     hyperparams: Dict[str, Union[List[int], List[str]]]
     num_pos: int
 
@@ -24,7 +24,7 @@ CV_PARAMS = [
 @pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
 def test_cv(
     toy_train_test: TrainTestPair,
-    model: InAlgorithm,
+    model: Type[InAlgorithm],
     hyperparams: Dict[str, Union[List[int], List[str]]],
     num_pos: int,
 ):
@@ -45,7 +45,7 @@ def test_cv(
 @pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
 def test_parallel_cv(
     toy_train_test: TrainTestPair,
-    model: InAlgorithm,
+    model: Type[InAlgorithm],
     hyperparams: Dict[str, Union[List[int], List[str]]],
     num_pos: int,
 ) -> None:

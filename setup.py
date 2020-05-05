@@ -43,12 +43,7 @@ setup(
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
-        "ci": [
-            "pytest >= 3.3.2",
-            "pytest-cov >= 2.6.0",
-            "torch >= 1.1.0, <= 1.1.0.post2",
-            "torchvision == 0.3.0",
-        ],
+        "ci": ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch == 1.5.0", "torchvision == 0.6.0",],
         # use `pip install EthicML[dev]` to install development packages
         "dev": [
             "black",

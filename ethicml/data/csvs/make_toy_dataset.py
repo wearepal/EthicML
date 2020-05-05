@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 
-def main(seed: int, samples: int):
+def main(seed: int, samples: int) -> None:
     """Make a toy dataset that can be used to check an algorithm runs."""
     np.random.seed(seed)
     random.seed(seed)
