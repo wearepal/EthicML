@@ -1,4 +1,4 @@
-"""Test that we can get some metrics on predictions"""
+"""Test that we can get some metrics on predictions."""
 
 from typing import Tuple
 
@@ -15,25 +15,17 @@ from ethicml.evaluators import (
     run_metrics,
 )
 from ethicml.metrics import (
-    AS,
     BCR,
     CV,
-    F1,
     NMI,
     NPV,
     PPV,
     TNR,
     TPR,
     Accuracy,
-    BalancedAccuracy,
-    Hsic,
     LabelOutOfBounds,
-    Metric,
-    ProbNeg,
-    ProbOutcome,
     ProbPos,
     RenyiCorrelation,
-    Theil,
     Yanovich,
 )
 from ethicml.preprocessing import BalancedTestSplit, train_test_split

@@ -92,6 +92,4 @@ def temp_dir() -> Generator[Path, None, None]:
 
 
 def get_id(value):
-    if hasattr(value, "name"):
-        return value.name
-    return value
+    return getattr(value, "name", value)

@@ -18,9 +18,6 @@ class MetricTest(NamedTuple):
     name: str
     expected: float
 
-    def __str__(self):
-        return "asdafs"
-
 
 METRIC_TESTS = [
     MetricTest(model=SVM(), metric=Accuracy(), name="Accuracy", expected=0.925),

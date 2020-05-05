@@ -30,6 +30,5 @@ def test_threaded(toy_train_test: TrainTestPair, model: InAlgorithmAsync, name: 
 
     predictions: Prediction = run_blocking(model.run_async(train, test))
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == num_pos
-    assert (
-        predictions.hard.values[predictions.hard.values == 0].shape[0] == len(predictions) - num_pos
-    )
+    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
+    assert num_neg == len(predictions) - num_pos
