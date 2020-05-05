@@ -1,12 +1,12 @@
 """Test that we can get some metrics on predictions"""
 
-from typing import NamedTuple, Tuple
+from typing import Tuple
 
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.inprocess import LR, LRCV, SVM, InAlgorithm, Kamiran, LRProb
-from ethicml.data import adult, nonbinary_toy, load_data
+from ethicml.algorithms.inprocess import LR, LRCV, SVM, InAlgorithm
+from ethicml.data import adult, load_data, nonbinary_toy
 from ethicml.evaluators import (
     MetricNotApplicable,
     diff_per_sensitive_attribute,
@@ -37,373 +37,97 @@ from ethicml.metrics import (
     Yanovich,
 )
 from ethicml.preprocessing import BalancedTestSplit, train_test_split
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
-from tests.run_algorithm_test import get_train_test
+from ethicml.utility import DataTuple, Prediction
+from ethicml.utility.data_structures import TrainValPair
 
 
-class MetricTest(NamedTuple):
-    """Define a test for a metric."""
-
-    name: str
-    metric: Metric
-    expected_value: float
-
-
-METRIC_TESTS = [
-    MetricTest(metric=Accuracy(), name="Accuracy", expected_value=0.987),
-    MetricTest(metric=F1(), name="F1", expected_value=0.989),
-    MetricTest(metric=BalancedAccuracy(), name="Balanced Accuracy", expected_value=0.987),
-    MetricTest(metric=NMI(base="s"), name="NMI preds and s", expected_value=0.016),
-]
-
-
-@pytest.mark.parametrize("name,metric,expected_value", METRIC_TESTS)
-def test_get_score_of_predictions(name: str, metric: Metric, expected_value: float) -> None:
-    """test get acc of predictions"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    assert metric.name == name
-    score = metric.score(predictions, test)
-    assert score == approx(expected_value, abs=0.001)
-
-
-def test_accuracy_per_sens_attr():
-    """test accuracy per sens attr"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert acc_per_sens == {
-        'sensitive-attr_0': approx(0.985, abs=0.001),
-        'sensitive-attr_1': approx(0.989, abs=0.001),
-    }
-
-
-def test_anti_spurious() -> None:
-    """test anti-spurious"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    metric: Metric = AS()
-    assert metric.name == "anti_spurious"
-    score = metric.score(predictions, test)
-    assert score == approx(0.982, abs=0.001)
-
-
-def test_probpos_per_sens_attr():
-    """test probpos per sens attr"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbPos())
-    assert acc_per_sens == {
-        'sensitive-attr_0': approx(0.532, abs=0.001),
-        'sensitive-attr_1': approx(0.680, abs=0.001),
-    }
-
-
-def test_proboutcome_per_sens_attr():
-    """test proboutcome per sens attr"""
-    train, test = get_train_test()
-    model: LRProb = LRProb()
-    predictions: SoftPrediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbOutcome())
-    assert acc_per_sens == {
-        "sensitive-attr_0": approx(0.522, abs=0.001),
-        "sensitive-attr_1": approx(0.667, abs=0.001),
-    }
-
-
-def test_probneg_per_sens_attr():
-    """test probneg per sens attr"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, ProbNeg())
-    assert acc_per_sens == {
-        "sensitive-attr_0": approx(0.467, abs=0.001),
-        "sensitive-attr_1": approx(0.319, abs=0.001),
-    }
-
-
-def test_acc_per_nonbinary_sens():
-    """test acc per nonbinary sens"""
-    data: DataTuple = load_data(adult("Nationality"))
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
-    train, test = train_test
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run_test(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-
-    test_dict = {
-        "native-country_Cambodia_0": approx(0.778, abs=0.001),
-        "native-country_Cambodia_1": approx(0.500, abs=0.001),
-        "native-country_Canada_0": approx(0.779, abs=0.001),
-        "native-country_Canada_1": approx(0.595, abs=0.001),
-        "native-country_China_0": approx(0.778, abs=0.001),
-        "native-country_China_1": approx(0.800, abs=0.001),
-        "native-country_Columbia_0": approx(0.778, abs=0.001),
-        "native-country_Columbia_1": approx(1.000, abs=0.001),
-        "native-country_Cuba_0": approx(0.778, abs=0.001),
-        "native-country_Cuba_1": approx(0.826, abs=0.001),
-        "native-country_Dominican-Republic_0": approx(0.778, abs=0.001),
-        "native-country_Dominican-Republic_1": approx(0.933, abs=0.001),
-        "native-country_Ecuador_0": approx(0.778, abs=0.001),
-        "native-country_Ecuador_1": approx(0.800, abs=0.001),
-        "native-country_El-Salvador_0": approx(0.778, abs=0.001),
-        "native-country_El-Salvador_1": approx(1.000, abs=0.001),
-        "native-country_England_0": approx(0.779, abs=0.001),
-        "native-country_England_1": approx(0.600, abs=0.001),
-        "native-country_France_0": approx(0.778, abs=0.001),
-        "native-country_France_1": approx(0.500, abs=0.001),
-        "native-country_Germany_0": approx(0.778, abs=0.001),
-        "native-country_Germany_1": approx(0.679, abs=0.001),
-        "native-country_Greece_0": approx(0.778, abs=0.001),
-        "native-country_Greece_1": approx(0.636, abs=0.001),
-        "native-country_Guatemala_0": approx(0.778, abs=0.001),
-        "native-country_Guatemala_1": approx(0.952, abs=0.001),
-        "native-country_Haiti_0": approx(0.778, abs=0.001),
-        "native-country_Haiti_1": approx(0.929, abs=0.001),
-        "native-country_Holand-Netherlands_0": approx(0.778, abs=0.001),
-        "native-country_Honduras_0": approx(0.778, abs=0.001),
-        "native-country_Honduras_1": approx(1.000, abs=0.001),
-        "native-country_Hong_0": approx(0.778, abs=0.001),
-        "native-country_Hong_1": approx(0.667, abs=0.001),
-        "native-country_Hungary_0": approx(0.778, abs=0.001),
-        "native-country_Hungary_1": approx(1.000, abs=0.001),
-        "native-country_India_0": approx(0.778, abs=0.001),
-        "native-country_India_1": approx(0.589, abs=0.001),
-        "native-country_Iran_0": approx(0.778, abs=0.001),
-        "native-country_Iran_1": approx(0.364, abs=0.001),
-        "native-country_Ireland_0": approx(0.778, abs=0.001),
-        "native-country_Ireland_1": approx(0.818, abs=0.001),
-        "native-country_Italy_0": approx(0.778, abs=0.001),
-        "native-country_Italy_1": approx(0.565, abs=0.001),
-        "native-country_Jamaica_0": approx(0.778, abs=0.001),
-        "native-country_Jamaica_1": approx(0.800, abs=0.001),
-        "native-country_Japan_0": approx(0.778, abs=0.001),
-        "native-country_Japan_1": approx(0.760, abs=0.001),
-        "native-country_Laos_0": approx(0.778, abs=0.001),
-        "native-country_Laos_1": approx(1.000, abs=0.001),
-        "native-country_Mexico_0": approx(0.774, abs=0.001),
-        "native-country_Mexico_1": approx(0.963, abs=0.001),
-        "native-country_Nicaragua_0": approx(0.778, abs=0.001),
-        "native-country_Nicaragua_1": approx(0.875, abs=0.001),
-        "native-country_Outlying-US(Guam-USVI-etc)_0": approx(0.778, abs=0.001),
-        "native-country_Outlying-US(Guam-USVI-etc)_1": approx(0.800, abs=0.001),
-        "native-country_Peru_0": approx(0.778, abs=0.001),
-        "native-country_Peru_1": approx(0.923, abs=0.001),
-        "native-country_Philippines_0": approx(0.778, abs=0.001),
-        "native-country_Philippines_1": approx(0.717, abs=0.001),
-        "native-country_Poland_0": approx(0.778, abs=0.001),
-        "native-country_Poland_1": approx(0.813, abs=0.001),
-        "native-country_Portugal_0": approx(0.778, abs=0.001),
-        "native-country_Portugal_1": approx(0.800, abs=0.001),
-        "native-country_Puerto-Rico_0": approx(0.778, abs=0.001),
-        "native-country_Puerto-Rico_1": approx(0.921, abs=0.001),
-        "native-country_Scotland_0": approx(0.778, abs=0.001),
-        "native-country_Scotland_1": approx(1.000, abs=0.001),
-        "native-country_South_0": approx(0.778, abs=0.001),
-        "native-country_South_1": approx(0.714, abs=0.001),
-        "native-country_Taiwan_0": approx(0.778, abs=0.001),
-        "native-country_Taiwan_1": approx(0.429, abs=0.001),
-        "native-country_Thailand_0": approx(0.778, abs=0.001),
-        "native-country_Thailand_1": approx(0.750, abs=0.001),
-        "native-country_Trinadad&Tobago_0": approx(0.778, abs=0.001),
-        "native-country_Trinadad&Tobago_1": approx(1.000, abs=0.001),
-        "native-country_United-States_0": approx(0.806, abs=0.001),
-        "native-country_United-States_1": approx(0.776, abs=0.001),
-        "native-country_Vietnam_0": approx(0.778, abs=0.001),
-        "native-country_Vietnam_1": approx(0.929, abs=0.001),
-        "native-country_Yugoslavia_0": approx(0.778, abs=0.001),
-        "native-country_Yugoslavia_1": approx(0.714, abs=0.001),
-    }
-
-    for key in acc_per_sens:
-        assert acc_per_sens[key] == test_dict[key]
-
-
-def test_acc_per_race():
-    """test acc per race"""
-    data: DataTuple = load_data(adult("Race"))
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
-    train, test = train_test
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run_test(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    test_dict = {
-        "race_Amer-Indian-Eskimo_0": approx(0.78, abs=0.01),
-        "race_Amer-Indian-Eskimo_1": approx(0.94, abs=0.01),
-        "race_Asian-Pac-Islander_0": approx(0.78, abs=0.01),
-        "race_Asian-Pac-Islander_1": approx(0.73, abs=0.01),
-        "race_Black_0": approx(0.77, abs=0.01),
-        "race_Black_1": approx(0.87, abs=0.01),
-        "race_Other_0": approx(0.78, abs=0.01),
-        "race_Other_1": approx(0.88, abs=0.01),
-        "race_White_0": approx(0.85, abs=0.01),
-        "race_White_1": approx(0.77, abs=0.01),
-    }
-
-    for key in acc_per_sens:
-        assert acc_per_sens[key] == test_dict[key]
-
-
-def test_tpr_diff():
+def test_tpr_diff(toy_train_val: TrainValPair):
     """test tpr diff"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {
-        "sensitive-attr_0": approx(0.981, abs=0.001),
-        "sensitive-attr_1": approx(0.992, abs=0.001),
+        "sensitive-attr_0": approx(0.923, abs=0.001),
+        "sensitive-attr_1": approx(1.0, abs=0.001),
     }
     tpr_diff = diff_per_sensitive_attribute(tprs)
     print(tpr_diff)
-    assert tpr_diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.010, abs=0.001)
+    assert tpr_diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
 
 
-def test_get_nmi_of_predictions():
-    """test get nmi of predictions"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    nmi: Metric = NMI(base="y")
-    assert nmi.name == "NMI preds and y"
-    score = nmi.score(predictions, test)
-    assert score == approx(0.900, abs=0.001)
-
-
-def test_ppv_diff():
+def test_ppv_diff(toy_train_val: TrainValPair):
     """test ppv diff"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, PPV())
     assert PPV().name == "PPV"
     assert results == {
-        "sensitive-attr_0": approx(0.990, abs=0.001),
-        "sensitive-attr_1": approx(0.992, abs=0.001),
+        "sensitive-attr_0": approx(0.857, abs=0.001),
+        "sensitive-attr_1": approx(0.903, abs=0.001),
     }
     diff = diff_per_sensitive_attribute(results)
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.05, abs=0.1)
 
 
-def test_npv_diff():
+def test_npv_diff(toy_train_val: TrainValPair):
     """test npv diff"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, NPV())
     assert NPV().name == "NPV"
     assert results == {
-        "sensitive-attr_0": approx(0.978, abs=0.001),
-        "sensitive-attr_1": approx(0.984, abs=0.001),
+        "sensitive-attr_0": approx(0.958, abs=0.001),
+        "sensitive-attr_1": approx(1.0, abs=0.001),
     }
     diff = diff_per_sensitive_attribute(results)
-    assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.005, abs=0.001)
+    assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.042, abs=0.001)
 
 
-def test_bcr_diff():
+def test_bcr_diff(toy_train_val: TrainValPair):
     """test bcr diff"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     results = metric_per_sensitive_attribute(predictions, test, BCR())
     assert BCR().name == "BCR"
     assert results == {
-        "sensitive-attr_0": approx(0.985, abs=0.001),
-        "sensitive-attr_1": approx(0.988, abs=0.001),
+        "sensitive-attr_0": approx(0.921, abs=0.001),
+        "sensitive-attr_1": approx(0.892, abs=0.001),
     }
     diff = diff_per_sensitive_attribute(results)
-    assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.002, abs=0.001)
+    assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.029, abs=0.001)
 
 
-def test_cv():
-    """test cv"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    cross_val = CV()
-    score = cross_val.score(predictions, test)
-    assert CV().name == "CV"
-    assert score == approx(0.851, abs=0.001)
-
-
-def test_theil():
-    """test theil"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    theil = Theil()
-    score = theil.score(predictions, test)
-    assert Theil().name == "Theil_Index"
-    assert score == approx(0.009, abs=0.001)
-
-    model = LR()
-    predictions = model.run(train, test)
-    theil = Theil()
-    score = theil.score(predictions, test)
-    assert score == approx(0.007, abs=0.001)
-
-    model = Kamiran()
-    predictions = model.run(train, test)
-    theil = Theil()
-    score = theil.score(predictions, test)
-    assert score == approx(0.005, abs=0.001)
-
-
-def test_theil_per_sens_attr():
-    """test theil per sens attr"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    theil_per_sens = metric_per_sensitive_attribute(predictions, test, Theil())
-    assert theil_per_sens == {
-        "sensitive-attr_0": approx(0.011, abs=0.001),
-        "sensitive-attr_1": approx(0.007, abs=0.001),
-    }
-
-
-def test_hsic():
-    """test hsic"""
-    train, test = get_train_test()
-    model: InAlgorithm = SVM()
-    predictions: Prediction = model.run(train, test)
-    hsic = Hsic()
-    score = hsic.score(predictions, test)
-    assert Hsic().name == "HSIC"
-    assert score == approx(0.002, abs=0.001)
-
-
-def test_use_appropriate_metric():
+def test_use_appropriate_metric(toy_train_val: TrainValPair):
     """test use appropriate metric"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     with pytest.raises(MetricNotApplicable):
         metric_per_sensitive_attribute(predictions, test, CV())
 
 
-def test_run_metrics():
+def test_run_metrics(toy_train_val: TrainValPair):
     """test run metrics"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     results = run_metrics(predictions, test, [CV()], [TPR()])
     assert len(results) == 5
-    assert results["TPR_sensitive-attr_0"] == approx(0.981, abs=0.001)
-    assert results["TPR_sensitive-attr_1"] == approx(0.992, abs=0.001)
-    assert results["TPR_sensitive-attr_0-sensitive-attr_1"] == approx(0.010, abs=0.001)
-    assert results["TPR_sensitive-attr_0/sensitive-attr_1"] == approx(0.989, abs=0.001)
-    assert results["CV"] == approx(0.851, abs=0.001)
+    assert results["TPR_sensitive-attr_0"] == approx(0.923, abs=0.001)
+    assert results["TPR_sensitive-attr_1"] == approx(1.0, abs=0.001)
+    assert results["TPR_sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
+    assert results["TPR_sensitive-attr_0/sensitive-attr_1"] == approx(0.923, abs=0.001)
+    assert results["CV"] == approx(0.630, abs=0.001)
 
 
-def test_get_info():
+def test_get_info(toy_train_val: TrainValPair):
     """test get info"""
-    train, test = get_train_test()
+    train, test = toy_train_val
     model: LRCV = LRCV()
     predictions: Prediction = model.run(train, test)
     results = run_metrics(predictions, test, [], [])
@@ -525,14 +249,6 @@ def test_nb_acc():
     predictions: Prediction = model.run_test(train, test)
     acc_score = Accuracy().score(predictions, test)
     assert acc_score == 0.1
-    accs = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert accs == {"sens_0": approx(0.09, abs=0.1), "sens_1": approx(0.11, abs=0.1)}
-    model = LR()
-    predictions = model.run_test(train, test)
-    acc_score = Accuracy().score(predictions, test)
-    assert acc_score == 0.7
-    accs = metric_per_sensitive_attribute(predictions, test, Accuracy())
-    assert accs == {"sens_0": approx(0.72, abs=0.1), "sens_1": approx(0.66, abs=0.1)}
 
 
 def test_nb_tpr():
@@ -554,7 +270,7 @@ def test_nb_tpr():
     assert tpr_score == 0.0
 
     with pytest.raises(LabelOutOfBounds):
-        tpr_score = TPR(pos_class=0).score(predictions, test)
+        _ = TPR(pos_class=0).score(predictions, test)
 
     accs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert accs == {"sens_0": approx(0.0, abs=0.1), "sens_1": approx(0.0, abs=0.1)}
@@ -576,7 +292,7 @@ def test_nb_tpr():
     assert tpr_score == 1.0
 
     with pytest.raises(LabelOutOfBounds):
-        tpr_score = TPR(pos_class=0).score(predictions, test)
+        _ = TPR(pos_class=0).score(predictions, test)
 
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert tprs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}
@@ -601,7 +317,7 @@ def test_nb_tnr():
     assert tnr_score == 1.0
 
     with pytest.raises(LabelOutOfBounds):
-        tnr_score = TNR(pos_class=0).score(predictions, test)
+        _ = TNR(pos_class=0).score(predictions, test)
 
     accs = metric_per_sensitive_attribute(predictions, test, TNR())
     assert accs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}

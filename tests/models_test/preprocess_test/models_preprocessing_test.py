@@ -17,13 +17,12 @@ from ethicml.algorithms.preprocess import (
     Zemel,
 )
 from ethicml.preprocessing import query_dt, train_test_split
-from ethicml.utility import DataTuple, Prediction, TestTuple
-from tests.run_algorithm_test import get_train_test
+from ethicml.utility import DataTuple, Prediction, TestTuple, TrainTestPair
 
 
-def test_vfae():
+def test_vfae(toy_train_test: TrainTestPair):
     """test vfae"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
     assert vfae_model is not None
@@ -40,8 +39,8 @@ def test_vfae():
     assert svm_model.name == "SVM"
 
     predictions: Prediction = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 254
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 146
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 68
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 12
 
     vfae_model = VFAE(dataset="Toy", supervised=True, epochs=10, fairness="Eq. Opp", batch_size=100)
     assert vfae_model is not None
@@ -56,8 +55,8 @@ def test_vfae():
     assert new_train.name == "VFAE: " + str(train.name)
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 254
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 146
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 68
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 12
 
     vfae_model = VFAE(
         dataset="Toy", supervised=False, epochs=10, fairness="Eq. Opp", batch_size=100
@@ -72,13 +71,13 @@ def test_vfae():
     assert new_test.x.shape[0] == test.x.shape[0]
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 227
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 173
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 47
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 33
 
 
-def test_threaded_zemel():
+def test_threaded_zemel(toy_train_test: TrainTestPair):
     """test threaded zemel"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     model: PreAlgorithmAsync = Zemel()
     assert model is not None
@@ -95,8 +94,8 @@ def test_threaded_zemel():
     assert classifier.name == "SVM"
 
     predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 242
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 158
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
 
     beut_model: PreAlgorithm = Zemel()
     assert beut_model is not None
@@ -115,13 +114,13 @@ def test_threaded_zemel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 242
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 158
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
 
 
-def test_threaded_beutel():
+def test_threaded_beutel(toy_train_test: TrainTestPair):
     """test threaded beutel"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     model: PreAlgorithmAsync = Beutel()
     assert model is not None
@@ -140,8 +139,8 @@ def test_threaded_beutel():
     assert classifier.name == "SVM"
 
     predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 243
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 157
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 55
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 25
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
@@ -160,13 +159,13 @@ def test_threaded_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 243
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 157
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 55
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 25
 
 
-def test_threaded_custom_beutel():
+def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
     """test threaded custom beutel"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
     assert beut_model is not None
@@ -183,8 +182,8 @@ def test_threaded_custom_beutel():
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train_nt, new_test_nt)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 243
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 157
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 62
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 18
 
     model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
     assert model is not None
@@ -203,13 +202,13 @@ def test_threaded_custom_beutel():
     assert classifier.name == "SVM"
 
     treaded_predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 1].shape[0] == 243
-    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 0].shape[0] == 157
+    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 1].shape[0] == 62
+    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 0].shape[0] == 18
 
 
-def test_upsampler():
+def test_upsampler(toy_train_test: TrainTestPair):
     """test upsampler"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
     assert upsampler is not None
@@ -228,8 +227,8 @@ def test_upsampler():
     assert lr_model.name == "Logistic Regression, C=1.0"
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 236
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 164
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 39
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 41
 
     upsampler = Upsampler(strategy="uniform")
     new_train, new_test = upsampler.run(train, test)
@@ -239,8 +238,8 @@ def test_upsampler():
     assert new_train.name == train.name
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 239
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 161
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
 
     upsampler = Upsampler(strategy="preferential")
     new_train, new_test = upsampler.run(train, test)
@@ -250,8 +249,8 @@ def test_upsampler():
     assert new_train.name == train.name
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 258
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 142
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
 
 
 def test_calders():

@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 
 from ethicml.common import ROOT_PATH
-from ethicml.data import toy, load_data
+from ethicml.data import load_data, toy
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, TrainTestPair
 
@@ -23,6 +23,16 @@ def toy_train_test() -> TrainTestPair:
     test: DataTuple
     train, test = train_test_split(data)
     return TrainTestPair(train, test.remove_y())
+
+
+@pytest.fixture(scope="session")
+def toy_train_val() -> TrainTestPair:
+    """By making this a fixture, pytest can cache the result"""
+    data: DataTuple = load_data(toy())
+    train: DataTuple
+    test: DataTuple
+    train, test = train_test_split(data)
+    return TrainTestPair(train, test)
 
 
 @pytest.fixture(scope="module")
@@ -79,3 +89,9 @@ def temp_dir() -> Generator[Path, None, None]:
     """
     with tempfile.TemporaryDirectory() as tmpdir:
         yield Path(tmpdir)
+
+
+def get_id(value):
+    if hasattr(value, "name"):
+        return value.name
+    return value

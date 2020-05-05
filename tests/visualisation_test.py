@@ -8,26 +8,25 @@ from matplotlib import pyplot as plt
 
 from ethicml.algorithms.inprocess import LR, SVM, Kamiran
 from ethicml.algorithms.preprocess import Upsampler
-from ethicml.data import adult, toy, load_data
+from ethicml.data import adult, load_data, toy
 from ethicml.evaluators import evaluate_models
 from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
 from ethicml.preprocessing import train_test_split
-from ethicml.utility import DataTuple, Results
+from ethicml.utility import DataTuple, Results, TrainTestPair
 from ethicml.visualisation import plot_results, save_2d_plot, save_jointplot, save_label_plot
-from tests.run_algorithm_test import get_train_test
 
 
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
-def test_plot():
+def test_plot(toy_train_test: TrainTestPair):
     """test plot"""
-    train, _ = get_train_test()
+    train, _ = toy_train_test
     save_2d_plot(train, "./plots/test.png")
 
 
 @pytest.mark.usefixtures("plot_cleanup")
-def test_joint_plot():
+def test_joint_plot(toy_train_test: TrainTestPair):
     """test joint plot"""
-    train, _ = get_train_test()
+    train, _ = toy_train_test
     save_jointplot(train, "./plots/joint.png")
 
 

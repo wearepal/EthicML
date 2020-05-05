@@ -1,0 +1,63 @@
+from typing import Dict, List, NamedTuple, Union
+
+import pytest
+
+from ethicml.algorithms import run_blocking
+from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm
+from ethicml.evaluators import CrossValidator, CVResults
+from ethicml.metrics import Accuracy
+from ethicml.utility import Prediction, TrainTestPair
+
+
+class CvParam(NamedTuple):
+    model: InAlgorithm
+    hyperparams: Dict[str, Union[List[int], List[str]]]
+    num_pos: int
+
+
+CV_PARAMS = [
+    CvParam(model=SVM, hyperparams={"C": [1, 10, 100], "kernel": ["rbf", "linear"]}, num_pos=43),
+    CvParam(model=LR, hyperparams={"C": [0.01, 0.1, 1.0]}, num_pos=44),
+]
+
+
+@pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
+def test_cv(
+    toy_train_test: TrainTestPair,
+    model: InAlgorithm,
+    hyperparams: Dict[str, Union[List[int], List[str]]],
+    num_pos: int,
+):
+    """test cv svm"""
+    train, test = toy_train_test
+    cross_validator = CrossValidator(model, hyperparams)
+    assert cross_validator is not None
+
+    cv_results = cross_validator.run(train)
+    best_model = cv_results.best(Accuracy())
+    assert isinstance(best_model, InAlgorithm)
+
+    preds: Prediction = best_model.run(train, test)
+    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
+    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+
+
+@pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
+def test_parallel_cv(
+    toy_train_test: TrainTestPair,
+    model: InAlgorithm,
+    hyperparams: Dict[str, Union[List[int], List[str]]],
+    num_pos: int,
+) -> None:
+    """test parallel cv."""
+    train, test = toy_train_test
+    measure = Accuracy()
+
+    cross_validator = CrossValidator(model, hyperparams, max_parallel=1)
+    cv_results: CVResults = run_blocking(cross_validator.run_async(train, measures=[measure]))
+    best_model = cv_results.best(measure)
+    assert isinstance(best_model, InAlgorithm)
+
+    preds: Prediction = best_model.run(train, test)
+    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
+    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos

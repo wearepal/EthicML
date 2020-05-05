@@ -1,7 +1,7 @@
 """EthicML Tests"""
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, NamedTuple, Tuple
+from typing import Dict, List, NamedTuple, Tuple
 
 import pandas as pd
 import pytest
@@ -21,19 +21,18 @@ from ethicml.algorithms.inprocess import (
     Kamiran,
     LRProb,
     Majority,
-    SVMAsync,
     ZafarAccuracy,
     ZafarBaseline,
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
 )
-from ethicml.data import compas, toy, load_data
+from ethicml.data import compas, load_data, toy
 from ethicml.evaluators import CrossValidator, CVResults, evaluate_models_async, run_in_parallel
 from ethicml.metrics import AbsCV, Accuracy, Metric
 from ethicml.preprocessing import query_dt, train_test_split
 from ethicml.utility import DataTuple, Heaviside, Prediction, SoftPrediction, TrainTestPair
-from tests.run_algorithm_test import count_true, get_train_test
+from tests.run_algorithm_test import count_true
 
 
 class InprocessTest(NamedTuple):
@@ -45,18 +44,18 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="SVM", model=SVM(), num_pos=242),
-    InprocessTest(name="Majority", model=Majority(), num_pos=400),
-    InprocessTest(name="MLP", model=MLP(), num_pos=242),
-    InprocessTest(name="Logistic Regression, C=1.0", model=LR(), num_pos=240),
-    InprocessTest(name="LRCV", model=LRCV(), num_pos=241),
+    InprocessTest(name="SVM", model=SVM(), num_pos=45),
+    InprocessTest(name="Majority", model=Majority(), num_pos=80),
+    InprocessTest(name="MLP", model=MLP(), num_pos=43),
+    InprocessTest(name="Logistic Regression, C=1.0", model=LR(), num_pos=44),
+    InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
 ]
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
-def test_inprocess(name: str, model: InAlgorithm, num_pos: int):
+def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int):
     """Test an inprocess model"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
@@ -89,99 +88,6 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
     )
 
 
-def test_cv_svm():
-    """test cv svm"""
-    train, test = get_train_test()
-
-    hyperparams: Dict[str, List[Any]] = {"C": [1, 10, 100], "kernel": ["rbf", "linear"]}
-
-    svm_cv = CrossValidator(SVM, hyperparams, folds=3)
-
-    assert svm_cv is not None
-
-    cv_results = svm_cv.run(train)
-
-    best_model = cv_results.best(Accuracy())
-    assert isinstance(best_model, InAlgorithm)
-
-    predictions: Prediction = best_model.run(train, test)
-    expected_num_pos = 242
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    assert (
-        predictions.hard.values[predictions.hard.values == 0].shape[0]
-        == len(predictions) - expected_num_pos
-    )
-
-
-def test_threaded_svm():
-    """test threaded svm"""
-    train, test = get_train_test()
-
-    model: InAlgorithmAsync = SVMAsync()
-    assert model is not None
-    assert model.name == "SVM"
-
-    predictions: Prediction = run_blocking(model.run_async(train, test))
-    expected_num_pos = 242
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    assert (
-        predictions.hard.values[predictions.hard.values == 0].shape[0]
-        == len(predictions) - expected_num_pos
-    )
-
-
-def test_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """test cv lr"""
-    train, test = toy_train_test
-
-    hyperparams: Dict[str, List[float]] = {"C": [0.01, 0.1, 1.0]}
-
-    lr_cv = CrossValidator(LR, hyperparams, folds=3)
-
-    assert lr_cv is not None
-
-    measure = Accuracy()
-    cv_results: CVResults = lr_cv.run(train, measures=[measure])
-
-    assert cv_results.best_hyper_params(measure)["C"] == 1.0
-    best_model = cv_results.best(measure)
-    assert isinstance(best_model, InAlgorithm)
-
-    predictions: Prediction = best_model.run(train, test)
-    expected_num_pos = 240
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    assert (
-        predictions.hard.values[predictions.hard.values == 0].shape[0]
-        == len(predictions) - expected_num_pos
-    )
-
-
-def test_parallel_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """test parallel cv lr"""
-    train, test = toy_train_test
-
-    hyperparams: Dict[str, List[float]] = {"C": [0.001, 0.01]}
-
-    lr_cv = CrossValidator(LR, hyperparams, folds=2, max_parallel=1)
-
-    assert lr_cv is not None
-
-    measure = Accuracy()
-    cv_results: CVResults = run_blocking(lr_cv.run_async(train, measures=[measure]))
-
-    assert cv_results.best_hyper_params(measure)["C"] == 0.01
-    best_model = cv_results.best(measure)
-    assert isinstance(best_model, InAlgorithm)
-
-    predictions: Prediction = best_model.run(train, test)
-    expected_num_pos = 244
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    assert (
-        predictions.hard.values[predictions.hard.values == 0].shape[0]
-        == len(predictions) - expected_num_pos
-    )
-
-
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     """test fair cv lr"""
     train, _ = toy_train_test
@@ -199,9 +105,9 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
     print(best_result)
 
-    assert best_result.params["C"] == 1e-5
-    assert best_result.scores["Accuracy"] == approx(0.9300, rel=1e-4)
-    assert best_result.scores["CV absolute"] == approx(0.8485, rel=1e-4)
+    assert best_result.params["C"] == 1e-4
+    assert best_result.scores["Accuracy"] == approx(0.888, abs=0.001)
+    assert best_result.scores["CV absolute"] == approx(0.832, abs=0.001)
 
 
 # @pytest.fixture(scope="module")
@@ -368,7 +274,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     class _LocalInstalledLR(InstalledModel):
         def __init__(self):
             super().__init__(
-                name="local installed LR", dir_name=".", top_dir="", executable=sys.executable
+                name="local installed LR", dir_name="../..", top_dir="", executable=sys.executable
             )
 
         def _script_command(
@@ -392,9 +298,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
-def test_agarwal():
+def test_agarwal(toy_train_test: TrainTestPair):
     """test agarwal"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     agarwal_variants: List[InAlgorithmAsync] = []
     model_names: List[str] = []
@@ -402,27 +308,27 @@ def test_agarwal():
 
     agarwal_variants.append(Agarwal())
     model_names.append("Agarwal, LR, DP")
-    expected_results.append((241, 159))
+    expected_results.append((45, 35))
 
     agarwal_variants.append(Agarwal(fairness="EqOd"))
     model_names.append("Agarwal, LR, EqOd")
-    expected_results.append((240, 160))
+    expected_results.append((44, 36))
 
     agarwal_variants.append(Agarwal(classifier="SVM"))
     model_names.append("Agarwal, SVM, DP")
-    expected_results.append((241, 159))
+    expected_results.append((45, 35))
 
     agarwal_variants.append(Agarwal(classifier="SVM", kernel="linear"))
     model_names.append("Agarwal, SVM, DP")
-    expected_results.append((242, 158))
+    expected_results.append((42, 38))
 
     agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd"))
     model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((241, 159))
+    expected_results.append((45, 35))
 
     agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd", kernel="linear"))
     model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((241, 159))
+    expected_results.append((42, 38))
 
     results = run_blocking(
         run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
@@ -454,12 +360,12 @@ def test_threaded_agarwal():
             datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
         )
     )
-    assert results.data["assert_result"].iloc[0] == 1.0
+    assert results.data["assert_result"].iloc[0] == 0.0
 
 
-def test_lr_prob():
+def test_lr_prob(toy_train_test: TrainTestPair):
     """test lr prob"""
-    train, test = get_train_test()
+    train, test = toy_train_test
 
     model: LRProb = LRProb()
     assert model.name == "Logistic Regression Prob, C=1.0"
@@ -469,8 +375,8 @@ def test_lr_prob():
     predictions: SoftPrediction = model.run(train, test)
     hard_predictions = pd.Series(heavi.apply(predictions.soft.to_numpy()))
     pd.testing.assert_series_equal(hard_predictions, predictions.hard)
-    assert hard_predictions.values[hard_predictions.values == 1].shape[0] == 240
-    assert hard_predictions.values[hard_predictions.values == 0].shape[0] == 160
+    assert hard_predictions.values[hard_predictions.values == 1].shape[0] == 44
+    assert hard_predictions.values[hard_predictions.values == 0].shape[0] == 36
 
 
 def test_kamiran(toy_train_test: TrainTestPair):
@@ -482,8 +388,8 @@ def test_kamiran(toy_train_test: TrainTestPair):
     assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: Prediction = kamiran_model.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 241
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 159
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
 
     # remove all samples with s=0 & y=1 from the data
     train_no_s0y1 = query_dt(train, "sensitive_attr != 0 | decision != 1")

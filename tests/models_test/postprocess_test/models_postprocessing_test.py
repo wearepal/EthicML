@@ -3,8 +3,7 @@
 from ethicml.algorithms.inprocess import LR, InAlgorithm
 from ethicml.algorithms.postprocess import Hardt, PostAlgorithm
 from ethicml.utility import Prediction, TrainTestPair, concat_tt
-
-from .run_algorithm_test import count_true
+from tests.run_algorithm_test import count_true
 
 
 def test_hardt(toy_train_test: TrainTestPair) -> None:
@@ -25,10 +24,10 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     # seperate out predictions on train set and predictions on test set
     pred_train = predictions.hard.iloc[: train.y.shape[0]]
     pred_test = predictions.hard.iloc[train.y.shape[0] :]
-    assert count_true(pred_test.values == 1) == 240
-    assert count_true(pred_test.values == 0) == 160
+    assert count_true(pred_test.values == 1) == 44
+    assert count_true(pred_test.values == 0) == 36
 
     post_model: PostAlgorithm = Hardt()
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == 209
-    assert count_true(fair_preds.hard.values == 0) == 191
+    assert count_true(fair_preds.hard.values == 1) == 35
+    assert count_true(fair_preds.hard.values == 0) == 45

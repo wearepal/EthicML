@@ -3,7 +3,7 @@ Test that an algorithm can run against some data
 """
 import os
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
@@ -13,7 +13,7 @@ from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, Kamiran, Majority
 from ethicml.algorithms.postprocess import PostAlgorithm
 from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
-from ethicml.data import adult, Dataset, toy, load_data
+from ethicml.data import Dataset, adult, toy
 from ethicml.evaluators import (
     MetricNotApplicable,
     evaluate_models,
@@ -22,15 +22,7 @@ from ethicml.evaluators import (
     run_in_parallel,
 )
 from ethicml.metrics import CV, TPR, Accuracy, Metric
-from ethicml.preprocessing import train_test_split
-from ethicml.utility import DataTuple, TrainTestPair
-
-
-def get_train_test() -> Tuple[DataTuple, DataTuple]:
-    """Helper function for other tests which loads the Toy dataset and splits it into train-test"""
-    data: DataTuple = load_data(toy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
-    return train_test
+from ethicml.utility import TrainTestPair
 
 
 def count_true(mask: "np.ndarray[np.bool_]") -> int:
@@ -38,17 +30,17 @@ def count_true(mask: "np.ndarray[np.bool_]") -> int:
     return mask.nonzero()[0].shape[0]
 
 
-def test_can_load_test_data():
+def test_can_load_test_data(toy_train_test: TrainTestPair):
     """test whether we can load test data"""
-    train, test = get_train_test()
+    train, test = toy_train_test
     assert train is not None
     assert test is not None
 
 
-def test_run_parallel():
+def test_run_parallel(toy_train_test: TrainTestPair):
     """test run parallel"""
-    data0 = get_train_test()
-    data1 = get_train_test()
+    data0 = toy_train_test
+    data1 = toy_train_test
     result = run_blocking(
         run_in_parallel(
             [LR(), SVM(), Majority()],
@@ -57,19 +49,19 @@ def test_run_parallel():
         )
     )
     # LR
-    assert count_true(result[0][0].hard.values == 1) == 240
-    assert count_true(result[0][0].hard.values == 0) == 160
-    assert count_true(result[0][1].hard.values == 1) == 240
-    assert count_true(result[0][1].hard.values == 0) == 160
+    assert count_true(result[0][0].hard.values == 1) == 44
+    assert count_true(result[0][0].hard.values == 0) == 36
+    assert count_true(result[0][1].hard.values == 1) == 44
+    assert count_true(result[0][1].hard.values == 0) == 36
     # SVM
-    assert count_true(result[1][0].hard.values == 1) == 242
-    assert count_true(result[1][0].hard.values == 0) == 158
-    assert count_true(result[1][1].hard.values == 1) == 242
-    assert count_true(result[1][1].hard.values == 0) == 158
+    assert count_true(result[1][0].hard.values == 1) == 45
+    assert count_true(result[1][0].hard.values == 0) == 35
+    assert count_true(result[1][1].hard.values == 1) == 45
+    assert count_true(result[1][1].hard.values == 0) == 35
     # Majority
-    assert count_true(result[2][0].hard.values == 1) == 400
+    assert count_true(result[2][0].hard.values == 1) == 80
     assert count_true(result[2][0].hard.values == 0) == 0
-    assert count_true(result[2][1].hard.values == 1) == 400
+    assert count_true(result[2][1].hard.values == 1) == 80
     assert count_true(result[2][1].hard.values == 0) == 0
 
 

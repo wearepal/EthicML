@@ -315,6 +315,13 @@ class TrainTestPair(NamedTuple):
     test: TestTuple
 
 
+class TrainValPair(NamedTuple):
+    """2-Tuple of train and test data."""
+
+    train: DataTuple
+    validation: DataTuple
+
+
 class Results:
     """Container for results from `evaluate_models`."""
 

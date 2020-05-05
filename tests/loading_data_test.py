@@ -37,9 +37,9 @@ def test_load_data():
     """test loading data"""
     with pytest.deprecated_call():  # assert that this gives a deprecation warning
         data: DataTuple = Toy().load()
-    assert (2000, 10) == data.x.shape
-    assert (2000, 1) == data.s.shape
-    assert (2000, 1) == data.y.shape
+    assert (400, 10) == data.x.shape
+    assert (400, 1) == data.s.shape
+    assert (400, 1) == data.y.shape
     assert data.name == "Toy"
 
 
@@ -84,7 +84,7 @@ def test_load_data_as_a_function(data_root: Path):
     ]
     assert data_obj.feature_split["s"] == ["sensitive-attr"]
     assert data_obj.feature_split["y"] == ["decision"]
-    assert len(data_obj) == 2000
+    assert len(data_obj) == 400
 
 
 def test_joining_2_load_functions(data_root: Path):
@@ -94,9 +94,9 @@ def test_joining_2_load_functions(data_root: Path):
         data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
     )
     data: DataTuple = data_obj.load()
-    assert (2000, 10) == data.x.shape
-    assert (2000, 1) == data.s.shape
-    assert (2000, 1) == data.y.shape
+    assert (400, 10) == data.x.shape
+    assert (400, 1) == data.s.shape
+    assert (400, 1) == data.y.shape
 
 
 def test_load_adult():
