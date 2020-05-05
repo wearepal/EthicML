@@ -48,13 +48,13 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
-    expected_num_pos = 242
+    expected_num_pos = 42
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
 
     predictions = run_blocking(model.run_async(train, test))
-    expected_num_pos = 242
+    expected_num_pos = 42
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
@@ -99,13 +99,13 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert model is not None
 
     predictions = model.run(train, test)
-    expected_num_pos = 242
+    expected_num_pos = 42
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
 
     predictions = run_blocking(model.run_async(train, test))
-    expected_num_pos = 242
+    expected_num_pos = 42
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
