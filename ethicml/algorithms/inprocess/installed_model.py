@@ -81,9 +81,7 @@ class InstalledModel(InAlgorithmAsync):
             environ["PIPENV_YES"] = "true"
             environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
-            subprocess.check_call(
-                [sys.executable, "-m", "pipenv", "install"], env=environ, shell=True
-            )
+            subprocess.check_call([sys.executable, "-m", "pipenv", "install"], env=environ)
 
     def remove(self) -> None:
         """Removes the directory that we created in _clone_directory()."""
