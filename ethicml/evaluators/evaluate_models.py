@@ -12,7 +12,18 @@ from ethicml.algorithms.preprocess import PreAlgorithm
 from ethicml.data import Dataset, load_data
 from ethicml.metrics import Metric
 from ethicml.preprocessing import DataSplitter, RandomSplit
-from ethicml.utility import DataTuple, Prediction, Results, TestTuple, TrainTestPair
+from ethicml.utility import (
+    DataTuple,
+    Prediction,
+    Results,
+    TestTuple,
+    TrainTestPair,
+    results_from_file,
+    append_file_to_results,
+    append_df_to_results,
+    save_results_as_csv,
+    make_results,
+)
 
 from .parallelism import run_in_parallel
 from .per_sensitive_attribute import (
@@ -97,7 +108,7 @@ def load_results(
         DataFrame if the file exists; None otherwise
     """
     path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
-    return Results.from_file(path_to_file)
+    return results_from_file(path_to_file)
 
 
 def _result_path(
@@ -249,21 +260,21 @@ def evaluate_models(
                 # =========================== end: run inprocess models ===========================
 
                 path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-                results: Results = Results(results_df)
+                results: Results = make_results(results_df)
                 # put old results before new results -> prepend=True
-                results.append_from_file(path_to_file, prepend=True)
-                results.save_as_csv(path_to_file)
+                results = append_file_to_results(results, path_to_file, prepend=True)
+                save_results_as_csv(results, path_to_file)
             # ========================== end: loop over preprocessed data =========================
         # =================================== end: one repeat =====================================
 
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
     preprocess_names = [model.name for model in preprocess_models]
-    results = Results()  # create empty Results object
+    results = make_results()  # create empty Results object
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
             path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-            results.append_from_file(path_to_file)
+            results = append_file_to_results(results, path_to_file)
     return results
 
 
@@ -373,8 +384,7 @@ async def evaluate_models_async(
     )
 
     # ======================================= merge results =======================================
-    all_results.append_df(transf_results.data)
-    return all_results
+    return append_df_to_results(all_results, transf_results)
 
 
 def _gather_metrics(
@@ -393,7 +403,7 @@ def _gather_metrics(
     num_cols = len(all_predictions[0]) if all_predictions else 0
     all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
 
-    all_results = Results()
+    all_results = make_results()
 
     # compute metrics, collect them and write them to files
     for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
@@ -414,10 +424,10 @@ def _gather_metrics(
 
         # write results to CSV files and load previous results from the files if they already exist
         path_to_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
-        results: Results = Results(results_df)
+        results: Results = make_results(results_df)
         # put old results before new results -> prepend=True
-        results.append_from_file(path_to_file, prepend=True)
-        results.save_as_csv(path_to_file)
-        all_results.append_df(results.data)
+        results = append_file_to_results(results, path_to_file, prepend=True)
+        save_results_as_csv(results, path_to_file)
+        all_results = append_df_to_results(all_results, results)
 
     return all_results

@@ -1,4 +1,5 @@
-from typing import Dict, List, NamedTuple, Type, Union
+"""Tests for cross validation."""
+from typing import Dict, List, NamedTuple, Type, Union, Sequence
 
 import pytest
 
@@ -10,8 +11,10 @@ from ethicml.utility import Prediction, TrainTestPair
 
 
 class CvParam(NamedTuple):
+    """Specification of a unit test for cross validation."""
+
     model: Type[InAlgorithm]
-    hyperparams: Dict[str, Union[List[int], List[str]]]
+    hyperparams: Dict[str, Union[Sequence[float], List[str]]]
     num_pos: int
 
 
@@ -25,7 +28,7 @@ CV_PARAMS = [
 def test_cv(
     toy_train_test: TrainTestPair,
     model: Type[InAlgorithm],
-    hyperparams: Dict[str, Union[List[int], List[str]]],
+    hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ):
     """test cv svm"""
@@ -46,7 +49,7 @@ def test_cv(
 def test_parallel_cv(
     toy_train_test: TrainTestPair,
     model: Type[InAlgorithm],
-    hyperparams: Dict[str, Union[List[int], List[str]]],
+    hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ) -> None:
     """test parallel cv."""

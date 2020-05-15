@@ -22,7 +22,7 @@ from ethicml.evaluators import (
     run_in_parallel,
 )
 from ethicml.metrics import CV, TPR, Accuracy, Metric
-from ethicml.utility import TrainTestPair
+from ethicml.utility import TrainTestPair, filter_and_map_results, filter_results
 
 
 def count_true(mask: "np.ndarray[np.bool_]") -> int:
@@ -71,7 +71,7 @@ def test_empty_evaluate():
     empty_result = evaluate_models([toy()], repeats=3, delete_prev=True)
     expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
-    pd.testing.assert_frame_equal(empty_result.data, expected_result)
+    pd.testing.assert_frame_equal(empty_result, expected_result)
 
 
 @pytest.mark.usefixtures("results_cleanup")
@@ -110,7 +110,7 @@ def test_run_alg_suite():
         delete_prev=True,
         topic="pytest",
     )
-    pd.testing.assert_frame_equal(parallel_results.data, results.data, check_like=True)
+    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     files = os.listdir(Path(".") / "results")
     file_names = [
@@ -131,7 +131,7 @@ def test_run_alg_suite():
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race_Upsample uniform.csv")
     read = read.set_index(["dataset", "transform", "model", "split_id"])
-    pd.testing.assert_frame_equal(reloaded.data, read)
+    pd.testing.assert_frame_equal(reloaded, read)
 
 
 @pytest.mark.usefixtures("results_cleanup")
@@ -193,22 +193,22 @@ def test_run_alg_suite_no_pipeline():
         fair_pipeline=False,
         delete_prev=True,
     )
-    pd.testing.assert_frame_equal(parallel_results.data, results.data, check_like=True)
+    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     num_datasets = 2
     num_preprocess = 1
     num_fair_inprocess = 1
     num_unfair_inprocess = 1
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
-    assert len(results.data) == expected_num
+    assert len(results) == expected_num
 
-    assert len(results.filter(["Kamiran & Calders LR"])) == 2  # result for Toy and for Adult
-    assert len(results.filter(["Toy"], index="dataset")) == 3  # results for Kamiran, LR, Upsampler
-    different_name = results.filter_and_map({"Kamiran & Calders LR": "Kamiran & Calders"})
-    assert len(different_name.filter(["Kamiran & Calders LR"])) == 0
-    assert len(different_name.filter(["Kamiran & Calders"])) == 2
+    assert len(filter_results(results, ["Kamiran & Calders LR"])) == 2  # result for Toy and Adult
+    assert len(filter_results(results, ["Toy"], index="dataset")) == 3  # Kamiran, LR and Upsampler
+    different_name = filter_and_map_results(results, {"Kamiran & Calders LR": "Kamiran & Calders"})
+    assert len(filter_results(different_name, ["Kamiran & Calders LR"])) == 0
+    assert len(filter_results(different_name, ["Kamiran & Calders"])) == 2
 
     pd.testing.assert_frame_equal(
-        results.filter(["Kamiran & Calders LR"]).data,
-        results.query("model == 'Kamiran & Calders LR'").data,
+        filter_results(results, ["Kamiran & Calders LR"]),
+        results.query("model == 'Kamiran & Calders LR'"),
     )

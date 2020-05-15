@@ -186,20 +186,19 @@ def single_plot(
     Returns:
         the legend object if something was plotted; False otherwise
     """
-    results_df = results.data
-    mask_for_dataset = results_df.index.get_level_values("dataset") == dataset
+    mask_for_dataset = results.index.get_level_values("dataset") == dataset
     if transform is not None:
         transforms: List[str] = [transform]
     else:
-        transforms = [str(t) for t in results_df.index.to_frame()["transform"].unique()]
+        transforms = [str(t) for t in results.index.to_frame()["transform"].unique()]
 
     entries: List[DataEntry] = []
     count = 0
-    for model in results_df.index.to_frame()["model"].unique():
-        mask_for_model = results_df.index.get_level_values("model") == model
+    for model in results.index.to_frame()["model"].unique():
+        mask_for_model = results.index.get_level_values("model") == model
         for transform_ in transforms:
-            mask_for_transform = results_df.index.get_level_values("transform") == transform_
-            data = results_df.loc[mask_for_dataset & mask_for_model & mask_for_transform]
+            mask_for_transform = results.index.get_level_values("transform") == transform_
+            data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
             if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
                 if not include_nan_entries:
                     continue  # this entry has missing values
@@ -250,10 +249,9 @@ def plot_results(
     """
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)
-    results_df = results.data
 
     def _get_columns(metric: Metric) -> List[str]:
-        cols = [col for col in results_df.columns if metric.name in col]
+        cols = [col for col in results.columns if metric.name in col]
         if not cols:
             raise ValueError(f'No matching columns found for Metric "{metric.name}".')
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
@@ -266,14 +264,14 @@ def plot_results(
         # if the metric is given as a Metric object, look for matching columns
         cols_x = _get_columns(metric_x)
     else:
-        if metric_x not in results_df.columns:
+        if metric_x not in results.columns:
             raise ValueError(f'No column named "{metric_x}".')
         cols_x = [metric_x]
 
     if isinstance(metric_y, Metric):
         cols_y = _get_columns(metric_y)
     else:
-        if metric_y not in results_df.columns:
+        if metric_y not in results.columns:
             raise ValueError(f'No column named "{metric_y}".')
         cols_y = [metric_y]
 
@@ -283,12 +281,12 @@ def plot_results(
 
     transforms: List[Optional[str]]
     if transforms_separately:
-        transforms = [str(t) for t in results_df.index.to_frame()["transform"].unique()]
+        transforms = [str(t) for t in results.index.to_frame()["transform"].unique()]
     else:
         transforms = [None]
 
     figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
-    for dataset in results_df.index.to_frame()["dataset"].unique():
+    for dataset in results.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
         for transform in transforms:
             for x_axis, y_axis in possible_pairs:

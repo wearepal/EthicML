@@ -221,7 +221,7 @@ def test_threaded_agarwal():
             datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
         )
     )
-    assert results.data["assert_result"].iloc[0] == 0.0
+    assert results["assert_result"].iloc[0] == 0.0
 
 
 def test_lr_prob(toy_train_test: TrainTestPair):

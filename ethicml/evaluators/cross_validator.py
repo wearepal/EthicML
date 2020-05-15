@@ -2,7 +2,7 @@
 from collections import defaultdict
 from itertools import product
 from statistics import mean
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Type
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Type, Sequence, Mapping
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.metrics import AbsCV, Accuracy, Metric
@@ -131,7 +131,7 @@ class CrossValidator:
     def __init__(
         self,
         model: Type[InAlgorithm],
-        hyperparams: Dict[str, List[Any]],
+        hyperparams: Mapping[str, Sequence[Any]],
         folds: int = 3,
         max_parallel: int = 0,
     ):
