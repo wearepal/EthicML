@@ -8,6 +8,7 @@ from typing import (
     List,
     Mapping,
     NamedTuple,
+    NewType,
     Optional,
     Sequence,
     Tuple,
@@ -29,8 +30,17 @@ __all__ = [
     "SoftPrediction",
     "TestTuple",
     "TrainTestPair",
+    "aggregate_results",
+    "append_df_to_results",
+    "append_file_to_results",
     "concat_dt",
     "concat_tt",
+    "filter_and_map_results",
+    "filter_results",
+    "make_results",
+    "map_over_results_index",
+    "results_from_file",
+    "save_results_as_csv",
 ]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -322,100 +332,91 @@ class TrainValPair(NamedTuple):
     validation: DataTuple
 
 
-class Results:
-    """Container for results from `evaluate_models`."""
+Results = NewType("Results", pd.DataFrame)  # Container for results from `evaluate_models`
 
-    columns: Final = ["dataset", "transform", "model", "split_id"]
+RESULTS_COLUMNS: Final = ["dataset", "transform", "model", "split_id"]
 
-    def __init__(self, data_frame: Optional[pd.DataFrame] = None):
-        """Initialise Results object."""
-        self._data: pd.DataFrame
-        if data_frame is not None:
-            # ensure correct index
-            if data_frame.index.names != self.columns:
-                self._data = data_frame.set_index(self.columns)
-            else:
-                self._data = data_frame
+
+def make_results(data_frame: Optional[pd.DataFrame] = None) -> Results:
+    """Initialise Results object.
+
+    You should always use this function instead of using the "constructor" directly, because this
+    function checks whether the columns are correct.
+    """
+    if data_frame is not None:
+        # ensure correct index
+        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+            return Results(data_frame.set_index(RESULTS_COLUMNS))
         else:
-            self._data = pd.DataFrame(columns=self.columns).set_index(self.columns)
+            return Results(data_frame)
+    else:
+        return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
 
-    @property
-    def data(self) -> pd.DataFrame:
-        """Getter for data property."""
-        return self._data
 
-    def __repr__(self) -> str:
-        """Overwrite __repr__ magic method."""
-        return repr(self._data)
+def append_df_to_results(
+    results: Results, data_frame: pd.DataFrame, prepend: bool = False
+) -> Results:
+    """Append (or prepend) a DataFrame to this object."""
+    if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+        data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
+    order = [data_frame, results] if prepend else [results, data_frame]
+    # set sort=False so that the order of the columns is preserved
+    return Results(pd.concat(order, sort=False, axis="index"))
 
-    def __str__(self) -> str:
-        """Overwrite __str__ magic method."""
-        return str(self._data)
 
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        return len(self._data)
+def append_file_to_results(results: Results, csv_file: Path, prepend: bool = False) -> Results:
+    """Append results from a CSV file."""
+    if csv_file.is_file():  # if file exists
+        return append_df_to_results(results, pd.read_csv(csv_file), prepend=prepend)
+    return results
 
-    def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
-        """Append (or prepend) a DataFrame to this object."""
-        if data_frame.index.names != self.columns:
-            data_frame = data_frame.set_index(self.columns)  # set correct index
-        order = [data_frame, self._data] if prepend else [self._data, data_frame]
-        # set sort=False so that the order of the columns is preserved
-        self._data = pd.concat(order, sort=False, axis="index")
 
-    def append_from_file(self, csv_file: Path, prepend: bool = False) -> bool:
-        """Append results from a CSV file."""
-        if csv_file.is_file():  # if file exists
-            self.append_df(pd.read_csv(csv_file), prepend=prepend)
-            return True
-        return False
+def save_results_as_csv(results: Results, file_path: Path) -> None:
+    """Save to csv."""
+    # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
+    results.reset_index(drop=False).to_csv(file_path, index=False)
 
-    def save_as_csv(self, file_path: Path) -> None:
-        """Save to csv."""
-        # `_data` has the multi index based on [dataset, transform, ...] so we have to reset that
-        self._data.reset_index(drop=False).to_csv(file_path, index=False)
 
-    @classmethod
-    def from_file(cls, csv_file: Path) -> Optional["Results"]:
-        """Load results from a CSV file that was created by `evaluate_models`.
+def results_from_file(csv_file: Path) -> Optional[Results]:
+    """Load results from a CSV file that was created by `evaluate_models`.
 
-        Args:
-            csv_file: path to a CSV file with results
+    Args:
+        csv_file: path to a CSV file with results
 
-        Returns:
-            DataFrame if the file exists; None otherwise
-        """
-        if csv_file.is_file():
-            return cls(pd.read_csv(csv_file))
-        return None
+    Returns:
+        Results if the file exists; None otherwise
+    """
+    if csv_file.is_file():
+        return make_results(pd.read_csv(csv_file))
+    return None
 
-    def map_over_index(
-        self, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]
-    ) -> "Results":
-        """Change the values of the index with a transformation function."""
-        results_mapped = self._data.copy()
-        results_mapped.index = results_mapped.index.map(mapper)
-        return Results(results_mapped)
 
-    def filter(
-        self, values: Iterable, index: Literal["dataset", "transform", "model"] = "model"
-    ) -> "Results":
-        """Filter the entries based on the given values."""
-        return Results(self._data.loc[self._data.index.get_level_values(index).isin(list(values))])
+def map_over_results_index(
+    results: Results, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]
+) -> Results:
+    """Change the values of the index with a transformation function."""
+    results_mapped = results.copy()
+    results_mapped.index = results_mapped.index.map(mapper)
+    return make_results(results_mapped)
 
-    def query(self, query_str: str) -> "Results":
-        """Query the underlying dataframe."""
-        return Results(self._data.query(query_str))
 
-    def filter_and_map(self, mapping: Mapping[str, str]) -> "Results":
-        """Filter entries and change the index with a mapping."""
-        return self.filter(mapping).map_over_index(
-            lambda index: (index[0], index[1], mapping[index[2]], index[3])
-        )
+def filter_results(
+    results: Results, values: Iterable, index: Literal["dataset", "transform", "model"] = "model"
+) -> Results:
+    """Filter the entries based on the given values."""
+    return Results(results.loc[results.index.get_level_values(index).isin(list(values))])
 
-    def aggregate(
-        self, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
-    ) -> pd.DataFrame:
-        """Aggregate results over the repeats."""
-        return self._data.groupby(["dataset", "transform", "model"]).agg(aggregator)[metrics]
+
+def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:
+    """Filter entries and change the index with a mapping."""
+    return map_over_results_index(
+        filter_results(results, mapping),
+        lambda index: (index[0], index[1], mapping[index[2]], index[3]),
+    )
+
+
+def aggregate_results(
+    results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
+) -> pd.DataFrame:
+    """Aggregate results over the repeats."""
+    return results.groupby(["dataset", "transform", "model"]).agg(aggregator)[metrics]
