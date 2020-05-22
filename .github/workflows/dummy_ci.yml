@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
     - master
-    paths:
+    paths:  # these are exactly the paths that are ignored in the real CI
     - 'docs/**'
     - 'docsource/**'
     - '**/*.md'
