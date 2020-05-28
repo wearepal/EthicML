@@ -1,4 +1,4 @@
-"""FWD Loss."""
+"""DRO Loss."""
 from typing import Optional, Type
 
 from torch import Tensor, nn
@@ -10,7 +10,7 @@ __all__ = ["DROLoss"]
 
 
 class DROLoss(nn.Module):
-    """Fairness Without Demographics Loss. Make sure to set reduction='none'"""
+    """Fairness Without Demographics Loss."""
 
     def __init__(self, loss_module: Optional[Type[_Loss]] = None, eta: float = 0.5):
         """Set up the loss, set which loss you want to optimize and the eta to offset by."""
