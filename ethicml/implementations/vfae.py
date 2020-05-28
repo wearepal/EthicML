@@ -1,5 +1,5 @@
 """Implementation of VFAE."""
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import pandas as pd
 import torch
@@ -7,8 +7,7 @@ from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
-from ethicml.data import adult, compas, credit, Dataset, german, nonbinary_toy, sqf, toy
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, TestTuple, get_dataset_obj_by_name
 
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
@@ -28,24 +27,6 @@ class VfaeArgs(PreAlgoArgs):
     z1_dec_size: List[int]
 
 
-def get_dataset_obj_by_name(name: str) -> Dataset:
-    """Given a dataset name, get the corresponding dataset object."""
-    lookup: Dict[str, Dataset] = {
-        "Adult": adult(),
-        "Compas": compas(),
-        "Credit": credit(),
-        "German": german(),
-        "NonBinaryToy": nonbinary_toy(),
-        "SQF": sqf(),
-        "Toy": toy(),
-    }
-
-    if name not in lookup:
-        raise NotImplementedError("That dataset doesn't exist")
-
-    return lookup[name]
-
-
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: VfaeArgs
 ) -> Tuple[DataTuple, TestTuple]:
@@ -59,7 +40,7 @@ def train_and_transform(
     Returns:
         Tuple of Encoded Train Dataset and Test Dataset.
     """
-    dataset = get_dataset_obj_by_name(flags.dataset)
+    dataset = get_dataset_obj_by_name(flags.dataset)()
 
     # Set up the data
     train_data = CustomDataset(train)

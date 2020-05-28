@@ -9,6 +9,7 @@ from pytest import approx
 
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
+    DRO,
     LR,
     LRCV,
     MLP,
@@ -44,6 +45,8 @@ INPROCESS_TESTS = [
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Logistic Regression, C=1.0", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5), num_pos=45),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0), num_pos=59),
 ]
 
 
