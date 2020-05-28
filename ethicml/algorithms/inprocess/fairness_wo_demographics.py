@@ -16,7 +16,7 @@ class FWD(InAlgorithmAsync):
 
     def __init__(
         self,
-        eta: float,
+        eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,
         network_size: Optional[List[int]] = None,
@@ -25,7 +25,7 @@ class FWD(InAlgorithmAsync):
         super().__init__(name="FWD")
         if network_size is None:
             network_size = [50]
-        self.flags: Dict[str, Union[int, str, List[int]]] = {
+        self.flags: Dict[str, Union[float, int, str, List[int]]] = {
             "eta": eta,
             "batch_size": batch_size,
             "epochs": epochs,
