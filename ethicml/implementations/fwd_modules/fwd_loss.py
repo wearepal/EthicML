@@ -21,5 +21,5 @@ class FWDLoss(nn.Module):
         self.eta = eta
 
     @implements(nn.Module)
-    def forward(self, input: Tensor, target: Tensor) -> Tensor:
-        return (self.loss(input, target,) - self.eta).relu().square()
+    def forward(self, pred: Tensor, target: Tensor) -> Tensor:  # pylint: disable=arguments-differ
+        return (self.loss(pred, target) - self.eta).relu().square()

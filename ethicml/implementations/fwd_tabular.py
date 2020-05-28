@@ -5,20 +5,14 @@ from typing import List
 import pandas as pd
 import torch
 from torch import optim
-from torch.optim.optimizer import Optimizer
+from torch.optim.optimizer import Optimizer  # pylint: disable=no-name-in-module
 from torch.utils.data import DataLoader
 
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.fwd_modules.fwd_classifier import FWDClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.utils import InAlgoArgs, load_data_from_flags
-from ethicml.utility import (
-    DataTuple,
-    Prediction,
-    SoftPrediction,
-    TestTuple,
-    get_dataset_obj_by_name,
-)
+from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 
 class FwdArgs(InAlgoArgs):
