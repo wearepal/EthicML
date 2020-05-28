@@ -9,7 +9,7 @@ __all__ = ["get_dataset_obj_by_name"]
 
 def get_dataset_obj_by_name(name: str) -> Dataset:
     """Given a dataset name, get the corresponding dataset object."""
-    lookup: Dict[str, Dataset] = {
+    lookup: Dict[str, Callable[[], Dataset] = {
         "Adult": adult(),
         "Compas": compas(),
         "Credit": credit(),
