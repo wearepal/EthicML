@@ -40,7 +40,7 @@ def train_and_transform(
     Returns:
         Tuple of Encoded Train Dataset and Test Dataset.
     """
-    dataset = get_dataset_obj_by_name(flags.dataset)
+    dataset = get_dataset_obj_by_name(flags.dataset)()
 
     # Set up the data
     train_data = CustomDataset(train)
