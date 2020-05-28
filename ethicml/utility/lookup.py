@@ -1,3 +1,5 @@
+"""Lookup tables / Swutch statements for project level objects."""
+
 from typing import Dict
 
 from ethicml.data import Dataset, adult, compas, credit, german, nonbinary_toy, sqf, toy

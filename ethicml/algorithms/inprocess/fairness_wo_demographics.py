@@ -1,13 +1,19 @@
+"""Fairness without Demographics."""
+
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from ethicml.algorithms.inprocess import InAlgorithmAsync
-from ethicml.algorithms.inprocess.shared import flag_interface
+from ethicml.common import implements
+
+from .in_algorithm import InAlgorithmAsync
+from .shared import flag_interface
 
 __all__ = ["FWD"]
 
 
 class FWD(InAlgorithmAsync):
+    """Implementation of https://arxiv.org/abs/1806.08010 ."""
+
     def __init__(
         self,
         eta: float,
@@ -15,6 +21,7 @@ class FWD(InAlgorithmAsync):
         batch_size: int = 32,
         network_size: Optional[List[int]] = None,
     ):
+        """Init module."""
         super().__init__(name="FWD")
         if network_size is None:
             network_size = [50]
@@ -25,6 +32,7 @@ class FWD(InAlgorithmAsync):
             "network_size": network_size,
         }
 
+    @implements(InAlgorithmAsync)
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         args = flag_interface(train_path, test_path, pred_path, self.flags)
         return ["-m", "ethicml.implementations.fwd_tabular"] + args

@@ -1,15 +1,20 @@
+"""Fairness without Demographics Classifier."""
 from typing import List
 
 from torch import Tensor, nn
 from torch.nn import BCELoss
 
+from ...common import implements
 from .fwd_loss import FWDLoss
 
 __all__ = ["FWDClassifier"]
 
 
 class FWDClassifier(nn.Module):
+    """Simple Classifier using Fairness without Demographics Loss."""
+
     def __init__(self, in_size: int, out_size: int, network_size: List[int], eta: float) -> None:
+        """Init the module."""
         super().__init__()
 
         self.loss = FWDLoss(loss_module=BCELoss(), eta=eta)
@@ -31,5 +36,6 @@ class FWDClassifier(nn.Module):
                 )
             self.seq.add_module("FWD Model last layer", nn.Linear(network_size[-1], out_size))
 
+    @implements(nn.Module)
     def forward(self, x: Tensor) -> Tensor:
         return self.seq(x).sigmoid()

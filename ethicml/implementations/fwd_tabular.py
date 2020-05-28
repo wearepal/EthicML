@@ -1,3 +1,4 @@
+"""Implementation of Fairness without Demographics."""
 from pathlib import Path
 from typing import List
 
@@ -21,20 +22,20 @@ from ethicml.utility import (
 
 
 class FwdArgs(InAlgoArgs):
+    """Args used in this module."""
+
     batch_size: int
     epochs: int
     eta: float
     network_size: List[int]
 
 
-def train_model(
-    epoch: int, model: FWDClassifier, train_loader: DataLoader, optimizer: Optimizer, args: FwdArgs
-):
+def train_model(epoch: int, model: FWDClassifier, train_loader: DataLoader, optimizer: Optimizer):
+    """Train a model."""
     model.train()
     train_loss = 0.0
-    for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):
+    for batch_idx, (data_x, _, data_y) in enumerate(train_loader):
         data_x = data_x.to("cpu")
-        data_s = data_s.to("cpu")
         data_y = data_y.to("cpu")
         optimizer.zero_grad()
         y_prob = model.forward(data_x)
@@ -53,7 +54,7 @@ def train_model(
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftPrediction:
-
+    """Train a network and return predictions."""
     # Set up the data
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=args.batch_size)
@@ -72,7 +73,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftP
 
     # Run Network
     for epoch in range(int(args.epochs)):
-        train_model(epoch, model, train_loader, optimizer, args)
+        train_model(epoch, model, train_loader, optimizer)
 
     # Transform output
     post_test: List[List[float]] = []
@@ -86,7 +87,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftP
 
 
 def main():
-    """This function runs the SVM model as a standalone program."""
+    """This function runs the FWD model as a standalone program on tabular data."""
     set_seed(888)
     args = FwdArgs().parse_args()
     train, test = load_data_from_flags(args)
