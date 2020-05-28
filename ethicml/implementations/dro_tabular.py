@@ -9,7 +9,7 @@ from torch.optim.optimizer import Optimizer  # pylint: disable=no-name-in-module
 from torch.utils.data import DataLoader
 
 from ethicml.implementations.beutel import set_seed
-from ethicml.implementations.fwd_modules.fwd_classifier import FWDClassifier
+from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.utils import InAlgoArgs, load_data_from_flags
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
@@ -24,7 +24,7 @@ class DroArgs(InAlgoArgs):
     network_size: List[int]
 
 
-def train_model(epoch: int, model: FWDClassifier, train_loader: DataLoader, optimizer: Optimizer):
+def train_model(epoch: int, model: DROClassifier, train_loader: DataLoader, optimizer: Optimizer):
     """Train a model."""
     model.train()
     train_loss = 0.0
@@ -47,7 +47,7 @@ def train_model(epoch: int, model: FWDClassifier, train_loader: DataLoader, opti
     print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftPrediction:
+def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftPrediction:
     """Train a network and return predictions."""
     # Set up the data
     train_data = CustomDataset(train)
@@ -57,7 +57,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftP
     test_loader = DataLoader(test_data, batch_size=args.batch_size)
 
     # Build Network
-    model = FWDClassifier(
+    model = DROClassifier(
         in_size=train_data.xdim,
         out_size=train_data.ydim,
         network_size=args.network_size,
@@ -83,7 +83,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: FwdArgs) -> SoftP
 def main():
     """This function runs the FWD model as a standalone program on tabular data."""
     set_seed(888)
-    args = FwdArgs().parse_args()
+    args = DroArgs().parse_args()
     train, test = load_data_from_flags(args)
     train_and_predict(train, test, args).to_npz(Path(args.predictions))
 

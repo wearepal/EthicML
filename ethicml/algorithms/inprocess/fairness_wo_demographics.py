@@ -8,10 +8,10 @@ from ethicml.common import implements
 from .in_algorithm import InAlgorithmAsync
 from .shared import flag_interface
 
-__all__ = ["FWD"]
+__all__ = ["DRO"]
 
 
-class FWD(InAlgorithmAsync):
+class DRO(InAlgorithmAsync):
     """Implementation of https://arxiv.org/abs/1806.08010 ."""
 
     def __init__(
@@ -22,7 +22,7 @@ class FWD(InAlgorithmAsync):
         network_size: Optional[List[int]] = None,
     ):
         """Init module."""
-        super().__init__(name="FWD")
+        super().__init__(name="Dist Robust Optim")
         if network_size is None:
             network_size = [50]
         self.flags: Dict[str, Union[float, int, str, List[int]]] = {
@@ -35,4 +35,4 @@ class FWD(InAlgorithmAsync):
     @implements(InAlgorithmAsync)
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         args = flag_interface(train_path, test_path, pred_path, self.flags)
-        return ["-m", "ethicml.implementations.fwd_tabular"] + args
+        return ["-m", "ethicml.implementations.dro_tabular"] + args
