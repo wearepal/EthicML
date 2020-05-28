@@ -15,7 +15,7 @@ from ethicml.implementations.utils import InAlgoArgs, load_data_from_flags
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 
-class FwdArgs(InAlgoArgs):
+class DroArgs(InAlgoArgs):
     """Args used in this module."""
 
     batch_size: int
