@@ -24,7 +24,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/predictive-analytics-lab/EthicML",
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests.*", "tests"]),
     package_data={"ethicml.data": ["csvs/*.csv", "csvs/*.csv.zip"], "ethicml": ["py.typed"]},
     python_requires=">=3.6",
     install_requires=[
