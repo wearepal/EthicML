@@ -22,4 +22,4 @@ class DROLoss(nn.Module):
 
     @implements(nn.Module)
     def forward(self, pred: Tensor, target: Tensor) -> Tensor:  # pylint: disable=arguments-differ
-        return (self.loss(pred, target) - self.eta).relu().square().mean()
+        return (self.loss(pred, target) - self.eta).relu().pow(2).mean()
