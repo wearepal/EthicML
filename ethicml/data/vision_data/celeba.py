@@ -124,11 +124,12 @@ def celeba(
         assert label in discrete_features
         continuous_features = ["filename"]
 
-    img_dir = root / _BASE_FOLDER / "img_align_celeba"
+    base = root / _BASE_FOLDER
+    img_dir = base / "img_align_celeba"
     if download:
-        _download(root)
+        _download(base)
     elif check_integrity:
-        if not _check_integrity(root):
+        if not _check_integrity(base):
             return None, img_dir
 
     dataset_obj = Dataset(
