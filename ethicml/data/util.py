@@ -1,6 +1,6 @@
 """Useful methods that are used in some of the data objects."""
 from itertools import groupby
-from typing import List, Mapping
+from typing import Dict, List, Mapping
 
 __all__ = [
     "get_concatenated_features",
@@ -96,3 +96,19 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
 def flatten_dict(dictionary: Mapping[str, List[str]]) -> List[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
     return [x for inner_list in dictionary.values() for x in inner_list]
+
+
+def reduce_feature_group(
+    disc_feature_groups: Dict[str, List[str]],
+    feature_group: str,
+    to_keep: List[str],
+    remaining_feature_name: str,
+) -> List[str]:
+    """Drop all features in the given feature group except the ones in to_keep."""
+    # first set the given feature group to just the value that we want to keep
+    disc_feature_groups[feature_group] = to_keep
+    # then, regenerate the list of discrete features; just like it's done in the constructor
+    discrete_features = flatten_dict(disc_feature_groups)
+    # then add a new dummy feature to the feature group. `load_data()` will create this for us
+    disc_feature_groups[feature_group].append(f"{feature_group}{remaining_feature_name}")
+    return discrete_features

@@ -1,17 +1,20 @@
 """Class to describe features of the Adult dataset."""
-from typing import Dict, List
 from warnings import warn
 
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import flatten_dict
+from ..util import flatten_dict, reduce_feature_group
 
 __all__ = ["Adult", "adult"]
 
+AdultSplits = Literal[
+    "Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality", "Education"
+]
+
 
 def Adult(  # pylint: disable=invalid-name
-    split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
+    split: AdultSplits = "Sex",
     discrete_only: bool = False,
     binarize_nationality: bool = False,
 ) -> Dataset:
@@ -21,7 +24,7 @@ def Adult(  # pylint: disable=invalid-name
 
 
 def adult(
-    split: Literal["Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality"] = "Sex",
+    split: AdultSplits = "Sex",
     discrete_only: bool = False,
     binarize_nationality: bool = False,
 ) -> Dataset:
@@ -236,12 +239,31 @@ def adult(
             s_prefix = ["native-country"]
             class_labels = ["salary_>50K"]
             class_label_prefix = ["salary"]
+        elif split == "Education":
+            to_keep = ["education_HS-grad", "education_Some-college"]
+            remaining_feature_name = "other"
+            discrete_features = reduce_feature_group(
+                disc_feature_groups=disc_feature_groups,
+                feature_group="education",
+                to_keep=to_keep,
+                remaining_feature_name="_" + remaining_feature_name,
+            )
+            sens_attrs = to_keep + ["education_" + remaining_feature_name]
+            s_prefix = ["education_"]
+            class_labels = ["salary_>50K"]
+            class_label_prefix = ["salary"]
         else:
             raise NotImplementedError
 
         name = f"Adult {split}"
         if binarize_nationality:
-            discrete_features = _drop_native(disc_feature_groups)
+            discrete_features = reduce_feature_group(
+                disc_feature_groups=disc_feature_groups,
+                feature_group="native-country",
+                to_keep=["native-country_United-States"],
+                remaining_feature_name="_not_United-States",
+            )
+            assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
             name += ", binary nationality"
 
     return Dataset(
@@ -257,15 +279,3 @@ def adult(
         discrete_only=discrete_only,
         disc_feature_groups=disc_feature_groups,
     )
-
-
-def _drop_native(disc_feature_groups: Dict[str, List[str]]) -> List[str]:
-    """Drop all features that encode the native country except the one for the US."""
-    # first set the native_country feature group to just the value that we want to keep
-    disc_feature_groups["native-country"] = ["native-country_United-States"]
-    # then, regenerate the list of discrete features; just like it's done in the constructor
-    discrete_features = flatten_dict(disc_feature_groups)
-    assert len(discrete_features) == 60  # 56 (discrete) input features + 4 label features
-    # then add a new dummy feature to the feature group. `load_data()` will create this for us
-    disc_feature_groups["native-country"].append("native-country_not_United-States")
-    return discrete_features
