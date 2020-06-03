@@ -323,6 +323,25 @@ def test_load_adult_drop_native():
     assert "native-country_Canada" not in data.x.columns
 
 
+def test_load_adult_education():
+    """test load adult education"""
+    adult_data = adult("Education")
+    assert adult_data.name == "Adult Education"
+    assert "education_HS-grad" in adult_data.sens_attrs
+    # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
+    assert "education_other" in adult_data.sens_attrs
+    assert "education_Masters" not in adult_data.sens_attrs
+
+    # with dummies
+    data = adult_data.load(ordered=True, generate_dummies=True)
+    assert (45222, 62) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "education_HS-grad" in data.x.columns
+    assert "education_other" in data.x.columns
+    assert "education_Masters" not in data.x.columns
+
+
 def test_additional_columns_load(data_root: Path):
     """test additional columns load"""
     data_loc = data_root / "adult.csv.zip"
