@@ -19,7 +19,7 @@ class LR(InAlgorithm):
     def __init__(self, C: Optional[float] = None):
         """Init LR."""
         self.C = LogisticRegression().C if C is None else C
-        super().__init__(name=f"Logistic Regression, C={self.C}", is_fairness_algo=False)
+        super().__init__(name=f"Logistic Regression (C={self.C})", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -34,7 +34,7 @@ class LRProb(InAlgorithm):
     def __init__(self, C: Optional[int] = None):
         """Init LRProb."""
         self.C = LogisticRegression().C if C is None else C
-        super().__init__(name=f"Logistic Regression Prob, C={self.C}", is_fairness_algo=False)
+        super().__init__(name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:

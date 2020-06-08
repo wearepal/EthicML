@@ -17,7 +17,7 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
 
     in_model: InAlgorithm = LR()
     assert in_model is not None
-    assert in_model.name == "Logistic Regression, C=1.0"
+    assert in_model.name == "Logistic Regression (C=1.0)"
 
     predictions: Prediction = in_model.run(train, train_test)
 
