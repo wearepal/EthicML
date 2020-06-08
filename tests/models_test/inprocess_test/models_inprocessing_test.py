@@ -41,7 +41,7 @@ class InprocessTest(NamedTuple):
 
 INPROCESS_TESTS = [
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
-    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=45),
+    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
