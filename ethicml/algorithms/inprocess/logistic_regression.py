@@ -1,6 +1,7 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
 from typing import Optional
 
+import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
@@ -46,15 +47,17 @@ class LRProb(InAlgorithm):
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
-    def __init__(self) -> None:
+    def __init__(self, seed: int = 888) -> None:
         """Init LRCV."""
         super().__init__(name="LRCV", is_fairness_algo=False)
+        self.seed = seed
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        folder = KFold(n_splits=3, shuffle=False)
+        random_state = np.random.RandomState(seed=self.seed)
+        folder = KFold(n_splits=3, shuffle=True, random_state=random_state)
         clf = LogisticRegressionCV(
-            cv=folder, n_jobs=-1, random_state=888, solver="liblinear", multi_class="auto"
+            cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)), info=dict(C=clf.C_[0]))
