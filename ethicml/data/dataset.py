@@ -7,7 +7,7 @@ from typing_extensions import final
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
-from .util import filter_features_by_prefixes, get_discrete_features, flatten_dict
+from .util import filter_features_by_prefixes, get_discrete_features
 
 __all__ = ["Dataset"]
 
@@ -187,6 +187,15 @@ class Dataset:
 
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]
+        # undo one-hot encoding if it's there
+        if s_data.shape[1] > 1:
+            name = s_data.columns[0].split("_")[0]
+            s_data.columns = range(s_data.shape[1])
+            s_data = s_data.idxmax(axis="columns").to_frame(name=name)
         y_data = dataframe[feature_split["y"]]
+        if y_data.shape[1] > 1:
+            name = y_data.columns[0].split("_")[0]
+            y_data.columns = range(y_data.shape[1])
+            y_data = y_data.idxmax(axis="columns").to_frame(name=name)
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
