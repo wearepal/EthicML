@@ -107,8 +107,8 @@ def reduce_feature_group(
     """Drop all features in the given feature group except the ones in to_keep."""
     # first set the given feature group to just the value that we want to keep
     disc_feature_groups[feature_group] = list(to_keep)
-    # then, regenerate the list of discrete features; just like it's done in the constructor
-    discrete_features = flatten_dict(disc_feature_groups)
     # then add a new dummy feature to the feature group. `load_data()` will create this for us
     disc_feature_groups[feature_group].append(f"{feature_group}{remaining_feature_name}")
+    # then, regenerate the list of discrete features; just like it's done in the constructor
+    discrete_features = flatten_dict(disc_feature_groups)
     return discrete_features
