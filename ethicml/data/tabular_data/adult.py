@@ -245,7 +245,7 @@ def adult(
                 remaining_feature_name="_" + remaining_feature_name,
             )
             sens_attrs = to_keep + ["education_" + remaining_feature_name]
-            s_prefix = ["education_"]
+            s_prefix = ["education"]
             class_labels = ["salary_>50K"]
             class_label_prefix = ["salary"]
         else:

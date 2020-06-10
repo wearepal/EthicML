@@ -165,7 +165,7 @@ class Dataset:
 
         if generate_dummies:
             # check whether we have to generate some complementary columns for binary features
-            disc_feature_groups = self.disc_feature_groups
+            disc_feature_groups = self._disc_feature_groups
             if disc_feature_groups is not None:
                 for group in disc_feature_groups.values():
                     assert len(group) > 1, "binary features should be encoded as two features"
@@ -186,10 +186,10 @@ class Dataset:
                         )
                 # order the features: first discrete features in the groups, then continuous
                 if ordered:
-                    discrete_features = flatten_dict(disc_feature_groups)
-                    feature_split_x = filter_features_by_prefixes(
-                        discrete_features + self.continuous_features, self.features_to_remove
-                    )
+                    filtered_disc_feature_groups = self.disc_feature_groups
+                    assert filtered_disc_feature_groups is not None
+                    discrete_features = flatten_dict(filtered_disc_feature_groups)
+                    feature_split_x = discrete_features + self.continuous_features
 
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]
