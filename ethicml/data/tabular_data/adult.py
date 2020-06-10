@@ -14,9 +14,7 @@ AdultSplits = Literal[
 
 
 def Adult(  # pylint: disable=invalid-name
-    split: AdultSplits = "Sex",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
+    split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
 ) -> Dataset:
     """UCI Adult dataset."""
     warn("The Adult class is deprecated. Use the function instead.", DeprecationWarning)
@@ -24,9 +22,7 @@ def Adult(  # pylint: disable=invalid-name
 
 
 def adult(
-    split: AdultSplits = "Sex",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
+    split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
 ) -> Dataset:
     """UCI Adult dataset."""
     if True:  # pylint: disable=using-constant-test

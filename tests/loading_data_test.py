@@ -321,6 +321,8 @@ def test_load_adult_drop_native():
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
     assert "native-country_Canada" not in data.x.columns
+    native_cols = data.x[["native-country_United-States", "native-country_not_United-States"]]
+    assert (native_cols.sum(axis="columns") == 1).all()
 
 
 def test_load_adult_education():
@@ -334,12 +336,14 @@ def test_load_adult_education():
 
     # with dummies
     data = adult_data.load(ordered=True, generate_dummies=True)
-    assert (45222, 62) == data.x.shape
-    assert (45222, 1) == data.s.shape
+    assert (45222, 90) == data.x.shape
+    assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "education_HS-grad" in data.x.columns
     assert "education_other" in data.x.columns
     assert "education_Masters" not in data.x.columns
+
+    assert (data.s.sum(axis="columns") == 1).all()
 
 
 def test_additional_columns_load(data_root: Path):
