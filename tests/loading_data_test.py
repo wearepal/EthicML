@@ -336,7 +336,7 @@ def test_load_adult_education():
 
     # ordered
     data = adult_data.load(ordered=True, generate_dummies=True)
-    assert (45222, 87) == data.x.shape
+    assert (45222, 86) == data.x.shape
     assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "education_HS-grad" in data.s.columns
@@ -347,7 +347,7 @@ def test_load_adult_education():
 
     # not ordered
     data = adult_data.load(generate_dummies=True)
-    assert (45222, 87) == data.x.shape
+    assert (45222, 86) == data.x.shape
     assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "education_HS-grad" in data.s.columns
