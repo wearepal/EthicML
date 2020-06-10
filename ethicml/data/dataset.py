@@ -147,7 +147,7 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(self, ordered: bool = False, generate_dummies: bool = False) -> DataTuple:
+    def load(self, ordered: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
@@ -163,33 +163,27 @@ class Dataset:
         feature_split = self.feature_split if not ordered else self.ordered_features
         feature_split_x = feature_split["x"]
 
-        if generate_dummies:
-            # check whether we have to generate some complementary columns for binary features
-            disc_feature_groups = self._disc_feature_groups
-            if disc_feature_groups is not None:
-                for group in disc_feature_groups.values():
-                    assert len(group) > 1, "binary features should be encoded as two features"
-                    for feature in group:
-                        if feature in self.features:
-                            continue  # nothing to do
-                        missing_feature = feature
+        # check whether we have to generate some complementary columns for binary features
+        disc_feature_groups = self._disc_feature_groups
+        if disc_feature_groups is not None:
+            for group in disc_feature_groups.values():
+                if len(group) == 1:
+                    continue
+                for feature in group:
+                    if feature in dataframe.columns:
+                        continue  # nothing to do
+                    missing_feature = feature
 
-                        existing_features = [other for other in group if other in self.features]
-                        assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
-                        # the dummy feature is the inverse of the existing feature
-                        or_combination = dataframe[existing_features[0]] == 1
-                        for other in existing_features[1:]:
-                            or_combination |= dataframe[other] == 1
-                        inverse: pd.Series = 1 - or_combination
-                        dataframe = pd.concat(
-                            [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
-                        )
-                # order the features: first discrete features in the groups, then continuous
-                if ordered:
-                    filtered_disc_feature_groups = self.disc_feature_groups
-                    assert filtered_disc_feature_groups is not None
-                    discrete_features = flatten_dict(filtered_disc_feature_groups)
-                    feature_split_x = discrete_features + self.continuous_features
+                    existing_features = [other for other in group if other in dataframe.columns]
+                    assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
+                    # the dummy feature is the inverse of the existing feature
+                    or_combination = dataframe[existing_features[0]] == 1
+                    for other in existing_features[1:]:
+                        or_combination |= dataframe[other] == 1
+                    inverse: pd.Series = 1 - or_combination
+                    dataframe = pd.concat(
+                        [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
+                    )
 
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]

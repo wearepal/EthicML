@@ -260,7 +260,7 @@ def adult(
                 remaining_feature_name="_not_United-States",
             )
             if split == "Sex":
-                assert len(discrete_features) == 60  # 56 (discrete) features + 4 class labels
+                assert len(discrete_features) == 61  # 57 (discrete) features + 4 class labels
             name += ", binary nationality"
 
     return Dataset(

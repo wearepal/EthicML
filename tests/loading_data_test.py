@@ -298,22 +298,22 @@ def test_load_adult_drop_native():
     adult_data = adult("Sex", binarize_nationality=True)
     assert adult_data.name == "Adult Sex, binary nationality"
     assert "native-country_United-States" in adult_data.discrete_features
-    # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
-    assert "native-country_not_United-States" not in adult_data.discrete_features
     assert "native-country_Canada" not in adult_data.discrete_features
 
-    # without dummies
-    data: DataTuple = adult_data.load(ordered=True, generate_dummies=False)
-    assert (45222, 61) == data.x.shape
+    # with dummies
+    data = adult_data.load(ordered=True)
+    assert (45222, 62) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "native-country_United-States" in data.x.columns
-    # the dummy feature is not in the actual dataframe:
-    assert "native-country_not_United-States" not in data.x.columns
+    # the dummy feature *is* in the actual dataframe:
+    assert "native-country_not_United-States" in data.x.columns
     assert "native-country_Canada" not in data.x.columns
+    native_cols = data.x[["native-country_United-States", "native-country_not_United-States"]]
+    assert (native_cols.sum(axis="columns") == 1).all()
 
-    # with dummies
-    data = adult_data.load(ordered=True, generate_dummies=True)
+    # with dummies, not ordered
+    data = adult_data.load(ordered=False)
     assert (45222, 62) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -335,25 +335,53 @@ def test_load_adult_education():
     assert "education_Masters" not in adult_data.sens_attrs
 
     # ordered
-    data = adult_data.load(ordered=True, generate_dummies=True)
+    data = adult_data.load(ordered=True)
     assert (45222, 86) == data.x.shape
     assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "education_HS-grad" in data.s.columns
     assert "education_other" in data.s.columns
     assert "education_Masters" not in data.s.columns
-
     assert (data.s.sum(axis="columns") == 1).all()
 
     # not ordered
-    data = adult_data.load(generate_dummies=True)
+    data = adult_data.load()
     assert (45222, 86) == data.x.shape
     assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
     assert "education_HS-grad" in data.s.columns
     assert "education_other" in data.s.columns
     assert "education_Masters" not in data.s.columns
+    assert (data.s.sum(axis="columns") == 1).all()
 
+
+def test_load_adult_education_drop():
+    """test load adult education"""
+    adult_data = adult("Education", binarize_nationality=True)
+    assert adult_data.name == "Adult Education, binary nationality"
+    assert "education_HS-grad" in adult_data.sens_attrs
+    # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
+    assert "education_other" in adult_data.sens_attrs
+    assert "education_Masters" not in adult_data.sens_attrs
+
+    # ordered
+    data = adult_data.load(ordered=True)
+    assert (45222, 47) == data.x.shape
+    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "education_HS-grad" in data.s.columns
+    assert "education_other" in data.s.columns
+    assert "education_Masters" not in data.s.columns
+    assert (data.s.sum(axis="columns") == 1).all()
+
+    # not ordered
+    data = adult_data.load()
+    assert (45222, 47) == data.x.shape
+    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "education_HS-grad" in data.s.columns
+    assert "education_other" in data.s.columns
+    assert "education_Masters" not in data.s.columns
     assert (data.s.sum(axis="columns") == 1).all()
 
 

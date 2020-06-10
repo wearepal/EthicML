@@ -11,7 +11,7 @@ from .dataset import Dataset
 __all__ = ["load_data", "create_data_obj"]
 
 
-def load_data(dataset: Dataset, ordered: bool = False, generate_dummies: bool = False) -> DataTuple:
+def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     """Load dataset from its CSV file.
 
     This function only exists for backwards compatibility. Use dataset.load() instead.
@@ -24,7 +24,7 @@ def load_data(dataset: Dataset, ordered: bool = False, generate_dummies: bool = 
     Returns:
         DataTuple with dataframes of features, labels and sensitive attributes
     """
-    return dataset.load(ordered=ordered, generate_dummies=generate_dummies)
+    return dataset.load(ordered=ordered)
 
 
 def create_data_obj(
