@@ -66,8 +66,9 @@ class Dataset:
         sensitive attributes, but the x features are ordered so first are the discrete features,
         then the continuous.
         """
+        ordered = self.discrete_features + self.continuous_features
         return {
-            "x": self.discrete_features + self.continuous_features,
+            "x": filter_features_by_prefixes(ordered, self.features_to_remove),
             "s": self.sens_attrs,
             "y": self.class_labels,
         }
@@ -186,7 +187,9 @@ class Dataset:
                 # order the features: first discrete features in the groups, then continuous
                 if ordered:
                     discrete_features = flatten_dict(disc_feature_groups)
-                    feature_split_x = discrete_features + self.continuous_features
+                    feature_split_x = filter_features_by_prefixes(
+                        discrete_features + self.continuous_features, self.features_to_remove
+                    )
 
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]

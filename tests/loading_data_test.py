@@ -334,14 +334,25 @@ def test_load_adult_education():
     assert "education_other" in adult_data.sens_attrs
     assert "education_Masters" not in adult_data.sens_attrs
 
-    # with dummies
+    # ordered
     data = adult_data.load(ordered=True, generate_dummies=True)
-    assert (45222, 90) == data.x.shape
+    assert (45222, 87) == data.x.shape
     assert (45222, 3) == data.s.shape
     assert (45222, 1) == data.y.shape
-    assert "education_HS-grad" in data.x.columns
-    assert "education_other" in data.x.columns
-    assert "education_Masters" not in data.x.columns
+    assert "education_HS-grad" in data.s.columns
+    assert "education_other" in data.s.columns
+    assert "education_Masters" not in data.s.columns
+
+    assert (data.s.sum(axis="columns") == 1).all()
+
+    # not ordered
+    data = adult_data.load(generate_dummies=True)
+    assert (45222, 87) == data.x.shape
+    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.y.shape
+    assert "education_HS-grad" in data.s.columns
+    assert "education_other" in data.s.columns
+    assert "education_Masters" not in data.s.columns
 
     assert (data.s.sum(axis="columns") == 1).all()
 
