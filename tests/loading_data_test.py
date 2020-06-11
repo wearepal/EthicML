@@ -230,7 +230,8 @@ def test_load_adult_race():
     adult_race = adult("Race")
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
-    assert (45222, 5) == data.s.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 5
     assert (45222, 1) == data.y.shape
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
@@ -256,26 +257,31 @@ def test_load_compas_race():
 
 def test_load_adult_race_sex():
     """test load adult race sex"""
-    data: DataTuple = adult("Race-Sex").load()
-    assert (45222, 96) == data.x.shape
-    assert (45222, 6) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    with pytest.raises(AssertionError):
+        data: DataTuple = adult("Race-Sex").load()
+    # assert (45222, 96) == data.x.shape
+    # assert (45222, 1) == data.s.shape
+    # assert (45222, 1) == data.y.shape
+    # assert data.s.nunique()[0] == 6
 
 
 def test_load_compas_race_sex():
     """test load compas race sex"""
-    data: DataTuple = compas("Race-Sex").load()
-    assert (6167, 399) == data.x.shape
-    assert (6167, 2) == data.s.shape
-    assert (6167, 1) == data.y.shape
+    with pytest.raises(AssertionError):
+        data: DataTuple = compas("Race-Sex").load()
+    # assert (6167, 399) == data.x.shape
+    # assert (6167, 1) == data.s.shape
+    # assert (6167, 1) == data.y.shape
+    # assert data.s.nunique()[0] == 2
 
 
 def test_load_adult_nationality():
     """test load adult nationality"""
     data: DataTuple = adult("Nationality").load()
     assert (45222, 62) == data.x.shape
-    assert (45222, 41) == data.s.shape
+    assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
+    assert data.s.nunique()[0] == 41
 
 
 def test_race_feature_split():
@@ -330,29 +336,24 @@ def test_load_adult_education():
     adult_data = adult("Education")
     assert adult_data.name == "Adult Education"
     assert "education_HS-grad" in adult_data.sens_attrs
-    # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
     assert "education_other" in adult_data.sens_attrs
     assert "education_Masters" not in adult_data.sens_attrs
 
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 86) == data.x.shape
-    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 3
     assert (45222, 1) == data.y.shape
-    assert "education_HS-grad" in data.s.columns
-    assert "education_other" in data.s.columns
-    assert "education_Masters" not in data.s.columns
-    assert (data.s.sum(axis="columns") == 1).all()
+    assert "education" in data.s.columns
 
     # not ordered
     data = adult_data.load()
     assert (45222, 86) == data.x.shape
-    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 3
     assert (45222, 1) == data.y.shape
-    assert "education_HS-grad" in data.s.columns
-    assert "education_other" in data.s.columns
-    assert "education_Masters" not in data.s.columns
-    assert (data.s.sum(axis="columns") == 1).all()
+    assert "education" in data.s.columns
 
 
 def test_load_adult_education_drop():
@@ -360,29 +361,24 @@ def test_load_adult_education_drop():
     adult_data = adult("Education", binarize_nationality=True)
     assert adult_data.name == "Adult Education, binary nationality"
     assert "education_HS-grad" in adult_data.sens_attrs
-    # the dummy feature is *not* in the discrete-features list, because it can't be loaded from CSV:
     assert "education_other" in adult_data.sens_attrs
     assert "education_Masters" not in adult_data.sens_attrs
 
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 47) == data.x.shape
-    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 3
     assert (45222, 1) == data.y.shape
-    assert "education_HS-grad" in data.s.columns
-    assert "education_other" in data.s.columns
-    assert "education_Masters" not in data.s.columns
-    assert (data.s.sum(axis="columns") == 1).all()
+    assert "education" in data.s.columns
 
     # not ordered
     data = adult_data.load()
     assert (45222, 47) == data.x.shape
-    assert (45222, 3) == data.s.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 3
     assert (45222, 1) == data.y.shape
-    assert "education_HS-grad" in data.s.columns
-    assert "education_other" in data.s.columns
-    assert "education_Masters" not in data.s.columns
-    assert (data.s.sum(axis="columns") == 1).all()
+    assert "education" in data.s.columns
 
 
 def test_additional_columns_load(data_root: Path):

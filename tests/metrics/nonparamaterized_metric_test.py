@@ -136,43 +136,28 @@ def test_tpr_diff_non_binary_race():
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
-        "race_Amer-Indian-Eskimo_0": approx(0.16, abs=0.01),
-        "race_Amer-Indian-Eskimo_1": approx(0.37, abs=0.01),
-        "race_Asian-Pac-Islander_0": approx(0.16, abs=0.01),
-        "race_Asian-Pac-Islander_1": approx(0.12, abs=0.01),
-        "race_Black_0": approx(0.16, abs=0.01),
-        "race_Black_1": approx(0.13, abs=0.01),
-        "race_Other_0": approx(0.16, abs=0.01),
-        "race_Other_1": approx(0.12, abs=0.01),
-        "race_White_0": approx(0.14, abs=0.01),
-        "race_White_1": approx(0.16, abs=0.01),
+        "race_0": approx(0.37, abs=0.01),
+        "race_1": approx(0.12, abs=0.01),
+        "race_2": approx(0.14, abs=0.01),
+        "race_3": approx(0.12, abs=0.01),
+        "race_4": approx(0.16, abs=0.01),
     }
 
     for key in tprs:
         assert tprs[key] == test_dict[key]
 
-    tprs_to_check = {
-        k: tprs[k]
-        for k in (
-            "race_Amer-Indian-Eskimo_1",
-            "race_Asian-Pac-Islander_1",
-            "race_Black_1",
-            "race_Other_1",
-            "race_White_1",
-        )
-    }
-    tpr_diff = diff_per_sensitive_attribute(tprs_to_check)
+    tpr_diff = diff_per_sensitive_attribute(tprs)
     test_dict = {
-        "race_Amer-Indian-Eskimo_1-race_Asian-Pac-Islander_1": approx(0.25, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_Black_1": approx(0.23, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_Other_1": approx(0.25, abs=0.01),
-        "race_Amer-Indian-Eskimo_1-race_White_1": approx(0.20, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_Black_1": approx(0.01, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_Other_1": approx(0.00, abs=0.01),
-        "race_Asian-Pac-Islander_1-race_White_1": approx(0.04, abs=0.01),
-        "race_Black_1-race_Other_1": approx(0.01, abs=0.01),
-        "race_Black_1-race_White_1": approx(0.04, abs=0.01),
-        "race_Other_1-race_White_1": approx(0.04, abs=0.01),
+        "race_0-race_1": approx(0.25, abs=0.01),
+        "race_0-race_2": approx(0.23, abs=0.01),
+        "race_0-race_3": approx(0.25, abs=0.01),
+        "race_0-race_4": approx(0.20, abs=0.01),
+        "race_1-race_2": approx(0.01, abs=0.01),
+        "race_1-race_3": approx(0.00, abs=0.01),
+        "race_1-race_4": approx(0.04, abs=0.01),
+        "race_2-race_3": approx(0.01, abs=0.01),
+        "race_2-race_4": approx(0.04, abs=0.01),
+        "race_3-race_4": approx(0.04, abs=0.01),
     }
 
     for key in tpr_diff:
@@ -189,43 +174,28 @@ def test_tpr_ratio_non_binary_race():
     tprs = metric_per_sensitive_attribute(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
-        "race_Amer-Indian-Eskimo_0": approx(0.16, abs=0.01),
-        "race_Amer-Indian-Eskimo_1": approx(0.37, abs=0.01),
-        "race_Asian-Pac-Islander_0": approx(0.16, abs=0.01),
-        "race_Asian-Pac-Islander_1": approx(0.12, abs=0.01),
-        "race_Black_0": approx(0.16, abs=0.01),
-        "race_Black_1": approx(0.13, abs=0.01),
-        "race_Other_0": approx(0.16, abs=0.01),
-        "race_Other_1": approx(0.12, abs=0.01),
-        "race_White_0": approx(0.14, abs=0.01),
-        "race_White_1": approx(0.16, abs=0.01),
+        "race_0": approx(0.37, abs=0.01),
+        "race_1": approx(0.12, abs=0.01),
+        "race_2": approx(0.14, abs=0.01),
+        "race_3": approx(0.12, abs=0.01),
+        "race_4": approx(0.16, abs=0.01),
     }
 
     for key in tprs:
         assert tprs[key] == test_dict[key]
 
-    tprs_to_check = {
-        k: tprs[k]
-        for k in (
-            "race_Amer-Indian-Eskimo_1",
-            "race_Asian-Pac-Islander_1",
-            "race_Black_1",
-            "race_Other_1",
-            "race_White_1",
-        )
-    }
-    tpr_diff = ratio_per_sensitive_attribute(tprs_to_check)
+    tpr_diff = ratio_per_sensitive_attribute(tprs)
     test_dict = {
-        "race_Amer-Indian-Eskimo_1/race_Asian-Pac-Islander_1": approx(0.32, abs=0.1),
-        "race_Amer-Indian-Eskimo_1/race_Black_1": approx(0.37, abs=0.1),
-        "race_Amer-Indian-Eskimo_1/race_Other_1": approx(0.33, abs=0.1),
-        "race_Amer-Indian-Eskimo_1/race_White_1": approx(0.44, abs=0.1),
-        "race_Asian-Pac-Islander_1/race_Black_1": approx(0.88, abs=0.1),
-        "race_Asian-Pac-Islander_1/race_Other_1": approx(0.97, abs=0.1),
-        "race_Asian-Pac-Islander_1/race_White_1": approx(0.72, abs=0.1),
-        "race_Black_1/race_Other_1": approx(0.91, abs=0.1),
-        "race_Black_1/race_White_1": approx(0.74, abs=0.1),
-        "race_Other_1/race_White_1": approx(0.74, abs=0.1),
+        "race_0/race_1": approx(0.32, abs=0.1),
+        "race_0/race_2": approx(0.37, abs=0.1),
+        "race_0/race_3": approx(0.33, abs=0.1),
+        "race_0/race_4": approx(0.44, abs=0.1),
+        "race_1/race_2": approx(0.88, abs=0.1),
+        "race_1/race_3": approx(0.97, abs=0.1),
+        "race_1/race_4": approx(0.72, abs=0.1),
+        "race_2/race_3": approx(0.91, abs=0.1),
+        "race_2/race_4": approx(0.74, abs=0.1),
+        "race_3/race_4": approx(0.74, abs=0.1),
     }
 
     for key in tpr_diff:

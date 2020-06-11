@@ -27,7 +27,7 @@ def main(seed: int, samples: int) -> None:
     sensitive_attr = np.concatenate((sensitive_attr_g1, sensitive_attr_g2))
 
     # There has to be a better way of dong this.
-    decision = [1 if v > 0 else 0 for v in feat1 + feat2 > 0]
+    decision = np.array([1 if v > 0 else 0 for v in feat1 + feat2 > 0])
     df = pd.DataFrame(
         data={
             "decision": decision,
