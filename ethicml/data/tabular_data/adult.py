@@ -177,6 +177,7 @@ def adult(
             class_labels = []
             class_label_prefix = []
         elif split == "Race-Sex":
+            # TODO: this is currently completely broken. we would need to construct all combinations
             sens_attrs = [
                 "sex_Male",
                 "race_Amer-Indian-Eskimo",

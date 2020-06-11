@@ -189,11 +189,13 @@ class Dataset:
         s_data = dataframe[feature_split["s"]]
         # undo one-hot encoding if it's there
         if s_data.shape[1] > 1:
+            assert (s_data.sum(axis="columns") == 1).all(), "s is not one-hot encoded"
             name = s_data.columns[0].split("_")[0]
             s_data.columns = range(s_data.shape[1])
             s_data = s_data.idxmax(axis="columns").to_frame(name=name)
         y_data = dataframe[feature_split["y"]]
         if y_data.shape[1] > 1:
+            assert (y_data.sum(axis="columns") == 1).all(), "y is not one-hot encoded"
             name = y_data.columns[0].split("_")[0]
             y_data.columns = range(y_data.shape[1])
             y_data = y_data.idxmax(axis="columns").to_frame(name=name)
