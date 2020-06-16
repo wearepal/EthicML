@@ -107,12 +107,18 @@ class TestTuple:
 
 
 class DataTuple(TestTuple):
-    """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels.
+
+    Args:
+        x: input features
+        s: sensitive attributes
+        y: class labels
+        name: optional name of the dataset
+    """
 
     def __init__(
         self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
     ):
-        """Init for DataTuple Class."""
         super().__init__(x=x, s=s, name=name)
         self.__y: pd.DataFrame = y
 
@@ -334,12 +340,14 @@ Results = NewType("Results", pd.DataFrame)  # Container for results from `evalua
 RESULTS_COLUMNS: Final = ["dataset", "transform", "model", "split_id"]
 
 
-def make_results(data_frame: Optional[pd.DataFrame] = None) -> Results:
+def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     """Initialise Results object.
 
     You should always use this function instead of using the "constructor" directly, because this
     function checks whether the columns are correct.
     """
+    if isinstance(data_frame, Path):
+        data_frame = pd.read_csv(data_frame)
     if data_frame is not None:
         # ensure correct index
         if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
@@ -354,7 +362,12 @@ class ResultsAggregator:
     """Aggregate results."""
 
     def __init__(self, initial: Optional[pd.DataFrame] = None):
-        self.results = make_results(initial)
+        self._results = make_results(initial)
+
+    @property
+    def results(self) -> Results:
+        """Results object over which this class is aggregating."""
+        return self._results
 
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object."""
@@ -362,12 +375,14 @@ class ResultsAggregator:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
         # set sort=False so that the order of the columns is preserved
-        self.results = Results(pd.concat(order, sort=False, axis="index"))
+        self._results = Results(pd.concat(order, sort=False, axis="index"))
 
-    def append_csv(self, csv_file: Path, prepend: bool = False) -> None:
+    def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
         """Append results from a CSV file."""
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
+            return True
+        return False
 
     def save_as_csv(self, file_path: Path) -> None:
         """Save to csv."""

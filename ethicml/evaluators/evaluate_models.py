@@ -106,7 +106,7 @@ def load_results(
     """
     csv_file = _result_path(outdir, dataset_name, transform_name, topic)
     if csv_file.is_file():
-        return make_results(pd.read_csv(csv_file))
+        return make_results(csv_file)
     return None
 
 
@@ -258,11 +258,11 @@ def evaluate_models(
                     pbar.update()
                 # =========================== end: run inprocess models ===========================
 
-                path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
+                csv_file = _result_path(outdir, dataset.name, transform_name, topic)
                 aggregator = ResultsAggregator(results_df)
                 # put old results before new results -> prepend=True
-                aggregator.append_csv(path_to_file, prepend=True)
-                aggregator.save_as_csv(path_to_file)
+                aggregator.append_from_csv(csv_file, prepend=True)
+                aggregator.save_as_csv(csv_file)
             # ========================== end: loop over preprocessed data =========================
         # =================================== end: one repeat =====================================
 
@@ -272,8 +272,8 @@ def evaluate_models(
     aggregator = ResultsAggregator()  # create empty aggregator object
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
-            path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-            aggregator.append_csv(path_to_file)
+            csv_file = _result_path(outdir, dataset.name, transform_name, topic)
+            aggregator.append_from_csv(csv_file)
     return aggregator.results
 
 
@@ -426,11 +426,11 @@ def _gather_metrics(
             results_df = results_df.append(df_row, ignore_index=True, sort=False)
 
         # write results to CSV files and load previous results from the files if they already exist
-        path_to_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
+        csv_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
         aggregator = ResultsAggregator(results_df)
         # put old results before new results -> prepend=True
-        aggregator.append_csv(path_to_file, prepend=True)
-        aggregator.save_as_csv(path_to_file)
+        aggregator.append_from_csv(csv_file, prepend=True)
+        aggregator.save_as_csv(csv_file)
         all_results.append_df(aggregator.results)
 
     return all_results.results
