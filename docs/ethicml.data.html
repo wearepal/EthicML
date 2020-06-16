@@ -224,7 +224,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.health" title="ethicml.data.health"><code class="xref py py-obj docutils literal notranslate"><span class="pre">health</span></code></a>(split, discrete_only)</p></td>
 <td><p>Heritage Health dataset.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.load_data" title="ethicml.data.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a>(dataset, ordered, generate_dummies)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.load_data" title="ethicml.data.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a>(dataset, ordered)</p></td>
 <td><p>Load dataset from its CSV file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.nonbinary_toy" title="ethicml.data.nonbinary_toy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonbinary_toy</span></code></a>()</p></td>
@@ -252,7 +252,7 @@
 </table>
 <dl class="py function">
 <dt id="ethicml.data.Adult">
-<code class="sig-name descname">Adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Literal[Sex, Race, Race - Binary, Race - Sex, Custom, Nationality]</span> <span class="o">=</span> <span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.data.dataset.Dataset<a class="headerlink" href="#ethicml.data.Adult" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">Adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Literal[Sex, Race, Race - Binary, Race - Sex, Custom, Nationality, Education]</span> <span class="o">=</span> <span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.data.dataset.Dataset<a class="headerlink" href="#ethicml.data.Adult" title="Permalink to this definition">¶</a></dt>
 <dd><p>UCI Adult dataset.</p>
 </dd></dl>
 
@@ -314,7 +314,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.load" title="ethicml.data.Dataset.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(ordered, generate_dummies)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Dataset.load" title="ethicml.data.Dataset.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(ordered)</p></td>
 <td><p>Load dataset from its CSV file.</p></td>
 </tr>
 </tbody>
@@ -364,7 +364,7 @@
 
 <dl class="py method">
 <dt id="ethicml.data.Dataset.load">
-<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ordered</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">generate_dummies</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.data.Dataset.load" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ordered</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.data.Dataset.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -410,7 +410,7 @@ then the continuous.</p>
 
 <dl class="py function">
 <dt id="ethicml.data.adult">
-<code class="sig-name descname">adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Literal[Sex, Race, Race - Binary, Race - Sex, Custom, Nationality]</span> <span class="o">=</span> <span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.data.dataset.Dataset<a class="headerlink" href="#ethicml.data.adult" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="p">:</span> <span class="n">Literal[Sex, Race, Race - Binary, Race - Sex, Custom, Nationality, Education]</span> <span class="o">=</span> <span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.data.dataset.Dataset<a class="headerlink" href="#ethicml.data.adult" title="Permalink to this definition">¶</a></dt>
 <dd><p>UCI Adult dataset.</p>
 </dd></dl>
 
@@ -617,7 +617,7 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
 
 <dl class="py function">
 <dt id="ethicml.data.load_data">
-<code class="sig-name descname">load_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">ethicml.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="n">ordered</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">generate_dummies</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.data.load_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">load_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">ethicml.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="n">ordered</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.data.load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <p>This function only exists for backwards compatibility. Use dataset.load() instead.</p>
 <dl class="field-list simple">
