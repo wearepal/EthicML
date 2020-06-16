@@ -59,6 +59,7 @@ def run_metrics(
     actual: DataTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
+    diffs_and_ratios: bool = True,
 ) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
@@ -67,6 +68,7 @@ def run_metrics(
         actual: DataTuple with the labels
         metrics: list of metrics
         per_sens_metrics: list of metrics that are computed per sensitive attribute
+        diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute
     """
     result: Dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):
@@ -76,10 +78,11 @@ def run_metrics(
 
     for metric in per_sens_metrics:
         per_sens = metric_per_sensitive_attribute(predictions, actual, metric)
-        diff_per_sens = diff_per_sensitive_attribute(per_sens)
-        ratio_per_sens = ratio_per_sensitive_attribute(per_sens)
-        per_sens.update(diff_per_sens)
-        per_sens.update(ratio_per_sens)
+        if diffs_and_ratios:
+            diff_per_sens = diff_per_sensitive_attribute(per_sens)
+            ratio_per_sens = ratio_per_sensitive_attribute(per_sens)
+            per_sens.update(diff_per_sens)
+            per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     for key, value in predictions.info.items():
