@@ -202,15 +202,15 @@
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal">Agarwal (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.aggregate">aggregate() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.aggregate_results">aggregate_results() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.Algorithm">Algorithm (class in ethicml.algorithms)</a>
 </li>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.AlgorithmAsync">AlgorithmAsync (class in ethicml.algorithms)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.append_df">append_df() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator.append_df">append_df() (ResultsAggregator method)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.append_from_file">append_from_file() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator.append_from_csv">append_from_csv() (ResultsAggregator method)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Activation.apply">apply() (Activation method)</a>
 
@@ -354,18 +354,16 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.data">data() (Results property)</a>
-</li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset">Dataset (class in ethicml.data)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.dataset_from_cond">dataset_from_cond() (in module ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.DataSplitter">DataSplitter (class in ethicml.preprocessing)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple">DataTuple (class in ethicml.utility)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.diff_per_sensitive_attribute">diff_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.disc_feature_groups">disc_feature_groups() (Dataset property)</a>
@@ -373,6 +371,8 @@
       <li><a href="ethicml.data.html#ethicml.data.Dataset.discrete_features">discrete_features() (Dataset property)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.domain_split">domain_split() (in module ethicml.preprocessing)</a>
+</li>
+      <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO">DRO (class in ethicml.algorithms.inprocess)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -477,15 +477,13 @@
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.filepath">filepath() (Dataset property)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.filter">filter() (Results method)</a>
-</li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.filter_and_map">filter_and_map() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.filter_and_map_results">filter_and_map_results() (in module ethicml.utility)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.filter_features_by_prefixes">filter_features_by_prefixes() (in module ethicml.data)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.from_file">from_file() (Results class method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.filter_results">filter_results() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.from_npz">from_npz() (DataTuple class method)</a>
 
@@ -518,6 +516,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.get_concatenated_features">get_concatenated_features() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.get_dataset_obj_by_name">get_dataset_obj_by_name() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.get_discrete_features">get_discrete_features() (in module ethicml.data)</a>
 </li>
@@ -577,6 +577,8 @@
 
       <ul>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.is_fairness_algo">(Corels property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO.is_fairness_algo">(DRO property)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithm.is_fairness_algo">(InAlgorithm property)</a>
 </li>
@@ -661,7 +663,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Majority">Majority (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.map_over_index">map_over_index() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.make_results">make_results() (in module ethicml.utility)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.map_over_results_index">map_over_results_index() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
@@ -730,6 +734,8 @@
         <li><a href="ethicml.data.html#ethicml.data.Dataset.name">(Dataset property)</a>
 </li>
         <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.name">(DataTuple property)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO.name">(DRO property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.F1.name">(F1 property)</a>
 </li>
@@ -866,10 +872,6 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.query">query() (Results method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.query_dt">query_dt() (in module ethicml.preprocessing)</a>
 </li>
   </ul></td>
@@ -908,7 +910,9 @@
         <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.replace">(TestTuple method)</a>
 </li>
       </ul></li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results">Results (class in ethicml.utility)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator.results">results() (ResultsAggregator property)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator">ResultsAggregator (class in ethicml.utility)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Agarwal.run">run() (Agarwal method)</a>
 
@@ -920,6 +924,8 @@
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.run">(Corels method)</a>
 </li>
         <li><a href="ethicml.evaluators.html#ethicml.evaluators.CrossValidator.run">(CrossValidator method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO.run">(DRO method)</a>
 </li>
         <li><a href="ethicml.algorithms.postprocess.html#ethicml.algorithms.postprocess.Hardt.run">(Hardt method)</a>
 </li>
@@ -979,6 +985,8 @@
 </li>
         <li><a href="ethicml.evaluators.html#ethicml.evaluators.CrossValidator.run_async">(CrossValidator method)</a>
 </li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO.run_async">(DRO method)</a>
+</li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithmAsync.run_async">(InAlgorithmAsync method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InstalledModel.run_async">(InstalledModel method)</a>
@@ -1018,6 +1026,8 @@
         <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Calders.run_test">(Calders method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.run_test">(Corels method)</a>
+</li>
+        <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.DRO.run_test">(DRO method)</a>
 </li>
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithm.run_test">(InAlgorithm method)</a>
 </li>
@@ -1080,7 +1090,7 @@
 </li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_2d_plot">save_2d_plot() (in module ethicml.visualisation)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.Results.save_as_csv">save_as_csv() (Results method)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator.save_as_csv">save_as_csv() (ResultsAggregator method)</a>
 </li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_jointplot">save_jointplot() (in module ethicml.visualisation)</a>
 </li>
