@@ -16,12 +16,9 @@ from ethicml.utility import (
     DataTuple,
     Prediction,
     Results,
+    ResultsAggregator,
     TestTuple,
     TrainTestPair,
-    results_from_file,
-    append_file_to_results,
-    append_df_to_results,
-    save_results_as_csv,
     make_results,
 )
 
@@ -107,8 +104,10 @@ def load_results(
     Returns:
         DataFrame if the file exists; None otherwise
     """
-    path_to_file = _result_path(outdir, dataset_name, transform_name, topic)
-    return results_from_file(path_to_file)
+    csv_file = _result_path(outdir, dataset_name, transform_name, topic)
+    if csv_file.is_file():
+        return make_results(pd.read_csv(csv_file))
+    return None
 
 
 def _result_path(
@@ -260,22 +259,22 @@ def evaluate_models(
                 # =========================== end: run inprocess models ===========================
 
                 path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-                results: Results = make_results(results_df)
+                aggregator = ResultsAggregator(results_df)
                 # put old results before new results -> prepend=True
-                results = append_file_to_results(results, path_to_file, prepend=True)
-                save_results_as_csv(results, path_to_file)
+                aggregator.append_csv(path_to_file, prepend=True)
+                aggregator.save_as_csv(path_to_file)
             # ========================== end: loop over preprocessed data =========================
         # =================================== end: one repeat =====================================
 
     pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
 
     preprocess_names = [model.name for model in preprocess_models]
-    results = make_results()  # create empty Results object
+    aggregator = ResultsAggregator()  # create empty aggregator object
     for dataset in datasets:
         for transform_name in ["no_transform"] + preprocess_names:
             path_to_file = _result_path(outdir, dataset.name, transform_name, topic)
-            results = append_file_to_results(results, path_to_file)
-    return results
+            aggregator.append_csv(path_to_file)
+    return aggregator.results
 
 
 class _DataInfo(NamedTuple):
@@ -333,6 +332,8 @@ async def evaluate_models_async(
     if delete_prev:
         _delete_previous_results(outdir, datasets, preprocess_models, topic)
 
+    all_results = ResultsAggregator()
+
     # ======================================= prepare data ========================================
     data_splits: List[TrainTestPair] = []
     test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
@@ -351,9 +352,10 @@ async def evaluate_models_async(
 
     # ============================= inprocess models on untransformed =============================
     all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
-    all_results = _gather_metrics(
+    inprocess_untransformed = _gather_metrics(
         all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
     )
+    all_results.append_df(inprocess_untransformed)
 
     # ===================================== preprocess models =====================================
     # run all preprocess models
@@ -382,9 +384,10 @@ async def evaluate_models_async(
     transf_results = _gather_metrics(
         transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
     )
+    all_results.append_df(transf_results)
 
-    # ======================================= merge results =======================================
-    return append_df_to_results(all_results, transf_results)
+    # ======================================== return all =========================================
+    return all_results.results
 
 
 def _gather_metrics(
@@ -403,7 +406,7 @@ def _gather_metrics(
     num_cols = len(all_predictions[0]) if all_predictions else 0
     all_predictions_t = [[row[i] for row in all_predictions] for i in range(num_cols)]
 
-    all_results = make_results()
+    all_results = ResultsAggregator()
 
     # compute metrics, collect them and write them to files
     for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
@@ -424,10 +427,10 @@ def _gather_metrics(
 
         # write results to CSV files and load previous results from the files if they already exist
         path_to_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
-        results: Results = make_results(results_df)
+        aggregator = ResultsAggregator(results_df)
         # put old results before new results -> prepend=True
-        results = append_file_to_results(results, path_to_file, prepend=True)
-        save_results_as_csv(results, path_to_file)
-        all_results = append_df_to_results(all_results, results)
+        aggregator.append_csv(path_to_file, prepend=True)
+        aggregator.save_as_csv(path_to_file)
+        all_results.append_df(aggregator.results)
 
-    return all_results
+    return all_results.results

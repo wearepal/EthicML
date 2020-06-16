@@ -27,20 +27,17 @@ __all__ = [
     "FairnessType",
     "Prediction",
     "Results",
+    "ResultsAggregator",
     "SoftPrediction",
     "TestTuple",
     "TrainTestPair",
     "aggregate_results",
-    "append_df_to_results",
-    "append_file_to_results",
     "concat_dt",
     "concat_tt",
     "filter_and_map_results",
     "filter_results",
     "make_results",
     "map_over_results_index",
-    "results_from_file",
-    "save_results_as_csv",
 ]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -353,42 +350,29 @@ def make_results(data_frame: Optional[pd.DataFrame] = None) -> Results:
         return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
 
 
-def append_df_to_results(
-    results: Results, data_frame: pd.DataFrame, prepend: bool = False
-) -> Results:
-    """Append (or prepend) a DataFrame to this object."""
-    if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
-        data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
-    order = [data_frame, results] if prepend else [results, data_frame]
-    # set sort=False so that the order of the columns is preserved
-    return Results(pd.concat(order, sort=False, axis="index"))
+class ResultsAggregator:
+    """Aggregate results."""
 
+    def __init__(self, initial: Optional[pd.DataFrame] = None):
+        self.results = make_results(initial)
 
-def append_file_to_results(results: Results, csv_file: Path, prepend: bool = False) -> Results:
-    """Append results from a CSV file."""
-    if csv_file.is_file():  # if file exists
-        return append_df_to_results(results, pd.read_csv(csv_file), prepend=prepend)
-    return results
+    def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
+        """Append (or prepend) a DataFrame to this object."""
+        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+            data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
+        order = [data_frame, self.results] if prepend else [self.results, data_frame]
+        # set sort=False so that the order of the columns is preserved
+        self.results = Results(pd.concat(order, sort=False, axis="index"))
 
+    def append_csv(self, csv_file: Path, prepend: bool = False) -> None:
+        """Append results from a CSV file."""
+        if csv_file.is_file():  # if file exists
+            self.append_df(pd.read_csv(csv_file), prepend=prepend)
 
-def save_results_as_csv(results: Results, file_path: Path) -> None:
-    """Save to csv."""
-    # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
-    results.reset_index(drop=False).to_csv(file_path, index=False)
-
-
-def results_from_file(csv_file: Path) -> Optional[Results]:
-    """Load results from a CSV file that was created by `evaluate_models`.
-
-    Args:
-        csv_file: path to a CSV file with results
-
-    Returns:
-        Results if the file exists; None otherwise
-    """
-    if csv_file.is_file():
-        return make_results(pd.read_csv(csv_file))
-    return None
+    def save_as_csv(self, file_path: Path) -> None:
+        """Save to csv."""
+        # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
+        self.results.reset_index(drop=False).to_csv(file_path, index=False)
 
 
 def map_over_results_index(
