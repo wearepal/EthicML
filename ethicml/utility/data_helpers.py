@@ -1,6 +1,8 @@
 """Helper functions for working with DataFrames (and Series)."""
 import pandas as pd
 
+__all__ = ["shuffle_df"]
+
 
 def shuffle_df(df: pd.DataFrame, random_state: int) -> pd.DataFrame:
     """Shuffle a given dataframe."""

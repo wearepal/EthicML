@@ -16,9 +16,10 @@ class Zemel(PreAlgorithmAsync):
         Ax: float = 0.01,
         Ay: float = 0.1,
         Az: float = 0.5,
-        max_iter: int = 5000,
-        maxfun: int = 5000,
+        max_iter: int = 5_000,
+        maxfun: int = 5_000,
         epsilon: float = 1e-5,
+        seed: int = 888,
     ) -> None:
         """Init Zemel."""
         super().__init__(name="Zemel")
@@ -31,6 +32,7 @@ class Zemel(PreAlgorithmAsync):
             "maxfun": maxfun,
             "epsilon": epsilon,
             "threshold": threshold,
+            "seed": seed,
         }
 
     def _script_command(

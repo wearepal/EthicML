@@ -1,19 +1,13 @@
-"""Implementation fo Zemel's Learned Fair Representations lifted from AIF360.
-
-https://github.com/IBM/AIF360/blob/master/aif360/algorithms/preprocessing/lfr.py
-"""
-from typing import List, Optional, Tuple, Union
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
+from scipy.spatial.distance import cdist
+from scipy.special import softmax
 
+from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple
-
-from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
-
-# Disable pylint's naming convention complaints - this code wasn't implemented by us
-# pylint: disable=invalid-name
 
 
 class ZemelArgs(PreAlgoArgs):
@@ -27,176 +21,74 @@ class ZemelArgs(PreAlgoArgs):
     maxfun: int
     epsilon: float
     threshold: float
+    seed: int
 
 
-def distances(x: np.ndarray, v: np.ndarray, alpha: np.ndarray) -> np.ndarray:
-    """Compute distances.
+def LFR_optim_objective(
+    parameters: np.ndarray,
+    x_unprivileged: np.ndarray,
+    x_privileged: np.ndarray,
+    y_unprivileged: np.ndarray,
+    y_privileged: np.ndarray,
+    clusters: int,
+    A_x: float,
+    A_y: float,
+    A_z: float,
+    print_interval,
+    verbose,
+) -> float:
+    num_unprivileged, features_dim = x_unprivileged.shape
+    num_privileged, _ = x_privileged.shape
 
-    Compute the l2 distance between each feature, x_n, and each
-    prototype vector, v_k, weighted by a feature-wise weight parameter, alpha
-    Args:
-        x: Input features
-        v: Prototype vectors
-        alpha: Individual weight parameters for each feature dimension
+    w = parameters[:clusters]
+    prototypes = parameters[clusters:].reshape((clusters, features_dim))
 
-    Returns: array of shape [n, k]containing the weighted l2 distances between
-    each feature, x_n, and each prototype vector, v_k
-    """
-    dists = np.sum(np.square(x[:, None] - v[None]) * alpha, axis=-1)
-    return dists
+    M_unprivileged, x_hat_unprivileged, y_hat_unprivileged = get_xhat_y_hat(
+        prototypes, w, x_unprivileged
+    )
 
+    M_privileged, x_hat_privileged, y_hat_privileged = get_xhat_y_hat(prototypes, w, x_privileged)
 
-def softmax(dists: np.ndarray) -> np.ndarray:
-    """Compute the probability that x_n maps to a given prototype vector, v_k.
+    y_hat = np.concatenate([y_hat_unprivileged, y_hat_privileged], axis=0)
+    y = np.concatenate([y_unprivileged.reshape((-1, 1)), y_privileged.reshape((-1, 1))], axis=0)
 
-    Args:
-        dists: l2 distances between each input feature and each prototype vector
+    L_x = np.mean((x_hat_unprivileged - x_unprivileged) ** 2) + np.mean(
+        (x_hat_privileged - x_privileged) ** 2
+    )
+    L_z = np.mean(abs(np.mean(M_unprivileged, axis=0) - np.mean(M_privileged, axis=0)))
+    L_y = -np.mean(y * np.log(y_hat) + (1.0 - y) * np.log(1.0 - y_hat))
 
-    Returns:
-        Membership probabilities of each input feature to each prototype
-    """
-    exp = np.exp(-dists)
-    denom = np.sum(exp, axis=1, keepdims=True)
-    denom[denom == 0] = 1e-6
-    matrix_nk = exp / denom
+    total_loss = A_x * L_x + A_y * L_y + A_z * L_z
 
-    return matrix_nk
+    if verbose and LFR_optim_objective.steps % print_interval == 0:  # type: ignore[attr-defined]
+        print(
+            f"step: {LFR_optim_objective.steps}, "  # type: ignore[attr-defined]
+            f"loss: {total_loss}, "
+            f"L_x: {L_x},  "
+            f"L_y: {L_y},  "
+            f"L_z: {L_z}"
+        )
+    LFR_optim_objective.steps += 1  # type: ignore[attr-defined]
 
-
-def x_n_hat(x, matrix_nk, v) -> Tuple[np.ndarray, float]:
-    """Reconstruct x_n from z_n.
-
-    And compute the difference between the original input and its reconstruction using l2 loss.
-
-    Args:
-        x: Input features
-        matrix_nk: Membership probabilities of each input feature to each prototype
-        v: Prototype vectors
-
-    Returns:
-        Reconstruction of x and the l2 loss between the reconstruction and x
-    """
-    x_n_hat_obj = matrix_nk @ v
-    l_x = (np.square(x - x_n_hat_obj)).sum()
-
-    return x_n_hat_obj, l_x
+    return total_loss
 
 
-def yhat(matrix_nk: np.ndarray, y: np.ndarray, w: np.ndarray) -> Tuple[np.ndarray, float]:
-    """Predict y and compute the cross-entropy loss.
-
-     This is between the resulting predictions and the target labels
-
-    Args:
-        matrix_nk: Matrix encoding the membership probabilities of each input feature to
-        each prototype
-        y: target labels for each sample
-        w: learned parameters governing the mapping from the prototypes to classification decisions
-
-    Returns:
-        Predictions and associated cross-entropy loss
-    """
-    y_hat = yhat_without_loss(matrix_nk, w)
-    l_y = (-y * np.log(y_hat) - (1.0 - y) * np.log(1.0 - y_hat)).sum()
-
-    return y_hat, l_y
-
-
-def yhat_without_loss(matrix_nk: np.ndarray, w: np.ndarray) -> np.ndarray:
-    """Predict y without computing the classification loss.
-
-    Args:
-        matrix_nk: Matrix encoding the membership probabilities of each input feature to
-        each prototype
-        w: learned parameters governing the mapping from the prototypes to classification decisions
-
-    Returns:
-        Predictions and associated cross-entropy loss
-    """
-    y_hat = matrix_nk @ w
-    y_hat[y_hat <= 0] = 1e-6
-    y_hat[y_hat >= 1] = 0.999
-
-    return y_hat
-
-
-def lfr_optim_ob(
-    params: np.ndarray,
-    data_sensitive: np.ndarray,
-    data_nonsensitive: np.ndarray,
-    y_sensitive: np.ndarray,
-    y_nonsensitive: np.ndarray,
-    k: int = 10,
-    a_x: float = 0.01,
-    a_y: float = 0.1,
-    a_z: float = 0.5,
-    results: bool = False,
-) -> Union[Tuple[np.ndarray, ...], float]:
-    """Apply L-BFGS to minimize the LFR objective function.
-
-    Args:
-        params: Array of trainable parameters.
-        data_sensitive: Data for the subset of individuals that are members
-        of the protected set (i.e. S= 1)
-        data_nonsensitive: Data for the subset of individuals that are not members
-        of the protected set (i.e. S= 0)
-        y_sensitive:
-        y_nonsensitive:
-        k: Number of prototype sets
-        a_x: Pre-factor for the L_x loss term.
-        a_y: Pre-factor for the L_y loss term.
-        a_z: Pre-factor for the L_z loss term.
-        results: Whether to return the predictions and prototype membership probabilities (True)
-        or the weighted LFR loss (False)
-
-    Returns:
-        If 'results' is True, returns the predictions and prototype membership probabilities;
-        otherwise returns the weighted LFR loss
-    """
-    lfr_optim_ob.iters += 1  # type: ignore[attr-defined]
-    _, p = data_sensitive.shape
-
-    alpha0 = params[:p]
-    alpha1 = params[p : 2 * p]
-    w = params[2 * p : (2 * p) + k]
-    v = np.array(params[(2 * p) + k :]).reshape((k, p))
-
-    dists_sensitive = distances(data_sensitive, v, alpha1)
-    dists_nonsensitive = distances(data_nonsensitive, v, alpha0)
-
-    m_nk_sensitive = softmax(dists_sensitive)
-    m_nk_nonsensitive = softmax(dists_nonsensitive)
-
-    m_k_sensitive = np.mean(m_nk_sensitive, axis=0)
-    m_k_nonsensitive = np.mean(m_nk_nonsensitive, axis=0)
-
-    # Loss term enforcing group fairness (minimizes MI between z and s)
-    l_z = np.sum(np.abs(m_k_sensitive - m_k_nonsensitive))
-
-    _, l_x1 = x_n_hat(data_sensitive, m_nk_sensitive, v)
-    _, l_x2 = x_n_hat(data_nonsensitive, m_nk_nonsensitive, v)
-    l_x = l_x1 + l_x2
-
-    yhat_sensitive, l_y1 = yhat(m_nk_sensitive, y_sensitive, w)
-    yhat_nonsensitive, l_y2 = yhat(m_nk_nonsensitive, y_nonsensitive, w)
-    l_y = l_y1 + l_y2
-
-    criterion = a_x * l_x + a_y * l_y + a_z * l_z
-
-    return_tuple = (yhat_sensitive, yhat_nonsensitive, m_nk_sensitive, m_nk_nonsensitive)
-
-    return return_tuple if results else criterion
-
-
-lfr_optim_ob.iters = 0  # type: ignore[attr-defined]
+def get_xhat_y_hat(
+    prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    M = softmax(-cdist(x, prototypes), axis=1)
+    x_hat = np.matmul(M, prototypes)
+    y_hat = np.clip(
+        np.matmul(M, w.reshape((-1, 1))), np.finfo(float).eps, 1.0 - np.finfo(float).eps
+    )
+    return M, x_hat, y_hat
 
 
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: ZemelArgs
 ) -> (Tuple[DataTuple, TestTuple]):
     """Train the Zemel model and return the transformed features of the train and test sets."""
-    np.random.seed(888)
-    features_dim = train.x.shape[1]
+    np.random.seed(flags.seed)
 
     sens_col = train.s.columns[0]
     training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
@@ -204,55 +96,48 @@ def train_and_transform(
     ytrain_sensitive = train.y.loc[train.s[sens_col] == 0].to_numpy()
     ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
 
-    model_inits = np.random.uniform(
-        size=int(features_dim * 2 + flags.clusters + features_dim * flags.clusters)
+    print_interval = 100
+    verbose = False
+
+    num_train_samples, features_dim = train.x.shape
+
+    # Initialize the LFR optim objective parameters
+    parameters_initialization = np.random.uniform(
+        size=flags.clusters + features_dim * flags.clusters
     )
-    bnd: List[Tuple[Optional[int], Optional[int]]] = []
-    for i, _ in enumerate(model_inits):
-        if i < features_dim * 2 or i >= features_dim * 2 + flags.clusters:
-            bnd.append((None, None))
-        else:
-            bnd.append((0, 1))
+    bnd = [(0, 1)] * flags.clusters + [(None, None)] * features_dim * flags.clusters  # type: ignore[operator]
+    LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
     learned_model = optim.fmin_l_bfgs_b(
-        lfr_optim_ob,
-        x0=model_inits,
-        epsilon=flags.epsilon,
+        LFR_optim_objective,
+        x0=parameters_initialization,
+        epsilon=1e-5,
         args=(
-            training_sensitive,
             training_nonsensitive,
-            ytrain_sensitive[:, 0],
+            training_sensitive,
             ytrain_nonsensitive[:, 0],
+            ytrain_sensitive[:, 0],
             flags.clusters,
             flags.Ax,
             flags.Ay,
             flags.Az,
-            0,
+            print_interval,
+            verbose,
         ),
         bounds=bnd,
         approx_grad=True,
         maxfun=flags.maxfun,
         maxiter=flags.max_iter,
-        disp=False,
+        disp=verbose,
     )[0]
+    w = learned_model[: flags.clusters]
+    prototypes = learned_model[flags.clusters :].reshape((flags.clusters, features_dim))
 
     testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
     testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
 
-    # Mutated, fairer dataset with new labels
-    test_transformed = transform(
-        testing_sensitive, testing_nonsensitive, learned_model, test, flags
-    )
-
-    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
-    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
-    ytrain_sensitive = train.y.loc[train.s[sens_col] == 0].to_numpy()
-    ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
-
-    # extract training model parameters
-    train_transformed = transform(
-        training_sensitive, training_nonsensitive, learned_model, train, flags
-    )
+    train_transformed = trans(prototypes, w, training_nonsensitive, training_sensitive, train)
+    test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
 
     return (
         DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name),
@@ -260,39 +145,10 @@ def train_and_transform(
     )
 
 
-def transform(features_sens, features_nonsens, learned_model, dataset, flags: ZemelArgs):
-    """Transform a dataset.
+def trans(prototypes, w, nonsens, sens, dataset):
+    _, features_hat_nonsensitive, labels_hat_nonsensitive = get_xhat_y_hat(prototypes, w, nonsens)
 
-    Args:
-        features_sens: Sensitive features.
-        features_nonsens: Nonsensitive features.
-        label_sens: Sensitive labels.
-        label_nonsens: Class labels.
-        learned_model: Model optimized for the LFR objective.
-        dataset: Dataset to be transformed.
-
-    Returns:
-        Dataframe of transformed features.
-    """
-    k = flags.clusters
-    _, p = features_sens.shape
-    alphaoptim0 = learned_model[:p]
-    alphaoptim1 = learned_model[p : 2 * p]
-    voptim = np.array(learned_model[(2 * p) + k :]).reshape((k, p))
-
-    # compute distances on the test dataset using train model params
-    dist_sensitive = distances(features_sens, voptim, alphaoptim1)
-    dist_nonsensitive = distances(features_nonsens, voptim, alphaoptim0)
-
-    # compute cluster probabilities for test instances
-    m_nk_sensitive = softmax(dist_sensitive)
-    m_nk_nonsensitive = softmax(dist_nonsensitive)
-
-    # learned mappings for test instances
-    res_sensitive = x_n_hat(features_sens, m_nk_sensitive, voptim)
-    x_n_hat_sensitive = res_sensitive[0]
-    res_nonsensitive = x_n_hat(features_nonsens, m_nk_nonsensitive, voptim)
-    x_n_hat_nonsensitive = res_nonsensitive[0]
+    _, features_hat_sensitive, labels_hat_sensitive = get_xhat_y_hat(prototypes, w, sens)
 
     sens_col = dataset.s.columns[0]
 
@@ -300,13 +156,13 @@ def transform(features_sens, features_nonsens, learned_model, dataset, flags: Ze
     nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
 
     transformed_features = np.zeros_like(dataset.x.to_numpy())
-    transformed_features[sensitive_idx] = x_n_hat_sensitive
-    transformed_features[nonsensitive_idx] = x_n_hat_nonsensitive
+    transformed_features[sensitive_idx] = features_hat_sensitive
+    transformed_features[nonsensitive_idx] = features_hat_nonsensitive
 
     return pd.DataFrame(transformed_features, columns=dataset.x.columns)
 
 
-def main():
+def main() -> None:
     """Main method to run model."""
     args = ZemelArgs()
     args.parse_args()
@@ -316,4 +172,14 @@ def main():
 
 
 if __name__ == "__main__":
+    """Learning fair representations is a pre-processing technique that finds a
+        latent representation which encodes the data well but obfuscates information
+        about protected attributes [2]_.
+        References:
+            .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
+               Fair Representations." International Conference on Machine Learning,
+               2013.
+        Based on code from https://github.com/zjelveh/learning-fair-representations
+        Which in turn, we've got from AIF360
+    """
     main()

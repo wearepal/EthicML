@@ -94,8 +94,8 @@ def test_threaded_zemel(toy_train_test: TrainTestPair):
     assert classifier.name == "SVM"
 
     predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 51
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 29
 
     beut_model: PreAlgorithm = Zemel()
     assert beut_model is not None
@@ -114,8 +114,8 @@ def test_threaded_zemel(toy_train_test: TrainTestPair):
     assert svm_model.name == "SVM"
 
     predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 51
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 29
 
 
 def test_threaded_beutel(toy_train_test: TrainTestPair):
