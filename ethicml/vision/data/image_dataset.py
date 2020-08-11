@@ -55,7 +55,7 @@ class TorchImageDataset(VisionDataset):
 
         self.x: np.ndarray[np.str_] = data.x["filename"].to_numpy()
         self.s = torch.as_tensor(s.to_numpy())
-        self.y = torch.as_tensor(target_attr.to_numpy())
+        self.y = torch.as_tensor(y.to_numpy())
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
         """Fetch the data sample at the given index.
