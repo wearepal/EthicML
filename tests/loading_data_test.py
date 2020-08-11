@@ -487,7 +487,7 @@ def test_celeba():
     assert celeba_data is not None
     data = celeba_data.load()
 
-    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
+    assert celeba_data.name == "CelebA, s=[Male], y=Smiling"
 
     assert (202599, 39) == data.x.shape
     assert (202599, 1) == data.s.shape

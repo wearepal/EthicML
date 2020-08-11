@@ -135,9 +135,8 @@ def celeba(
     elif check_integrity:
         if not _check_integrity(base):
             return None, img_dir
-
     dataset_obj = Dataset(
-        name=f"CelebA, s={sens_attr}, y={label}",
+        name=f"CelebA, s=[{', '.join(sens_attr)}], y={label}",
         sens_attrs=sens_attr,
         s_prefix=sens_attr,
         class_labels=[label],
