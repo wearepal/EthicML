@@ -1,11 +1,17 @@
 """Test for ethicml.vision."""
 
+import numpy as np
 import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from ethicml.data import create_celeba_dataset, create_cmnist_datasets, create_genfaces_dataset
-from ethicml.vision import LdColorizer, TorchImageDataset
+from ethicml.vision import (
+    LdColorizer,
+    TorchImageDataset,
+    create_celeba_dataset,
+    create_cmnist_datasets,
+    create_genfaces_dataset,
+)
 
 
 @pytest.mark.parametrize("transform", [LdColorizer])
@@ -55,6 +61,25 @@ def test_celeba():
 
     assert isinstance(train_set, TorchImageDataset)
     assert isinstance(test_set, TorchImageDataset)
+
+
+def test_celeba_multi_s():
+    """test celeba"""
+    data = create_celeba_dataset(
+        root="non-existent",
+        biased=False,
+        mixing_factor=0.0,
+        unbiased_pcnt=1.0,
+        sens_attr_name=["Black_Hair", "Blond_Hair", "Brown_Hair"],
+        target_attr_name="Smiling",
+        check_integrity=False,
+    )
+
+    assert len(data) == 115_309
+    assert data.s.shape[1] == 1
+    assert np.unique(data.s.numpy()).tolist() == [0, 1, 2]
+
+    assert isinstance(data, TorchImageDataset)
 
 
 def test_gen_faces():

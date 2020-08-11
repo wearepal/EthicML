@@ -12,5 +12,4 @@ from .tabular_data.sqf import *
 from .tabular_data.toy import *
 from .util import *
 from .vision_data.celeba import *
-from .vision_data.cmnist import *
 from .vision_data.genfaces import *

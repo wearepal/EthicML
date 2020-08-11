@@ -1,10 +1,11 @@
 """Wrapper for SKLearn implementation of SVM."""
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
 
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
+
 from .shared import flag_interface
 
 __all__ = ["SVMAsync"]
