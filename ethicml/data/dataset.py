@@ -1,13 +1,14 @@
 """Data structure for all datasets that come with the framework."""
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import pandas as pd
 from typing_extensions import Literal
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
+
 from .util import filter_features_by_prefixes, get_discrete_features
 
 __all__ = ["Dataset"]
