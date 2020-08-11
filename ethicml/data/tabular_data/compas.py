@@ -458,5 +458,5 @@ def compas(
         class_label_prefix=class_label_prefix,
         class_labels=class_labels,
         discrete_only=discrete_only,
-        disc_feature_groups=disc_feature_groups,
+        discrete_feature_groups=disc_feature_groups,
     )

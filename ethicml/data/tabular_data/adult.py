@@ -274,5 +274,5 @@ def adult(
         s_prefix=s_prefix,
         class_label_prefix=class_label_prefix,
         discrete_only=discrete_only,
-        disc_feature_groups=disc_feature_groups,
+        discrete_feature_groups=disc_feature_groups,
     )

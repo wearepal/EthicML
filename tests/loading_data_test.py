@@ -1,4 +1,5 @@
 """Test the loading data capability."""
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -287,10 +288,13 @@ def test_load_adult_nationality():
 def test_race_feature_split():
     """test race feature split"""
     adult_data: Dataset = adult(split="Custom")
-    adult_data.sens_attrs = ["race_White"]
-    adult_data.s_prefix = ["race"]
-    adult_data.class_labels = ["salary_>50K"]
-    adult_data.class_label_prefix = ["salary"]
+    adult_data = replace(
+        adult_data,
+        sens_attrs=["race_White"],
+        s_prefix=["race"],
+        class_labels=["salary_>50K"],
+        class_label_prefix=["salary"],
+    )
 
     data: DataTuple = adult_data.load()
 

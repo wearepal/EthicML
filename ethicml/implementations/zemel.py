@@ -1,3 +1,4 @@
+"""Zemel algorithm."""
 from typing import Tuple
 
 import numpy as np
@@ -37,6 +38,7 @@ def LFR_optim_objective(
     print_interval,
     verbose,
 ) -> float:
+    """LFR optim objective."""
     num_unprivileged, features_dim = x_unprivileged.shape
     num_privileged, _ = x_privileged.shape
 
@@ -76,6 +78,7 @@ def LFR_optim_objective(
 def get_xhat_y_hat(
     prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Get xhat y hat."""
     M = softmax(-cdist(x, prototypes), axis=1)
     x_hat = np.matmul(M, prototypes)
     y_hat = np.clip(
@@ -146,6 +149,7 @@ def train_and_transform(
 
 
 def trans(prototypes, w, nonsens, sens, dataset):
+    """Trans."""
     _, features_hat_nonsensitive, labels_hat_nonsensitive = get_xhat_y_hat(prototypes, w, nonsens)
 
     _, features_hat_sensitive, labels_hat_sensitive = get_xhat_y_hat(prototypes, w, sens)

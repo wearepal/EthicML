@@ -136,7 +136,7 @@ def celeba(
         s_prefix=sens_attr,
         class_labels=[label],
         class_label_prefix=[label],
-        disc_feature_groups=disc_feature_groups,
+        discrete_feature_groups=disc_feature_groups,
         features=discrete_features + continuous_features,
         cont_features=continuous_features,
         num_samples=202599,

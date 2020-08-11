@@ -13,11 +13,11 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
-from ethicml.data import CelebAttrs, celeba
+from ethicml.data import CelebAttrs, GenfacesAttributes, celeba, genfaces
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
-__all__ = ["TorchImageDataset", "create_celeba_dataset"]
+__all__ = ["TorchImageDataset", "create_celeba_dataset", "create_genfaces_dataset"]
 
 
 class TorchImageDataset(VisionDataset):
@@ -167,4 +167,67 @@ def create_celeba_dataset(
             map_to_binary=False,
             transform=transform,
             target_transform=target_transform,
+        )
+
+
+def create_genfaces_dataset(
+    root: str,
+    biased: bool,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    sens_attr_name: GenfacesAttributes,
+    target_attr_name: GenfacesAttributes,
+    transform: Optional[Callable] = None,
+    target_transform: Optional[Callable] = None,
+    download: bool = False,
+    seed: int = 42,
+    check_integrity: bool = True,
+) -> TorchImageDataset:
+    """Create a CelebA dataset object.
+
+    Args:
+        root: Root directory where images are downloaded to.
+        biased: Wheher to artifically bias the dataset according to the mixing factor. See
+                :func:`get_biased_subset()` for more details.
+        mixing_factor: Mixing factor used to generate the biased subset of the data.
+        sens_attr_name: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+                        performed if multiple sensitive attributes are specified.
+        unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
+        target_attr_name: Attribute to set as the target attribute.
+        transform: A function/transform that  takes in an PIL image and returns a transformed
+                   version. E.g, `transforms.ToTensor`
+        target_transform: A function/transform that takes in the target and transforms it.
+        download: If true, downloads the dataset from the internet and puts it in root
+                  directory. If dataset is already downloaded, it is not downloaded again.
+        seed: Random seed used to sample biased subset.
+        check_integrity: If True, check whether the data has been downloaded correctly.
+    """
+    sens_attr_name = cast(GenfacesAttributes, sens_attr_name.lower())
+    target_attr_name = cast(GenfacesAttributes, target_attr_name.lower())
+
+    dataset, base_dir = genfaces(
+        download_dir=root,
+        label=target_attr_name,
+        sens_attr=sens_attr_name,
+        download=download,
+        check_integrity=check_integrity,
+    )
+    assert dataset is not None
+    all_dt = dataset.load()
+
+    if sens_attr_name == target_attr_name:
+        warnings.warn("Same attribute specified for both the sensitive and target attribute.")
+
+    unbiased_dt, biased_dt, _ = ProportionalSplit(unbiased_pcnt, start_seed=seed)(all_dt)
+
+    if biased:
+        biased_dt, _ = get_biased_subset(
+            data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
+        )
+        return TorchImageDataset(
+            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform,
+        )
+    else:
+        return TorchImageDataset(
+            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform,
         )

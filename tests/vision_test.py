@@ -5,8 +5,13 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from ethicml.data import create_cmnist_datasets, create_genfaces_dataset
-from ethicml.vision import LdColorizer, TorchImageDataset, create_celeba_dataset
+from ethicml.vision import (
+    LdColorizer,
+    TorchImageDataset,
+    create_celeba_dataset,
+    create_cmnist_datasets,
+    create_genfaces_dataset,
+)
 
 
 @pytest.mark.parametrize("transform", [LdColorizer])

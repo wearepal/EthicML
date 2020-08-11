@@ -30,5 +30,5 @@ def toy() -> Dataset:
         sens_attrs=["sensitive-attr"],
         class_labels=["decision"],
         discrete_only=False,
-        disc_feature_groups=disc_feature_groups,
+        discrete_feature_groups=disc_feature_groups,
     )

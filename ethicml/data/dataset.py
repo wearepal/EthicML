@@ -1,9 +1,10 @@
 """Data structure for all datasets that come with the framework."""
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Sequence, Tuple
 
 import pandas as pd
-from typing_extensions import Literal, final
+from typing_extensions import Literal
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
@@ -12,52 +13,40 @@ from .util import filter_features_by_prefixes, get_discrete_features
 __all__ = ["Dataset"]
 
 
-@final  # this class should not be subclassed. it is just meant as a data structure
+@dataclass(frozen=True)
 class Dataset:
     """Data structure that holds all the information needed to load a given dataset."""
 
-    def __init__(
-        self,
-        name: str,
-        filename_or_path: Union[str, Path],
-        features: Sequence[str],
-        cont_features: Sequence[str],
-        sens_attrs: Sequence[str],
-        class_labels: Sequence[str],
-        num_samples: int,
-        discrete_only: bool,
-        s_prefix: Optional[Sequence[str]] = None,
-        class_label_prefix: Optional[Sequence[str]] = None,
-        disc_feature_groups: Optional[Dict[str, List[str]]] = None,
-    ):
-        """Init Dataset object."""
-        self.features_to_remove: List[str] = []
-        self._name: str = name
-        self.num_samples: int = num_samples
-        self.continuous_features = list(cont_features)
-        self.features = list(features)
-        self.s_prefix = list(s_prefix) if s_prefix is not None else []
-        self.sens_attrs: List[str] = list(sens_attrs)
-        self.class_label_prefix = list(class_label_prefix) if class_label_prefix is not None else []
-        self.class_labels: List[str] = list(class_labels)
-        self.discrete_only: bool = discrete_only
-        self._filepath: Path
-        if isinstance(filename_or_path, Path):
-            self._filepath = filename_or_path
-        else:
-            self._filepath = ROOT_PATH / "data" / "csvs" / filename_or_path
-        self._disc_feature_groups: Optional[Dict[str, List[str]]] = disc_feature_groups
-        self.combination_multipliers: Dict[str, int] = {}
-
-    @property
-    def name(self) -> str:
-        """Name of the dataset."""
-        return self._name
+    name: str
+    filename_or_path: Union[str, Path]
+    features: Sequence[str]
+    cont_features: Sequence[str]
+    sens_attrs: Sequence[str]
+    class_labels: Sequence[str]
+    num_samples: int
+    discrete_only: bool
+    s_prefix: Sequence[str] = field(default_factory=list)
+    class_label_prefix: Sequence[str] = field(default_factory=list)
+    discrete_feature_groups: Optional[Dict[str, List[str]]] = None
+    combination_multipliers: Dict[str, int] = field(default_factory=dict)
 
     @property
     def filepath(self) -> Path:
         """Filepath from which to load the data."""
-        return self._filepath
+        if isinstance(self.filename_or_path, Path):
+            return self.filename_or_path
+        else:
+            return ROOT_PATH / "data" / "csvs" / self.filename_or_path
+
+    @property
+    def features_to_remove(self) -> List[str]:
+        """Features that have to be removed from x."""
+        to_remove: List[str] = []
+        to_remove += self.s_prefix
+        to_remove += self.class_label_prefix
+        if self.discrete_only:
+            to_remove += self.continuous_features
+        return to_remove
 
     @property
     def ordered_features(self) -> Dict[str, List[str]]:
@@ -70,8 +59,8 @@ class Dataset:
         ordered = self.discrete_features + self.continuous_features
         return {
             "x": filter_features_by_prefixes(ordered, self.features_to_remove),
-            "s": self.sens_attrs,
-            "y": self.class_labels,
+            "s": list(self.sens_attrs),
+            "y": list(self.class_labels),
         }
 
     @property
@@ -81,68 +70,32 @@ class Dataset:
         This should have separate entries for the features, the labels and the sensitive attributes.
         """
         features_to_remove = self.features_to_remove
-        if self.discrete_only:
-            features_to_remove += self.continuous_features
 
         return {
             "x": filter_features_by_prefixes(self.features, features_to_remove),
-            "s": self.sens_attrs,
-            "y": self.class_labels,
+            "s": list(self.sens_attrs),
+            "y": list(self.class_labels),
         }
 
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return filter_features_by_prefixes(self._cont_features, self.features_to_remove)
-
-    @continuous_features.setter
-    def continuous_features(self, feats: List[str]) -> None:
-        self._cont_features = feats
-
-    @property
-    def features(self) -> List[str]:
-        """List of all features."""
-        return self._features
-
-    @features.setter
-    def features(self, feats: List[str]) -> None:
-        self._features = feats
-
-    @property
-    def s_prefix(self) -> List[str]:
-        """List of prefixes of the sensitive attribute."""
-        return self._s_prefix
-
-    @s_prefix.setter
-    def s_prefix(self, sens_attrs: List[str]) -> None:
-        self._s_prefix = sens_attrs
-        self.features_to_remove += sens_attrs
-
-    @property
-    def class_label_prefix(self) -> List[str]:
-        """List of prefixes of class labels."""
-        return self._class_label_prefix
-
-    @class_label_prefix.setter
-    def class_label_prefix(self, label_prefixs: List[str]) -> None:
-        self._class_label_prefix = label_prefixs
-        self.features_to_remove += label_prefixs
+        return filter_features_by_prefixes(self.cont_features, self.features_to_remove)
 
     @property
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
         return get_discrete_features(
-            self.features, self.features_to_remove, self.continuous_features
+            list(self.features), self.features_to_remove, self.continuous_features
         )
 
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
         """Dictionary of feature groups."""
-        if self._disc_feature_groups is None:
+        if self.discrete_feature_groups is None:
             return None
-        return {
-            k: v for k, v in self._disc_feature_groups.items() if k not in self.features_to_remove
-        }
+        dfgs = self.discrete_feature_groups
+        return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
 
     def __len__(self) -> int:
         """Number of elements in the dataset."""
@@ -176,8 +129,15 @@ class Dataset:
         feature_split = self.feature_split if not ordered else self.ordered_features
         feature_split_x = feature_split["x"]
 
-        # check whether we have to generate some complementary columns for binary features
-        disc_feature_groups = self._disc_feature_groups
+        # =========================================================================================
+        # Check whether we have to generate some complementary columns for binary features.
+        # This happens when we have for example several races: race-asian-pac-islander etc, but we
+        # want to have a an attribute called "race_other" that summarizes them all. Now the problem
+        # is that this cannot be done in the before this point, because only here have we actually
+        # loaded the data. So, we have to do it here, with all the information we can piece
+        # together.
+
+        disc_feature_groups = self.discrete_feature_groups
         if disc_feature_groups is not None:
             for group in disc_feature_groups.values():
                 if len(group) == 1:
@@ -198,6 +158,7 @@ class Dataset:
                         [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
                     )
 
+        # =========================================================================================
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]
         y_data = dataframe[feature_split["y"]]
