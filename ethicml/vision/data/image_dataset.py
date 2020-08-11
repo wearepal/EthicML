@@ -45,19 +45,17 @@ class TorchImageDataset(VisionDataset):
         """
         super().__init__(root, transform=transform, target_transform=target_transform)
 
-        sens_attr = data.s
+        s = data.s
         self.s_dim = 1
         target_attr = data.y
 
         if map_to_binary:
-            sens_attr = (sens_attr + 1) // 2  # map from {-1, 1} to {0, 1}
+            s = (s + 1) // 2  # map from {-1, 1} to {0, 1}
             target_attr = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        filename = data.x["filename"]
-
-        self.filename: np.ndarray[np.str_] = filename.to_numpy()
-        self.sens_attr = torch.as_tensor(sens_attr.to_numpy())
-        self.target_attr = torch.as_tensor(target_attr.to_numpy())
+        self.x: np.ndarray[np.str_] = data.x["filename"].to_numpy()
+        self.s = torch.as_tensor(s.to_numpy())
+        self.y = torch.as_tensor(target_attr.to_numpy())
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
         """Fetch the data sample at the given index.
@@ -69,17 +67,17 @@ class TorchImageDataset(VisionDataset):
             Tuple[1]: Tuple containing the sample along
             with its sensitive and target attribute labels.
         """
-        x = Image.open(str(self.root / self.filename[index]))
-        s = self.sens_attr[index]
-        target = self.target_attr[index]
+        x = Image.open(str(self.root / self.x[index]))
+        s = self.s[index]
+        y = self.y[index]
 
         if self.transform is not None:
             x = self.transform(x)
 
         if self.target_transform is not None:
-            target = self.target_transform(target)
+            y = self.target_transform(y)
 
-        return x, s, target
+        return x, s, y
 
     def __len__(self) -> int:
         """Length (sample count) of the dataset.
@@ -87,4 +85,4 @@ class TorchImageDataset(VisionDataset):
         Returns:
             Integer indicating the length of the dataset.
         """
-        return self.sens_attr.size(0)
+        return self.s.size(0)

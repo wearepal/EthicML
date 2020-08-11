@@ -483,7 +483,9 @@ def test_celeba():
     """test celeba"""
     celeba_data, _ = celeba(download_dir="non-existent")
     assert celeba_data is None  # data should not be there
-    celeba_data, _ = celeba(download_dir="non-existent", check_integrity=False)
+    celeba_data, _ = celeba(
+        download_dir="non-existent", check_integrity=False, sens_attr=["Male", "Young"]
+    )
     assert celeba_data is not None
     data = celeba_data.load()
 

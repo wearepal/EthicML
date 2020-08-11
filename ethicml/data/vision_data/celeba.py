@@ -1,7 +1,7 @@
 """Class to describe attributes of the CelebA dataset."""
 import warnings
 from pathlib import Path
-from typing import Callable, List, Optional, Tuple, cast
+from typing import Callable, List, Optional, Tuple, Union, cast
 
 from typing_extensions import Final, Literal
 
@@ -77,7 +77,7 @@ _FILE_LIST: Final = [
 def celeba(
     download_dir: str,
     label: CelebAttrs = "Smiling",
-    sens_attr: CelebAttrs = "Male",
+    sens_attr: Union[CelebAttrs, List[CelebAttrs]] = "Male",
     download: bool = False,
     check_integrity: bool = True,
 ) -> Tuple[Optional[Dataset], Path]:
@@ -120,7 +120,11 @@ def celeba(
             "Young": ["Young"],
         }
         discrete_features = flatten_dict(disc_feature_groups)
-        assert sens_attr in discrete_features
+        if isinstance(sens_attr, list):
+            assert all([feat in discrete_features for feat in sens_attr])
+        else:
+            assert sens_attr in discrete_features
+            sens_attr = [sens_attr]
         assert label in discrete_features
         continuous_features = ["filename"]
 
@@ -134,8 +138,8 @@ def celeba(
 
     dataset_obj = Dataset(
         name=f"CelebA, s={sens_attr}, y={label}",
-        sens_attrs=[sens_attr],
-        s_prefix=[sens_attr],
+        sens_attrs=sens_attr,
+        s_prefix=sens_attr,
         class_labels=[label],
         class_label_prefix=[label],
         disc_feature_groups=disc_feature_groups,
