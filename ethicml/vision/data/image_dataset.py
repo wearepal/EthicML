@@ -47,11 +47,11 @@ class TorchImageDataset(VisionDataset):
 
         s = data.s
         self.s_dim = 1
-        target_attr = data.y
+        y = data.y
 
         if map_to_binary:
             s = (s + 1) // 2  # map from {-1, 1} to {0, 1}
-            target_attr = (target_attr + 1) // 2  # map from {-1, 1} to {0, 1}
+            y = (y + 1) // 2  # map from {-1, 1} to {0, 1}
 
         self.x: np.ndarray[np.str_] = data.x["filename"].to_numpy()
         self.s = torch.as_tensor(s.to_numpy())
