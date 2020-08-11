@@ -3,8 +3,9 @@
 Modifies the Pytorch vision dataset by enabling the use of sensitive attributes
 and biased subset sampling.
 """
+import warnings
 from pathlib import Path
-from typing import Callable, Optional, Tuple
+from typing import Callable, List, Optional, Union, Tuple, cast
 
 import numpy as np
 import torch
@@ -12,9 +13,11 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
+from ethicml.data import CelebAttrs, celeba
+from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
-__all__ = ["TorchImageDataset"]
+__all__ = ["TorchImageDataset", "create_celeba_dataset"]
 
 
 class TorchImageDataset(VisionDataset):
@@ -86,3 +89,82 @@ class TorchImageDataset(VisionDataset):
             Integer indicating the length of the dataset.
         """
         return self.s.size(0)
+
+
+def create_celeba_dataset(
+    root: str,
+    biased: bool,
+    mixing_factor: float,
+    unbiased_pcnt: float,
+    sens_attr_name: Union[CelebAttrs, List[CelebAttrs], Tuple[CelebAttrs, ...]],
+    target_attr_name: CelebAttrs,
+    transform: Optional[Callable] = None,
+    target_transform: Optional[Callable] = None,
+    download: bool = False,
+    seed: int = 42,
+    check_integrity: bool = True,
+) -> TorchImageDataset:
+    """Create a CelebA dataset object.
+
+    Args:
+        root: Root directory where images are downloaded to.
+        biased: Wheher to artifically bias the dataset according to the mixing factor. See
+                :func:`get_biased_subset()` for more details.
+        mixing_factor: Mixing factor used to generate the biased subset of the data.
+        unbiased_pcnt: Percentage of the dataset to set aside as the 'unbiased' split.
+        sens_attr_name: Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+                        performed if multiple sensitive attributes are specified.
+        target_attr_name: Attribute to set as the target attribute.
+        transform: A function/transform that  takes in an PIL image and returns a transformed
+                   version. E.g, `transforms.ToTensor`
+        target_transform: A function/transform that takes in the target and transforms it.
+        download: If true, downloads the dataset from the internet and puts it in root
+                  directory. If dataset is already downloaded, it is not downloaded again.
+        seed: Random seed used to sample biased subset.
+        check_integrity: If True, check whether the data has been downloaded correctly.
+    """
+    if not isinstance(sens_attr_name, (list, tuple)):
+        sens_attr_name = cast(CelebAttrs, sens_attr_name.capitalize())
+    target_attr_name = cast(CelebAttrs, target_attr_name.capitalize())
+
+    dataset, base_dir = celeba(
+        download_dir=root,
+        label=target_attr_name,
+        sens_attr=sens_attr_name,
+        download=download,
+        check_integrity=check_integrity,
+    )
+    assert dataset is not None
+    if isinstance(sens_attr_name, (list, tuple)):
+        # FIXME: the following check should not be hard coded
+        if len(sens_attr_name) == 2 and ("Male" in sens_attr_name) and ("Young" in sens_attr_name):
+            all_dt = dataset.load(sens_combination=True, map_to_binary=True)
+        else:
+            all_dt = dataset.load(discard_non_one_hot=True, map_to_binary=True)
+    else:
+        all_dt = dataset.load(map_to_binary=True)
+
+    if sens_attr_name == target_attr_name:
+        warnings.warn("Same attribute specified for both the sensitive and target attribute.")
+
+    unbiased_dt, biased_dt, _ = ProportionalSplit(unbiased_pcnt, start_seed=seed)(all_dt)
+
+    if biased:
+        biased_dt, _ = get_biased_subset(
+            data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
+        )
+        return TorchImageDataset(
+            data=biased_dt,
+            root=base_dir,
+            map_to_binary=False,
+            transform=transform,
+            target_transform=target_transform,
+        )
+    else:
+        return TorchImageDataset(
+            data=unbiased_dt,
+            root=base_dir,
+            map_to_binary=False,
+            transform=transform,
+            target_transform=target_transform,
+        )

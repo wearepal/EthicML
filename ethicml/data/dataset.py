@@ -1,9 +1,9 @@
 """Data structure for all datasets that come with the framework."""
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Sequence, Tuple
 
 import pandas as pd
-from typing_extensions import final
+from typing_extensions import Literal, final
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
@@ -20,26 +20,26 @@ class Dataset:
         self,
         name: str,
         filename_or_path: Union[str, Path],
-        features: List[str],
-        cont_features: List[str],
-        sens_attrs: List[str],
-        class_labels: List[str],
+        features: Sequence[str],
+        cont_features: Sequence[str],
+        sens_attrs: Sequence[str],
+        class_labels: Sequence[str],
         num_samples: int,
         discrete_only: bool,
-        s_prefix: Optional[List[str]] = None,
-        class_label_prefix: Optional[List[str]] = None,
+        s_prefix: Optional[Sequence[str]] = None,
+        class_label_prefix: Optional[Sequence[str]] = None,
         disc_feature_groups: Optional[Dict[str, List[str]]] = None,
     ):
         """Init Dataset object."""
         self.features_to_remove: List[str] = []
         self._name: str = name
         self.num_samples: int = num_samples
-        self.continuous_features = cont_features
-        self.features = features
-        self.s_prefix = s_prefix or []
-        self.sens_attrs: List[str] = sens_attrs
-        self.class_label_prefix = class_label_prefix or []
-        self.class_labels: List[str] = class_labels
+        self.continuous_features = list(cont_features)
+        self.features = list(features)
+        self.s_prefix = list(s_prefix) if s_prefix is not None else []
+        self.sens_attrs: List[str] = list(sens_attrs)
+        self.class_label_prefix = list(class_label_prefix) if class_label_prefix is not None else []
+        self.class_labels: List[str] = list(class_labels)
         self.discrete_only: bool = discrete_only
         self._filepath: Path
         if isinstance(filename_or_path, Path):
@@ -47,6 +47,7 @@ class Dataset:
         else:
             self._filepath = ROOT_PATH / "data" / "csvs" / filename_or_path
         self._disc_feature_groups: Optional[Dict[str, List[str]]] = disc_feature_groups
+        self.combination_multipliers: Dict[str, int] = {}
 
     @property
     def name(self) -> str:
@@ -147,12 +148,24 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(self, ordered: bool = False) -> DataTuple:
+    def load(
+        self,
+        ordered: bool = False,
+        discard_non_one_hot: bool = False,
+        map_to_binary: bool = False,
+        sens_combination: bool = False,
+        class_combination: bool = False,
+    ) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
             ordered: if True, return features such that discrete come first, then continuous
             generate_dummies: if True generate complementary features for standalone binary features
+            discard_non_one_hot: if some entries in s or y are not correctly one-hot encoded,
+                                 discard those
+            map_to_binary: if True, convert labels from {-1, 1} to {0, 1}
+            sens_combination: if True, take as s the cartesian product of all s columns
+            class_combination: if True, take as y the cartesian product of all y columns
 
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
@@ -187,17 +200,66 @@ class Dataset:
 
         x_data = dataframe[feature_split_x]
         s_data = dataframe[feature_split["s"]]
-        # undo one-hot encoding if it's there
-        if s_data.shape[1] > 1:
-            assert (s_data.sum(axis="columns") == 1).all(), "s is not one-hot encoded"
-            name = s_data.columns[0].split("_")[0]
-            s_data.columns = range(s_data.shape[1])
-            s_data = s_data.idxmax(axis="columns").to_frame(name=name)
         y_data = dataframe[feature_split["y"]]
-        if y_data.shape[1] > 1:
-            assert (y_data.sum(axis="columns") == 1).all(), "y is not one-hot encoded"
-            name = y_data.columns[0].split("_")[0]
-            y_data.columns = range(y_data.shape[1])
-            y_data = y_data.idxmax(axis="columns").to_frame(name=name)
+
+        if map_to_binary:
+            s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
+            y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
+
+        if sens_combination:
+            s_mask = None
+            s_data = self.combine_attributes(s_data)
+        else:
+            s_name = self.s_prefix[0] if self.s_prefix else ",".join(s_data.columns)
+            s_data, s_mask = maybe_undo_one_hot(s_data, discard_non_one_hot, "s", s_name)
+            if s_mask is not None:
+                y_data = y_data[s_mask]
+                x_data = x_data[s_mask]
+        if class_combination:
+            y_mask = None
+            y_data = self.combine_attributes(y_data)
+        else:
+            y_name = (
+                self.class_label_prefix[0] if self.class_label_prefix else ",".join(y_data.columns)
+            )
+            y_data, y_mask = maybe_undo_one_hot(y_data, discard_non_one_hot, "y", y_name)
+            if y_mask is not None:
+                s_data = s_data[y_mask]
+                x_data = x_data[y_mask]
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
+
+    def combine_attributes(self, attributes: pd.DataFrame) -> pd.DataFrame:
+        """Take the cartesian product of all attributes."""
+        attr_names = list(attributes.columns)
+        combination = attributes[attr_names[0]]
+        multiplier = 2
+        self.combination_multipliers[attr_names[0]] = 1
+        for attr_name in attr_names[1:]:
+            combination += multiplier * attributes[attr_name]
+            self.combination_multipliers[attr_name] = multiplier
+            multiplier *= 2
+        return combination.to_frame(name=",".join(attr_names))
+
+
+def maybe_undo_one_hot(
+    attributes: pd.DataFrame,
+    discard_non_one_hot: bool,
+    label_type: Literal["s", "y"],
+    new_name: str,
+) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
+    """Undo one-hot encoding if it's there."""
+    mask = None
+    if attributes.shape[1] > 1:
+        if discard_non_one_hot:
+            # only use those samples where exactly one of the specified attributes is true
+            mask = attributes.sum(axis="columns") == 1
+            attributes = attributes.loc[mask]
+        else:
+            assert (attributes.sum(axis="columns") == 1).all(), f"{label_type} is not one-hot"
+
+        # we have to overwrite the column names because `idxmax` uses the column names
+        attributes.columns = list(range(attributes.shape[1]))
+        attributes = attributes.idxmax(axis="columns").to_frame(name=new_name)
+
+    return attributes, mask

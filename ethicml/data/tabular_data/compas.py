@@ -440,7 +440,6 @@ def compas(
         class_labels = ["two-year-recid"]
         class_label_prefix = ["two-year-recid"]
     elif split == "Race-Sex":
-        # TODO: this is currently completely broken. we would need to construct all combinations.
         sens_attrs = ["sex", "race"]
         s_prefix = ["race", "sex"]
         class_labels = ["two-year-recid"]
