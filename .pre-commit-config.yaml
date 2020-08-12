@@ -27,3 +27,11 @@ repos:
             --add-ignore=D105,D107,
             --ignore-decorators=implements|overload
         ]
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: check-merge-conflict
+    -   id: check-toml
+    -   id: check-yaml
+    -   id: name-tests-test
+    -   id: debug-statements
