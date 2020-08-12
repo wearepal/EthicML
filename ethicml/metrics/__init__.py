@@ -15,9 +15,9 @@ from .balanced_accuracy import BalancedAccuracy
 from .bcr import BCR
 from .confusion_matrix import LabelOutOfBounds, confusion_matrix
 from .cv import CV, AbsCV
+from .dependence_measures import *
 from .hsic import Hsic
 from .metric import Metric
-from .dependence_measures import *
 from .npv import NPV
 from .ppv import PPV
 from .prob_neg import ProbNeg

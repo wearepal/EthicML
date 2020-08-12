@@ -1,6 +1,8 @@
 """Test the loading data capability."""
+from dataclasses import replace
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -267,12 +269,11 @@ def test_load_adult_race_sex():
 
 def test_load_compas_race_sex():
     """test load compas race sex"""
-    with pytest.raises(AssertionError):
-        data: DataTuple = compas("Race-Sex").load()
-    # assert (6167, 399) == data.x.shape
-    # assert (6167, 1) == data.s.shape
-    # assert (6167, 1) == data.y.shape
-    # assert data.s.nunique()[0] == 2
+    data: DataTuple = compas("Race-Sex").load(sens_combination=True)
+    assert (6167, 399) == data.x.shape
+    assert (6167, 1) == data.s.shape
+    assert (6167, 1) == data.y.shape
+    assert data.s.nunique()[0] == 4
 
 
 def test_load_adult_nationality():
@@ -287,10 +288,13 @@ def test_load_adult_nationality():
 def test_race_feature_split():
     """test race feature split"""
     adult_data: Dataset = adult(split="Custom")
-    adult_data.sens_attrs = ["race_White"]
-    adult_data.s_prefix = ["race"]
-    adult_data.class_labels = ["salary_>50K"]
-    adult_data.class_label_prefix = ["salary"]
+    adult_data = replace(
+        adult_data,
+        sens_attrs=["race_White"],
+        s_prefix=["race"],
+        class_labels=["salary_>50K"],
+        class_label_prefix=["salary"],
+    )
 
     data: DataTuple = adult_data.load()
 
@@ -485,11 +489,32 @@ def test_celeba():
     assert celeba_data is None  # data should not be there
     celeba_data, _ = celeba(download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load()
+    data = celeba_data.load(map_to_binary=True)
 
     assert celeba_data.name == "CelebA, s=[Male], y=Smiling"
 
     assert (202599, 39) == data.x.shape
+    assert (202599, 1) == data.s.shape
+    assert (202599, 1) == data.y.shape
+    assert len(data) == len(celeba_data)
+
+    assert data.x["filename"].iloc[0] == "000001.jpg"
+
+
+def test_celeba_multi_s():
+    """test celeba"""
+    celeba_data, _ = celeba(
+        sens_attr=["Young", "Male"], download_dir="non-existent", check_integrity=False
+    )
+    assert celeba_data is not None
+    data = celeba_data.load(sens_combination=True, map_to_binary=True)
+
+    assert celeba_data.name == "CelebA, s=[Young, Male], y=Smiling"
+    assert celeba_data.combination_multipliers == {"Young": 1, "Male": 2}
+
+    assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
+    assert data.s.columns[0] == "Young,Male"
+    assert (202599, 38) == data.x.shape
     assert (202599, 1) == data.s.shape
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)

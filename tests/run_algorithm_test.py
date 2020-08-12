@@ -77,8 +77,7 @@ def test_empty_evaluate():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
     """test run alg suite"""
-    dataset = adult("Race")
-    dataset.sens_attrs = ["race_White"]
+    dataset = adult(split="Race-Binary")
     datasets: List[Dataset] = [dataset, toy()]
     preprocess_models: List[PreAlgorithm] = [Upsampler()]
     inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel="linear")]
@@ -114,8 +113,8 @@ def test_run_alg_suite():
 
     files = os.listdir(Path(".") / "results")
     file_names = [
-        "pytest_Adult Race_Upsample uniform.csv",
-        "pytest_Adult Race_no_transform.csv",
+        "pytest_Adult Race-Binary_Upsample uniform.csv",
+        "pytest_Adult Race-Binary_no_transform.csv",
         "pytest_Toy_Upsample uniform.csv",
         "pytest_Toy_no_transform.csv",
     ]
@@ -127,9 +126,9 @@ def test_run_alg_suite():
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
         assert written_file.shape == (2, 15)
 
-    reloaded = load_results("Adult Race", "Upsample uniform", "pytest")
+    reloaded = load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
-    read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race_Upsample uniform.csv")
+    read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
     read = read.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded, read)
 

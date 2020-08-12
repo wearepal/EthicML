@@ -7,10 +7,7 @@ from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 from typing_extensions import Protocol
 
-__all__ = [
-    "DatasetWrapper",
-    "LdTransformedDataset",
-]
+__all__ = ["DatasetWrapper", "LdTransformedDataset"]
 
 _T_co = TypeVar("_T_co", covariant=True)
 

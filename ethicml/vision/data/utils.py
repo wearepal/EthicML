@@ -3,6 +3,8 @@ from typing import Any, List
 
 from torch.utils.data import Dataset, Subset, random_split
 
+__all__ = ["set_transform", "train_test_split"]
+
 
 def set_transform(dataset: Dataset, transform: Any) -> None:
     """Set the transform of a dataset to the specified transform."""

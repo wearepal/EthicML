@@ -1,6 +1,6 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
-from pathlib import Path
 import random
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,7 @@ from fairlearn.reductions import (
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import ClassifierType, DataTuple, FairnessType, TestTuple, Prediction
+from ethicml.utility import ClassifierType, DataTuple, FairnessType, Prediction, TestTuple
 
 from .utils import InAlgoArgs
 
