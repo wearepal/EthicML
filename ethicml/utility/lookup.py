@@ -2,7 +2,18 @@
 
 from typing import Callable, Dict
 
-from ethicml.data import Dataset, adult, compas, credit, german, nonbinary_toy, sqf, toy
+from ethicml.data import (
+    Dataset,
+    adult,
+    compas,
+    credit,
+    crime,
+    german,
+    health,
+    nonbinary_toy,
+    sqf,
+    toy,
+)
 
 __all__ = ["get_dataset_obj_by_name"]
 
@@ -10,13 +21,15 @@ __all__ = ["get_dataset_obj_by_name"]
 def get_dataset_obj_by_name(name: str) -> Callable[[], Dataset]:
     """Given a dataset name, get the corresponding dataset object."""
     lookup: Dict[str, Callable[[], Dataset]] = {
-        "Adult": adult,
-        "Compas": compas,
-        "Credit": credit,
-        "German": german,
-        "NonBinaryToy": nonbinary_toy,
-        "SQF": sqf,
-        "Toy": toy,
+        adult.__name__: adult,
+        compas.__name__: compas,
+        credit.__name__: credit,
+        crime.__name__: crime,
+        german.__name__: german,
+        nonbinary_toy.__name__: nonbinary_toy,
+        health.__name__: health,
+        sqf.__name__: sqf,
+        toy.__name__: toy,
     }
 
     if name not in lookup:

@@ -7,6 +7,7 @@ from typing_extensions import final
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple
+
 from .util import filter_features_by_prefixes, get_discrete_features
 
 __all__ = ["Dataset"]

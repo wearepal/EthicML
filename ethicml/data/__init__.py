@@ -14,3 +14,14 @@ from .util import *
 from .vision_data.celeba import *
 from .vision_data.cmnist import *
 from .vision_data.genfaces import *
+
+available_tabular = [
+    adult.__name__,
+    compas.__name__,
+    credit.__name__,
+    crime.__name__,
+    german.__name__,
+    health.__name__,
+    sqf.__name__,
+    toy.__name__,
+]

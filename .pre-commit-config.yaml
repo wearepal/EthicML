@@ -18,3 +18,12 @@ repos:
     - id: black
       args: [--config=.black-config.toml]
       language_version: python3.7
+-   repo: https://github.com/pycqa/pydocstyle
+    rev: 5.0.2  # pick a git hash / tag to point to
+    hooks:
+    -   id: pydocstyle
+        args: [
+            --convention=google,
+            --add-ignore=D105,D107,
+            --ignore-decorators=implements|overload
+        ]
