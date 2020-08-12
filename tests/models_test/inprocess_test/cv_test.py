@@ -1,5 +1,5 @@
 """Tests for cross validation."""
-from typing import Dict, List, NamedTuple, Type, Union, Sequence
+from typing import Dict, List, NamedTuple, Sequence, Type, Union
 
 import pytest
 

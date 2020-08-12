@@ -1,6 +1,6 @@
-import subprocess
+from subprocess import run
 
-subprocess.call(
+run(
     [
         "pydocstyle",
         "--convention=google",
@@ -9,5 +9,6 @@ subprocess.call(
         "--count",
         "-e",
         "ethicml",
-    ]
+    ],
+    check=True,
 )

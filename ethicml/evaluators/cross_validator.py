@@ -2,7 +2,7 @@
 from collections import defaultdict
 from itertools import product
 from statistics import mean
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple, Type, Sequence, Mapping
+from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Sequence, Tuple, Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.metrics import AbsCV, Accuracy, Metric

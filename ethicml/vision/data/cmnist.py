@@ -14,9 +14,8 @@ from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
 from typing_extensions import Literal
 
-from ethicml.vision import LdColorizer
-
 from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
+from .label_dependent_transforms import LdColorizer
 from .transforms import NoisyDequantize, Quantize
 from .utils import train_test_split
 
