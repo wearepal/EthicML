@@ -5,7 +5,7 @@ __all__ = ["credit"]
 
 
 def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
-    """UCL Credit Card dataset."""
+    """UCI Credit Card dataset."""
     if True:  # pylint: disable=using-constant-test
         features = [
             "LIMIT_BAL",

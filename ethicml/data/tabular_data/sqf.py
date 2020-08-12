@@ -9,6 +9,7 @@ def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
     if True:  # pylint: disable=using-constant-test
         features = [
             "perstop",
+            "perobs",
             "sex",
             "race",
             "age",
