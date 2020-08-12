@@ -31,8 +31,8 @@ def get_dataset_obj_by_name(name: str) -> Callable[[], Dataset]:
         sqf.__name__: sqf,
         toy.__name__: toy,
     }
-
-    if name not in lookup:
+    lowercase_name = name.lower()
+    if lowercase_name not in lookup:
         raise NotImplementedError("That dataset doesn't exist")
 
-    return lookup[name]
+    return lookup[lowercase_name]
