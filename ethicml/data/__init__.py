@@ -2,7 +2,6 @@
 from .dataset import *
 from .load import *
 from .lookup import *
-from .scaling import *
 from .tabular_data.adult import *
 from .tabular_data.compas import *
 from .tabular_data.credit import *

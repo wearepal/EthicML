@@ -192,7 +192,7 @@ def test_load_adult_race():
 
 
 def test_load_adult_race_sex():
-    """Test load of split combinatin that doesn't exist yet."""
+    """Test load adult race sex."""
     with pytest.raises(AssertionError):
         data: DataTuple = adult("Race-Sex").load()
 
