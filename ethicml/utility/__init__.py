@@ -4,5 +4,3 @@ from .activation import Activation
 from .data_helpers import *
 from .data_structures import *
 from .heaviside import Heaviside
-from .lookup import *
-from .scaling import *

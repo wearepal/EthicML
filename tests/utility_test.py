@@ -2,7 +2,7 @@
 import pytest
 
 from ethicml import data
-from ethicml.utility import get_dataset_obj_by_name
+from ethicml.data import get_dataset_obj_by_name
 
 
 @pytest.mark.parametrize("name", data.available_tabular)

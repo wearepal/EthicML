@@ -4,8 +4,8 @@ from typing import Tuple
 import pandas as pd
 from typing_extensions import Protocol
 
-from ethicml.data import Dataset
-from ethicml.utility import DataTuple
+from ..utility import DataTuple
+from .dataset import Dataset
 
 __all__ = ["scale_continuous"]
 

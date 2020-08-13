@@ -2,18 +2,16 @@
 
 from typing import Callable, Dict
 
-from ethicml.data import (
-    Dataset,
-    adult,
-    compas,
-    credit,
-    crime,
-    german,
-    health,
-    nonbinary_toy,
-    sqf,
-    toy,
-)
+from .dataset import Dataset
+from .tabular_data.adult import adult
+from .tabular_data.compas import compas
+from .tabular_data.credit import credit
+from .tabular_data.crime import crime
+from .tabular_data.german import german
+from .tabular_data.health import health
+from .tabular_data.non_binary_toy import nonbinary_toy
+from .tabular_data.sqf import sqf
+from .tabular_data.toy import toy
 
 __all__ = ["get_dataset_obj_by_name"]
 

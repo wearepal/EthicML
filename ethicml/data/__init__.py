@@ -1,6 +1,8 @@
 """This module contains items related to data, such as raw csv's and data objects."""
 from .dataset import *
 from .load import *
+from .lookup import *
+from .scaling import *
 from .tabular_data.adult import *
 from .tabular_data.compas import *
 from .tabular_data.credit import *
