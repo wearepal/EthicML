@@ -7,7 +7,8 @@ from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
-from ethicml.utility import DataTuple, TestTuple, get_dataset_obj_by_name
+from ethicml.data import get_dataset_obj_by_name
+from ethicml.utility import DataTuple, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
