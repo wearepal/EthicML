@@ -41,11 +41,7 @@ def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]
     """
     res: List[str] = []
     for name in features:
-        filtered = False
-        for pref in prefixes:
-            if name.startswith(pref):
-                filtered = True
-                break
+        filtered = any(name.startswith(pref) for pref in prefixes)
         if not filtered:
             res.append(name)
     return res
@@ -110,5 +106,4 @@ def reduce_feature_group(
     # then add a new dummy feature to the feature group. `load_data()` will create this for us
     disc_feature_groups[feature_group].append(f"{feature_group}{remaining_feature_name}")
     # then, regenerate the list of discrete features; just like it's done in the constructor
-    discrete_features = flatten_dict(disc_feature_groups)
-    return discrete_features
+    return flatten_dict(disc_feature_groups)

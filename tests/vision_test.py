@@ -16,8 +16,7 @@ from ethicml.vision import (
 
 @pytest.mark.parametrize("transform", [LdColorizer])
 def test_label_dependent_transforms(transform):
-    """test label dependent transforms"""
-
+    """Test label dependent transforms."""
     data = torch.rand((9, 3, 4, 4))
     labels = torch.randint(low=0, high=10, size=(9,))
 
@@ -36,7 +35,7 @@ def test_label_dependent_transforms(transform):
 
 
 def test_celeba():
-    """test celeba"""
+    """Test celeba."""
     train_set = create_celeba_dataset(
         root="non-existent",
         biased=True,
@@ -64,7 +63,7 @@ def test_celeba():
 
 
 def test_celeba_multi_s():
-    """test celeba"""
+    """Test celeba."""
     data = create_celeba_dataset(
         root="non-existent",
         biased=False,
@@ -83,7 +82,7 @@ def test_celeba_multi_s():
 
 
 def test_gen_faces():
-    """test gen faces"""
+    """Test gen faces."""
     train_set = create_genfaces_dataset(
         root="non-existent",
         biased=True,
@@ -111,6 +110,7 @@ def test_gen_faces():
 
 
 def test_cmnist(temp_dir):
+    """Test CMNIST."""
     train_set, test_set = create_cmnist_datasets(
         root=str(temp_dir), scale=0.01, train_pcnt=0.8, download=True, classes_to_keep=[0, 1]
     )
@@ -118,7 +118,7 @@ def test_cmnist(temp_dir):
     train_loader = DataLoader(train_set, batch_size=1)
     test_loader = DataLoader(test_set, batch_size=1)
 
-    for i in range(5):
+    for _ in range(5):
         x, s, y = next(iter(train_loader))
         assert x.shape == (1, 3, 28, 28)
         assert s.shape == torch.Size([1])
