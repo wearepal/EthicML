@@ -38,7 +38,7 @@ class DatasetWrapper(Dataset):
     @transform.setter
     def transform(self, transform: Optional[TransformType]) -> None:
         transform = transform or []
-        if not isinstance(transform, (Sequence)):
+        if not isinstance(transform, Sequence):
             transform = [transform]
         assert transform is not None
         self.__transform = transform
