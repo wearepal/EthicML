@@ -17,13 +17,20 @@ class Blind(InAlgorithm):
     def __init__(self, seed: int = 888) -> None:
         """Init Majority."""
         super().__init__(name="Blind", is_fairness_algo=False)
-        np.random.seed(seed)
+        self.seed = seed
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
 
+        state = np.random.get_state()
+        np.random.seed(self.seed)
+
         train_y_vals = train.y.drop_duplicates()
 
-        return Prediction(
+        predictions = Prediction(
             hard=pd.Series(np.random.choice(train_y_vals.T.to_numpy()[0], test.x.shape[0]))
         )
+
+        np.random.set_state(state)
+
+        return predictions
