@@ -1,4 +1,4 @@
-"""EthicML Tests"""
+"""EthicML Tests."""
 import sys
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Tuple
@@ -23,6 +23,7 @@ from ethicml.algorithms.inprocess import (
     LRProb,
     Majority,
 )
+from ethicml.algorithms.inprocess.blind import Blind
 from ethicml.data import compas, load_data, toy
 from ethicml.evaluators import CrossValidator, evaluate_models_async, run_in_parallel
 from ethicml.metrics import AbsCV, Accuracy, Metric
@@ -32,7 +33,7 @@ from tests.run_algorithm_test import count_true
 
 
 class InprocessTest(NamedTuple):
-    """Define a test for an inprocess model"""
+    """Define a test for an inprocess model."""
 
     name: str
     model: InAlgorithm
@@ -43,6 +44,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
+    InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
@@ -53,7 +55,7 @@ INPROCESS_TESTS = [
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
 def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int):
-    """Test an inprocess model"""
+    """Test an inprocess model."""
     train, test = toy_train_test
 
     assert isinstance(model, InAlgorithm)
@@ -66,7 +68,7 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
-    """test corels"""
+    """Test corels."""
     model: InAlgorithm = Corels()
     assert model is not None
     assert model.name == "CORELS"
@@ -86,7 +88,7 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
-    """test fair cv lr"""
+    """Test fair cv lr."""
     train, _ = toy_train_test
 
     hyperparams: Dict[str, List[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
@@ -129,7 +131,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
-    """test local installed lr"""
+    """Test local installed lr."""
     train, test = toy_train_test
 
     class _LocalInstalledLR(InstalledModel):
@@ -160,7 +162,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 
 def test_agarwal(toy_train_test: TrainTestPair):
-    """test agarwal"""
+    """Test agarwal."""
     train, test = toy_train_test
 
     agarwal_variants: List[InAlgorithmAsync] = []
@@ -204,7 +206,7 @@ def test_agarwal(toy_train_test: TrainTestPair):
 
 
 def test_threaded_agarwal():
-    """test threaded agarwal"""
+    """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [Agarwal(classifier="SVM", fairness="EqOd")]
 
     class AssertResult(Metric):
@@ -225,7 +227,7 @@ def test_threaded_agarwal():
 
 
 def test_lr_prob(toy_train_test: TrainTestPair):
-    """test lr prob"""
+    """Test lr prob."""
     train, test = toy_train_test
 
     model: LRProb = LRProb()
@@ -241,7 +243,7 @@ def test_lr_prob(toy_train_test: TrainTestPair):
 
 
 def test_kamiran(toy_train_test: TrainTestPair):
-    """test kamiran"""
+    """Test kamiran."""
     train, test = toy_train_test
 
     kamiran_model: InAlgorithm = Kamiran()
