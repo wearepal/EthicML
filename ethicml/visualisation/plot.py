@@ -25,9 +25,6 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     columns = data.x.columns
 
     amalgamated = pd.concat([data.x, data.s, data.y], axis="columns")
-    curr = mpl.get_backend()
-    print(curr)
-    mpl.use("agg")
 
     plot = sns.scatterplot(
         x=columns[0],
