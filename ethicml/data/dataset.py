@@ -10,9 +10,9 @@ from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
 
 from .util import (
+    LabelSpec,
     filter_features_by_prefixes,
     get_discrete_features,
-    LabelSpec,
     label_specs_to_feature_list,
 )
 

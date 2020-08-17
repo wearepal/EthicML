@@ -76,7 +76,6 @@ def test_celeba_multi_s():
 
     assert len(data) == 115_309
     assert data.s.shape[1] == 1
-    assert data.s.columns[0] == "Hair_Color"
     assert np.unique(data.s.numpy()).tolist() == [0, 1, 2]
 
     assert isinstance(data, TorchImageDataset)

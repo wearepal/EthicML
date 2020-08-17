@@ -39,9 +39,9 @@ def test_can_load_test_data(data_root: Path):
 
 
 @pytest.mark.parametrize(
-    "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name,sens_comb",
+    "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
     [
-        (adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex", False),
+        (adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (
             adult("Sex", binarize_nationality=True),
             45222,
@@ -52,32 +52,31 @@ def test_can_load_test_data(data_root: Path):
             1,
             2,
             "Adult Sex, binary nationality",
-            False,
         ),
-        (adult(split="Sex"), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex", False),
-        (adult(split="Race"), 45222, 98, 93, 1, 5, 1, 2, "Adult Race", False),
-        (adult(split="Race-Binary"), 45222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary", False),
-        (adult(split="Nationality"), 45222, 62, 57, 1, 41, 1, 2, "Adult Nationality", False),
-        (adult(split="Education"), 45222, 86, 82, 1, 3, 1, 2, "Adult Education", False),
-        (compas(), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex", False),
-        (compas(split="Sex"), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex", False),
-        (compas(split="Race"), 6167, 400, 395, 1, 2, 1, 2, "Compas Race", False),
-        (compas(split="Race-Sex"), 6167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex", True),
-        (credit(), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex", False),
-        (credit(split="Sex"), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex", False),
-        (crime(), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary", False),
-        (crime(split="Race-Binary"), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary", False),
-        (german(), 1000, 57, 50, 1, 2, 1, 2, "German Sex", False),
-        (german(split="Sex"), 1000, 57, 50, 1, 2, 1, 2, "German Sex", False),
-        (health(), 171067, 130, 12, 1, 2, 1, 2, "Health", False),
-        (health(split="Sex"), 171067, 130, 12, 1, 2, 1, 2, "Health", False),
-        (nonbinary_toy(), 100, 2, 0, 1, 2, 1, 5, "NonBinaryToy", False),
-        (sqf(), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex", False),
-        (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex", False),
-        (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race", False),
-        (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex", True),
-        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1", False),
-        (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy", False),
+        (adult(split="Sex"), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
+        (adult(split="Race"), 45222, 98, 93, 1, 5, 1, 2, "Adult Race"),
+        (adult(split="Race-Binary"), 45222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary"),
+        (adult(split="Nationality"), 45222, 62, 57, 1, 41, 1, 2, "Adult Nationality"),
+        (adult(split="Education"), 45222, 86, 82, 1, 3, 1, 2, "Adult Education"),
+        (compas(), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
+        (compas(split="Sex"), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
+        (compas(split="Race"), 6167, 400, 395, 1, 2, 1, 2, "Compas Race"),
+        (compas(split="Race-Sex"), 6167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex"),
+        (credit(), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (credit(split="Sex"), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (crime(), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
+        (crime(split="Race-Binary"), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
+        (german(), 1000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (german(split="Sex"), 1000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (health(), 171067, 130, 12, 1, 2, 1, 2, "Health"),
+        (health(split="Sex"), 171067, 130, 12, 1, 2, 1, 2, "Health"),
+        (nonbinary_toy(), 100, 2, 0, 1, 2, 1, 5, "NonBinaryToy"),
+        (sqf(), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
+        (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
+        (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race"),
+        (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
+        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1"),
+        (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )
 def test_data_shape(
@@ -90,10 +89,9 @@ def test_data_shape(
     y_features,
     num_labels,
     name,
-    sens_comb,
 ):
     """Test loading data."""
-    data: DataTuple = dataset.load(sens_combination=sens_comb)
+    data: DataTuple = dataset.load()
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -107,7 +105,7 @@ def test_data_shape(
 
     assert data.name == name
 
-    data: DataTuple = dataset.load(ordered=True, sens_combination=sens_comb)
+    data: DataTuple = dataset.load(ordered=True)
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -410,7 +408,7 @@ def test_celeba():
     assert celeba_data is not None
     data = celeba_data.load(map_to_binary=True)
 
-    assert celeba_data.name == "CelebA, s=[Male], y=Smiling"
+    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
 
     assert (202599, 39) == data.x.shape
     assert (202599, 1) == data.s.shape
@@ -427,10 +425,10 @@ def test_celeba_multi_s():
     assert celeba_data is not None
     data = celeba_data.load(map_to_binary=True)
 
-    assert celeba_data.name == "CelebA, s=[Young, Male], y=Smiling"
+    assert celeba_data.name == "CelebA, s=[Age, Gender], y=Smiling"
 
     assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
-    assert data.s.columns[0] == "Young,Male"
+    assert data.s.columns[0] == "Age,Gender"
     assert (202599, 38) == data.x.shape
     assert (202599, 1) == data.s.shape
     assert (202599, 1) == data.y.shape

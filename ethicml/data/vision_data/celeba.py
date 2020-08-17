@@ -119,9 +119,11 @@ def celeba(
     if isinstance(sens_attr, dict):
         s_prefix = label_specs_to_feature_list(sens_attr)
         assert all(feat in discrete_features for feat in s_prefix)
+        name = "[" + ", ".join(sens_attr) + "]"
     else:
         assert sens_attr in discrete_features
         s_prefix = [sens_attr]
+        name = sens_attr
     assert label in discrete_features
     continuous_features = ["filename"]
 
@@ -133,7 +135,7 @@ def celeba(
         if not _check_integrity(base):
             return None, img_dir
     dataset_obj = Dataset(
-        name=f"CelebA, s=[{', '.join(sens_attr)}], y={label}",
+        name=f"CelebA, s={name}, y={label}",
         sens_attr_spec=sens_attr,
         s_prefix=s_prefix,
         class_label_spec=label,
