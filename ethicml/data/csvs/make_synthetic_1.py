@@ -5,12 +5,12 @@ import numpy as np
 import pandas as pd
 
 
-def sigmoid(x):
+def sigmoid(x: np.ndarray) -> np.ndarray:
     """As there is no np.sigmoid."""
     return 1 / (1 + np.exp(-x))
 
 
-def main():
+def main() -> None:
     r"""Make synthetic data.
 
     Generate synthetic data that conforms to 'Scenario 1'
