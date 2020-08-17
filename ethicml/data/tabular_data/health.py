@@ -282,9 +282,9 @@ def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         ]
 
         if split == "Sex":
-            sens_attrs = ["sexMALE"]
+            sens_attr_spec = "sexMALE"
             s_prefix = ["sex"]
-            class_labels = ["Charlson>0"]
+            class_label_spec = "Charlson>0"
             class_label_prefix = ["Charlson"]
         else:
             raise NotImplementedError
@@ -295,8 +295,8 @@ def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         features=features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
-        sens_attrs=sens_attrs,
+        sens_attr_spec=sens_attr_spec,
         class_label_prefix=class_label_prefix,
-        class_labels=class_labels,
+        class_label_spec=class_label_spec,
         discrete_only=discrete_only,
     )

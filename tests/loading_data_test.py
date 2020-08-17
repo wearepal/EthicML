@@ -10,6 +10,7 @@ from ethicml.data import (
     Adult,
     Compas,
     Dataset,
+    LabelSpec,
     Toy,
     adult,
     celeba,
@@ -195,8 +196,14 @@ def test_load_adult_race():
 
 def test_load_adult_race_sex():
     """Test load adult race sex."""
-    with pytest.raises(AssertionError):
-        data: DataTuple = adult("Race-Sex").load()
+    data: DataTuple = adult("Race-Sex").load()
+    assert (45222, 98) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 5
+    assert (45222, 1) == data.y.shape
+    assert adult_race.disc_feature_groups is not None
+    assert "race" not in adult_race.disc_feature_groups
+    assert "salary" not in adult_race.disc_feature_groups
 
 
 def test_race_feature_split():
@@ -204,9 +211,9 @@ def test_race_feature_split():
     adult_data: Dataset = adult(split="Custom")
     adult_data = replace(
         adult_data,
-        sens_attrs=["race_White"],
+        sens_attr_spec="race_White",
         s_prefix=["race"],
-        class_labels=["salary_>50K"],
+        class_label_spec="salary_>50K",
         class_label_prefix=["salary"],
     )
 
@@ -304,8 +311,8 @@ def test_additional_columns_load(data_root: Path):
     data_loc = data_root / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
         data_loc,
-        s_columns=["race_White"],
-        y_columns=["salary_>50K"],
+        s_columns="race_White",
+        y_columns="salary_>50K",
         additional_to_drop=["race_Black", "salary_<=50K"],
     )
     data: DataTuple = data_obj.load()
@@ -417,14 +424,12 @@ def test_celeba():
 
 def test_celeba_multi_s():
     """Test celeba w/ multi S."""
-    celeba_data, _ = celeba(
-        sens_attr=["Young", "Male"], download_dir="non-existent", check_integrity=False
-    )
+    sens_spec = {"Age": LabelSpec(["Young"]), "Gender": LabelSpec(["Male"], multiplier=2)}
+    celeba_data, _ = celeba(sens_attr=sens_spec, download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(sens_combination=True, map_to_binary=True)
+    data = celeba_data.load(map_to_binary=True)
 
     assert celeba_data.name == "CelebA, s=[Young, Male], y=Smiling"
-    assert celeba_data.combination_multipliers == {"Young": 1, "Male": 2}
 
     assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
     assert data.s.columns[0] == "Young,Male"

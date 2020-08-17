@@ -268,9 +268,9 @@ def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = F
         features_to_remove = ["communityname", "fold"]
         features = [feature for feature in features if feature not in features_to_remove]
         if split == "Race-Binary":
-            sens_attrs = [">0.06black"]
+            sens_attr_spec = ">0.06black"
             s_prefix = [">0.06", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
-            class_labels = ["high_crime"]
+            class_label_spec = "high_crime"
             class_label_prefix = ["high_crime", "Violent"]
         else:
             raise NotImplementedError
@@ -281,8 +281,8 @@ def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = F
         features=features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
-        sens_attrs=sens_attrs,
+        sens_attr_spec=sens_attr_spec,
         class_label_prefix=class_label_prefix,
-        class_labels=class_labels,
+        class_label_spec=class_label_spec,
         discrete_only=discrete_only,
     )

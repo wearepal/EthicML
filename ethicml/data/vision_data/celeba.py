@@ -1,11 +1,11 @@
 """Class to describe attributes of the CelebA dataset."""
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from typing_extensions import Final, Literal
 
 from ..dataset import Dataset
-from ..util import flatten_dict
+from ..util import LabelSpec, flatten_dict, label_specs_to_feature_list
 
 __all__ = ["CelebAttrs", "celeba"]
 
@@ -73,7 +73,7 @@ _FILE_LIST: Final = [
 def celeba(
     download_dir: str,
     label: CelebAttrs = "Smiling",
-    sens_attr: Union[CelebAttrs, List[CelebAttrs], Tuple[CelebAttrs, ...]] = "Male",
+    sens_attr: Union[CelebAttrs, Dict[str, LabelSpec]] = "Male",
     download: bool = False,
     check_integrity: bool = True,
 ) -> Tuple[Optional[Dataset], Path]:
@@ -115,11 +115,13 @@ def celeba(
         "Young": ["Young"],
     }
     discrete_features = flatten_dict(disc_feature_groups)
-    if isinstance(sens_attr, (list, tuple)):
-        assert all([feat in discrete_features for feat in sens_attr])
+    s_prefix: List[str]
+    if isinstance(sens_attr, dict):
+        s_prefix = label_specs_to_feature_list(sens_attr)
+        assert all(feat in discrete_features for feat in s_prefix)
     else:
         assert sens_attr in discrete_features
-        sens_attr = [sens_attr]
+        s_prefix = [sens_attr]
     assert label in discrete_features
     continuous_features = ["filename"]
 
@@ -132,9 +134,9 @@ def celeba(
             return None, img_dir
     dataset_obj = Dataset(
         name=f"CelebA, s=[{', '.join(sens_attr)}], y={label}",
-        sens_attrs=sens_attr,
-        s_prefix=sens_attr,
-        class_labels=[label],
+        sens_attr_spec=sens_attr,
+        s_prefix=s_prefix,
+        class_label_spec=label,
         class_label_prefix=[label],
         discrete_feature_groups=disc_feature_groups,
         features=discrete_features + continuous_features,

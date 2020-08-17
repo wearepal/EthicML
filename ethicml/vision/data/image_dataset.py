@@ -5,7 +5,7 @@ and biased subset sampling.
 """
 import warnings
 from pathlib import Path
-from typing import Callable, List, Optional, Tuple, Union, cast
+from typing import Callable, Dict, List, Optional, Tuple, Union, cast
 
 import numpy as np
 import torch
@@ -13,7 +13,7 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
-from ethicml.data import CelebAttrs, GenfacesAttributes, celeba, genfaces
+from ethicml.data import CelebAttrs, GenfacesAttributes, celeba, genfaces, LabelSpec
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
@@ -96,7 +96,7 @@ def create_celeba_dataset(
     biased: bool,
     mixing_factor: float,
     unbiased_pcnt: float,
-    sens_attr_name: Union[CelebAttrs, List[CelebAttrs], Tuple[CelebAttrs, ...]],
+    sens_attr_name: Union[CelebAttrs, Dict[str, List[CelebAttrs]]],
     target_attr_name: CelebAttrs,
     transform: Optional[Callable] = None,
     target_transform: Optional[Callable] = None,
@@ -123,26 +123,24 @@ def create_celeba_dataset(
         seed: Random seed used to sample biased subset.
         check_integrity: If True, check whether the data has been downloaded correctly.
     """
-    if not isinstance(sens_attr_name, (list, tuple)):
-        sens_attr_name = cast(CelebAttrs, sens_attr_name.capitalize())
-    target_attr_name = cast(CelebAttrs, target_attr_name.capitalize())
-
+    sens_attr: Union[CelebAttrs, Dict[str, LabelSpec]]
+    if isinstance(sens_attr_name, dict):
+        multiplier = 1
+        sens_attr = {}
+        for name, columns in sens_attr_name.items():
+            sens_attr[name] = LabelSpec(list(columns), multiplier=multiplier)
+            multiplier *= 2  # the attributes are all binary
+    else:
+        sens_attr = sens_attr_name
     dataset, base_dir = celeba(
         download_dir=root,
         label=target_attr_name,
-        sens_attr=sens_attr_name,
+        sens_attr=sens_attr,
         download=download,
         check_integrity=check_integrity,
     )
     assert dataset is not None
-    if isinstance(sens_attr_name, (list, tuple)):
-        # FIXME: the following check should not be hard coded
-        if len(sens_attr_name) == 2 and ("Male" in sens_attr_name) and ("Young" in sens_attr_name):
-            all_dt = dataset.load(sens_combination=True, map_to_binary=True)
-        else:
-            all_dt = dataset.load(discard_non_one_hot=True, map_to_binary=True)
-    else:
-        all_dt = dataset.load(map_to_binary=True)
+    all_dt = dataset.load(map_to_binary=True, discard_non_one_hot=True)
 
     if sens_attr_name == target_attr_name:
         warnings.warn("Same attribute specified for both the sensitive and target attribute.")

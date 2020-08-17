@@ -1,13 +1,22 @@
 """Useful methods that are used in some of the data objects."""
 from itertools import groupby
-from typing import Dict, List, Mapping, Sequence
+from typing import Dict, List, Mapping, NamedTuple, Sequence
 
 __all__ = [
+    "LabelSpec",
     "get_concatenated_features",
     "filter_features_by_prefixes",
     "get_discrete_features",
     "group_disc_feat_indexes",
+    "label_specs_to_feature_list",
 ]
+
+
+class LabelSpec(NamedTuple):
+    """Specification for a label (can be class label or sensitive attribute)."""
+
+    columns: List[str]
+    multiplier: int = 1
 
 
 def get_concatenated_features(
@@ -107,3 +116,11 @@ def reduce_feature_group(
     disc_feature_groups[feature_group].append(f"{feature_group}{remaining_feature_name}")
     # then, regenerate the list of discrete features; just like it's done in the constructor
     return flatten_dict(disc_feature_groups)
+
+
+def label_specs_to_feature_list(specs: Dict[str, LabelSpec]) -> List[str]:
+    """Extract all the feature column names from a dictionary of label specifications."""
+    feature_list: List[str] = []
+    for spec in specs.values():
+        feature_list += spec.columns
+    return feature_list

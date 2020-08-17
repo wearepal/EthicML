@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import flatten_dict
+from ..util import LabelSpec, flatten_dict
 
 __all__ = ["GenfacesAttributes", "genfaces"]
 
@@ -56,22 +56,20 @@ def genfaces(
         if not _check_integrity(root):
             return None, img_dir
 
-    return (
-        Dataset(
-            name=f"GenFaces, s={sens_attr}, y={label}",
-            sens_attrs=disc_feature_groups[sens_attr],
-            s_prefix=[sens_attr],
-            class_labels=disc_feature_groups[label],
-            class_label_prefix=[label],
-            discrete_feature_groups=disc_feature_groups,
-            features=discrete_features + continuous_features,
-            cont_features=continuous_features,
-            num_samples=148_285,
-            filename_or_path="genfaces.csv.zip",
-            discrete_only=False,
-        ),
-        img_dir,
+    dataset_obj = Dataset(
+        name=f"GenFaces, s={sens_attr}, y={label}",
+        sens_attr_spec={sens_attr: LabelSpec(disc_feature_groups[sens_attr])},
+        s_prefix=[sens_attr],
+        class_label_spec={label: LabelSpec(disc_feature_groups[label])},
+        class_label_prefix=[label],
+        discrete_feature_groups=disc_feature_groups,
+        features=discrete_features + continuous_features,
+        cont_features=continuous_features,
+        num_samples=148_285,
+        filename_or_path="genfaces.csv.zip",
+        discrete_only=False,
     )
+    return dataset_obj, img_dir
 
 
 def _check_integrity(base: Path) -> bool:
