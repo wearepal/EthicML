@@ -1,4 +1,4 @@
-"""Class to describe features of the Test dataset."""
+"""Class to describe features of the Toy dataset."""
 from warnings import warn
 
 from ..dataset import Dataset
@@ -23,7 +23,7 @@ def toy() -> Dataset:
     continuous_features = ["a1", "a2"]
     return Dataset(
         name="Toy",
-        num_samples=2000,
+        num_samples=400,
         filename_or_path="toy.csv",
         features=continuous_features + discrete_features,
         cont_features=continuous_features,
