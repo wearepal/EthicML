@@ -21,16 +21,12 @@ class Blind(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-
-        state = np.random.get_state()
-        np.random.seed(self.seed)
-
         train_y_vals = train.y.drop_duplicates()
 
-        predictions = Prediction(
-            hard=pd.Series(np.random.choice(train_y_vals.T.to_numpy()[0], test.x.shape[0]))
-        )
+        self.random = np.random.RandomState(self.seed)
 
-        np.random.set_state(state)
+        predictions = Prediction(
+            hard=pd.Series(self.random.choice(train_y_vals.T.to_numpy()[0], test.x.shape[0]))
+        )
 
         return predictions
