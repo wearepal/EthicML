@@ -12,7 +12,7 @@ __all__ = ["Blind"]
 
 
 class Blind(InAlgorithm):
-    """returns a random label."""
+    """Returns a random label."""
 
     def __init__(self, seed: int = 888) -> None:
         """Init Majority."""
