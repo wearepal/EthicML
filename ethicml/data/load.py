@@ -28,10 +28,7 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
 
 def create_data_obj(
-    filepath: Path,
-    s_column: str,
-    y_column: str,
-    additional_to_drop: Optional[List[str]] = None,
+    filepath: Path, s_column: str, y_column: str, additional_to_drop: Optional[List[str]] = None,
 ) -> Dataset:
     """Create a `ConfigurableDataset` from the given file.
 

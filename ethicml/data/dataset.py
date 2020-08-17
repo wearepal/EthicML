@@ -38,16 +38,20 @@ class Dataset:
 
     @property
     def sens_attrs(self) -> List[str]:
+        """Get the list of sensitive attributes."""
         if isinstance(self.sens_attr_spec, str):
             return [self.sens_attr_spec]
         else:
+            assert isinstance(self.sens_attr_spec, dict)
             return label_specs_to_feature_list(self.sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
+        """Get the list of class labels."""
         if isinstance(self.class_label_spec, str):
             return [self.class_label_spec]
         else:
+            assert isinstance(self.class_label_spec, dict)
             return label_specs_to_feature_list(self.class_label_spec)
 
     @property
@@ -182,12 +186,14 @@ class Dataset:
 
         s_data, s_mask = self._maybe_combine_labels(s_data, discard_non_one_hot, label_type="s")
         if s_mask is not None:
-            y_data = y_data[s_mask]
-            x_data = x_data[s_mask]
-        y_data, y_mask = self._maybe_combine_labels(s_data, discard_non_one_hot, label_type="y")
+            x_data = x_data.loc[s_mask]
+            s_data = s_data.loc[s_mask]
+            y_data = y_data.loc[s_mask]
+        y_data, y_mask = self._maybe_combine_labels(y_data, discard_non_one_hot, label_type="y")
         if y_mask is not None:
-            s_data = s_data[y_mask]
-            x_data = x_data[y_mask]
+            x_data = x_data.loc[y_mask]
+            s_data = s_data.loc[y_mask]
+            y_data = y_data.loc[y_mask]
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
@@ -204,29 +210,41 @@ class Dataset:
         # create a Series of zeroes with the same length as the dataframe
         combination: pd.Series[int] = pd.Series(0, index=range(len(attributes)))
 
-        for spec in label_mapping.values():
+        for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded
+                raw_values = attributes[spec.columns]
                 if discard_non_one_hot:
                     # only use those samples where exactly one of the specified attributes is true
-                    mask = attributes.sum(axis="columns") == 1
-                    attributes = attributes.loc[mask]
+                    mask = raw_values.sum(axis="columns") == 1
                 else:
-                    assert (attributes.sum(axis="columns") == 1).all(), f"label is not one-hot"
-                values = undo_one_hot(attributes[spec.columns])
+                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+                values = undo_one_hot(raw_values)
             else:
                 values = attributes[spec.columns[0]]
             combination += spec.multiplier * values
         return combination.to_frame(name=",".join(label_mapping)), mask
 
     def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+        """Expand a label in the form of an index into all the subfeatures."""
         label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
         assert isinstance(label_mapping, dict)
+        label_mapping: Dict[str, LabelSpec]  # redefine the variable for mypy's sake
+
+        # first order the multipliers; this is important for disentangling the values
+        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
+
+        labels = label[label.columns[0]]
 
         final_df = {}
-        for sens, spec in label_mapping.items():
-            value = (label % (spec.multiplier + 1)) // spec.multiplier
+        for i, name in enumerate(names_ordered):
+            spec = label_mapping[name]
+            value = labels
+            if i + 1 < len(names_ordered):
+                next_spec = label_mapping[names_ordered[i + 1]]
+                value = labels % next_spec.multiplier
+            value = value // spec.multiplier
+            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
             restored = pd.get_dummies(value)
-            restored.columns = pd.Index(spec.columns)
-            final_df[sens] = restored  # for the multi-level column index
+            final_df[name] = restored  # for the multi-level column index
 
         return pd.concat(final_df, axis=1)

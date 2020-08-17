@@ -123,9 +123,7 @@ def test_deprecation_warning(dataset):
 def test_load_data_as_a_function(data_root: Path):
     """Test load data as a function."""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(
-        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     assert data_obj is not None
     assert data_obj.feature_split["x"] == [
         "a1",
@@ -147,9 +145,7 @@ def test_load_data_as_a_function(data_root: Path):
 def test_joining_2_load_functions(data_root: Path):
     """Test joining 2 load functions."""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(
-        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
     assert (400, 1) == data.s.shape
@@ -196,14 +192,16 @@ def test_load_adult_race():
 
 def test_load_adult_race_sex():
     """Test load adult race sex."""
-    data: DataTuple = adult("Race-Sex").load()
-    assert (45222, 98) == data.x.shape
+    adult_race_sex = adult("Race-Sex")
+    data: DataTuple = adult_race_sex.load()
+    assert (45222, 96) == data.x.shape
     assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 5
+    assert data.s.nunique()[0] == 2 * 5
     assert (45222, 1) == data.y.shape
-    assert adult_race.disc_feature_groups is not None
-    assert "race" not in adult_race.disc_feature_groups
-    assert "salary" not in adult_race.disc_feature_groups
+    assert adult_race_sex.disc_feature_groups is not None
+    assert "race" not in adult_race_sex.disc_feature_groups
+    assert "sex" not in adult_race_sex.disc_feature_groups
+    assert "salary" not in adult_race_sex.disc_feature_groups
 
 
 def test_race_feature_split():
@@ -311,8 +309,8 @@ def test_additional_columns_load(data_root: Path):
     data_loc = data_root / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
         data_loc,
-        s_columns="race_White",
-        y_columns="salary_>50K",
+        s_column="race_White",
+        y_column="salary_>50K",
         additional_to_drop=["race_Black", "salary_<=50K"],
     )
     data: DataTuple = data_obj.load()
@@ -457,3 +455,36 @@ def test_genfaces():
     assert len(data) == len(gen_faces)
 
     assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+
+
+def test_expand_s():
+    """Test expanding s."""
+    data = Dataset(
+        name="test",
+        filename_or_path="non-existent",
+        features=[],
+        cont_features=[],
+        sens_attr_spec={
+            "Gender": LabelSpec(["Female", "Male"], multiplier=3),
+            "Race": LabelSpec(["Blue", "Green", "Pink"], multiplier=1),
+        },
+        class_label_spec="label",
+        num_samples=7,
+        discrete_only=False,
+    )
+
+    compact_df = pd.DataFrame([0, 4, 3, 1, 3, 5, 2], columns=["Gender,Race"])
+    gender_expanded = pd.DataFrame(
+        [[1, 0], [0, 1], [0, 1], [1, 0], [0, 1], [0, 1], [1, 0]], columns=["Female", "Male"]
+    )
+    race_expanded = pd.DataFrame(
+        [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
+        columns=["Blue", "Green", "Pink"],
+    )
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
+    raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
+
+    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, False, "s")[0], compact_df)
+    pd.testing.assert_frame_equal(
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
+    )

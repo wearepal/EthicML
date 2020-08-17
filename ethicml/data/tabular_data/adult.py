@@ -194,7 +194,7 @@ def adult(
                     "race_White",
                 ],
                 multiplier=2,
-            )
+            ),
         }
         s_prefix = ["race", "sex"]
         class_label_spec = "salary_>50K"
