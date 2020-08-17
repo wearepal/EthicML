@@ -180,25 +180,25 @@ class Dataset:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        s_data, s_mask = self.maybe_combine_labels(s_data, discard_non_one_hot, label_type="s")
+        s_data, s_mask = self._maybe_combine_labels(s_data, discard_non_one_hot, label_type="s")
         if s_mask is not None:
             y_data = y_data[s_mask]
             x_data = x_data[s_mask]
-        y_data, y_mask = self.maybe_combine_labels(s_data, discard_non_one_hot, label_type="y")
+        y_data, y_mask = self._maybe_combine_labels(s_data, discard_non_one_hot, label_type="y")
         if y_mask is not None:
             s_data = s_data[y_mask]
             x_data = x_data[y_mask]
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
-    def maybe_combine_labels(
+    def _maybe_combine_labels(
         self, attributes: pd.DataFrame, discard_non_one_hot: bool, label_type: Literal["s", "y"]
     ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs."""
         mask = None  # the mask is needed when we have to discard samples
-        label_mapping = self.s_mapping if label_type == "s" else self.y_mapping
 
-        if label_mapping is None:
+        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
+        if isinstance(label_mapping, str):
             return attributes, mask
 
         # create a Series of zeroes with the same length as the dataframe
@@ -217,3 +217,16 @@ class Dataset:
                 values = attributes[spec.columns[0]]
             combination += spec.multiplier * values
         return combination.to_frame(name=",".join(label_mapping)), mask
+
+    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
+        assert isinstance(label_mapping, dict)
+
+        final_df = {}
+        for sens, spec in label_mapping.items():
+            value = (label % (spec.multiplier + 1)) // spec.multiplier
+            restored = pd.get_dummies(value)
+            restored.columns = pd.Index(spec.columns)
+            final_df[sens] = restored  # for the multi-level column index
+
+        return pd.concat(final_df, axis=1)
