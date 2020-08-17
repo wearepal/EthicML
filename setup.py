@@ -1,3 +1,5 @@
+"""Welcome to EthicML."""
+
 from setuptools import find_packages, setup
 
 # We follow Semantic Versioning (https://semver.org/)
