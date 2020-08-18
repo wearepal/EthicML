@@ -4,6 +4,7 @@ from typing import Dict, List, Mapping, NamedTuple, Sequence
 
 __all__ = [
     "LabelSpec",
+    "simple_spec",
     "get_concatenated_features",
     "filter_features_by_prefixes",
     "get_discrete_features",
@@ -124,3 +125,15 @@ def label_specs_to_feature_list(specs: Dict[str, LabelSpec]) -> List[str]:
     for spec in specs.values():
         feature_list += spec.columns
     return feature_list
+
+
+def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> Dict[str, LabelSpec]:
+    """Create label specs for the most common case where columns contain 0s and 1s."""
+    multiplier = 1
+    label_specs = {}
+    for name, columns in label_defs.items():
+        label_specs[name] = LabelSpec(list(columns), multiplier=multiplier)
+        num_columns = len(columns)
+        # we assume here that the columns only contain 0s and 1s
+        multiplier *= num_columns if num_columns > 1 else 2
+    return label_specs

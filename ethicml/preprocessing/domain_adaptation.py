@@ -1,7 +1,7 @@
 """Set of scripts for splitting the train and test datasets based on conditions."""
 
 import re
-from typing import Tuple
+from typing import Hashable, Optional, Tuple
 
 import pandas as pd
 
@@ -75,7 +75,7 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
     return train_datatup, test_datatup
 
 
-def make_valid_variable_name(name: str) -> str:
+def make_valid_variable_name(name: Optional[Hashable]) -> str:
     """Convert a string into a valid Python variable name."""
     # Ensure that it's a string
     name = str(name)

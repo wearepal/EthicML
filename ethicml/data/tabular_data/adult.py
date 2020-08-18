@@ -5,7 +5,7 @@ from warnings import warn
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict, reduce_feature_group
+from ..util import LabelSpec, simple_spec, flatten_dict, reduce_feature_group
 
 __all__ = ["Adult", "adult"]
 
@@ -158,17 +158,7 @@ def adult(
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
     elif split == "Race":
-        sens_attr_spec = {
-            "race": LabelSpec(
-                [
-                    "race_Amer-Indian-Eskimo",
-                    "race_Asian-Pac-Islander",
-                    "race_Black",
-                    "race_Other",
-                    "race_White",
-                ]
-            )
-        }
+        sens_attr_spec = simple_spec({"race": disc_feature_groups["race"]})
         s_prefix = ["race"]
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
@@ -183,70 +173,13 @@ def adult(
         class_label_spec = {}
         class_label_prefix = []
     elif split == "Race-Sex":
-        sens_attr_spec = {
-            "sex": LabelSpec(["sex_Male"], multiplier=1),
-            "race": LabelSpec(
-                [
-                    "race_Amer-Indian-Eskimo",
-                    "race_Asian-Pac-Islander",
-                    "race_Black",
-                    "race_Other",
-                    "race_White",
-                ],
-                multiplier=2,
-            ),
-        }
+        sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": disc_feature_groups["race"]})
         s_prefix = ["race", "sex"]
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
     elif split == "Nationality":
-        sens_attr_spec = {
-            "native-country": LabelSpec(
-                [
-                    "native-country_Cambodia",
-                    "native-country_Canada",
-                    "native-country_China",
-                    "native-country_Columbia",
-                    "native-country_Cuba",
-                    "native-country_Dominican-Republic",
-                    "native-country_Ecuador",
-                    "native-country_El-Salvador",
-                    "native-country_England",
-                    "native-country_France",
-                    "native-country_Germany",
-                    "native-country_Greece",
-                    "native-country_Guatemala",
-                    "native-country_Haiti",
-                    "native-country_Holand-Netherlands",
-                    "native-country_Honduras",
-                    "native-country_Hong",
-                    "native-country_Hungary",
-                    "native-country_India",
-                    "native-country_Iran",
-                    "native-country_Ireland",
-                    "native-country_Italy",
-                    "native-country_Jamaica",
-                    "native-country_Japan",
-                    "native-country_Laos",
-                    "native-country_Mexico",
-                    "native-country_Nicaragua",
-                    "native-country_Outlying-US(Guam-USVI-etc)",
-                    "native-country_Peru",
-                    "native-country_Philippines",
-                    "native-country_Poland",
-                    "native-country_Portugal",
-                    "native-country_Puerto-Rico",
-                    "native-country_Scotland",
-                    "native-country_South",
-                    "native-country_Taiwan",
-                    "native-country_Thailand",
-                    "native-country_Trinadad&Tobago",
-                    "native-country_United-States",
-                    "native-country_Vietnam",
-                    "native-country_Yugoslavia",
-                ]
-            )
-        }
+        sens = "native-country"
+        sens_attr_spec = simple_spec({sens: disc_feature_groups[sens]})
         s_prefix = ["native-country"]
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
@@ -259,7 +192,9 @@ def adult(
             to_keep=to_keep,
             remaining_feature_name="_" + remaining_feature_name,
         )
-        sens_attr_spec = {"education": LabelSpec(to_keep + ["education_" + remaining_feature_name])}
+        sens_attr_spec = simple_spec(
+            {"education": to_keep + ["education_" + remaining_feature_name]}
+        )
         s_prefix = ["education"]
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]

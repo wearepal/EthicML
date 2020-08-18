@@ -343,11 +343,11 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
     indices: np.ndarray[np.int64] = np.arange(data.x.shape[0])
 
     fold_sizes: np.ndarray[np.int32] = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)
-    fold_sizes[: data.x.shape[0] % folds] += 1
+    fold_sizes[: data.x.shape[0] % folds] += np.int32(1)
 
     current = 0
     for i, fold_size in enumerate(fold_sizes):
-        start, stop = current, current + fold_size
+        start, stop = current, int(current + fold_size)
         val_inds: np.ndarray[np.int64] = indices[start:stop]
         train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 

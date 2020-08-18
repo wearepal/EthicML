@@ -13,7 +13,14 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
-from ethicml.data import CelebAttrs, GenfacesAttributes, LabelSpec, celeba, genfaces
+from ethicml.data import (
+    CelebAttrs,
+    GenfacesAttributes,
+    LabelSpec,
+    celeba,
+    genfaces,
+    simple_spec,
+)
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
@@ -125,11 +132,7 @@ def create_celeba_dataset(
     """
     sens_attr: Union[CelebAttrs, Dict[str, LabelSpec]]
     if isinstance(sens_attr_name, dict):
-        multiplier = 1
-        sens_attr = {}
-        for name, columns in sens_attr_name.items():
-            sens_attr[name] = LabelSpec(list(columns), multiplier=multiplier)
-            multiplier *= 2  # the attributes are all binary
+        sens_attr = simple_spec(sens_attr_name)
     else:
         sens_attr = sens_attr_name
     dataset, base_dir = celeba(

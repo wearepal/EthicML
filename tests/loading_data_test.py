@@ -23,6 +23,7 @@ from ethicml.data import (
     group_disc_feat_indexes,
     health,
     nonbinary_toy,
+    simple_spec,
     sqf,
     synthetic,
     toy,
@@ -486,3 +487,13 @@ def test_expand_s():
     pd.testing.assert_frame_equal(
         data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )
+
+
+def test_simple_spec():
+    """Test the simple spec function."""
+    sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
+    spec = simple_spec(sens_attrs)
+    assert spec == {
+        "gender": LabelSpec(["female", "male"], multiplier=3),
+        "race": LabelSpec(["blue", "green", "pink"], multiplier=1),
+    }
