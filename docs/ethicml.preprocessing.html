@@ -25,7 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -176,7 +176,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.BiasedSubset" title="ethicml.preprocessing.BiasedSubset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BiasedSubset</span></code></a>(unbiased_pcnt, mixing_factors, …)</p></td>
 <td><p>Split the given data into a biased subset and a normal subset.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.DataSplitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataSplitter</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.DataSplitter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataSplitter</span></code></a>()</p></td>
 <td><p>Base class for classes that split data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.LabelBinarizer" title="ethicml.preprocessing.LabelBinarizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a>()</p></td>
@@ -218,7 +218,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.query_dt" title="ethicml.preprocessing.query_dt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_dt</span></code></a>(datatup, query_str)</p></td>
 <td><p>Query a datatuple.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.train_test_split" title="ethicml.preprocessing.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a>(data, train_percentage, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.scale_continuous" title="ethicml.preprocessing.scale_continuous"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_continuous</span></code></a>(dataset, datatuple, scaler, …)</p></td>
+<td><p>Use a scaler on just the continuous features.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.train_test_split" title="ethicml.preprocessing.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a>(data, train_percentage, …)</p></td>
 <td><p>Split a data tuple into two datatuple along the rows of the DataFrames.</p></td>
 </tr>
 </tbody>
@@ -462,6 +465,12 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dt id="ethicml.preprocessing.query_dt">
 <code class="sig-name descname">query_dt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datatup</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">query_str</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; ethicml.utility.data_structures.DataTuple<a class="headerlink" href="#ethicml.preprocessing.query_dt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query a datatuple.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.preprocessing.scale_continuous">
+<code class="sig-name descname">scale_continuous</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">ethicml.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="n">datatuple</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="p">:</span> <span class="n">ethicml.preprocessing.scaling.ScalerType</span></em>, <em class="sig-param"><span class="n">inverse</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>ethicml.utility.data_structures.DataTuple<span class="p">, </span>ethicml.preprocessing.scaling.ScalerType<span class="p">]</span><a class="headerlink" href="#ethicml.preprocessing.scale_continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a scaler on just the continuous features.</p>
 </dd></dl>
 
 <dl class="py function">
