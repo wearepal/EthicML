@@ -5,7 +5,7 @@ from warnings import warn
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict
+from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
 
@@ -442,7 +442,7 @@ def compas(
         class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
     elif split == "Race-Sex":
-        sens_attr_spec = {"sex": LabelSpec(["sex"]), "race": LabelSpec(["race"], multiplier=2)}
+        sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
         s_prefix = ["race", "sex"]
         class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
