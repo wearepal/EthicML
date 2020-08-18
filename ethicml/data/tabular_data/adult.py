@@ -5,7 +5,7 @@ from warnings import warn
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, simple_spec, flatten_dict, reduce_feature_group
+from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
 
 __all__ = ["Adult", "adult"]
 
