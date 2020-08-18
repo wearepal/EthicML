@@ -62,9 +62,9 @@ def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         ]
 
         if split == "Sex":
-            sens_attrs = ["SEX"]
+            sens_attr_spec = "SEX"
             s_prefix = ["SEX"]
-            class_labels = ["default-payment-next-month"]
+            class_label_spec = "default-payment-next-month"
             class_label_prefix = ["default-payment-next-month"]
         elif split == "Custom":
             pass
@@ -78,8 +78,8 @@ def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         features=features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
-        sens_attrs=sens_attrs,
+        sens_attr_spec=sens_attr_spec,
         class_label_prefix=class_label_prefix,
-        class_labels=class_labels,
+        class_label_spec=class_label_spec,
         discrete_only=discrete_only,
     )

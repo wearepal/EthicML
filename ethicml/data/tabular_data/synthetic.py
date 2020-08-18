@@ -1,6 +1,8 @@
 """Class to describe features of the Synthetic dataset."""
 from warnings import warn
 
+from typing_extensions import Literal
+
 from ..dataset import Dataset
 
 __all__ = ["Synthetic", "synthetic"]
@@ -12,7 +14,7 @@ def Synthetic() -> Dataset:  # pylint: disable=invalid-name
     return synthetic()
 
 
-def synthetic(scenario: int = 1) -> Dataset:
+def synthetic(scenario: Literal[1] = 1) -> Dataset:
     r"""Dataset with synthetic data.
 
     Scenario 1 = X⊥S & Y⊥S.
@@ -23,7 +25,7 @@ def synthetic(scenario: int = 1) -> Dataset:
         filename_or_path="synthetic_scenario_1.csv",
         features=["x1", "x2"],
         cont_features=["x1", "x2"],
-        sens_attrs=["s"],
-        class_labels=["y"],
+        sens_attr_spec="s",
+        class_label_spec="y",
         discrete_only=False,
     )

@@ -10,6 +10,7 @@ from ethicml.data import (
     Adult,
     Compas,
     Dataset,
+    PartialLabelSpec,
     Toy,
     adult,
     celeba,
@@ -22,6 +23,7 @@ from ethicml.data import (
     group_disc_feat_indexes,
     health,
     nonbinary_toy,
+    simple_spec,
     sqf,
     synthetic,
     toy,
@@ -38,9 +40,9 @@ def test_can_load_test_data(data_root: Path):
 
 
 @pytest.mark.parametrize(
-    "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name,sens_comb",
+    "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
     [
-        (adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex", False),
+        (adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (
             adult("Sex", binarize_nationality=True),
             45222,
@@ -51,32 +53,31 @@ def test_can_load_test_data(data_root: Path):
             1,
             2,
             "Adult Sex, binary nationality",
-            False,
         ),
-        (adult(split="Sex"), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex", False),
-        (adult(split="Race"), 45222, 98, 93, 1, 5, 1, 2, "Adult Race", False),
-        (adult(split="Race-Binary"), 45222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary", False),
-        (adult(split="Nationality"), 45222, 62, 57, 1, 41, 1, 2, "Adult Nationality", False),
-        (adult(split="Education"), 45222, 86, 82, 1, 3, 1, 2, "Adult Education", False),
-        (compas(), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex", False),
-        (compas(split="Sex"), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex", False),
-        (compas(split="Race"), 6167, 400, 395, 1, 2, 1, 2, "Compas Race", False),
-        (compas(split="Race-Sex"), 6167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex", True),
-        (credit(), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex", False),
-        (credit(split="Sex"), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex", False),
-        (crime(), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary", False),
-        (crime(split="Race-Binary"), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary", False),
-        (german(), 1000, 57, 50, 1, 2, 1, 2, "German Sex", False),
-        (german(split="Sex"), 1000, 57, 50, 1, 2, 1, 2, "German Sex", False),
-        (health(), 171067, 130, 12, 1, 2, 1, 2, "Health", False),
-        (health(split="Sex"), 171067, 130, 12, 1, 2, 1, 2, "Health", False),
-        (nonbinary_toy(), 100, 2, 0, 1, 2, 1, 5, "NonBinaryToy", False),
-        (sqf(), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex", False),
-        (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex", False),
-        (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race", False),
-        (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex", True),
-        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1", False),
-        (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy", False),
+        (adult(split="Sex"), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
+        (adult(split="Race"), 45222, 98, 93, 1, 5, 1, 2, "Adult Race"),
+        (adult(split="Race-Binary"), 45222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary"),
+        (adult(split="Nationality"), 45222, 62, 57, 1, 41, 1, 2, "Adult Nationality"),
+        (adult(split="Education"), 45222, 86, 82, 1, 3, 1, 2, "Adult Education"),
+        (compas(), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
+        (compas(split="Sex"), 6167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
+        (compas(split="Race"), 6167, 400, 395, 1, 2, 1, 2, "Compas Race"),
+        (compas(split="Race-Sex"), 6167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex"),
+        (credit(), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (credit(split="Sex"), 30000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (crime(), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
+        (crime(split="Race-Binary"), 1993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
+        (german(), 1000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (german(split="Sex"), 1000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (health(), 171067, 130, 12, 1, 2, 1, 2, "Health"),
+        (health(split="Sex"), 171067, 130, 12, 1, 2, 1, 2, "Health"),
+        (nonbinary_toy(), 100, 2, 0, 1, 2, 1, 5, "NonBinaryToy"),
+        (sqf(), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
+        (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
+        (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race"),
+        (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
+        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1"),
+        (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )
 def test_data_shape(
@@ -89,10 +90,9 @@ def test_data_shape(
     y_features,
     num_labels,
     name,
-    sens_comb,
 ):
     """Test loading data."""
-    data: DataTuple = dataset.load(sens_combination=sens_comb)
+    data: DataTuple = dataset.load()
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -106,7 +106,7 @@ def test_data_shape(
 
     assert data.name == name
 
-    data: DataTuple = dataset.load(ordered=True, sens_combination=sens_comb)
+    data: DataTuple = dataset.load(ordered=True)
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -122,9 +122,7 @@ def test_deprecation_warning(dataset):
 def test_load_data_as_a_function(data_root: Path):
     """Test load data as a function."""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(
-        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     assert data_obj is not None
     assert data_obj.feature_split["x"] == [
         "a1",
@@ -146,9 +144,7 @@ def test_load_data_as_a_function(data_root: Path):
 def test_joining_2_load_functions(data_root: Path):
     """Test joining 2 load functions."""
     data_loc = data_root / "toy.csv"
-    data_obj: Dataset = create_data_obj(
-        data_loc, s_columns=["sensitive-attr"], y_columns=["decision"]
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
     assert (400, 1) == data.s.shape
@@ -195,8 +191,16 @@ def test_load_adult_race():
 
 def test_load_adult_race_sex():
     """Test load adult race sex."""
-    with pytest.raises(AssertionError):
-        data: DataTuple = adult("Race-Sex").load()
+    adult_race_sex = adult("Race-Sex")
+    data: DataTuple = adult_race_sex.load()
+    assert (45222, 96) == data.x.shape
+    assert (45222, 1) == data.s.shape
+    assert data.s.nunique()[0] == 2 * 5
+    assert (45222, 1) == data.y.shape
+    assert adult_race_sex.disc_feature_groups is not None
+    assert "race" not in adult_race_sex.disc_feature_groups
+    assert "sex" not in adult_race_sex.disc_feature_groups
+    assert "salary" not in adult_race_sex.disc_feature_groups
 
 
 def test_race_feature_split():
@@ -204,9 +208,9 @@ def test_race_feature_split():
     adult_data: Dataset = adult(split="Custom")
     adult_data = replace(
         adult_data,
-        sens_attrs=["race_White"],
+        sens_attr_spec="race_White",
         s_prefix=["race"],
-        class_labels=["salary_>50K"],
+        class_label_spec="salary_>50K",
         class_label_prefix=["salary"],
     )
 
@@ -304,8 +308,8 @@ def test_additional_columns_load(data_root: Path):
     data_loc = data_root / "adult.csv.zip"
     data_obj: Dataset = create_data_obj(
         data_loc,
-        s_columns=["race_White"],
-        y_columns=["salary_>50K"],
+        s_column="race_White",
+        y_column="salary_>50K",
         additional_to_drop=["race_Black", "salary_<=50K"],
     )
     data: DataTuple = data_obj.load()
@@ -403,9 +407,9 @@ def test_celeba():
     assert celeba_data is None  # data should not be there
     celeba_data, _ = celeba(download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(map_to_binary=True)
+    data = celeba_data.load()
 
-    assert celeba_data.name == "CelebA, s=[Male], y=Smiling"
+    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
 
     assert (202599, 39) == data.x.shape
     assert (202599, 1) == data.s.shape
@@ -417,17 +421,15 @@ def test_celeba():
 
 def test_celeba_multi_s():
     """Test celeba w/ multi S."""
-    celeba_data, _ = celeba(
-        sens_attr=["Young", "Male"], download_dir="non-existent", check_integrity=False
-    )
+    sens_spec = dict(simple_spec({"Age": ["Young"], "Gender": ["Male"]}))
+    celeba_data, _ = celeba(sens_attr=sens_spec, download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(sens_combination=True, map_to_binary=True)
+    data = celeba_data.load()
 
-    assert celeba_data.name == "CelebA, s=[Young, Male], y=Smiling"
-    assert celeba_data.combination_multipliers == {"Young": 1, "Male": 2}
+    assert celeba_data.name == "CelebA, s=[Age, Gender], y=Smiling"
 
     assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
-    assert data.s.columns[0] == "Young,Male"
+    assert data.s.columns[0] == "Age,Gender"
     assert (202599, 38) == data.x.shape
     assert (202599, 1) == data.s.shape
     assert (202599, 1) == data.y.shape
@@ -452,3 +454,46 @@ def test_genfaces():
     assert len(data) == len(gen_faces)
 
     assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+
+
+def test_expand_s():
+    """Test expanding s."""
+    data = Dataset(
+        name="test",
+        filename_or_path="non-existent",
+        features=[],
+        cont_features=[],
+        sens_attr_spec={
+            "Gender": PartialLabelSpec(["Female", "Male"], multiplier=3),
+            "Race": PartialLabelSpec(["Blue", "Green", "Pink"], multiplier=1),
+        },
+        class_label_spec="label",
+        num_samples=7,
+        discrete_only=False,
+    )
+
+    compact_df = pd.DataFrame([0, 4, 3, 1, 3, 5, 2], columns=["Gender,Race"])
+    gender_expanded = pd.DataFrame(
+        [[1, 0], [0, 1], [0, 1], [1, 0], [0, 1], [0, 1], [1, 0]], columns=["Female", "Male"]
+    )
+    race_expanded = pd.DataFrame(
+        [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
+        columns=["Blue", "Green", "Pink"],
+    )
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
+    raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
+
+    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
+    pd.testing.assert_frame_equal(
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
+    )
+
+
+def test_simple_spec():
+    """Test the simple spec function."""
+    sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
+    spec = simple_spec(sens_attrs)
+    assert spec == {
+        "gender": PartialLabelSpec(["female", "male"], multiplier=3),
+        "race": PartialLabelSpec(["blue", "green", "pink"], multiplier=1),
+    }

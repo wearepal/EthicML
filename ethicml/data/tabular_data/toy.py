@@ -27,8 +27,8 @@ def toy() -> Dataset:
         filename_or_path="toy.csv",
         features=continuous_features + discrete_features,
         cont_features=continuous_features,
-        sens_attrs=["sensitive-attr"],
-        class_labels=["decision"],
+        sens_attr_spec="sensitive-attr",
+        class_label_spec="decision",
         discrete_only=False,
         discrete_feature_groups=disc_feature_groups,
     )

@@ -80,9 +80,9 @@ def german(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         ]
 
         if split == "Sex":
-            sens_attrs = ["sex"]
+            sens_attr_spec = "sex"
             s_prefix = ["sex"]
-            class_labels = ["credit-label"]
+            class_label_spec = "credit-label"
             class_label_prefix = ["credit-label"]
         else:
             raise NotImplementedError
@@ -94,8 +94,8 @@ def german(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         features=features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
-        sens_attrs=sens_attrs,
+        sens_attr_spec=sens_attr_spec,
         class_label_prefix=class_label_prefix,
-        class_labels=class_labels,
+        class_label_spec=class_label_spec,
         discrete_only=discrete_only,
     )

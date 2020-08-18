@@ -69,7 +69,7 @@ def test_celeba_multi_s():
         biased=False,
         mixing_factor=0.0,
         unbiased_pcnt=1.0,
-        sens_attr_name=["Black_Hair", "Blond_Hair", "Brown_Hair"],
+        sens_attr_name={"Hair_Color": ["Black_Hair", "Blond_Hair", "Brown_Hair"]},
         target_attr_name="Smiling",
         check_integrity=False,
     )

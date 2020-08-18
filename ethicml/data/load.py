@@ -28,17 +28,14 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
 
 def create_data_obj(
-    filepath: Path,
-    s_columns: List[str],
-    y_columns: List[str],
-    additional_to_drop: Optional[List[str]] = None,
+    filepath: Path, s_column: str, y_column: str, additional_to_drop: Optional[List[str]] = None,
 ) -> Dataset:
     """Create a `ConfigurableDataset` from the given file.
 
     Args:
         filepath: path to a CSV file
-        s_columns: list of columns that represent sensitive attributes
-        y_columns: list of columns that contain lables
+        s_column: column that represents sensitive attributes
+        y_column: column that contains lables
         additional_to_drop: other columns that should be dropped
 
     Returns:
@@ -50,10 +47,8 @@ def create_data_obj(
     dataframe: pd.DataFrame = pd.read_csv(filepath)
 
     columns: List[str] = [str(x) for x in dataframe.columns.to_numpy().tolist()]
-    for s_col in s_columns:
-        columns.remove(s_col)
-    for y_col in y_columns:
-        columns.remove(y_col)
+    columns.remove(s_column)
+    columns.remove(y_column)
     for additional in additional_to_drop:
         columns.remove(additional)
 
@@ -62,8 +57,8 @@ def create_data_obj(
         num_samples=len(dataframe),
         features=columns,
         cont_features=[],
-        sens_attrs=s_columns,
-        class_labels=y_columns,
+        sens_attr_spec=s_column,
+        class_label_spec=y_column,
         filename_or_path=filepath,
         discrete_only=False,
     )

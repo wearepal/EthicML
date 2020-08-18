@@ -7,9 +7,14 @@ import pandas as pd
 from typing_extensions import Literal
 
 from ethicml.common import ROOT_PATH
-from ethicml.utility import DataTuple
+from ethicml.utility import DataTuple, undo_one_hot
 
-from .util import filter_features_by_prefixes, get_discrete_features
+from .util import (
+    LabelSpec,
+    filter_features_by_prefixes,
+    get_discrete_features,
+    label_specs_to_feature_list,
+)
 
 __all__ = ["Dataset"]
 
@@ -22,14 +27,35 @@ class Dataset:
     filename_or_path: Union[str, Path]
     features: Sequence[str]
     cont_features: Sequence[str]
-    sens_attrs: Sequence[str]
-    class_labels: Sequence[str]
+    sens_attr_spec: Union[str, LabelSpec]
+    class_label_spec: Union[str, LabelSpec]
     num_samples: int
     discrete_only: bool
     s_prefix: Sequence[str] = field(default_factory=list)
     class_label_prefix: Sequence[str] = field(default_factory=list)
     discrete_feature_groups: Optional[Dict[str, List[str]]] = None
-    combination_multipliers: Dict[str, int] = field(default_factory=dict)
+    discard_non_one_hot: bool = False
+    """If some entries in s or y are not correctly one-hot encoded, discard those."""
+    map_to_binary: bool = False
+    """If True, convert labels from {-1, 1} to {0, 1}."""
+
+    @property
+    def sens_attrs(self) -> List[str]:
+        """Get the list of sensitive attributes."""
+        if isinstance(self.sens_attr_spec, str):
+            return [self.sens_attr_spec]
+        else:
+            assert isinstance(self.sens_attr_spec, dict)
+            return label_specs_to_feature_list(self.sens_attr_spec)
+
+    @property
+    def class_labels(self) -> List[str]:
+        """Get the list of class labels."""
+        if isinstance(self.class_label_spec, str):
+            return [self.class_label_spec]
+        else:
+            assert isinstance(self.class_label_spec, dict)
+            return label_specs_to_feature_list(self.class_label_spec)
 
     @property
     def filepath(self) -> Path:
@@ -60,8 +86,8 @@ class Dataset:
         ordered = self.discrete_features + self.continuous_features
         return {
             "x": filter_features_by_prefixes(ordered, self.features_to_remove),
-            "s": list(self.sens_attrs),
-            "y": list(self.class_labels),
+            "s": self.sens_attrs,
+            "y": self.class_labels,
         }
 
     @property
@@ -74,8 +100,8 @@ class Dataset:
 
         return {
             "x": filter_features_by_prefixes(self.features, features_to_remove),
-            "s": list(self.sens_attrs),
-            "y": list(self.class_labels),
+            "s": self.sens_attrs,
+            "y": self.class_labels,
         }
 
     @property
@@ -102,24 +128,11 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(
-        self,
-        ordered: bool = False,
-        discard_non_one_hot: bool = False,
-        map_to_binary: bool = False,
-        sens_combination: bool = False,
-        class_combination: bool = False,
-    ) -> DataTuple:
+    def load(self, ordered: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
             ordered: if True, return features such that discrete come first, then continuous
-            generate_dummies: if True generate complementary features for standalone binary features
-            discard_non_one_hot: if some entries in s or y are not correctly one-hot encoded,
-                                 discard those
-            map_to_binary: if True, convert labels from {-1, 1} to {0, 1}
-            sens_combination: if True, take as s the cartesian product of all s columns
-            class_combination: if True, take as y the cartesian product of all y columns
 
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
@@ -164,64 +177,71 @@ class Dataset:
         s_data = dataframe[feature_split["s"]]
         y_data = dataframe[feature_split["y"]]
 
-        if map_to_binary:
+        if self.map_to_binary:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        if sens_combination:
-            s_mask = None
-            s_data = self.combine_attributes(s_data)
-        else:
-            s_name = self.s_prefix[0] if self.s_prefix else ",".join(s_data.columns)
-            s_data, s_mask = maybe_undo_one_hot(s_data, discard_non_one_hot, "s", s_name)
-            if s_mask is not None:
-                y_data = y_data[s_mask]
-                x_data = x_data[s_mask]
-        if class_combination:
-            y_mask = None
-            y_data = self.combine_attributes(y_data)
-        else:
-            y_name = (
-                self.class_label_prefix[0] if self.class_label_prefix else ",".join(y_data.columns)
-            )
-            y_data, y_mask = maybe_undo_one_hot(y_data, discard_non_one_hot, "y", y_name)
-            if y_mask is not None:
-                s_data = s_data[y_mask]
-                x_data = x_data[y_mask]
+        s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
+        if s_mask is not None:
+            x_data = x_data.loc[s_mask]
+            s_data = s_data.loc[s_mask]
+            y_data = y_data.loc[s_mask]
+        y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
+        if y_mask is not None:
+            x_data = x_data.loc[y_mask]
+            s_data = s_data.loc[y_mask]
+            y_data = y_data.loc[y_mask]
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
-    def combine_attributes(self, attributes: pd.DataFrame) -> pd.DataFrame:
-        """Take the cartesian product of all attributes."""
-        attr_names = list(attributes.columns)
-        combination = attributes[attr_names[0]]
-        multiplier = 2
-        self.combination_multipliers[attr_names[0]] = 1
-        for attr_name in attr_names[1:]:
-            combination += multiplier * attributes[attr_name]
-            self.combination_multipliers[attr_name] = multiplier
-            multiplier *= 2
-        return combination.to_frame(name=",".join(attr_names))
+    def _maybe_combine_labels(
+        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
+    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
+        """Construct a new label according to the LabelSpecs."""
+        mask = None  # the mask is needed when we have to discard samples
 
+        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
+        if isinstance(label_mapping, str):
+            return attributes, mask
 
-def maybe_undo_one_hot(
-    attributes: pd.DataFrame,
-    discard_non_one_hot: bool,
-    label_type: Literal["s", "y"],
-    new_name: str,
-) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
-    """Undo one-hot encoding if it's there."""
-    mask = None
-    if attributes.shape[1] > 1:
-        if discard_non_one_hot:
-            # only use those samples where exactly one of the specified attributes is true
-            mask = attributes.sum(axis="columns") == 1
-            attributes = attributes.loc[mask]
-        else:
-            assert (attributes.sum(axis="columns") == 1).all(), f"{label_type} is not one-hot"
+        # create a Series of zeroes with the same length as the dataframe
+        combination: pd.Series[int] = pd.Series(0, index=range(len(attributes)))
 
-        # we have to overwrite the column names because `idxmax` uses the column names
-        attributes.columns = list(range(attributes.shape[1]))
-        attributes = attributes.idxmax(axis="columns").to_frame(name=new_name)
+        for name, spec in label_mapping.items():
+            if len(spec.columns) > 1:  # data is one-hot encoded
+                raw_values = attributes[spec.columns]
+                if self.discard_non_one_hot:
+                    # only use those samples where exactly one of the specified attributes is true
+                    mask = raw_values.sum(axis="columns") == 1
+                else:
+                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+                values = undo_one_hot(raw_values)
+            else:
+                values = attributes[spec.columns[0]]
+            combination += spec.multiplier * values
+        return combination.to_frame(name=",".join(label_mapping)), mask
 
-    return attributes, mask
+    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+        """Expand a label in the form of an index into all the subfeatures."""
+        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
+        assert not isinstance(label_mapping, str)
+        label_mapping: LabelSpec  # redefine the variable for mypy's sake
+
+        # first order the multipliers; this is important for disentangling the values
+        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
+
+        labels = label[label.columns[0]]
+
+        final_df = {}
+        for i, name in enumerate(names_ordered):
+            spec = label_mapping[name]
+            value = labels
+            if i + 1 < len(names_ordered):
+                next_spec = label_mapping[names_ordered[i + 1]]
+                value = labels % next_spec.multiplier
+            value = value // spec.multiplier
+            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
+            restored = pd.get_dummies(value)
+            final_df[name] = restored  # for the multi-level column index
+
+        return pd.concat(final_df, axis=1)

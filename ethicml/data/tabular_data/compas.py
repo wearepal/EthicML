@@ -1,10 +1,11 @@
 """Class to describe features of the Compas dataset."""
+from typing import Union
 from warnings import warn
 
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import flatten_dict
+from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
 
@@ -429,20 +430,21 @@ def compas(
         "priors-count",
     ]
 
+    sens_attr_spec: Union[str, LabelSpec]
     if split == "Sex":
-        sens_attrs = ["sex"]
+        sens_attr_spec = "sex"
         s_prefix = ["sex"]
-        class_labels = ["two-year-recid"]
+        class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
     elif split == "Race":
-        sens_attrs = ["race"]
+        sens_attr_spec = "race"
         s_prefix = ["race"]
-        class_labels = ["two-year-recid"]
+        class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
     elif split == "Race-Sex":
-        sens_attrs = ["sex", "race"]
+        sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
         s_prefix = ["race", "sex"]
-        class_labels = ["two-year-recid"]
+        class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
     else:
         raise NotImplementedError
@@ -454,9 +456,9 @@ def compas(
         features=discrete_features + continuous_features,
         cont_features=continuous_features,
         s_prefix=s_prefix,
-        sens_attrs=sens_attrs,
+        sens_attr_spec=sens_attr_spec,
         class_label_prefix=class_label_prefix,
-        class_labels=class_labels,
+        class_label_spec=class_label_spec,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
     )

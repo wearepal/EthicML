@@ -5,7 +5,7 @@ and biased subset sampling.
 """
 import warnings
 from pathlib import Path
-from typing import Callable, List, Optional, Tuple, Union, cast
+from typing import Callable, Dict, List, Optional, Tuple, Union, cast
 
 import numpy as np
 import torch
@@ -13,7 +13,7 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
-from ethicml.data import CelebAttrs, GenfacesAttributes, celeba, genfaces
+from ethicml.data import CelebAttrs, GenfacesAttributes, LabelSpec, celeba, genfaces, simple_spec
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
 
@@ -27,7 +27,6 @@ class TorchImageDataset(VisionDataset):
         self,
         data: DataTuple,
         root: Path,
-        map_to_binary: bool = False,
         transform: Optional[Callable] = None,
         target_transform: Optional[Callable] = None,
     ):
@@ -41,7 +40,6 @@ class TorchImageDataset(VisionDataset):
         Args:
             data: Data tuple with x containing the filepaths to the generated faces images.
             root: Root directory where images are downloaded to.
-            map_to_binary: if True, convert labels of {-1, 1} to {0, 1}
             transform: A function/transform that  takes in an PIL image and returns a transformed
                        version. E.g, `transforms.ToTensor`
             target_transform: A function/transform that takes in the target and transforms it.
@@ -51,10 +49,6 @@ class TorchImageDataset(VisionDataset):
         s = data.s
         self.s_dim = 1
         y = data.y
-
-        if map_to_binary:
-            s = (s + 1) // 2  # map from {-1, 1} to {0, 1}
-            y = (y + 1) // 2  # map from {-1, 1} to {0, 1}
 
         self.x: np.ndarray[np.str_] = data.x["filename"].to_numpy()
         self.s = torch.as_tensor(s.to_numpy())
@@ -96,7 +90,7 @@ def create_celeba_dataset(
     biased: bool,
     mixing_factor: float,
     unbiased_pcnt: float,
-    sens_attr_name: Union[CelebAttrs, List[CelebAttrs], Tuple[CelebAttrs, ...]],
+    sens_attr_name: Union[CelebAttrs, Dict[str, List[CelebAttrs]]],
     target_attr_name: CelebAttrs,
     transform: Optional[Callable] = None,
     target_transform: Optional[Callable] = None,
@@ -123,26 +117,20 @@ def create_celeba_dataset(
         seed: Random seed used to sample biased subset.
         check_integrity: If True, check whether the data has been downloaded correctly.
     """
-    if not isinstance(sens_attr_name, (list, tuple)):
-        sens_attr_name = cast(CelebAttrs, sens_attr_name.capitalize())
-    target_attr_name = cast(CelebAttrs, target_attr_name.capitalize())
-
+    sens_attr: Union[CelebAttrs, LabelSpec]
+    if isinstance(sens_attr_name, dict):
+        sens_attr = dict(simple_spec(sens_attr_name))
+    else:
+        sens_attr = sens_attr_name
     dataset, base_dir = celeba(
         download_dir=root,
         label=target_attr_name,
-        sens_attr=sens_attr_name,
+        sens_attr=sens_attr,
         download=download,
         check_integrity=check_integrity,
     )
     assert dataset is not None
-    if isinstance(sens_attr_name, (list, tuple)):
-        # FIXME: the following check should not be hard coded
-        if len(sens_attr_name) == 2 and ("Male" in sens_attr_name) and ("Young" in sens_attr_name):
-            all_dt = dataset.load(sens_combination=True, map_to_binary=True)
-        else:
-            all_dt = dataset.load(discard_non_one_hot=True, map_to_binary=True)
-    else:
-        all_dt = dataset.load(map_to_binary=True)
+    all_dt = dataset.load()
 
     if sens_attr_name == target_attr_name:
         warnings.warn("Same attribute specified for both the sensitive and target attribute.")
@@ -154,19 +142,11 @@ def create_celeba_dataset(
             data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
         )
         return TorchImageDataset(
-            data=biased_dt,
-            root=base_dir,
-            map_to_binary=False,
-            transform=transform,
-            target_transform=target_transform,
+            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform,
         )
     else:
         return TorchImageDataset(
-            data=unbiased_dt,
-            root=base_dir,
-            map_to_binary=False,
-            transform=transform,
-            target_transform=target_transform,
+            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform,
         )
 
 
