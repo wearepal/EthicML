@@ -1,5 +1,5 @@
 """Class to describe features of the Adult dataset."""
-from typing import Dict, Union
+from typing import Union
 from warnings import warn
 
 from typing_extensions import Literal
@@ -150,8 +150,7 @@ def adult(
         "hours-per-week",
     ]
 
-    sens_attr_spec: Union[str, Dict[str, LabelSpec]]
-    class_label_spec: Union[str, Dict[str, LabelSpec]]
+    sens_attr_spec: Union[str, LabelSpec]
     if split == "Sex":
         sens_attr_spec = "sex_Male"
         s_prefix = ["sex"]
@@ -168,9 +167,9 @@ def adult(
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
     elif split == "Custom":
-        sens_attr_spec = {}
+        sens_attr_spec = ""
         s_prefix = []
-        class_label_spec = {}
+        class_label_spec = ""
         class_label_prefix = []
     elif split == "Race-Sex":
         sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": disc_feature_groups["race"]})

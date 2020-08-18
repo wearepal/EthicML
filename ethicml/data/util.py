@@ -4,6 +4,7 @@ from typing import Dict, List, Mapping, NamedTuple, Sequence
 
 __all__ = [
     "LabelSpec",
+    "PartialLabelSpec",
     "simple_spec",
     "get_concatenated_features",
     "filter_features_by_prefixes",
@@ -13,11 +14,14 @@ __all__ = [
 ]
 
 
-class LabelSpec(NamedTuple):
-    """Specification for a label (can be class label or sensitive attribute)."""
+class PartialLabelSpec(NamedTuple):
+    """Specification for part of a label (can be class label or sensitive attribute)."""
 
     columns: List[str]
     multiplier: int = 1
+
+
+LabelSpec = Mapping[str, PartialLabelSpec]
 
 
 def get_concatenated_features(
@@ -119,7 +123,7 @@ def reduce_feature_group(
     return flatten_dict(disc_feature_groups)
 
 
-def label_specs_to_feature_list(specs: Dict[str, LabelSpec]) -> List[str]:
+def label_specs_to_feature_list(specs: LabelSpec) -> List[str]:
     """Extract all the feature column names from a dictionary of label specifications."""
     feature_list: List[str] = []
     for spec in specs.values():
@@ -127,12 +131,12 @@ def label_specs_to_feature_list(specs: Dict[str, LabelSpec]) -> List[str]:
     return feature_list
 
 
-def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> Dict[str, LabelSpec]:
+def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
     """Create label specs for the most common case where columns contain 0s and 1s."""
     multiplier = 1
     label_specs = {}
     for name, columns in label_defs.items():
-        label_specs[name] = LabelSpec(list(columns), multiplier=multiplier)
+        label_specs[name] = PartialLabelSpec(list(columns), multiplier=multiplier)
         num_columns = len(columns)
         # we assume here that the columns only contain 0s and 1s
         multiplier *= num_columns if num_columns > 1 else 2

@@ -10,7 +10,7 @@ from ethicml.data import (
     Adult,
     Compas,
     Dataset,
-    LabelSpec,
+    PartialLabelSpec,
     Toy,
     adult,
     celeba,
@@ -407,7 +407,7 @@ def test_celeba():
     assert celeba_data is None  # data should not be there
     celeba_data, _ = celeba(download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(map_to_binary=True)
+    data = celeba_data.load()
 
     assert celeba_data.name == "CelebA, s=Male, y=Smiling"
 
@@ -421,10 +421,10 @@ def test_celeba():
 
 def test_celeba_multi_s():
     """Test celeba w/ multi S."""
-    sens_spec = {"Age": LabelSpec(["Young"]), "Gender": LabelSpec(["Male"], multiplier=2)}
+    sens_spec = dict(simple_spec({"Age": ["Young"], "Gender": ["Male"]}))
     celeba_data, _ = celeba(sens_attr=sens_spec, download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(map_to_binary=True)
+    data = celeba_data.load()
 
     assert celeba_data.name == "CelebA, s=[Age, Gender], y=Smiling"
 
@@ -464,8 +464,8 @@ def test_expand_s():
         features=[],
         cont_features=[],
         sens_attr_spec={
-            "Gender": LabelSpec(["Female", "Male"], multiplier=3),
-            "Race": LabelSpec(["Blue", "Green", "Pink"], multiplier=1),
+            "Gender": PartialLabelSpec(["Female", "Male"], multiplier=3),
+            "Race": PartialLabelSpec(["Blue", "Green", "Pink"], multiplier=1),
         },
         class_label_spec="label",
         num_samples=7,
@@ -483,7 +483,7 @@ def test_expand_s():
     multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
-    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, False, "s")[0], compact_df)
+    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
         data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )
@@ -494,6 +494,6 @@ def test_simple_spec():
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
     spec = simple_spec(sens_attrs)
     assert spec == {
-        "gender": LabelSpec(["female", "male"], multiplier=3),
-        "race": LabelSpec(["blue", "green", "pink"], multiplier=1),
+        "gender": PartialLabelSpec(["female", "male"], multiplier=3),
+        "race": PartialLabelSpec(["blue", "green", "pink"], multiplier=1),
     }

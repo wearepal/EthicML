@@ -27,14 +27,17 @@ class Dataset:
     filename_or_path: Union[str, Path]
     features: Sequence[str]
     cont_features: Sequence[str]
-    sens_attr_spec: Union[str, Dict[str, LabelSpec]]
-    class_label_spec: Union[str, Dict[str, LabelSpec]]
+    sens_attr_spec: Union[str, LabelSpec]
+    class_label_spec: Union[str, LabelSpec]
     num_samples: int
     discrete_only: bool
     s_prefix: Sequence[str] = field(default_factory=list)
     class_label_prefix: Sequence[str] = field(default_factory=list)
     discrete_feature_groups: Optional[Dict[str, List[str]]] = None
-    y_mapping: Optional[Dict[str, LabelSpec]] = None
+    discard_non_one_hot: bool = False
+    """If some entries in s or y are not correctly one-hot encoded, discard those."""
+    map_to_binary: bool = False
+    """If True, convert labels from {-1, 1} to {0, 1}."""
 
     @property
     def sens_attrs(self) -> List[str]:
@@ -125,17 +128,11 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(
-        self, ordered: bool = False, discard_non_one_hot: bool = False, map_to_binary: bool = False,
-    ) -> DataTuple:
+    def load(self, ordered: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
             ordered: if True, return features such that discrete come first, then continuous
-            generate_dummies: if True generate complementary features for standalone binary features
-            discard_non_one_hot: if some entries in s or y are not correctly one-hot encoded,
-                                 discard those
-            map_to_binary: if True, convert labels from {-1, 1} to {0, 1}
 
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
@@ -180,16 +177,16 @@ class Dataset:
         s_data = dataframe[feature_split["s"]]
         y_data = dataframe[feature_split["y"]]
 
-        if map_to_binary:
+        if self.map_to_binary:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        s_data, s_mask = self._maybe_combine_labels(s_data, discard_non_one_hot, label_type="s")
+        s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
         if s_mask is not None:
             x_data = x_data.loc[s_mask]
             s_data = s_data.loc[s_mask]
             y_data = y_data.loc[s_mask]
-        y_data, y_mask = self._maybe_combine_labels(y_data, discard_non_one_hot, label_type="y")
+        y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
         if y_mask is not None:
             x_data = x_data.loc[y_mask]
             s_data = s_data.loc[y_mask]
@@ -198,7 +195,7 @@ class Dataset:
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
     def _maybe_combine_labels(
-        self, attributes: pd.DataFrame, discard_non_one_hot: bool, label_type: Literal["s", "y"]
+        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
     ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs."""
         mask = None  # the mask is needed when we have to discard samples
@@ -213,7 +210,7 @@ class Dataset:
         for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded
                 raw_values = attributes[spec.columns]
-                if discard_non_one_hot:
+                if self.discard_non_one_hot:
                     # only use those samples where exactly one of the specified attributes is true
                     mask = raw_values.sum(axis="columns") == 1
                 else:
@@ -227,8 +224,8 @@ class Dataset:
     def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
         """Expand a label in the form of an index into all the subfeatures."""
         label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
-        assert isinstance(label_mapping, dict)
-        label_mapping: Dict[str, LabelSpec]  # redefine the variable for mypy's sake
+        assert not isinstance(label_mapping, str)
+        label_mapping: LabelSpec  # redefine the variable for mypy's sake
 
         # first order the multipliers; this is important for disentangling the values
         names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)

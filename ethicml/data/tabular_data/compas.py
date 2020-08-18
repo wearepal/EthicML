@@ -1,5 +1,5 @@
 """Class to describe features of the Compas dataset."""
-from typing import Dict, Union
+from typing import Union
 from warnings import warn
 
 from typing_extensions import Literal
@@ -430,7 +430,7 @@ def compas(
         "priors-count",
     ]
 
-    sens_attr_spec: Union[str, Dict[str, LabelSpec]]
+    sens_attr_spec: Union[str, LabelSpec]
     if split == "Sex":
         sens_attr_spec = "sex"
         s_prefix = ["sex"]

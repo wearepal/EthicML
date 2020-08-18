@@ -1,8 +1,8 @@
 """Class to describe features of the SQF dataset."""
-from typing import Dict, Union
+from typing import Union
 
 from ..dataset import Dataset
-from ..util import LabelSpec
+from ..util import LabelSpec, simple_spec
 
 __all__ = ["sqf"]
 
@@ -161,7 +161,7 @@ def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
 
     continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
-    sens_attr_spec: Union[str, Dict[str, LabelSpec]]
+    sens_attr_spec: Union[str, LabelSpec]
     if split == "Sex":
         sens_attr_spec = "sex"
         s_prefix = ["sex"]
@@ -173,7 +173,7 @@ def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         class_label_spec = "weapon"
         class_label_prefix = ["weapon"]
     elif split == "Race-Sex":
-        sens_attr_spec = {"sex": LabelSpec(["sex"]), "race": LabelSpec(["race"], multiplier=2)}
+        sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
         s_prefix = ["race", "sex"]
         class_label_spec = "weapon"
         class_label_prefix = ["weapon"]

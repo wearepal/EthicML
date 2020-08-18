@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple, Union
 from typing_extensions import Final, Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict, label_specs_to_feature_list
+from ..util import LabelSpec, PartialLabelSpec, flatten_dict, label_specs_to_feature_list
 
 __all__ = ["CelebAttrs", "celeba"]
 
@@ -73,7 +73,7 @@ _FILE_LIST: Final = [
 def celeba(
     download_dir: str,
     label: CelebAttrs = "Smiling",
-    sens_attr: Union[CelebAttrs, Dict[str, LabelSpec]] = "Male",
+    sens_attr: Union[CelebAttrs, Dict[str, PartialLabelSpec]] = "Male",
     download: bool = False,
     check_integrity: bool = True,
 ) -> Tuple[Optional[Dataset], Path]:
@@ -146,6 +146,8 @@ def celeba(
         num_samples=202599,
         filename_or_path="celeba.csv.zip",
         discrete_only=False,
+        discard_non_one_hot=True,
+        map_to_binary=True,
     )
     return dataset_obj, img_dir
 

@@ -5,7 +5,7 @@ from typing import Optional, Tuple
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict
+from ..util import flatten_dict, simple_spec
 
 __all__ = ["GenfacesAttributes", "genfaces"]
 
@@ -58,9 +58,9 @@ def genfaces(
 
     dataset_obj = Dataset(
         name=f"GenFaces, s={sens_attr}, y={label}",
-        sens_attr_spec={sens_attr: LabelSpec(disc_feature_groups[sens_attr])},
+        sens_attr_spec=simple_spec({sens_attr: disc_feature_groups[sens_attr]}),
         s_prefix=[sens_attr],
-        class_label_spec={label: LabelSpec(disc_feature_groups[label])},
+        class_label_spec=simple_spec({label: disc_feature_groups[label]}),
         class_label_prefix=[label],
         discrete_feature_groups=disc_feature_groups,
         features=discrete_features + continuous_features,
