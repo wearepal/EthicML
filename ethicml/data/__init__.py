@@ -10,6 +10,7 @@ from .tabular_data.german import *
 from .tabular_data.health import *
 from .tabular_data.non_binary_toy import *
 from .tabular_data.sqf import *
+from .tabular_data.synthetic import *
 from .tabular_data.toy import *
 from .util import *
 from .vision_data.celeba import *

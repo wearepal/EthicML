@@ -23,6 +23,7 @@ from ethicml.data import (
     health,
     nonbinary_toy,
     sqf,
+    synthetic,
     toy,
 )
 from ethicml.preprocessing import domain_split, query_dt
@@ -74,6 +75,7 @@ def test_can_load_test_data(data_root: Path):
         (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex", False),
         (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race", False),
         (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex", True),
+        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1", False),
         (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy", False),
     ],
 )
