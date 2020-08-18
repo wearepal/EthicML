@@ -25,7 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -167,13 +167,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation" title="ethicml.utility.Activation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Activation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Activation" title="ethicml.utility.Activation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Activation</span></code></a>()</p></td>
 <td><p>Base class for decision functions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataTuple</span></code></a>(x, s, y, name)</p></td>
 <td><p>A tuple of dataframes for the features, the sensitive attribute and the class labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside" title="ethicml.utility.Heaviside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Heaviside</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.Heaviside" title="ethicml.utility.Heaviside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Heaviside</span></code></a>()</p></td>
 <td><p>Decision function that accepts predictions with score of 50% or above.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.Prediction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prediction</span></code></a>(hard, info, float]] = None)</p></td>
@@ -188,7 +188,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TestTuple" title="ethicml.utility.TestTuple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestTuple</span></code></a>(x, s, name)</p></td>
 <td><p>A tuple of dataframes for the features and the sensitive attribute.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair" title="ethicml.utility.TrainTestPair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainTestPair</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair" title="ethicml.utility.TrainTestPair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TrainTestPair</span></code></a>(train, test)</p></td>
 <td><p>2-Tuple of train and test data.</p></td>
 </tr>
 </tbody>
@@ -215,14 +215,17 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.filter_results" title="ethicml.utility.filter_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_results</span></code></a>(results, values, index, …)</p></td>
 <td><p>Filter the entries based on the given values.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.get_dataset_obj_by_name" title="ethicml.utility.get_dataset_obj_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset_obj_by_name</span></code></a>(name)</p></td>
-<td><p>Given a dataset name, get the corresponding dataset object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.make_results" title="ethicml.utility.make_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_results</span></code></a>(data_frame, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.make_results" title="ethicml.utility.make_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_results</span></code></a>(data_frame, …)</p></td>
 <td><p>Initialise Results object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.map_over_results_index" title="ethicml.utility.map_over_results_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_over_results_index</span></code></a>(results, mapper, str, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.map_over_results_index" title="ethicml.utility.map_over_results_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_over_results_index</span></code></a>(results, mapper, str, …)</p></td>
 <td><p>Change the values of the index with a transformation function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.shuffle_df" title="ethicml.utility.shuffle_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shuffle_df</span></code></a>(df, random_state)</p></td>
+<td><p>Shuffle a given dataframe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.undo_one_hot" title="ethicml.utility.undo_one_hot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">undo_one_hot</span></code></a>(df, new_column_name)</p></td>
+<td><p>Undo one-hot encoding.</p></td>
 </tr>
 </tbody>
 </table>
@@ -712,7 +715,7 @@
 
 <dl class="py class">
 <dt id="ethicml.utility.TrainTestPair">
-<em class="property">class </em><code class="sig-name descname">TrainTestPair</code><a class="headerlink" href="#ethicml.utility.TrainTestPair" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">TrainTestPair</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">test</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.TestTuple</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
 <p>2-Tuple of train and test data.</p>
 <p>Create new instance of TrainTestPair(train, test)</p>
@@ -723,10 +726,10 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.count" title="ethicml.utility.TrainTestPair.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.count" title="ethicml.utility.TrainTestPair.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value, /)</p></td>
 <td><p>Return number of occurrences of value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.index" title="ethicml.utility.TrainTestPair.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.utility.TrainTestPair.index" title="ethicml.utility.TrainTestPair.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value[, start, stop])</p></td>
 <td><p>Return first index of value.</p></td>
 </tr>
 </tbody>
@@ -748,26 +751,26 @@
 </table>
 <dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.count">
-<code class="sig-name descname">count</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return number of occurrences of value.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">stop</span><span class="o">=</span><span class="default_value">9223372036854775807</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first index of value.</p>
 <p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="ethicml.utility.TrainTestPair.test">
-<code class="sig-name descname">test</code><a class="headerlink" href="#ethicml.utility.TrainTestPair.test" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">test</code><em class="property">: ethicml.utility.data_structures.TestTuple</em><a class="headerlink" href="#ethicml.utility.TrainTestPair.test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="ethicml.utility.TrainTestPair.train">
-<code class="sig-name descname">train</code><a class="headerlink" href="#ethicml.utility.TrainTestPair.train" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train</code><em class="property">: ethicml.utility.data_structures.DataTuple</em><a class="headerlink" href="#ethicml.utility.TrainTestPair.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
@@ -804,12 +807,6 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="ethicml.utility.get_dataset_obj_by_name">
-<code class="sig-name descname">get_dataset_obj_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>ethicml.data.dataset.Dataset<span class="p">]</span><a class="headerlink" href="#ethicml.utility.get_dataset_obj_by_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a dataset name, get the corresponding dataset object.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt id="ethicml.utility.make_results">
 <code class="sig-name descname">make_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_frame</span><span class="p">:</span> <span class="n">Union[None, pandas.core.frame.DataFrame, pathlib.Path]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; NewType.&lt;locals&gt;.new_type<a class="headerlink" href="#ethicml.utility.make_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialise Results object.</p>
@@ -821,6 +818,18 @@ function checks whether the columns are correct.</p>
 <dt id="ethicml.utility.map_over_results_index">
 <code class="sig-name descname">map_over_results_index</code><span class="sig-paren">(</span><em class="sig-param">results: NewType.&lt;locals&gt;.new_type, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]</em><span class="sig-paren">)</span> &#x2192; NewType.&lt;locals&gt;.new_type<a class="headerlink" href="#ethicml.utility.map_over_results_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the values of the index with a transformation function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.utility.shuffle_df">
+<code class="sig-name descname">shuffle_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#ethicml.utility.shuffle_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shuffle a given dataframe.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.utility.undo_one_hot">
+<code class="sig-name descname">undo_one_hot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">new_column_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>pandas.core.series.Series<span class="p">, </span>pandas.core.frame.DataFrame<span class="p">]</span><a class="headerlink" href="#ethicml.utility.undo_one_hot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo one-hot encoding.</p>
 </dd></dl>
 
 </div>

@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -26,7 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -306,7 +305,9 @@
 </li>
       <li><a href="ethicml.data.html#ethicml.data.celeba">celeba() (in module ethicml.data)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Dataset.class_label_prefix">class_label_prefix() (Dataset property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.class_labels">class_labels() (Dataset property)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.PartialLabelSpec.columns">columns (PartialLabelSpec attribute)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Compas">Compas() (in module ethicml.data)</a>
 </li>
@@ -326,17 +327,21 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.count">count() (TrainTestPair method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.PartialLabelSpec.count">count() (PartialLabelSpec method)</a>
+
+      <ul>
+        <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.count">(TrainTestPair method)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.create_celeba_dataset">create_celeba_dataset() (in module ethicml.data)</a>
+      </ul></li>
+      <li><a href="ethicml.vision.html#ethicml.vision.create_celeba_dataset">create_celeba_dataset() (in module ethicml.vision)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.create_cmnist_datasets">create_cmnist_datasets() (in module ethicml.data)</a>
+      <li><a href="ethicml.vision.html#ethicml.vision.create_cmnist_datasets">create_cmnist_datasets() (in module ethicml.vision)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.create_data_obj">create_data_obj() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Kamishima.create_file_in_kamishima_format">create_file_in_kamishima_format() (Kamishima static method)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.create_genfaces_dataset">create_genfaces_dataset() (in module ethicml.data)</a>
+      <li><a href="ethicml.vision.html#ethicml.vision.create_genfaces_dataset">create_genfaces_dataset() (in module ethicml.vision)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.credit">credit() (in module ethicml.data)</a>
 </li>
@@ -358,6 +363,8 @@
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.dataset_from_cond">dataset_from_cond() (in module ethicml.preprocessing)</a>
 </li>
+      <li><a href="ethicml.vision.html#ethicml.vision.DatasetWrapper">DatasetWrapper (class in ethicml.vision)</a>
+</li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.DataSplitter">DataSplitter (class in ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple">DataTuple (class in ethicml.utility)</a>
@@ -367,6 +374,8 @@
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.diff_per_sensitive_attribute">diff_per_sensitive_attribute() (in module ethicml.evaluators)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.disc_feature_groups">disc_feature_groups() (Dataset property)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.discard_non_one_hot">discard_non_one_hot (Dataset attribute)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.discrete_features">discrete_features() (Dataset property)</a>
 </li>
@@ -463,6 +472,8 @@
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.evaluate_models_async">evaluate_models_async() (in module ethicml.evaluators)</a>
 </li>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.expand_labels">expand_labels() (Dataset method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -473,7 +484,7 @@
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.feature_split">feature_split() (Dataset property)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Dataset.features">features() (Dataset property)</a>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.features_to_remove">features_to_remove() (Dataset property)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.Dataset.filepath">filepath() (Dataset property)</a>
 </li>
@@ -517,7 +528,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.get_concatenated_features">get_concatenated_features() (in module ethicml.data)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.get_dataset_obj_by_name">get_dataset_obj_by_name() (in module ethicml.utility)</a>
+      <li><a href="ethicml.data.html#ethicml.data.get_dataset_obj_by_name">get_dataset_obj_by_name() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.get_discrete_features">get_discrete_features() (in module ethicml.data)</a>
 </li>
@@ -563,8 +574,12 @@
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.InAlgorithmAsync">InAlgorithmAsync (class in ethicml.algorithms.inprocess)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.index">index() (TrainTestPair method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.PartialLabelSpec.index">index() (PartialLabelSpec method)</a>
+
+      <ul>
+        <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.index">(TrainTestPair method)</a>
 </li>
+      </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.Prediction.info">info() (Prediction property)</a>
 
       <ul>
@@ -633,6 +648,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.label_specs_to_feature_list">label_specs_to_feature_list() (in module ethicml.data)</a>
+</li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer">LabelBinarizer (class in ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.LabelOutOfBounds">LabelOutOfBounds</a>
@@ -641,10 +658,12 @@
 </li>
       <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation">LdTransformation (class in ethicml.vision)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.Dataset.load">load() (Dataset method)</a>
+      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset">LdTransformedDataset (class in ethicml.vision)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.load">load() (Dataset method)</a>
+</li>
       <li><a href="ethicml.data.html#ethicml.data.load_data">load_data() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.load_results">load_results() (in module ethicml.evaluators)</a>
@@ -666,6 +685,8 @@
       <li><a href="ethicml.utility.html#ethicml.utility.make_results">make_results() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.map_over_results_index">map_over_results_index() (in module ethicml.utility)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.map_to_binary">map_to_binary (Dataset attribute)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
@@ -703,6 +724,10 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.PartialLabelSpec.multiplier">multiplier (PartialLabelSpec attribute)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="N">N</h2>
@@ -730,8 +755,6 @@
         <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.Corels.name">(Corels property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.CV.name">(CV property)</a>
-</li>
-        <li><a href="ethicml.data.html#ethicml.data.Dataset.name">(Dataset property)</a>
 </li>
         <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.name">(DataTuple property)</a>
 </li>
@@ -822,6 +845,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.metrics.html#ethicml.metrics.NMI">NMI (class in ethicml.metrics)</a>
 </li>
+      <li><a href="ethicml.vision.html#ethicml.vision.NoisyDequantize">NoisyDequantize (class in ethicml.vision)</a>
+</li>
       <li><a href="ethicml.data.html#ethicml.data.nonbinary_toy">nonbinary_toy() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.NPV">NPV (class in ethicml.metrics)</a>
@@ -840,6 +865,8 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.PartialLabelSpec">PartialLabelSpec (class in ethicml.data)</a>
+</li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.plot_results">plot_results() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer.post">post() (LabelBinarizer method)</a>
@@ -850,10 +877,10 @@
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.PPV">PPV (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithm">PreAlgorithm (class in ethicml.algorithms.preprocess)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithm">PreAlgorithm (class in ethicml.algorithms.preprocess)</a>
+</li>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.PreAlgorithmAsync">PreAlgorithmAsync (class in ethicml.algorithms.preprocess)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Prediction">Prediction (class in ethicml.utility)</a>
@@ -871,6 +898,10 @@
 
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.vision.html#ethicml.vision.Quantize">Quantize (class in ethicml.vision)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.query_dt">query_dt() (in module ethicml.preprocessing)</a>
 </li>
@@ -1086,8 +1117,6 @@
         <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.s">(TestTuple property)</a>
 </li>
       </ul></li>
-      <li><a href="ethicml.data.html#ethicml.data.Dataset.s_prefix">s_prefix() (Dataset property)</a>
-</li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_2d_plot">save_2d_plot() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.ResultsAggregator.save_as_csv">save_as_csv() (ResultsAggregator method)</a>
@@ -1095,6 +1124,8 @@
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_jointplot">save_jointplot() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.save_label_plot">save_label_plot() (in module ethicml.visualisation)</a>
+</li>
+      <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.scale_continuous">scale_continuous() (in module ethicml.preprocessing)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.score">score() (AbsCV method)</a>
 
@@ -1142,7 +1173,15 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.Dataset.sens_attrs">sens_attrs() (Dataset property)</a>
+</li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.SequentialSplit">SequentialSplit (class in ethicml.preprocessing)</a>
+</li>
+      <li><a href="ethicml.vision.html#ethicml.vision.set_transform">set_transform() (in module ethicml.vision)</a>
+</li>
+      <li><a href="ethicml.utility.html#ethicml.utility.shuffle_df">shuffle_df() (in module ethicml.utility)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.simple_spec">simple_spec() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.single_plot">single_plot() (in module ethicml.visualisation)</a>
 </li>
@@ -1157,6 +1196,10 @@
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVM">SVM (class in ethicml.algorithms.inprocess)</a>
 </li>
       <li><a href="ethicml.algorithms.inprocess.html#ethicml.algorithms.inprocess.SVMAsync">SVMAsync (class in ethicml.algorithms.inprocess)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.Synthetic">Synthetic() (in module ethicml.data)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.synthetic">synthetic() (in module ethicml.data)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1182,10 +1225,10 @@
         <li><a href="ethicml.utility.html#ethicml.utility.TestTuple.to_npz">(TestTuple method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.vision.html#ethicml.vision.TorchImageDataset">TorchImageDataset (class in ethicml.vision)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.Toy">Toy() (in module ethicml.data)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.toy">toy() (in module ethicml.data)</a>
@@ -1195,14 +1238,28 @@
       <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.train">train (TrainTestPair attribute)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.train_test_split">train_test_split() (in module ethicml.preprocessing)</a>
+
+      <ul>
+        <li><a href="ethicml.vision.html#ethicml.vision.train_test_split">(in module ethicml.vision)</a>
 </li>
+      </ul></li>
       <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair">TrainTestPair (class in ethicml.utility)</a>
 </li>
+      <li><a href="ethicml.vision.html#ethicml.vision.DatasetWrapper.transform">transform() (DatasetWrapper property)</a>
+
+      <ul>
+        <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset.transform">(LdTransformedDataset property)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.utility.html#ethicml.utility.undo_one_hot">undo_one_hot() (in module ethicml.utility)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.preprocess.html#ethicml.algorithms.preprocess.Upsampler">Upsampler (class in ethicml.algorithms.preprocess)</a>
 </li>

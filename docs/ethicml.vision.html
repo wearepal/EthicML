@@ -25,7 +25,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -167,17 +167,79 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdColorizer" title="ethicml.vision.LdColorizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdColorizer</span></code></a>(scale, min_val, max_val, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.DatasetWrapper" title="ethicml.vision.DatasetWrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DatasetWrapper</span></code></a>(dataset, transform, …)</p></td>
+<td><p>Generic dataset wrapper.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdColorizer" title="ethicml.vision.LdColorizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdColorizer</span></code></a>(scale, min_val, max_val, …)</p></td>
 <td><p>Transform that colorizes images.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation" title="ethicml.vision.LdTransformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdTransformation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformation" title="ethicml.vision.LdTransformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdTransformation</span></code></a>()</p></td>
 <td><p>Base class for label-dependent augmentations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.TorchImageDataset" title="ethicml.vision.TorchImageDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorchImageDataset</span></code></a>(data, root, map_to_binary, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformedDataset" title="ethicml.vision.LdTransformedDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LdTransformedDataset</span></code></a>(dataset, *, target_dim, …)</p></td>
+<td><p>Dataset applying label-dependent transformations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.NoisyDequantize" title="ethicml.vision.NoisyDequantize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NoisyDequantize</span></code></a>(n_bits_x)</p></td>
+<td><p>Callable class for injecting noise into binned (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.Quantize" title="ethicml.vision.Quantize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quantize</span></code></a>(n_bits_x)</p></td>
+<td><p>Callable class that quantizes image data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.TorchImageDataset" title="ethicml.vision.TorchImageDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TorchImageDataset</span></code></a>(data, root, transform, …)</p></td>
 <td><p>Image dataset for pytorch.</p></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.create_celeba_dataset" title="ethicml.vision.create_celeba_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_celeba_dataset</span></code></a>(root, biased, …)</p></td>
+<td><p>Create a CelebA dataset object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.create_cmnist_datasets" title="ethicml.vision.create_cmnist_datasets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_cmnist_datasets</span></code></a>(*, root, scale, …)</p></td>
+<td><p>Create and return colourised MNIST train/test pair.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.create_genfaces_dataset" title="ethicml.vision.create_genfaces_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_genfaces_dataset</span></code></a>(root, biased, …)</p></td>
+<td><p>Create a CelebA dataset object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.vision.set_transform" title="ethicml.vision.set_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_transform</span></code></a>(dataset, transform)</p></td>
+<td><p>Set the transform of a dataset to the specified transform.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.train_test_split" title="ethicml.vision.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a>(dataset, train_pcnt)</p></td>
+<td><p>Split a dataset into train and test splits, of sizes dictated by the train percentage.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="ethicml.vision.DatasetWrapper">
+<em class="property">class </em><code class="sig-name descname">DatasetWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">ethicml.vision.data.dataset_wrappers.SizedItemGetter</span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Optional[Union[Callable[[…], torch.Tensor], Sequence[Callable]]]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.DatasetWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+<p>Generic dataset wrapper.</p>
+<p>Initialise the dataset wrapper.</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.DatasetWrapper.transform" title="ethicml.vision.DatasetWrapper.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<td><p>The transformation(s) to be applied to the data.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="ethicml.vision.DatasetWrapper.transform">
+<em class="property">property </em><code class="sig-name descname">transform</code><a class="headerlink" href="#ethicml.vision.DatasetWrapper.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transformation(s) to be applied to the data.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt id="ethicml.vision.LdColorizer">
 <em class="property">class </em><code class="sig-name descname">LdColorizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">min_val</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_val</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">binarize</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">background</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">black</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">seed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">42</span></em>, <em class="sig-param"><span class="n">greyscale</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">color_indices</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>int<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdColorizer" title="Permalink to this definition">¶</a></dt>
@@ -212,8 +274,50 @@ the colors are drawn. Lower values correspond to higher bias. Defaults to 0.02.<
 </dd></dl>
 
 <dl class="py class">
+<dt id="ethicml.vision.LdTransformedDataset">
+<em class="property">class </em><code class="sig-name descname">LdTransformedDataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">torch.utils.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">target_dim</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">discrete_labels</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">ld_transform</span><span class="p">:</span> <span class="n">Optional[Union[Callable[[…], torch.Tensor], Sequence[Callable]]]</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label_independent</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">correlation</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.LdTransformedDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.vision.data.dataset_wrappers.DatasetWrapper</span></code></p>
+<p>Dataset applying label-dependent transformations.</p>
+<p>Initialise the dataset wrapper.</p>
+<p><strong>Attributes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.vision.LdTransformedDataset.transform" title="ethicml.vision.LdTransformedDataset.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a></p></td>
+<td><p>The transformation(s) to be applied to the data.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="ethicml.vision.LdTransformedDataset.transform">
+<em class="property">property </em><code class="sig-name descname">transform</code><a class="headerlink" href="#ethicml.vision.LdTransformedDataset.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transformation(s) to be applied to the data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="ethicml.vision.NoisyDequantize">
+<em class="property">class </em><code class="sig-name descname">NoisyDequantize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_bits_x</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.NoisyDequantize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.vision.data.transforms.Transformation</span></code></p>
+<p>Callable class for injecting noise into binned (e.g. image) data.</p>
+<p>Createca NoisyQuantize object.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ethicml.vision.Quantize">
+<em class="property">class </em><code class="sig-name descname">Quantize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_bits_x</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.Quantize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.vision.data.transforms.Transformation</span></code></p>
+<p>Callable class that quantizes image data.</p>
+<p>Create Quantize object.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt id="ethicml.vision.TorchImageDataset">
-<em class="property">class </em><code class="sig-name descname">TorchImageDataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">map_to_binary</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.TorchImageDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">TorchImageDataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">pathlib.Path</span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.vision.TorchImageDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torchvision.datasets.vision.VisionDataset</span></code></p>
 <p>Image dataset for pytorch.</p>
 <p>Large-scale CelebFaces Attributes (CelebA) Dataset.</p>
@@ -226,13 +330,102 @@ landmarks).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> – Data tuple with x containing the filepaths to the generated faces images.</p></li>
 <li><p><strong>root</strong> – Root directory where images are downloaded to.</p></li>
-<li><p><strong>map_to_binary</strong> – if True, convert labels of {-1, 1} to {0, 1}</p></li>
 <li><p><strong>transform</strong> – A function/transform that  takes in an PIL image and returns a transformed
 version. E.g, <cite>transforms.ToTensor</cite></p></li>
 <li><p><strong>target_transform</strong> – A function/transform that takes in the target and transforms it.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.vision.create_celeba_dataset">
+<code class="sig-name descname">create_celeba_dataset</code><span class="sig-paren">(</span><em class="sig-param">root: str, biased: bool, mixing_factor: float, unbiased_pcnt: float, sens_attr_name: Union[Literal[5_o_Clock_Shadow, Arched_Eyebrows, Attractive, Bags_Under_Eyes, Bald, Bangs, Big_Lips, Big_Nose, Black_Hair, Blond_Hair, Blurry, Brown_Hair, Bushy_Eyebrows, Chubby, Double_Chin, Eyeglasses, Goatee, Gray_Hair, Heavy_Makeup, High_Cheekbones, Male, Mouth_Slightly_Open, Mustache, Narrow_Eyes, No_Beard, Oval_Face, Pale_Skin, Pointy_Nose, Receding_Hairline, Rosy_Cheeks, Sideburns, Smiling, Straight_Hair, Wavy_Hair, Wearing_Earrings, Wearing_Hat, Wearing_Lipstick, Wearing_Necklace, Wearing_Necktie, Young], Dict[str, List[Literal[5_o_Clock_Shadow, Arched_Eyebrows, Attractive, Bags_Under_Eyes, Bald, Bangs, Big_Lips, Big_Nose, Black_Hair, Blond_Hair, Blurry, Brown_Hair, Bushy_Eyebrows, Chubby, Double_Chin, Eyeglasses, Goatee, Gray_Hair, Heavy_Makeup, High_Cheekbones, Male, Mouth_Slightly_Open, Mustache, Narrow_Eyes, No_Beard, Oval_Face, Pale_Skin, Pointy_Nose, Receding_Hairline, Rosy_Cheeks, Sideburns, Smiling, Straight_Hair, Wavy_Hair, Wearing_Earrings, Wearing_Hat, Wearing_Lipstick, Wearing_Necklace, Wearing_Necktie, Young]]]], target_attr_name: Literal[5_o_Clock_Shadow, Arched_Eyebrows, Attractive, Bags_Under_Eyes, Bald, Bangs, Big_Lips, Big_Nose, Black_Hair, Blond_Hair, Blurry, Brown_Hair, Bushy_Eyebrows, Chubby, Double_Chin, Eyeglasses, Goatee, Gray_Hair, Heavy_Makeup, High_Cheekbones, Male, Mouth_Slightly_Open, Mustache, Narrow_Eyes, No_Beard, Oval_Face, Pale_Skin, Pointy_Nose, Receding_Hairline, Rosy_Cheeks, Sideburns, Smiling, Straight_Hair, Wavy_Hair, Wearing_Earrings, Wearing_Hat, Wearing_Lipstick, Wearing_Necklace, Wearing_Necktie, Young], transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, seed: int = 42, check_integrity: bool = True</em><span class="sig-paren">)</span> &#x2192; ethicml.vision.data.image_dataset.TorchImageDataset<a class="headerlink" href="#ethicml.vision.create_celeba_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a CelebA dataset object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – Root directory where images are downloaded to.</p></li>
+<li><p><strong>biased</strong> – Wheher to artifically bias the dataset according to the mixing factor. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">get_biased_subset()</span></code> for more details.</p></li>
+<li><p><strong>mixing_factor</strong> – Mixing factor used to generate the biased subset of the data.</p></li>
+<li><p><strong>unbiased_pcnt</strong> – Percentage of the dataset to set aside as the ‘unbiased’ split.</p></li>
+<li><p><strong>sens_attr_name</strong> – Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+performed if multiple sensitive attributes are specified.</p></li>
+<li><p><strong>target_attr_name</strong> – Attribute to set as the target attribute.</p></li>
+<li><p><strong>transform</strong> – A function/transform that  takes in an PIL image and returns a transformed
+version. E.g, <cite>transforms.ToTensor</cite></p></li>
+<li><p><strong>target_transform</strong> – A function/transform that takes in the target and transforms it.</p></li>
+<li><p><strong>download</strong> – If true, downloads the dataset from the internet and puts it in root
+directory. If dataset is already downloaded, it is not downloaded again.</p></li>
+<li><p><strong>seed</strong> – Random seed used to sample biased subset.</p></li>
+<li><p><strong>check_integrity</strong> – If True, check whether the data has been downloaded correctly.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.vision.create_cmnist_datasets">
+<code class="sig-name descname">create_cmnist_datasets</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">scale</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">train_pcnt</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">download</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">seed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">42</span></em>, <em class="sig-param"><span class="n">rotate_data</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">shift_data</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">padding</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">quant_level</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">8</span></em>, <em class="sig-param"><span class="n">input_noise</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">classes_to_keep</span><span class="p">:</span> <span class="n">Optional[Sequence[Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>ethicml.vision.data.dataset_wrappers.LdTransformedDataset<span class="p">, </span>ethicml.vision.data.dataset_wrappers.LdTransformedDataset<span class="p">]</span><a class="headerlink" href="#ethicml.vision.create_cmnist_datasets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and return colourised MNIST train/test pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – Where the images are downloaded to.</p></li>
+<li><p><strong>scale</strong> – The amount of ‘bias’ in the colour. Lower is more biased.</p></li>
+<li><p><strong>train_pcnt</strong> – The percentage of data to make the test set.</p></li>
+<li><p><strong>download</strong> – Whether or not to download the data.</p></li>
+<li><p><strong>seed</strong> – Random seed for reproducing results.</p></li>
+<li><p><strong>rotate_data</strong> – Whether or not to rotate the training images.</p></li>
+<li><p><strong>shift_data</strong> – Whether or not to shift the training images.</p></li>
+<li><p><strong>padding</strong> – Whether or not to pad the training images.</p></li>
+<li><p><strong>quant_level</strong> – the number of bins to quantize the data into.</p></li>
+<li><p><strong>input_noise</strong> – Whether or not to add noise to the training images.</p></li>
+<li><p><strong>classes_to_keep</strong> – Which digit classes to keep. If None or empty then all classes will be kept.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Returns: tuple of train and test data as a Dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.vision.create_genfaces_dataset">
+<code class="sig-name descname">create_genfaces_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">biased</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">mixing_factor</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">unbiased_pcnt</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">sens_attr_name</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>gender<span class="p">, </span>age<span class="p">, </span>ethnicity<span class="p">, </span>eye_color<span class="p">, </span>hair_color<span class="p">, </span>hair_length<span class="p">, </span>emotion<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">target_attr_name</span><span class="p">:</span> <span class="n">Literal<span class="p">[</span>gender<span class="p">, </span>age<span class="p">, </span>ethnicity<span class="p">, </span>eye_color<span class="p">, </span>hair_color<span class="p">, </span>hair_length<span class="p">, </span>emotion<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">download</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">seed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">42</span></em>, <em class="sig-param"><span class="n">check_integrity</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; ethicml.vision.data.image_dataset.TorchImageDataset<a class="headerlink" href="#ethicml.vision.create_genfaces_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a CelebA dataset object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root</strong> – Root directory where images are downloaded to.</p></li>
+<li><p><strong>biased</strong> – Wheher to artifically bias the dataset according to the mixing factor. See
+<code class="xref py py-func docutils literal notranslate"><span class="pre">get_biased_subset()</span></code> for more details.</p></li>
+<li><p><strong>mixing_factor</strong> – Mixing factor used to generate the biased subset of the data.</p></li>
+<li><p><strong>sens_attr_name</strong> – Attribute(s) to set as the sensitive attribute. Biased sampling cannot be
+performed if multiple sensitive attributes are specified.</p></li>
+<li><p><strong>unbiased_pcnt</strong> – Percentage of the dataset to set aside as the ‘unbiased’ split.</p></li>
+<li><p><strong>target_attr_name</strong> – Attribute to set as the target attribute.</p></li>
+<li><p><strong>transform</strong> – A function/transform that  takes in an PIL image and returns a transformed
+version. E.g, <cite>transforms.ToTensor</cite></p></li>
+<li><p><strong>target_transform</strong> – A function/transform that takes in the target and transforms it.</p></li>
+<li><p><strong>download</strong> – If true, downloads the dataset from the internet and puts it in root
+directory. If dataset is already downloaded, it is not downloaded again.</p></li>
+<li><p><strong>seed</strong> – Random seed used to sample biased subset.</p></li>
+<li><p><strong>check_integrity</strong> – If True, check whether the data has been downloaded correctly.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.vision.set_transform">
+<code class="sig-name descname">set_transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">torch.utils.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="n">transform</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.vision.set_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the transform of a dataset to the specified transform.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.vision.train_test_split">
+<code class="sig-name descname">train_test_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span><span class="p">:</span> <span class="n">torch.utils.data.dataset.Dataset</span></em>, <em class="sig-param"><span class="n">train_pcnt</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>torch.utils.data.dataset.Subset<span class="p">]</span><a class="headerlink" href="#ethicml.vision.train_test_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split a dataset into train and test splits, of sizes dictated by the train percentage.</p>
 </dd></dl>
 
 </div>
