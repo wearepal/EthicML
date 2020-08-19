@@ -109,7 +109,7 @@ results in just a couple of lines of code.
 So we want to also expose a lower-level API so that a user can make use of as much, or little of the library
 as is suitable for them.
 
-We've built everything with this aproach in mind, but we still have a way to go.
+We've built everything with this philosophy in mind, but acknowledge that we still have a way to go.
 
 # Contributing
 
