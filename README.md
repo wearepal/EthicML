@@ -20,7 +20,7 @@ Because of this, we built the premier fairness toolkit for research.
 Features include:
 - Support for multiple sensitive attributes
 - Vision datasets
-- MyPy typed codebase
+- Codebase typed with mypy
 - Tested code
 - Reproducible results
 
