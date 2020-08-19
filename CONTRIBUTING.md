@@ -14,7 +14,7 @@ The 2 main ways to contribute to this project are raising an Issue, or opening a
 6. (Optional) Check if your code would pass CI by running `python check_all.py` locally.
 
 ## CI
-We use GitHub actions to test our code and make sure that we're keeping up the standards we set for ourselves.
+We use GitHub Actions to test our code and make sure that we're keeping up the standards we set for ourselves.
 Before your code can be accepted it must be formatted with Black, conform to PyLint, covered by tests, include mypy type hints and be documented.
 
 This sounds like a lot, but it's super easy. If you neeed any help with this, we can add to your PR and get it in shape :D 
