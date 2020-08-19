@@ -1,16 +1,23 @@
 # EthicML
 
-EthicML exists to solve the problems we've found with off-the-shelf fairness comparison packages.
+EthicML is the premier library for performing and assessing __algorithmic fairness__.
+Unlike other libraries, EthicML isn't an education tool, but rather a __researcher__'s toolkit.
 
-These other packages are useful, but given that we primarily do research,
+Other algorthimic fairness packages are useful, but given that we primarily do research,
 a lot of the work we do doesn't fit into some nice box.
 For example, we might want to use a 'fair' pre-processing method on the data before training a classifier on it.
 We may still be experimenting and only want part of the framework to execute,
 or we may want to do hyper-parameter optimization.
 Whilst other frameworks can be modified to do these tasks,
 you end up with hacked-together approaches that don't lend themselves to be built on in the future.
-Because of this,
-we're drawing a line in the sand with some of the other frameworks we've used and building our own.
+Because of this, we built the premier fairness toolkit for research.
+
+Features include:
+- Support for multiple sensitive attributes
+- Vision datasets
+- MyPy typed codebase
+- Tested code
+- Reproducible results
 
 ### Why not use XXX?
 
@@ -18,6 +25,7 @@ There are an increasing number of other options,
 IBM's fair-360, Aequitas, EthicalML/XAI, Fairness-Comparison and others.
 They're all great at what they do, they're just not right for us.
 We will however be influenced by them.
+Sometimes, we even use their implementations.
 
 ## Installation
 
@@ -33,9 +41,11 @@ because there are many different versions for different systems.
 
 ## Documentation
 
-The documentation can be found here: https://predictive-analytics-lab.github.io/EthicML/
+The documentation can be found here: https://predictive-analytics-lab.com/EthicML/
 
 ## Design Principles
+
+Keep things simple.
 
 ### The Triplet
 
@@ -45,7 +55,7 @@ Given that we're considering fairness, the base of the toolbox is the triplet {x
 - S - Sensitive Label
 - Y - Class Label
 
-All methods must assume S and Y are multi-class.
+__Developer note__: All methods must assume S and Y are multi-class.
 
 We use a DataTuple class to contain the triplet
 
@@ -53,7 +63,13 @@ We use a DataTuple class to contain the triplet
 triplet = DataTuple(x: pandas.DataFrame, s: pandas.DataFrame, y: pandas.DataFrame)
 ```
 
-The dataframe may be a little inefficient,
+In addition, we have a variation, the TestTuple which contains the pair
+```python
+pair = TestTuple(x: pandas.DataFrame, s: pandas.DataFrame)
+```
+This is to reduce the likelihood of a user accidentally evaluting performance on their training set.
+
+Using dataframes may be a little inefficient,
 but given the amount of splicing on conditions that we're doing, it feels worth it.
 
 ### Separation of Methods
@@ -61,23 +77,39 @@ but given the amount of splicing on conditions that we're doing, it feels worth 
 We purposefully keep pre, during and post algorithm methods separate. This is because they have different return types.
 
 ```python
-pre_algorithm.run(train: DataTuple, test: DataTuple)  # -> Tuple[pandas.DataFrame, pandas.DataFrame]
-in_algorithm.run(train: DataTuple, test: DataTuple)  # -> pandas.DataFrame
-post_algorithm.run(preds: DataFrame, test: DataTuple)  # -> pandas.DataFrame
+pre_algorithm.run(train: DataTuple, test: TestTuple)  # -> Tuple[DataTuple, TestTuple]
+in_algorithm.run(train: DataTuple, test: TestTuple)  # -> Prediction
+post_algorithm.run(train_prediction: Prediction, train: DataTuple, test_prediction: Prediction, test: TestTuple)  # -> Prediction
 ```
-where preds is a one column dataframe with the column name 'preds'.
+where `Prediction` holds a pandas.Series of the class label.
+In the case of a "soft" output, `SoftPrediction` extends `Prediction` and provides a mapping from
+"soft" to "hard" labels.
+See the documentation for more details.
 
 ### General Rules of Thumb
 
 - Mutable data structures are bad.
 - At the very least, functions should be Typed.
-- Readability > Efficiency
-- Don't get around warnings by just turning them off.
+- Readability > Efficiency.
+- Warnings must be addressed.
+- Always write tests first.
 
 ## Future Plans
 
-Hopefully EthicML becomes a super easy way to look at the biases in different datasets
-and get a comparison of different models.
+The aim is to make EthicML operate on 2 levels.
+
+1. We want a high-level API so that a user can define a new model or metric, then get publication-ready
+results in just a couple of lines of code.
+2. In addition, we understand that really ground-breaking work involves tearing up the rulebook.
+So we want to also expose a lower-level API so that a user can make use of as much, or little of the library
+as is suitable for them.
+
+We've built everything with this aproach in mind, but we still have a way to go.
+
+# Contributing
+
+If you're interest in this research area, we'd love to have you aboard.
+Whether your skills are in coding-up papers you've read, writing tutorials, or designing a logo, please reach out.
 
 ## Development
 Install development dependencies with `pip install -e .[dev]`
