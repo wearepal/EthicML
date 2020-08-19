@@ -1,5 +1,10 @@
 # EthicML
 
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+![](https://github.com/predictive-analytics-lab/EthicML/workflows/EthicML%20CI/badge.svg)
+
+
+
 EthicML is the premier library for performing and assessing __algorithmic fairness__.
 Unlike other libraries, EthicML isn't an education tool, but rather a __researcher__'s toolkit.
 
