@@ -72,7 +72,7 @@ In addition, we have a variation: the TestTuple which contains the pair
 ```python
 pair = TestTuple(x: pandas.DataFrame, s: pandas.DataFrame)
 ```
-This is to reduce the likelihood of a user accidentally evaluting performance on their training set.
+This is to reduce the risk of a user accidentally evaluating performance on their training set.
 
 Using dataframes may be a little inefficient,
 but given the amount of splicing on conditions that we're doing, it feels worth it.
