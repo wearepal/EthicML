@@ -105,7 +105,7 @@ The aim is to make EthicML operate on 2 levels.
 
 1. We want a high-level API so that a user can define a new model or metric, then get publication-ready
 results in just a couple of lines of code.
-2. In addition, we understand that really ground-breaking work involves tearing up the rulebook.
+2. We understand that truly ground-breaking work sometimes involves tearing up the rulebook.
 So we want to also expose a lower-level API so that a user can make use of as much, or little of the library
 as is suitable for them.
 
