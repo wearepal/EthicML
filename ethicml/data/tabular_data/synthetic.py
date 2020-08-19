@@ -14,18 +14,21 @@ def Synthetic() -> Dataset:  # pylint: disable=invalid-name
     return synthetic()
 
 
-def synthetic(scenario: Literal[1] = 1) -> Dataset:
+def synthetic(scenario: Literal[1] = 1, target: Literal[1, 2, 3] = 1) -> Dataset:
     r"""Dataset with synthetic data.
 
     Scenario 1 = X⊥S & Y⊥S.
     """
-    return Dataset(
-        name="Synthetic - Scenario 1",
-        num_samples=1000,
-        filename_or_path="synthetic_scenario_1.csv",
-        features=["x1", "x2"],
-        cont_features=["x1", "x2"],
-        sens_attr_spec="s",
-        class_label_spec="y",
-        discrete_only=False,
-    )
+    if scenario == 1:
+        return Dataset(
+            name=f"Synthetic - Scenario {scenario}, target {target}",
+            num_samples=1000,
+            filename_or_path="synthetic_scenario_1.csv",
+            features=["x1", "x2"],
+            cont_features=["x1", "x2"],
+            sens_attr_spec="s",
+            class_label_spec=f"y{target}",
+            discrete_only=False,
+        )
+    else:
+        raise NotImplementedError("We'll have more scenarios available soon!")
