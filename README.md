@@ -68,7 +68,7 @@ We use a DataTuple class to contain the triplet
 triplet = DataTuple(x: pandas.DataFrame, s: pandas.DataFrame, y: pandas.DataFrame)
 ```
 
-In addition, we have a variation, the TestTuple which contains the pair
+In addition, we have a variation: the TestTuple which contains the pair
 ```python
 pair = TestTuple(x: pandas.DataFrame, s: pandas.DataFrame)
 ```
