@@ -73,6 +73,9 @@ def test_can_load_test_data(data_root: Path):
         (synthetic(scenario=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 1"),
         (synthetic(scenario=2, target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 2"),
         (synthetic(scenario=2, target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 3"),
+        (synthetic(scenario=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 1"),
+        (synthetic(scenario=3, target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 2"),
+        (synthetic(scenario=3, target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 3"),
         (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )
