@@ -14,12 +14,17 @@ def Synthetic() -> Dataset:  # pylint: disable=invalid-name
     return synthetic()
 
 
-def synthetic(scenario: Literal[1, 2] = 1, target: Literal[1, 2, 3] = 1) -> Dataset:
+def synthetic(scenario: Literal[1, 2, 3] = 1, target: Literal[1, 2, 3] = 1) -> Dataset:
     r"""Dataset with synthetic data.
 
+    ⊥ = is independent of
+    ~ = is an ancestor of in the causal model used to generate the data
+
     Scenario 1 = X⊥S & Y⊥S.
+    Scenario 2 = X_2⊥S & Y_2⊥S; X_1~S, Y_1~S & Y_3~S
+    Scenario 3 = X⊥S, Y_1⊥S, Y_2⊥S; Y_3~S
     """
-    assert scenario in [1, 2]
+    assert scenario in [1, 2, 3]
     assert target in [1, 2, 3]
 
     return Dataset(
