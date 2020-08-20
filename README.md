@@ -5,7 +5,7 @@
 
 
 
-EthicML is the premier library for performing and assessing __algorithmic fairness__.
+EthicML is a library for performing and assessing __algorithmic fairness__.
 Unlike other libraries, EthicML isn't an education tool, but rather a __researcher__'s toolkit.
 
 Other algorthimic fairness packages are useful, but given that we primarily do research,
@@ -15,7 +15,7 @@ We may still be experimenting and only want part of the framework to execute,
 or we may want to do hyper-parameter optimization.
 Whilst other frameworks can be modified to do these tasks,
 you end up with hacked-together approaches that don't lend themselves to be built on in the future.
-Because of this, we built the premier fairness toolkit for research.
+Because of this, we built EthicML, a fairness toolkit for researchers.
 
 Features include:
 - Support for multiple sensitive attributes
@@ -30,7 +30,7 @@ There are an increasing number of other options,
 IBM's fair-360, Aequitas, EthicalML/XAI, Fairness-Comparison and others.
 They're all great at what they do, they're just not right for us.
 We will however be influenced by them.
-Sometimes, we even use their implementations.
+Where appropriate, we even subsume some of these libraries.
 
 ## Installation
 
