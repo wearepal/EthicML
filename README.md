@@ -114,7 +114,7 @@ We've built everything with this philosophy in mind, but acknowledge that we sti
 # Contributing
 
 If you're interest in this research area, we'd love to have you aboard.
-For more details check out CONTRIBUTING.md.
+For more details check out [CONTRIBUTING.md](./CONTRIBUTING.md).
 Whether your skills are in coding-up papers you've read, writing tutorials, or designing a logo, please reach out.
 
 ## Development
