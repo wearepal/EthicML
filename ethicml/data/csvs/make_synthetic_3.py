@@ -4,10 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
-def sigmoid(x: np.ndarray) -> np.ndarray:
-    """As there is no np.sigmoid."""
-    return 1 / (1 + np.exp(-x))
+from ethicml.data.csvs.utility import sigmoid
 
 
 def main() -> None:
