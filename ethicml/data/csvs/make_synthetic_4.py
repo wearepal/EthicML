@@ -13,28 +13,31 @@ def sigmoid(x: np.ndarray) -> np.ndarray:
 def main() -> None:
     r"""Make synthetic data.
 
-    Generate synthetic data that conforms to 'Scenario 3'
+    Generate synthetic data that conforms to 'Scenario 4'
 
-    Scenario 3
+    Scenario 4
     ----------
-
-    +-----+   +-----+
-    | Y_1 +<--+ X_1 +-+
-    +-----+   +-----+ |   +-----+   +---+
-                      +-->+ Y_3 +<--+ S |
-    +-----+   +-----+ |   +-----+   +---+
+                           +---+
+                 +---------+ S |
+                 |         +-+-+
+                 v           |
+    +-----+   +--+--+        |
+    | Y_1 +<--+ X_1 +-+      v
+    +-----+   +-----+ |   +--+--+
+                      +-->+ Y_3 |
+    +-----+   +-----+ |   +-----+
     | Y_2 +<--+ X_2 +-+
     +-----+   +-----+
 
     In this scenario, there are two input variables, X_1 and X_2.
     There are three outcome variables, Y_1, Y_2 & Y_3.
-    There is one sensitive attribute, S, which is independent of both X, Y_1 and Y_2,
-    but not independent of Y_3.
+    There is one sensitive attribute, S, which is independent of X_2 & Y_2,
+    but not independent of X_1, Y_1, or Y_3.
 
     We have:
     S ~ B(0.5)
 
-    X_1 ~ N(0, 2)
+    X_1 ~ N(S, 2)
     X_2 ~ N(-1.5, 4)
 
     Y_1 ~ B(sigmoid(X_1)))
@@ -48,13 +51,13 @@ def main() -> None:
 
     s = np.random.binomial(1, 0.5, samples)
 
-    x_1 = np.random.normal(0, 2, samples)
-    x_1f = x_1
+    x_1f = np.random.normal(0, 2, samples)
+    x_1 = x_1f + s
     x_2 = np.random.normal(-1.5, 4, samples)
     x_2f = x_2
 
     y_1 = np.random.binomial(1, sigmoid(x_1))
-    y_1f = y_1
+    y_1f = np.random.binomial(1, sigmoid(x_1f))
     y_2 = np.random.binomial(1, sigmoid(x_2))
     y_2f = y_2
     p = (x_1 + x_2) / 2
@@ -95,7 +98,7 @@ def main() -> None:
     df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
 
     # Save the CSV
-    df.to_csv(str(Path(__file__).parent / "synthetic_scenario_3.csv"), index=False)
+    df.to_csv(str(Path(__file__).parent / "synthetic_scenario_4.csv"), index=False)
 
 
 if __name__ == "__main__":

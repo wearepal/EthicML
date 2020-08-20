@@ -39,7 +39,7 @@ def main() -> None:
     We have:
     S ~ B(0.5)
 
-    X_1 ~ N(S, 0.5)
+    X_1 ~ N(0, 0.5) + S
     X_2 ~ N(-1.5, 4)
 
     Y_1 ~ B(sigmoid(X_1)))
@@ -56,16 +56,47 @@ def main() -> None:
 
     s = np.random.binomial(1, 0.5, samples)
 
-    x_1 = np.random.normal(s, 0.5)
+    x_1f = np.random.normal(0, 0.5, samples)
+    x_1 = x_1f + s
     x_2 = np.random.normal(-1.5, 4, samples)
+    x_2f = x_2
 
     y_1 = np.random.binomial(1, sigmoid(x_1))
+    y_1f = np.random.binomial(1, sigmoid(x_1f))
     y_2 = np.random.binomial(1, sigmoid(x_2))
+    y_2f = y_2
     y_3 = np.random.binomial(1, sigmoid(x_1 + x_2))
+    y_3f = np.random.binomial(1, sigmoid(x_1f + x_2))
 
-    print(s.mean(), x_1.mean(), x_2.mean(), y_1.mean(), y_2.mean(), y_3.mean())
+    print(
+        s.mean(),
+        x_1.mean(),
+        x_1f.mean(),
+        x_2.mean(),
+        x_2f.mean(),
+        y_1.mean(),
+        y_1f.mean(),
+        y_2.mean(),
+        y_2f.mean(),
+        y_3.mean(),
+        y_3f.mean(),
+    )
 
-    df = pd.DataFrame(data={"x1": x_1, "x2": x_2, "s": s, "y1": y_1, "y2": y_2, "y3": y_3,})
+    df = pd.DataFrame(
+        data={
+            "x1": x_1,
+            "x1f": x_1f,
+            "x2": x_2,
+            "x2f": x_2f,
+            "s": s,
+            "y1": y_1,
+            "y1f": y_1f,
+            "y2": y_2,
+            "y2f": y_2f,
+            "y3": y_3,
+            "y3f": y_3f,
+        }
+    )
 
     # Shuffle the data,
     df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
