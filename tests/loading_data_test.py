@@ -76,7 +76,9 @@ def test_can_load_test_data(data_root: Path):
         (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
         (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race"),
         (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
-        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1"),
+        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 1"),
+        (synthetic(target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 2"),
+        (synthetic(target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 3"),
         (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )
