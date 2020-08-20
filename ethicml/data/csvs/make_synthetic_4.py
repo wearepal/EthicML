@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from ethicml.data.csvs.utility import sigmoid
+
 
 def main() -> None:
     r"""Make synthetic data.
