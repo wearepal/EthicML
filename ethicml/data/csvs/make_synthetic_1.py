@@ -39,7 +39,7 @@ def main() -> None:
 
     """
     seed = 0
-    samples = 1_000
+    samples = 100_000
 
     np.random.seed(seed)
 

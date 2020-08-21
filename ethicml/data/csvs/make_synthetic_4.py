@@ -42,7 +42,7 @@ def main() -> None:
     Y_3 ~ B(sigmoid(((X_1 + X_2)/2)+S))
     """
     seed = 0
-    samples = 1_000
+    samples = 100_000
 
     np.random.seed(seed)
 

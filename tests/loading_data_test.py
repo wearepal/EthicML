@@ -114,13 +114,14 @@ def test_data_shape(
 @pytest.mark.parametrize("fair", [False, True])
 @pytest.mark.parametrize("target", [1, 2, 3])
 @pytest.mark.parametrize("scenario", [1, 2, 3, 4])
-def test_data_shape(scenario, target, fair):
+@pytest.mark.parametrize("samples", [10, 100, 1_000])
+def test_synth_data_shape(scenario, target, fair, samples):
     """Test loading data."""
-    dataset = synthetic(scenario=scenario, target=target, fair=fair)
+    dataset = synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
-    assert (1000, 2) == data.x.shape
-    assert (1000, 1) == data.s.shape
-    assert (1000, 1) == data.y.shape
+    assert (samples, 2) == data.x.shape
+    assert (samples, 1) == data.s.shape
+    assert (samples, 1) == data.y.shape
 
     assert len(dataset.ordered_features["x"]) == 2
     assert len(dataset.discrete_features) == 0
@@ -135,9 +136,9 @@ def test_data_shape(scenario, target, fair):
         assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
 
     data: DataTuple = dataset.load(ordered=True)
-    assert (1000, 2) == data.x.shape
-    assert (1000, 1) == data.s.shape
-    assert (1000, 1) == data.y.shape
+    assert (samples, 2) == data.x.shape
+    assert (samples, 1) == data.s.shape
+    assert (samples, 1) == data.y.shape
 
 
 @pytest.mark.parametrize("dataset", [Adult, Compas, Toy])

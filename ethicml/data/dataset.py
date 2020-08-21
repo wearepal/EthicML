@@ -137,7 +137,7 @@ class Dataset:
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
         """
-        dataframe: pd.DataFrame = pd.read_csv(self.filepath)
+        dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self.num_samples)
         assert isinstance(dataframe, pd.DataFrame)
 
         feature_split = self.feature_split if not ordered else self.ordered_features

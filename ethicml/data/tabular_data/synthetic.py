@@ -1,6 +1,7 @@
 """Class to describe features of the Synthetic dataset."""
 from warnings import warn
 
+from teext import PositiveInt
 from typing_extensions import Literal
 
 from ..dataset import Dataset
@@ -12,16 +13,18 @@ def Synthetic(  # pylint: disable=invalid-name
     scenario: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     fair: bool = False,
+    num_samples: PositiveInt = 1_000,
 ) -> Dataset:
     """Dataset with synthetic scenario 1 data."""
     warn("The Synthetic class is deprecated. Use the function instead.", DeprecationWarning)
-    return synthetic(scenario=scenario, target=target, fair=fair)
+    return synthetic(scenario=scenario, target=target, fair=fair, num_samples=num_samples)
 
 
 def synthetic(
     scenario: Literal[1, 2, 3, 4] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     fair: bool = False,
+    num_samples: PositiveInt = 1_000,
 ) -> Dataset:
     r"""Dataset with synthetic data.
 
@@ -39,10 +42,11 @@ def synthetic(
     """
     assert scenario in [1, 2, 3, 4]
     assert target in [1, 2, 3]
+    assert 0 < num_samples <= 100_000
 
     return Dataset(
         name=f"Synthetic - Scenario {scenario}, target {target}" + (" fair" if fair else ""),
-        num_samples=1000,
+        num_samples=num_samples,
         filename_or_path=f"synthetic_scenario_{scenario}.csv",
         features=["x1f", "x2f"] if fair else ["x1", "x2"],
         cont_features=["x1f", "x2f"] if fair else ["x1", "x2"],
