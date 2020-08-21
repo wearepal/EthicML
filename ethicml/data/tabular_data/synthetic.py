@@ -22,7 +22,7 @@ def Synthetic(  # pylint: disable=invalid-name
 
 def synthetic(
     scenario: Literal[1, 2, 3, 4] = 1,  # pylint: disable=bad-whitespace
-    target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
+    target: Literal[1, 2, 3] = 3,  # pylint: disable=bad-whitespace
     fair: bool = False,
     num_samples: PositiveInt = 1_000,
 ) -> Dataset:
