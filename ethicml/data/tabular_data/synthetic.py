@@ -24,7 +24,7 @@ def synthetic(
     scenario: Literal[1, 2, 3, 4] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 3,  # pylint: disable=bad-whitespace
     fair: bool = False,
-    num_samples: PositiveInt = 1_000,
+    num_samples: int = 1_000,
 ) -> Dataset:
     r"""Dataset with synthetic data.
 
@@ -42,7 +42,8 @@ def synthetic(
     """
     assert scenario in [1, 2, 3, 4]
     assert target in [1, 2, 3]
-    assert 0 < num_samples <= 100_000
+    assert num_samples <= 100_000
+    num_samples = PositiveInt(num_samples)
 
     return Dataset(
         name=f"Synthetic - Scenario {scenario}, target {target}" + (" fair" if fair else ""),
