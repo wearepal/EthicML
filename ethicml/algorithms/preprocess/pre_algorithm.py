@@ -9,6 +9,8 @@ from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blo
 from ethicml.common import implements
 from ethicml.utility import DataTuple, TestTuple
 
+__all__ = ["PreAlgorithm", "PreAlgorithmAsync"]
+
 
 class PreAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do pre-processing."""

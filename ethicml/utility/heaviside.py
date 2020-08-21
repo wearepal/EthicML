@@ -4,6 +4,8 @@ import numpy
 
 from .activation import Activation
 
+__all__ = ["Heaviside"]
+
 
 class Heaviside(Activation):
     """Decision function that accepts predictions with score of 50% or above."""

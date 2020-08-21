@@ -5,6 +5,8 @@ from typing import Dict, List, Optional, Union
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["VFAE"]
+
 
 class VFAE(PreAlgorithmAsync):
     """VFAE Object - see implementation file for details."""
