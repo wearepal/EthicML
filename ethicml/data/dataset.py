@@ -183,14 +183,14 @@ class Dataset:
 
         s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
         if s_mask is not None:
-            x_data = x_data.loc[s_mask]
-            s_data = s_data.loc[s_mask]
-            y_data = y_data.loc[s_mask]
+            x_data = x_data.loc[s_mask].reset_index(drop=True)
+            s_data = s_data.loc[s_mask].reset_index(drop=True)
+            y_data = y_data.loc[s_mask].reset_index(drop=True)
         y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
         if y_mask is not None:
-            x_data = x_data.loc[y_mask]
-            s_data = s_data.loc[y_mask]
-            y_data = y_data.loc[y_mask]
+            x_data = x_data.loc[y_mask].reset_index(drop=True)
+            s_data = s_data.loc[y_mask].reset_index(drop=True)
+            y_data = y_data.loc[y_mask].reset_index(drop=True)
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
