@@ -68,6 +68,7 @@ def genfaces(
         num_samples=148_285,
         filename_or_path="genfaces.csv.zip",
         discrete_only=False,
+        discard_non_one_hot=True,
     )
     return dataset_obj, img_dir
 
