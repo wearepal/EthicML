@@ -49,11 +49,12 @@ def genfaces(
     assert label in disc_feature_groups
     continuous_features = ["filename"]
 
-    img_dir = root / _BASE_FOLDER / _SUBDIR
+    base = root / _BASE_FOLDER
+    img_dir = base / _SUBDIR
     if download:
-        _download(root)
+        _download(base)
     elif check_integrity:
-        if not _check_integrity(root):
+        if not _check_integrity(base):
             return None, img_dir
 
     dataset_obj = Dataset(
