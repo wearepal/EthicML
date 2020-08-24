@@ -22,7 +22,6 @@ class Upsampler(PreAlgorithm):
     """
 
     def __init__(self, strategy: Literal["uniform", "preferential", "naive"] = "uniform"):
-        """Init Upsampler."""
         super().__init__(name=f"Upsample {strategy}")
 
         assert strategy in ["uniform", "preferential", "naive"]

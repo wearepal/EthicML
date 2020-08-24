@@ -38,7 +38,6 @@ class TestDataset(Dataset):
     """Shared Dataset for pytorch models without labels."""
 
     def __init__(self, data: TestTuple):
-        """Init TestDataset."""
         super().__init__()
         self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(data)
 
@@ -60,7 +59,6 @@ class CustomDataset(Dataset):
     """Shared Dataset for pytorch models."""
 
     def __init__(self, data: DataTuple):
-        """Init CutomDataset."""
         super().__init__()
         test = data.remove_y()
         self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(test)

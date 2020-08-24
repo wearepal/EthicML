@@ -27,7 +27,7 @@ class BiasedSubset(DataSplitter):
         seed: int = 42,
         data_efficient: bool = True,
     ):
-        """Init BiasedSplit.
+        """The constructor takes the following arguments.
 
         Args:
             mixing_factors: List of mixing factors; they are chosen based on the split ID
@@ -128,7 +128,7 @@ class BiasedDebiasedSubsets(DataSplitter):
         seed: int = 42,
         fixed_unbiased: bool = True,
     ):
-        """Init BiasedDebiasedSplit.
+        """The constructor takes the following arguments.
 
         Args:
             mixing_factors: List of mixing factors; they are chosen based on the split ID

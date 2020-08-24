@@ -14,7 +14,6 @@ class Metric(ABC):
     _name: str = "<unnamed metric>"
 
     def __init__(self, pos_class: int = 1):
-        """Init Metric."""
         self.positive_class = pos_class
 
     @abstractmethod

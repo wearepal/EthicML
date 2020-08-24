@@ -26,7 +26,6 @@ class Agarwal(InAlgorithmAsync):
         C: Optional[float] = None,
         kernel: Optional[str] = None,
     ):
-        """Init Agarwal."""
         if fairness not in VALID_FAIRNESS:
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
         if classifier not in VALID_MODELS:

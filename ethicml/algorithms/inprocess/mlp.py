@@ -28,7 +28,6 @@ class MLP(InAlgorithm):
         hidden_layer_sizes: Optional[Tuple[int]] = None,
         activation: Optional[ActivationType] = None,
     ):
-        """Init MLP."""
         super().__init__(name="MLP", is_fairness_algo=False)
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes

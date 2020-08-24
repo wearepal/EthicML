@@ -19,7 +19,6 @@ class LabelBinarizer:
     """If a dataset has labels [-1,1], then this will make it so the labels = [0,1]."""
 
     def __init__(self) -> None:
-        """Init LabelBinarizer."""
         self.min_val: int
         self.max_val: int
 

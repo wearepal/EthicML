@@ -15,7 +15,6 @@ class InAlgorithm(Algorithm):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
     def __init__(self, name: str, is_fairness_algo: bool = True):
-        """Initialize the base class."""
         super().__init__(name=name)
         self.__is_fairness_algo = is_fairness_algo
 

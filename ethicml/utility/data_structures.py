@@ -47,7 +47,6 @@ class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
     def __init__(self, x: pd.DataFrame, s: pd.DataFrame, name: Optional[str] = None):
-        """Init function for TestTuple object."""
         self.__x: pd.DataFrame = x
         self.__s: pd.DataFrame = s
         self.__name: Optional[str] = name
@@ -210,7 +209,6 @@ class Prediction:
     """Prediction of an algorithm."""
 
     def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
-        """Init the prediction class."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
@@ -247,7 +245,6 @@ class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
     def __init__(self, soft: pd.Series, info: Optional[Dict[str, float]] = None):
-        """Init the soft prediction class."""
         super().__init__(hard=soft.ge(0.5).astype(int), info=info)
         self._soft = soft
 

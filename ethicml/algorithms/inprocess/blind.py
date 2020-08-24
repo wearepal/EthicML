@@ -15,7 +15,6 @@ class Blind(InAlgorithm):
     """Returns a random label."""
 
     def __init__(self, seed: int = 888) -> None:
-        """Init Majority."""
         super().__init__(name="Blind", is_fairness_algo=False)
         self.seed = seed
 

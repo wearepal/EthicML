@@ -78,7 +78,6 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     """Zafar without fairness."""
 
     def __init__(self) -> None:
-        """Init ZafarBaseline."""
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
     def _create_command_line(
@@ -91,7 +90,6 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, gamma: float = 0.5):
-        """Init ZafarAccuracy."""
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
@@ -105,7 +103,6 @@ class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, c: float = 0.001):
-        """Init ZafarFairness."""
         super().__init__(name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT)
         self._c = c
 
@@ -122,7 +119,6 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _base_name: ClassVar[str] = "ZafarEqOpp"
 
     def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
-        """Init Zafar."""
         super().__init__(name=f"{self._base_name}, τ={tau}, μ={mu}", sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu

@@ -21,7 +21,6 @@ class DRO(InAlgorithmAsync):
         batch_size: int = 32,
         network_size: Optional[List[int]] = None,
     ):
-        """Init module."""
         super().__init__(name="Dist Robust Optim")
         if network_size is None:
             network_size = [50]

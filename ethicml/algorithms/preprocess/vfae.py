@@ -22,7 +22,6 @@ class VFAE(PreAlgorithmAsync):
         z2_enc_size: Optional[List[int]] = None,
         z1_dec_size: Optional[List[int]] = None,
     ):
-        """Init VFAE."""
         # pylint: disable=too-many-arguments
         super().__init__(name="VFAE")
 

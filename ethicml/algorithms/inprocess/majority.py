@@ -14,7 +14,6 @@ class Majority(InAlgorithm):
     """Simply returns the majority label from the train set."""
 
     def __init__(self) -> None:
-        """Init Majority."""
         super().__init__(name="Majority", is_fairness_algo=False)
 
     @implements(InAlgorithm)
