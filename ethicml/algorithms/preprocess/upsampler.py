@@ -11,6 +11,8 @@ from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from .pre_algorithm import PreAlgorithm
 
+__all__ = ["Upsampler"]
+
 
 class Upsampler(PreAlgorithm):
     """Upsampler algorithm.

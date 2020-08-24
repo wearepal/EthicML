@@ -5,6 +5,8 @@ from typing import Dict, List, Union
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["Zemel"]
+
 
 class Zemel(PreAlgorithmAsync):
     """AIF360 implementation of Zemel's LFR."""

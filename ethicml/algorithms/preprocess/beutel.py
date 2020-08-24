@@ -7,6 +7,8 @@ from ethicml.utility import FairnessType
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["Beutel"]
+
 
 class Beutel(PreAlgorithmAsync):
     """Beutel's adversarially learned fair representations."""

@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 
 import numpy
 
+__all__ = ["Activation"]
+
 
 class Activation(ABC):
     """Base class for decision functions."""
