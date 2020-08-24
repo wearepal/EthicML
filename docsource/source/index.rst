@@ -13,18 +13,17 @@ Example
 
 .. code:: python
 
-   from ethicml.data import Adult
-   from ethicml.algorithms.inprocess import SVM, Kamiran
-   from ethicml.metrics import Accuracy, TPR, ProbPos
-   from ethicml.evaluators import evaluate_models
-   
-   evaluate_models(
-       datasets=[Adult()],
-       inprocess_models=[SVM(), Kamiran()],
-       metrics=[Accuracy()],
-       per_sens_metrics=[TPR(), ProbPos()],
-       repeats=5,
+   import ethicml as eml
+
+   results = eml.evaluate_models(
+       datasets=[eml.adult()],
+       inprocess_models=[eml.SVM(), eml.Kamiran()],
+       preprocess_models=[eml.Upsampler()],
+       metrics=[eml.Accuracy()],
+       per_sens_attribute=[eml.ProbPos(), eml.TPR()],
+       repeats=5
    )
+   eml.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
 
 
 API

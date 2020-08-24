@@ -23,7 +23,7 @@ copyright = "2019, O. Thomas, T. Kehrenberg"
 author = "O. Thomas, T. Kehrenberg"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.0-alpha3"
+release = "0.1.0-alpha9"
 
 
 # -- General configuration ---------------------------------------------------
@@ -34,10 +34,13 @@ autodoc_default_options = {
     "inherited-members": True,
     "show-inheritance": True,
     "autosummary": True,
+    "autosummary-no-nesting": True,
+    "special-members": "__len__",
 }
+autodoc_typehints = "description"
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
-add_module_names = False
+add_module_names = False  # do not show classes and functions with full module name (ethicml.data..)
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -45,8 +48,7 @@ add_module_names = False
 extensions = [
     # Need the autodoc and autosummary packages to generate our docs.
     "sphinx.ext.autodoc",
-    # 'sphinx.ext.autosummary',
-    # The Napoleon extension allows for nicer argument formatting.
+    # Napoleon is used for Google-style docstrings
     "sphinx.ext.napoleon",
     "autodocsumm",
 ]

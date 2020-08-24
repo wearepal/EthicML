@@ -1,4 +1,4 @@
-ethicml.algorithms.preprocess
+Preprocess algorithms
 =====================================
 
 .. automodule:: ethicml.algorithms.preprocess

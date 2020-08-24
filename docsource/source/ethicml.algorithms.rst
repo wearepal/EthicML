@@ -1,4 +1,4 @@
-ethicml.algorithms
+Algorithms base
 ==========================
 
 .. automodule:: ethicml.algorithms
