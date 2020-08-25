@@ -1,4 +1,4 @@
-ethicml.vision
+Vision data helpers
 =============================
 
 .. automodule:: ethicml.vision

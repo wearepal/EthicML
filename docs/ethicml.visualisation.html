@@ -1,15 +1,18 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ethicml.visualisation &mdash; EthicML 0.1.0-alpha3 documentation</title>
+  <title>Visualisation helpers &mdash; EthicML 0.1.0-alpha9 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
@@ -17,7 +20,9 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -30,13 +35,9 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="ethicml.vision" href="ethicml.vision.html" /> 
+    <link rel="prev" title="Vision data helpers" href="ethicml.vision.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> EthicML
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> EthicML
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -81,22 +83,23 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">ethicml.algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">ethicml.algorithms.preprocess</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">ethicml.algorithms.inprocess</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">ethicml.algorithms.postprocess</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">ethicml.evaluators</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">ethicml.preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">ethicml.utility</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">ethicml.vision</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ethicml.visualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">Preprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Visualisation helpers</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -135,9 +138,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>ethicml.visualisation</li>
+      <li>Visualisation helpers</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -157,7 +160,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="module-ethicml.visualisation">
-<span id="ethicml-visualisation"></span><h1>ethicml.visualisation<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this headline">¶</a></h1>
+<span id="visualisation-helpers"></span><h1>Visualisation helpers<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this headline">¶</a></h1>
 <p>This module contains tools for plotting results.</p>
 <p><strong>Functions</strong></p>
 <table class="longtable docutils align-default">
@@ -166,88 +169,128 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_results" title="ethicml.visualisation.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a>(results, metric_y, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_results" title="ethicml.visualisation.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a>(results, metric_y, metric_x[, …])</p></td>
 <td><p>Plot the given result with boxes that represent mean and standard deviation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_2d_plot" title="ethicml.visualisation.save_2d_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_2d_plot</span></code></a>(data, filepath)</p></td>
 <td><p>Make 2D plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.save_jointplot" title="ethicml.visualisation.save_jointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_jointplot</span></code></a>(data, filepath, dims, int] =)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.save_jointplot" title="ethicml.visualisation.save_jointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_jointplot</span></code></a>(data, filepath[, dims])</p></td>
 <td><p>Make joint plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_label_plot" title="ethicml.visualisation.save_label_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_label_plot</span></code></a>(data, filename)</p></td>
 <td><p>Make label plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot" title="ethicml.visualisation.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a>(plot, results, xaxis, str], …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot" title="ethicml.visualisation.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a>(plot, results, xaxis, yaxis, …)</p></td>
 <td><p>Provide the functionality of the individual plotting functions through a nice interface.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt id="ethicml.visualisation.plot_results">
-<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param">results: NewType.&lt;locals&gt;.new_type, metric_y: Union[str, ethicml.metrics.metric.Metric], metric_x: Union[str, ethicml.metrics.metric.Metric], ptype: Literal[box, cross, scatter, line] = 'box', save: bool = True, dpi: int = 300, transforms_separately: bool = True</em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Tuple<span class="p">[</span>matplotlib.figure.Figure<span class="p">, </span>matplotlib.axes._axes.Axes<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">metric_y</span></em>, <em class="sig-param"><span class="n">metric_x</span></em>, <em class="sig-param"><span class="n">ptype</span><span class="o">=</span><span class="default_value">'box'</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">dpi</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">transforms_separately</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the given result with boxes that represent mean and standard deviation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> – a DataFrame that already contains the values of the metrics</p></li>
-<li><p><strong>metric_y</strong> – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
-<li><p><strong>metric_x</strong> – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
-<li><p><strong>ptype</strong> – plot type</p></li>
-<li><p><strong>save</strong> – if True, save the plot as a PDF</p></li>
-<li><p><strong>dpi</strong> – DPI of the plots</p></li>
-<li><p><strong>transforms_separately</strong> – if True, each transform gets its own plot</p></li>
+<li><p><strong>results</strong> (<em>NewType.&lt;locals&gt;.new_type</em>) – a DataFrame that already contains the values of the metrics</p></li>
+<li><p><strong>metric_y</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
+<li><p><strong>metric_x</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
+<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>box</em><em>, </em><em>cross</em><em>, </em><em>scatter</em><em>, </em><em>line</em><em>]</em>) – plot type</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – if True, save the plot as a PDF</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – DPI of the plots</p></li>
+<li><p><strong>transforms_separately</strong> (<em>bool</em>) – if True, each transform gets its own plot</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list of all figures and plots</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[matplotlib.figure.Figure, matplotlib.axes._axes.Axes]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="ethicml.visualisation.save_2d_plot">
-<code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_2d_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make 2D plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – </p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="ethicml.visualisation.save_jointplot">
-<code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dims</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>int<span class="p">, </span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0, 1</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_jointplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">filepath</span></em>, <em class="sig-param"><span class="n">dims</span><span class="o">=</span><span class="default_value">0, 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make joint plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – </p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
+<li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="ethicml.visualisation.save_label_plot">
-<code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">ethicml.utility.data_structures.DataTuple</span></em>, <em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_label_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make label plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – </p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="ethicml.visualisation.single_plot">
-<code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param">plot: matplotlib.axes._axes.Axes, results: NewType.&lt;locals&gt;.new_type, xaxis: Tuple[str, str], yaxis: Tuple[str, str], dataset: str, transform: Optional[str], ptype: Literal[box, cross, scatter, line] = 'box', legend_pos: Optional[Literal[inside, outside]] = 'outside', legend_yanchor: float = 1.0, markersize: int = 6, alternating_style: bool = True, include_nan_entries: bool = False</em><span class="sig-paren">)</span> &#x2192; Union[None, Literal[False], matplotlib.legend.Legend]<a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">single_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plot</span></em>, <em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">xaxis</span></em>, <em class="sig-param"><span class="n">yaxis</span></em>, <em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">transform</span></em>, <em class="sig-param"><span class="n">ptype</span><span class="o">=</span><span class="default_value">'box'</span></em>, <em class="sig-param"><span class="n">legend_pos</span><span class="o">=</span><span class="default_value">'outside'</span></em>, <em class="sig-param"><span class="n">legend_yanchor</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">markersize</span><span class="o">=</span><span class="default_value">6</span></em>, <em class="sig-param"><span class="n">alternating_style</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">include_nan_entries</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provide the functionality of the individual plotting functions through a nice interface.</p>
 <p>This function can also be used to create figures with multiple plots on them, because it does
 not generate a Figure object itself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plot</strong> – Plot object</p></li>
-<li><p><strong>results</strong> – DataFrame with the data</p></li>
-<li><p><strong>xaxis</strong> – name of column that’s plotted on the x-axis</p></li>
-<li><p><strong>yaxis</strong> – name of column that’s plotted on the y-axis</p></li>
-<li><p><strong>dataset</strong> – string that identifies the dataset</p></li>
-<li><p><strong>transform</strong> – string that identifies the preprocessing method, or None</p></li>
-<li><p><strong>ptype</strong> – plot type</p></li>
-<li><p><strong>legend_pos</strong> – position of the legend (or None for no legend)</p></li>
-<li><p><strong>legend_yanchor</strong> – position in the vertical direction where the legend should begin</p></li>
-<li><p><strong>markersize</strong> – size of marker</p></li>
-<li><p><strong>alternating_style</strong> – if True, entries for scatter plots are done in alternating style</p></li>
-<li><p><strong>include_nan_entries</strong> – if True, entries with NaNs still appear in the legend</p></li>
+<li><p><strong>plot</strong> (<em>matplotlib.axes._axes.Axes</em>) – Plot object</p></li>
+<li><p><strong>results</strong> (<em>NewType.&lt;locals&gt;.new_type</em>) – DataFrame with the data</p></li>
+<li><p><strong>xaxis</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the x-axis</p></li>
+<li><p><strong>yaxis</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the y-axis</p></li>
+<li><p><strong>dataset</strong> (<em>str</em>) – string that identifies the dataset</p></li>
+<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – string that identifies the preprocessing method, or None</p></li>
+<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>box</em><em>, </em><em>cross</em><em>, </em><em>scatter</em><em>, </em><em>line</em><em>]</em>) – plot type</p></li>
+<li><p><strong>legend_pos</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>inside</em><em>, </em><em>outside</em><em>]</em><em>]</em>) – position of the legend (or None for no legend)</p></li>
+<li><p><strong>legend_yanchor</strong> (<em>float</em>) – position in the vertical direction where the legend should begin</p></li>
+<li><p><strong>markersize</strong> (<em>int</em>) – size of marker</p></li>
+<li><p><strong>alternating_style</strong> (<em>bool</em>) – if True, entries for scatter plots are done in alternating style</p></li>
+<li><p><strong>include_nan_entries</strong> (<em>bool</em>) – if True, entries with NaNs still appear in the legend</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the legend object if something was plotted; False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[None, Literal[False], matplotlib.legend.Legend]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -263,7 +306,7 @@ not generate a Figure object itself.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="ethicml.vision.html" class="btn btn-neutral float-left" title="ethicml.vision" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ethicml.vision.html" class="btn btn-neutral float-left" title="Vision data helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -272,11 +315,19 @@ not generate a Figure object itself.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, O. Thomas, T. Kehrenberg
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -287,7 +338,6 @@ not generate a Figure object itself.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
