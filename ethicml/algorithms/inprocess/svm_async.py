@@ -15,7 +15,6 @@ class SVMAsync(InAlgorithmAsync):
     """Support Vector Machine."""
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
-        """Init SVM."""
         super().__init__(name="SVM", is_fairness_algo=False)
         self.flags = {
             "c": SVC().C if C is None else C,

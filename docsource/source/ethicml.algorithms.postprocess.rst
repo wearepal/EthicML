@@ -1,4 +1,4 @@
-ethicml.algorithms.postprocess
+Postprocess algorithms
 =====================================
 
 .. automodule:: ethicml.algorithms.postprocess

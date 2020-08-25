@@ -1,4 +1,4 @@
-ethicml.utility
+Utils
 =======================
 
 .. automodule:: ethicml.utility

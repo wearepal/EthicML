@@ -46,7 +46,6 @@ class SequentialSplit(DataSplitter):
     """Take the first N samples for train set and the rest for test set; no shuffle."""
 
     def __init__(self, train_percentage: float):
-        """Init Sequential split."""
         self.train_percentage = train_percentage
 
     @implements(DataSplitter)
@@ -141,7 +140,7 @@ class RandomSplit(DataSplitter):
     """Standard train test split."""
 
     def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
-        """Init RandomSplit.
+        """The constructor takes the following arguments.
 
         Args:
             train_percentage: how much of the data to use for the train split
@@ -248,7 +247,7 @@ class BalancedTestSplit(RandomSplit):
         train_percentage: float = 0.8,
         start_seed: int = 0,
     ):
-        """Init BalancedTestSplit.
+        """The constructor takes the following arguments.
 
         Args:
             balance_type: how to do the balancing

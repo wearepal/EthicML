@@ -23,7 +23,6 @@ class Kamishima(InstalledModel):
     """
 
     def __init__(self, eta: float = 1.0):
-        """Init Kamishima."""
         super().__init__(
             name="Kamishima",
             dir_name="kamishima",

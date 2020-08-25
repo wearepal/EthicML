@@ -1,4 +1,4 @@
-ethicml.metrics
+Metrics
 =======================
 
 .. automodule:: ethicml.metrics

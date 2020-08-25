@@ -1,4 +1,4 @@
-ethicml.data
+Datasets
 ====================
 
 .. automodule:: ethicml.data

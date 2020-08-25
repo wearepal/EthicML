@@ -26,7 +26,6 @@ class CVResults:
     """Stores the results of a cross validation experiment."""
 
     def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
-        """Init CVResults data store."""
         self.raw_storage = results
         self.model = model
         self.mean_storage = self._organize_and_compute_means()
@@ -135,7 +134,7 @@ class CrossValidator:
         folds: int = 3,
         max_parallel: int = 0,
     ):
-        """Init CrossValidator.
+        """The constructor takes the following arguments.
 
         Args:
             model: the class (not an instance) of the model for cross validation

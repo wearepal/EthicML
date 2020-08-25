@@ -27,7 +27,6 @@ class Kamiran(InAlgorithm):
         C: Optional[float] = None,
         kernel: Optional[str] = None,
     ):
-        """Init Kamiran."""
         super().__init__(name=f"Kamiran & Calders {classifier}")
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")

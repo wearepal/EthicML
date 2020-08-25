@@ -12,7 +12,6 @@ class Encoder(nn.Module):
     def __init__(
         self, enc_size: List[int], init_size: int, ld: int, activation: nn.Module = nn.ReLU()
     ) -> None:
-        """Init Encoder."""
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified

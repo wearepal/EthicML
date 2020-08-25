@@ -26,7 +26,6 @@ class Categorical(nn.Module):
     """Group a category together."""
 
     def __init__(self, in_feat, dims):
-        """Init Categorical object."""
         super().__init__()
         self.layer = nn.Sequential(nn.Linear(in_feat, dims), nn.Softmax(dim=-1))
         self.ohe = _OneHotEncoder(n_dims=dims)

@@ -1,4 +1,4 @@
-ethicml.preprocessing
+Data preprocessing
 =============================
 
 .. automodule:: ethicml.preprocessing

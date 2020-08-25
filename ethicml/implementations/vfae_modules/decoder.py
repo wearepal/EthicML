@@ -16,7 +16,6 @@ class Decoder(nn.Module):
     """Decoder for VFAE."""
 
     def __init__(self, dataset: Dataset, deploy: bool = False):
-        """Init Decoder."""
         super().__init__()
         self._deploy = deploy
         self.features: List[str] = dataset.feature_split["x"]

@@ -16,7 +16,6 @@ class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
     def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1):
-        """Init for Hardt."""
         super().__init__(name="Hardt")
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label

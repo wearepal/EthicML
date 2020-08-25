@@ -32,7 +32,6 @@ class VFAENetwork(nn.Module):
         z2_enc_size: List[int],
         z1_dec_size: List[int],
     ):
-        """Init VFAE Network."""
         super(VFAENetwork, self).__init__()
         torch.manual_seed(888)
 
