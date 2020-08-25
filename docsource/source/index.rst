@@ -1,12 +1,8 @@
-.. EthicML documentation master file, created by
-   sphinx-quickstart on Tue Sep 17 14:06:38 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to EthicML's documentation!
 ===================================
 
-Package for evaluating the performance of methods which aim to increase fairness, accountability and/or transparency.
+Package for evaluating the performance of methods
+which aim to increase fairness, accountability and/or transparency of machine learning models.
 
 Example
 -------
