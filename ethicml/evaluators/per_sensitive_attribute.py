@@ -41,7 +41,7 @@ def metric_per_sensitive_attribute(
     for y_col in y_columns:
         for s_col in s_columns:
             for unique_s in actual.s[s_col].unique():
-                mask: pd.Series = (actual.s[s_col] == unique_s)
+                mask: pd.Series = actual.s[s_col] == unique_s
                 subset = DataTuple(
                     x=pd.DataFrame(
                         actual.x.loc[mask][actual.x.columns], columns=actual.x.columns

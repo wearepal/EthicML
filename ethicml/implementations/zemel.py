@@ -177,13 +177,13 @@ def main() -> None:
 
 if __name__ == "__main__":
     """Learning fair representations is a pre-processing technique that finds a
-        latent representation which encodes the data well but obfuscates information
-        about protected attributes [2]_.
-        References:
-            .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
-               Fair Representations." International Conference on Machine Learning,
-               2013.
-        Based on code from https://github.com/zjelveh/learning-fair-representations
-        Which in turn, we've got from AIF360
+    latent representation which encodes the data well but obfuscates information
+    about protected attributes [2]_.
+    References:
+        .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
+           Fair Representations." International Conference on Machine Learning,
+           2013.
+    Based on code from https://github.com/zjelveh/learning-fair-representations
+    Which in turn, we've got from AIF360
     """
     main()
