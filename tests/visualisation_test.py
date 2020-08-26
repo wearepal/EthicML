@@ -1,6 +1,4 @@
-"""
-Testing for plotting functionality
-"""
+"""Testing for plotting functionality."""
 from typing import List, Tuple
 
 import pytest
@@ -14,25 +12,41 @@ from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, Results, TrainTestPair
 from ethicml.visualisation import plot_results, save_2d_plot, save_jointplot, save_label_plot
+from ethicml.visualisation.plot import save_multijointplot
 
 
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
-def test_plot(toy_train_test: TrainTestPair):
-    """test plot"""
+def test_plot_tsne(toy_train_test: TrainTestPair):
+    """Test plot."""
     train, _ = toy_train_test
+    save_2d_plot(train, "./plots/test.png")
+
+
+@pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
+def test_plot_no_tsne(toy_train_test: TrainTestPair):
+    """Test plot."""
+    train, _ = toy_train_test
+    train = DataTuple(x=train.x[train.x.columns[:2]], s=train.s, y=train.y)
     save_2d_plot(train, "./plots/test.png")
 
 
 @pytest.mark.usefixtures("plot_cleanup")
 def test_joint_plot(toy_train_test: TrainTestPair):
-    """test joint plot"""
+    """Test joint plot."""
     train, _ = toy_train_test
     save_jointplot(train, "./plots/joint.png")
 
 
 @pytest.mark.usefixtures("plot_cleanup")
+def test_multijoint_plot(toy_train_test: TrainTestPair):
+    """Test joint plot."""
+    train, _ = toy_train_test
+    save_multijointplot(train, "./plots/joint.png")
+
+
+@pytest.mark.usefixtures("plot_cleanup")
 def test_label_plot():
-    """test label plot"""
+    """Test label plot."""
     data: DataTuple = load_data(adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
@@ -42,7 +56,7 @@ def test_label_plot():
 
 @pytest.mark.usefixtures("plot_cleanup")
 def test_plot_evals():
-    """test plot evals"""
+    """Test plot evals."""
     results: Results = evaluate_models(
         datasets=[adult(), toy()],
         preprocess_models=[Upsampler(strategy="preferential")],

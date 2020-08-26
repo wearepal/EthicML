@@ -43,19 +43,24 @@ def main() -> None:
 
     np.random.seed(seed)
 
-    x_1 = np.random.normal(3, 2, samples)
-    x_1f = x_1
-    x_2 = np.random.normal(-1.5, 4, samples)
+    s = np.random.binomial(1, 0.6, samples)
+
+    x_1f = np.random.normal(0, 0.5, samples)
+    x_1 = x_1f
+    x_2 = np.random.normal(-1, 3, samples)
     x_2f = x_2
 
     y_1 = np.random.binomial(1, sigmoid(x_1))
-    y_1f = y_1
+    y_1f = np.random.binomial(1, sigmoid(x_1f))
     y_2 = np.random.binomial(1, sigmoid(x_2))
     y_2f = y_2
-    y_3 = np.random.binomial(1, sigmoid(x_1 + x_2))
-    y_3f = y_3
+    p = x_1 + x_2
+    pf = x_1f + x_2f
+    y_3 = np.random.binomial(1, sigmoid(p))
+    y_3f = np.random.binomial(1, sigmoid(pf))
 
-    s = np.random.binomial(1, 0.5, samples)
+    noise_1 = np.random.normal(0, 4, samples)
+    noise_2 = np.random.normal(3, 7, samples)
 
     print(
         s.mean(),
@@ -84,6 +89,8 @@ def main() -> None:
             "y2f": y_2f,
             "y3": y_3,
             "y3f": y_3f,
+            "n1": noise_1,
+            "n2": noise_2,
         }
     )
 
