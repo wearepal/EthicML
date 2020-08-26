@@ -1,5 +1,5 @@
 """Class to describe features of the Heritage Health dataset."""
-from ethicml.data import Dataset
+from ..dataset import Dataset
 
 __all__ = ["health"]
 
