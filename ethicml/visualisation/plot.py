@@ -140,9 +140,7 @@ def make_gif(files: List[str], name: str = "movie") -> None:
     """Make GIF."""
     import imageio
 
-    images = []
-    for filename in files:
-        images.append(imageio.imread(filename))
+    images = [imageio.imread(filename) for filename in files]
     imageio.mimsave(f"{name}.gif", images)
 
 
@@ -281,9 +279,10 @@ def single_plot(
         for transform_ in transforms:
             mask_for_transform = results.index.get_level_values("transform") == transform_
             data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
-            if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
-                if not include_nan_entries:
-                    continue  # this entry has missing values
+            if (
+                data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any()
+            ) and not include_nan_entries:
+                continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
             entries.append(DataEntry(model_label, data, (not alternating_style) or count % 2 == 0))
             count += 1
