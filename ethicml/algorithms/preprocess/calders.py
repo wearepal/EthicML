@@ -7,12 +7,13 @@ from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
 from .pre_algorithm import PreAlgorithm
 
+__all__ = ["Calders"]
+
 
 class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
     def __init__(self, preferable_class: int, disadvantaged_group: int):
-        """Init object."""
         super().__init__(name="Calders")
         self.preferable_class = preferable_class
         self.disadvantaged_group = disadvantaged_group

@@ -7,6 +7,8 @@ from ethicml.utility import FairnessType
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["Beutel"]
+
 
 class Beutel(PreAlgorithmAsync):
     """Beutel's adversarially learned fair representations."""
@@ -26,7 +28,6 @@ class Beutel(PreAlgorithmAsync):
         adv_weight: float = 1.0,
         validation_pcnt: float = 0.1,
     ):
-        """Init Beutel."""
         # pylint: disable=too-many-arguments
         super().__init__(name=f"Beutel {fairness}")
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {

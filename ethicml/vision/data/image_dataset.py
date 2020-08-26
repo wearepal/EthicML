@@ -142,11 +142,11 @@ def create_celeba_dataset(
             data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
         )
         return TorchImageDataset(
-            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform,
+            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform
         )
     else:
         return TorchImageDataset(
-            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform,
+            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform
         )
 
 
@@ -205,9 +205,9 @@ def create_genfaces_dataset(
             data=biased_dt, mixing_factor=mixing_factor, unbiased_pcnt=0, seed=seed
         )
         return TorchImageDataset(
-            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform,
+            data=biased_dt, root=base_dir, transform=transform, target_transform=target_transform
         )
     else:
         return TorchImageDataset(
-            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform,
+            data=unbiased_dt, root=base_dir, transform=transform, target_transform=target_transform
         )

@@ -271,7 +271,6 @@ class Encoder(nn.Module):
     """Encoder of the GAN."""
 
     def __init__(self, enc_size: Sequence[int], init_size: int, activation):
-        """Init Encoder."""
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -304,7 +303,6 @@ class Adversary(nn.Module):
         activation: nn.Module,
         adv_weight: float,
     ):
-        """Init Adversary."""
         super().__init__()
         self.fairness = fairness
         self.init_size = init_size
@@ -345,7 +343,6 @@ class Predictor(nn.Module):
     def __init__(
         self, pred_size: Sequence[int], init_size: int, class_label_size: int, activation: nn.Module
     ):
-        """Init predictor class."""
         super().__init__()
         self.predictor = nn.Sequential()
         if not pred_size:  # In the case that encoder size [] is specified
@@ -375,7 +372,6 @@ class Model(nn.Module):
     """Whole GAN model."""
 
     def __init__(self, enc: Encoder, adv: Adversary, pred: Predictor) -> None:
-        """Init Model object."""
         super().__init__()
         self.enc = enc
         self.adv = adv

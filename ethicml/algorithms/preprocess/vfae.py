@@ -5,6 +5,8 @@ from typing import Dict, List, Optional, Union
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["VFAE"]
+
 
 class VFAE(PreAlgorithmAsync):
     """VFAE Object - see implementation file for details."""
@@ -20,7 +22,6 @@ class VFAE(PreAlgorithmAsync):
         z2_enc_size: Optional[List[int]] = None,
         z1_dec_size: Optional[List[int]] = None,
     ):
-        """Init VFAE."""
         # pylint: disable=too-many-arguments
         super().__init__(name="VFAE")
 

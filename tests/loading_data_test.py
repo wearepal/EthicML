@@ -485,6 +485,28 @@ def test_genfaces():
     assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
 
 
+def test_genfaces_multi_s():
+    """Test genfaces."""
+    gen_faces, _ = genfaces(
+        label="hair_color",
+        sens_attr="eye_color",
+        download_dir="non-existent",
+        check_integrity=False,
+    )
+    assert gen_faces is not None
+    data = gen_faces.load()
+
+    assert gen_faces.name == "GenFaces, s=eye_color, y=hair_color"
+
+    incomplete_entries = 11_003  # entries that are missing either s or y
+    assert (148_285 - incomplete_entries, 11) == data.x.shape
+    assert (148_285 - incomplete_entries, 1) == data.s.shape
+    assert (148_285 - incomplete_entries, 1) == data.y.shape
+    assert len(data) == len(gen_faces) - incomplete_entries
+
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+
+
 def test_expand_s():
     """Test expanding s."""
     data = Dataset(

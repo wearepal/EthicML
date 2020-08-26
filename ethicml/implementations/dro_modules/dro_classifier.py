@@ -14,7 +14,6 @@ class DROClassifier(nn.Module):
     """Simple Classifier using Fairness without Demographics Loss."""
 
     def __init__(self, in_size: int, out_size: int, network_size: List[int], eta: float) -> None:
-        """Init the module."""
         super().__init__()
 
         self.loss = DROLoss(loss_module=BCELoss, eta=eta)

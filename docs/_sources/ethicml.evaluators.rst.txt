@@ -1,4 +1,4 @@
-ethicml.evaluators
+Evaluation helpers
 ==========================
 
 .. automodule:: ethicml.evaluators

@@ -11,6 +11,8 @@ from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from .pre_algorithm import PreAlgorithm
 
+__all__ = ["Upsampler"]
+
 
 class Upsampler(PreAlgorithm):
     """Upsampler algorithm.
@@ -20,7 +22,6 @@ class Upsampler(PreAlgorithm):
     """
 
     def __init__(self, strategy: Literal["uniform", "preferential", "naive"] = "uniform"):
-        """Init Upsampler."""
         super().__init__(name=f"Upsample {strategy}")
 
         assert strategy in ["uniform", "preferential", "naive"]

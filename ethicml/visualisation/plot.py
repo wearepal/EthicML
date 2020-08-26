@@ -1,7 +1,7 @@
 """Create plots of a dataset."""
 import itertools
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -87,9 +87,9 @@ def multivariateGrid(
     outcome_col: str,
     df: pd.DataFrame,
     scatter_alpha: float = 0.5,
-):
-    def colored_scatter(x, y, c=None):
-        def scatter(*args, **kwargs):
+) -> None:
+    def colored_scatter(x: Any, y: Any, c: Optional[str] = None) -> Callable[[Any], None]:
+        def scatter(*args: Any, **kwargs: Any) -> None:
             args = (x, y)
             if c is not None:
                 kwargs['c'] = c
@@ -114,7 +114,6 @@ def multivariateGrid(
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
     # sns.distplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
     plt.legend(legends)
-    return plt
 
 
 def save_multijointplot(data: DataTuple, filepath: str) -> None:
@@ -124,7 +123,7 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = maybe_tsne(data)
 
-    plot = multivariateGrid(
+    multivariateGrid(
         col_x=x1_name,
         col_y=x2_name,
         sens_col=data.s.columns[0],
@@ -133,7 +132,7 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     )
 
     file_path.parent.mkdir(exist_ok=True)
-    plot.savefig(file_path)
+    plt.savefig(file_path)
     plt.clf()
 
 

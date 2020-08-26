@@ -26,7 +26,6 @@ class DatasetWrapper(Dataset):
     """Generic dataset wrapper."""
 
     def __init__(self, dataset: SizedItemGetter, transform: Optional[TransformType] = None):
-        """Initialise the dataset wrapper."""
         self.dataset = dataset
         self.transform = transform
 
@@ -89,7 +88,6 @@ class LdTransformedDataset(DatasetWrapper):
         label_independent: bool = False,
         correlation: float = 1.0,
     ):
-        """Initialise the dataset wrapper."""
         super().__init__(dataset=dataset, transform=ld_transform)
 
         if not 0 <= correlation <= 1:

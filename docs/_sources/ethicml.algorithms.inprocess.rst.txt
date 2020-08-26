@@ -1,4 +1,4 @@
-ethicml.algorithms.inprocess
+Inprocess algorithms
 =====================================
 
 .. automodule:: ethicml.algorithms.inprocess

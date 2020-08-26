@@ -1,4 +1,4 @@
-ethicml.visualisation
+Visualisation helpers
 =============================
 
 .. automodule:: ethicml.visualisation

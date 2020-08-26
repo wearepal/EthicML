@@ -5,6 +5,8 @@ from typing import Dict, List, Union
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
+__all__ = ["Zemel"]
+
 
 class Zemel(PreAlgorithmAsync):
     """AIF360 implementation of Zemel's LFR."""
@@ -21,7 +23,6 @@ class Zemel(PreAlgorithmAsync):
         epsilon: float = 1e-5,
         seed: int = 888,
     ) -> None:
-        """Init Zemel."""
         super().__init__(name="Zemel")
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,

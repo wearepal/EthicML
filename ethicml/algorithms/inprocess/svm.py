@@ -16,7 +16,6 @@ class SVM(InAlgorithm):
     """Support Vector Machine."""
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
-        """Init SVM."""
         kernel_name = f" ({kernel})" if kernel is not None else ""
         super().__init__(name="SVM" + kernel_name, is_fairness_algo=False)
         self.C = SVC().C if C is None else C

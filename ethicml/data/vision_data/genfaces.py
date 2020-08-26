@@ -11,7 +11,7 @@ __all__ = ["GenfacesAttributes", "genfaces"]
 
 
 GenfacesAttributes = Literal[
-    "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion",
+    "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion"
 ]
 
 _BASE_FOLDER = "genfaces"
@@ -49,11 +49,12 @@ def genfaces(
     assert label in disc_feature_groups
     continuous_features = ["filename"]
 
-    img_dir = root / _BASE_FOLDER / _SUBDIR
+    base = root / _BASE_FOLDER
+    img_dir = base / _SUBDIR
     if download:
-        _download(root)
+        _download(base)
     elif check_integrity:
-        if not _check_integrity(root):
+        if not _check_integrity(base):
             return None, img_dir
 
     dataset_obj = Dataset(
@@ -68,6 +69,7 @@ def genfaces(
         num_samples=148_285,
         filename_or_path="genfaces.csv.zip",
         discrete_only=False,
+        discard_non_one_hot=True,
     )
     return dataset_obj, img_dir
 

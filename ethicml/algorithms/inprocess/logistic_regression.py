@@ -18,7 +18,6 @@ class LR(InAlgorithm):
     """Logistic regression with hard predictions."""
 
     def __init__(self, C: Optional[float] = None):
-        """Init LR."""
         self.C = LogisticRegression().C if C is None else C
         super().__init__(name=f"Logistic Regression (C={self.C})", is_fairness_algo=False)
 
@@ -33,7 +32,6 @@ class LRProb(InAlgorithm):
     """Logistic regression with soft output."""
 
     def __init__(self, C: Optional[int] = None):
-        """Init LRProb."""
         self.C = LogisticRegression().C if C is None else C
         super().__init__(name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False)
 
@@ -48,7 +46,6 @@ class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     def __init__(self, n_splits: int = 3, seed: int = 888) -> None:
-        """Init LRCV."""
         super().__init__(name="LRCV", is_fairness_algo=False)
         self.n_splits = n_splits
         self.seed = seed
