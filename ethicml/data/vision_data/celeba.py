@@ -4,8 +4,9 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from typing_extensions import Final, Literal
 
+from ethicml import common
 from ..dataset import Dataset
-from ..util import LabelSpec, PartialLabelSpec, flatten_dict, label_specs_to_feature_list
+from ..util import PartialLabelSpec, flatten_dict, label_specs_to_feature_list
 
 __all__ = ["CelebAttrs", "celeba"]
 
@@ -157,6 +158,8 @@ def celeba(
 
 
 def _check_integrity(base: Path) -> bool:
+    if not common.TORCHVISION_AVAILABLE:
+        raise RuntimeError("Need torchvision to download data.")
     from torchvision.datasets.utils import check_integrity
 
     for (_, md5, filename) in _FILE_LIST:
@@ -173,6 +176,8 @@ def _check_integrity(base: Path) -> bool:
 
 def _download(base: Path) -> None:
     """Attempt to download data if files cannot be found in the base folder."""
+    if not common.TORCHVISION_AVAILABLE:
+        raise RuntimeError("Need torchvision to download data.")
     import zipfile
     from torchvision.datasets.utils import download_file_from_google_drive
 
