@@ -119,13 +119,13 @@ def test_synth_data_shape(scenario, target, fair, samples):
     """Test loading data."""
     dataset = synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
-    assert (samples, 2) == data.x.shape
+    assert (samples, 4) == data.x.shape
     assert (samples, 1) == data.s.shape
     assert (samples, 1) == data.y.shape
 
-    assert len(dataset.ordered_features["x"]) == 2
+    assert len(dataset.ordered_features["x"]) == 4
     assert len(dataset.discrete_features) == 0
-    assert len(dataset.continuous_features) == 2
+    assert len(dataset.continuous_features) == 4
 
     assert data.s.nunique()[0] == 2
     assert data.y.nunique()[0] == 2
@@ -136,7 +136,7 @@ def test_synth_data_shape(scenario, target, fair, samples):
         assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
 
     data: DataTuple = dataset.load(ordered=True)
-    assert (samples, 2) == data.x.shape
+    assert (samples, 4) == data.x.shape
     assert (samples, 1) == data.s.shape
     assert (samples, 1) == data.y.shape
 
