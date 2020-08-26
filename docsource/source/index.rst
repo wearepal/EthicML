@@ -9,17 +9,17 @@ Example
 
 .. code:: python
 
-   import ethicml as eml
+   import ethicml as em
 
-   results = eml.evaluate_models(
-       datasets=[eml.adult()],
-       inprocess_models=[eml.SVM(), eml.Kamiran()],
-       preprocess_models=[eml.Upsampler()],
-       metrics=[eml.Accuracy()],
-       per_sens_attribute=[eml.ProbPos(), eml.TPR()],
-       repeats=5
+   results = em.evaluate_models(
+       datasets=[em.adult()],
+       inprocess_models=[em.SVM(), em.Kamiran()],
+       preprocess_models=[em.Upsampler()],
+       metrics=[em.Accuracy()],
+       per_sens_attribute=[em.ProbPos(), em.TPR()],
+       repeats=5,
    )
-   eml.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
+   em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
 
 
 API
