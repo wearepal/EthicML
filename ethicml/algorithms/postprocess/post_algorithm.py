@@ -6,6 +6,8 @@ from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from ..algorithm_base import Algorithm
 
+__all__ = ["PostAlgorithm"]
+
 
 class PostAlgorithm(Algorithm):
     """Abstract Base Class for all algorithms that do post-processing."""
