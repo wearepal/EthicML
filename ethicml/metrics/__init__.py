@@ -9,6 +9,7 @@ Some example code
 
    run_metrics(predictions, test_data, metrics=[Accuracy, TPR, ProbPos])
 """
+from . import accuracy, dependence_measures
 from .accuracy import *
 from .anti_spur import AS
 from .balanced_accuracy import BalancedAccuracy
@@ -26,3 +27,25 @@ from .prob_pos import ProbPos
 from .theil import Theil
 from .tnr import TNR
 from .tpr import TPR
+
+__all__ = [
+    "AS",
+    "BalancedAccuracy",
+    "BCR",
+    "LabelOutOfBounds",
+    "confusion_matrix",
+    "CV",
+    "AbsCV",
+    "Hsic",
+    "Metric",
+    "NPV",
+    "PPV",
+    "ProbNeg",
+    "ProbOutcome",
+    "ProbPos",
+    "Theil",
+    "TNR",
+    "TPR",
+]
+for submodule in [accuracy, dependence_measures]:
+    __all__ += submodule.__all__  # type: ignore[attr-defined]

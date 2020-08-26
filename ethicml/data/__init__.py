@@ -1,20 +1,16 @@
 """This module contains items related to data, such as raw csv's and data objects."""
+from . import dataset, load, lookup, tabular_data, util, vision_data
 from .dataset import *
 from .load import *
 from .lookup import *
-from .tabular_data.adult import *
-from .tabular_data.compas import *
-from .tabular_data.credit import *
-from .tabular_data.crime import *
-from .tabular_data.german import *
-from .tabular_data.health import *
-from .tabular_data.non_binary_toy import *
-from .tabular_data.sqf import *
-from .tabular_data.synthetic import *
-from .tabular_data.toy import *
+from .tabular_data import *
 from .util import *
-from .vision_data.celeba import *
-from .vision_data.genfaces import *
+from .vision_data import *
+
+__all__ = ["available_tabular"]
+for submodule in [dataset, load, lookup, tabular_data, util, vision_data]:
+    __all__ += submodule.__all__  # type: ignore[attr-defined]
+
 
 available_tabular = [
     adult.__name__,
