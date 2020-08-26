@@ -11,7 +11,7 @@ __all__ = ["GenfacesAttributes", "genfaces"]
 
 
 GenfacesAttributes = Literal[
-    "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion",
+    "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion"
 ]
 
 _BASE_FOLDER = "genfaces"

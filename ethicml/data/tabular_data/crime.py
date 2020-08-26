@@ -6,7 +6,7 @@ from ..dataset import Dataset
 __all__ = ["crime"]
 
 
-def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = False,) -> Dataset:
+def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = False) -> Dataset:
     """UCI Communities and Crime dataset."""
     if True:  # pylint: disable=using-constant-test
         features = [

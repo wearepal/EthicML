@@ -159,8 +159,7 @@ class CrossValidator:
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
         models = [
-            self.model(**experiment)  # type: ignore[call-arg]
-            for experiment in self.experiments
+            self.model(**experiment) for experiment in self.experiments  # type: ignore[call-arg]
         ]
         # create all folds
         data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))

@@ -61,7 +61,7 @@ _FILE_LIST: Final = [
         "00d2c5bc6d35e252742224ab0c1e8fcb",  # MD5 Hash
         "img_align_celeba.zip",  # Filename
     ),
-    ("0B7EVK8r0v71pblRyaVFSWGxPY0U", "75e246fa4810816ffd6ee81facbd244c", "list_attr_celeba.txt",),
+    ("0B7EVK8r0v71pblRyaVFSWGxPY0U", "75e246fa4810816ffd6ee81facbd244c", "list_attr_celeba.txt"),
     (
         "0B7EVK8r0v71pY0NSMzRuSXJEVkk",
         "d32c9cbf5e040fd4025c592c306e6668",

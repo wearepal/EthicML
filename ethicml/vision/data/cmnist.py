@@ -97,7 +97,7 @@ def create_cmnist_datasets(
     train_data, test_data = train_test_split(all_data, train_pcnt=train_pcnt)
 
     colorizer = LdColorizer(
-        scale=scale, background=False, black=True, binarize=True, greyscale=False,
+        scale=scale, background=False, black=True, binarize=True, greyscale=False
     )
     train_data = DatasetWrapper(train_data, transform=base_aug + data_aug)
     train_data = LdTransformedDataset(

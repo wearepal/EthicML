@@ -22,7 +22,7 @@ class ScalerType(Protocol):
 
 
 def scale_continuous(
-    dataset: Dataset, datatuple: DataTuple, scaler: ScalerType, inverse: bool = False,
+    dataset: Dataset, datatuple: DataTuple, scaler: ScalerType, inverse: bool = False
 ) -> Tuple[DataTuple, ScalerType]:
     """Use a scaler on just the continuous features."""
     new_feats = datatuple.x.copy().astype('float64')

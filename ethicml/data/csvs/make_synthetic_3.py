@@ -57,7 +57,7 @@ def main() -> None:
 
     print(s.mean(), x_1.mean(), x_2.mean(), y_1.mean(), y_2.mean(), y_3.mean())
 
-    df = pd.DataFrame(data={"x1": x_1, "x2": x_2, "s": s, "y1": y_1, "y2": y_2, "y3": y_3,})
+    df = pd.DataFrame(data={"x1": x_1, "x2": x_2, "s": s, "y1": y_1, "y2": y_2, "y3": y_3})
 
     # Shuffle the data,
     df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)
