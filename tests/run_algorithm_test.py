@@ -9,20 +9,7 @@ import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
 import pytest
 
-from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, Kamiran, Majority
-from ethicml.algorithms.postprocess import PostAlgorithm
-from ethicml.algorithms.preprocess import PreAlgorithm, Upsampler
-from ethicml.data import Dataset, adult, toy
-from ethicml.evaluators import (
-    MetricNotApplicable,
-    evaluate_models,
-    evaluate_models_async,
-    load_results,
-    run_in_parallel,
-)
-from ethicml.metrics import CV, TPR, Accuracy, Metric
-from ethicml.utility import TrainTestPair, filter_and_map_results, filter_results
+import ethicml as em
 
 
 def count_true(mask: "np.ndarray[np.bool_]") -> int:
@@ -30,21 +17,21 @@ def count_true(mask: "np.ndarray[np.bool_]") -> int:
     return mask.nonzero()[0].shape[0]
 
 
-def test_can_load_test_data(toy_train_test: TrainTestPair):
+def test_can_load_test_data(toy_train_test: em.TrainTestPair):
     """test whether we can load test data"""
     train, test = toy_train_test
     assert train is not None
     assert test is not None
 
 
-def test_run_parallel(toy_train_test: TrainTestPair):
+def test_run_parallel(toy_train_test: em.TrainTestPair):
     """test run parallel"""
     data0 = toy_train_test
     data1 = toy_train_test
-    result = run_blocking(
-        run_in_parallel(
-            [LR(), SVM(), Majority()],
-            [TrainTestPair(*data0), TrainTestPair(*data1)],
+    result = em.run_blocking(
+        em.run_in_parallel(
+            [em.LR(), em.SVM(), em.Majority()],
+            [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
             max_parallel=2,
         )
     )
@@ -68,7 +55,7 @@ def test_run_parallel(toy_train_test: TrainTestPair):
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """test empty evaluate"""
-    empty_result = evaluate_models([toy()], repeats=3, delete_prev=True)
+    empty_result = em.evaluate_models([em.toy()], repeats=3, delete_prev=True)
     expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
     expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(empty_result, expected_result)
@@ -77,15 +64,15 @@ def test_empty_evaluate():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
     """test run alg suite"""
-    dataset = adult(split="Race-Binary")
-    datasets: List[Dataset] = [dataset, toy()]
-    preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [LR(), SVM(kernel="linear")]
-    postprocess_models: List[PostAlgorithm] = []
-    metrics: List[Metric] = [Accuracy(), CV()]
-    per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
-    parallel_results = run_blocking(
-        evaluate_models_async(
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset, em.toy()]
+    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    postprocess_models: List[em.PostAlgorithm] = []
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    parallel_results = em.run_blocking(
+        em.evaluate_models_async(
             datasets,
             preprocess_models,
             inprocess_models,
@@ -97,7 +84,7 @@ def test_run_alg_suite():
             topic="pytest",
         )
     )
-    results = evaluate_models(
+    results = em.evaluate_models(
         datasets,
         preprocess_models,
         inprocess_models,
@@ -126,7 +113,7 @@ def test_run_alg_suite():
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
         assert written_file.shape == (2, 15)
 
-    reloaded = load_results("Adult Race-Binary", "Upsample uniform", "pytest")
+    reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
     read = read.set_index(["dataset", "transform", "model", "split_id"])
@@ -136,14 +123,14 @@ def test_run_alg_suite():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_wrong_metrics():
     """test run alg suite wrong metrics"""
-    datasets: List[Dataset] = [toy(), adult()]
-    preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [SVM(kernel="linear"), LR()]
-    postprocess_models: List[PostAlgorithm] = []
-    metrics: List[Metric] = [Accuracy(), CV()]
-    per_sens_metrics: List[Metric] = [Accuracy(), TPR(), CV()]
-    with pytest.raises(MetricNotApplicable):
-        evaluate_models(
+    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
+    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel="linear"), em.LR()]
+    postprocess_models: List[em.PostAlgorithm] = []
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
+    with pytest.raises(em.MetricNotApplicable):
+        em.evaluate_models(
             datasets,
             preprocess_models,
             inprocess_models,
@@ -158,15 +145,15 @@ def test_run_alg_suite_wrong_metrics():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
     """test run alg suite no pipeline"""
-    datasets: List[Dataset] = [toy(), adult()]
-    preprocess_models: List[PreAlgorithm] = [Upsampler()]
-    inprocess_models: List[InAlgorithm] = [Kamiran(classifier="LR"), LR()]
-    postprocess_models: List[PostAlgorithm] = []
-    metrics: List[Metric] = [Accuracy(), CV()]
-    per_sens_metrics: List[Metric] = [Accuracy(), TPR()]
+    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
+    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
+    postprocess_models: List[em.PostAlgorithm] = []
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
-    parallel_results = run_blocking(
-        evaluate_models_async(
+    parallel_results = em.run_blocking(
+        em.evaluate_models_async(
             datasets,
             preprocess_models,
             inprocess_models,
@@ -179,7 +166,7 @@ def test_run_alg_suite_no_pipeline():
             fair_pipeline=False,
         )
     )
-    results = evaluate_models(
+    results = em.evaluate_models(
         datasets,
         preprocess_models,
         inprocess_models,
@@ -201,13 +188,19 @@ def test_run_alg_suite_no_pipeline():
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results) == expected_num
 
-    assert len(filter_results(results, ["Kamiran & Calders LR"])) == 2  # result for Toy and Adult
-    assert len(filter_results(results, ["Toy"], index="dataset")) == 3  # Kamiran, LR and Upsampler
-    different_name = filter_and_map_results(results, {"Kamiran & Calders LR": "Kamiran & Calders"})
-    assert len(filter_results(different_name, ["Kamiran & Calders LR"])) == 0
-    assert len(filter_results(different_name, ["Kamiran & Calders"])) == 2
+    assert (
+        len(em.filter_results(results, ["Kamiran & Calders LR"])) == 2
+    )  # result for Toy and Adult
+    assert (
+        len(em.filter_results(results, ["Toy"], index="dataset")) == 3
+    )  # Kamiran, LR and Upsampler
+    different_name = em.filter_and_map_results(
+        results, {"Kamiran & Calders LR": "Kamiran & Calders"}
+    )
+    assert len(em.filter_results(different_name, ["Kamiran & Calders LR"])) == 0
+    assert len(em.filter_results(different_name, ["Kamiran & Calders"])) == 2
 
     pd.testing.assert_frame_equal(
-        filter_results(results, ["Kamiran & Calders LR"]),
+        em.filter_results(results, ["Kamiran & Calders LR"]),
         results.query("model == 'Kamiran & Calders LR'"),
     )
