@@ -16,7 +16,7 @@ GenfacesAttributes = Literal[
 
 _BASE_FOLDER = "genfaces"
 _SUBDIR = "images"
-_FILE_ID = "1TYeoJS-2Q2uU3BD9Ckf9aJOHbxLz5wFr"
+_FILE_ID = "14WTxAEe5-UyXqxJlnAOV3rVZz-ebJO1g"
 _ZIP_FILE = "genfaces_info.zip"
 
 

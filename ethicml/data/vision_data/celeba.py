@@ -57,13 +57,17 @@ _BASE_FOLDER: Final = "celeba"
 
 _FILE_LIST: Final = [
     (
-        "0B7EVK8r0v71pZjFTYXZWM3FlRnM",  # File ID
+        "1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR",  # File ID
         "00d2c5bc6d35e252742224ab0c1e8fcb",  # MD5 Hash
         "img_align_celeba.zip",  # Filename
     ),
-    ("0B7EVK8r0v71pblRyaVFSWGxPY0U", "75e246fa4810816ffd6ee81facbd244c", "list_attr_celeba.txt"),
     (
-        "0B7EVK8r0v71pY0NSMzRuSXJEVkk",
+        "1gxmFoeEPgF9sT65Wpo85AnHl3zsQ4NvS",
+        "75e246fa4810816ffd6ee81facbd244c",
+        "list_attr_celeba.txt",
+    ),
+    (
+        "1ih_VMokoI774ErNWrb26lDeWlanUBpnX",
         "d32c9cbf5e040fd4025c592c306e6668",
         "list_eval_partition.txt",
     ),
