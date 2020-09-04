@@ -31,6 +31,7 @@ autoclass_content = "both"  # include both class docstring and __init__
 autodoc_default_options = {
     # Make sure that any autodoc declarations show the right members
     "members": True,
+    "imported-members": True,
     "inherited-members": True,
     "show-inheritance": True,
     "autosummary": True,

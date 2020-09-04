@@ -4,10 +4,9 @@ Some example code
 
 .. code:: python
 
-   from ethicml.metrics import Accuracy, TPR, ProbPos
-   from ethicml.evaluators import run_metrics
+   import ethicml as em
 
-   run_metrics(predictions, test_data, metrics=[Accuracy, TPR, ProbPos])
+   em.run_metrics(predictions, test_data, metrics=[em.Accuracy(), em.TPR(), em.ProbPos()])
 """
 from .accuracy import *
 from .anti_spur import AS

@@ -34,7 +34,8 @@ class Hardt(PostAlgorithm):
 
     def _fit(self, train_predictions: Prediction, train: DataTuple) -> OptimizeResult:
         from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
-        from ethicml.metrics import TNR, TPR
+        from ethicml.metrics.tpr import TPR
+        from ethicml.metrics.tnr import TNR
 
         # compute basic statistics
         fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()

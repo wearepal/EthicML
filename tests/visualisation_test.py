@@ -6,10 +6,10 @@ from typing import List, Tuple
 import pytest
 from matplotlib import pyplot as plt
 
+import ethicml as em
 from ethicml.algorithms.inprocess import LR, SVM, Kamiran
 from ethicml.algorithms.preprocess import Upsampler
 from ethicml.data import adult, load_data, toy
-from ethicml.evaluators import evaluate_models
 from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, Results, TrainTestPair
@@ -43,7 +43,7 @@ def test_label_plot():
 @pytest.mark.usefixtures("plot_cleanup")
 def test_plot_evals():
     """test plot evals"""
-    results: Results = evaluate_models(
+    results: Results = em.evaluate_models(
         datasets=[adult(), toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
         inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],

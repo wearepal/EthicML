@@ -9,7 +9,7 @@ import pandas as pd
 import seaborn as sns
 from typing_extensions import Literal
 
-from ethicml.metrics import Metric
+from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
 
 from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter

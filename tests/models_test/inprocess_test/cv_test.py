@@ -3,9 +3,9 @@ from typing import Dict, List, NamedTuple, Sequence, Type, Union
 
 import pytest
 
+import ethicml as em
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm
-from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import Accuracy
 from ethicml.utility import Prediction, TrainTestPair
 
@@ -33,7 +33,7 @@ def test_cv(
 ):
     """test cv svm"""
     train, test = toy_train_test
-    cross_validator = CrossValidator(model, hyperparams)
+    cross_validator = em.CrossValidator(model, hyperparams)
     assert cross_validator is not None
 
     cv_results = cross_validator.run(train)
@@ -56,8 +56,8 @@ def test_parallel_cv(
     train, test = toy_train_test
     measure = Accuracy()
 
-    cross_validator = CrossValidator(model, hyperparams, max_parallel=1)
-    cv_results: CVResults = run_blocking(cross_validator.run_async(train, measures=[measure]))
+    cross_validator = em.CrossValidator(model, hyperparams, max_parallel=1)
+    cv_results: em.CVResults = run_blocking(cross_validator.run_async(train, measures=[measure]))
     best_model = cv_results.best(measure)
     assert isinstance(best_model, InAlgorithm)
 
