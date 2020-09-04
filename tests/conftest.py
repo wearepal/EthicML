@@ -7,6 +7,7 @@ from typing import Generator
 import pandas as pd
 import pytest
 
+import ethicml as em
 from ethicml.common import ROOT_PATH
 from ethicml.data import load_data, toy
 from ethicml.preprocessing import train_test_split
@@ -86,3 +87,18 @@ def temp_dir() -> Generator[Path, None, None]:
 def get_id(value):
     """Get ID."""
     return getattr(value, "name", value)
+
+
+@pytest.fixture(scope="function")
+def simulate_no_torch() -> Generator[None, None, None]:
+    # ======= set up ========
+    torch_available = em.common.TORCH_AVAILABLE
+    torchvision_available = em.common.TORCHVISION_AVAILABLE
+    em.common.TORCH_AVAILABLE = False
+    em.common.TORCHVISION_AVAILABLE = False
+
+    yield  # run test
+
+    # ====== tear down =======
+    em.common.TORCH_AVAILABLE = torch_available
+    em.common.TORCHVISION_AVAILABLE = torchvision_available
