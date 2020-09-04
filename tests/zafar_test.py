@@ -3,6 +3,7 @@ from typing import Dict, List
 import pytest
 from pytest import approx
 
+import ethicml as em
 from ethicml.algorithms import run_blocking
 from ethicml.algorithms.inprocess import (
     InAlgorithm,
@@ -13,7 +14,6 @@ from ethicml.algorithms.inprocess import (
     ZafarEqOpp,
     ZafarFairness,
 )
-from ethicml.evaluators import CrossValidator, CVResults
 from ethicml.metrics import AbsCV, Accuracy
 from ethicml.utility import Prediction, TrainTestPair
 
@@ -62,13 +62,13 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
     model = zafar_models[0]
-    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+    zafar_cv = em.CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
 
     primary = Accuracy()
     fair_measure = AbsCV()
-    cv_results: CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
+    cv_results: em.CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
@@ -113,13 +113,13 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     hyperparams = {"c": [1, 1e-1, 1e-2]}
 
     model = zafar_models[2]
-    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+    zafar_cv = em.CrossValidator(model, hyperparams, folds=3)
 
     assert zafar_cv is not None
 
     primary = Accuracy()
     fair_measure = AbsCV()
-    cv_results: CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
+    cv_results: em.CVResults = zafar_cv.run(train, measures=[primary, fair_measure])
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 

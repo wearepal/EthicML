@@ -26,12 +26,9 @@ API
 ---
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    ethicml.algorithms
-   ethicml.algorithms.preprocess
-   ethicml.algorithms.inprocess
-   ethicml.algorithms.postprocess
    ethicml.data
    ethicml.evaluators
    ethicml.metrics
