@@ -4,7 +4,7 @@ from typing import Dict, List
 
 import pandas as pd
 
-from ethicml.metrics import Metric
+from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
 __all__ = [
