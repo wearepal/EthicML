@@ -5,9 +5,9 @@ from setuptools import find_packages, setup
 # We follow Semantic Versioning (https://semver.org/)
 _MAJOR_VERSION = "0"
 _MINOR_VERSION = "1"
-_PATCH_VERSION = "1"
+_PATCH_VERSION = "0"
 
-_VERSION_SUFFIX = "dev1"
+_VERSION_SUFFIX = "alpha.10"
 
 # Example, '0.4.0-rc1'
 version = ".".join([_MAJOR_VERSION, _MINOR_VERSION, _PATCH_VERSION])
