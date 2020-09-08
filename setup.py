@@ -40,6 +40,7 @@ setup(
         "pillow",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
+        "teext",
         "tqdm >= 4.31.1",
         "typed-argument-parser == 1.4",
         "typing-extensions >= 3.7.2",

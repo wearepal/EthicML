@@ -39,12 +39,21 @@ def test_can_load_test_data(data_root: Path):
     assert data is not None
 
 
-# fmt: off
 @pytest.mark.parametrize(
     "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
     [
         (adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
-        (adult("Sex", binarize_nationality=True), 45222, 62, 57, 1, 2, 1, 2, "Adult Sex, binary nationality"),
+        (
+            adult("Sex", binarize_nationality=True),
+            45222,
+            62,
+            57,
+            1,
+            2,
+            1,
+            2,
+            "Adult Sex, binary nationality",
+        ),
         (adult(split="Sex"), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (adult(split="Race"), 45222, 98, 93, 1, 5, 1, 2, "Adult Race"),
         (adult(split="Race-Binary"), 45222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary"),
@@ -67,15 +76,6 @@ def test_can_load_test_data(data_root: Path):
         (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
         (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race"),
         (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
-        (synthetic(), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 1"),
-        (synthetic(target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 2"),
-        (synthetic(target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 1, target 3"),
-        (synthetic(scenario=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 1"),
-        (synthetic(scenario=2, target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 2"),
-        (synthetic(scenario=2, target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 2, target 3"),
-        (synthetic(scenario=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 1"),
-        (synthetic(scenario=3, target=2), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 2"),
-        (synthetic(scenario=3, target=3), 1000, 2, 0, 1, 2, 1, 2, "Synthetic - Scenario 3, target 3"),
         (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )
@@ -109,7 +109,36 @@ def test_data_shape(
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
-# fmt: on
+
+
+@pytest.mark.parametrize("fair", [False, True])
+@pytest.mark.parametrize("target", [1, 2, 3])
+@pytest.mark.parametrize("scenario", [1, 2, 3, 4])
+@pytest.mark.parametrize("samples", [10, 100, 1_000])
+def test_synth_data_shape(scenario, target, fair, samples):
+    """Test loading data."""
+    dataset = synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
+    data: DataTuple = dataset.load()
+    assert (samples, 4) == data.x.shape
+    assert (samples, 1) == data.s.shape
+    assert (samples, 1) == data.y.shape
+
+    assert len(dataset.ordered_features["x"]) == 4
+    assert len(dataset.discrete_features) == 0
+    assert len(dataset.continuous_features) == 4
+
+    assert data.s.nunique()[0] == 2
+    assert data.y.nunique()[0] == 2
+
+    if fair:
+        assert data.name == f"Synthetic - Scenario {scenario}, target {target} fair"
+    else:
+        assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
+
+    data: DataTuple = dataset.load(ordered=True)
+    assert (samples, 4) == data.x.shape
+    assert (samples, 1) == data.s.shape
+    assert (samples, 1) == data.y.shape
 
 
 @pytest.mark.parametrize("dataset", [Adult, Compas, Toy])
