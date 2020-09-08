@@ -21,8 +21,8 @@ from typing import (
 
 from tqdm import tqdm
 
-from ethicml.algorithms.inprocess import InAlgorithm, InAlgorithmAsync
-from ethicml.algorithms.preprocess import PreAlgorithm, PreAlgorithmAsync
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm, InAlgorithmAsync
+from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm, PreAlgorithmAsync
 from ethicml.utility import DataTuple, Prediction, TestTuple, TrainTestPair
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]

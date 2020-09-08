@@ -10,7 +10,7 @@ import seaborn as sns
 from sklearn.manifold import TSNE
 from typing_extensions import Literal
 
-from ethicml.metrics import Metric
+from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
 
 from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter

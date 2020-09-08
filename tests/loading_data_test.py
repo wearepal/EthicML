@@ -467,6 +467,13 @@ def test_celeba_multi_s():
     assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
+@pytest.mark.usefixtures("simulate_no_torch")
+def test_celeba_no_torch():
+    """Test celeba."""
+    with pytest.raises(RuntimeError, match="Need torchvision to download data."):
+        celeba(download_dir="some_dir", download=True)
+
+
 def test_genfaces():
     """Test genfaces."""
     gen_faces, _ = genfaces(download_dir="non-existent")

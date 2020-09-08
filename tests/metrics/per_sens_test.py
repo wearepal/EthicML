@@ -3,9 +3,9 @@ from typing import Dict, NamedTuple, Tuple
 import pytest
 from pytest import approx
 
+import ethicml as em
 from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, LRProb
 from ethicml.data import Dataset, adult, load_data, nonbinary_toy, toy
-from ethicml.evaluators import metric_per_sensitive_attribute
 from ethicml.metrics import Accuracy, Metric, ProbNeg, ProbOutcome, ProbPos, Theil
 from ethicml.preprocessing import train_test_split
 from ethicml.utility import DataTuple, Prediction
@@ -141,7 +141,7 @@ def test_metric_per_sens_attr(
     train, test = train_test
     model: InAlgorithm = classifier
     predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, metric)
+    acc_per_sens = em.metric_per_sensitive_attribute(predictions, test, metric)
 
     try:
         for key in acc_per_sens:

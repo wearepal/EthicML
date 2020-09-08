@@ -4,8 +4,9 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from typing_extensions import Final, Literal
 
+from ethicml import common
 from ..dataset import Dataset
-from ..util import LabelSpec, PartialLabelSpec, flatten_dict, label_specs_to_feature_list
+from ..util import PartialLabelSpec, flatten_dict, label_specs_to_feature_list
 
 __all__ = ["CelebAttrs", "celeba"]
 
@@ -57,13 +58,17 @@ _BASE_FOLDER: Final = "celeba"
 
 _FILE_LIST: Final = [
     (
-        "0B7EVK8r0v71pZjFTYXZWM3FlRnM",  # File ID
+        "1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR",  # File ID
         "00d2c5bc6d35e252742224ab0c1e8fcb",  # MD5 Hash
         "img_align_celeba.zip",  # Filename
     ),
-    ("0B7EVK8r0v71pblRyaVFSWGxPY0U", "75e246fa4810816ffd6ee81facbd244c", "list_attr_celeba.txt"),
     (
-        "0B7EVK8r0v71pY0NSMzRuSXJEVkk",
+        "1gxmFoeEPgF9sT65Wpo85AnHl3zsQ4NvS",
+        "75e246fa4810816ffd6ee81facbd244c",
+        "list_attr_celeba.txt",
+    ),
+    (
+        "1ih_VMokoI774ErNWrb26lDeWlanUBpnX",
         "d32c9cbf5e040fd4025c592c306e6668",
         "list_eval_partition.txt",
     ),
@@ -153,6 +158,8 @@ def celeba(
 
 
 def _check_integrity(base: Path) -> bool:
+    if not common.TORCHVISION_AVAILABLE:
+        raise RuntimeError("Need torchvision to download data.")
     from torchvision.datasets.utils import check_integrity
 
     for (_, md5, filename) in _FILE_LIST:
@@ -169,6 +176,8 @@ def _check_integrity(base: Path) -> bool:
 
 def _download(base: Path) -> None:
     """Attempt to download data if files cannot be found in the base folder."""
+    if not common.TORCHVISION_AVAILABLE:
+        raise RuntimeError("Need torchvision to download data.")
     import zipfile
     from torchvision.datasets.utils import download_file_from_google_drive
 
