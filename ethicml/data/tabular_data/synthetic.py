@@ -13,7 +13,7 @@ def Synthetic(  # pylint: disable=invalid-name
     scenario: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     fair: bool = False,
-    num_samples: PositiveInt = 1_000,
+    num_samples: int = 1_000,
 ) -> Dataset:
     """Dataset with synthetic scenario 1 data."""
     warn("The Synthetic class is deprecated. Use the function instead.", DeprecationWarning)
