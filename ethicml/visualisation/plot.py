@@ -105,14 +105,8 @@ def multivariateGrid(
     legends = []
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
-        g.plot_joint(
-            colored_scatter(df_group[col_x], df_group[col_y], color),
-        )
-        sns.distplot(
-            df_group[col_x].values,
-            ax=g.ax_marg_x,
-            color=color,
-        )
+        g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
+        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)
         sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)
     # Do also global Hist:
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
