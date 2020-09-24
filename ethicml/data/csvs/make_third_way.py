@@ -1,18 +1,17 @@
 """Make synthetic data for the 3rd way paper."""
 import random
-from typing import List
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy.stats import skewnorm
 
 
-def make_x_bar(k: int, n: int) -> List[np.ndarray]:
+def make_x_bar(k: int, n: int) -> List[Tuple[float, float]]:
     """Initial potential."""
-    return np.array(
-        [np.random.normal(np.random.binomial(1, 1 / (j + 1), 1), 1 / (j + 1), n) for j in range(k)]
-    ).transpose()
+    return [(np.random.binomial(1, 1 / (j + 1), 1)[0], 1 / (j + 1)) for j in range(k)]
 
 
 def make_s(alpha: float, n=int):
@@ -22,6 +21,10 @@ def make_s(alpha: float, n=int):
 
 def make_dx(x_bar: np.ndarray, s: np.ndarray, gamma: float):
     """Skew the data replicating life experience."""
+    for mean, std in x_bar:
+        print(mean, std)
+        print(skewnorm.pdf(mean, std))
+
     return x_bar + gamma * ((s * 2) - 1)[:, None]
 
 
@@ -67,7 +70,7 @@ def main():
     xi = 0.3
 
     x_bar = make_x_bar(k=k, n=samples)
-    x_bar_df = pd.DataFrame(x_bar, columns=[f"x_bar_{i}" for i in range(k)])
+    # x_bar_df = pd.DataFrame(x_bar, columns=[f"x_bar_{i}" for i in range(k)])
 
     s = make_s(alpha=0.5, n=samples)
     s_df = pd.DataFrame(s, columns=["sens"])
