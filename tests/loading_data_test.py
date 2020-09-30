@@ -28,6 +28,7 @@ from ethicml.data import (
     synthetic,
     toy,
 )
+from ethicml.data.tabular_data.third_way import third_way
 from ethicml.preprocessing import domain_split, query_dt
 from ethicml.utility import DataTuple, concat_dt
 
@@ -76,6 +77,7 @@ def test_can_load_test_data(data_root: Path):
         (sqf(split="Sex"), 12347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
         (sqf(split="Race"), 12347, 145, 139, 1, 2, 1, 2, "SQF Race"),
         (sqf(split="Race-Sex"), 12347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
+        (third_way(), 1000, 5, 5, 1, 2, 1, 2, "ThirdWay"),
         (toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
     ],
 )

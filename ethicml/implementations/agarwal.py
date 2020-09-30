@@ -29,7 +29,7 @@ class AgarwalArgs(InAlgoArgs):
     kernel: str
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
+def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data."""
     random.seed(888)
     np.random.seed(888)

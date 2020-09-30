@@ -164,8 +164,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
         data.y[y_col][data.s[s_col] == 1].value_counts() / data.y[y_col][data.s[s_col] == 1].count()
     )
 
-    y_0_label = y_s0.index[0]
-    y_1_label = y_s0.index[1]
+    y_0_label = data.y[y_col].value_counts().index.min()
+    y_1_label = data.y[y_col].value_counts().index.max()
 
     mpl.style.use("seaborn-pastel")
     # plt.xkcd()

@@ -2,6 +2,7 @@
 from .dataset import *
 from .load import *
 from .lookup import *
+from .tabular_data import third_way
 from .tabular_data.adult import *
 from .tabular_data.compas import *
 from .tabular_data.credit import *
@@ -24,5 +25,6 @@ available_tabular = [
     german.__name__,
     health.__name__,
     sqf.__name__,
+    third_way.__name__,
     toy.__name__,
 ]
