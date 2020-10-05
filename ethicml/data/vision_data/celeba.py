@@ -180,6 +180,7 @@ def _download(base: Path) -> None:
     if not common.TORCHVISION_AVAILABLE:
         raise RuntimeError("Need torchvision to download data.")
     import zipfile
+
     from torchvision.datasets.utils import download_file_from_google_drive
 
     if _check_integrity(base):
