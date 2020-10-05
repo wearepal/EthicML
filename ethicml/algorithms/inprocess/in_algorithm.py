@@ -25,6 +25,9 @@ class InAlgorithm(Algorithm):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            predictions
         """
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -48,6 +51,9 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            predictions
         """
         return run_blocking(self.run_async(train, test))
 
@@ -57,6 +63,9 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            predictions
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)

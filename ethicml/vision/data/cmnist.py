@@ -66,8 +66,9 @@ def create_cmnist_datasets(
         quant_level: the number of bins to quantize the data into.
         input_noise: Whether or not to add noise to the training images.
         classes_to_keep: Which digit classes to keep. If None or empty then all classes will be kept.
-    Returns: tuple of train and test data as a Dataset.
 
+    Returns:
+        tuple of train and test data as a Dataset.
     """
     np.random.seed(seed)
     random.seed(seed)

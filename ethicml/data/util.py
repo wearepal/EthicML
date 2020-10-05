@@ -6,7 +6,6 @@ __all__ = [
     "LabelSpec",
     "PartialLabelSpec",
     "simple_spec",
-    "get_concatenated_features",
     "filter_features_by_prefixes",
     "get_discrete_features",
     "group_disc_feat_indexes",
@@ -22,25 +21,6 @@ class PartialLabelSpec(NamedTuple):
 
 
 LabelSpec = Mapping[str, PartialLabelSpec]
-
-
-def get_concatenated_features(
-    s_prefix: List[str], y_prefix: List[str], continuous_features: List[str], discrete_only: bool
-) -> List[str]:
-    """Absolutely no idea why this is here.
-
-    It's not used anywhere. Mark for deletion.
-
-    Args:
-        s_prefix:
-        y_prefix:
-        continuous_features:
-        discrete_only:
-
-    Returns:
-        list of features prepended with the sensitive label and class label.
-    """
-    return s_prefix + y_prefix + continuous_features if discrete_only else s_prefix + y_prefix
 
 
 def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:

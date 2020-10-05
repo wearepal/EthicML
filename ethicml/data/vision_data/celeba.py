@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Tuple, Union
 from typing_extensions import Final, Literal
 
 from ethicml import common
+
 from ..dataset import Dataset
 from ..util import PartialLabelSpec, flatten_dict, label_specs_to_feature_list
 

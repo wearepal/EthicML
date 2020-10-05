@@ -1,6 +1,6 @@
 [tool.black]
 line-length = 100
-target_version = ['py37']
+target-version = ['py36']
 include = '''
 (
   ethicml/(.*).pyi?$
@@ -40,3 +40,30 @@ exclude = '''
 )
 '''
 skip-string-normalization = true
+
+[tool.isort]
+include_trailing_comma = "True"
+known_third_party = [
+  "PIL",
+  "black",
+  "fairlearn",
+  "git",
+  "matplotlib",
+  "mypy",
+  "numpy",
+  "pandas",
+  "pylint",
+  "pytest",
+  "scipy",
+  "seaborn",
+  "setuptools",
+  "sklearn",
+  "tap",
+  "teext",
+  "torch",
+  "torchvision",
+  "tqdm",
+  "typing_extensions",
+]
+line_length = 100
+multi_line_output = 3

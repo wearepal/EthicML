@@ -27,6 +27,7 @@ class PostAlgorithm(Algorithm):
             train: the training set with the correct labels and sensitive attributes
             test_predictions: predictions on the test set
             test: the test set with the sensitive attributes
-        Return:
+
+        Returns:
             post-processed predictions on the test set
         """

@@ -16,7 +16,6 @@ repos:
     rev: 20.8b1
     hooks:
     - id: black
-      args: [--config=.black-config.toml]
       language_version: python3.7
 -   repo: https://github.com/pycqa/pydocstyle
     rev: 5.1.0  # pick a git hash / tag to point to
