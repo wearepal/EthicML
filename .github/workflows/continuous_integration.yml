@@ -70,7 +70,7 @@ jobs:
       run: |
         python -m black --check -l 100 -t py36 -S ethicml/
         python -m black --check -l 100 -t py36 -S tests/
-        isort --check
+        isort . --check --diff
 
   type_check_with_mypy:
 
