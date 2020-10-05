@@ -8,9 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import InAlgorithmAsync
-from ethicml.utility import DataTuple, TestTuple
+from ethicml import DataTuple, InAlgorithmAsync, TestTuple, run_blocking
 
 
 def test_simple_saving() -> None:

@@ -4,15 +4,30 @@ from typing import List, Tuple
 import pytest
 from matplotlib import pyplot as plt
 
-import ethicml as em
-from ethicml.algorithms.inprocess import LR, SVM, Kamiran
-from ethicml.algorithms.preprocess import Upsampler
-from ethicml.data import adult, load_data, toy
-from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
-from ethicml.preprocessing import train_test_split
-from ethicml.utility import DataTuple, Results, TrainTestPair
-from ethicml.visualisation import plot_results, save_2d_plot, save_jointplot, save_label_plot
-from ethicml.visualisation.plot import save_multijointplot
+from ethicml import (
+    CV,
+    LR,
+    NMI,
+    SVM,
+    TPR,
+    Accuracy,
+    DataTuple,
+    Kamiran,
+    ProbPos,
+    Results,
+    TrainTestPair,
+    Upsampler,
+    adult,
+    evaluate_models,
+    load_data,
+    plot_results,
+    save_2d_plot,
+    save_jointplot,
+    save_label_plot,
+    save_multijointplot,
+    toy,
+    train_test_split,
+)
 
 
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
@@ -57,7 +72,7 @@ def test_label_plot():
 @pytest.mark.usefixtures("plot_cleanup")
 def test_plot_evals():
     """Test plot evals."""
-    results: Results = em.evaluate_models(
+    results: Results = evaluate_models(
         datasets=[adult(), toy()],
         preprocess_models=[Upsampler(strategy="preferential")],
         inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],

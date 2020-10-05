@@ -7,28 +7,39 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import ethicml as em
-from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import (
+from ethicml import (
     DRO,
     LR,
     LRCV,
     MLP,
     SVM,
+    AbsCV,
+    Accuracy,
     Agarwal,
+    Blind,
     Corels,
+    CrossValidator,
+    DataTuple,
+    Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
     InstalledModel,
     Kamiran,
     LRProb,
     Majority,
+    Metric,
+    Prediction,
+    SoftPrediction,
+    TrainTestPair,
+    compas,
+    evaluate_models_async,
+    load_data,
+    query_dt,
+    run_blocking,
+    run_in_parallel,
+    toy,
+    train_test_split,
 )
-from ethicml.algorithms.inprocess.blind import Blind
-from ethicml.data import compas, load_data, toy
-from ethicml.metrics import AbsCV, Accuracy, Metric
-from ethicml.preprocessing import query_dt, train_test_split
-from ethicml.utility import DataTuple, Heaviside, Prediction, SoftPrediction, TrainTestPair
 from tests.run_algorithm_test import count_true
 
 
@@ -93,7 +104,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
     hyperparams: Dict[str, List[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
-    lr_cv = em.CrossValidator(LR, hyperparams, folds=3)
+    lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
 
@@ -194,7 +205,7 @@ def test_agarwal(toy_train_test: TrainTestPair):
     expected_results.append((42, 38))
 
     results = run_blocking(
-        em.run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
+        run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
     )
 
     for model, results_for_model, model_name, (pred_true, pred_false) in zip(
@@ -219,7 +230,7 @@ def test_threaded_agarwal():
             )
 
     results = run_blocking(
-        em.evaluate_models_async(
+        evaluate_models_async(
             datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
         )
     )

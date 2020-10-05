@@ -8,29 +8,26 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml.common import ROOT_PATH
-from ethicml.data import load_data, toy
-from ethicml.preprocessing import train_test_split
-from ethicml.utility import DataTuple, TrainTestPair
+from ethicml import DataTuple, TrainTestPair
 
 
 @pytest.fixture(scope="session")
 def toy_train_test() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = load_data(toy())
+    data: DataTuple = em.toy().load()
     train: DataTuple
     test: DataTuple
-    train, test = train_test_split(data)
+    train, test = em.train_test_split(data)
     return TrainTestPair(train, test.remove_y())
 
 
 @pytest.fixture(scope="session")
 def toy_train_val() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = load_data(toy())
+    data: DataTuple = em.toy().load()
     train: DataTuple
     test: DataTuple
-    train, test = train_test_split(data)
+    train, test = em.train_test_split(data)
     return TrainTestPair(train, test)
 
 
@@ -74,7 +71,7 @@ def simple_data() -> DataTuple:
 @pytest.fixture(scope="session")
 def data_root() -> Path:
     """Common data root."""
-    return ROOT_PATH / "data" / "csvs"
+    return em.ROOT_PATH / "data" / "csvs"
 
 
 @pytest.fixture(scope="function")

@@ -1,32 +1,20 @@
-"""
-Test preprocessing capabilities
-"""
+"""Test preprocessing capabilities."""
 import math
 from typing import Tuple
 
 import pandas as pd
 from pytest import approx
 
-from ethicml.data import adult, load_data, toy
-from ethicml.preprocessing import (
-    BalancedTestSplit,
-    ProportionalSplit,
-    SequentialSplit,
-    bin_cont_feats,
-    get_biased_and_debiased_subsets,
-    get_biased_subset,
-    query_dt,
-    train_test_split,
-)
-from ethicml.utility import DataTuple
+import ethicml as em
+from ethicml import DataTuple, ProportionalSplit
 
 from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
     """test train test split"""
-    data: DataTuple = load_data(toy())
-    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    data: DataTuple = em.load_data(em.toy())
+    train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train, test = train_test
     assert train is not None
     assert test is not None
@@ -44,32 +32,32 @@ def test_train_test_split():
     assert test.s.shape[0] == NUM_SAMPLES - len_default
 
     len_0_9 = math.floor((NUM_SAMPLES / 100) * 90)
-    train, test = train_test_split(data, train_percentage=0.9)
+    train, test = em.train_test_split(data, train_percentage=0.9)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == NUM_SAMPLES - len_0_9
 
     len_0_7 = math.floor((NUM_SAMPLES / 100) * 70)
-    train, test = train_test_split(data, train_percentage=0.7)
+    train, test = em.train_test_split(data, train_percentage=0.7)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == NUM_SAMPLES - len_0_7
 
     len_0_5 = math.floor((NUM_SAMPLES / 100) * 50)
-    train, test = train_test_split(data, train_percentage=0.5)
+    train, test = em.train_test_split(data, train_percentage=0.5)
     assert train.s.shape[0] == len_0_5
     assert test.s.shape[0] == NUM_SAMPLES - len_0_5
 
     len_0_3 = math.floor((NUM_SAMPLES / 100) * 30)
-    train, test = train_test_split(data, train_percentage=0.3)
+    train, test = em.train_test_split(data, train_percentage=0.3)
     assert train.s.shape[0] == len_0_3
     assert test.s.shape[0] == NUM_SAMPLES - len_0_3
 
     len_0_1 = math.floor((NUM_SAMPLES / 100) * 10)
-    train, test = train_test_split(data, train_percentage=0.1)
+    train, test = em.train_test_split(data, train_percentage=0.1)
     assert train.s.shape[0] == len_0_1
     assert test.s.shape[0] == NUM_SAMPLES - len_0_1
 
     len_0_0 = math.floor((NUM_SAMPLES / 100) * 0)
-    train, test = train_test_split(data, train_percentage=0.0)
+    train, test = em.train_test_split(data, train_percentage=0.0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
     assert test.s.shape[0] == NUM_SAMPLES - len_0_0
@@ -78,7 +66,7 @@ def test_train_test_split():
 
 def test_prop_train_test_split():
     """test prop train test split"""
-    data: DataTuple = load_data(toy())
+    data: DataTuple = em.load_data(em.toy())
     train: DataTuple
     test: DataTuple
     train, test, _ = ProportionalSplit(train_percentage=0.8)(data, split_id=0)
@@ -147,8 +135,8 @@ def test_prop_train_test_split():
 
 def test_random_seed():
     """test random seed"""
-    data: DataTuple = load_data(toy())
-    train_test_0: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    data: DataTuple = em.load_data(em.toy())
+    train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train_0, test_0 = train_test_0
     assert train_0 is not None
     assert test_0 is not None
@@ -159,7 +147,7 @@ def test_random_seed():
     assert train_0.x.shape[0] == train_0.s.shape[0]
     assert train_0.s.shape[0] == train_0.y.shape[0]
 
-    train_test_1: Tuple[DataTuple, DataTuple] = train_test_split(data, random_seed=1)
+    train_test_1: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=1)
     train_1, test_1 = train_test_1
     assert train_1 is not None
     assert test_1 is not None
@@ -170,7 +158,7 @@ def test_random_seed():
     assert train_1.x.shape[0] == train_1.s.shape[0]
     assert train_1.s.shape[0] == train_1.y.shape[0]
 
-    train_test_2: Tuple[DataTuple, DataTuple] = train_test_split(data, random_seed=2)
+    train_test_2: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=2)
     train_2, test_2 = train_test_2
     assert train_2 is not None
     assert test_2 is not None
@@ -181,7 +169,7 @@ def test_random_seed():
     assert train_2.x.shape[0] == train_2.s.shape[0]
     assert train_2.s.shape[0] == train_2.y.shape[0]
 
-    train_test_3: Tuple[DataTuple, DataTuple] = train_test_split(data, random_seed=3)
+    train_test_3: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=3)
     train_3, test_3 = train_test_3
     assert train_3 is not None
     assert test_3 is not None
@@ -195,9 +183,9 @@ def test_random_seed():
 
 def test_binning():
     """test binning"""
-    data: DataTuple = load_data(adult())
+    data: DataTuple = em.load_data(em.adult())
 
-    binned: DataTuple = bin_cont_feats(data)
+    binned: DataTuple = em.bin_cont_feats(data)
 
     assert len([col for col in binned.x.columns if col not in data.x.columns]) == 25
     assert "age" not in binned.x.columns
@@ -205,10 +193,10 @@ def test_binning():
 
 def test_sequential_split():
     """test sequential split"""
-    data: DataTuple = load_data(toy())
+    data: DataTuple = em.load_data(em.toy())
     train: DataTuple
     test: DataTuple
-    train, test, _ = SequentialSplit(train_percentage=0.8)(data)
+    train, test, _ = em.SequentialSplit(train_percentage=0.8)(data)
     assert all(data.x.iloc[0] == train.x.iloc[0])
     assert all(data.x.iloc[-1] == test.x.iloc[-1])
     assert len(train) == 320
@@ -225,7 +213,7 @@ def test_biased_split():
     )
 
     # =================================== mixing factor = 0 =======================================
-    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s=y everywhere; `subset` is just a subset of `data`
 
     assert biased1.s.shape == (313, 1)
@@ -243,7 +231,7 @@ def test_biased_split():
     data_mean = (data.s.to_numpy() == data.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(
+    biased2, debiased = em.get_biased_and_debiased_subsets(
         data, mixing_factor=0.0, unbiased_pcnt=0.5, fixed_unbiased=True
     )
     # expected behavior: in biased2, s=y everywhere; in debiased, 50% s=y and 50% s!=y
@@ -262,7 +250,7 @@ def test_biased_split():
     assert count == 374 // 2
 
     # ================================= mixing factor = 0.5 =======================================
-    biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
     # expected behavior: biased1 and `subset` are both just subsets of `data`
 
     assert biased1.s.shape[0] == approx(500, abs=4)
@@ -278,7 +266,7 @@ def test_biased_split():
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(
+    biased2, debiased = em.get_biased_and_debiased_subsets(
         data, mixing_factor=0.5, unbiased_pcnt=0.5, fixed_unbiased=True
     )
     # expected behavior: biased2 is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
@@ -299,7 +287,7 @@ def test_biased_split():
     assert count == 374 // 2
 
     # ================================== mixing factor = 1 ========================================
-    biased1, subset = get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s!=y everywhere; `subset` is just a subset of `data`
 
     assert biased1.s.shape == (188, 1)
@@ -313,7 +301,7 @@ def test_biased_split():
     subset_mean = (subset.s.to_numpy() == subset.y.to_numpy()).mean()
     assert subset_mean == approx(data_mean, abs=0.01)
 
-    biased2, debiased = get_biased_and_debiased_subsets(
+    biased2, debiased = em.get_biased_and_debiased_subsets(
         data, mixing_factor=1.0, unbiased_pcnt=0.5, fixed_unbiased=True
     )
     # expected behavior: in biased2, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
@@ -341,16 +329,16 @@ def test_biased_split_sizes():
         name="TestData",
     )
 
-    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.8)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.8)
     assert len(biased1) < len(subset)
-    biased1, subset = get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.2)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.2)
     assert len(biased1) > len(subset)
 
-    biased2, debiased = get_biased_and_debiased_subsets(
+    biased2, debiased = em.get_biased_and_debiased_subsets(
         data, mixing_factor=0.0, unbiased_pcnt=0.8, fixed_unbiased=True
     )
     assert len(biased2) < len(debiased)
-    biased2, debiased = get_biased_and_debiased_subsets(
+    biased2, debiased = em.get_biased_and_debiased_subsets(
         data, mixing_factor=0.0, unbiased_pcnt=0.2, fixed_unbiased=True
     )
     assert len(biased2) > len(debiased)
@@ -366,24 +354,24 @@ def test_biased_split_nonbinary():
         name="TestData",
     )
 
-    biased1, subset = get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
+    biased1, subset = em.get_biased_subset(data, mixing_factor=0.5, unbiased_pcnt=0.5)
     assert len(biased1) == approx(len(subset), abs=4)
 
 
 def test_balanced_test_split(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
-    train, test, split_info = BalancedTestSplit(train_percentage=train_percentage)(simple_data)
+    train, test, split_info = em.BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
     # check that the split for training set was proportional
     assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
     assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
-    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 150)
-    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 150)
-    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 150)
+    assert len(em.query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 150)
+    assert len(em.query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
 
     # check how many samples were droppped
     assert split_info["percent_dropped"] == 0.496
@@ -392,7 +380,7 @@ def test_balanced_test_split(simple_data: DataTuple):
 def test_balanced_test_split_by_s(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
-    train, test, split_info = BalancedTestSplit(
+    train, test, split_info = em.BalancedTestSplit(
         balance_type="P(y|s)=0.5", train_percentage=train_percentage
     )(simple_data)
 
@@ -401,10 +389,10 @@ def test_balanced_test_split_by_s(simple_data: DataTuple):
     assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
-    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 250)
-    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 250)
+    assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 250)
+    assert len(em.query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 250)
 
     # check how many samples were droppped
     assert split_info["percent_dropped"] == 0.304
@@ -413,7 +401,7 @@ def test_balanced_test_split_by_s(simple_data: DataTuple):
 def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
-    train, test, split_info = BalancedTestSplit(
+    train, test, split_info = em.BalancedTestSplit(
         balance_type="P(s,y)=0.25", train_percentage=train_percentage
     )(simple_data)
 
@@ -422,10 +410,10 @@ def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
     assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
-    assert len(query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 100)
-    assert len(query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 0 & y == 1")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 1 & y == 0")) == round((1 - train_percentage) * 100)
+    assert len(em.query_dt(test, "s == 1 & y == 1")) == round((1 - train_percentage) * 100)
 
     # check how many samples were droppped
     assert split_info["percent_dropped"] == 0.6
