@@ -22,6 +22,9 @@ class PreAlgorithm(Algorithm):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            a tuple of the pre-processed training data and the test data
         """
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
@@ -40,6 +43,9 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            a tuple of the pre-processed training data and the test data
         """
         return run_blocking(self.run_async(train, test))
 
@@ -49,6 +55,9 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         Args:
             train: training data
             test: test data
+
+        Returns:
+            a tuple of the pre-processed training data and the test data
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)

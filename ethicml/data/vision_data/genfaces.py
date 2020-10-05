@@ -81,6 +81,7 @@ def _check_integrity(base: Path) -> bool:
 def _download(base: Path) -> None:
     """Attempt to download data if files cannot be found in the base folder."""
     import zipfile
+
     from torchvision.datasets.utils import download_file_from_google_drive
 
     if _check_integrity(base):
