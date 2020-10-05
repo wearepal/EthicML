@@ -6,24 +6,30 @@ import pytest
 from pytest import approx
 
 import ethicml as em
-from ethicml.algorithms.inprocess import LR, LRCV, SVM, InAlgorithm
-from ethicml.data import adult, load_data, nonbinary_toy
-from ethicml.metrics import (
+from ethicml import (
     BCR,
     CV,
+    LR,
+    LRCV,
     NMI,
     NPV,
     PPV,
+    SVM,
     TNR,
     TPR,
     Accuracy,
+    BalancedTestSplit,
+    DataTuple,
+    InAlgorithm,
     LabelOutOfBounds,
+    Prediction,
     ProbPos,
     RenyiCorrelation,
     Yanovich,
+    load_data,
+    nonbinary_toy,
+    train_test_split,
 )
-from ethicml.preprocessing import BalancedTestSplit, train_test_split
-from ethicml.utility import DataTuple, Prediction
 from ethicml.utility.data_structures import TrainValPair
 
 
@@ -122,7 +128,7 @@ def test_get_info(toy_train_val: TrainValPair):
 
 def test_tpr_diff_non_binary_race():
     """test tpr diff non binary race"""
-    data: DataTuple = load_data(adult("Race"))
+    data: DataTuple = load_data(em.adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -160,7 +166,7 @@ def test_tpr_diff_non_binary_race():
 
 def test_tpr_ratio_non_binary_race():
     """test tpr ratio non binary race"""
-    data: DataTuple = load_data(adult("Race"))
+    data: DataTuple = load_data(em.adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -347,7 +353,7 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
 
 def test_dependence_measures_adult() -> None:
     """test dependence measures"""
-    data = load_data(adult(split="Sex"))
+    data = load_data(em.adult(split="Sex"))
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)
 

@@ -6,14 +6,15 @@ import pandas as pd
 from pytest import approx
 
 import ethicml as em
+from ethicml import DataTuple, ProportionalSplit
 
 from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
     """test train test split"""
-    data: em.DataTuple = em.load_data(em.toy())
-    train_test: Tuple[em.DataTuple, em.DataTuple] = em.train_test_split(data)
+    data: DataTuple = em.load_data(em.toy())
+    train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train, test = train_test
     assert train is not None
     assert test is not None
@@ -65,10 +66,10 @@ def test_train_test_split():
 
 def test_prop_train_test_split():
     """test prop train test split"""
-    data: em.DataTuple = em.load_data(em.toy())
-    train: em.DataTuple
-    test: em.DataTuple
-    train, test, _ = em.ProportionalSplit(train_percentage=0.8)(data, split_id=0)
+    data: DataTuple = em.load_data(em.toy())
+    train: DataTuple
+    test: DataTuple
+    train, test, _ = ProportionalSplit(train_percentage=0.8)(data, split_id=0)
     assert train is not None
     assert test is not None
     assert train.x.shape[0] > test.x.shape[0]
@@ -88,7 +89,7 @@ def test_prop_train_test_split():
     assert count_true(train.y.to_numpy() == 0) == round(0.8 * count_true(data.y.to_numpy() == 0))
 
     len_0_9 = math.floor((NUM_SAMPLES / 100) * 90)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.9)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == NUM_SAMPLES - len_0_9
     assert count_true(train.s.to_numpy() == 0) == approx(
@@ -99,7 +100,7 @@ def test_prop_train_test_split():
     )
 
     len_0_7 = math.floor((NUM_SAMPLES / 100) * 70)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.7)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == NUM_SAMPLES - len_0_7
     assert count_true(train.s.to_numpy() == 0) == approx(
@@ -110,22 +111,22 @@ def test_prop_train_test_split():
     )
 
     len_0_5 = math.floor((NUM_SAMPLES / 100) * 50)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.5)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.5)(data, split_id=0)
     assert train.s.shape[0] == len_0_5
     assert test.s.shape[0] == NUM_SAMPLES - len_0_5
 
     len_0_3 = math.floor((NUM_SAMPLES / 100) * 30)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.3)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.3)(data, split_id=0)
     assert train.s.shape[0] == len_0_3
     assert test.s.shape[0] == NUM_SAMPLES - len_0_3
 
     len_0_1 = math.floor((NUM_SAMPLES / 100) * 10)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.1)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.1)(data, split_id=0)
     assert train.s.shape[0] == len_0_1
     assert test.s.shape[0] == NUM_SAMPLES - len_0_1
 
     len_0_0 = math.floor((NUM_SAMPLES / 100) * 0)
-    train, test, _ = em.ProportionalSplit(train_percentage=0.0)(data, split_id=0)
+    train, test, _ = ProportionalSplit(train_percentage=0.0)(data, split_id=0)
     assert train.s.shape[0] == len_0_0
     assert train.name == "Toy - Train"
     assert test.s.shape[0] == NUM_SAMPLES - len_0_0
@@ -134,8 +135,8 @@ def test_prop_train_test_split():
 
 def test_random_seed():
     """test random seed"""
-    data: em.DataTuple = em.load_data(em.toy())
-    train_test_0: Tuple[em.DataTuple, em.DataTuple] = em.train_test_split(data)
+    data: DataTuple = em.load_data(em.toy())
+    train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train_0, test_0 = train_test_0
     assert train_0 is not None
     assert test_0 is not None
@@ -146,7 +147,7 @@ def test_random_seed():
     assert train_0.x.shape[0] == train_0.s.shape[0]
     assert train_0.s.shape[0] == train_0.y.shape[0]
 
-    train_test_1: Tuple[em.DataTuple, em.DataTuple] = em.train_test_split(data, random_seed=1)
+    train_test_1: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=1)
     train_1, test_1 = train_test_1
     assert train_1 is not None
     assert test_1 is not None
@@ -157,7 +158,7 @@ def test_random_seed():
     assert train_1.x.shape[0] == train_1.s.shape[0]
     assert train_1.s.shape[0] == train_1.y.shape[0]
 
-    train_test_2: Tuple[em.DataTuple, em.DataTuple] = em.train_test_split(data, random_seed=2)
+    train_test_2: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=2)
     train_2, test_2 = train_test_2
     assert train_2 is not None
     assert test_2 is not None
@@ -168,7 +169,7 @@ def test_random_seed():
     assert train_2.x.shape[0] == train_2.s.shape[0]
     assert train_2.s.shape[0] == train_2.y.shape[0]
 
-    train_test_3: Tuple[em.DataTuple, em.DataTuple] = em.train_test_split(data, random_seed=3)
+    train_test_3: Tuple[DataTuple, DataTuple] = em.train_test_split(data, random_seed=3)
     train_3, test_3 = train_test_3
     assert train_3 is not None
     assert test_3 is not None
@@ -182,9 +183,9 @@ def test_random_seed():
 
 def test_binning():
     """test binning"""
-    data: em.DataTuple = em.load_data(em.adult())
+    data: DataTuple = em.load_data(em.adult())
 
-    binned: em.DataTuple = em.bin_cont_feats(data)
+    binned: DataTuple = em.bin_cont_feats(data)
 
     assert len([col for col in binned.x.columns if col not in data.x.columns]) == 25
     assert "age" not in binned.x.columns
@@ -192,9 +193,9 @@ def test_binning():
 
 def test_sequential_split():
     """test sequential split"""
-    data: em.DataTuple = em.load_data(em.toy())
-    train: em.DataTuple
-    test: em.DataTuple
+    data: DataTuple = em.load_data(em.toy())
+    train: DataTuple
+    test: DataTuple
     train, test, _ = em.SequentialSplit(train_percentage=0.8)(data)
     assert all(data.x.iloc[0] == train.x.iloc[0])
     assert all(data.x.iloc[-1] == test.x.iloc[-1])
@@ -204,7 +205,7 @@ def test_sequential_split():
 
 def test_biased_split():
     """test biased split"""
-    data = em.DataTuple(
+    data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
         y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
@@ -321,7 +322,7 @@ def test_biased_split():
 
 def test_biased_split_sizes():
     """test biased split sizes"""
-    data = em.DataTuple(
+    data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
         y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
@@ -346,7 +347,7 @@ def test_biased_split_sizes():
 def test_biased_split_nonbinary():
     """test biased split nonbinary"""
     # generate data that uses -1 and 1 instead of 0 and 1 for s and y
-    data = em.DataTuple(
+    data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.DataFrame([1] * 750 + [-1] * 250, columns=["sens="]),
         y=pd.DataFrame([1] * 500 + [-1] * 250 + [1] * 125 + [-1] * 125, columns=["label<"]),
@@ -357,7 +358,7 @@ def test_biased_split_nonbinary():
     assert len(biased1) == approx(len(subset), abs=4)
 
 
-def test_balanced_test_split(simple_data: em.DataTuple):
+def test_balanced_test_split(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(train_percentage=train_percentage)(simple_data)
@@ -376,7 +377,7 @@ def test_balanced_test_split(simple_data: em.DataTuple):
     assert split_info["percent_dropped"] == 0.496
 
 
-def test_balanced_test_split_by_s(simple_data: em.DataTuple):
+def test_balanced_test_split_by_s(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(
@@ -397,7 +398,7 @@ def test_balanced_test_split_by_s(simple_data: em.DataTuple):
     assert split_info["percent_dropped"] == 0.304
 
 
-def test_balanced_test_split_by_s_and_y(simple_data: em.DataTuple):
+def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
     """test biased split sizes"""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(
