@@ -51,6 +51,7 @@ setup(
         "dev": [
             "black",
             "data-science-types",
+            "isort == 5.5.4",
             "mypy",
             "pydocstyle",
             "pylint",
