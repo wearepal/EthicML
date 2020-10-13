@@ -25,6 +25,7 @@ from ethicml import (
     InAlgorithmAsync,
     InstalledModel,
     Kamiran,
+    Laftr,
     LRProb,
     Majority,
     Metric,
@@ -61,6 +62,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5), num_pos=45),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0), num_pos=59),
+    InprocessTest(name="Laftr Supervised", model=Laftr(dataset='toy'), num_pos=44),
 ]
 
 

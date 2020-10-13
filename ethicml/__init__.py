@@ -7,6 +7,7 @@ from .algorithms.inprocess.in_algorithm import *
 from .algorithms.inprocess.installed_model import *
 from .algorithms.inprocess.kamiran import *
 from .algorithms.inprocess.kamishima import *
+from .algorithms.inprocess.laftr import *
 from .algorithms.inprocess.logistic_regression import *
 from .algorithms.inprocess.majority import *
 from .algorithms.inprocess.manual import *

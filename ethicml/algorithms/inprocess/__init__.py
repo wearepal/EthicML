@@ -6,6 +6,7 @@ from .installed_model import *
 from .kamiran import *
 from .kamishima import *
 from .kamishima import Kamishima
+from .laftr import *
 from .logistic_regression import *
 from .majority import *
 from .manual import *
