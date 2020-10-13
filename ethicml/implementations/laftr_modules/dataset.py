@@ -1,7 +1,6 @@
 """Torch Dataset wrapper for EthicML."""
 
-from itertools import groupby
-from typing import TYPE_CHECKING, Iterator, List, Tuple
+from typing import TYPE_CHECKING, Dict, List, Sequence, Tuple, Union
 
 import numpy as np
 import torch
@@ -16,25 +15,11 @@ else:
     BaseDataset = Dataset
 
 
-def group_features(disc_feats: List[str]) -> Iterator[Tuple[str, Iterator[str]]]:
-    """Group discrete features names according to the first segment of their name."""
-
-    def _first_segment(feature_name: str) -> str:
-        return feature_name.split("_")[0]
-
-    return groupby(disc_feats, _first_segment)
-
-
-def grouped_features_indexes(disc_feats: List[str]) -> List[slice]:
-    """Group discrete features names according to the first segment of their name.
-
-    Then return a list of their corresponding slices (assumes order is maintained).
-    """
-    group_iter = group_features(disc_feats)
-
+def grouped_features_slices(disc_feature_groups: Dict[str, List[str]]) -> List[slice]:
+    """Find slices that correspond to the given feature groups."""
     feature_slices = []
     start_idx = 0
-    for _, group in group_iter:
+    for group in disc_feature_groups.values():
         len_group = len(list(group))
         indexes = slice(start_idx, start_idx + len_group)
         feature_slices.append(indexes)
@@ -48,35 +33,36 @@ class DataTupleDataset(BaseDataset):
 
     def __init__(
         self,
-        dataset: DataTuple,
-        disc_features: List[str],
-        cont_features: List[str],
+        dataset: Union[DataTuple, TestTuple],
+        disc_feature_groups: Dict[str, List[str]],
+        cont_features: Sequence[str],
     ):
         """Create DataTupleDataset."""
+        cont_features = [feat for feat in cont_features if feat in dataset.x.columns]
+
+        # order the discrete features as they are in the dictionary `disc_feature_groups`
+        discrete_features_in_order: List[str] = []
+        for group in disc_feature_groups.values():
+            discrete_features_in_order += group
+
+        # get slices that correspond to that ordering
+        self.disc_feature_group_slices = grouped_features_slices(disc_feature_groups)
+
+        self.x_disc = dataset.x[discrete_features_in_order].to_numpy(dtype=np.float32)
+        self.x_cont = dataset.x[cont_features].to_numpy(dtype=np.float32)
+        # self.s = dataset.s.to_numpy(dtype=np.float32)
+        # self.y = dataset.y.to_numpy(dtype=np.float32)
+
+        _, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(dataset)
         if isinstance(dataset, DataTuple):
+            self.y = dataset.y.to_numpy(dtype=np.float32)
+            self.ydim = dataset.y.shape[1]
+            self.y_names = dataset.y.columns
             self.train = True
         elif isinstance(dataset, TestTuple):
             self.train = False
         else:
             raise NotImplementedError("Should only be a DataTuple or a TestTuple")
-
-        disc_features = [feat for feat in disc_features if feat in dataset.x.columns]
-        self.disc_features = disc_features
-
-        cont_features = [feat for feat in cont_features if feat in dataset.x.columns]
-        self.cont_features = cont_features
-        self.feature_groups = dict(discrete=grouped_features_indexes(self.disc_features))
-
-        self.x_disc = dataset.x[self.disc_features].to_numpy(dtype=np.float32)
-        self.x_cont = dataset.x[self.cont_features].to_numpy(dtype=np.float32)
-        # self.s = dataset.s.to_numpy(dtype=np.float32)
-        # self.y = dataset.y.to_numpy(dtype=np.float32)
-
-        _, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(dataset)
-        if self.train:
-            self.y = dataset.y.to_numpy(dtype=np.float32)
-            self.ydim = dataset.y.shape[1]
-            self.y_names = dataset.y.columns
 
     def __len__(self) -> int:
         return self.s.shape[0]

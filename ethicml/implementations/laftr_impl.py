@@ -13,11 +13,12 @@ from torch.utils.data import DataLoader
 
 from ethicml import LRCV, Accuracy, DataTuple, Majority, Prediction, TestTuple, Union
 from ethicml.algorithms.inprocess.blind import Blind
-from ethicml.implementations.laftr_modules.autoencoder import LaftrAE
-from ethicml.implementations.laftr_modules.common import get_device
-from ethicml.implementations.laftr_modules.data_lookup import data_lookup
-from ethicml.implementations.laftr_modules.dataset import DataTupleDataset
-from ethicml.implementations.utils import InAlgoArgs
+
+from .laftr_modules.autoencoder import LaftrAE
+from .laftr_modules.common import get_device
+from .laftr_modules.data_lookup import data_lookup
+from .laftr_modules.dataset import DataTupleDataset
+from .utils import InAlgoArgs
 
 
 class Datasets(str, Enum):
@@ -56,9 +57,13 @@ class LaftrArgs(InAlgoArgs):
 def load_ethicml_data(datatuple: Union[DataTuple, TestTuple], dataset: str) -> DataTupleDataset:
     """Load an EthicML Dataset."""
     dataset_obj = data_lookup(dataset)
-    disc_features = dataset_obj.discrete_features
+    disc_feature_groups = dataset_obj.disc_feature_groups
+    if disc_feature_groups is None:
+        raise ValueError("Can only run on datasets with feature groups.")
     cont_features = dataset_obj.cont_features
-    return DataTupleDataset(datatuple, disc_features=disc_features, cont_features=cont_features)
+    return DataTupleDataset(
+        datatuple, disc_feature_groups=disc_feature_groups, cont_features=cont_features
+    )
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: LaftrArgs) -> pd.Series:
@@ -85,7 +90,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: LaftrArgs) -> pd.
         latent_dim=args.enc_ld,
         blocks=args.enc_blocks,
         hidden_multiplier=args.enc_hidden_multiplier,
-        feature_groups=train_data.feature_groups,
+        feature_groups=train_data.disc_feature_group_slices,
     )
     encoder.device = device
     enc_optimizer = Adam(encoder.parameters(), lr=args.lr, weight_decay=args.weight_decay)

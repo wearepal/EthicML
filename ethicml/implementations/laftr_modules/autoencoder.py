@@ -1,7 +1,7 @@
 """Autoencoder for X."""
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union, overload
 
 import numpy as np
 import torch
@@ -9,6 +9,7 @@ import torch.distributions as td
 import torch.nn.functional as F
 from torch import Tensor, nn
 from torch.utils.data import DataLoader
+from typing_extensions import Literal
 
 from ethicml import implements
 from ethicml.implementations.laftr_modules.base_model import BaseModel
@@ -117,7 +118,7 @@ class LaftrAE(BaseModel):
         latent_dim: int,
         blocks: int,
         hidden_multiplier: int,
-        feature_groups: List[str],
+        disc_feature_group_slices: List[slice],
     ):
         super().__init__()
         self.enc = Encoder(in_size, latent_dim, blocks=blocks, hid_multiplier=hidden_multiplier)
@@ -125,7 +126,7 @@ class LaftrAE(BaseModel):
         self.dec = Decoder(latent_dim, in_size, blocks=blocks, hid_multiplier=hidden_multiplier)
         self.pred = Predictor(latent_dim, blocks=blocks, hid_multiplier=hidden_multiplier)
         self._optim: Optional[torch.optim.Optimizer] = None
-        self.feature_groups = feature_groups
+        self.disc_feature_group_slices = disc_feature_group_slices
 
     @implements(nn.Module)
     def forward(self, x: Tensor, s: Tensor) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
@@ -194,7 +195,7 @@ class LaftrAE(BaseModel):
         enc_latent_norm = 0.0
         enc_pred_loss = 0.0
         _adv_weight = 0.0 if warmup else adv_weight
-        for batch_idx, (data_x, data_s, data_y) in enumerate(data_loader):
+        for _, (data_x, data_s, data_y) in enumerate(data_loader):
             data_x = data_x.to(device)
             data_s = data_s.to(device)
 
@@ -204,19 +205,19 @@ class LaftrAE(BaseModel):
             feat_sens_loss = F.binary_cross_entropy_with_logits(s_pred, data_s, reduction="mean")
             pred_loss = F.binary_cross_entropy_with_logits(y_pred, data_y, reduction="mean")
 
-            if self.feature_groups["discrete"]:
+            if self.disc_feature_group_slices:
                 recon_loss = F.mse_loss(
-                    x_pred[:, slice(self.feature_groups["discrete"][-1].stop, data_x.shape[1])],
-                    data_x[:, slice(self.feature_groups["discrete"][-1].stop, data_x.shape[1])],
+                    x_pred[:, slice(self.disc_feature_group_slices[-1].stop, data_x.shape[1])],
+                    data_x[:, slice(self.disc_feature_group_slices[-1].stop, data_x.shape[1])],
                     reduction="mean",
                 )
-                for group_slice in self.feature_groups["discrete"]:
+                for group_slice in self.disc_feature_group_slices:
                     recon_loss += F.cross_entropy(
                         x_pred[:, group_slice],
                         torch.argmax(data_x[:, group_slice], dim=-1),
                         reduction="mean",
                     )
-                # recon_loss /= len(self.feature_groups["discrete"]) + 1
+                # recon_loss /= len(self.disc_feature_group_slices) + 1
 
             else:
                 recon_loss = F.mse_loss(x_pred, data_x, reduction="mean")
@@ -275,14 +276,22 @@ class LaftrAE(BaseModel):
 
     def invert(self, z, discretize: bool = True) -> Tensor:
         """Go from soft to discrete features."""
-        if discretize and self.feature_groups["discrete"]:
-            for group_slice in self.feature_groups["discrete"]:
+        if discretize and self.disc_feature_group_slices:
+            for group_slice in self.disc_feature_group_slices:
                 one_hot = self.to_discrete(z[:, group_slice])
                 z[:, group_slice] = one_hot
 
         return z
 
-    def recon(self, x: Tensor, s: Tensor, as_numpy: bool = True) -> np.ndarray:
+    @overload
+    def recon(self, x: Tensor, s: Tensor, as_numpy: Literal[True] = ...) -> np.ndarray:
+        ...
+
+    @overload
+    def recon(self, x: Tensor, s: Tensor, as_numpy: Literal[False]) -> Tensor:
+        ...
+
+    def recon(self, x: Tensor, s: Tensor, as_numpy: bool = True) -> Union[np.ndarray, Tensor]:
         """Return Reconstruction."""
         self.eval()
         _, _, recon, _ = self(x, s)
