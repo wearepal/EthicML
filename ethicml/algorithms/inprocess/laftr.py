@@ -26,7 +26,6 @@ class Laftr(InAlgorithmAsync):
         lr: float = 1e-3,
         seed: int = 0,
         warmup_steps: int = 0,
-        wandb: int = 0,
         weight_decay: float = 1e-6,
     ) -> None:
         """Laftr Algo."""
@@ -45,7 +44,6 @@ class Laftr(InAlgorithmAsync):
             "enc_reg_weight": enc_reg_weight,
             "lr": lr,
             "seed": seed,
-            "wandb": wandb,
             "warmup_steps": warmup_steps,
             "weight_decay": weight_decay,
         }

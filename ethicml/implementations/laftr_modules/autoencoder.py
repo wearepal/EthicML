@@ -154,7 +154,6 @@ class LaftrAE(BaseModel):
         warmup_steps: int,
         reg_weight: float,
         adv_weight: float,
-        log_wandb: bool,
         scheduler: Optional[torch.optim.lr_scheduler.ExponentialLR],
         additional_adv_steps: int,
         pred_weight: float,
@@ -171,7 +170,7 @@ class LaftrAE(BaseModel):
                 additional_adv_steps=additional_adv_steps,
                 pred_weight=pred_weight,
             )
-            results_dict.update({"epoch": epoch, "epochs": epochs, "log_wandb": log_wandb})
+            results_dict.update({"epoch": epoch, "epochs": epochs})
             self.log_results(results_dict)
             if scheduler:
                 scheduler.step()

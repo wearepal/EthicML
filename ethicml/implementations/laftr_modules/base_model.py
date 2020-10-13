@@ -5,7 +5,6 @@ from typing import Dict, Tuple
 import torch
 from torch import Tensor, nn
 
-import wandb
 from ethicml import implements
 
 
@@ -43,12 +42,7 @@ class BaseModel(nn.Module):
         """Log results."""
         epoch = results_dict.pop("epoch")
         epochs = results_dict.pop("epochs")
-        log_wandb = results_dict.pop("log_wandb")
-        if log_wandb:
-            print(f"{epoch} / {epochs}")
-            wandb.log(results_dict)
-        else:
-            print(f"{epoch} / {epochs}", {k: round(v, 4) for k, v in results_dict.items()})
+        print(f"{epoch} / {epochs}", {k: round(v, 4) for k, v in results_dict.items()})
 
     def unpack(self, j: Tuple[Tensor, ...]) -> Tuple[Tensor, Tensor]:
         """Unpack a dataloader's iterable."""

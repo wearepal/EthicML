@@ -11,7 +11,6 @@ from sklearn.model_selection import KFold
 from torch.optim import Adam, lr_scheduler
 from torch.utils.data import DataLoader
 
-import wandb
 from ethicml import LRCV, Accuracy, DataTuple, Majority, Prediction, TestTuple, Union
 from ethicml.algorithms.inprocess.blind import Blind
 from ethicml.implementations.laftr_modules.autoencoder import LaftrAE
@@ -40,7 +39,6 @@ class LaftrArgs(InAlgoArgs):
     device: int
     lr: float
     seed: int
-    wandb: int
     warmup_steps: int
     weight_decay: float
 
@@ -100,7 +98,6 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: LaftrArgs) -> pd.
         warmup_steps=args.warmup_steps,
         reg_weight=args.enc_reg_weight,
         adv_weight=args.enc_adv_weight,
-        log_wandb=args.wandb > 0,
         scheduler=enc_scheduler,
         additional_adv_steps=args.enc_additional_adv_steps,
         pred_weight=args.enc_pred_weight,
@@ -158,11 +155,6 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: LaftrArgs) -> pd.
 def main() -> None:
     """This function runs the Facct model as a standalone program."""
     args: LaftrArgs = LaftrArgs().parse_args()
-    if args.wandb > 0:
-        wandb.init(
-            project="facct",
-            config={k: getattr(args, k) for k in list(vars(LaftrArgs)['__annotations__'])},
-        )
     train, test = DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
     Prediction(hard=train_and_predict(train, test, args)).to_npz(Path(args.predictions))
 
