@@ -1,4 +1,5 @@
 """Data structures that are used throughout the code."""
+import json
 from pathlib import Path
 from typing import (
     Callable,
@@ -47,6 +48,7 @@ class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
     def __init__(self, x: pd.DataFrame, s: pd.DataFrame, name: Optional[str] = None):
+        """Make a TestTuple."""
         self.__x: pd.DataFrame = x
         self.__s: pd.DataFrame = s
         self.__name: Optional[str] = name
@@ -118,6 +120,7 @@ class DataTuple(TestTuple):
     def __init__(
         self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
     ):
+        """Make a DataTuple."""
         super().__init__(x=x, s=s, name=name)
         self.__y: pd.DataFrame = y
 
@@ -209,6 +212,7 @@ class Prediction:
     """Prediction of an algorithm."""
 
     def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
+        """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
@@ -230,14 +234,25 @@ class Prediction:
     @staticmethod
     def from_npz(npz_path: Path) -> "Prediction":
         """Load prediction from npz file."""
+        info = None
+        if (npz_path.parent / "info.txt").exists():
+            with open(npz_path.parent / "info.txt") as json_file:
+                info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
             if "soft" in data:
-                return SoftPrediction(soft=pd.Series(np.squeeze(data["soft"])))
-            return Prediction(hard=pd.Series(np.squeeze(data["hard"])))
+                return SoftPrediction(soft=pd.Series(np.squeeze(data["soft"])), info=info)
+            return Prediction(hard=pd.Series(np.squeeze(data["hard"])), info=info)
 
     def to_npz(self, npz_path: Path) -> None:
         """Save prediction as npz file."""
+        if self.info:
+            for v in self.info.values():
+                assert isinstance(v, float), "Info must be Dict[str, float]"
+            json_path = npz_path.parent / 'info.txt'
+            with open(json_path, 'w') as json_file:
+                json.dump(self.info, json_file)
+
         np.savez(npz_path, hard=self.hard.to_numpy())
 
 
@@ -245,6 +260,7 @@ class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
     def __init__(self, soft: pd.Series, info: Optional[Dict[str, float]] = None):
+        """Make a soft prediction object."""
         super().__init__(hard=soft.ge(0.5).astype(int), info=info)
         self._soft = soft
 
@@ -359,6 +375,7 @@ class ResultsAggregator:
     """Aggregate results."""
 
     def __init__(self, initial: Optional[pd.DataFrame] = None):
+        """Init results aggregator obj."""
         self._results = make_results(initial)
 
     @property

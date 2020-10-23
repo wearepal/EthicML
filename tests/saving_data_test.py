@@ -1,6 +1,4 @@
-"""
-Test the saving data capability
-"""
+"""Test the saving data capability."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -8,13 +6,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgorithmAsync, TestTuple, run_blocking
+from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple, run_blocking
 
 
 def test_simple_saving() -> None:
-    """
-    tests that a DataTuple can be saved
-    """
+    """Tests that a DataTuple can be saved."""
     data_tuple = DataTuple(
         x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0])}),
         s=pd.DataFrame(
@@ -29,13 +25,13 @@ def test_simple_saving() -> None:
     )
 
     class CheckEquality(InAlgorithmAsync):
-        """Dummy algorithm class for testing whether writing and reading feather files works"""
+        """Dummy algorithm class for testing whether writing and reading feather files works."""
 
         def __init__(self) -> None:
             super().__init__(name="Check equality")
 
         def _script_command(self, train_path, _, pred_path):
-            """Check if the dataframes loaded from the files are the same as the original ones"""
+            """Check if the dataframes loaded from the files are the same as the original ones."""
             loaded = DataTuple.from_npz(train_path)
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
@@ -48,10 +44,32 @@ def test_simple_saving() -> None:
     pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
 
 
+def test_preidtions_loaded(temp_dir) -> None:
+    """Test that predictions can be saved and loaded."""
+    preds = Prediction(hard=pd.Series([1]))
+    preds.to_npz(temp_dir / "test.npz")
+    loaded = Prediction.from_npz(temp_dir / "test.npz")
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
+
+
+def test_predictions_info_loaded(temp_dir) -> None:
+    """Test that predictions can be saved and loaded."""
+    preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
+    preds.to_npz(temp_dir / "test.npz")
+    loaded = Prediction.from_npz(temp_dir / "test.npz")
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
+    assert preds.info == loaded.info
+
+
+def test_predictions_info_loaded_bad(temp_dir) -> None:
+    """Test that predictions can be saved and loaded."""
+    preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})
+    with pytest.raises(AssertionError):
+        preds.to_npz(temp_dir / "test.npz")
+
+
 def test_dataset_name_none() -> None:
-    """
-    tests that a DataTuple can be saved without the name property
-    """
+    """Tests that a DataTuple can be saved without the name property."""
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=["a1"]),
         s=pd.DataFrame([4.0], columns=["b2"]),
@@ -71,9 +89,7 @@ def test_dataset_name_none() -> None:
 
 
 def test_dataset_name_with_spaces() -> None:
-    """
-    tests that a dataset name can contain spaces and special chars
-    """
+    """Tests that a dataset name can contain spaces and special chars."""
     name = "This is a very@#$%^&*((())) complicated name"
     datatup = TestTuple(
         x=pd.DataFrame([3.0], columns=["a1"]), s=pd.DataFrame([4.0], columns=["b2"]), name=name
@@ -90,9 +106,7 @@ def test_dataset_name_with_spaces() -> None:
 
 
 def test_apply_to_joined_df() -> None:
-    """
-    tests apply_to_joined_df_function
-    """
+    """Tests apply_to_joined_df_function."""
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=["a1"]),
         s=pd.DataFrame([4.0], columns=["b2"]),
@@ -110,7 +124,7 @@ def test_apply_to_joined_df() -> None:
 
 
 def test_data_tuple_len() -> None:
-    """test DataTuple len property"""
+    """Test DataTuple len property."""
     datatup_unequal_len = DataTuple(
         x=pd.DataFrame([3.0, 2.0], columns=["a1"]),
         s=pd.DataFrame([4.0], columns=["b2"]),
