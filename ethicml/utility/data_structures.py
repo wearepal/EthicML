@@ -235,8 +235,8 @@ class Prediction:
     def from_npz(npz_path: Path) -> "Prediction":
         """Load prediction from npz file."""
         info = None
-        if (npz_path.parent / "info.txt").exists():
-            with open(npz_path.parent / "info.txt") as json_file:
+        if (npz_path.parent / "info.json").exists():
+            with open(npz_path.parent / "info.json") as json_file:
                 info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
