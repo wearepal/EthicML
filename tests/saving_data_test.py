@@ -44,7 +44,7 @@ def test_simple_saving() -> None:
     pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
 
 
-def test_preidtions_loaded(temp_dir) -> None:
+def test_predictions_loaded(temp_dir) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]))
     preds.to_npz(temp_dir / "test.npz")
