@@ -249,7 +249,7 @@ class Prediction:
         if self.info:
             for v in self.info.values():
                 assert isinstance(v, float), "Info must be Dict[str, float]"
-            json_path = npz_path.parent / 'info.txt'
+            json_path = npz_path.parent / 'info.json'
             with open(json_path, 'w') as json_file:
                 json.dump(self.info, json_file)
 
