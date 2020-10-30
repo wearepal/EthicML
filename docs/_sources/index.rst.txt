@@ -16,7 +16,7 @@ Example
        inprocess_models=[em.SVM(), em.Kamiran()],
        preprocess_models=[em.Upsampler()],
        metrics=[em.Accuracy()],
-       per_sens_attribute=[em.ProbPos(), em.TPR()],
+       per_sens_metrics=[em.ProbPos(), em.TPR()],
        repeats=5,
    )
    em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")

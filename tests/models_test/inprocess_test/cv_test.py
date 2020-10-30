@@ -4,10 +4,7 @@ from typing import Dict, List, NamedTuple, Sequence, Type, Union
 import pytest
 
 import ethicml as em
-from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm
-from ethicml.metrics import Accuracy
-from ethicml.utility import Prediction, TrainTestPair
+from ethicml import LR, SVM, Accuracy, InAlgorithm, Prediction, TrainTestPair
 
 
 class CvParam(NamedTuple):
@@ -57,7 +54,7 @@ def test_parallel_cv(
     measure = Accuracy()
 
     cross_validator = em.CrossValidator(model, hyperparams, max_parallel=1)
-    cv_results: em.CVResults = run_blocking(cross_validator.run_async(train, measures=[measure]))
+    cv_results: em.CVResults = em.run_blocking(cross_validator.run_async(train, measures=[measure]))
     best_model = cv_results.best(measure)
     assert isinstance(best_model, InAlgorithm)
 
