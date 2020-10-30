@@ -205,10 +205,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datasets</strong> (<em>List</em><em>[</em><em>ethicml.data.dataset.Dataset</em><em>]</em>) – list of dataset objects</p></li>
-<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</em><em>]</em>) – list of preprocess model objects</p></li>
-<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em><em>]</em>) – list of inprocess model objects</p></li>
-<li><p><strong>postprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</em><em>]</em>) – list of postprocess model objects</p></li>
+<li><p><strong>datasets</strong> (<em>List</em><em>[</em><a class="reference internal" href="ethicml.data.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a><em>]</em>) – list of dataset objects</p></li>
+<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><em>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</em></a><em>]</em>) – list of preprocess model objects</p></li>
+<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – list of inprocess model objects</p></li>
+<li><p><strong>postprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><em>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</em></a><em>]</em>) – list of postprocess model objects</p></li>
 <li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metric objects</p></li>
 <li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metric objects that will be evaluated per sensitive attribute</p></li>
 <li><p><strong>repeats</strong> (<em>int</em>) – number of repeats to perform for the experiments</p></li>
@@ -232,10 +232,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datasets</strong> (<em>List</em><em>[</em><em>ethicml.data.dataset.Dataset</em><em>]</em>) – list of dataset objects</p></li>
-<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</em><em>]</em>) – list of preprocess model objects</p></li>
-<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em><em>]</em>) – list of inprocess model objects</p></li>
-<li><p><strong>postprocess_models</strong> (<em>Sequence</em><em>[</em><em>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</em><em>]</em>) – list of postprocess model objects</p></li>
+<li><p><strong>datasets</strong> (<em>List</em><em>[</em><a class="reference internal" href="ethicml.data.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a><em>]</em>) – list of dataset objects</p></li>
+<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><em>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</em></a><em>]</em>) – list of preprocess model objects</p></li>
+<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – list of inprocess model objects</p></li>
+<li><p><strong>postprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><em>ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</em></a><em>]</em>) – list of postprocess model objects</p></li>
 <li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metric objects</p></li>
 <li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metric objects that will be evaluated per sensitive attribute</p></li>
 <li><p><strong>repeats</strong> (<em>int</em>) – number of repeats to perform for the experiments</p></li>
@@ -277,7 +277,7 @@
 
 <dl class="py function">
 <dt id="ethicml.evaluators.evaluate_models.run_metrics">
-<code class="sig-name descname">run_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predictions</span></em>, <em class="sig-param"><span class="n">actual</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">per_sens_metrics</span><span class="o">=</span><span class="default_value">()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate_models.run_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">run_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">predictions</span></em>, <em class="sig-param"><span class="n">actual</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">per_sens_metrics</span><span class="o">=</span><span class="default_value">()</span></em>, <em class="sig-param"><span class="n">diffs_and_ratios</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate_models.run_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run all the given metrics on the given predictions and return the results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,6 +286,7 @@
 <li><p><strong>actual</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – DataTuple with the labels</p></li>
 <li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metrics</p></li>
 <li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><em>ethicml.metrics.metric.Metric</em><em>]</em>) – list of metrics that are computed per sensitive attribute</p></li>
+<li><p><strong>diffs_and_ratios</strong> (<em>bool</em>) – if True, compute diffs and ratios per sensitive attribute</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -322,7 +323,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>List</em><em>[</em><em>ethicml.evaluators.cross_validator.ResultTuple</em><em>]</em>) – </p></li>
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em><em>]</em>) – </p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -335,7 +336,7 @@
 <dd class="field-odd"><p><strong>measure</strong> (<em>ethicml.metrics.metric.Metric</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</p>
+<dd class="field-even"><p><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -399,7 +400,7 @@ secondary metric from the top K.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><em>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
 <li><p><strong>hyperparams</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – a dictionary where the keys are the names of hyperparameters and the values
 are lists of possible values for the hyperparameters</p></li>
 <li><p><strong>folds</strong> (<em>int</em>) – the number of folds</p></li>
@@ -487,9 +488,9 @@ there is no maximum</p></li>
 
 <dl class="py function">
 <dt id="ethicml.evaluators.parallelism.run_in_parallel">
-<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.inprocess.in_algorithm.InAlgorithm<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">'0'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>ethicml.utility.data_structures.Prediction<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.parallelism.run_in_parallel" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">'0'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>ethicml.utility.data_structures.Prediction<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#ethicml.evaluators.parallelism.run_in_parallel" title="Permalink to this definition">¶</a></dt>
 <dt>
-<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">'0'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span>ethicml.utility.data_structures.DataTuple<span class="p">, </span>ethicml.utility.data_structures.TestTuple<span class="p">]</span><span class="p">]</span><span class="p">]</span></dt>
+<em class="property">async </em><code class="sig-name descname">run_in_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">algos</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span><a class="reference internal" href="ethicml.algorithms.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Sequence<span class="p">[</span>ethicml.utility.data_structures.TrainTestPair<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">max_parallel</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">'0'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span>ethicml.utility.data_structures.DataTuple<span class="p">, </span>ethicml.utility.data_structures.TestTuple<span class="p">]</span><span class="p">]</span><span class="p">]</span></dt>
 <dd><p>Run the given algorithms (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

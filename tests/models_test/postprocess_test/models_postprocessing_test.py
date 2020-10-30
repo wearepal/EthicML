@@ -1,8 +1,7 @@
 """EthicML tests"""
 
-from ethicml.algorithms.inprocess import LR, InAlgorithm
-from ethicml.algorithms.postprocess import Hardt, PostAlgorithm
-from ethicml.utility import Prediction, TrainTestPair, concat_tt
+import ethicml as em
+from ethicml import LR, Hardt, InAlgorithm, PostAlgorithm, Prediction, TrainTestPair
 from tests.run_algorithm_test import count_true
 
 
@@ -13,7 +12,7 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
         toy_train_test: Train-test pair of toy data
     """
     train, test = toy_train_test
-    train_test = concat_tt([train, test], ignore_index=True)
+    train_test = em.concat_tt([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None

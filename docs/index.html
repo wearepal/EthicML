@@ -169,7 +169,7 @@ which aim to increase fairness, accountability and/or transparency of machine le
     <span class="n">inprocess_models</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">SVM</span><span class="p">(),</span> <span class="n">em</span><span class="o">.</span><span class="n">Kamiran</span><span class="p">()],</span>
     <span class="n">preprocess_models</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">Upsampler</span><span class="p">()],</span>
     <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()],</span>
-    <span class="n">per_sens_attribute</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">ProbPos</span><span class="p">(),</span> <span class="n">em</span><span class="o">.</span><span class="n">TPR</span><span class="p">()],</span>
+    <span class="n">per_sens_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">ProbPos</span><span class="p">(),</span> <span class="n">em</span><span class="o">.</span><span class="n">TPR</span><span class="p">()],</span>
     <span class="n">repeats</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">em</span><span class="o">.</span><span class="n">plot_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="s2">&quot;Accuracy&quot;</span><span class="p">,</span> <span class="s2">&quot;prob_pos_Male_0/Male_1&quot;</span><span class="p">)</span>
@@ -181,13 +181,19 @@ which aim to increase fairness, accountability and/or transparency of machine le
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms">Algorithms base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.algorithm_base">Algorithms base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.preprocess">Preprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.inprocess">Inprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.postprocess">Postprocess algorithms</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#module-ethicml.data.dataset">Dataset base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#tabular-datasets">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#vision-dataset">Vision dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#utils">Utils</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ethicml.evaluators.html#module-ethicml.evaluators.evaluate_models">Model evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml.evaluators.html#module-ethicml.evaluators.cross_validator">Cross-validation</a></li>
