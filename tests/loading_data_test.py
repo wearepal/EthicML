@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 import ethicml as em
+from ethicml import DataTuple
 
 
 def test_can_load_test_data(data_root: Path):
@@ -68,7 +69,7 @@ def test_data_shape(
     name,
 ):
     """Test loading data."""
-    data: em.DataTuple = dataset.load()
+    data: DataTuple = dataset.load()
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -82,7 +83,7 @@ def test_data_shape(
 
     assert data.name == name
 
-    data: em.DataTuple = dataset.load(ordered=True)
+    data: DataTuple = dataset.load(ordered=True)
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
@@ -95,7 +96,7 @@ def test_data_shape(
 def test_synth_data_shape(scenario, target, fair, samples):
     """Test loading data."""
     dataset = em.synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
-    data: em.DataTuple = dataset.load()
+    data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
     assert (samples, 1) == data.s.shape
     assert (samples, 1) == data.y.shape
@@ -112,7 +113,7 @@ def test_synth_data_shape(scenario, target, fair, samples):
     else:
         assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
 
-    data: em.DataTuple = dataset.load(ordered=True)
+    data: DataTuple = dataset.load(ordered=True)
     assert (samples, 4) == data.x.shape
     assert (samples, 1) == data.s.shape
     assert (samples, 1) == data.y.shape
@@ -122,7 +123,7 @@ def test_synth_data_shape(scenario, target, fair, samples):
 def test_deprecation_warning(dataset):
     """Test loading data."""
     with pytest.deprecated_call():  # assert that this gives a deprecation warning
-        data: em.DataTuple = dataset().load()
+        data: DataTuple = dataset().load()
 
 
 def test_load_data_as_a_function(data_root: Path):
@@ -155,7 +156,7 @@ def test_joining_2_load_functions(data_root: Path):
     data_obj: em.Dataset = em.create_data_obj(
         data_loc, s_column="sensitive-attr", y_column="decision"
     )
-    data: em.DataTuple = data_obj.load()
+    data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
     assert (400, 1) == data.s.shape
     assert (400, 1) == data.y.shape
@@ -163,7 +164,7 @@ def test_joining_2_load_functions(data_root: Path):
 
 def test_load_compas_feature_length():
     """Test load compas feature length."""
-    data: em.DataTuple = em.compas().load()
+    data: DataTuple = em.compas().load()
     assert len(em.compas().ordered_features["x"]) == 400
     assert len(em.compas().discrete_features) == 395
     assert len(em.compas().continuous_features) == 5
@@ -177,7 +178,7 @@ def test_load_compas_feature_length():
 def test_load_adult_explicitly_sex():
     """Test load adult explicitly sex."""
     adult_sex = em.adult("Sex")
-    data: em.DataTuple = adult_sex.load()
+    data: DataTuple = adult_sex.load()
     assert (45222, 101) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert (45222, 1) == data.y.shape
@@ -189,7 +190,7 @@ def test_load_adult_explicitly_sex():
 def test_load_adult_race():
     """Test load adult race."""
     adult_race = em.adult("Race")
-    data: em.DataTuple = adult_race.load()
+    data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert data.s.nunique()[0] == 5
@@ -202,7 +203,7 @@ def test_load_adult_race():
 def test_load_adult_race_sex():
     """Test load adult race sex."""
     adult_race_sex = em.adult("Race-Sex")
-    data: em.DataTuple = adult_race_sex.load()
+    data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
     assert (45222, 1) == data.s.shape
     assert data.s.nunique()[0] == 2 * 5
@@ -224,7 +225,7 @@ def test_race_feature_split():
         class_label_prefix=["salary"],
     )
 
-    data: em.DataTuple = adult_data.load()
+    data: DataTuple = adult_data.load()
 
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -322,7 +323,7 @@ def test_additional_columns_load(data_root: Path):
         y_column="salary_>50K",
         additional_to_drop=["race_Black", "salary_<=50K"],
     )
-    data: em.DataTuple = data_obj.load()
+    data: DataTuple = data_obj.load()
 
     assert (45222, 102) == data.x.shape
     assert (45222, 1) == data.s.shape
@@ -331,7 +332,7 @@ def test_additional_columns_load(data_root: Path):
 
 def test_domain_adapt_adult():
     """Test domain adapt adult."""
-    data: em.DataTuple = em.adult().load()
+    data: DataTuple = em.adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
@@ -377,8 +378,8 @@ def test_query():
     x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])
     s: pd.DataFrame = pd.DataFrame(columns=["c="], data=[[6], [7], [8]])
     y: pd.DataFrame = pd.DataFrame(columns=["d"], data=[[9], [10], [11]])
-    data = em.DataTuple(x=x, s=s, y=y, name="test_data")
-    selected = em.query_dt(data, "_0a == 0 & c_eq_ == 6 & d == 9")
+    data = DataTuple(x=x, s=s, y=y, name="test_data")
+    selected = em.query_dt(data, "`0a` == 0 & `c=` == 6 & d == 9")
     pd.testing.assert_frame_equal(selected.x, x.head(1))
     pd.testing.assert_frame_equal(selected.s, s.head(1))
     pd.testing.assert_frame_equal(selected.y, y.head(1))
@@ -389,11 +390,11 @@ def test_concat():
     x: pd.DataFrame = pd.DataFrame(columns=["a"], data=[[1]])
     s: pd.DataFrame = pd.DataFrame(columns=["b"], data=[[2]])
     y: pd.DataFrame = pd.DataFrame(columns=["c"], data=[[3]])
-    data1 = em.DataTuple(x=x, s=s, y=y, name="test_data")
+    data1 = DataTuple(x=x, s=s, y=y, name="test_data")
     x = pd.DataFrame(columns=["a"], data=[[4]])
     s = pd.DataFrame(columns=["b"], data=[[5]])
     y = pd.DataFrame(columns=["c"], data=[[6]])
-    data2 = em.DataTuple(x=x, s=s, y=y, name="test_tuple")
+    data2 = DataTuple(x=x, s=s, y=y, name="test_tuple")
     data3 = em.concat_dt([data1, data2], axis="index", ignore_index=True)
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=["a"], data=[[1], [4]]))
     pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=["b"], data=[[2], [5]]))

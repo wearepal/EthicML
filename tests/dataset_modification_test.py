@@ -3,12 +3,11 @@ import pandas
 import pytest
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from ethicml import data
-from ethicml.data import get_dataset_obj_by_name, load_data
+from ethicml import get_dataset_obj_by_name, available_tabular, load_data
 from ethicml.preprocessing import scale_continuous, train_test_split
 
 
-@pytest.mark.parametrize("dataset_name", data.available_tabular)
+@pytest.mark.parametrize("dataset_name", available_tabular())
 @pytest.mark.parametrize("scaler", [StandardScaler, MinMaxScaler])
 def test_scaling(dataset_name, scaler):
     """Test that scaling works."""

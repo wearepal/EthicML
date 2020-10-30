@@ -1,11 +1,10 @@
 """Test utility functions."""
 import pytest
 
-from ethicml import data
-from ethicml.data import get_dataset_obj_by_name
+from ethicml import available_tabular, get_dataset_obj_by_name
 
 
-@pytest.mark.parametrize("name", data.available_tabular)
+@pytest.mark.parametrize("name", available_tabular())
 def test_lookup(name):
     """Test the lookup of  a dataset by name."""
     assert name == get_dataset_obj_by_name(name).__name__
