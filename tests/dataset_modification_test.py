@@ -3,7 +3,7 @@ import pandas
 import pytest
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from ethicml import get_dataset_obj_by_name, available_tabular, load_data
+from ethicml import available_tabular, get_dataset_obj_by_name, load_data
 from ethicml.preprocessing import scale_continuous, train_test_split
 
 
