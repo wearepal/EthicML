@@ -1,7 +1,6 @@
 """Set of scripts for splitting the train and test datasets based on conditions."""
 
-import re
-from typing import Hashable, Optional, Tuple
+from typing import Tuple
 
 import pandas as pd
 
@@ -12,12 +11,7 @@ __all__ = ["dataset_from_cond", "domain_split", "query_dt"]
 
 def dataset_from_cond(dataset: pd.DataFrame, cond: str) -> pd.DataFrame:
     """Return the dataframe that meets some condition."""
-    original_column_names = dataset.columns
-    # make column names query-friendly
-    dataset = dataset.rename(axis="columns", mapper=make_valid_variable_name)
-    subset = dataset.query(cond).reset_index(drop=True)
-    subset.columns = original_column_names
-    return subset
+    return dataset.query(cond).reset_index(drop=True)
 
 
 def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
@@ -73,27 +67,3 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
     test_datatup = DataTuple(x=test_x, s=test_s, y=test_y, name=datatup.name)
 
     return train_datatup, test_datatup
-
-
-def make_valid_variable_name(name: Optional[Hashable]) -> str:
-    """Convert a string into a valid Python variable name."""
-    # Ensure that it's a string
-    name = str(name)
-
-    # Python variable names may only contain digits, letters and underscores
-    explicit_substitutions = {
-        "-": "_",  # Replace hyphens with underscores
-        "+": "_plus_",
-        "=": "_eq_",
-    }
-    for original, replacement in explicit_substitutions.items():
-        name = name.replace(original, replacement)
-
-    # Remove every other disallowed character
-    name = re.sub("[^0-9a-zA-Z_]", "", name)
-
-    # Python variables must start with a letter or an underscore
-    # Thus, we add an underscore, if the string starts with a digit
-    if name[0] in ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"):
-        name = "_" + name
-    return name

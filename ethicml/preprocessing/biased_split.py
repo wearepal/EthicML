@@ -4,9 +4,9 @@ from typing import Dict, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
-from ethicml.preprocessing.domain_adaptation import make_valid_variable_name, query_dt
-from ethicml.utility import DataTuple, concat_dt
+from ethicml.utility.data_structures import DataTuple, concat_dt
 
+from .domain_adaptation import query_dt
 from .train_test_split import DataSplitter, ProportionalSplit
 
 __all__ = [
@@ -258,21 +258,21 @@ def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTu
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
     """Get the subset where s and y are equal and the subset where they are opposite."""
-    s_name = make_valid_variable_name(s_name)
-    y_name = make_valid_variable_name(y_name)
     s_values = np.unique(data.s.to_numpy())
     y_values = np.unique(data.y.to_numpy())
     assert len(s_values) == 2, "function only works with binary sensitive attribute"
     assert len(y_values) == 2, "function only works with binary labels"
     # we implicitly assume that the minimum value of s and y are equal; same for the maximum value
-    s_0, s_1 = s_values
-    y_0, y_1 = y_values
+    s0, s1 = s_values
+    y0, y1 = y_values
     # datapoints where s and y are the same
     s_and_y_equal = query_dt(
-        data, f"({s_name} == {s_0} & {y_name} == {y_0}) | ({s_name} == {s_1} & {y_name} == {y_1})"
+        data,
+        f"(`{s_name}` == {s0} & `{y_name}` == {y0}) | (`{s_name}` == {s1} & `{y_name}` == {y1})",
     )
     # datapoints where they are not the same
     s_and_y_opposite = query_dt(
-        data, f"({s_name} == {s_0} & {y_name} == {y_1}) | ({s_name} == {s_1} & {y_name} == {y_0})"
+        data,
+        f"(`{s_name}` == {s0} & `{y_name}` == {y1}) | (`{s_name}` == {s1} & `{y_name}` == {y0})",
     )
     return s_and_y_equal, s_and_y_opposite

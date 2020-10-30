@@ -35,7 +35,7 @@ setup(
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2, < 3.3.1",
         "numpy >= 1.14.2",
-        "pandas >= 0.24.0",
+        "pandas >= 0.25.0",
         "pipenv >= 2018.11.26",
         "pillow",
         "scikit_learn >= 0.20.1",
