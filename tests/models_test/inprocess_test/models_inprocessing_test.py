@@ -266,5 +266,5 @@ def test_kamiran(toy_train_test: TrainTestPair):
     assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
 
     # remove all samples with s=0 & y=1 from the data
-    train_no_s0y1 = query_dt(train, "sensitive_attr != 0 | decision != 1")
+    train_no_s0y1 = query_dt(train, "`sensitive-attr` != 0 | decision != 1")
     predictions = kamiran_model.run(train_no_s0y1, test)
