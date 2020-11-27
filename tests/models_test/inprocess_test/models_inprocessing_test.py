@@ -40,6 +40,7 @@ from ethicml import (
     toy,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.oracle import Oracle
 from tests.run_algorithm_test import count_true
 
 
@@ -76,6 +77,28 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     predictions: Prediction = model.run(train, test)
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+
+def test_oracle():
+    """Test an inprocess model."""
+    data: DataTuple = toy().load()
+    train, test = train_test_split(data)
+
+    model = Oracle()
+    name = "Oracle"
+    num_pos = 41
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    test = test.remove_y()
+    with pytest.raises(AssertionError):
+        predictions: Prediction = model.run(train, test)
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
