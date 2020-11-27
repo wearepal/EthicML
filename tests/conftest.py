@@ -1,4 +1,7 @@
-"""This file is automatically imported by pytest (no need to import it) and defines shared fixtures."""
+"""This file is automatically imported by pytest.
+
+This file is automatically imported by pytest (no need to import it) and defines shared fixtures.
+"""
 import shutil
 import tempfile
 from pathlib import Path
@@ -88,6 +91,7 @@ def get_id(value):
 
 @pytest.fixture(scope="function")
 def simulate_no_torch() -> Generator[None, None, None]:
+    """Make it appear that Torch is not avaiable."""
     # ======= set up ========
     torch_available = em.common.TORCH_AVAILABLE
     torchvision_available = em.common.TORCHVISION_AVAILABLE
