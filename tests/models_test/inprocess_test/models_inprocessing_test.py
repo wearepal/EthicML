@@ -205,27 +205,27 @@ def test_agarwal(toy_train_test: TrainTestPair):
 
     agarwal_variants.append(Agarwal())
     model_names.append("Agarwal, LR, DP")
-    expected_results.append((45, 35))
+    expected_results.append((52, 28))
 
     agarwal_variants.append(Agarwal(fairness="EqOd"))
     model_names.append("Agarwal, LR, EqOd")
-    expected_results.append((44, 36))
+    expected_results.append((45, 35))
 
     agarwal_variants.append(Agarwal(classifier="SVM"))
     model_names.append("Agarwal, SVM, DP")
-    expected_results.append((45, 35))
+    expected_results.append((56, 24))
 
     agarwal_variants.append(Agarwal(classifier="SVM", kernel="linear"))
     model_names.append("Agarwal, SVM, DP")
-    expected_results.append((42, 38))
+    expected_results.append((50, 30))
 
     agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd"))
     model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((45, 35))
+    expected_results.append((46, 34))
 
     agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd", kernel="linear"))
     model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((42, 38))
+    expected_results.append((41, 39))
 
     results = run_blocking(
         run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)

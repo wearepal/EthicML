@@ -5,10 +5,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from fairlearn.reductions import (
-    ConditionalSelectionRate,
     DemographicParity,
     EqualizedOdds,
     ExponentiatedGradient,
+    UtilityParity,
 )
 from sklearn.linear_model import LogisticRegression
 
@@ -34,7 +34,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
     random.seed(888)
     np.random.seed(888)
 
-    fairness_class: ConditionalSelectionRate
+    fairness_class: UtilityParity
     if args.fairness == "DP":
         fairness_class = DemographicParity()
     else:
@@ -50,7 +50,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
     data_a = train.s[train.s.columns[0]]
 
     exponentiated_gradient = ExponentiatedGradient(
-        model, constraints=fairness_class, eps=args.eps, T=args.iters
+        model, constraints=fairness_class, eps=args.eps, max_iter=args.iters
     )
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
