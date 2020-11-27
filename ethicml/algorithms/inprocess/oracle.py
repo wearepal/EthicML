@@ -6,7 +6,7 @@ class Oracle(InAlgorithm):
     """A perfect predictor.
 
     Can only be used if test is a DataTuple, rather than the usual TestTuple.
-    This model isn't inetended for general use,
+    This model isn't intended for general use,
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
