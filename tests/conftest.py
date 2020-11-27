@@ -21,7 +21,7 @@ def toy_train_test() -> TrainTestPair:
     train: DataTuple
     test: DataTuple
     train, test = em.train_test_split(data)
-    return TrainTestPair(train, test.remove_y())
+    return TrainTestPair(train, test)
 
 
 @pytest.fixture(scope="session")
