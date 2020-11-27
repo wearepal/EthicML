@@ -40,6 +40,12 @@ To install EthicML, just do
 pip3 install ethicml
 ```
 
+If you want to use the method by Agarwal et al., you have to explicitly install _all_ dependencies:
+```
+pip3 install 'ethicml[all]'
+```
+(The quotes are needed in `zsh` and will also work in `bash`.)
+
 **Attention**: In order to use all features of EthicML, PyTorch needs to be installed separately.
 We are not including PyTorch as a requirement of EthicML,
 because there are many different versions for different systems.
