@@ -29,18 +29,21 @@ from ethicml import (
     Majority,
     Metric,
     Prediction,
+    ProbPos,
     SoftPrediction,
     TrainTestPair,
     compas,
+    diff_per_sensitive_attribute,
     evaluate_models_async,
     load_data,
+    metric_per_sensitive_attribute,
     query_dt,
     run_blocking,
     run_in_parallel,
     toy,
     train_test_split,
 )
-from ethicml.algorithms.inprocess.oracle import Oracle
+from ethicml.algorithms.inprocess.oracle import DPOracle, Oracle
 from tests.run_algorithm_test import count_true
 
 
@@ -98,7 +101,35 @@ def test_oracle():
 
     test = test.remove_y()
     with pytest.raises(AssertionError):
-        predictions: Prediction = model.run(train, test)
+        _ = model.run(train, test)
+
+
+def test_dp_oracle():
+    """Test an inprocess model."""
+    data: DataTuple = toy().load()
+    train, test = train_test_split(data)
+
+    model = DPOracle()
+    name = "DemPar. Oracle"
+    num_pos = 53
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(predictions, test, ProbPos())
+    )
+    for name, diff in diffs.items():
+        assert 0 == pytest.approx(diff, abs=1e-2)
+
+    test = test.remove_y()
+    with pytest.raises(AssertionError):
+        _ = model.run(train, test)
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:

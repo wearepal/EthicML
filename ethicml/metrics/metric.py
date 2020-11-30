@@ -13,7 +13,7 @@ class Metric(ABC):
     # see https://github.com/python/mypy/issues/4019 for more information on this limitation
     _name: str = "<unnamed metric>"
 
-    def __init__(self, pos_class: int = 1):
+    def __init__(self, pos_class: int = 1) -> None:
         self.positive_class = pos_class
 
     @abstractmethod
@@ -22,7 +22,7 @@ class Metric(ABC):
 
         Args:
             prediction: predicted labels
-            actual: dictionary with the actual labels and the sensitive attributes
+            actual: DataTuple with the actual labels and the sensitive attributes
 
         Returns:
             the score as a single number

@@ -20,12 +20,11 @@ repos:
 -   repo: https://github.com/pycqa/pydocstyle
     rev: 5.1.0  # pick a git hash / tag to point to
     hooks:
-    -   id: pydocstyle
-        args: [
-            --convention=google,
-            --add-ignore=D105,D107,
-            --ignore-decorators=implements|overload
-        ]
+      - id: pydocstyle
+        args:
+          - --convention=google
+          - --add-ignore=D105,D107
+          - --ignore-decorators=implements|overload|property
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
