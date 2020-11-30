@@ -87,7 +87,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install mypy
         pip install git+https://github.com/predictive-analytics-lab/data-science-types
-        pip install typed-argument-parser==1.4
+        pip install typed-argument-parser==1.4 teext
     - name: Type check with mypy
       run: |
         python run_mypy.py
