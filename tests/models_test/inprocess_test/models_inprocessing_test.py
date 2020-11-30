@@ -13,6 +13,7 @@ from ethicml import (
     LRCV,
     MLP,
     SVM,
+    TPR,
     AbsCV,
     Accuracy,
     Agarwal,
@@ -43,7 +44,7 @@ from ethicml import (
     toy,
     train_test_split,
 )
-from ethicml.algorithms.inprocess.oracle import DPOracle, Oracle
+from ethicml.algorithms.inprocess.oracle import DPOracle, EqOppOracle, Oracle
 from tests.run_algorithm_test import count_true
 
 
@@ -124,6 +125,32 @@ def test_dp_oracle():
     diffs = diff_per_sensitive_attribute(
         metric_per_sensitive_attribute(predictions, test, ProbPos())
     )
+    for name, diff in diffs.items():
+        assert 0 == pytest.approx(diff, abs=1e-2)
+
+    test = test.remove_y()
+    with pytest.raises(AssertionError):
+        _ = model.run(train, test)
+
+
+def test_eqopp_oracle():
+    """Test an inprocess model."""
+    data: DataTuple = toy().load()
+    train, test = train_test_split(data)
+
+    model = EqOppOracle()
+    name = "EqOpp. Oracle"
+    num_pos = 66
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    diffs = diff_per_sensitive_attribute(metric_per_sensitive_attribute(predictions, test, TPR()))
     for name, diff in diffs.items():
         assert 0 == pytest.approx(diff, abs=1e-2)
 
