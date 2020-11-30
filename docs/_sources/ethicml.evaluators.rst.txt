@@ -1,5 +1,6 @@
+******************
 Evaluation helpers
-==========================
+******************
 
 .. automodule:: ethicml.evaluators
     :no-members:
@@ -11,24 +12,24 @@ Evaluation helpers
 
 
 Model evaluation
-----------------
+================
 
 .. automodule:: ethicml.evaluators.evaluate_models
 
 
 Cross-validation
-----------------
+================
 
 .. automodule:: ethicml.evaluators.cross_validator
 
 
 Parallel evaluation
--------------------
+===================
 
 .. automodule:: ethicml.evaluators.parallelism
 
 
 Compare metrics between groups
-------------------------------
+==============================
 
 .. automodule:: ethicml.evaluators.per_sensitive_attribute

@@ -1,5 +1,6 @@
+*******************
 Vision data helpers
-=============================
+*******************
 
 .. automodule:: ethicml.vision
    :members:
