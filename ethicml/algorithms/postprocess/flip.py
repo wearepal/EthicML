@@ -29,6 +29,17 @@ class FlipBase(PostAlgorithm):
     def _fit(self, test: TestTuple, preds: Prediction) -> Tuple[int, int]:
         pass
 
+    @abstractmethod
+    def _flip(
+        self,
+        preds: Prediction,
+        dt: TestTuple,
+        flip_0_to_1: bool,
+        num_to_flip: int,
+        s_group: int,
+    ) -> Prediction:
+        pass
+
 
 class DPFlip(FlipBase):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
