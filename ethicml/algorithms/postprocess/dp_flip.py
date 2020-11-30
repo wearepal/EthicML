@@ -38,6 +38,8 @@ class DPFlip(PostAlgorithm):
         else:
             pre_y_val = 1 if flip_0_to_1 else 0
             post_y_val = 0 if flip_0_to_1 else 1
+            num_to_flip = abs(num_to_flip)
+
         _y = preds.hard[preds.hard == pre_y_val]
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
         idx_s_y = _y.index & _s.index  # type: ignore[operator]
@@ -62,8 +64,8 @@ class DPFlip(PostAlgorithm):
 
         if b > 1:
             x = a / b
-            z = 0
+            z = 0.0
         else:
-            x = 0
+            x = 0.0
             z = a
         return int(round(x)), int(round(z))

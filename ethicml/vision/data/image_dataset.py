@@ -13,7 +13,7 @@ from PIL import Image
 from torch import Tensor
 from torchvision.datasets import VisionDataset
 
-from ethicml.data.util import simple_spec
+from ethicml.data.util import LabelSpec, simple_spec
 from ethicml.data.vision_data.celeba import CelebAttrs, celeba
 from ethicml.data.vision_data.genfaces import GenfacesAttributes, genfaces
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
