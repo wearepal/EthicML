@@ -1,7 +1,6 @@
 """How would a perfect predictor perform?"""
 from ethicml import DataTuple, InAlgorithm, Prediction, TestTuple, implements
-from ethicml.algorithms.postprocess.dp_flip import DPFlip
-from ethicml.algorithms.postprocess.eq_opp_flip import EqOppFlip
+from ethicml.algorithms.postprocess.flip import DPFlip, EqOppFlip
 
 
 class Oracle(InAlgorithm):

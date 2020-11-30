@@ -140,7 +140,7 @@ def test_eqopp_oracle():
 
     model = EqOppOracle()
     name = "EqOpp. Oracle"
-    num_pos = 66
+    num_pos = 4
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
