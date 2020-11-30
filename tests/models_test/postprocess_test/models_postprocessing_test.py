@@ -44,7 +44,7 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
         metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     for name, diff in diffs.items():
-        assert pytest.approx(diff, 0, abs=1e-2)
+        assert 0 == pytest.approx(diff, abs=1e-2)
 
 
 def test_hardt(toy_train_test: TrainTestPair) -> None:

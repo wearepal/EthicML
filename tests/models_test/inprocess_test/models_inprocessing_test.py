@@ -29,11 +29,14 @@ from ethicml import (
     Majority,
     Metric,
     Prediction,
+    ProbPos,
     SoftPrediction,
     TrainTestPair,
     compas,
+    diff_per_sensitive_attribute,
     evaluate_models_async,
     load_data,
+    metric_per_sensitive_attribute,
     query_dt,
     run_blocking,
     run_in_parallel,
@@ -117,6 +120,12 @@ def test_dp_oracle():
     predictions: Prediction = model.run(train, test)
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(predictions, test, ProbPos())
+    )
+    for name, diff in diffs.items():
+        assert 0 == pytest.approx(diff, abs=1e-2)
 
     test = test.remove_y()
     with pytest.raises(AssertionError):

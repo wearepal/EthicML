@@ -57,8 +57,6 @@ class DPFlip(PostAlgorithm):
         n10 = preds.hard[(s_1.index) & (y_0.index)].count()  # type: ignore[operator]
         n11 = preds.hard[(s_1.index) & (y_1.index)].count()  # type: ignore[operator]
 
-        print(f"difference between groups: {(n01)/(n00+n01)} vs {(n11)/(n10+n11)}")
-
         a = (((n00 + n01) * n11) - ((n10 + n11) * n01)) / (n00 + n01)
         b = (n10 + n11) / (n00 + n01)
 
