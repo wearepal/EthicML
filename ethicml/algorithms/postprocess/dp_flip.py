@@ -64,8 +64,8 @@ class DPFlip(PostAlgorithm):
 
         if b > 1:
             x = a / b
-            z = 0
+            z = 0.0
         else:
-            x = 0
+            x = 0.0
             z = a
         return int(round(x)), int(round(z))
