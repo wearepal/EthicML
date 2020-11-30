@@ -1,5 +1,6 @@
+******************
 Data preprocessing
-=============================
+******************
 
 .. automodule:: ethicml.preprocessing
    :members:

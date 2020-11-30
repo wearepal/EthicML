@@ -1,11 +1,12 @@
+***********************************
 Welcome to EthicML's documentation!
-===================================
+***********************************
 
 Package for evaluating the performance of methods
 which aim to increase fairness, accountability and/or transparency of machine learning models.
 
 Example
--------
+=======
 
 .. code:: python
 
@@ -23,7 +24,7 @@ Example
 
 
 API
----
+===
 
 .. toctree::
    :maxdepth: 2

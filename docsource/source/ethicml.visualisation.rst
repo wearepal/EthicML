@@ -1,5 +1,6 @@
+*********************
 Visualisation helpers
-=============================
+*********************
 
 .. automodule:: ethicml.visualisation
    :members:

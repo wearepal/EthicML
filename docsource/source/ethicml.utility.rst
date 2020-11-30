@@ -1,5 +1,6 @@
+*****
 Utils
-=======================
+*****
 
 .. automodule:: ethicml.utility
    :members:
