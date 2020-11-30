@@ -128,8 +128,8 @@ def test_eqopp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     post_model: PostAlgorithm = EqOppFlip()
     assert post_model.name == "EqOpp. Post Process"
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == 43
-    assert count_true(fair_preds.hard.values == 0) == 37
+    assert count_true(fair_preds.hard.values == 1) == 45
+    assert count_true(fair_preds.hard.values == 0) == 35
     diffs = diff_per_sensitive_attribute(
         metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )

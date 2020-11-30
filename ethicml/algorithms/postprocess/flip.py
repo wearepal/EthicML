@@ -138,8 +138,8 @@ class EqOppFlip(FlipBase):
         n10 = preds.hard[(s_1.index) & (y_0.index)].count()  # type: ignore[operator]
         n11 = preds.hard[(s_1.index) & (y_1.index)].count()  # type: ignore[operator]
 
-        a = r1
-        b = r0 * (n11 / n01)
+        a = r1 - ((n11 * r0) / n01)
+        b = n11 / n01
 
         if b > 1:
             x = a / b
