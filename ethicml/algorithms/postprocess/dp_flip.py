@@ -60,7 +60,10 @@ class DPFlip(PostAlgorithm):
         a = (((n00 + n01) * n11) - ((n10 + n11) * n01)) / (n00 + n01)
         b = (n10 + n11) / (n00 + n01)
 
-        x = 0.5 * a * b
-        z = a * (1 - 0.5 * b ** 2)
-
-        return round(x), round(z)
+        if b > 1:
+            x = a / b
+            z = 0
+        else:
+            x = 0
+            z = a
+        return int(round(x)), int(round(z))

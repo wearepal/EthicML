@@ -38,8 +38,8 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
     post_model: PostAlgorithm = DPFlip()
     assert post_model.name == "DemPar. Post Process"
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == 46
-    assert count_true(fair_preds.hard.values == 0) == 34
+    assert count_true(fair_preds.hard.values == 1) == 57
+    assert count_true(fair_preds.hard.values == 0) == 23
     diffs = diff_per_sensitive_attribute(
         metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )

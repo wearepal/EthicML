@@ -111,7 +111,7 @@ def test_dp_oracle():
 
     model = DPOracle()
     name = "DemPar. Oracle"
-    num_pos = 44
+    num_pos = 53
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
