@@ -24,7 +24,7 @@ class Oracle(InAlgorithm):
 class DPOracle(InAlgorithm):
     """A perfect Demographic Parity Predictor.
 
-    an only be used if test is a DataTuple, rather than the usual TestTuple.
+    Can only be used if test is a DataTuple, rather than the usual TestTuple.
     This model isn't intended for general use,
     but can be useful if you want to either do a sanity check, or report potential values.
     """
