@@ -1,15 +1,14 @@
 """Class to describe features of the Toy dataset."""
-from warnings import warn
 
 from ..dataset import Dataset
-from ..util import flatten_dict
+from ..util import deprecated, flatten_dict
 
 __all__ = ["Toy", "toy"]
 
 
+@deprecated
 def Toy() -> Dataset:  # pylint: disable=invalid-name
     """Dataset with toy data for testing."""
-    warn("The Toy class is deprecated. Use the function instead.", DeprecationWarning)
     return toy()
 
 

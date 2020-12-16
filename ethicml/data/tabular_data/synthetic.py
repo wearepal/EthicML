@@ -1,14 +1,15 @@
 """Class to describe features of the Synthetic dataset."""
-from warnings import warn
 
 from teext import PositiveInt
 from typing_extensions import Literal
 
 from ..dataset import Dataset
+from ..util import deprecated
 
 __all__ = ["Synthetic", "synthetic"]
 
 
+@deprecated
 def Synthetic(  # pylint: disable=invalid-name
     scenario: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
@@ -16,7 +17,6 @@ def Synthetic(  # pylint: disable=invalid-name
     num_samples: int = 1_000,
 ) -> Dataset:
     """Dataset with synthetic scenario 1 data."""
-    warn("The Synthetic class is deprecated. Use the function instead.", DeprecationWarning)
     return synthetic(scenario=scenario, target=target, fair=fair, num_samples=num_samples)
 
 
