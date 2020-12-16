@@ -1,10 +1,4 @@
-********
-Datasets
-********
-
 .. automodule:: ethicml.data
-   :members:
-   :imported-members:
 
 .. contents::
     :depth: 2
