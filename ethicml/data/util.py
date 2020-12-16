@@ -2,7 +2,7 @@
 import functools
 import warnings
 from itertools import groupby
-from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
 
 __all__ = [
     "deprecated",
@@ -15,8 +15,10 @@ __all__ = [
     "label_specs_to_feature_list",
 ]
 
+_F = TypeVar("_F", bound=Callable[..., Any])
 
-def deprecated(func: Callable) -> Callable:
+
+def deprecated(func: _F) -> _F:
     """This is a decorator which can be used to mark functions as deprecated.
 
     It will result in a warning being emitted when the function is used.

@@ -2,14 +2,14 @@ repos:
 -   repo: https://github.com/humitos/mirrors-autoflake
     rev: v1.3
     hooks:
-    - id: autoflake
-      args: ['--in-place', '--remove-all-unused-imports', '--remove-unused-variable', '--ignore-init-module-imports']
--   repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-    - id: seed-isort-config
+      - id: autoflake
+        args:
+          - --in-place
+          - --remove-all-unused-imports
+          - --remove-unused-variable
+          - --ignore-init-module-imports
 -   repo: https://github.com/timothycrosley/isort
-    rev: 5.5.4  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
+    rev: 5.6.4  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
     hooks:
     - id: isort
 -   repo: https://github.com/ambv/black
@@ -26,7 +26,7 @@ repos:
           - --add-ignore=D105,D107
           - --ignore-decorators=implements|overload|property
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v3.3.0
     hooks:
     -   id: check-merge-conflict
     -   id: check-toml
