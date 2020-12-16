@@ -28,13 +28,12 @@ def lipton() -> Dataset:
     }
     ```
     """
-    discrete_features = []
     continuous_features = ["hair_length", "work_experience"]
     return Dataset(
         name="Lipton",
         num_samples=2_000,
         filename_or_path="lipton.csv",
-        features=continuous_features + discrete_features,
+        features=continuous_features,
         cont_features=continuous_features,
         sens_attr_spec="sens",
         class_label_spec="hired",

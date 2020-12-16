@@ -2,7 +2,7 @@
 import functools
 import warnings
 from itertools import groupby
-from typing import Dict, List, Mapping, NamedTuple, Sequence
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence
 
 __all__ = [
     "deprecated",
@@ -16,14 +16,14 @@ __all__ = [
 ]
 
 
-def deprecated(func):
+def deprecated(func: Callable) -> Callable:
     """This is a decorator which can be used to mark functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
     """
 
     @functools.wraps(func)
-    def new_func(*args, **kwargs):
+    def new_func(*args: Any, **kwargs: Any) -> Callable:
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
             f"The {func.__name__} class is deprecated. "
