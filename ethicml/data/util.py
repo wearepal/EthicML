@@ -1,8 +1,11 @@
 """Useful methods that are used in some of the data objects."""
+import functools
+import warnings
 from itertools import groupby
-from typing import Dict, List, Mapping, NamedTuple, Sequence
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
 
 __all__ = [
+    "deprecated",
     "LabelSpec",
     "PartialLabelSpec",
     "simple_spec",
@@ -11,6 +14,29 @@ __all__ = [
     "group_disc_feat_indexes",
     "label_specs_to_feature_list",
 ]
+
+_F = TypeVar("_F", bound=Callable[..., Any])
+
+
+def deprecated(func: _F) -> _F:
+    """This is a decorator which can be used to mark functions as deprecated.
+
+    It will result in a warning being emitted when the function is used.
+    """
+
+    @functools.wraps(func)
+    def new_func(*args: Any, **kwargs: Any) -> Callable:
+        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
+        warnings.warn(
+            f"The {func.__name__} class is deprecated. "
+            f"Use the function `{func.__name__.lower()}` instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        warnings.simplefilter('default', DeprecationWarning)  # reset filter
+        return func(*args, **kwargs)
+
+    return new_func
 
 
 class PartialLabelSpec(NamedTuple):
