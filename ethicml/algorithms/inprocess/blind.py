@@ -24,8 +24,6 @@ class Blind(InAlgorithm):
 
         random = np.random.RandomState(self.seed)
 
-        predictions = Prediction(
+        return Prediction(
             hard=pd.Series(random.choice(train_y_vals.T.to_numpy()[0], test.x.shape[0]))
         )
-
-        return predictions
