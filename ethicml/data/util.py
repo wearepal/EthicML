@@ -1,8 +1,7 @@
 """Useful methods that are used in some of the data objects."""
-import functools
 import warnings
 from itertools import groupby
-from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar, cast
 
 __all__ = [
     "deprecated",
@@ -24,8 +23,7 @@ def deprecated(func: _F) -> _F:
     It will result in a warning being emitted when the function is used.
     """
 
-    @functools.wraps(func)
-    def new_func(*args: Any, **kwargs: Any) -> Callable:
+    def new_func(*args, **kwargs):  # type: ignore[no-untyped-def]
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
             f"The {func.__name__} class is deprecated. "
@@ -36,7 +34,7 @@ def deprecated(func: _F) -> _F:
         warnings.simplefilter('default', DeprecationWarning)  # reset filter
         return func(*args, **kwargs)
 
-    return new_func
+    return cast(_F, new_func)
 
 
 class PartialLabelSpec(NamedTuple):
