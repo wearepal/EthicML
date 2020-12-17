@@ -1,4 +1,5 @@
 """Useful methods that are used in some of the data objects."""
+import functools
 import warnings
 from itertools import groupby
 from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar, cast
@@ -23,6 +24,7 @@ def deprecated(func: _F) -> _F:
     It will result in a warning being emitted when the function is used.
     """
 
+    @functools.wraps(func)
     def new_func(*args, **kwargs):  # type: ignore[no-untyped-def]
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
