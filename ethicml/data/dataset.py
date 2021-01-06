@@ -14,7 +14,7 @@ from .util import (
     LabelSpec,
     filter_features_by_prefixes,
     get_discrete_features,
-    label_specs_to_feature_list,
+    label_spec_to_feature_list,
 )
 
 __all__ = ["Dataset"]
@@ -61,18 +61,20 @@ class Dataset:
     @property
     def sens_attrs(self) -> List[str]:
         """Get the list of sensitive attributes."""
-        if isinstance(self._sens_attr_spec, str):
-            return [self._sens_attr_spec]
-        assert isinstance(self._sens_attr_spec, dict)
-        return label_specs_to_feature_list(self._sens_attr_spec)
+        if isinstance(self.sens_attr_spec, str):
+            return [self.sens_attr_spec]
+        else:
+            assert isinstance(self.sens_attr_spec, dict)
+            return label_spec_to_feature_list(self.sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
-        if isinstance(self._class_label_spec, str):
-            return [self._class_label_spec]
-        assert isinstance(self._class_label_spec, dict)
-        return label_specs_to_feature_list(self._class_label_spec)
+        if isinstance(self.class_label_spec, str):
+            return [self.class_label_spec]
+        else:
+            assert isinstance(self.class_label_spec, dict)
+            return label_spec_to_feature_list(self.class_label_spec)
 
     @property
     def filepath(self) -> Path:
@@ -253,8 +255,8 @@ class Dataset:
             spec = label_mapping[name]
             value = labels
             if i + 1 < len(names_ordered):
-                next_spec = label_mapping[names_ordered[i + 1]]
-                value = labels % next_spec.multiplier
+                next_group = label_mapping[names_ordered[i + 1]]
+                value = labels % next_group.multiplier
             value = value // spec.multiplier
             value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
             restored = pd.get_dummies(value)
