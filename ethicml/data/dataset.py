@@ -1,6 +1,4 @@
 """Data structure for all datasets that come with the framework."""
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
@@ -61,20 +59,18 @@ class Dataset:
     @property
     def sens_attrs(self) -> List[str]:
         """Get the list of sensitive attributes."""
-        if isinstance(self.sens_attr_spec, str):
-            return [self.sens_attr_spec]
-        else:
-            assert isinstance(self.sens_attr_spec, dict)
-            return label_spec_to_feature_list(self.sens_attr_spec)
+        if isinstance(self._sens_attr_spec, str):
+            return [self._sens_attr_spec]
+        assert isinstance(self._sens_attr_spec, dict)
+        return label_spec_to_feature_list(self._sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
-        if isinstance(self.class_label_spec, str):
-            return [self.class_label_spec]
-        else:
-            assert isinstance(self.class_label_spec, dict)
-            return label_spec_to_feature_list(self.class_label_spec)
+        if isinstance(self._class_label_spec, str):
+            return [self._class_label_spec]
+        assert isinstance(self._class_label_spec, dict)
+        return label_spec_to_feature_list(self._class_label_spec)
 
     @property
     def filepath(self) -> Path:
@@ -279,7 +275,7 @@ class Dataset:
         discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
         discard_non_one_hot: Optional[bool] = None,
         map_to_binary: Optional[bool] = None,
-    ) -> Dataset:
+    ) -> "Dataset":
         """Try to mimic dataclasses.replace."""
         return Dataset(
             name=self._name if name is None else name,
