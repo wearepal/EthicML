@@ -1,4 +1,6 @@
 """Data structure for all datasets that come with the framework."""
+from __future__ import annotations
+
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
@@ -275,7 +277,7 @@ class Dataset:
         discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
         discard_non_one_hot: Optional[bool] = None,
         map_to_binary: Optional[bool] = None,
-    ):
+    ) -> Dataset:
         """Try to mimic dataclasses.replace."""
         return Dataset(
             name=self._name if name is None else name,
