@@ -10,14 +10,14 @@ __all__ = ["Compas", "compas"]
 
 
 @deprecated
-def Compas(  # pylint: disable=invalid-name
+def compas(
     split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
 ) -> Dataset:
     """Get COMPAS (or ProPublica) dataset."""
     return compas(split, discrete_only)
 
 
-def compas(
+def Compas(  # pylint: disable=invalid-name
     split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
 ) -> Dataset:
     """Compas (or ProPublica) dataset."""

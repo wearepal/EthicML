@@ -7,12 +7,12 @@ __all__ = ["Lipton", "lipton"]
 
 
 @deprecated
-def Lipton() -> Dataset:  # pylint: disable=invalid-name
+def lipton() -> Dataset:
     """Dataset with toy data for testing."""
     return lipton()
 
 
-def lipton() -> Dataset:
+def Lipton() -> Dataset:  # pylint: disable=invalid-name
     """Synthetic dataset from the Lipton et al. 2018.
 
     Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`

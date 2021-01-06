@@ -7,12 +7,12 @@ __all__ = ["Toy", "toy"]
 
 
 @deprecated
-def Toy() -> Dataset:  # pylint: disable=invalid-name
+def toy() -> Dataset:
     """Dataset with toy data for testing."""
     return toy()
 
 
-def toy() -> Dataset:
+def Toy() -> Dataset:  # pylint: disable=invalid-name
     """Dataset with toy data for testing."""
     disc_feature_groups = {
         "disc_1": ["disc_1_a", "disc_1_b", "disc_1_c", "disc_1_d", "disc_1_e"],

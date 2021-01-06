@@ -4,7 +4,14 @@ from typing import Union
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, deprecated, flatten_dict, reduce_feature_group, simple_spec
+from ..util import (
+    LabelGroup,
+    LabelSpec,
+    deprecated,
+    flatten_dict,
+    reduce_feature_group,
+    simple_spec,
+)
 
 __all__ = ["Adult", "adult"]
 
@@ -14,14 +21,14 @@ AdultSplits = Literal[
 
 
 @deprecated
-def Adult(  # pylint: disable=invalid-name
+def adult(
     split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
 ) -> Dataset:
     """UCI Adult dataset."""
     return adult(split, discrete_only, binarize_nationality)
 
 
-def adult(
+def Adult(  # pylint: disable=invalid-name
     split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
 ) -> Dataset:
     """UCI Adult dataset."""
@@ -156,7 +163,7 @@ def adult(
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]
     elif split == "Race":
-        sens_attr_spec = simple_spec({"race": disc_feature_groups["race"]})
+        sens_attr_spec = {"race": LabelGroup(disc_feature_groups["race"])}
         s_prefix = ["race"]
         class_label_spec = "salary_>50K"
         class_label_prefix = ["salary"]

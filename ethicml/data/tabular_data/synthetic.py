@@ -10,7 +10,7 @@ __all__ = ["Synthetic", "synthetic"]
 
 
 @deprecated
-def Synthetic(  # pylint: disable=invalid-name
+def synthetic(
     scenario: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
     fair: bool = False,
@@ -20,7 +20,7 @@ def Synthetic(  # pylint: disable=invalid-name
     return synthetic(scenario=scenario, target=target, fair=fair, num_samples=num_samples)
 
 
-def synthetic(
+def Synthetic(  # pylint: disable=invalid-name
     scenario: Literal[1, 2, 3, 4] = 1,  # pylint: disable=bad-whitespace
     target: Literal[1, 2, 3] = 3,  # pylint: disable=bad-whitespace
     fair: bool = False,
