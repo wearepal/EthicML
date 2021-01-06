@@ -507,8 +507,8 @@ def test_expand_s():
         features=[],
         cont_features=[],
         sens_attr_spec={
-            "Gender": em.PartialLabelSpec(["Female", "Male"], multiplier=3),
-            "Race": em.PartialLabelSpec(["Blue", "Green", "Pink"], multiplier=1),
+            "Gender": em.LabelGroup(["Female", "Male"], multiplier=3),
+            "Race": em.LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
         },
         class_label_spec="label",
         num_samples=7,
@@ -537,6 +537,6 @@ def test_simple_spec():
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
     spec = em.simple_spec(sens_attrs)
     assert spec == {
-        "gender": em.PartialLabelSpec(["female", "male"], multiplier=3),
-        "race": em.PartialLabelSpec(["blue", "green", "pink"], multiplier=1),
+        "gender": em.LabelGroup(["female", "male"], multiplier=3),
+        "race": em.LabelGroup(["blue", "green", "pink"], multiplier=1),
     }
