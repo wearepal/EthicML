@@ -1,5 +1,4 @@
 """Test the loading data capability."""
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -88,6 +87,9 @@ def test_data_shape(
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
+
+    with pytest.raises(AttributeError):
+        data.cont_features
 
 
 @pytest.mark.parametrize("fair", [False, True])
@@ -218,8 +220,7 @@ def test_load_adult_race_sex():
 def test_race_feature_split():
     """Test race feature split."""
     adult_data: em.Dataset = em.adult(split="Custom")
-    adult_data = replace(
-        adult_data,
+    adult_data = adult_data.replace(
         sens_attr_spec="race_White",
         s_prefix=["race"],
         class_label_spec="salary_>50K",
