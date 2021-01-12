@@ -1,5 +1,5 @@
 """Data structure for all datasets that come with the framework."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, InitVar
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
@@ -19,14 +19,14 @@ from .util import (
 __all__ = ["Dataset"]
 
 
-@dataclass(frozen=True)
+@dataclass
 class Dataset:
     """Data structure that holds all the information needed to load a given dataset."""
 
     name: str
     filename_or_path: Union[str, Path]
     features: Sequence[str]
-    cont_features: Sequence[str]
+    cont_features: InitVar[Sequence[str]]
     sens_attr_spec: Union[str, LabelSpec]
     class_label_spec: Union[str, LabelSpec]
     num_samples: int
@@ -38,6 +38,10 @@ class Dataset:
     """If some entries in s or y are not correctly one-hot encoded, discard those."""
     map_to_binary: bool = False
     """If True, convert labels from {-1, 1} to {0, 1}."""
+    _cont_features: Sequence[str] = field(init=False)
+
+    def __post_init__(self, cont_features: Sequence[str]) -> None:
+        self._cont_features = cont_features
 
     @property
     def sens_attrs(self) -> List[str]:
@@ -107,7 +111,7 @@ class Dataset:
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return filter_features_by_prefixes(self.cont_features, self.features_to_remove)
+        return filter_features_by_prefixes(self._cont_features, self.features_to_remove)
 
     @property
     def discrete_features(self) -> List[str]:
