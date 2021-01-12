@@ -1,5 +1,5 @@
 """Data structure for all datasets that come with the framework."""
-from dataclasses import dataclass, field, InitVar
+from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
