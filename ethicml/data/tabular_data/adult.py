@@ -1,11 +1,10 @@
 """Class to describe features of the Adult dataset."""
 from typing import Union
-from warnings import warn
 
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
+from ..util import LabelSpec, deprecated, flatten_dict, reduce_feature_group, simple_spec
 
 __all__ = ["Adult", "adult"]
 
@@ -14,11 +13,11 @@ AdultSplits = Literal[
 ]
 
 
+@deprecated
 def Adult(  # pylint: disable=invalid-name
     split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
 ) -> Dataset:
     """UCI Adult dataset."""
-    warn("The Adult class is deprecated. Use the function instead.", DeprecationWarning)
     return adult(split, discrete_only, binarize_nationality)
 
 

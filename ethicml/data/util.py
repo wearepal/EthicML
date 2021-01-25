@@ -1,46 +1,52 @@
 """Useful methods that are used in some of the data objects."""
+import functools
+import warnings
 from itertools import groupby
-from typing import Dict, List, Mapping, NamedTuple, Sequence
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
 
 __all__ = [
+    "LabelGroup",
     "LabelSpec",
-    "PartialLabelSpec",
-    "simple_spec",
-    "get_concatenated_features",
+    "deprecated",
     "filter_features_by_prefixes",
     "get_discrete_features",
     "group_disc_feat_indexes",
-    "label_specs_to_feature_list",
+    "label_spec_to_feature_list",
+    "simple_spec",
 ]
 
-
-class PartialLabelSpec(NamedTuple):
-    """Specification for part of a label (can be class label or sensitive attribute)."""
-
-    columns: List[str]
-    multiplier: int = 1
+_F = TypeVar("_F", bound=Callable[..., Any])
 
 
-LabelSpec = Mapping[str, PartialLabelSpec]
+def deprecated(func: _F) -> _F:
+    """This is a decorator which can be used to mark functions as deprecated.
 
-
-def get_concatenated_features(
-    s_prefix: List[str], y_prefix: List[str], continuous_features: List[str], discrete_only: bool
-) -> List[str]:
-    """Absolutely no idea why this is here.
-
-    It's not used anywhere. Mark for deletion.
-
-    Args:
-        s_prefix:
-        y_prefix:
-        continuous_features:
-        discrete_only:
-
-    Returns:
-        list of features prepended with the sensitive label and class label.
+    It will result in a warning being emitted when the function is used.
     """
-    return s_prefix + y_prefix + continuous_features if discrete_only else s_prefix + y_prefix
+
+    @functools.wraps(func)
+    def new_func(*args: Any, **kwargs: Any) -> Callable:
+        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
+        warnings.warn(
+            f"The {func.__name__} class is deprecated. "
+            f"Use the function `{func.__name__.lower()}` instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        warnings.simplefilter('default', DeprecationWarning)  # reset filter
+        return func(*args, **kwargs)
+
+    return new_func
+
+
+class LabelGroup(NamedTuple):
+    """Definition of a group of columns that should be interpreted as a single label."""
+
+    columns: List[str]  # list of columns that belong to the group
+    multiplier: int = 1  # multiplier assigned to this group (needed when combining groups)
+
+
+LabelSpec = Mapping[str, LabelGroup]
 
 
 def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:
@@ -123,21 +129,21 @@ def reduce_feature_group(
     return flatten_dict(disc_feature_groups)
 
 
-def label_specs_to_feature_list(specs: LabelSpec) -> List[str]:
+def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
     """Extract all the feature column names from a dictionary of label specifications."""
     feature_list: List[str] = []
-    for spec in specs.values():
-        feature_list += spec.columns
+    for group in spec.values():
+        feature_list += group.columns
     return feature_list
 
 
 def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
     """Create label specs for the most common case where columns contain 0s and 1s."""
     multiplier = 1
-    label_specs = {}
+    label_spec = {}
     for name, columns in label_defs.items():
-        label_specs[name] = PartialLabelSpec(list(columns), multiplier=multiplier)
+        label_spec[name] = LabelGroup(list(columns), multiplier=multiplier)
         num_columns = len(columns)
         # we assume here that the columns only contain 0s and 1s
         multiplier *= num_columns if num_columns > 1 else 2
-    return label_specs
+    return label_spec

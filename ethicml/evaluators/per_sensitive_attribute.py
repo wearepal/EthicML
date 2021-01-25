@@ -31,6 +31,7 @@ def metric_per_sensitive_attribute(
 
     assert actual.s.shape[0] == actual.x.shape[0]
     assert actual.s.shape[0] == actual.y.shape[0]
+    assert prediction.hard.shape[0] == actual.y.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
 

@@ -65,11 +65,12 @@ jobs:
     - name: Install black
       run: |
         python -m pip install --upgrade pip
-        pip install black
+        pip install black isort
     - name: Format with black
       run: |
         python -m black --check -l 100 -t py36 -S ethicml/
         python -m black --check -l 100 -t py36 -S tests/
+        isort . --check --diff
 
   type_check_with_mypy:
 
@@ -86,7 +87,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install mypy
         pip install git+https://github.com/predictive-analytics-lab/data-science-types
-        pip install typed-argument-parser==1.4
+        pip install typed-argument-parser==1.4 teext
     - name: Type check with mypy
       run: |
         python run_mypy.py
@@ -108,4 +109,4 @@ jobs:
         pip install pydocstyle
     - name: Check docstrings with pydocstyle
       run: |
-        python run_pydocstyle.py
+        pydocstyle --count -e ethicml

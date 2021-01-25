@@ -5,8 +5,9 @@ from typing import Dict, List, Optional, Tuple, Union
 from typing_extensions import Final, Literal
 
 from ethicml import common
+
 from ..dataset import Dataset
-from ..util import PartialLabelSpec, flatten_dict, label_specs_to_feature_list
+from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 
 __all__ = ["CelebAttrs", "celeba"]
 
@@ -78,7 +79,7 @@ _FILE_LIST: Final = [
 def celeba(
     download_dir: str,
     label: CelebAttrs = "Smiling",
-    sens_attr: Union[CelebAttrs, Dict[str, PartialLabelSpec]] = "Male",
+    sens_attr: Union[CelebAttrs, Dict[str, LabelGroup]] = "Male",
     download: bool = False,
     check_integrity: bool = True,
 ) -> Tuple[Optional[Dataset], Path]:
@@ -122,7 +123,7 @@ def celeba(
     discrete_features = flatten_dict(disc_feature_groups)
     s_prefix: List[str]
     if isinstance(sens_attr, dict):
-        s_prefix = label_specs_to_feature_list(sens_attr)
+        s_prefix = label_spec_to_feature_list(sens_attr)
         assert all(feat in discrete_features for feat in s_prefix)
         name = "[" + ", ".join(sens_attr) + "]"
     else:
@@ -179,6 +180,7 @@ def _download(base: Path) -> None:
     if not common.TORCHVISION_AVAILABLE:
         raise RuntimeError("Need torchvision to download data.")
     import zipfile
+
     from torchvision.datasets.utils import download_file_from_google_drive
 
     if _check_integrity(base):

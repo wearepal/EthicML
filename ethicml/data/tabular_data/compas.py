@@ -1,20 +1,19 @@
 """Class to describe features of the Compas dataset."""
 from typing import Union
-from warnings import warn
 
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, flatten_dict, simple_spec
+from ..util import LabelSpec, deprecated, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
 
 
+@deprecated
 def Compas(  # pylint: disable=invalid-name
     split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
 ) -> Dataset:
     """Get COMPAS (or ProPublica) dataset."""
-    warn("The Compas class is deprecated. Use the function instead.", DeprecationWarning)
     return compas(split, discrete_only)
 
 

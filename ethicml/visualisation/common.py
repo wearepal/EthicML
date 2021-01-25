@@ -206,7 +206,7 @@ def scatter(
     for i, entry in enumerate(plot_def.entries):
         additional_params: Dict[str, Any]
         if entry.do_fill or connect_dots:
-            additional_params = dict()
+            additional_params = {}
             shp_index = filled_counter
             filled_counter += 1
         else:

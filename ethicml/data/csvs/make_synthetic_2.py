@@ -4,10 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
-def sigmoid(x: np.ndarray) -> np.ndarray:
-    """As there is no np.sigmoid."""
-    return 1 / (1 + np.exp(-x))
+from ethicml.data.csvs.utility import sigmoid
 
 
 def main() -> None:
@@ -39,7 +36,7 @@ def main() -> None:
     We have:
     S ~ B(0.5)
 
-    X_1 ~ N(S, 0.5)
+    X_1 ~ N(0, 0.5) + 2*S
     X_2 ~ N(-1.5, 4)
 
     Y_1 ~ B(sigmoid(X_1)))
@@ -50,22 +47,60 @@ def main() -> None:
 
     """
     seed = 0
-    samples = 1_000
+    samples = 100_000
 
     np.random.seed(seed)
 
-    s = np.random.binomial(1, 0.5, samples)
+    s = np.random.binomial(1, 0.6, samples)
 
-    x_1 = np.random.normal(s, 0.5)
-    x_2 = np.random.normal(-1.5, 4, samples)
+    x_1f = np.random.normal(0, 0.5, samples)
+    x_1 = x_1f + (s * 2 - 1)
+    x_2 = np.random.normal(-1, 3, samples)
+    x_2f = x_2
 
     y_1 = np.random.binomial(1, sigmoid(x_1))
+    y_1f = np.random.binomial(1, sigmoid(x_1f))
     y_2 = np.random.binomial(1, sigmoid(x_2))
-    y_3 = np.random.binomial(1, sigmoid(x_1 + x_2))
+    y_2f = y_2
+    p = x_1 + x_2
+    pf = x_1f + x_2f
+    y_3 = np.random.binomial(1, sigmoid(p))
+    y_3f = np.random.binomial(1, sigmoid(pf))
 
-    print(s.mean(), x_1.mean(), x_2.mean(), y_1.mean(), y_2.mean(), y_3.mean())
+    noise_1 = np.random.normal(0, 4, samples)
+    noise_2 = np.random.normal(3, 7, samples)
 
-    df = pd.DataFrame(data={"x1": x_1, "x2": x_2, "s": s, "y1": y_1, "y2": y_2, "y3": y_3})
+    print(
+        s.mean(),
+        x_1.mean(),
+        x_1f.mean(),
+        x_2.mean(),
+        x_2f.mean(),
+        y_1.mean(),
+        y_1f.mean(),
+        y_2.mean(),
+        y_2f.mean(),
+        y_3.mean(),
+        y_3f.mean(),
+    )
+
+    df = pd.DataFrame(
+        data={
+            "x1": x_1,
+            "x1f": x_1f,
+            "x2": x_2,
+            "x2f": x_2f,
+            "s": s,
+            "y1": y_1,
+            "y1f": y_1f,
+            "y2": y_2,
+            "y2f": y_2f,
+            "y3": y_3,
+            "y3f": y_3f,
+            "n1": noise_1,
+            "n2": noise_2,
+        }
+    )
 
     # Shuffle the data,
     df = df.sample(frac=1.0, random_state=seed).reset_index(drop=True)

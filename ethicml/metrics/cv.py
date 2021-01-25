@@ -16,8 +16,8 @@ class CV(Metric):
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         # has to be imported on demand because otherwise we get circular imports
         from ethicml.evaluators.per_sensitive_attribute import (
-            metric_per_sensitive_attribute,
             diff_per_sensitive_attribute,
+            metric_per_sensitive_attribute,
         )
 
         per_sens = metric_per_sensitive_attribute(prediction, actual, ProbPos())

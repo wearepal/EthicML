@@ -1,0 +1,48 @@
+[tool.black]
+line-length = 100
+target-version = ['py36']
+include = '''
+(
+  ethicml/(.*).pyi?$
+  | tests/(.*).pyi?$
+)
+'''
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.venv
+    | .*/\.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | .github
+    | docs
+    | docsource
+    | examples
+    | plots
+    | results
+    | \.editorconfig
+    | \.gitignore
+    | \.pytest_cache
+    | \.coverage.*
+    | .pre-commit-config.yaml
+    | .pylintrc
+    | CODEOWNERS
+    | LICENSE
+    | mypy.ini
+    | README.md
+  )/
+)
+'''
+skip-string-normalization = true
+
+[tool.isort]
+include_trailing_comma = "True"
+known_third_party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
+line_length = 100
+multi_line_output = 3

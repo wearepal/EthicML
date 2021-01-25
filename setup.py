@@ -31,25 +31,33 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         'dataclasses;python_version<"3.7"',  # dataclasses are in the stdlib in python>=3.7
-        "fairlearn >= 0.4.0",
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2, < 3.3.1",
         "numpy >= 1.14.2",
-        "pandas >= 0.24.0",
+        "pandas >= 1.0",
         "pipenv >= 2018.11.26",
         "pillow",
         "scikit_learn >= 0.20.1",
         "seaborn >= 0.9.0",
+        "teext",
         "tqdm >= 4.31.1",
         "typed-argument-parser == 1.4",
         "typing-extensions >= 3.7.2",
     ],
     extras_require={
-        "ci": ["pytest >= 3.3.2", "pytest-cov >= 2.6.0", "torch == 1.5.0", "torchvision == 0.6.0"],
+        "all": ["fairlearn == 0.4.6"],
+        "ci": [
+            "fairlearn == 0.4.6",
+            "pytest >= 3.3.2",
+            "pytest-cov >= 2.6.0",
+            "torch == 1.5.0",
+            "torchvision == 0.6.0",
+        ],
         # use `pip install EthicML[dev]` to install development packages
         "dev": [
             "black",
             "data-science-types",
+            "isort == 5.5.4",
             "mypy",
             "pydocstyle",
             "pylint",

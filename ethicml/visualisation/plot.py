@@ -1,12 +1,13 @@
 """Create plots of a dataset."""
 import itertools
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from sklearn.manifold import TSNE
 from typing_extensions import Literal
 
 from ethicml.metrics.metric import Metric
@@ -14,21 +15,45 @@ from ethicml.utility import DataTuple, Results
 
 from .common import DataEntry, LegendType, PlotDef, PlotType, errorbox, scatter
 
-__all__ = ["plot_results", "single_plot", "save_2d_plot", "save_label_plot", "save_jointplot"]
+__all__ = [
+    "plot_results",
+    "single_plot",
+    "save_2d_plot",
+    "save_label_plot",
+    "save_jointplot",
+    "save_multijointplot",
+]
 
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
+
+
+def maybe_tsne(data: DataTuple) -> Tuple[pd.DataFrame, str, str]:
+    columns = data.x.columns
+
+    if len(columns) > 2:
+        tsne_embeddings = TSNE(n_components=2, random_state=0).fit_transform(data.x)
+        amalgamated = pd.concat(
+            [pd.DataFrame(tsne_embeddings, columns=["tsne1", "tsne2"]), data.s, data.y],
+            axis="columns",
+        )
+        x1_name = "tsne1"
+        x2_name = "tsne2"
+    else:
+        amalgamated = pd.concat([data.x, data.s, data.y], axis="columns")
+        x1_name = f"{columns[0]}"
+        x2_name = f"{columns[1]}"
+    return amalgamated, x1_name, x2_name
 
 
 def save_2d_plot(data: DataTuple, filepath: str) -> None:
     """Make 2D plot."""
     file_path = Path(filepath)
-    columns = data.x.columns
 
-    amalgamated = pd.concat([data.x, data.s, data.y], axis="columns")
+    amalgamated, x1_name, x2_name = maybe_tsne(data)
 
     plot = sns.scatterplot(
-        x=columns[0],
-        y=columns[1],
+        x=x1_name,
+        y=x2_name,
         hue=data.y.columns[0],
         palette="Set2",
         data=amalgamated,
@@ -55,13 +80,65 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
     plt.clf()
 
 
+def multivariateGrid(
+    col_x: str,
+    col_y: str,
+    sens_col: str,
+    outcome_col: str,
+    df: pd.DataFrame,
+    scatter_alpha: float = 0.5,
+) -> None:
+    def colored_scatter(x: Any, y: Any, c: Optional[str] = None) -> Callable[[Any], None]:
+        def scatter(*args: Any, **kwargs: Any) -> None:
+            args = (x, y)
+            if c is not None:
+                kwargs['c'] = c
+            kwargs['alpha'] = scatter_alpha
+            plt.scatter(*args, **kwargs)
+
+        return scatter
+
+    sns.set_palette("husl")
+
+    g = sns.JointGrid(x=col_x, y=col_y, data=df)
+    color = None
+    legends = []
+    for name, df_group in df.groupby([sens_col, outcome_col]):
+        legends.append(f"S={name[0]}, Y={name[1]}")
+        g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
+        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)
+        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)
+    # Do also global Hist:
+    # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
+    # sns.distplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
+    plt.legend(legends)
+
+
+def save_multijointplot(data: DataTuple, filepath: str) -> None:
+    """Make joint plot."""
+    file_path = Path(filepath)
+    data.x.columns
+
+    amalgamated, x1_name, x2_name = maybe_tsne(data)
+
+    multivariateGrid(
+        col_x=x1_name,
+        col_y=x2_name,
+        sens_col=data.s.columns[0],
+        outcome_col=data.y.columns[0],
+        df=amalgamated,
+    )
+
+    file_path.parent.mkdir(exist_ok=True)
+    plt.savefig(file_path)
+    plt.clf()
+
+
 def make_gif(files: List[str], name: str = "movie") -> None:
     """Make GIF."""
     import imageio
 
-    images = []
-    for filename in files:
-        images.append(imageio.imread(filename))
+    images = [imageio.imread(filename) for filename in files]
     imageio.mimsave(f"{name}.gif", images)
 
 
@@ -76,8 +153,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     s_0_val = s_values[0]
     s_1_val = s_values[1]
 
-    s_0_label = s_values.index[0]
-    s_1_label = s_values.index[1]
+    s_0_label = s_values.index.min()
+    s_1_label = s_values.index.max()
 
     y_col = data.y.columns[0]
     y_s0 = (
@@ -148,6 +225,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     file_path.parent.mkdir(exist_ok=True)
     fig.savefig(file_path)
+    fig.clf()
 
 
 def single_plot(
@@ -199,9 +277,10 @@ def single_plot(
         for transform_ in transforms:
             mask_for_transform = results.index.get_level_values("transform") == transform_
             data = results.loc[mask_for_dataset & mask_for_model & mask_for_transform]
-            if data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any():
-                if not include_nan_entries:
-                    continue  # this entry has missing values
+            if (
+                data[[xaxis[0], yaxis[0]]].empty or data[[xaxis[0], yaxis[0]]].isnull().any().any()
+            ) and not include_nan_entries:
+                continue  # this entry has missing values
             model_label = f"{model} ({transform_})" if transform_ != "no_transform" else str(model)
             entries.append(DataEntry(model_label, data, (not alternating_style) or count % 2 == 0))
             count += 1

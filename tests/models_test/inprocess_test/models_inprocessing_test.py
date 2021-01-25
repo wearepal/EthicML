@@ -7,28 +7,43 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-import ethicml as em
-from ethicml.algorithms import run_blocking
-from ethicml.algorithms.inprocess import (
+from ethicml import (
     DRO,
     LR,
     LRCV,
     MLP,
     SVM,
+    AbsCV,
+    Accuracy,
     Agarwal,
+    Blind,
     Corels,
+    CrossValidator,
+    DataTuple,
+    Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
     InstalledModel,
     Kamiran,
     LRProb,
     Majority,
+    Metric,
+    Prediction,
+    ProbPos,
+    SoftPrediction,
+    TrainTestPair,
+    compas,
+    diff_per_sensitive_attribute,
+    evaluate_models_async,
+    load_data,
+    metric_per_sensitive_attribute,
+    query_dt,
+    run_blocking,
+    run_in_parallel,
+    toy,
+    train_test_split,
 )
-from ethicml.algorithms.inprocess.blind import Blind
-from ethicml.data import compas, load_data, toy
-from ethicml.metrics import AbsCV, Accuracy, Metric
-from ethicml.preprocessing import query_dt, train_test_split
-from ethicml.utility import DataTuple, Heaviside, Prediction, SoftPrediction, TrainTestPair
+from ethicml.algorithms.inprocess.oracle import DPOracle, Oracle
 from tests.run_algorithm_test import count_true
 
 
@@ -67,6 +82,56 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
 
 
+def test_oracle():
+    """Test an inprocess model."""
+    data: DataTuple = toy().load()
+    train, test = train_test_split(data)
+
+    model = Oracle()
+    name = "Oracle"
+    num_pos = 41
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    test = test.remove_y()
+    with pytest.raises(AssertionError):
+        _ = model.run(train, test)
+
+
+def test_dp_oracle():
+    """Test an inprocess model."""
+    data: DataTuple = toy().load()
+    train, test = train_test_split(data)
+
+    model = DPOracle()
+    name = "DemPar. Oracle"
+    num_pos = 53
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(predictions, test, ProbPos())
+    )
+    for name, diff in diffs.items():
+        assert 0 == pytest.approx(diff, abs=1e-2)
+
+    test = test.remove_y()
+    with pytest.raises(AssertionError):
+        _ = model.run(train, test)
+
+
 def test_corels(toy_train_test: TrainTestPair) -> None:
     """Test corels."""
     model: InAlgorithm = Corels()
@@ -93,7 +158,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
     hyperparams: Dict[str, List[float]] = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
-    lr_cv = em.CrossValidator(LR, hyperparams, folds=3)
+    lr_cv = CrossValidator(LR, hyperparams, folds=3)
 
     assert lr_cv is not None
 
@@ -194,7 +259,7 @@ def test_agarwal(toy_train_test: TrainTestPair):
     expected_results.append((42, 38))
 
     results = run_blocking(
-        em.run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
+        run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
     )
 
     for model, results_for_model, model_name, (pred_true, pred_false) in zip(
@@ -219,7 +284,7 @@ def test_threaded_agarwal():
             )
 
     results = run_blocking(
-        em.evaluate_models_async(
+        evaluate_models_async(
             datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
         )
     )
@@ -255,5 +320,5 @@ def test_kamiran(toy_train_test: TrainTestPair):
     assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
 
     # remove all samples with s=0 & y=1 from the data
-    train_no_s0y1 = query_dt(train, "sensitive_attr != 0 | decision != 1")
+    train_no_s0y1 = query_dt(train, "`sensitive-attr` != 0 | decision != 1")
     predictions = kamiran_model.run(train_no_s0y1, test)

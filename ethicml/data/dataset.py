@@ -13,7 +13,7 @@ from .util import (
     LabelSpec,
     filter_features_by_prefixes,
     get_discrete_features,
-    label_specs_to_feature_list,
+    label_spec_to_feature_list,
 )
 
 __all__ = ["Dataset"]
@@ -46,7 +46,7 @@ class Dataset:
             return [self.sens_attr_spec]
         else:
             assert isinstance(self.sens_attr_spec, dict)
-            return label_specs_to_feature_list(self.sens_attr_spec)
+            return label_spec_to_feature_list(self.sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
@@ -55,7 +55,7 @@ class Dataset:
             return [self.class_label_spec]
         else:
             assert isinstance(self.class_label_spec, dict)
-            return label_specs_to_feature_list(self.class_label_spec)
+            return label_spec_to_feature_list(self.class_label_spec)
 
     @property
     def filepath(self) -> Path:
@@ -137,7 +137,7 @@ class Dataset:
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
         """
-        dataframe: pd.DataFrame = pd.read_csv(self.filepath)
+        dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self.num_samples)
         assert isinstance(dataframe, pd.DataFrame)
 
         feature_split = self.feature_split if not ordered else self.ordered_features
@@ -237,8 +237,8 @@ class Dataset:
             spec = label_mapping[name]
             value = labels
             if i + 1 < len(names_ordered):
-                next_spec = label_mapping[names_ordered[i + 1]]
-                value = labels % next_spec.multiplier
+                next_group = label_mapping[names_ordered[i + 1]]
+                value = labels % next_group.multiplier
             value = value // spec.multiplier
             value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
             restored = pd.get_dummies(value)

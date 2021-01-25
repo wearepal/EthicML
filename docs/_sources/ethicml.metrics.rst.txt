@@ -1,5 +1,6 @@
+*******
 Metrics
-=======================
+*******
 
 .. automodule:: ethicml.metrics
    :members:

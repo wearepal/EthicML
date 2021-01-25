@@ -4,12 +4,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from fairlearn.reductions import (
-    ConditionalSelectionRate,
-    DemographicParity,
-    EqualizedOdds,
-    ExponentiatedGradient,
-)
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
@@ -31,6 +25,15 @@ class AgarwalArgs(InAlgoArgs):
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
     """Train a logistic regression model and compute predictions on the given test data."""
+    try:
+        from fairlearn.reductions import (
+            ConditionalSelectionRate,
+            DemographicParity,
+            EqualizedOdds,
+            ExponentiatedGradient,
+        )
+    except ImportError as e:
+        raise RuntimeError("In order to use Agarwal, install fairlearn.") from e
     random.seed(888)
     np.random.seed(888)
 

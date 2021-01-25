@@ -5,22 +5,16 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from ethicml.vision import (
-    LdColorizer,
-    TorchImageDataset,
-    create_celeba_dataset,
-    create_cmnist_datasets,
-    create_genfaces_dataset,
-)
+import ethicml.vision as emvi
 
 
-@pytest.mark.parametrize("transform", [LdColorizer])
+@pytest.mark.parametrize("transform", [emvi.LdColorizer])
 def test_label_dependent_transforms(transform):
     """Test label dependent transforms."""
     data = torch.rand((9, 3, 4, 4))
     labels = torch.randint(low=0, high=10, size=(9,))
 
-    colorizer = LdColorizer(
+    colorizer = emvi.LdColorizer(
         scale=0.02,
         min_val=0.0,
         max_val=1.0,
@@ -36,7 +30,7 @@ def test_label_dependent_transforms(transform):
 
 def test_celeba():
     """Test celeba."""
-    train_set = create_celeba_dataset(
+    train_set = emvi.create_celeba_dataset(
         root="non-existent",
         biased=True,
         mixing_factor=0.0,
@@ -45,7 +39,7 @@ def test_celeba():
         target_attr_name="Smiling",
         check_integrity=False,
     )
-    test_set = create_celeba_dataset(
+    test_set = emvi.create_celeba_dataset(
         root="non-existent",
         biased=False,
         mixing_factor=0.0,
@@ -58,13 +52,13 @@ def test_celeba():
     assert len(train_set) == 52855
     assert len(test_set) == 81039
 
-    assert isinstance(train_set, TorchImageDataset)
-    assert isinstance(test_set, TorchImageDataset)
+    assert isinstance(train_set, emvi.TorchImageDataset)
+    assert isinstance(test_set, emvi.TorchImageDataset)
 
 
 def test_celeba_multi_s():
     """Test celeba."""
-    data = create_celeba_dataset(
+    data = emvi.create_celeba_dataset(
         root="non-existent",
         biased=False,
         mixing_factor=0.0,
@@ -78,12 +72,12 @@ def test_celeba_multi_s():
     assert data.s.shape[1] == 1
     assert np.unique(data.s.numpy()).tolist() == [0, 1, 2]
 
-    assert isinstance(data, TorchImageDataset)
+    assert isinstance(data, emvi.TorchImageDataset)
 
 
 def test_gen_faces():
     """Test gen faces."""
-    train_set = create_genfaces_dataset(
+    train_set = emvi.create_genfaces_dataset(
         root="non-existent",
         biased=True,
         mixing_factor=0.0,
@@ -92,7 +86,7 @@ def test_gen_faces():
         target_attr_name="emotion",
         check_integrity=False,
     )
-    test_set = create_genfaces_dataset(
+    test_set = emvi.create_genfaces_dataset(
         root="non-existent",
         biased=False,
         mixing_factor=0.0,
@@ -105,13 +99,13 @@ def test_gen_faces():
     assert len(train_set) == 27928
     assert len(test_set) == 59314
 
-    assert isinstance(train_set, TorchImageDataset)
-    assert isinstance(test_set, TorchImageDataset)
+    assert isinstance(train_set, emvi.TorchImageDataset)
+    assert isinstance(test_set, emvi.TorchImageDataset)
 
 
 def test_cmnist(temp_dir):
     """Test CMNIST."""
-    train_set, test_set = create_cmnist_datasets(
+    train_set, test_set = emvi.create_cmnist_datasets(
         root=str(temp_dir), scale=0.01, train_pcnt=0.8, download=True, classes_to_keep=[0, 1]
     )
 

@@ -1,11 +1,12 @@
+***********************************
 Welcome to EthicML's documentation!
-===================================
+***********************************
 
 Package for evaluating the performance of methods
 which aim to increase fairness, accountability and/or transparency of machine learning models.
 
 Example
--------
+=======
 
 .. code:: python
 
@@ -16,14 +17,14 @@ Example
        inprocess_models=[em.SVM(), em.Kamiran()],
        preprocess_models=[em.Upsampler()],
        metrics=[em.Accuracy()],
-       per_sens_attribute=[em.ProbPos(), em.TPR()],
+       per_sens_metrics=[em.ProbPos(), em.TPR()],
        repeats=5,
    )
    em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
 
 
 API
----
+===
 
 .. toctree::
    :maxdepth: 2

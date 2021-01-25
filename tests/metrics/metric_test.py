@@ -3,9 +3,22 @@ from typing import NamedTuple
 import pytest
 from pytest import approx
 
-from ethicml.algorithms.inprocess import LR, SVM, InAlgorithm, Kamiran
-from ethicml.metrics import AS, CV, F1, NMI, Accuracy, BalancedAccuracy, Hsic, Metric, Theil
-from ethicml.utility import Prediction
+from ethicml import (
+    AS,
+    CV,
+    F1,
+    LR,
+    NMI,
+    SVM,
+    Accuracy,
+    BalancedAccuracy,
+    Hsic,
+    InAlgorithm,
+    Kamiran,
+    Metric,
+    Prediction,
+    Theil,
+)
 from ethicml.utility.data_structures import TrainValPair
 from tests.conftest import get_id
 
