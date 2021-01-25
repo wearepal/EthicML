@@ -52,7 +52,7 @@ jobs:
         python run_pylint.py
         python run_pylint_tests.py
 
-  format_with_black:
+  format_with_black_and_isort:
 
     runs-on: ubuntu-latest
 
@@ -70,6 +70,8 @@ jobs:
       run: |
         python -m black --check -l 100 -t py36 -S ethicml/
         python -m black --check -l 100 -t py36 -S tests/
+    - name: Format with isort
+      run: |
         isort . --check --diff
 
   type_check_with_mypy:
