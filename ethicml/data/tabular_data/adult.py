@@ -15,14 +15,20 @@ AdultSplits = Literal[
 
 @deprecated
 def Adult(  # pylint: disable=invalid-name
-    split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
+    split: AdultSplits = "Sex",
+    discrete_only: bool = False,
+    binarize_nationality: bool = False,
+    binarize_race: bool = False,
 ) -> Dataset:
     """UCI Adult dataset."""
-    return adult(split, discrete_only, binarize_nationality)
+    return adult(split, discrete_only, binarize_nationality, binarize_race)
 
 
 def adult(
-    split: AdultSplits = "Sex", discrete_only: bool = False, binarize_nationality: bool = False
+    split: AdultSplits = "Sex",
+    discrete_only: bool = False,
+    binarize_nationality: bool = False,
+    binarize_race: bool = False,
 ) -> Dataset:
     """UCI Adult dataset."""
     disc_feature_groups = {
@@ -210,6 +216,18 @@ def adult(
         if split == "Sex":
             assert len(discrete_features) == 61  # 57 (discrete) features + 4 class labels
         name += ", binary nationality"
+    if binarize_race:
+        discrete_features = reduce_feature_group(
+            disc_feature_groups=disc_feature_groups,
+            feature_group="race",
+            to_keep=["race_White"],
+            remaining_feature_name="_not_White",
+        )
+        if split == "Sex" and binarize_nationality:
+            assert len(discrete_features) == 58  # 54 (discrete) features + 4 class labels
+        if split == "Sex" and not binarize_nationality:
+            assert len(discrete_features) == 97  # 93 (discrete) features + 4 class labels
+        name += ", binary race"
 
     return Dataset(
         name=name,
