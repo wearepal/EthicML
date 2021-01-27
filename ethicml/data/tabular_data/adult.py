@@ -226,7 +226,7 @@ def adult(
         if split == "Sex" and binarize_nationality:
             assert len(discrete_features) == 58  # 54 (discrete) features + 4 class labels
         if split == "Sex" and not binarize_nationality:
-            assert len(discrete_features) == 97  # 53 (discrete) features + 4 class labels
+            assert len(discrete_features) == 97  # 93 (discrete) features + 4 class labels
         name += ", binary race"
 
     return Dataset(
