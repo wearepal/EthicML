@@ -42,7 +42,10 @@ class Dataset:
     _raw_file_name_or_path: Union[str, Path] = field(init=False)
     _cont_features_unfiltered: Sequence[str] = field(init=False)
 
-    def __post_init__(self, cont_features: Sequence[str]) -> None:
+    def __post_init__(
+        self, filename_or_path: Union[str, Path], cont_features: Sequence[str]
+    ) -> None:
+        self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = cont_features
 
     @property
