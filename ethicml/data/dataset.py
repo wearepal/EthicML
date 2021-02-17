@@ -24,7 +24,7 @@ class Dataset:
     """Data structure that holds all the information needed to load a given dataset."""
 
     name: str
-    filename_or_path: Union[str, Path]
+    filename_or_path: InitVar[Union[str, Path]]
     features: Sequence[str]
     cont_features: InitVar[Sequence[str]]
     sens_attr_spec: Union[str, LabelSpec]
@@ -38,10 +38,15 @@ class Dataset:
     """If some entries in s or y are not correctly one-hot encoded, discard those."""
     map_to_binary: bool = False
     """If True, convert labels from {-1, 1} to {0, 1}."""
-    _cont_features: Sequence[str] = field(init=False)
 
-    def __post_init__(self, cont_features: Sequence[str]) -> None:
-        self._cont_features = cont_features
+    _raw_file_name_or_path: Union[str, Path] = field(init=False)
+    _cont_features_unfiltered: Sequence[str] = field(init=False)
+
+    def __post_init__(
+        self, filename_or_path: Union[str, Path], cont_features: Sequence[str]
+    ) -> None:
+        self._raw_file_name_or_path = filename_or_path
+        self._cont_features_unfiltered = cont_features
 
     @property
     def sens_attrs(self) -> List[str]:
@@ -64,10 +69,10 @@ class Dataset:
     @property
     def filepath(self) -> Path:
         """Filepath from which to load the data."""
-        if isinstance(self.filename_or_path, Path):
-            return self.filename_or_path
+        if isinstance(self._raw_file_name_or_path, Path):
+            return self._raw_file_name_or_path
         else:
-            return ROOT_PATH / "data" / "csvs" / self.filename_or_path
+            return ROOT_PATH / "data" / "csvs" / self._raw_file_name_or_path
 
     @property
     def features_to_remove(self) -> List[str]:
@@ -111,7 +116,7 @@ class Dataset:
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return filter_features_by_prefixes(self._cont_features, self.features_to_remove)
+        return filter_features_by_prefixes(self._cont_features_unfiltered, self.features_to_remove)
 
     @property
     def discrete_features(self) -> List[str]:
