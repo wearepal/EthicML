@@ -1,6 +1,6 @@
 """Common variables / constants that make things run smoother."""
-from importlib import util
 import os
+from importlib import util
 from pathlib import Path
 from typing import Any, Callable, TypeVar
 
