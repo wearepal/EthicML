@@ -51,11 +51,11 @@ class Quantize(Transformation):
         self.n_bits_x = n_bits_x
         self.n_bins = 2 ** n_bits_x
 
-    def _transform(self, data: Tensor) -> Tensor:
+    def _transform(self, x: Tensor) -> Tensor:
         if self.n_bits_x < 8:
             # for n_bits_x=5, this turns the range (0, 1) to (0, 32) and floors it
             # the exact value 32 will only appear if there was an exact 1 in `data`
-            x = torch.floor(torch.clamp(data, 0, 1 - 1e-6) * self.n_bins)
+            x = torch.floor(torch.clamp(x, 0, 1 - 1e-6) * self.n_bins)
             # re-normalize to between 0 and 1
             x = x / self.n_bins
         return x
