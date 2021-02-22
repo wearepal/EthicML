@@ -287,8 +287,7 @@ class Encoder(nn.Module):
 
     def forward(self, x: Tensor) -> Tensor:  # type: ignore[override]
         """Forward pass."""
-        encoded = self.encoder(x)
-        return encoded
+        return self.encoder(x)
 
 
 class Adversary(nn.Module):
