@@ -52,7 +52,7 @@ class TorchImageDataset(VisionDataset):
         self.s_dim = 1
         y = data.y
 
-        self.x: np.ndarray[np.str_] = data.x["filename"].to_numpy()
+        self.x: np.ndarray = data.x["filename"].to_numpy()
         self.s = torch.as_tensor(s.to_numpy())
         self.y = torch.as_tensor(y.to_numpy())
 

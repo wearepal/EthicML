@@ -1,7 +1,8 @@
 """Functions that are common to PyTorch models."""
-from typing import TYPE_CHECKING, Tuple
+from typing import Tuple
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 from torch import Tensor
@@ -9,21 +10,8 @@ from torch.utils.data import Dataset
 
 from ethicml.utility import DataTuple, TestTuple
 
-if TYPE_CHECKING:
-    import pandas as pd  # only needed for type checking
 
-
-def _get_info(
-    data: TestTuple,
-) -> Tuple[
-    "np.ndarray[np.float32]",
-    "np.ndarray[np.float32]",
-    int,
-    int,
-    int,
-    "pd.Index[str]",
-    "pd.Index[str]",
-]:
+def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, int, pd.Index, pd.Index]:
     features = data.x.to_numpy(dtype=np.float32)
     sens_labels = data.s.to_numpy(dtype=np.float32)
     num = data.s.shape[0]
@@ -50,7 +38,7 @@ class TestDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]"]:
+    def names(self) -> Tuple[pd.Index, pd.Index]:
         """Get tuple of x names and s names."""
         return self.x_names, self.s_names
 
@@ -75,7 +63,7 @@ class CustomDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple["pd.Index[str]", "pd.Index[str]", "pd.Index[str]"]:
+    def names(self) -> Tuple[pd.Index, pd.Index, pd.Index]:
         """Get tuple of x names, s names and y names."""
         return self.x_names, self.s_names, self.y_names
 

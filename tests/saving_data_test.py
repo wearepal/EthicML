@@ -63,7 +63,7 @@ def test_predictions_info_loaded(temp_dir) -> None:
 
 def test_predictions_info_loaded_bad(temp_dir) -> None:
     """Test that predictions can be saved and loaded."""
-    preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})
+    preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})  # type: ignore
     with pytest.raises(AssertionError):
         preds.to_npz(temp_dir / "test.npz")
 

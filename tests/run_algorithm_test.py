@@ -12,7 +12,7 @@ import pytest
 import ethicml as em
 
 
-def count_true(mask: "np.ndarray[np.bool_]") -> int:
+def count_true(mask: np.ndarray) -> int:
     """Count the number of elements that are True"""
     return mask.nonzero()[0].shape[0]
 
