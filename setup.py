@@ -33,7 +33,7 @@ setup(
         'dataclasses;python_version<"3.7"',  # dataclasses are in the stdlib in python>=3.7
         "GitPython >= 2.1.11",
         "matplotlib >= 3.0.2, < 3.3.1",
-        "numpy >= 1.20.1",
+        "numpy >= 1.14.2",
         "pandas >= 1.0",
         "pipenv >= 2018.11.26",
         "pillow",

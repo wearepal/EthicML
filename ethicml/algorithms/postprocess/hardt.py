@@ -79,9 +79,7 @@ class Hardt(PostAlgorithm):
             ],
             dtype=np.float64,
         )
-        b_ub: np.ndarray = np.array(
-            [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64
-        )
+        b_ub: np.ndarray = np.array([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64)
 
         # Create boolean conditioning vectors for protected groups
         mask_s1 = train.s[train.s.columns[0]].to_numpy() == 1
