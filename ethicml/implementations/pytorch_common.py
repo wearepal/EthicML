@@ -16,13 +16,13 @@ if TYPE_CHECKING:
 def _get_info(
     data: TestTuple,
 ) -> Tuple[
-    "np.ndarray[np.float32]",
-    "np.ndarray[np.float32]",
+    np.ndarray,
+    np.ndarray,
     int,
     int,
     int,
-    "pd.Index[str]",
-    "pd.Index[str]",
+    pd.Index,
+    pd.Index,
 ]:
     features = data.x.to_numpy(dtype=np.float32)
     sens_labels = data.s.to_numpy(dtype=np.float32)

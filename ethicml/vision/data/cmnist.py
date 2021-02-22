@@ -26,7 +26,7 @@ _Classes = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
 def _filter_classes(dataset: MNIST, classes_to_keep: Sequence[int]) -> Subset:
-    targets: np.ndarray[np.int64] = dataset.targets.numpy()
+    targets: np.ndarray = dataset.targets.numpy()
     final_mask = np.zeros_like(targets, dtype=np.bool_)
     for index, label in enumerate(classes_to_keep):
         mask = targets == label

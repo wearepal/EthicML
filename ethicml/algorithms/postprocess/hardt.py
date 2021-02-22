@@ -66,7 +66,7 @@ class Hardt(PostAlgorithm):
         # b_ub: 1-D array of values representing the upper-bound of each
         # inequality constraint (row) in A_ub.
         # Just to keep these between zero and one
-        inequalilty_constraint_matrix: np.ndarray[np.float64] = np.array(
+        inequalilty_constraint_matrix: np.ndarray = np.array(
             [
                 [1.0, 0.0, 0.0, 0.0],
                 [-1.0, 0.0, 0.0, 0.0],
@@ -79,7 +79,7 @@ class Hardt(PostAlgorithm):
             ],
             dtype=np.float64,
         )
-        b_ub: np.ndarray[np.float64] = np.array(
+        b_ub: np.ndarray = np.array(
             [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64
         )
 
