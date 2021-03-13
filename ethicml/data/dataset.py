@@ -21,7 +21,13 @@ __all__ = ["Dataset"]
 
 @dataclass
 class Dataset:
-    """Data structure that holds all the information needed to load a given dataset."""
+    """Data structure that holds all the information needed to load a given dataset.
+
+    Args:
+        discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded, discard
+            those.
+        map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
+    """
 
     name: str
     filename_or_path: InitVar[Union[str, Path]]
@@ -35,9 +41,7 @@ class Dataset:
     class_label_prefix: Sequence[str] = field(default_factory=list)
     discrete_feature_groups: Optional[Dict[str, List[str]]] = None
     discard_non_one_hot: bool = False
-    """If some entries in s or y are not correctly one-hot encoded, discard those."""
     map_to_binary: bool = False
-    """If True, convert labels from {-1, 1} to {0, 1}."""
 
     _raw_file_name_or_path: Union[str, Path] = field(init=False)
     _cont_features_unfiltered: Sequence[str] = field(init=False)
