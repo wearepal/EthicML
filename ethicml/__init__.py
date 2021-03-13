@@ -46,11 +46,14 @@ from .evaluators.parallelism import *
 from .evaluators.per_sensitive_attribute import *
 from .metrics.accuracy import *
 from .metrics.anti_spur import AS
+from .metrics.average_odds import AverageOddsDiff
 from .metrics.balanced_accuracy import BalancedAccuracy
 from .metrics.bcr import BCR
 from .metrics.confusion_matrix import LabelOutOfBounds, confusion_matrix
 from .metrics.cv import CV, AbsCV
 from .metrics.dependence_measures import *
+from .metrics.fnr import FNR
+from .metrics.fpr import FPR
 from .metrics.hsic import Hsic
 from .metrics.metric import Metric
 from .metrics.npv import NPV
