@@ -1,5 +1,4 @@
 """Test the loading data capability."""
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -31,6 +30,28 @@ def test_can_load_test_data(data_root: Path):
             1,
             2,
             "Adult Sex, binary nationality",
+        ),
+        (
+            em.adult("Sex", binarize_race=True),
+            45222,
+            98,
+            93,
+            1,
+            2,
+            1,
+            2,
+            "Adult Sex, binary race",
+        ),
+        (
+            em.adult("Sex", binarize_nationality=True, binarize_race=True),
+            45222,
+            59,
+            54,
+            1,
+            2,
+            1,
+            2,
+            "Adult Sex, binary nationality, binary race",
         ),
         (em.adult(split="Sex"), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (em.adult(split="Race"), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
@@ -218,13 +239,10 @@ def test_load_adult_race_sex():
 def test_race_feature_split():
     """Test race feature split."""
     adult_data: em.Dataset = em.adult(split="Custom")
-    adult_data = replace(
-        adult_data,
-        sens_attr_spec="race_White",
-        s_prefix=["race"],
-        class_label_spec="salary_>50K",
-        class_label_prefix=["salary"],
-    )
+    adult_data.sens_attr_spec = "race_White"
+    adult_data.s_prefix = ["race"]
+    adult_data.class_label_spec = "salary_>50K"
+    adult_data.class_label_prefix = ["salary"]
 
     data: DataTuple = adult_data.load()
 
@@ -507,8 +525,8 @@ def test_expand_s():
         features=[],
         cont_features=[],
         sens_attr_spec={
-            "Gender": em.PartialLabelSpec(["Female", "Male"], multiplier=3),
-            "Race": em.PartialLabelSpec(["Blue", "Green", "Pink"], multiplier=1),
+            "Gender": em.LabelGroup(["Female", "Male"], multiplier=3),
+            "Race": em.LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
         },
         class_label_spec="label",
         num_samples=7,
@@ -537,6 +555,6 @@ def test_simple_spec():
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
     spec = em.simple_spec(sens_attrs)
     assert spec == {
-        "gender": em.PartialLabelSpec(["female", "male"], multiplier=3),
-        "race": em.PartialLabelSpec(["blue", "green", "pink"], multiplier=1),
+        "gender": em.LabelGroup(["female", "male"], multiplier=3),
+        "race": em.LabelGroup(["blue", "green", "pink"], multiplier=1),
     }

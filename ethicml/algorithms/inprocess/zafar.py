@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, Union
 
 import pandas as pd
+from typing_extensions import Final
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -17,6 +18,8 @@ __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "Zafar
 
 SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
 SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"
+
+MAIN: Final = "main.py"
 
 
 class _ZafarAlgorithmBase(InstalledModel):
@@ -83,7 +86,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
-        return ["main.py", train_name, test_name, predictions_name, "baseline", "0"]
+        return [MAIN, train_name, test_name, predictions_name, "baseline", "0"]
 
 
 class ZafarAccuracy(_ZafarAlgorithmBase):
@@ -96,7 +99,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
-        return ["main.py", train_name, test_name, predictions_name, "gamma", str(self.gamma)]
+        return [MAIN, train_name, test_name, predictions_name, "gamma", str(self.gamma)]
 
 
 class ZafarFairness(_ZafarAlgorithmBase):
@@ -109,7 +112,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
-        return ["main.py", train_name, test_name, predictions_name, "c", str(self._c)]
+        return [MAIN, train_name, test_name, predictions_name, "c", str(self._c)]
 
 
 class ZafarEqOpp(_ZafarAlgorithmBase):
@@ -128,7 +131,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
         return [
-            "main.py",
+            MAIN,
             train_name,
             test_name,
             predictions_name,

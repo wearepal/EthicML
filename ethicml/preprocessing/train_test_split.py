@@ -164,7 +164,7 @@ class RandomSplit(DataSplitter):
 
 def generate_proportional_split_indexes(
     data: DataTuple, train_percentage: float, random_seed: int = 42
-) -> Tuple["np.ndarray[np.int64]", "np.ndarray[np.int64]"]:
+) -> Tuple[np.ndarray, np.ndarray]:
     """Generate the indexes of the train and test splits using a proportional sampling scheme."""
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)
@@ -175,8 +175,8 @@ def generate_proportional_split_indexes(
     s_vals: List[int] = list(map(int, data.s[s_col].unique()))
     y_vals: List[int] = list(map(int, data.y[y_col].unique()))
 
-    train_indexes: List[np.ndarray[np.int64]] = []
-    test_indexes: List[np.ndarray[np.int64]] = []
+    train_indexes: List[np.ndarray] = []
+    test_indexes: List[np.ndarray] = []
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
@@ -270,8 +270,8 @@ class BalancedTestSplit(RandomSplit):
         s_vals: List[int] = list(map(int, data.s[s_col].unique()))
         y_vals: List[int] = list(map(int, data.y[y_col].unique()))
 
-        train_indexes: List[np.ndarray[np.int64]] = []
-        test_indexes: List[np.ndarray[np.int64]] = []
+        train_indexes: List[np.ndarray] = []
+        test_indexes: List[np.ndarray] = []
 
         num_test: Dict[Tuple[int, int], int] = {}
         # find out how many samples are available for the test set
@@ -339,15 +339,15 @@ class BalancedTestSplit(RandomSplit):
 
 def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
     """So much love to sklearn for making their source code open."""
-    indices: np.ndarray[np.int64] = np.arange(data.x.shape[0])
+    indices: np.ndarray = np.arange(data.x.shape[0])
 
-    fold_sizes: np.ndarray[np.int32] = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)
+    fold_sizes: np.ndarray = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)
     fold_sizes[: data.x.shape[0] % folds] += np.int32(1)
 
     current = 0
     for i, fold_size in enumerate(fold_sizes):
         start, stop = current, int(current + fold_size)
-        val_inds: np.ndarray[np.int64] = indices[start:stop]
+        val_inds: np.ndarray = indices[start:stop]
         train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)

@@ -92,7 +92,7 @@ class Hsic(Metric):
 
             start += batchs_size
 
-        return np.mean(np.array(batches))
+        return np.array(batches).mean().item()
 
     @property
     def apply_per_sensitive(self) -> bool:
