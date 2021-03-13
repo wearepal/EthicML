@@ -1,3 +1,4 @@
+"""Metric Tests."""
 from typing import NamedTuple
 
 import pytest
@@ -11,6 +12,7 @@ from ethicml import (
     NMI,
     SVM,
     Accuracy,
+    AverageOddsDiff,
     BalancedAccuracy,
     Hsic,
     InAlgorithm,
@@ -38,6 +40,7 @@ METRIC_TESTS = [
     MetricTest(model=SVM(), metric=BalancedAccuracy(), name="Balanced Accuracy", expected=0.923),
     MetricTest(model=SVM(), metric=NMI(base="s"), name="NMI preds and s", expected=0.102),
     MetricTest(model=SVM(), metric=CV(), name="CV", expected=0.630),
+    MetricTest(model=SVM(), metric=AverageOddsDiff(), name="AverageOddsDiff", expected=0.105),
     MetricTest(model=SVM(), metric=Theil(), name="Theil_Index", expected=0.033),
     MetricTest(model=LR(), metric=Theil(), name="Theil_Index", expected=0.029),
     MetricTest(model=Kamiran(), metric=Theil(), name="Theil_Index", expected=0.030),
@@ -51,7 +54,7 @@ METRIC_TESTS = [
 def test_get_score_of_predictions(
     toy_train_val: TrainValPair, model: InAlgorithm, name: str, metric: Metric, expected: float
 ) -> None:
-    """test get acc of predictions"""
+    """Test get acc of predictions."""
     train, test = toy_train_val
     classifier: InAlgorithm = model
     predictions: Prediction = classifier.run(train, test)
