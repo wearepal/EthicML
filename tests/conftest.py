@@ -103,3 +103,24 @@ def simulate_no_torch() -> Generator[None, None, None]:
     # ====== tear down =======
     em.common.TORCH_AVAILABLE = torch_available
     em.common.TORCHVISION_AVAILABLE = torchvision_available
+
+
+def pytest_addoption(parser):
+    """Add arg for running all tests including those marked as slow."""
+    parser.addoption("--runslow", action="store_true", default=False, help="run slow tests")
+
+
+def pytest_configure(config):
+    """Ad slow as a mark option."""
+    config.addinivalue_line("markers", "slow: mark test as slow to run")
+
+
+def pytest_collection_modifyitems(config, items):
+    """By default, skip tests marked with @pytest.mark.slow."""
+    if config.getoption("--runslow"):
+        # --runslow given in cli: do not skip slow tests
+        return
+    skip_slow = pytest.mark.skip(reason="need --runslow option to run")
+    for item in items:
+        if "slow" in item.keywords:
+            item.add_marker(skip_slow)
