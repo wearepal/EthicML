@@ -50,8 +50,8 @@ setup(
             "fairlearn == 0.4.6",
             "pytest >= 3.3.2",
             "pytest-cov >= 2.6.0",
-            "torch == 1.5.0",
-            "torchvision == 0.6.0",
+            "torch == 1.8.0",
+            "torchvision == 0.9.0",
         ],
         # use `pip install EthicML[dev]` to install development packages
         "dev": [
