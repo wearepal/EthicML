@@ -481,7 +481,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>DP</em><em>, </em><em>EqOp</em><em>, </em><em>EqOd</em><em>]</em>) – </p></li>
+<li><p><strong>fairness</strong> (<em>typing_extensions.Literal</em><em>[</em><em>DP</em><em>, </em><em>EqOp</em><em>, </em><em>EqOd</em><em>]</em>) – </p></li>
 <li><p><strong>enc_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 <li><p><strong>adv_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 <li><p><strong>pred_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
@@ -665,7 +665,7 @@ of samples.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>strategy</strong> (<em>Literal</em><em>[</em><em>uniform</em><em>, </em><em>preferential</em><em>, </em><em>naive</em><em>]</em>) – </p></li>
+<li><p><strong>strategy</strong> (<em>typing_extensions.Literal</em><em>[</em><em>uniform</em><em>, </em><em>preferential</em><em>, </em><em>naive</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -1121,8 +1121,8 @@ of samples.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>DP</em><em>, </em><em>EqOp</em><em>, </em><em>EqOd</em><em>]</em>) – </p></li>
-<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><a class="reference internal" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="ethicml.algorithms.inprocess.logistic_regression.LR"><em>LR</em></a><em>, </em><a class="reference internal" href="#ethicml.algorithms.inprocess.svm.SVM" title="ethicml.algorithms.inprocess.svm.SVM"><em>SVM</em></a><em>]</em>) – </p></li>
+<li><p><strong>fairness</strong> (<em>typing_extensions.Literal</em><em>[</em><em>DP</em><em>, </em><em>EqOp</em><em>, </em><em>EqOd</em><em>]</em>) – </p></li>
+<li><p><strong>classifier</strong> (<em>typing_extensions.Literal</em><em>[</em><a class="reference internal" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="ethicml.algorithms.inprocess.logistic_regression.LR"><em>LR</em></a><em>, </em><a class="reference internal" href="#ethicml.algorithms.inprocess.svm.SVM" title="ethicml.algorithms.inprocess.svm.SVM"><em>SVM</em></a><em>]</em>) – </p></li>
 <li><p><strong>eps</strong> (<em>float</em>) – </p></li>
 <li><p><strong>iters</strong> (<em>int</em>) – </p></li>
 <li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
@@ -1463,7 +1463,7 @@ simply the last part of the repository URL)</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><a class="reference internal" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="ethicml.algorithms.inprocess.logistic_regression.LR"><em>LR</em></a><em>, </em><a class="reference internal" href="#ethicml.algorithms.inprocess.svm.SVM" title="ethicml.algorithms.inprocess.svm.SVM"><em>SVM</em></a><em>]</em>) – </p></li>
+<li><p><strong>classifier</strong> (<em>typing_extensions.Literal</em><em>[</em><a class="reference internal" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="ethicml.algorithms.inprocess.logistic_regression.LR"><em>LR</em></a><em>, </em><a class="reference internal" href="#ethicml.algorithms.inprocess.svm.SVM" title="ethicml.algorithms.inprocess.svm.SVM"><em>SVM</em></a><em>]</em>) – </p></li>
 <li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
 <li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 </ul>
@@ -2080,7 +2080,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name of the algorithm</p></li>
 <li><p><strong>hidden_layer_sizes</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>activation</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>identity</em><em>, </em><em>logistic</em><em>, </em><em>tanh</em><em>, </em><em>relu</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>activation</strong> (<em>Optional</em><em>[</em><em>typing_extensions.Literal</em><em>[</em><em>identity</em><em>, </em><em>logistic</em><em>, </em><em>tanh</em><em>, </em><em>relu</em><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>

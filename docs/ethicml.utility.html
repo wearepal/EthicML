@@ -748,26 +748,26 @@
 
 <dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.count">
-<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return number of occurrences of value.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">stop</span><span class="o">=</span><span class="default_value">9223372036854775807</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">start=0</em>, <em class="sig-param">stop=9223372036854775807</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.TrainTestPair.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first index of value.</p>
 <p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.test">
-<code class="sig-name descname">test</code><em class="property">: ethicml.utility.data_structures.TestTuple</em><a class="headerlink" href="#ethicml.utility.TrainTestPair.test" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">test</code><a class="headerlink" href="#ethicml.utility.TrainTestPair.test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
 <dt id="ethicml.utility.TrainTestPair.train">
-<code class="sig-name descname">train</code><em class="property">: ethicml.utility.data_structures.DataTuple</em><a class="headerlink" href="#ethicml.utility.TrainTestPair.train" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">train</code><a class="headerlink" href="#ethicml.utility.TrainTestPair.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
@@ -799,7 +799,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datatup_list</strong> (<em>Sequence</em><em>[</em><em>ethicml.utility.data_structures.DataTuple</em><em>]</em>) – </p></li>
-<li><p><strong>axis</strong> (<em>Literal</em><em>[</em><em>columns</em><em>, </em><em>index</em><em>]</em>) – </p></li>
+<li><p><strong>axis</strong> (<em>typing_extensions.Literal</em><em>[</em><em>columns</em><em>, </em><em>index</em><em>]</em>) – </p></li>
 <li><p><strong>ignore_index</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
@@ -817,7 +817,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datatup_list</strong> (<em>List</em><em>[</em><em>ethicml.utility.data_structures.TestTuple</em><em>]</em>) – </p></li>
-<li><p><strong>axis</strong> (<em>Literal</em><em>[</em><em>columns</em><em>, </em><em>index</em><em>]</em>) – </p></li>
+<li><p><strong>axis</strong> (<em>typing_extensions.Literal</em><em>[</em><em>columns</em><em>, </em><em>index</em><em>]</em>) – </p></li>
 <li><p><strong>ignore_index</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
@@ -853,7 +853,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>NewType.&lt;locals&gt;.new_type</em>) – </p></li>
 <li><p><strong>values</strong> (<em>Iterable</em>) – </p></li>
-<li><p><strong>index</strong> (<em>Literal</em><em>[</em><em>dataset</em><em>, </em><em>transform</em><em>, </em><em>model</em><em>]</em>) – </p></li>
+<li><p><strong>index</strong> (<em>typing_extensions.Literal</em><em>[</em><em>dataset</em><em>, </em><em>scaler</em><em>, </em><em>transform</em><em>, </em><em>model</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -886,7 +886,7 @@ function checks whether the columns are correct.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>NewType.&lt;locals&gt;.new_type</em>) – </p></li>
-<li><p><strong>mapper</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>mapper</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
