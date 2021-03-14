@@ -242,19 +242,20 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>discard_non_one_hot</strong> (<em>bool</em>) – If some entries in s or y are not correctly one-hot encoded, discard
+those.</p></li>
+<li><p><strong>map_to_binary</strong> (<em>bool</em>) – If True, convert labels from {-1, 1} to {0, 1}.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>filename_or_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>filename_or_path</strong> (<em>dataclasses.InitVar</em>) – </p></li>
 <li><p><strong>features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>cont_features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec"><em>ethicml.data.util.PartialLabelSpec</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>class_label_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec"><em>ethicml.data.util.PartialLabelSpec</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>cont_features</strong> (<em>dataclasses.InitVar</em>) – </p></li>
+<li><p><strong>sens_attr_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>class_label_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>s_prefix</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>class_label_prefix</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_feature_groups</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>discard_non_one_hot</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>map_to_binary</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -290,12 +291,6 @@
 <dd><p>Dictionary of feature groups.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="ethicml.data.dataset.Dataset.discard_non_one_hot">
-<code class="sig-name descname">discard_non_one_hot</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#ethicml.data.dataset.Dataset.discard_non_one_hot" title="Permalink to this definition">¶</a></dt>
-<dd><p>If some entries in s or y are not correctly one-hot encoded, discard those.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="ethicml.data.dataset.Dataset.discrete_features">
 <em class="property">property </em><code class="sig-name descname">discrete_features</code><a class="headerlink" href="#ethicml.data.dataset.Dataset.discrete_features" title="Permalink to this definition">¶</a></dt>
@@ -310,7 +305,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>pandas.core.frame.DataFrame</em>) – </p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>s</em><em>, </em><em>y</em><em>]</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>typing_extensions.Literal</em><em>[</em><em>s</em><em>, </em><em>y</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -355,12 +350,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="ethicml.data.dataset.Dataset.map_to_binary">
-<code class="sig-name descname">map_to_binary</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#ethicml.data.dataset.Dataset.map_to_binary" title="Permalink to this definition">¶</a></dt>
-<dd><p>If True, convert labels from {-1, 1} to {0, 1}.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt id="ethicml.data.dataset.Dataset.ordered_features">
 <em class="property">property </em><code class="sig-name descname">ordered_features</code><a class="headerlink" href="#ethicml.data.dataset.Dataset.ordered_features" title="Permalink to this definition">¶</a></dt>
@@ -401,32 +390,26 @@ then the continuous.</p>
 </table>
 <dl class="py function">
 <dt id="ethicml.data.tabular_data.adult.Adult">
-<code class="sig-name descname">Adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">Adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_race</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition">¶</a></dt>
 <dd><p>UCI Adult dataset.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>split</strong> (<em>Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Binary</em><em>, </em><em>Race-Sex</em><em>, </em><em>Custom</em><em>, </em><em>Nationality</em><em>, </em><em>Education</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="ethicml.data.tabular_data.adult.adult">
-<code class="sig-name descname">adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.adult" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">adult</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_nationality</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">binarize_race</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.adult" title="Permalink to this definition">¶</a></dt>
 <dd><p>UCI Adult dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>split</strong> (<em>Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Binary</em><em>, </em><em>Race-Sex</em><em>, </em><em>Custom</em><em>, </em><em>Nationality</em><em>, </em><em>Education</em><em>]</em>) – </p></li>
+<li><p><strong>split</strong> (<em>typing_extensions.Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Binary</em><em>, </em><em>Race-Sex</em><em>, </em><em>Custom</em><em>, </em><em>Nationality</em><em>, </em><em>Education</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>binarize_race</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -459,14 +442,8 @@ then the continuous.</p>
 <code class="sig-name descname">Compas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">split</span><span class="o">=</span><span class="default_value">'Sex'</span></em>, <em class="sig-param"><span class="n">discrete_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get COMPAS (or ProPublica) dataset.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>split</strong> (<em>Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Sex</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -478,7 +455,7 @@ then the continuous.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>split</strong> (<em>Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Sex</em><em>]</em>) – </p></li>
+<li><p><strong>split</strong> (<em>typing_extensions.Literal</em><em>[</em><em>Sex</em><em>, </em><em>Race</em><em>, </em><em>Race-Sex</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
@@ -544,7 +521,7 @@ then the continuous.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>split</strong> (<em>Literal</em><em>[</em><em>Race-Binary</em><em>]</em>) – </p></li>
+<li><p><strong>split</strong> (<em>typing_extensions.Literal</em><em>[</em><em>Race-Binary</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
@@ -704,16 +681,8 @@ then the continuous.</p>
 <code class="sig-name descname">Synthetic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scenario</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">target</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">fair</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">num_samples</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dataset with synthetic scenario 1 data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>scenario</strong> (<em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>]</em>) – </p></li>
-<li><p><strong>target</strong> (<em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>]</em>) – </p></li>
-<li><p><strong>fair</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -745,8 +714,8 @@ then the continuous.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scenario</strong> (<em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>, </em><em>4</em><em>]</em>) – </p></li>
-<li><p><strong>target</strong> (<em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>]</em>) – </p></li>
+<li><p><strong>scenario</strong> (<em>typing_extensions.Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>, </em><em>4</em><em>]</em>) – </p></li>
+<li><p><strong>target</strong> (<em>typing_extensions.Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>]</em>) – </p></li>
 <li><p><strong>fair</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
 </ul>
@@ -825,8 +794,8 @@ then the continuous.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>download_dir</strong> (<em>str</em>) – </p></li>
-<li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>5_o_Clock_Shadow</em><em>, </em><em>Arched_Eyebrows</em><em>, </em><em>Attractive</em><em>, </em><em>Bags_Under_Eyes</em><em>, </em><em>Bald</em><em>, </em><em>Bangs</em><em>, </em><em>Big_Lips</em><em>, </em><em>Big_Nose</em><em>, </em><em>Black_Hair</em><em>, </em><em>Blond_Hair</em><em>, </em><em>Blurry</em><em>, </em><em>Brown_Hair</em><em>, </em><em>Bushy_Eyebrows</em><em>, </em><em>Chubby</em><em>, </em><em>Double_Chin</em><em>, </em><em>Eyeglasses</em><em>, </em><em>Goatee</em><em>, </em><em>Gray_Hair</em><em>, </em><em>Heavy_Makeup</em><em>, </em><em>High_Cheekbones</em><em>, </em><em>Male</em><em>, </em><em>Mouth_Slightly_Open</em><em>, </em><em>Mustache</em><em>, </em><em>Narrow_Eyes</em><em>, </em><em>No_Beard</em><em>, </em><em>Oval_Face</em><em>, </em><em>Pale_Skin</em><em>, </em><em>Pointy_Nose</em><em>, </em><em>Receding_Hairline</em><em>, </em><em>Rosy_Cheeks</em><em>, </em><em>Sideburns</em><em>, </em><em>Smiling</em><em>, </em><em>Straight_Hair</em><em>, </em><em>Wavy_Hair</em><em>, </em><em>Wearing_Earrings</em><em>, </em><em>Wearing_Hat</em><em>, </em><em>Wearing_Lipstick</em><em>, </em><em>Wearing_Necklace</em><em>, </em><em>Wearing_Necktie</em><em>, </em><em>Young</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>5_o_Clock_Shadow</em><em>, </em><em>Arched_Eyebrows</em><em>, </em><em>Attractive</em><em>, </em><em>Bags_Under_Eyes</em><em>, </em><em>Bald</em><em>, </em><em>Bangs</em><em>, </em><em>Big_Lips</em><em>, </em><em>Big_Nose</em><em>, </em><em>Black_Hair</em><em>, </em><em>Blond_Hair</em><em>, </em><em>Blurry</em><em>, </em><em>Brown_Hair</em><em>, </em><em>Bushy_Eyebrows</em><em>, </em><em>Chubby</em><em>, </em><em>Double_Chin</em><em>, </em><em>Eyeglasses</em><em>, </em><em>Goatee</em><em>, </em><em>Gray_Hair</em><em>, </em><em>Heavy_Makeup</em><em>, </em><em>High_Cheekbones</em><em>, </em><em>Male</em><em>, </em><em>Mouth_Slightly_Open</em><em>, </em><em>Mustache</em><em>, </em><em>Narrow_Eyes</em><em>, </em><em>No_Beard</em><em>, </em><em>Oval_Face</em><em>, </em><em>Pale_Skin</em><em>, </em><em>Pointy_Nose</em><em>, </em><em>Receding_Hairline</em><em>, </em><em>Rosy_Cheeks</em><em>, </em><em>Sideburns</em><em>, </em><em>Smiling</em><em>, </em><em>Straight_Hair</em><em>, </em><em>Wavy_Hair</em><em>, </em><em>Wearing_Earrings</em><em>, </em><em>Wearing_Hat</em><em>, </em><em>Wearing_Lipstick</em><em>, </em><em>Wearing_Necklace</em><em>, </em><em>Wearing_Necktie</em><em>, </em><em>Young</em><em>]</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec"><em>ethicml.data.util.PartialLabelSpec</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>label</strong> (<em>typing_extensions.Literal</em><em>[</em><em>5_o_Clock_Shadow</em><em>, </em><em>Arched_Eyebrows</em><em>, </em><em>Attractive</em><em>, </em><em>Bags_Under_Eyes</em><em>, </em><em>Bald</em><em>, </em><em>Bangs</em><em>, </em><em>Big_Lips</em><em>, </em><em>Big_Nose</em><em>, </em><em>Black_Hair</em><em>, </em><em>Blond_Hair</em><em>, </em><em>Blurry</em><em>, </em><em>Brown_Hair</em><em>, </em><em>Bushy_Eyebrows</em><em>, </em><em>Chubby</em><em>, </em><em>Double_Chin</em><em>, </em><em>Eyeglasses</em><em>, </em><em>Goatee</em><em>, </em><em>Gray_Hair</em><em>, </em><em>Heavy_Makeup</em><em>, </em><em>High_Cheekbones</em><em>, </em><em>Male</em><em>, </em><em>Mouth_Slightly_Open</em><em>, </em><em>Mustache</em><em>, </em><em>Narrow_Eyes</em><em>, </em><em>No_Beard</em><em>, </em><em>Oval_Face</em><em>, </em><em>Pale_Skin</em><em>, </em><em>Pointy_Nose</em><em>, </em><em>Receding_Hairline</em><em>, </em><em>Rosy_Cheeks</em><em>, </em><em>Sideburns</em><em>, </em><em>Smiling</em><em>, </em><em>Straight_Hair</em><em>, </em><em>Wavy_Hair</em><em>, </em><em>Wearing_Earrings</em><em>, </em><em>Wearing_Hat</em><em>, </em><em>Wearing_Lipstick</em><em>, </em><em>Wearing_Necklace</em><em>, </em><em>Wearing_Necktie</em><em>, </em><em>Young</em><em>]</em>) – </p></li>
+<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>typing_extensions.Literal</em><em>[</em><em>5_o_Clock_Shadow</em><em>, </em><em>Arched_Eyebrows</em><em>, </em><em>Attractive</em><em>, </em><em>Bags_Under_Eyes</em><em>, </em><em>Bald</em><em>, </em><em>Bangs</em><em>, </em><em>Big_Lips</em><em>, </em><em>Big_Nose</em><em>, </em><em>Black_Hair</em><em>, </em><em>Blond_Hair</em><em>, </em><em>Blurry</em><em>, </em><em>Brown_Hair</em><em>, </em><em>Bushy_Eyebrows</em><em>, </em><em>Chubby</em><em>, </em><em>Double_Chin</em><em>, </em><em>Eyeglasses</em><em>, </em><em>Goatee</em><em>, </em><em>Gray_Hair</em><em>, </em><em>Heavy_Makeup</em><em>, </em><em>High_Cheekbones</em><em>, </em><em>Male</em><em>, </em><em>Mouth_Slightly_Open</em><em>, </em><em>Mustache</em><em>, </em><em>Narrow_Eyes</em><em>, </em><em>No_Beard</em><em>, </em><em>Oval_Face</em><em>, </em><em>Pale_Skin</em><em>, </em><em>Pointy_Nose</em><em>, </em><em>Receding_Hairline</em><em>, </em><em>Rosy_Cheeks</em><em>, </em><em>Sideburns</em><em>, </em><em>Smiling</em><em>, </em><em>Straight_Hair</em><em>, </em><em>Wavy_Hair</em><em>, </em><em>Wearing_Earrings</em><em>, </em><em>Wearing_Hat</em><em>, </em><em>Wearing_Lipstick</em><em>, </em><em>Wearing_Necklace</em><em>, </em><em>Wearing_Necktie</em><em>, </em><em>Young</em><em>]</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>download</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>check_integrity</strong> (<em>bool</em>) – </p></li>
 </ul>
@@ -861,8 +830,8 @@ then the continuous.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>download_dir</strong> (<em>str</em>) – </p></li>
-<li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>gender</em><em>, </em><em>age</em><em>, </em><em>ethnicity</em><em>, </em><em>eye_color</em><em>, </em><em>hair_color</em><em>, </em><em>hair_length</em><em>, </em><em>emotion</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Literal</em><em>[</em><em>gender</em><em>, </em><em>age</em><em>, </em><em>ethnicity</em><em>, </em><em>eye_color</em><em>, </em><em>hair_color</em><em>, </em><em>hair_length</em><em>, </em><em>emotion</em><em>]</em>) – </p></li>
+<li><p><strong>label</strong> (<em>typing_extensions.Literal</em><em>[</em><em>gender</em><em>, </em><em>age</em><em>, </em><em>ethnicity</em><em>, </em><em>eye_color</em><em>, </em><em>hair_color</em><em>, </em><em>hair_length</em><em>, </em><em>emotion</em><em>]</em>) – </p></li>
+<li><p><strong>sens_attr</strong> (<em>typing_extensions.Literal</em><em>[</em><em>gender</em><em>, </em><em>age</em><em>, </em><em>ethnicity</em><em>, </em><em>eye_color</em><em>, </em><em>hair_color</em><em>, </em><em>hair_length</em><em>, </em><em>emotion</em><em>]</em>) – </p></li>
 <li><p><strong>download</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>check_integrity</strong> (<em>bool</em>) – </p></li>
 </ul>
@@ -993,8 +962,8 @@ then the continuous.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PartialLabelSpec</span></code></a>(columns[, multiplier])</p></td>
-<td><p>Specification for part of a label (can be class label or sensitive attribute).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelGroup</span></code></a>(columns[, multiplier])</p></td>
+<td><p>Definition of a group of columns that should be interpreted as a single label.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1005,8 +974,8 @@ then the continuous.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.simple_spec" title="ethicml.data.util.simple_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_spec</span></code></a>(label_defs)</p></td>
-<td><p>Create label specs for the most common case where columns contain 0s and 1s.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.deprecated" title="ethicml.data.util.deprecated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated</span></code></a>(func)</p></td>
+<td><p>This is a decorator which can be used to mark functions as deprecated.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.filter_features_by_prefixes" title="ethicml.data.util.filter_features_by_prefixes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_features_by_prefixes</span></code></a>(features, prefixes)</p></td>
 <td><p>Filter the features by prefixes.</p></td>
@@ -1017,17 +986,20 @@ then the continuous.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.group_disc_feat_indexes" title="ethicml.data.util.group_disc_feat_indexes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_disc_feat_indexes</span></code></a>(disc_feat_names[, …])</p></td>
 <td><p>Group discrete features names according to the first segment of their name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.label_specs_to_feature_list" title="ethicml.data.util.label_specs_to_feature_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_specs_to_feature_list</span></code></a>(specs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.label_spec_to_feature_list" title="ethicml.data.util.label_spec_to_feature_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_spec_to_feature_list</span></code></a>(spec)</p></td>
 <td><p>Extract all the feature column names from a dictionary of label specifications.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.simple_spec" title="ethicml.data.util.simple_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_spec</span></code></a>(label_defs)</p></td>
+<td><p>Create label specs for the most common case where columns contain 0s and 1s.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
-<dt id="ethicml.data.util.PartialLabelSpec">
-<em class="property">class </em><code class="sig-name descname">PartialLabelSpec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">multiplier</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.data.util.LabelGroup">
+<em class="property">class </em><code class="sig-name descname">LabelGroup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span></em>, <em class="sig-param"><span class="n">multiplier</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<p>Specification for part of a label (can be class label or sensitive attribute).</p>
-<p>Create new instance of PartialLabelSpec(columns, multiplier)</p>
+<p>Definition of a group of columns that should be interpreted as a single label.</p>
+<p>Create new instance of LabelGroup(columns, multiplier)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1037,36 +1009,51 @@ then the continuous.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="ethicml.data.util.PartialLabelSpec.__len__">
-<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec.__len__" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.data.util.LabelGroup.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.__len__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return len(self).</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="ethicml.data.util.PartialLabelSpec.columns">
-<code class="sig-name descname">columns</code><em class="property">: List<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec.columns" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="ethicml.data.util.LabelGroup.columns">
+<em class="property">property </em><code class="sig-name descname">columns</code><a class="headerlink" href="#ethicml.data.util.LabelGroup.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ethicml.data.util.PartialLabelSpec.count">
-<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec.count" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.data.util.LabelGroup.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return number of occurrences of value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ethicml.data.util.PartialLabelSpec.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">stop</span><span class="o">=</span><span class="default_value">9223372036854775807</span></em>, <em class="sig-param"><span class="o">/</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec.index" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.data.util.LabelGroup.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">start=0</em>, <em class="sig-param">stop=9223372036854775807</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first index of value.</p>
 <p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt id="ethicml.data.util.PartialLabelSpec.multiplier">
-<code class="sig-name descname">multiplier</code><em class="property">: int</em><a class="headerlink" href="#ethicml.data.util.PartialLabelSpec.multiplier" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="ethicml.data.util.LabelGroup.multiplier">
+<em class="property">property </em><code class="sig-name descname">multiplier</code><a class="headerlink" href="#ethicml.data.util.LabelGroup.multiplier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt id="ethicml.data.util.deprecated">
+<code class="sig-name descname">deprecated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.deprecated" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a decorator which can be used to mark functions as deprecated.</p>
+<p>It will result in a warning being emitted when the function is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>_F</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>_F</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -1129,12 +1116,12 @@ then the continuous.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="ethicml.data.util.label_specs_to_feature_list">
-<code class="sig-name descname">label_specs_to_feature_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">specs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.label_specs_to_feature_list" title="Permalink to this definition">¶</a></dt>
+<dt id="ethicml.data.util.label_spec_to_feature_list">
+<code class="sig-name descname">label_spec_to_feature_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.label_spec_to_feature_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract all the feature column names from a dictionary of label specifications.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>specs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec"><em>ethicml.data.util.PartialLabelSpec</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>spec</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>List[str]</p>
@@ -1151,7 +1138,7 @@ then the continuous.</p>
 <dd class="field-odd"><p><strong>label_defs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>Mapping[str, <a class="reference internal" href="#ethicml.data.util.PartialLabelSpec" title="ethicml.data.util.PartialLabelSpec">ethicml.data.util.PartialLabelSpec</a>]</p>
+<dd class="field-even"><p>Mapping[str, <a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup">ethicml.data.util.LabelGroup</a>]</p>
 </dd>
 </dl>
 </dd></dl>
