@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Format with black
+    - name: Format with black and isort
       run: |
         echo "pass!"
 
