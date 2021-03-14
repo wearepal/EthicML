@@ -34,7 +34,7 @@ def test_scaling(dataset_name, scaler):
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
 @pytest.mark.parametrize("scaler", [StandardScaler, MinMaxScaler])
-def test_scaling(dataset_name, scaler):
+def test_scaling_separate_test(dataset_name, scaler):
     """Test that scaling works."""
     scaler = scaler()
     dataset = get_dataset_obj_by_name(dataset_name)()

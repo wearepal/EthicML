@@ -31,7 +31,7 @@ def _filter_classes(dataset: MNIST, classes_to_keep: Sequence[int]) -> Subset:
     for index, label in enumerate(classes_to_keep):
         mask = targets == label
         targets = np.where(mask, index, targets)
-        final_mask |= mask
+        final_mask |= mask  # type: ignore[misc]
     dataset.targets = targets
     inds = final_mask.nonzero()[0].tolist()
 
