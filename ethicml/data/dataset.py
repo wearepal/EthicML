@@ -57,18 +57,16 @@ class Dataset:
         """Get the list of sensitive attributes."""
         if isinstance(self.sens_attr_spec, str):
             return [self.sens_attr_spec]
-        else:
-            assert isinstance(self.sens_attr_spec, dict)
-            return label_spec_to_feature_list(self.sens_attr_spec)
+        assert isinstance(self.sens_attr_spec, dict)
+        return label_spec_to_feature_list(self.sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
         if isinstance(self.class_label_spec, str):
             return [self.class_label_spec]
-        else:
-            assert isinstance(self.class_label_spec, dict)
-            return label_spec_to_feature_list(self.class_label_spec)
+        assert isinstance(self.class_label_spec, dict)
+        return label_spec_to_feature_list(self.class_label_spec)
 
     @property
     def filepath(self) -> Path:

@@ -1,6 +1,4 @@
-"""
-Test that an algorithm can run against some data
-"""
+"""Test that an algorithm can run against some data."""
 import os
 from pathlib import Path
 from typing import List
@@ -8,24 +6,25 @@ from typing import List
 import numpy as np  # pylint: disable=unused-import  # import needed for mypy
 import pandas as pd
 import pytest
+from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
 
 
 def count_true(mask: np.ndarray) -> int:
-    """Count the number of elements that are True"""
+    """Count the number of elements that are True."""
     return mask.nonzero()[0].shape[0]
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
-    """test whether we can load test data"""
+    """Test whether we can load test data."""
     train, test = toy_train_test
     assert train is not None
     assert test is not None
 
 
 def test_run_parallel(toy_train_test: em.TrainTestPair):
-    """test run parallel"""
+    """Test run parallel."""
     data0 = toy_train_test
     data1 = toy_train_test
     result = em.run_blocking(
@@ -54,16 +53,59 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
 
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
-    """test empty evaluate"""
+    """Test empty evaluate."""
     empty_result = em.evaluate_models([em.toy()], repeats=3, delete_prev=True)
-    expected_result = pd.DataFrame([], columns=["dataset", "transform", "model", "split_id"])
-    expected_result = expected_result.set_index(["dataset", "transform", "model", "split_id"])
+    expected_result = pd.DataFrame(
+        [], columns=["dataset", "scaler", "transform", "model", "split_id"]
+    )
+    expected_result = expected_result.set_index(
+        ["dataset", "scaler", "transform", "model", "split_id"]
+    )
     pd.testing.assert_frame_equal(empty_result, expected_result)
 
 
 @pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_scaler():
+    """Test run alg suite."""
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset, em.toy()]
+    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    postprocess_models: List[em.PostAlgorithm] = []
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets,
+        preprocess_models,
+        inprocess_models,
+        postprocess_models,
+        metrics,
+        per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        delete_prev=True,
+        topic="pytest",
+    )
+    results_scaler = em.evaluate_models(
+        datasets,
+        preprocess_models,
+        inprocess_models,
+        postprocess_models,
+        metrics,
+        per_sens_metrics,
+        scaler=StandardScaler(),
+        repeats=1,
+        test_mode=True,
+        delete_prev=True,
+        topic="pytest",
+    )
+    with pytest.raises(AssertionError):
+        pd.testing.assert_frame_equal(results_scaler, results_no_scaler, check_like=True)
+
+
+@pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
-    """test run alg suite"""
+    """Test run alg suite."""
     dataset = em.adult(split="Race-Binary")
     datasets: List[em.Dataset] = [dataset, em.toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
@@ -111,18 +153,18 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 15)
+        assert written_file.shape == (2, 16)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
-    read = read.set_index(["dataset", "transform", "model", "split_id"])
+    read = read.set_index(["dataset", "scaler", "transform", "model", "split_id"])
     pd.testing.assert_frame_equal(reloaded, read)
 
 
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_wrong_metrics():
-    """test run alg suite wrong metrics"""
+    """Test run alg suite wrong metrics."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel="linear"), em.LR()]
@@ -144,7 +186,7 @@ def test_run_alg_suite_wrong_metrics():
 
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
-    """test run alg suite no pipeline"""
+    """Test run alg suite no pipeline."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
