@@ -12,7 +12,7 @@ from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.metrics.metric import Metric
-from ethicml.preprocessing import DataSplitter, RandomSplit
+from ethicml.preprocessing import DataSplitter, RandomSplit, scale_continuous
 from ethicml.utility import (
     DataTuple,
     Prediction,
@@ -32,6 +32,8 @@ from .per_sensitive_attribute import (
 )
 
 __all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
+
+from ..preprocessing.scaling import ScalerType
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -147,11 +149,13 @@ def evaluate_models(
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
+    scaler: Optional[ScalerType] = None,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
         datasets: list of dataset objects
+        scaler: scaler to use on the continuous features of the dataset.
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
         postprocess_models: list of postprocess model objects
@@ -172,7 +176,7 @@ def evaluate_models(
     else:
         train_test_split = splitter
 
-    columns = ["dataset", "transform", "model", "split_id"]
+    columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
     total_experiments = (
         len(datasets)
@@ -193,6 +197,9 @@ def evaluate_models(
             train: DataTuple
             test: DataTuple
             train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
+            if scaler is not None:
+                train, scaler_post = scale_continuous(dataset, train, scaler)
+                test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_subset()
@@ -243,6 +250,7 @@ def evaluate_models(
 
                     temp_res: Dict[str, Union[str, float]] = {
                         "dataset": dataset.name,
+                        "scaler": "None" if scaler is None else scaler.__class__.__name__,
                         "transform": transform_name,
                         "model": model.name,
                         "split_id": split_id,
@@ -286,6 +294,7 @@ class _DataInfo(NamedTuple):
     dataset_name: str
     transform_name: str
     split_info: Dict[str, float]
+    scaler: str
 
 
 async def evaluate_models_async(
@@ -302,11 +311,13 @@ async def evaluate_models_async(
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
     max_parallel: int = 1,
+    scaler: Optional[ScalerType] = None,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
     Args:
         datasets: list of dataset objects
+        scaler: Sklearn-style scaler to be used on the continuous features.
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
         postprocess_models: list of postprocess model objects
@@ -352,7 +363,15 @@ async def evaluate_models_async(
             train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
             split_info.update({"split_id": split_id})
-            test_data.append(_DataInfo(test, dataset.name, default_transform_name, split_info))
+            test_data.append(
+                _DataInfo(
+                    test=test,
+                    dataset_name=dataset.name,
+                    transform_name=default_transform_name,
+                    split_info=split_info,
+                    scaler="None" if scaler is None else scaler.__class__.__name__,
+                )
+            )
 
     # ============================= inprocess models on untransformed =============================
     all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
@@ -373,7 +392,11 @@ async def evaluate_models_async(
             transformed_data.append(TrainTestPair(transf_train, transf_test))
             transformed_test.append(
                 _DataInfo(
-                    data_info.test, data_info.dataset_name, pre_model.name, data_info.split_info
+                    test=data_info.test,
+                    dataset_name=data_info.dataset_name,
+                    transform_name=pre_model.name,
+                    split_info=data_info.split_info,
+                    scaler="None" if scaler is None else scaler.__class__.__name__,
                 )
             )
 
@@ -404,7 +427,7 @@ def _gather_metrics(
     topic: Optional[str],
 ) -> Results:
     """Take a list of lists of predictions and compute all metrics."""
-    columns = ["dataset", "transform", "model", "split_id"]
+    columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
     # transpose `all_results` so that the order in the results dataframe is correct
     num_cols = len(all_predictions[0]) if all_predictions else 0
@@ -421,6 +444,7 @@ def _gather_metrics(
             # construct a row of the results dataframe
             df_row: Dict[str, Union[str, float]] = {
                 "dataset": data_info.dataset_name,
+                "scaler": data_info.scaler,
                 "transform": data_info.transform_name,
                 "model": model.name,
                 **data_info.split_info,
