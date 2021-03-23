@@ -4,9 +4,6 @@
     :depth: 2
     :local:
 
-Dataset base
-============
-
 .. automodule:: ethicml.data.dataset
 
 Tabular datasets

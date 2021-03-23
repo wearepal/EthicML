@@ -1,3 +1,4 @@
+# noqa: D400
 """Class to describe features of the Adult dataset."""
 from typing import Union
 
