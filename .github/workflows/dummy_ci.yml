@@ -32,7 +32,7 @@ jobs:
       run: |
         echo "pass!"
 
-  format_with_black:
+  format_with_black_and_isort:
 
     runs-on: ubuntu-latest
 
