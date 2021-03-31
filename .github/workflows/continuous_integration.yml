@@ -40,7 +40,7 @@ jobs:
         echo "$HOME/.poetry/bin" >> $GITHUB_PATH
         rm get-poetry.py
     - name: Install dependencies
-      run: poetry install -E ci --no-interaction
+      run: poetry install -E ci --no-dev --no-interaction
     - name: Test with pytest
       run: |
         python -m pytest -vv --cov=ethicml --cov-fail-under=80  tests/
