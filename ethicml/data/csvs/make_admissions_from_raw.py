@@ -42,9 +42,9 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 import pandas as pd
 
 
-def run_generate_admissions():
+def run_generate_admissions() -> None:
     """Add a the header solumns, binarise label and shuffle."""
-    data = pd.read_csv("raw/ufrgs_entrance_exam_and_gpa.csv.zip", header=None)
+    data = pd.read_csv("raw/ufrgs_entrance_exam_and_gpa.csv.zip", header=None)  # type: ignore[call-overload]
 
     # Give data column names
     columns = [
