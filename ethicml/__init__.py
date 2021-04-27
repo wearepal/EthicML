@@ -26,6 +26,7 @@ from .common import *
 from .data.dataset import *
 from .data.load import *
 from .data.lookup import *
+from .data.tabular_data.admissions import *
 from .data.tabular_data.adult import *
 from .data.tabular_data.compas import *
 from .data.tabular_data.credit import *
