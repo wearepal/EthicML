@@ -19,10 +19,11 @@ def test_can_load_test_data(data_root: Path):
 @pytest.mark.parametrize(
     "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
     [
-        (em.adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
+        (em.admissions(), 43_303, 9, 0, 1, 2, 1, 2, "Admissions Gender"),
+        (em.adult(), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (
             em.adult("Sex", binarize_nationality=True),
-            45222,
+            45_222,
             62,
             57,
             1,
@@ -33,7 +34,7 @@ def test_can_load_test_data(data_root: Path):
         ),
         (
             em.adult("Sex", binarize_race=True),
-            45222,
+            45_222,
             98,
             93,
             1,
@@ -44,7 +45,7 @@ def test_can_load_test_data(data_root: Path):
         ),
         (
             em.adult("Sex", binarize_nationality=True, binarize_race=True),
-            45222,
+            45_222,
             59,
             54,
             1,
