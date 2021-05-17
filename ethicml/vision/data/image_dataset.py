@@ -61,38 +61,42 @@ class TorchImageDataset(VisionDataset):
         self.additional_columns = data.x.drop(["filename"], axis=1)
         self.possible_labels = list(self.additional_columns.columns)
 
-    def new_task(self, label: str) -> None:
-        """Update a dataset and switch to a new task (y) label."""
+    def _label_check(self, label: str) -> None:
         assert label in self.possible_labels, f"Sorry, {label} not in {self.possible_labels}"
+
+    def _pre_update(self, new_label: str, values: Tensor, current_label: str):
+        self._label_check(new_label)
         self.additional_columns = pd.concat(
             [
                 self.additional_columns,
-                pd.DataFrame(self.y.detach().cpu().numpy(), columns=[self.y_label]),
+                pd.DataFrame(values.detach().cpu().numpy(), columns=[current_label]),
             ],
             axis=1,
         )
-        self.possible_labels.append(self.y_label)
-        y = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
-        self.y = (y + 1) // 2 if y.min() == -1 and y.max() == 1 and len(y.unique()) == 2 else y
+        self.possible_labels.append(current_label)
+
+    def _post_update(self, label: str):
         self.additional_columns = self.additional_columns.drop(label, axis=1)
         self.possible_labels.remove(label)
+
+    def _label_value(self, label: str):
+        _l = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
+        return (_l + 1) // 2 if _l.min() == -1 and _l.max() == 1 and len(_l.unique()) == 2 else _l
+
+    def _update_value(self, new_label: str, values: Tensor, current_label: str):
+        self._pre_update(new_label, values, current_label)
+        to_return = self._label_value(new_label)
+        self._post_update(new_label)
+        return to_return
+
+    def new_task(self, label: str) -> None:
+        """Update a dataset and switch to a new task (y) label."""
+        self.y = self._update_value(label, self.y, self.y_label)
         self.y_label = label
 
     def new_sensitive(self, label: str) -> None:
         """Update a dataset and switch to a new sensitive (s) label."""
-        assert label in self.possible_labels, f"Sorry, {label} not in {self.possible_labels}"
-        self.additional_columns = pd.concat(
-            [
-                self.additional_columns,
-                pd.DataFrame(self.s.detach().cpu().numpy(), columns=[self.s_label]),
-            ],
-            axis=1,
-        )
-        self.possible_labels.append(self.s_label)
-        s = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
-        self.s = (s + 1) // 2 if s.min() == -1 and s.max() == 1 and len(s.unique()) == 2 else s
-        self.additional_columns = self.additional_columns.drop(label, axis=1)
-        self.possible_labels.remove(label)
+        self.s = self._update_value(label, self.s, self.s_label)
         self.s_label = label
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
