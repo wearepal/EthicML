@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple, Union, cast
 
 import numpy as np
+import pandas as pd
 import torch
 from PIL import Image
 from torch import Tensor
@@ -55,6 +56,44 @@ class TorchImageDataset(VisionDataset):
         self.x: np.ndarray = data.x["filename"].to_numpy()
         self.s = torch.as_tensor(s.to_numpy())
         self.y = torch.as_tensor(y.to_numpy())
+        self.s_label = list(s.columns)[0]
+        self.y_label = list(y.columns)[0]
+        self.additional_columns = data.x.drop(["filename"], axis=1)
+        self.possible_labels = list(self.additional_columns.columns)
+
+    def new_task(self, label: str) -> None:
+        """Update a dataset and switch to a new task (y) label."""
+        assert label in self.possible_labels, f"Sorry, {label} not in {self.possible_labels}"
+        self.additional_columns = pd.concat(
+            [
+                self.additional_columns,
+                pd.DataFrame(self.y.detach().cpu().numpy(), columns=[self.y_label]),
+            ],
+            axis=1,
+        )
+        self.possible_labels.append(self.y_label)
+        y = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
+        self.y = (y + 1) // 2 if y.min() == -1 and y.max() == 1 and len(y.unique()) == 2 else y
+        self.additional_columns = self.additional_columns.drop(label, axis=1)
+        self.possible_labels.remove(label)
+        self.y_label = label
+
+    def new_sensitive(self, label: str) -> None:
+        """Update a dataset and switch to a new sensitive (s) label."""
+        assert label in self.possible_labels, f"Sorry, {label} not in {self.possible_labels}"
+        self.additional_columns = pd.concat(
+            [
+                self.additional_columns,
+                pd.DataFrame(self.s.detach().cpu().numpy(), columns=[self.s_label]),
+            ],
+            axis=1,
+        )
+        self.possible_labels.append(self.s_label)
+        s = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
+        self.s = (s + 1) // 2 if s.min() == -1 and s.max() == 1 and len(s.unique()) == 2 else s
+        self.additional_columns = self.additional_columns.drop(label, axis=1)
+        self.possible_labels.remove(label)
+        self.s_label = label
 
     def __getitem__(self, index: int) -> Tuple[Tensor, Tensor, Tensor]:
         """Fetch the data sample at the given index.
