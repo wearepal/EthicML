@@ -64,7 +64,7 @@ class TorchImageDataset(VisionDataset):
     def _label_check(self, label: str) -> None:
         assert label in self.possible_labels, f"Sorry, {label} not in {self.possible_labels}"
 
-    def _pre_update(self, new_label: str, values: Tensor, current_label: str):
+    def _pre_update(self, new_label: str, values: Tensor, current_label: str) -> None:
         self._label_check(new_label)
         self.additional_columns = pd.concat(
             [
@@ -75,15 +75,15 @@ class TorchImageDataset(VisionDataset):
         )
         self.possible_labels.append(current_label)
 
-    def _post_update(self, label: str):
+    def _post_update(self, label: str) -> None:
         self.additional_columns = self.additional_columns.drop(label, axis=1)
         self.possible_labels.remove(label)
 
-    def _label_value(self, label: str):
+    def _label_value(self, label: str) -> Tensor:
         _l = torch.as_tensor(self.additional_columns[label].to_numpy()).unsqueeze(-1)
         return (_l + 1) // 2 if _l.min() == -1 and _l.max() == 1 and len(_l.unique()) == 2 else _l
 
-    def _update_value(self, new_label: str, values: Tensor, current_label: str):
+    def _update_value(self, new_label: str, values: Tensor, current_label: str) -> Tensor:
         self._pre_update(new_label, values, current_label)
         to_return = self._label_value(new_label)
         self._post_update(new_label)
