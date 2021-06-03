@@ -44,3 +44,4 @@ skip-string-normalization = true
 [tool.isort]
 known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
 profile = "black"
+line_length = 100
