@@ -3,9 +3,9 @@ import itertools
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
+from kit import implements
 from typing_extensions import Literal
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from ..inprocess.logistic_regression import LRProb

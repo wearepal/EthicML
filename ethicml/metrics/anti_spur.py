@@ -1,8 +1,8 @@
 """Anti-spurious."""
 
 import numpy as np
+from kit import implements
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric

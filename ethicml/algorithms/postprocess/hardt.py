@@ -1,10 +1,10 @@
 """Post-processing method by Hardt et al."""
 import numpy as np
 import pandas as pd
+from kit import implements
 from numpy.random import RandomState
 from scipy.optimize import OptimizeResult, linprog
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .post_algorithm import PostAlgorithm

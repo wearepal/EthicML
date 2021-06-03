@@ -1,7 +1,8 @@
 """For assessing Average Odds Difference metric."""
 
 
-from ethicml.common import implements
+from kit import implements
+
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric

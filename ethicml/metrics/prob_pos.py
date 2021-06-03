@@ -1,6 +1,7 @@
 """For assessing ProbPos."""
 
-from ethicml.common import implements
+from kit import implements
+
 from ethicml.utility import DataTuple, Prediction
 
 from .confusion_matrix import confusion_matrix

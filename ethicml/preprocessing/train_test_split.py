@@ -5,11 +5,11 @@ from typing import Dict, Iterator, List, Tuple
 
 import numpy as np
 import pandas as pd
+from kit import implements
 from numpy.random import RandomState
 from pandas.testing import assert_index_equal
 from typing_extensions import Literal
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
 

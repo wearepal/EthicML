@@ -1,6 +1,7 @@
 """For assessing mean of logits."""
 
-from ethicml.common import implements
+from kit import implements
+
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
 from .metric import Metric
