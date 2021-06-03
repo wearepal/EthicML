@@ -34,7 +34,7 @@ setup(
         "matplotlib >= 3.0.2",
         "numpy >= 1.20.1",
         "pandas >= 1.0",
-        "palkit >= 0.1.7"
+        "palkit >= 0.1.7",
         "pipenv >= 2018.11.26",
         "pillow",
         "scikit_learn >= 0.20.1",
