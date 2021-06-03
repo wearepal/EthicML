@@ -2,8 +2,9 @@
 from typing import Tuple
 
 import numpy as np
+from kit import implements
 
-from ethicml import DataTuple, PostAlgorithm, Prediction, TestTuple, implements
+from ethicml import DataTuple, PostAlgorithm, Prediction, TestTuple
 
 
 class DPFlip(PostAlgorithm):
