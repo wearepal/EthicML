@@ -1,10 +1,10 @@
 """Fairness without Demographics Classifier."""
 from typing import List
 
+from kit import implements
 from torch import Tensor, nn
 from torch.nn import BCELoss
 
-from ...common import implements
 from .dro_loss import DROLoss
 
 __all__ = ["DROClassifier"]
