@@ -13,18 +13,21 @@ case $version_bump in
   *)
     echo "invalid version bump: \"$version_bump\""
     echo "Usage: bash make_release.sh <version bump>"
+    echo ""
+    echo "List of valid version bumps: patch, minor, major, prepatch, preminor, premajor, prerelease"
     exit 1
     ;;
 esac
 
-if [ -n "$(git status --porcelain)" ]; then
-  echo "repository is dirty"
-  exit 1
+if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
+  echo "The repository has uncommitted changes."
+  echo "This will lead to problems with git checkout."
+  exit 2
 fi
 
 if [ $(git symbolic-ref --short -q HEAD) != "master" ]; then
   echo "not on master branch"
-  exit 2
+  exit 3
 fi
 
 echo ensure master branch is up-to-date
