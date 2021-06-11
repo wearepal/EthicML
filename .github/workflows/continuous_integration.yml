@@ -35,13 +35,12 @@ jobs:
         restore-keys: ${{ runner.os }}-poetry-
     - name: Install Poetry
       run: |
-        curl -fsSL -o install-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py
-        python install-poetry.py -y
+        curl -fsSL -o get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+        python get-poetry.py -y
         echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-        rm install-poetry.py
+        rm get-poetry.py
     - name: Install dependencies
       run: |
-        export PATH=~/.local/bin:$PATH
         poetry install -E ci --no-dev --no-interaction
     - name: Test with pytest
       run: |
