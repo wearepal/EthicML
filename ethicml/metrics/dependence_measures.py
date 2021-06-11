@@ -2,10 +2,10 @@
 from typing import ClassVar
 
 import numpy as np
+from kit import implements
 from sklearn.metrics import normalized_mutual_info_score
 from typing_extensions import Literal
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
@@ -144,6 +144,6 @@ class RenyiCorrelation(_DependenceMeasure):
         return singulars[1]
 
 
-def _count_true(mask: "np.ndarray[np.bool_]") -> int:
+def _count_true(mask: np.ndarray) -> int:
     """Count the number of elements that are True."""
     return mask.nonzero()[0].shape[0]

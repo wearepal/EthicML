@@ -1,7 +1,8 @@
 """Kamiran&Calders 2012, massaging."""
 from typing import Dict, List, Tuple
 
-from ethicml.common import implements
+from kit import implements
+
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
 from ..inprocess.logistic_regression import LRProb

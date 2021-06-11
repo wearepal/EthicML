@@ -1,5 +1,4 @@
 """Test the loading data capability."""
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -20,10 +19,11 @@ def test_can_load_test_data(data_root: Path):
 @pytest.mark.parametrize(
     "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
     [
-        (em.adult(), 45222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
+        (em.admissions(), 43_303, 9, 0, 1, 2, 1, 2, "Admissions Gender"),
+        (em.adult(), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (
             em.adult("Sex", binarize_nationality=True),
-            45222,
+            45_222,
             62,
             57,
             1,
@@ -31,6 +31,28 @@ def test_can_load_test_data(data_root: Path):
             1,
             2,
             "Adult Sex, binary nationality",
+        ),
+        (
+            em.adult("Sex", binarize_race=True),
+            45_222,
+            98,
+            93,
+            1,
+            2,
+            1,
+            2,
+            "Adult Sex, binary race",
+        ),
+        (
+            em.adult("Sex", binarize_nationality=True, binarize_race=True),
+            45_222,
+            59,
+            54,
+            1,
+            2,
+            1,
+            2,
+            "Adult Sex, binary nationality, binary race",
         ),
         (em.adult(split="Sex"), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (em.adult(split="Race"), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
@@ -218,13 +240,10 @@ def test_load_adult_race_sex():
 def test_race_feature_split():
     """Test race feature split."""
     adult_data: em.Dataset = em.adult(split="Custom")
-    adult_data = replace(
-        adult_data,
-        sens_attr_spec="race_White",
-        s_prefix=["race"],
-        class_label_spec="salary_>50K",
-        class_label_prefix=["salary"],
-    )
+    adult_data.sens_attr_spec = "race_White"
+    adult_data.s_prefix = ["race"]
+    adult_data.class_label_spec = "salary_>50K"
+    adult_data.class_label_prefix = ["salary"]
 
     data: DataTuple = adult_data.load()
 

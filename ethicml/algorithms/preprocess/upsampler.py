@@ -3,9 +3,9 @@ import itertools
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
+from kit import implements
 from typing_extensions import Literal
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from ..inprocess.logistic_regression import LRProb
@@ -132,9 +132,7 @@ def upsample(
             y_val = key[1]
             s_y_mask = (dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)
 
-            ascending = False
-            if s_val <= 0:
-                ascending = True
+            ascending = s_val <= 0
 
             if percentages[key] > 1.0:
                 selected.append(all_data.loc[s_y_mask])

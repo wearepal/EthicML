@@ -3,9 +3,9 @@ from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
+from kit import implements
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.common import implements
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm

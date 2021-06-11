@@ -195,9 +195,9 @@
 </li>
         <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.__len__">(DataTuple method)</a>
 </li>
-        <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset.__len__">(LdTransformedDataset method)</a>
+        <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup.__len__">(LabelGroup method)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec.__len__">(PartialLabelSpec method)</a>
+        <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset.__len__">(LdTransformedDataset method)</a>
 </li>
         <li><a href="ethicml.utility.html#ethicml.utility.Prediction.__len__">(Prediction method)</a>
 </li>
@@ -251,6 +251,8 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.AS.apply_per_sensitive">(AS property)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.apply_per_sensitive">(AverageOddsDiff property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.apply_per_sensitive">(BalancedAccuracy property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.apply_per_sensitive">(BCR property)</a>
@@ -258,6 +260,10 @@
         <li><a href="ethicml.metrics.html#ethicml.metrics.CV.apply_per_sensitive">(CV property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.F1.apply_per_sensitive">(F1 property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.apply_per_sensitive">(FNR property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.apply_per_sensitive">(FPR property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Hsic.apply_per_sensitive">(Hsic property)</a>
 </li>
@@ -298,6 +304,8 @@
 </li>
       <li><a href="ethicml.data.html#ethicml.data.lookup.available_tabular">available_tabular() (in module ethicml.data.lookup)</a>
 </li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff">AverageOddsDiff (class in ethicml.metrics)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -336,7 +344,7 @@
 </li>
       <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.class_labels">class_labels() (Dataset property)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec.columns">columns (PartialLabelSpec attribute)</a>
+      <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup.columns">columns() (LabelGroup property)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.tabular_data.compas.Compas">Compas() (in module ethicml.data.tabular_data.compas)</a>
 </li>
@@ -356,7 +364,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec.count">count() (PartialLabelSpec method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup.count">count() (LabelGroup method)</a>
 
       <ul>
         <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.count">(TrainTestPair method)</a>
@@ -400,11 +408,11 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.data.html#ethicml.data.util.deprecated">deprecated() (in module ethicml.data.util)</a>
+</li>
       <li><a href="ethicml.evaluators.html#ethicml.evaluators.per_sensitive_attribute.diff_per_sensitive_attribute">diff_per_sensitive_attribute() (in module ethicml.evaluators.per_sensitive_attribute)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.disc_feature_groups">disc_feature_groups() (Dataset property)</a>
-</li>
-      <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.discard_non_one_hot">discard_non_one_hot (Dataset attribute)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.discrete_features">discrete_features() (Dataset property)</a>
 </li>
@@ -813,11 +821,15 @@
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.filter_and_map_results">filter_and_map_results() (in module ethicml.utility)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.data.html#ethicml.data.util.filter_features_by_prefixes">filter_features_by_prefixes() (in module ethicml.data.util)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.utility.html#ethicml.utility.filter_results">filter_results() (in module ethicml.utility)</a>
+</li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.FNR">FNR (class in ethicml.metrics)</a>
+</li>
+      <li><a href="ethicml.metrics.html#ethicml.metrics.FPR">FPR (class in ethicml.metrics)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.DataTuple.from_npz">from_npz() (DataTuple class method)</a>
 
@@ -895,7 +907,7 @@
 </li>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">InAlgorithmAsync (class in ethicml.algorithms.inprocess.in_algorithm)</a>
 </li>
-      <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec.index">index() (PartialLabelSpec method)</a>
+      <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup.index">index() (LabelGroup method)</a>
 
       <ul>
         <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.index">(TrainTestPair method)</a>
@@ -969,9 +981,11 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.util.label_specs_to_feature_list">label_specs_to_feature_list() (in module ethicml.data.util)</a>
+      <li><a href="ethicml.data.html#ethicml.data.util.label_spec_to_feature_list">label_spec_to_feature_list() (in module ethicml.data.util)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer">LabelBinarizer (class in ethicml.preprocessing)</a>
+</li>
+      <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup">LabelGroup (class in ethicml.data.util)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.LabelOutOfBounds">LabelOutOfBounds</a>
 </li>
@@ -979,10 +993,10 @@
 </li>
       <li><a href="ethicml.vision.html#ethicml.vision.LdTransformation">LdTransformation (class in ethicml.vision)</a>
 </li>
-      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset">LdTransformedDataset (class in ethicml.vision)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="ethicml.vision.html#ethicml.vision.LdTransformedDataset">LdTransformedDataset (class in ethicml.vision)</a>
+</li>
       <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.load">load() (Dataset method)</a>
 </li>
       <li><a href="ethicml.data.html#ethicml.data.load.load_data">load_data() (in module ethicml.data.load)</a>
@@ -1006,8 +1020,6 @@
       <li><a href="ethicml.utility.html#ethicml.utility.make_results">make_results() (in module ethicml.utility)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.map_over_results_index">map_over_results_index() (in module ethicml.utility)</a>
-</li>
-      <li><a href="ethicml.data.html#ethicml.data.dataset.Dataset.map_to_binary">map_to_binary (Dataset attribute)</a>
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
@@ -1130,7 +1142,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec.multiplier">multiplier (PartialLabelSpec attribute)</a>
+      <li><a href="ethicml.data.html#ethicml.data.util.LabelGroup.multiplier">multiplier() (LabelGroup property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1149,6 +1161,8 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.AS.name">(AS property)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.name">(AverageOddsDiff property)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.name">(BalancedAccuracy property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.name">(BCR property)</a>
@@ -1166,6 +1180,10 @@
         <li><a href="ethicml.algorithms.html#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.name">(DRO property)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.F1.name">(F1 property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.name">(FNR property)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.name">(FPR property)</a>
 </li>
         <li><a href="ethicml.algorithms.html#ethicml.algorithms.postprocess.hardt.Hardt.name">(Hardt property)</a>
 </li>
@@ -1270,8 +1288,6 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.data.html#ethicml.data.util.PartialLabelSpec">PartialLabelSpec (class in ethicml.data.util)</a>
-</li>
       <li><a href="ethicml.visualisation.html#ethicml.visualisation.plot_results">plot_results() (in module ethicml.visualisation)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.LabelBinarizer.post">post() (LabelBinarizer method)</a>
@@ -1282,10 +1298,10 @@
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.PPV">PPV (class in ethicml.metrics)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">PreAlgorithm (class in ethicml.algorithms.preprocess.pre_algorithm)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="ethicml.algorithms.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync">PreAlgorithmAsync (class in ethicml.algorithms.preprocess.pre_algorithm)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.Prediction">Prediction (class in ethicml.utility)</a>
@@ -1541,6 +1557,8 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.AS.score">(AS method)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.score">(AverageOddsDiff method)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.score">(BalancedAccuracy method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.score">(BCR method)</a>
@@ -1548,6 +1566,10 @@
         <li><a href="ethicml.metrics.html#ethicml.metrics.CV.score">(CV method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.F1.score">(F1 method)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.score">(FNR method)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.score">(FPR method)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Hsic.score">(Hsic method)</a>
 </li>
@@ -1614,7 +1636,7 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.test">test (TrainTestPair attribute)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.test">test() (TrainTestPair property)</a>
 </li>
       <li><a href="ethicml.utility.html#ethicml.utility.TestTuple">TestTuple (class in ethicml.utility)</a>
 </li>
@@ -1642,7 +1664,7 @@
 </li>
       <li><a href="ethicml.metrics.html#ethicml.metrics.TPR">TPR (class in ethicml.metrics)</a>
 </li>
-      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.train">train (TrainTestPair attribute)</a>
+      <li><a href="ethicml.utility.html#ethicml.utility.TrainTestPair.train">train() (TrainTestPair property)</a>
 </li>
       <li><a href="ethicml.preprocessing.html#ethicml.preprocessing.train_test_split">train_test_split() (in module ethicml.preprocessing)</a>
 

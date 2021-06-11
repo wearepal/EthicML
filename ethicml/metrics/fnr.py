@@ -1,4 +1,4 @@
-"""For assessing NPV."""
+"""For assessing FNR."""
 
 from kit import implements
 
@@ -8,13 +8,13 @@ from .confusion_matrix import confusion_matrix
 from .metric import Metric
 
 
-class NPV(Metric):
-    """Negative predictive value."""
+class FNR(Metric):
+    """False negative rate."""
 
-    _name: str = "NPV"
+    _name: str = "FNR"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        t_neg, _, f_neg, _ = confusion_matrix(prediction, actual, self.positive_class)
+        _, _, f_neg, t_pos = confusion_matrix(prediction, actual, self.positive_class)
 
-        return t_neg / (t_neg + f_neg)
+        return f_neg / (f_neg + t_pos)

@@ -1,6 +1,7 @@
 """For assessing Calder-Verwer metric, :math:`1-(P(Y=1|S=1)-P(Y=1|S!=1))`."""
 
-from ethicml.common import implements
+from kit import implements
+
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric

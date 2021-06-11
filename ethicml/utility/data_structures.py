@@ -103,7 +103,7 @@ class TestTuple:
             return cls(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.DataFrame(data["s"], columns=data["s_names"]),
-                name=name if name else None,
+                name=name or None,
             )
 
 
@@ -204,7 +204,7 @@ class DataTuple(TestTuple):
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.DataFrame(data["s"], columns=data["s_names"]),
                 y=pd.DataFrame(data["y"], columns=data["y_names"]),
-                name=name if name else None,
+                name=name or None,
             )
 
 
@@ -350,7 +350,7 @@ class TrainValPair(NamedTuple):
 
 Results = NewType("Results", pd.DataFrame)  # Container for results from `evaluate_models`
 
-RESULTS_COLUMNS: Final = ["dataset", "transform", "model", "split_id"]
+RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]
 
 
 def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
@@ -405,7 +405,7 @@ class ResultsAggregator:
 
 
 def map_over_results_index(
-    results: Results, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str]]
+    results: Results, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str, str]]
 ) -> Results:
     """Change the values of the index with a transformation function."""
     results_mapped = results.copy()
@@ -414,7 +414,9 @@ def map_over_results_index(
 
 
 def filter_results(
-    results: Results, values: Iterable, index: Literal["dataset", "transform", "model"] = "model"
+    results: Results,
+    values: Iterable,
+    index: Literal["dataset", "scaler", "transform", "model"] = "model",
 ) -> Results:
     """Filter the entries based on the given values."""
     return Results(results.loc[results.index.get_level_values(index).isin(list(values))])
@@ -424,7 +426,7 @@ def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Resu
     """Filter entries and change the index with a mapping."""
     return map_over_results_index(
         filter_results(results, mapping),
-        lambda index: (index[0], index[1], mapping[index[2]], index[3]),
+        lambda index: (index[0], index[1], index[2], mapping[index[3]], index[4]),
     )
 
 
@@ -432,4 +434,4 @@ def aggregate_results(
     results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
-    return results.groupby(["dataset", "transform", "model"]).agg(aggregator)[metrics]
+    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]

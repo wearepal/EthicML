@@ -2,8 +2,8 @@
 
 import numpy as np
 import pandas as pd
+from kit import implements
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm
@@ -24,8 +24,6 @@ class Blind(InAlgorithm):
 
         random = np.random.RandomState(self.seed)
 
-        predictions = Prediction(
+        return Prediction(
             hard=pd.Series(random.choice(train_y_vals.T.to_numpy()[0], test.x.shape[0]))
         )
-
-        return predictions

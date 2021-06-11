@@ -1,7 +1,6 @@
 """Test helper functions."""
 import pytest
-
-from ethicml.common import implements
+from kit import implements
 
 
 def test_implements() -> None:

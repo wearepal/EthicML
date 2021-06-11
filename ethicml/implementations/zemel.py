@@ -37,7 +37,7 @@ def LFR_optim_objective(
     A_z: float,
     print_interval,
     verbose,
-) -> float:
+) -> np.number:
     """LFR optim objective."""
     num_unprivileged, features_dim = x_unprivileged.shape
     num_privileged, _ = x_privileged.shape

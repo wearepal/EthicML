@@ -1,6 +1,64 @@
+[tool.poetry]
+name = "EthicML"
+version = "0.2.3"
+description = "EthicML is a library for performing and assessing algorithmic fairness. Unlike other libraries, EthicML isn't an education tool, but rather a researcher's toolkit."
+readme="README.md"
+authors = ["PAL <info@predictive-analytics-lab.com>"]
+packages = [
+  { include = "ethicml" },
+]
+include=["ethicml/py.typed"]
+classifiers=[
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+keywords=["ml", "fairness"]
+repository="https://github.com/predictive-analytics-lab/EthicML"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+GitPython = "^2.1.11"
+matplotlib = ">=3.0.2"
+numpy = ">=1.20.1"
+palkit = ">=0.1.7"
+pandas = "^1.0"
+pipenv = ">=2018.11.26"
+Pillow = "^8.1.2"
+scikit-learn = ">=0.20.1"
+seaborn = ">=0.9.0"
+teext = "^0.1.2"
+tqdm = ">=4.31.1"
+typed-argument-parser = "1.4"
+typing-extensions = ">=3.7.2"
+fairlearn = { version = "0.4.6", optional = true }
+pytest = { version = "^6.0.0", optional = true }
+pytest-cov = { version = "^2.6.0", optional = true }
+torch = { version = "^1.8", optional = true }
+torchvision = { version = "^0.9.0", optional = true }
+
+[tool.poetry.extras]
+ci = ["fairlearn","pytest","pytest-cov","torch","torchvision"]
+all= ["fairlearn"]
+
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+isort = "5.5.4"
+mypy = "^0.812"
+pre-commit = "^2.11.1"
+pydocstyle = "^6.0.0"
+pylint = "^2.7.4"
+pytest = "^6.2.2"
+pytest-cov = "^2.11.1"
+
+
 [tool.black]
 line-length = 100
-target-version = ['py36']
+target-version = ['py37']
 include = '''
 (
   ethicml/(.*).pyi?$
@@ -42,7 +100,10 @@ exclude = '''
 skip-string-normalization = true
 
 [tool.isort]
-include_trailing_comma = "True"
-known_third_party = ["PIL", "black", "git", "fairlearn", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
+known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
+profile = "black"
 line_length = 100
-multi_line_output = 3
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

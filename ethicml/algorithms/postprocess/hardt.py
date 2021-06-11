@@ -1,10 +1,10 @@
 """Post-processing method by Hardt et al."""
 import numpy as np
 import pandas as pd
+from kit import implements
 from numpy.random import RandomState
 from scipy.optimize import OptimizeResult, linprog
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .post_algorithm import PostAlgorithm
@@ -66,7 +66,7 @@ class Hardt(PostAlgorithm):
         # b_ub: 1-D array of values representing the upper-bound of each
         # inequality constraint (row) in A_ub.
         # Just to keep these between zero and one
-        inequalilty_constraint_matrix: np.ndarray[np.float64] = np.array(
+        inequalilty_constraint_matrix: np.ndarray = np.array(
             [
                 [1.0, 0.0, 0.0, 0.0],
                 [-1.0, 0.0, 0.0, 0.0],
@@ -79,9 +79,7 @@ class Hardt(PostAlgorithm):
             ],
             dtype=np.float64,
         )
-        b_ub: np.ndarray[np.float64] = np.array(
-            [1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64
-        )
+        b_ub: np.ndarray = np.array([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64)
 
         # Create boolean conditioning vectors for protected groups
         mask_s1 = train.s[train.s.columns[0]].to_numpy() == 1

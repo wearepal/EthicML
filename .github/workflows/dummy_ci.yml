@@ -32,12 +32,12 @@ jobs:
       run: |
         echo "pass!"
 
-  format_with_black:
+  format_with_black_and_isort:
 
     runs-on: ubuntu-latest
 
     steps:
-    - name: Format with black
+    - name: Format with black and isort
       run: |
         echo "pass!"
 

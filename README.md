@@ -34,7 +34,7 @@ Where appropriate, we even subsume some of these libraries.
 
 ## Installation
 
-EthicML requires Python >= 3.6.
+EthicML requires Python >= 3.7.
 To install EthicML, just do
 ```
 pip3 install ethicml

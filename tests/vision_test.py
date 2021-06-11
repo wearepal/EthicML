@@ -8,6 +8,7 @@ from torch.utils.data import DataLoader
 import ethicml.vision as emvi
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("transform", [emvi.LdColorizer])
 def test_label_dependent_transforms(transform):
     """Test label dependent transforms."""
@@ -28,6 +29,7 @@ def test_label_dependent_transforms(transform):
     colorizer(data, labels)
 
 
+@pytest.mark.slow
 def test_celeba():
     """Test celeba."""
     train_set = emvi.create_celeba_dataset(
@@ -55,7 +57,33 @@ def test_celeba():
     assert isinstance(train_set, emvi.TorchImageDataset)
     assert isinstance(test_set, emvi.TorchImageDataset)
 
+    assert train_set.possible_labels is not None
+    assert train_set.additional_columns is not None
+    assert "Blond_Hair" in train_set.possible_labels
+    tmp_smiling = train_set.y
+    tmp_blond = (
+        torch.as_tensor(train_set.additional_columns["Blond_Hair"].to_numpy()).unsqueeze(-1) + 1
+    ) // 2
+    assert not torch.equal(tmp_blond, tmp_smiling)
 
+    with pytest.raises(AssertionError):
+        train_set.new_task("Blond")
+    train_set.new_task("Blond_Hair")
+    with pytest.raises(AssertionError):
+        assert torch.equal(tmp_smiling, train_set.y)
+    assert torch.equal(tmp_blond, train_set.y)
+
+    with pytest.raises(AssertionError):
+        train_set.new_sensitive("Smling")
+    train_set.new_sensitive("Smiling")
+    with pytest.raises(AssertionError):
+        assert torch.equal(tmp_blond, train_set.s)
+    with pytest.raises(AssertionError):
+        assert torch.equal(train_set.s, train_set.y)
+    assert torch.equal(tmp_smiling, train_set.s)
+
+
+@pytest.mark.slow
 def test_celeba_multi_s():
     """Test celeba."""
     data = emvi.create_celeba_dataset(
@@ -75,6 +103,7 @@ def test_celeba_multi_s():
     assert isinstance(data, emvi.TorchImageDataset)
 
 
+@pytest.mark.slow
 def test_gen_faces():
     """Test gen faces."""
     train_set = emvi.create_genfaces_dataset(
@@ -103,6 +132,7 @@ def test_gen_faces():
     assert isinstance(test_set, emvi.TorchImageDataset)
 
 
+@pytest.mark.slow
 def test_cmnist(temp_dir):
     """Test CMNIST."""
     train_set, test_set = emvi.create_cmnist_datasets(

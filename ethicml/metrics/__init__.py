@@ -10,11 +10,14 @@ Some example code
 """
 from .accuracy import *
 from .anti_spur import AS
+from .average_odds import AverageOddsDiff
 from .balanced_accuracy import BalancedAccuracy
 from .bcr import BCR
 from .confusion_matrix import LabelOutOfBounds, confusion_matrix
 from .cv import CV, AbsCV
 from .dependence_measures import *
+from .fnr import FNR
+from .fpr import FPR
 from .hsic import Hsic
 from .metric import Metric
 from .npv import NPV

@@ -4,8 +4,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import List
 
+from kit import implements
+
 from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]

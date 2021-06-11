@@ -3,10 +3,10 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+from kit import implements
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
-from ethicml.common import implements
 from ethicml.utility import DataTuple, Prediction, SoftPrediction, TestTuple
 
 from .in_algorithm import InAlgorithm

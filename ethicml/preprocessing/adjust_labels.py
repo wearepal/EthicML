@@ -30,8 +30,8 @@ class LabelBinarizer:
         # make copy of dataset
         dataset = dataset.replace(y=dataset.y.copy())
 
-        self.min_val = dataset.y.to_numpy().min()
-        self.max_val = dataset.y.to_numpy().max()
+        self.min_val = dataset.y.to_numpy().min().item()
+        self.max_val = dataset.y.to_numpy().max().item()
 
         y_col = dataset.y.columns[0]
 

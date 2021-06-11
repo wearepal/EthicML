@@ -1,5 +1,5 @@
 """Data structure for all datasets that come with the framework."""
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
@@ -19,14 +19,20 @@ from .util import (
 __all__ = ["Dataset"]
 
 
-@dataclass(frozen=True)
+@dataclass
 class Dataset:
-    """Data structure that holds all the information needed to load a given dataset."""
+    """Data structure that holds all the information needed to load a given dataset.
+
+    Args:
+        discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded, discard
+            those.
+        map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
+    """
 
     name: str
-    filename_or_path: Union[str, Path]
+    filename_or_path: InitVar[Union[str, Path]]
     features: Sequence[str]
-    cont_features: Sequence[str]
+    cont_features: InitVar[Sequence[str]]
     sens_attr_spec: Union[str, LabelSpec]
     class_label_spec: Union[str, LabelSpec]
     num_samples: int
@@ -35,35 +41,40 @@ class Dataset:
     class_label_prefix: Sequence[str] = field(default_factory=list)
     discrete_feature_groups: Optional[Dict[str, List[str]]] = None
     discard_non_one_hot: bool = False
-    """If some entries in s or y are not correctly one-hot encoded, discard those."""
     map_to_binary: bool = False
-    """If True, convert labels from {-1, 1} to {0, 1}."""
+
+    _raw_file_name_or_path: Union[str, Path] = field(init=False)
+    _cont_features_unfiltered: Sequence[str] = field(init=False)
+
+    def __post_init__(
+        self, filename_or_path: Union[str, Path], cont_features: Sequence[str]
+    ) -> None:
+        self._raw_file_name_or_path = filename_or_path
+        self._cont_features_unfiltered = cont_features
 
     @property
     def sens_attrs(self) -> List[str]:
         """Get the list of sensitive attributes."""
         if isinstance(self.sens_attr_spec, str):
             return [self.sens_attr_spec]
-        else:
-            assert isinstance(self.sens_attr_spec, dict)
-            return label_spec_to_feature_list(self.sens_attr_spec)
+        assert isinstance(self.sens_attr_spec, dict)
+        return label_spec_to_feature_list(self.sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
         if isinstance(self.class_label_spec, str):
             return [self.class_label_spec]
-        else:
-            assert isinstance(self.class_label_spec, dict)
-            return label_spec_to_feature_list(self.class_label_spec)
+        assert isinstance(self.class_label_spec, dict)
+        return label_spec_to_feature_list(self.class_label_spec)
 
     @property
     def filepath(self) -> Path:
         """Filepath from which to load the data."""
-        if isinstance(self.filename_or_path, Path):
-            return self.filename_or_path
+        if isinstance(self._raw_file_name_or_path, Path):
+            return self._raw_file_name_or_path
         else:
-            return ROOT_PATH / "data" / "csvs" / self.filename_or_path
+            return ROOT_PATH / "data" / "csvs" / self._raw_file_name_or_path
 
     @property
     def features_to_remove(self) -> List[str]:
@@ -107,7 +118,7 @@ class Dataset:
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return filter_features_by_prefixes(self.cont_features, self.features_to_remove)
+        return filter_features_by_prefixes(self._cont_features_unfiltered, self.features_to_remove)
 
     @property
     def discrete_features(self) -> List[str]:
@@ -205,7 +216,7 @@ class Dataset:
             return attributes, mask
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series[int] = pd.Series(0, index=range(len(attributes)))
+        combination: pd.Series = pd.Series(0, index=range(len(attributes)))
 
         for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded
