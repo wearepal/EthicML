@@ -8,6 +8,7 @@ packages = [
   { include = "ethicml" },
 ]
 include=["ethicml/py.typed"]
+exclude = ["ethicml/data/csvs/raw/*"]
 classifiers=[
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
