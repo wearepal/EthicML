@@ -12,6 +12,7 @@ on:
     - .gitignore
     - CODEOWNERS
     - LICENSE
+    - make_release.sh
 
 jobs:
   test_with_pytest:
