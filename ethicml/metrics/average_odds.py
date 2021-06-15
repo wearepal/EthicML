@@ -33,8 +33,8 @@ class AverageOddsDiff(Metric):
         tpr_diff = diff_per_sensitive_attribute(tpr_per_sens)
         fpr_diff = diff_per_sensitive_attribute(fpr_per_sens)
 
-        tpr_sum = 0
-        fpr_sum = 0
+        tpr_sum = 0.0
+        fpr_sum = 0.0
         total = 0
         for ((tpr_k, tpr_v), (fpr_k, fpr_v)) in zip(tpr_diff.items(), fpr_diff.items()):
             total += 1
