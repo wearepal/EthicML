@@ -1,4 +1,6 @@
 """Data structures that are used throughout the code."""
+from __future__ import annotations
+
 import json
 from pathlib import Path
 from typing import (
@@ -19,7 +21,7 @@ from typing import (
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_index_equal
-from typing_extensions import Final, Literal
+from typing_extensions import Final, Literal, TypeGuard
 
 __all__ = [
     "ActivationType",
@@ -78,7 +80,7 @@ class TestTuple:
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.DataFrame] = None,
         name: Optional[str] = None,
-    ) -> "TestTuple":
+    ) -> TestTuple:
         """Create a copy of the TestTuple but change the given values."""
         return TestTuple(
             x=x if x is not None else self.x,
@@ -95,7 +97,7 @@ class TestTuple:
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> "TestTuple":
+    def from_npz(cls, data_path: Path) -> TestTuple:
         """Load test tuple from npz file."""
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -159,7 +161,7 @@ class DataTuple(TestTuple):
             name=name if name is not None else self.name,
         )
 
-    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> "DataTuple":
+    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
         """Concatenate the dataframes in the DataTuple and then apply a function to it."""
         self.x.columns = self.x.columns.astype(str)
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
@@ -175,7 +177,7 @@ class DataTuple(TestTuple):
 
         return result
 
-    def get_subset(self, num: int = 500) -> "DataTuple":
+    def get_subset(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
 
         Args:
@@ -195,7 +197,7 @@ class DataTuple(TestTuple):
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> "DataTuple":
+    def from_npz(cls, data_path: Path) -> DataTuple:
         """Load data tuple from npz file."""
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -232,7 +234,7 @@ class Prediction:
         return self._info
 
     @staticmethod
-    def from_npz(npz_path: Path) -> "Prediction":
+    def from_npz(npz_path: Path) -> Prediction:
         """Load prediction from npz file."""
         info = None
         if (npz_path.parent / "info.json").exists():
@@ -249,8 +251,8 @@ class Prediction:
         if self.info:
             for v in self.info.values():
                 assert isinstance(v, float), "Info must be Dict[str, float]"
-            json_path = npz_path.parent / 'info.json'
-            with open(json_path, 'w') as json_file:
+            json_path = npz_path.parent / "info.json"
+            with open(json_path, "w") as json_file:
                 json.dump(self.info, json_file)
 
         np.savez(npz_path, hard=self.hard.to_numpy())
@@ -318,16 +320,9 @@ def concat_tt(
 FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
 
 
-def str_to_fair_type(fair_str: str) -> Optional[FairnessType]:
-    """Convert a string to a fairness type or return None if not possible."""
-    # this somewhat silly code is needed because mypy doesn't support narrowing to literals yet
-    if fair_str == "DP":
-        return "DP"
-    if fair_str == "EqOd":
-        return "EqOd"
-    if fair_str == "EqOp":
-        return "EqOp"
-    return None
+def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
+    """Check whether a string conforms to a fairness type."""
+    return fair_str in ("DP", "EqOd", "EqOp")
 
 
 ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
@@ -405,7 +400,8 @@ class ResultsAggregator:
 
 
 def map_over_results_index(
-    results: Results, mapper: Callable[[Tuple[str, str, str, str]], Tuple[str, str, str, str, str]]
+    results: Results,
+    mapper: Callable[[Tuple[str, str, str, str, str]], Tuple[str, str, str, str, str]],
 ) -> Results:
     """Change the values of the index with a transformation function."""
     results_mapped = results.copy()
