@@ -29,7 +29,7 @@ __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
 _AT = TypeVar("_AT", InAlgorithmAsync, PreAlgorithmAsync)  # async algorithm type
 _ST = TypeVar("_ST", InAlgorithm, PreAlgorithm)  # sync algorithm type
-_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple])  # return type
+_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple])  # the return type
 
 RunType = Callable[[DataTuple, TestTuple], Coroutine[Any, Any, _RT]]
 BlockingRunType = Callable[[DataTuple, TestTuple], _RT]

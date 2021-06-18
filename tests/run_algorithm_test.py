@@ -230,19 +230,17 @@ def test_run_alg_suite_no_pipeline():
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results) == expected_num
 
-    assert (
-        len(em.filter_results(results, ["Kamiran & Calders LR"])) == 2
-    )  # result for Toy and Adult
+    kc_name = "Kamiran & Calders LR"
+
+    assert len(em.filter_results(results, [kc_name])) == 2  # result for Toy and Adult
     assert (
         len(em.filter_results(results, ["Toy"], index="dataset")) == 3
     )  # Kamiran, LR and Upsampler
-    different_name = em.filter_and_map_results(
-        results, {"Kamiran & Calders LR": "Kamiran & Calders"}
-    )
-    assert len(em.filter_results(different_name, ["Kamiran & Calders LR"])) == 0
+    different_name = em.filter_and_map_results(results, {kc_name: "Kamiran & Calders"})
+    assert len(em.filter_results(different_name, [kc_name])) == 0
     assert len(em.filter_results(different_name, ["Kamiran & Calders"])) == 2
 
     pd.testing.assert_frame_equal(
-        em.filter_results(results, ["Kamiran & Calders LR"]),
-        results.query("model == 'Kamiran & Calders LR'"),
+        em.filter_results(results, [kc_name]),
+        results.query(f"model == '{kc_name}'"),
     )

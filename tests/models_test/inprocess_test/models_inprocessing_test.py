@@ -92,7 +92,6 @@ def test_oracle():
     num_pos = 41
 
     assert isinstance(model, InAlgorithm)
-    assert model is not None
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
@@ -114,7 +113,6 @@ def test_dp_oracle():
     num_pos = 53
 
     assert isinstance(model, InAlgorithm)
-    assert model is not None
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)

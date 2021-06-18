@@ -322,7 +322,7 @@ FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
 
 def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
     """Check whether a string conforms to a fairness type."""
-    return fair_str in ("DP", "EqOd", "EqOp")
+    return fair_str in {"DP", "EqOd", "EqOp"}
 
 
 ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
@@ -356,14 +356,13 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
-    if data_frame is not None:
-        # ensure correct index
-        if data_frame.index.names != RESULTS_COLUMNS:
-            return Results(data_frame.set_index(RESULTS_COLUMNS))
-        else:
-            return Results(data_frame)
-    else:
+    if data_frame is None:
         return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
+    # ensure correct index
+    if data_frame.index.names != RESULTS_COLUMNS:
+        return Results(data_frame.set_index(RESULTS_COLUMNS))
+    else:
+        return Results(data_frame)
 
 
 class ResultsAggregator:

@@ -53,9 +53,8 @@ def genfaces(
     img_dir = base / _SUBDIR
     if download:
         _download(base)
-    elif check_integrity:
-        if not _check_integrity(base):
-            return None, img_dir
+    elif check_integrity and not _check_integrity(base):
+        return None, img_dir
 
     dataset_obj = Dataset(
         name=f"GenFaces, s={sens_attr}, y={label}",

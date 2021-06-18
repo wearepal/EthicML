@@ -137,9 +137,8 @@ def celeba(
     img_dir = base / "img_align_celeba"
     if download:
         _download(base)
-    elif check_integrity:
-        if not _check_integrity(base):
-            return None, img_dir
+    elif check_integrity and not _check_integrity(base):
+        return None, img_dir
     dataset_obj = Dataset(
         name=f"CelebA, s={name}, y={label}",
         sens_attr_spec=sens_attr,
@@ -192,4 +191,3 @@ def _download(base: Path) -> None:
 
     with zipfile.ZipFile(base / "img_align_celeba.zip", "r") as fhandle:
         fhandle.extractall(str(base))
-    return

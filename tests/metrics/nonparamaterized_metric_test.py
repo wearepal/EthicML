@@ -34,7 +34,7 @@ from ethicml.utility.data_structures import TrainValPair
 
 
 def test_tpr_diff(toy_train_val: TrainValPair):
-    """test tpr diff"""
+    """Test tpr diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -50,7 +50,7 @@ def test_tpr_diff(toy_train_val: TrainValPair):
 
 
 def test_ppv_diff(toy_train_val: TrainValPair):
-    """test ppv diff"""
+    """Test ppv diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -65,7 +65,7 @@ def test_ppv_diff(toy_train_val: TrainValPair):
 
 
 def test_npv_diff(toy_train_val: TrainValPair):
-    """test npv diff"""
+    """Test npv diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -80,7 +80,7 @@ def test_npv_diff(toy_train_val: TrainValPair):
 
 
 def test_bcr_diff(toy_train_val: TrainValPair):
-    """test bcr diff"""
+    """Test bcr diff."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -95,7 +95,7 @@ def test_bcr_diff(toy_train_val: TrainValPair):
 
 
 def test_use_appropriate_metric(toy_train_val: TrainValPair):
-    """test use appropriate metric"""
+    """Test use appropriate metric."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -104,7 +104,7 @@ def test_use_appropriate_metric(toy_train_val: TrainValPair):
 
 
 def test_run_metrics(toy_train_val: TrainValPair):
-    """test run metrics"""
+    """Test run metrics."""
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
@@ -118,7 +118,7 @@ def test_run_metrics(toy_train_val: TrainValPair):
 
 
 def test_get_info(toy_train_val: TrainValPair):
-    """test get info"""
+    """Test get info."""
     train, test = toy_train_val
     model: LRCV = LRCV()
     predictions: Prediction = model.run(train, test)
@@ -127,7 +127,7 @@ def test_get_info(toy_train_val: TrainValPair):
 
 
 def test_tpr_diff_non_binary_race():
-    """test tpr diff non binary race"""
+    """Test tpr diff non binary race."""
     data: DataTuple = load_data(em.adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -165,7 +165,7 @@ def test_tpr_diff_non_binary_race():
 
 
 def test_tpr_ratio_non_binary_race():
-    """test tpr ratio non binary race"""
+    """Test tpr ratio non binary race."""
     data: DataTuple = load_data(em.adult("Race"))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -203,7 +203,7 @@ def test_tpr_ratio_non_binary_race():
 
 
 def test_nb_acc():
-    """test nb acc"""
+    """Test nb acc."""
     data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -214,7 +214,7 @@ def test_nb_acc():
 
 
 def test_nb_tpr():
-    """test nb tpr"""
+    """Test nb tpr."""
     data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -261,7 +261,7 @@ def test_nb_tpr():
 
 
 def test_nb_tnr():
-    """test nb tnr"""
+    """Test nb tnr."""
     data: DataTuple = load_data(nonbinary_toy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
@@ -301,7 +301,7 @@ def test_nb_tnr():
     assert tnr_score == 1.0
 
     with pytest.raises(LabelOutOfBounds):
-        tnr_score = TNR(pos_class=0).score(predictions, test)
+        _ = TNR(pos_class=0).score(predictions, test)
 
     tnrs = em.metric_per_sensitive_attribute(predictions, test, TNR())
     assert tnrs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}
@@ -322,7 +322,7 @@ def _compute_inv_cv(preds: Prediction, actual: DataTuple) -> float:
 
 
 def test_dependence_measures(simple_data: DataTuple) -> None:
-    """test dependence measures"""
+    """Test dependence measures."""
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
@@ -352,7 +352,7 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
 
 
 def test_dependence_measures_adult() -> None:
-    """test dependence measures"""
+    """Test dependence measures."""
     data = load_data(em.adult(split="Sex"))
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)

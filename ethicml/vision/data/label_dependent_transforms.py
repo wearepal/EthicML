@@ -136,13 +136,12 @@ class LdColorizer(LdTransformation):
             else:
                 # colorful background, white digits
                 transformed_data = torch.clamp(data + color_tensor, 0, 1)
+        elif self.black:
+            # black background, colorful digits
+            transformed_data = data * color_tensor
         else:
-            if self.black:
-                # black background, colorful digits
-                transformed_data = data * color_tensor
-            else:
-                # white background, colorful digits
-                transformed_data = 1 - data * (1 - color_tensor)
+            # white background, colorful digits
+            transformed_data = 1 - data * (1 - color_tensor)
 
         if self.greyscale:
             transformed_data = transformed_data.mean(dim=1, keepdim=True)
