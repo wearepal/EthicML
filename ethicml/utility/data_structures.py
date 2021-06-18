@@ -358,7 +358,7 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
         data_frame = pd.read_csv(data_frame)
     if data_frame is not None:
         # ensure correct index
-        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+        if data_frame.index.names != RESULTS_COLUMNS:
             return Results(data_frame.set_index(RESULTS_COLUMNS))
         else:
             return Results(data_frame)
@@ -380,7 +380,7 @@ class ResultsAggregator:
 
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object."""
-        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+        if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
         # set sort=False so that the order of the columns is preserved

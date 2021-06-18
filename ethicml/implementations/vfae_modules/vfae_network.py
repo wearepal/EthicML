@@ -61,9 +61,9 @@ class VFAENetwork(nn.Module):
         """Reparametrization trick - Leaving as a method to try and control reproducability."""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
-        return eps.mul(std).add_(mean)  # type: ignore[attr-defined]
+        return eps.mul(std).add_(mean)
 
-    def forward(  # type: ignore[override]
+    def forward(
         self, x: Tensor, s: Tensor, y: Tensor
     ) -> Tuple[
         Tuple[Tensor, Tensor, Tensor],

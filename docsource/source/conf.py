@@ -1,8 +1,9 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
+"""Configuration file for the Sphinx documentation builder.
+
+This file only contains a selection of the most common options. For a full
+list see the documentation:
+http://www.sphinx-doc.org/en/master/config
+"""
 
 # -- Path setup --------------------------------------------------------------
 
@@ -12,6 +13,7 @@
 #
 import os
 import sys
+from typing import List
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -19,7 +21,7 @@ sys.path.insert(0, os.path.abspath(".."))
 # -- Project information -----------------------------------------------------
 
 project = "EthicML"
-copyright = "2019, O. Thomas, T. Kehrenberg"
+copyright = "2021, O. Thomas, T. Kehrenberg"
 author = "O. Thomas, T. Kehrenberg"
 
 # The full version, including alpha/beta/rc tags
@@ -60,7 +62,7 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns: List[str] = []
 
 
 # -- Options for HTML output -------------------------------------------------
