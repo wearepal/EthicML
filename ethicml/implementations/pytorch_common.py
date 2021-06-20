@@ -119,8 +119,8 @@ def compute_projection_gradients(
         loss_a (Tensor): Adversarial loss.
         alpha (float): Pre-factor for adversarial loss.
     """
-    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
-    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
+    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
+    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
 
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)
