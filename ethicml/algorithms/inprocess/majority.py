@@ -18,5 +18,5 @@ class Majority(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        maj = train.y.mode().iloc[0].to_numpy()
+        maj = train.y.mode().iloc[0].to_numpy()  # type: ignore[attr-defined]
         return Prediction(hard=pd.Series(maj.repeat(len(test.x))))

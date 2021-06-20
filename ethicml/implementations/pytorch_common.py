@@ -12,8 +12,8 @@ from ethicml.utility import DataTuple, TestTuple
 
 
 def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, int, pd.Index, pd.Index]:
-    features = data.x.to_numpy(dtype=np.float32)
-    sens_labels = data.s.to_numpy(dtype=np.float32)
+    features = data.x.to_numpy(dtype=np.float32)  # type: ignore[type-var]
+    sens_labels = data.s.to_numpy(dtype=np.float32)  # type: ignore[type-var]
     num = data.s.shape[0]
     xdim = data.x.shape[1]
     sdim = data.s.shape[1]
@@ -50,7 +50,7 @@ class CustomDataset(Dataset):
         super().__init__()
         test = data.remove_y()
         self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(test)
-        self.y = data.y.to_numpy(dtype=np.float32)
+        self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[type-var]
         self.ydim = data.y.shape[1]
         self.y_names = data.y.columns
 
@@ -119,8 +119,8 @@ def compute_projection_gradients(
         loss_a (Tensor): Adversarial loss.
         alpha (float): Pre-factor for adversarial loss.
     """
-    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
-    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
+    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
+    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
 
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)

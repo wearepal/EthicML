@@ -186,7 +186,7 @@ class DataTuple(TestTuple):
         Returns:
             subset of training data
         """
-        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
 
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file."""

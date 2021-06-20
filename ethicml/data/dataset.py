@@ -216,7 +216,7 @@ class Dataset:
             return attributes, mask
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(0, index=range(len(attributes)))
+        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
 
         for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded

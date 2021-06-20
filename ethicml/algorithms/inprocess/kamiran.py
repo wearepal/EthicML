@@ -90,10 +90,10 @@ def compute_instance_weights(train: DataTuple) -> pd.DataFrame:
 
     train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]), columns=["instance weights"])
 
-    train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav
-    train_instance_weights.iloc[cond_p_unfav.index] *= w_p_unfav
-    train_instance_weights.iloc[cond_up_fav.index] *= w_up_fav
-    train_instance_weights.iloc[cond_up_unfav.index] *= w_up_unfav
+    train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav  # type: ignore[call-overload]
+    train_instance_weights.iloc[cond_p_unfav.index] *= w_p_unfav  # type: ignore[call-overload]
+    train_instance_weights.iloc[cond_up_fav.index] *= w_up_fav  # type: ignore[call-overload]
+    train_instance_weights.iloc[cond_up_unfav.index] *= w_up_unfav  # type: ignore[call-overload]
 
     return train_instance_weights
 
