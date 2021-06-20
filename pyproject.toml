@@ -101,10 +101,53 @@ exclude = '''
 skip-string-normalization = true
 
 [tool.isort]
-known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
+known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm"]
+extra_standard_library = ["typing_extensions"]
 profile = "black"
 line_length = 100
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = "3.7"
+no_implicit_optional = true
+allow_redefinition = true
+strict_equality = true
+check_untyped_defs = true
+warn_unreachable = true
+#disallow_any_unimported = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+show_error_codes = true
+warn_unused_ignores = true
+
+# ===== the following modules in EthicML aren't ready to be type checked so strictly =====
+[[tool.mypy.overrides]]
+module = ["tests.*", "ethicml.implementations.*", "ethicml.algorithms.inprocess.fair_gpyt"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+# ========== imports that don't have types ===========
+
+[[tool.mypy.overrides]]
+module = [
+    "black.*",
+    "fairlearn.*",
+    "git",
+    "imageio",
+    "matplotlib.*",
+    "pandas.testing",
+    "PIL",
+    "pylint.*",
+    "pytest.*",
+    "scipy.*",
+    "setuptools.*",
+    "sklearn.*",
+    "seaborn",
+    "torch.*",
+    "torchvision.*",
+    "tqdm.*"
+]
+ignore_missing_imports = true

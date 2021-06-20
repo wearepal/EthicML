@@ -43,7 +43,7 @@ class DPFlip(PostAlgorithm):
 
         _y = preds.hard[preds.hard == pre_y_val]
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
-        idx_s_y = _y.index & _s.index  # type: ignore[operator]
+        idx_s_y = _y.index & _s.index
         rng = np.random.RandomState(888)
         idxs = [i for i in rng.permutation(idx_s_y)]
         preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})
@@ -55,10 +55,10 @@ class DPFlip(PostAlgorithm):
         s_0 = test.s[test.s[test.s.columns[0]] == 0]
         s_1 = test.s[test.s[test.s.columns[0]] == 1]
         # Naming is nSY
-        n00 = preds.hard[(s_0.index) & (y_0.index)].count()  # type: ignore[operator]
-        n01 = preds.hard[(s_0.index) & (y_1.index)].count()  # type: ignore[operator]
-        n10 = preds.hard[(s_1.index) & (y_0.index)].count()  # type: ignore[operator]
-        n11 = preds.hard[(s_1.index) & (y_1.index)].count()  # type: ignore[operator]
+        n00 = preds.hard[(s_0.index) & (y_0.index)].count()
+        n01 = preds.hard[(s_0.index) & (y_1.index)].count()
+        n10 = preds.hard[(s_1.index) & (y_0.index)].count()
+        n11 = preds.hard[(s_1.index) & (y_1.index)].count()
 
         a = (((n00 + n01) * n11) - ((n10 + n11) * n01)) / (n00 + n01)
         b = (n10 + n11) / (n00 + n01)

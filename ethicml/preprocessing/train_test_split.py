@@ -2,13 +2,13 @@
 import itertools
 from abc import ABC, abstractmethod
 from typing import Dict, Iterator, List, Tuple
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
 from kit import implements
 from numpy.random import RandomState
 from pandas.testing import assert_index_equal
-from typing_extensions import Literal
 
 from ethicml.utility import DataTuple
 from ethicml.utility.data_helpers import shuffle_df
@@ -55,10 +55,10 @@ class SequentialSplit(DataSplitter):
         del split_id
         train_len = round(self.train_percentage * len(data))
 
-        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
+        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))  # type: ignore[call-overload]
         train = train.replace(name=f"{data.name} - Train")
 
-        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
+        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))  # type: ignore[call-overload]
         test = test.replace(name=f"{data.name} - Test")
 
         assert len(train) + len(test) == len(data)
@@ -94,8 +94,8 @@ def train_test_split(
 
     # split
     train_len = int(train_percentage * len(all_data))
-    all_data_train = all_data.iloc[:train_len]
-    all_data_test = all_data.iloc[train_len:]
+    all_data_train = all_data.iloc[:train_len]  # type: ignore[call-overload]
+    all_data_test = all_data.iloc[train_len:]  # type: ignore[call-overload]
 
     assert isinstance(all_data_train, pd.DataFrame)
     assert isinstance(all_data_test, pd.DataFrame)
@@ -217,16 +217,16 @@ class ProportionalSplit(RandomSplit):
         )
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_indexes].reset_index(drop=True),
-            s=data.s.iloc[train_indexes].reset_index(drop=True),
-            y=data.y.iloc[train_indexes].reset_index(drop=True),
+            x=data.x.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            s=data.s.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            y=data.y.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_indexes].reset_index(drop=True),
-            s=data.s.iloc[test_indexes].reset_index(drop=True),
-            y=data.y.iloc[test_indexes].reset_index(drop=True),
+            x=data.x.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            s=data.s.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            y=data.y.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Test",
         )
 
@@ -350,17 +350,17 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
         val_inds: np.ndarray = indices[start:stop]
         train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 
-        train_x = data.x.iloc[train_inds].reset_index(drop=True)
-        train_s = data.s.iloc[train_inds].reset_index(drop=True)
-        train_y = data.y.iloc[train_inds].reset_index(drop=True)
+        train_x = data.x.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        train_s = data.s.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        train_y = data.y.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert train_x.shape == (len(train_inds), data.x.shape[1])
         assert train_s.shape == (len(train_inds), data.s.shape[1])
         assert train_y.shape == (len(train_inds), data.y.shape[1])
 
-        val_x = data.x.iloc[val_inds].reset_index(drop=True)
-        val_s = data.s.iloc[val_inds].reset_index(drop=True)
-        val_y = data.y.iloc[val_inds].reset_index(drop=True)
+        val_x = data.x.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        val_s = data.s.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        val_y = data.y.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert val_x.shape == (len(val_inds), data.x.shape[1])
         assert val_s.shape == (len(val_inds), data.s.shape[1])

@@ -12,7 +12,7 @@ from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
-    """test train test split"""
+    """Test train test split."""
     data: DataTuple = em.load_data(em.toy())
     train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train, test = train_test
@@ -65,7 +65,7 @@ def test_train_test_split():
 
 
 def test_prop_train_test_split():
-    """test prop train test split"""
+    """Test prop train test split."""
     data: DataTuple = em.load_data(em.toy())
     train: DataTuple
     test: DataTuple
@@ -134,7 +134,7 @@ def test_prop_train_test_split():
 
 
 def test_random_seed():
-    """test random seed"""
+    """Test random seed."""
     data: DataTuple = em.load_data(em.toy())
     train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train_0, test_0 = train_test_0
@@ -182,7 +182,7 @@ def test_random_seed():
 
 
 def test_binning():
-    """test binning"""
+    """Test binning."""
     data: DataTuple = em.load_data(em.adult())
 
     binned: DataTuple = em.bin_cont_feats(data)
@@ -192,7 +192,7 @@ def test_binning():
 
 
 def test_sequential_split():
-    """test sequential split"""
+    """Test sequential split."""
     data: DataTuple = em.load_data(em.toy())
     train: DataTuple
     test: DataTuple
@@ -204,7 +204,7 @@ def test_sequential_split():
 
 
 def test_biased_split():
-    """test biased split"""
+    """Test biased split."""
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
@@ -240,13 +240,10 @@ def test_biased_split():
     assert biased2.y.shape == (313, 1)
     assert (biased2.s.to_numpy() == biased2.y.to_numpy()).all()
 
-    # assert debiased.s.shape == (626, 1)
-    # assert debiased.y.shape == (626, 1)
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    # assert count == 626 // 2
     assert count == 374 // 2
 
     # ================================= mixing factor = 0.5 =======================================
@@ -277,13 +274,10 @@ def test_biased_split():
     biased2_mean = (biased2.s.to_numpy() == biased2.y.to_numpy()).mean()
     assert biased2_mean == approx(data_mean, abs=0.01)
 
-    # assert debiased.s.shape == (564, 1)
-    # assert debiased.y.shape == (564, 1)
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    # assert count == 564 // 2
     assert count == 374 // 2
 
     # ================================== mixing factor = 1 ========================================
@@ -310,18 +304,15 @@ def test_biased_split():
     assert biased2.y.shape == (188, 1)
     assert (biased2.s.to_numpy() != biased2.y.to_numpy()).all()
 
-    # assert debiased.s.shape == (376, 1)
-    # assert debiased.y.shape == (376, 1)
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
     count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
-    # assert count == 376 // 2
     assert count == 374 // 2
 
 
 def test_biased_split_sizes():
-    """test biased split sizes"""
+    """Test biased split sizes."""
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
@@ -345,7 +336,7 @@ def test_biased_split_sizes():
 
 
 def test_biased_split_nonbinary():
-    """test biased split nonbinary"""
+    """Test biased split nonbinary."""
     # generate data that uses -1 and 1 instead of 0 and 1 for s and y
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
@@ -359,7 +350,7 @@ def test_biased_split_nonbinary():
 
 
 def test_balanced_test_split(simple_data: DataTuple):
-    """test biased split sizes"""
+    """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
@@ -378,7 +369,7 @@ def test_balanced_test_split(simple_data: DataTuple):
 
 
 def test_balanced_test_split_by_s(simple_data: DataTuple):
-    """test biased split sizes"""
+    """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(
         balance_type="P(y|s)=0.5", train_percentage=train_percentage
@@ -399,7 +390,7 @@ def test_balanced_test_split_by_s(simple_data: DataTuple):
 
 
 def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
-    """test biased split sizes"""
+    """Test biased split sizes."""
     train_percentage = 0.75
     train, test, split_info = em.BalancedTestSplit(
         balance_type="P(s,y)=0.25", train_percentage=train_percentage

@@ -47,7 +47,7 @@ def set_seed(seed: int):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)  # type: ignore[attr-defined]
+    torch.cuda.manual_seed_all(seed)
 
 
 def build_networks(flags: BeutelArgs, train_data: CustomDataset, enc_activation, adv_activation):
@@ -264,7 +264,7 @@ class GradReverse(Function):
 
 
 def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
-    return GradReverse.apply(features, lambda_)  # type: ignore[attr-defined]
+    return GradReverse.apply(features, lambda_)
 
 
 class Encoder(nn.Module):
@@ -285,7 +285,7 @@ class Encoder(nn.Module):
                 )
                 self.encoder.add_module("encoder activation {}".format(k + 1), activation)
 
-    def forward(self, x: Tensor) -> Tensor:  # type: ignore[override]
+    def forward(self, x: Tensor) -> Tensor:
         """Forward pass."""
         return self.encoder(x)
 
@@ -321,7 +321,7 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
             self.adversary.add_module("adversary last activation", activation)
 
-    def forward(self, x: Tensor, y: Tensor) -> Tensor:  # type: ignore[override]
+    def forward(self, x: Tensor, y: Tensor) -> Tensor:
         """Forward pass."""
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
@@ -362,7 +362,7 @@ class Predictor(nn.Module):
             )
             self.predictor.add_module("adversary last activation", activation)
 
-    def forward(self, x: Tensor) -> Tensor:  # type: ignore[override]
+    def forward(self, x: Tensor) -> Tensor:
         """Forward pass."""
         return self.predictor(x)
 
@@ -376,9 +376,7 @@ class Model(nn.Module):
         self.adv = adv
         self.pred = pred
 
-    def forward(  # type: ignore[override]
-        self, x: Tensor, y: Tensor
-    ) -> Tuple[Tensor, Tensor, Tensor]:
+    def forward(self, x: Tensor, y: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
         """Forward pass."""
         encoded = self.enc(x)
         s_hat = self.adv(encoded, y)

@@ -22,14 +22,14 @@ def test_scaling(dataset_name, scaler):
 
     if dataset_name == "crime" and str(scaler) == "MinMaxScaler()":
         # Crime dataset is minmax scaled by the data providers.
-        pandas.testing.assert_frame_equal(datatuple.x, datatuple_scaled.x, check_dtype=False)
+        pandas.testing.assert_frame_equal(datatuple.x, datatuple_scaled.x, check_dtype=False)  # type: ignore[call-arg]
     else:
         with pytest.raises(AssertionError):
-            pandas.testing.assert_frame_equal(datatuple.x, datatuple_scaled.x, check_dtype=False)
+            pandas.testing.assert_frame_equal(datatuple.x, datatuple_scaled.x, check_dtype=False)  # type: ignore[call-arg]
 
     datatuple_post, _ = scale_continuous(dataset, datatuple_scaled, scaler2, inverse=True)
 
-    pandas.testing.assert_frame_equal(datatuple.x, datatuple_post.x, check_dtype=False)
+    pandas.testing.assert_frame_equal(datatuple.x, datatuple_post.x, check_dtype=False)  # type: ignore[call-arg]
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
@@ -55,12 +55,12 @@ def test_scaling_separate_test(dataset_name, scaler):
         pass
     else:
         with pytest.raises(AssertionError):
-            pandas.testing.assert_frame_equal(train.x, train_scaled.x, check_dtype=False)
+            pandas.testing.assert_frame_equal(train.x, train_scaled.x, check_dtype=False)  # type: ignore[call-arg]
         with pytest.raises(AssertionError):
-            pandas.testing.assert_frame_equal(test.x, test_scaled.x, check_dtype=False)
+            pandas.testing.assert_frame_equal(test.x, test_scaled.x, check_dtype=False)  # type: ignore[call-arg]
 
     train_post, _ = scale_continuous(dataset, train_scaled, scaler2, inverse=True)
     test_post, _ = scale_continuous(dataset, test_scaled, scaler2, inverse=True)
 
-    pandas.testing.assert_frame_equal(train.x, train_post.x, check_dtype=False)
-    pandas.testing.assert_frame_equal(test.x, test_post.x, check_dtype=False)
+    pandas.testing.assert_frame_equal(train.x, train_post.x, check_dtype=False)  # type: ignore[call-arg]
+    pandas.testing.assert_frame_equal(test.x, test_post.x, check_dtype=False)  # type: ignore[call-arg]

@@ -261,7 +261,7 @@ def evaluate_models(
 
                     temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
 
-                    for postprocess in postprocess_models:
+                    for _ in postprocess_models:
                         # Post-processing has yet to be defined
                         # - leaving blank until we have an implementation to work with
                         pass

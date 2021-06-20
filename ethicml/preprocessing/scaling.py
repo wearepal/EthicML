@@ -1,8 +1,8 @@
 """Scale a dataset."""
 from typing import Tuple
+from typing_extensions import Protocol
 
 import pandas as pd
-from typing_extensions import Protocol
 
 from ethicml.data.dataset import Dataset
 from ethicml.utility import DataTuple

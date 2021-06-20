@@ -17,11 +17,11 @@ from typing import (
     Tuple,
     Union,
 )
+from typing_extensions import Final, Literal, TypeGuard
 
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_index_equal
-from typing_extensions import Final, Literal, TypeGuard
 
 __all__ = [
     "ActivationType",
@@ -186,7 +186,7 @@ class DataTuple(TestTuple):
         Returns:
             subset of training data
         """
-        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
 
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file."""
@@ -322,7 +322,7 @@ FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
 
 def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
     """Check whether a string conforms to a fairness type."""
-    return fair_str in ("DP", "EqOd", "EqOp")
+    return fair_str in {"DP", "EqOd", "EqOp"}
 
 
 ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
@@ -356,14 +356,13 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
-    if data_frame is not None:
-        # ensure correct index
-        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
-            return Results(data_frame.set_index(RESULTS_COLUMNS))
-        else:
-            return Results(data_frame)
-    else:
+    if data_frame is None:
         return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
+    # ensure correct index
+    if data_frame.index.names != RESULTS_COLUMNS:
+        return Results(data_frame.set_index(RESULTS_COLUMNS))
+    else:
+        return Results(data_frame)
 
 
 class ResultsAggregator:
@@ -380,7 +379,7 @@ class ResultsAggregator:
 
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object."""
-        if data_frame.index.names != RESULTS_COLUMNS:  # type: ignore[comparison-overlap]
+        if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
         # set sort=False so that the order of the columns is preserved

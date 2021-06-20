@@ -30,8 +30,8 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)  # type: ignore[call-overload]
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 
@@ -61,8 +61,8 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)  # type: ignore[call-overload]
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 
@@ -94,8 +94,8 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :]
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :]  # type: ignore[call-overload]
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 
