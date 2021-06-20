@@ -1,7 +1,6 @@
 """Class to describe attributes of the CelebA dataset."""
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-
 from typing_extensions import Final, Literal
 
 from ethicml import common

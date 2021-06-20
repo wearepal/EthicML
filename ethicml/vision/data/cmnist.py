@@ -6,13 +6,13 @@ but at test time the colour is random.
 
 import random
 from typing import Optional, Sequence, Tuple
+from typing_extensions import Literal
 
 import numpy as np
 import torch
 from torch.utils.data import ConcatDataset, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
-from typing_extensions import Literal
 
 from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
 from .label_dependent_transforms import LdColorizer

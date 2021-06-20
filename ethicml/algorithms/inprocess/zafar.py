@@ -4,9 +4,9 @@ from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, Union
+from typing_extensions import Final
 
 import pandas as pd
-from typing_extensions import Final
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, Prediction, TestTuple

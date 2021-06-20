@@ -1,7 +1,6 @@
 """Generated faces."""
 from pathlib import Path
 from typing import Optional, Tuple
-
 from typing_extensions import Literal
 
 from ..dataset import Dataset

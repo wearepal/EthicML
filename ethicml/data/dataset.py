@@ -2,9 +2,9 @@
 from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
+from typing_extensions import Literal
 
 import pandas as pd
-from typing_extensions import Literal
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot

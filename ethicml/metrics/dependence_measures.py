@@ -1,10 +1,10 @@
 """For assessing the Mutual Information between s and yhat."""
 from typing import ClassVar
+from typing_extensions import Literal
 
 import numpy as np
 from kit import implements
 from sklearn.metrics import normalized_mutual_info_score
-from typing_extensions import Literal
 
 from ethicml.utility import DataTuple, Prediction
 

@@ -2,13 +2,14 @@
 import itertools
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
+from typing_extensions import Literal
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+from matplotlib import figure, legend
 from sklearn.manifold import TSNE
-from typing_extensions import Literal
 
 from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
@@ -241,7 +242,7 @@ def single_plot(
     markersize: int = 6,
     alternating_style: bool = True,
     include_nan_entries: bool = False,
-) -> Union[None, Literal[False], mpl.legend.Legend]:
+) -> Union[None, Literal[False], legend.Legend]:
     """Provide the functionality of the individual plotting functions through a nice interface.
 
     This function can also be used to create figures with multiple plots on them, because it does
@@ -311,7 +312,7 @@ def plot_results(
     save: bool = True,
     dpi: int = 300,
     transforms_separately: bool = True,
-) -> List[Tuple[plt.Figure, plt.Axes]]:
+) -> List[Tuple[figure.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
     Args:
@@ -364,12 +365,12 @@ def plot_results(
     else:
         transforms = [None]
 
-    figure_list: List[Tuple[plt.Figure, plt.Axes]] = []
+    figure_list: List[Tuple[figure.Figure, plt.Axes]] = []
     for dataset in results.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
         for transform in transforms:
             for x_axis, y_axis in possible_pairs:
-                fig: plt.Figure
+                fig: figure.Figure
                 plot: plt.Axes
                 fig, plot = plt.subplots(dpi=dpi)
 

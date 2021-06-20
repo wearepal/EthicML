@@ -17,11 +17,11 @@ from typing import (
     Tuple,
     Union,
 )
+from typing_extensions import Final, Literal, TypeGuard
 
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_index_equal
-from typing_extensions import Final, Literal, TypeGuard
 
 __all__ = [
     "ActivationType",

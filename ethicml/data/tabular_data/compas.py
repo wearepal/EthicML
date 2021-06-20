@@ -1,6 +1,5 @@
 """Class to describe features of the Compas dataset."""
 from typing import Union
-
 from typing_extensions import Literal
 
 from ..dataset import Dataset

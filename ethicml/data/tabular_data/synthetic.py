@@ -1,7 +1,8 @@
 """Class to describe features of the Synthetic dataset."""
 
-from teext import PositiveInt
 from typing_extensions import Literal
+
+from teext import PositiveInt
 
 from ..dataset import Dataset
 from ..util import deprecated
