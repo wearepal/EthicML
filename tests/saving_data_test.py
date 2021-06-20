@@ -1,7 +1,7 @@
 """Test the saving data capability."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Final
+from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
