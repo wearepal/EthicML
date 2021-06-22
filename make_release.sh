@@ -27,14 +27,14 @@ if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   exit 2
 fi
 
-if [ $(git symbolic-ref --short -q HEAD) != "master" ]; then
-  echo "not on master branch"
+if [ $(git symbolic-ref --short -q HEAD) != "main" ]; then
+  echo "not on main branch"
   exit 3
 fi
 
 echo ""
 echo "######################################"
-echo "# ensure master branch is up-to-date #"
+echo "#  ensure main branch is up-to-date  #"
 echo "######################################"
 git pull
 
@@ -52,9 +52,9 @@ git pull
 
 echo ""
 echo "#######################################"
-echo "#   merge master into release branch  #"
+echo "#   merge main into release branch  #"
 echo "#######################################"
-git merge --no-ff master --no-edit
+git merge --no-ff main --no-edit
 
 # bump version
 poetry version $version_bump
@@ -92,9 +92,9 @@ poetry publish
 
 # clean up
 echo "#######################################"
-echo "#      go back to master branch       #"
+echo "#        go back to main branch       #"
 echo "#######################################"
-git checkout master
+git checkout main
 
 echo "#####################################################"
 echo "#               all done! now go to                 #"
