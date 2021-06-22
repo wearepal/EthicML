@@ -3,7 +3,7 @@ name: EthicML CI
 on:
   pull_request:
     branches:
-    - master
+    - main
     paths-ignore:
     - 'docs/**'
     - 'docsource/**'
