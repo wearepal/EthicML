@@ -1,3 +1,7 @@
+********
+Datasets
+********
+
 .. automodule:: ethicml.data
 
 .. contents::

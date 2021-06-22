@@ -1,7 +1,1 @@
-"""
-********
-Datasets
-********
-
-This module contains items related to data, such as raw csv's and data objects.
-"""
+"""This module contains items related to data, such as raw csv's and data objects."""

@@ -1,7 +1,1 @@
-"""
-**********
-Algorithms
-**********
-
-Definitions of algorithms.
-"""
+"""Definitions of algorithms."""
