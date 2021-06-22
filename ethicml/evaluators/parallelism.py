@@ -161,7 +161,7 @@ async def run_in_parallel(
             data=data,
             max_parallel=max_parallel,
         )
-    elif isinstance(algos[0], PreAlgorithm):
+    else:
         pre_algos = cast(Sequence[PreAlgorithm], algos)
         # Mypy complains in the next line because of https://github.com/python/mypy/issues/5374
         pre_async_algos, async_idx, pre_blocking_algos = _filter(

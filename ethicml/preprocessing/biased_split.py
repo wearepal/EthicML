@@ -3,6 +3,7 @@ from typing import Dict, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
+import teext as tx
 
 from ethicml.utility.data_structures import DataTuple, concat_dt
 
@@ -80,8 +81,8 @@ def get_biased_subset(
     Returns:
         biased and unbiased dataset
     """
-    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
-    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
+    assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
+    assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
 
@@ -184,8 +185,8 @@ def get_biased_and_debiased_subsets(
     Returns:
         biased and unbiased dataset
     """
-    assert 0 <= mixing_factor <= 1, f"mixing_factor: {mixing_factor}"
-    assert 0 <= unbiased_pcnt <= 1, f"unbiased_pcnt: {unbiased_pcnt}"
+    assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
+    assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
     s_name = data.s.columns[0]
     y_name = data.y.columns[0]
     sy_equal, sy_opposite = _get_sy_equal_and_opp(data, s_name, y_name)

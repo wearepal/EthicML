@@ -1143,11 +1143,14 @@ python-versions = "*"
 
 [[package]]
 name = "teext"
-version = "0.1.2"
+version = "0.1.3"
 description = "Typing extensions extensions"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
+
+[package.dependencies]
+typing-extensions = ">=3.10"
 
 [[package]]
 name = "terminado"
@@ -1376,7 +1379,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "torch", "torchvision"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "8384e0efe234129a9a64acd9c609a1aee32c3e675d805bf93cce00f08985f84c"
+content-hash = "b88e5b8fb799a20689bd42d1bb9c7b15de4a24b15aebaa90925f4939925f6237"
 
 [metadata.files]
 appdirs = [
@@ -2230,8 +2233,8 @@ snowballstemmer = [
     {file = "snowballstemmer-2.1.0.tar.gz", hash = "sha256:e997baa4f2e9139951b6f4c631bad912dfd3c792467e2f03d7239464af90e914"},
 ]
 teext = [
-    {file = "teext-0.1.2-py3-none-any.whl", hash = "sha256:4aac2f5819f542560a8bccc12db323f1729f2444b9242efc078139e1fbef4b72"},
-    {file = "teext-0.1.2.tar.gz", hash = "sha256:0d11dd2bb988e26287d94d0b32da48d57ed4241f9b917e6795b9c2b9046b4199"},
+    {file = "teext-0.1.3-py3-none-any.whl", hash = "sha256:976552c8c1fa00bab54360731177563df9297afda8f10795c1081675c8fefca9"},
+    {file = "teext-0.1.3.tar.gz", hash = "sha256:1e59d0b7f8bddbbdb13fb69b50c01edd170425f4a22bb9ebd510fa4a5dc5cc36"},
 ]
 terminado = [
     {file = "terminado-0.10.1-py3-none-any.whl", hash = "sha256:c89ace5bffd0e7268bdcf22526830eb787fd146ff9d78691a0528386f92b9ae3"},
