@@ -5,20 +5,8 @@ from typing_extensions import Literal
 import teext as tx
 
 from ..dataset import Dataset
-from ..util import deprecated
 
-__all__ = ["Synthetic", "synthetic"]
-
-
-@deprecated
-def Synthetic(  # pylint: disable=invalid-name
-    scenario: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
-    target: Literal[1, 2, 3] = 1,  # pylint: disable=bad-whitespace
-    fair: bool = False,
-    num_samples: int = 1_000,
-) -> Dataset:
-    """Dataset with synthetic scenario 1 data."""
-    return synthetic(scenario=scenario, target=target, fair=fair, num_samples=num_samples)
+__all__ = ["synthetic"]
 
 
 def synthetic(

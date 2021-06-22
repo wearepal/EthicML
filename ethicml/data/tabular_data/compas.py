@@ -3,17 +3,9 @@ from typing import Union
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, deprecated, flatten_dict, simple_spec
+from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
-
-
-@deprecated
-def Compas(  # pylint: disable=invalid-name
-    split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
-) -> Dataset:
-    """Get COMPAS (or ProPublica) dataset."""
-    return compas(split, discrete_only)
 
 
 def compas(
@@ -460,3 +452,6 @@ def compas(
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
     )
+
+
+Compas = compas  # for backwards compatibility

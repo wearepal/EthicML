@@ -142,13 +142,6 @@ def test_synth_data_shape(scenario, target, fair, samples):
     assert (samples, 1) == data.y.shape
 
 
-@pytest.mark.parametrize("dataset", [em.Adult, em.Compas, em.Toy])
-def test_deprecation_warning(dataset):
-    """Test loading data."""
-    with pytest.deprecated_call():  # assert that this gives a deprecation warning
-        data: DataTuple = dataset().load()
-
-
 def test_load_data_as_a_function(data_root: Path):
     """Test load data as a function."""
     data_loc = data_root / "toy.csv"
