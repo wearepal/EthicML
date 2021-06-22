@@ -41,30 +41,13 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import deprecated
 
-__all__ = ["Admissions", "admissions"]
+__all__ = ["admissions"]
 
 AdmissionsSplits = Literal["Gender"]
 
 
-@deprecated
-def Admissions(  # pylint: disable=invalid-name
-    split: AdmissionsSplits = "Gender",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
-    binarize_race: bool = False,
-) -> Dataset:
-    """UFRGS Admissions dataset."""
-    return admissions(split, discrete_only, binarize_nationality, binarize_race)
-
-
-def admissions(
-    split: AdmissionsSplits = "Gender",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
-    binarize_race: bool = False,
-) -> Dataset:
+def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) -> Dataset:
     """UFRGS Admissions dataset."""
     features = [
         "gender",

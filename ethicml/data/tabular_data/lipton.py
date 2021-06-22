@@ -1,15 +1,8 @@
 """Class to describe features of the Lipton dataset."""
 
 from ..dataset import Dataset
-from ..util import deprecated
 
-__all__ = ["Lipton", "lipton"]
-
-
-@deprecated
-def Lipton() -> Dataset:  # pylint: disable=invalid-name
-    """Dataset with toy data for testing."""
-    return lipton()
+__all__ = ["lipton"]
 
 
 def lipton() -> Dataset:

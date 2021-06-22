@@ -32,7 +32,7 @@ class VFAENetwork(nn.Module):
         z2_enc_size: List[int],
         z1_dec_size: List[int],
     ):
-        super(VFAENetwork, self).__init__()
+        super().__init__()
         torch.manual_seed(888)
 
         self.supervised = supervised

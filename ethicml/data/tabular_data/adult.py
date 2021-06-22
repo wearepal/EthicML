@@ -3,24 +3,13 @@ from typing import Union
 from typing_extensions import Literal
 
 from ..dataset import Dataset
-from ..util import LabelSpec, deprecated, flatten_dict, reduce_feature_group, simple_spec
+from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
 
 __all__ = ["Adult", "adult"]
 
 AdultSplits = Literal[
     "Sex", "Race", "Race-Binary", "Race-Sex", "Custom", "Nationality", "Education"
 ]
-
-
-@deprecated
-def Adult(  # pylint: disable=invalid-name
-    split: AdultSplits = "Sex",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
-    binarize_race: bool = False,
-) -> Dataset:
-    """UCI Adult dataset."""
-    return adult(split, discrete_only, binarize_nationality, binarize_race)
 
 
 def adult(
@@ -241,3 +230,6 @@ def adult(
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
     )
+
+
+Adult = adult  # for backwards compatibility
