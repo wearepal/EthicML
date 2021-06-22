@@ -1,3 +1,7 @@
+**********
+Algorithms
+**********
+
 .. automodule:: ethicml.algorithms
 
 .. contents::
@@ -8,6 +12,9 @@ Algorithms base
 ===============
 
 .. automodule:: ethicml.algorithms.algorithm_base
+
+Preprocess algorithms
+=====================
 
 .. automodule:: ethicml.algorithms.preprocess
 

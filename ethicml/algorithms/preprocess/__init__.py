@@ -1,6 +1,1 @@
-"""
-Preprocess algorithms
-=====================
-
-Pre-process algorithms take the training data and transform it.
-"""
+"""Pre-process algorithms take the training data and transform it."""
