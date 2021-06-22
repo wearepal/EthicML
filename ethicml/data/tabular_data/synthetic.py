@@ -2,7 +2,7 @@
 
 from typing_extensions import Literal
 
-from teext import PositiveInt
+import teext as tx
 
 from ..dataset import Dataset
 from ..util import deprecated
@@ -44,7 +44,7 @@ def synthetic(
     assert scenario in [1, 2, 3, 4]
     assert target in [1, 2, 3]
     assert num_samples <= 100_000
-    num_samples = PositiveInt(num_samples)
+    num_samples = tx.assert_positive_int(num_samples)
 
     return Dataset(
         name=f"Synthetic - Scenario {scenario}, target {target}" + (" fair" if fair else ""),
