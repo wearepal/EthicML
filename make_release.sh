@@ -12,7 +12,9 @@ case $version_bump in
     ;;
   *)
     echo "invalid version bump: \"$version_bump\""
-    echo "Usage: bash make_release.sh <version bump>"
+    echo "Usage:"
+    echo ""
+    echo "    bash make_release.sh <version bump>"
     echo ""
     echo "List of valid version bumps: patch, minor, major, prepatch, preminor, premajor, prerelease"
     exit 1
@@ -25,30 +27,34 @@ if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   exit 2
 fi
 
-if [ $(git symbolic-ref --short -q HEAD) != "master" ]; then
-  echo "not on master branch"
+if [ $(git symbolic-ref --short -q HEAD) != "main" ]; then
+  echo "not on main branch"
   exit 3
 fi
 
+echo ""
 echo "######################################"
-echo "# ensure master branch is up-to-date #"
+echo "#  ensure main branch is up-to-date  #"
 echo "######################################"
 git pull
 
+echo ""
 echo "######################################"
 echo "#       checkout release branch      #"
 echo "######################################"
 git checkout release
 
+echo ""
 echo "#######################################"
 echo "# ensure release branch is up-to-date #"
 echo "#######################################"
 git pull
 
+echo ""
 echo "#######################################"
-echo "#   merge master into release branch  #"
+echo "#   merge main into release branch  #"
 echo "#######################################"
-git merge --no-ff master --no-edit
+git merge --no-ff main --no-edit
 
 # bump version
 poetry version $version_bump
@@ -76,18 +82,19 @@ echo "#            do new build             #"
 echo "#######################################"
 poetry build
 
-# clean up
-echo "#######################################"
-echo "#      go back to master branch       #"
-echo "#######################################"
-git checkout master
-
+echo ""
 echo "#######################################"
 echo "#          publish package            #"
 echo "#######################################"
 # to use this, set up an API token with
 #  `poetry config pypi-token.pypi <api token>`
 poetry publish
+
+# clean up
+echo "#######################################"
+echo "#        go back to main branch       #"
+echo "#######################################"
+git checkout main
 
 echo "#####################################################"
 echo "#               all done! now go to                 #"

@@ -6,13 +6,13 @@ but at test time the colour is random.
 
 import random
 from typing import Optional, Sequence, Tuple
+from typing_extensions import Literal
 
 import numpy as np
 import torch
 from torch.utils.data import ConcatDataset, Subset
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
-from typing_extensions import Literal
 
 from .dataset_wrappers import DatasetWrapper, LdTransformedDataset
 from .label_dependent_transforms import LdColorizer
@@ -31,7 +31,7 @@ def _filter_classes(dataset: MNIST, classes_to_keep: Sequence[int]) -> Subset:
     for index, label in enumerate(classes_to_keep):
         mask = targets == label
         targets = np.where(mask, index, targets)
-        final_mask |= mask  # type: ignore[misc]
+        final_mask |= mask
     dataset.targets = targets
     inds = final_mask.nonzero()[0].tolist()
 

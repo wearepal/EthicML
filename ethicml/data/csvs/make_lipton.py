@@ -18,11 +18,11 @@ def main() -> None:
     hair_length_1 = 35 * rng.beta(2, 2, SAMPLES)
     hair_length = np.where(z == 1, hair_length_1, hair_length_0)
 
-    pois = rng.poisson((25 + 6 * z))  # type: ignore[operator]
+    pois = rng.poisson((25 + 6 * z))
     norm = rng.normal(20, 0.2, SAMPLES)
     work_experience = pois - norm
 
-    p = 1 / (1 + (np.exp(-(-25.5 + 2.5 * work_experience))))  # type: ignore[operator]
+    p = 1 / (1 + (np.exp(-(-25.5 + 2.5 * work_experience))))
 
     y = 2 * rng.binomial(1, p) - 1
 

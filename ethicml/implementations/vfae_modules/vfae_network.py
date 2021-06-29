@@ -32,7 +32,7 @@ class VFAENetwork(nn.Module):
         z2_enc_size: List[int],
         z1_dec_size: List[int],
     ):
-        super(VFAENetwork, self).__init__()
+        super().__init__()
         torch.manual_seed(888)
 
         self.supervised = supervised
@@ -61,9 +61,9 @@ class VFAENetwork(nn.Module):
         """Reparametrization trick - Leaving as a method to try and control reproducability."""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
-        return eps.mul(std).add_(mean)  # type: ignore[attr-defined]
+        return eps.mul(std).add_(mean)
 
-    def forward(  # type: ignore[override]
+    def forward(
         self, x: Tensor, s: Tensor, y: Tensor
     ) -> Tuple[
         Tuple[Tensor, Tensor, Tensor],
@@ -74,7 +74,6 @@ class VFAENetwork(nn.Module):
     ]:
         """Forward pass for network."""
         z1_mu, z1_logvar = self.encode_z1(x, s)
-        # z1 = F.sigmoid(reparameterize(z1_mu, z1_logvar))
         z1 = self.reparameterize(z1_mu, z1_logvar)
 
         z2_triplet: Optional[Tuple[Any, Any, Any]]
@@ -82,16 +81,13 @@ class VFAENetwork(nn.Module):
         y_pred: Optional[torch.Tensor]
         if self.supervised:
             z2_mu, z2_logvar = self.encode_z2(z1, y)
-            # z2 = F.sigmoid(reparameterize(z2_mu, z2_logvar))
             z2 = self.reparameterize(z2_mu, z2_logvar)
 
             z1_dec_mu, z1_dec_logvar = self.decode_z1(z2, y)
-            # z1_dec = F.sigmoid(reparameterize(z1_dec_mu, z1_dec_logvar))
             z1_dec = self.reparameterize(z1_dec_mu, z1_dec_logvar)
 
             x_dec = self.x_dec(z1_dec, s)
 
-            # y_pred_hl = self.yp_hl(z1)
             y_pred = torch.sigmoid(self.ypred(z1))
 
             z2_triplet = z2, z2_mu, z2_logvar

@@ -1,10 +1,10 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
 from typing import Dict, List, Optional, Tuple
+from typing_extensions import Literal
 
 import pandas as pd
 from kit import implements
-from typing_extensions import Literal
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 

@@ -1,15 +1,9 @@
 """Class to describe features of the Toy dataset."""
 
 from ..dataset import Dataset
-from ..util import deprecated, flatten_dict
+from ..util import flatten_dict
 
 __all__ = ["Toy", "toy"]
-
-
-@deprecated
-def Toy() -> Dataset:  # pylint: disable=invalid-name
-    """Dataset with toy data for testing."""
-    return toy()
 
 
 def toy() -> Dataset:
@@ -31,3 +25,6 @@ def toy() -> Dataset:
         discrete_only=False,
         discrete_feature_groups=disc_feature_groups,
     )
+
+
+Toy = toy  # for backwards compatibility

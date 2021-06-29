@@ -116,7 +116,6 @@ def train_model(
         prediction_loss, reconstruction_loss, kld_loss, mmd_loss = loss_tuple
         loss = kld_loss + reconstruction_loss + prediction_loss + mmd_loss
         loss.backward()
-        # KLD_loss = KLD1 + KLD2
         train_loss += loss.item()
         optimizer.step()
         if batch_idx % 100 == 0:

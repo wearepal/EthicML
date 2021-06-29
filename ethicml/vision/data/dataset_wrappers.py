@@ -1,11 +1,11 @@
 """Script containing dataset wrapping classes."""
 from typing import Any, Callable, Iterator, Optional, Sequence, Sized, Tuple, TypeVar, Union, cast
+from typing_extensions import Protocol
 
 import numpy as np
 import torch
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
-from typing_extensions import Protocol
 
 __all__ = ["DatasetWrapper", "LdTransformedDataset"]
 

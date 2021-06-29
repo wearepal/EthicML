@@ -3,7 +3,7 @@ name: EthicML CI
 on:
   pull_request:
     branches:
-    - master
+    - main
     paths-ignore:
     - 'docs/**'
     - 'docsource/**'
@@ -12,6 +12,7 @@ on:
     - .gitignore
     - CODEOWNERS
     - LICENSE
+    - make_release.sh
 
 jobs:
   test_with_pytest:

@@ -2,9 +2,9 @@
 from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
+from typing_extensions import Literal
 
 import pandas as pd
-from typing_extensions import Literal
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
@@ -216,7 +216,7 @@ class Dataset:
             return attributes, mask
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(0, index=range(len(attributes)))
+        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
 
         for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded

@@ -86,7 +86,7 @@ class CVResults:
 
     def best(self, measure: Metric) -> InAlgorithm:
         """Get best model."""
-        return self.model(**self.best_hyper_params(measure))  # type: ignore[call-arg]
+        return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
         """Get best result in top K entries.
@@ -160,9 +160,7 @@ class CrossValidator:
         """Run the cross validation experiments asynchronously."""
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
-        models = [
-            self.model(**experiment) for experiment in self.experiments  # type: ignore[call-arg]
-        ]
+        models = [self.model(**experiment) for experiment in self.experiments]
         # create all folds
         data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
         # convert to right format
@@ -183,7 +181,7 @@ class CrossValidator:
             # run the models one by one and *immediately* report the scores on the measures
             for experiment in self.experiments:
                 # instantiate model and run it
-                model = self.model(**experiment)  # type: ignore[call-arg]
+                model = self.model(**experiment)
                 preds = model.run(train_fold, val)
                 scores = compute_scores_and_append(experiment, preds, val, i)
                 score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())

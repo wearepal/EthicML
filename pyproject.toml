@@ -22,16 +22,16 @@ repository="https://github.com/predictive-analytics-lab/EthicML"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
-GitPython = "^2.1.11"
+GitPython = "^3.1"
 matplotlib = ">=3.0.2"
 numpy = ">=1.20.1"
-palkit = ">=0.1.7"
+palkit = ">=0.1.10"
 pandas = "^1.0"
 pipenv = ">=2018.11.26"
 Pillow = "^8.1.2"
 scikit-learn = ">=0.20.1"
 seaborn = ">=0.9.0"
-teext = "^0.1.2"
+teext = "^0.1.3"
 tqdm = ">=4.31.1"
 typed-argument-parser = "1.4"
 typing-extensions = ">=3.7.2"
@@ -40,6 +40,8 @@ pytest = { version = "^6.0.0", optional = true }
 pytest-cov = { version = "^2.6.0", optional = true }
 torch = { version = "^1.8", optional = true }
 torchvision = { version = "^0.9.0", optional = true }
+gitdb2 = "4.0.2"
+smmap2 = "3.0.1"
 
 [tool.poetry.extras]
 ci = ["fairlearn","pytest","pytest-cov","torch","torchvision"]
@@ -49,7 +51,7 @@ all= ["fairlearn"]
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
 isort = "5.5.4"
-mypy = "^0.812"
+mypy = ">=0.900"
 pre-commit = "^2.11.1"
 pydocstyle = "^6.0.0"
 pylint = "^2.7.4"
@@ -101,10 +103,53 @@ exclude = '''
 skip-string-normalization = true
 
 [tool.isort]
-known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm", "typing_extensions"]
+known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "torchvision", "tqdm"]
+extra_standard_library = ["typing_extensions"]
 profile = "black"
 line_length = 100
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = "3.7"
+no_implicit_optional = true
+allow_redefinition = true
+strict_equality = true
+check_untyped_defs = true
+warn_unreachable = true
+#disallow_any_unimported = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+show_error_codes = true
+warn_unused_ignores = true
+
+# ===== the following modules in EthicML aren't ready to be type checked so strictly =====
+[[tool.mypy.overrides]]
+module = ["tests.*", "ethicml.implementations.*", "ethicml.algorithms.inprocess.fair_gpyt"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+# ========== imports that don't have types ===========
+
+[[tool.mypy.overrides]]
+module = [
+    "black.*",
+    "fairlearn.*",
+    "git",
+    "imageio",
+    "matplotlib.*",
+    "pandas.testing",
+    "PIL",
+    "pylint.*",
+    "pytest.*",
+    "scipy.*",
+    "setuptools.*",
+    "sklearn.*",
+    "seaborn",
+    "torch.*",
+    "torchvision.*",
+    "tqdm.*"
+]
+ignore_missing_imports = true

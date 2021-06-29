@@ -1,12 +1,15 @@
 """Test the saving data capability."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
 import pytest
 
 from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple, run_blocking
+
+NPZ: Final[str] = "test.npz"
 
 
 def test_simple_saving() -> None:
@@ -47,16 +50,16 @@ def test_simple_saving() -> None:
 def test_predictions_loaded(temp_dir) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]))
-    preds.to_npz(temp_dir / "test.npz")
-    loaded = Prediction.from_npz(temp_dir / "test.npz")
+    preds.to_npz(temp_dir / NPZ)
+    loaded = Prediction.from_npz(temp_dir / NPZ)
     pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
 
 
 def test_predictions_info_loaded(temp_dir) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
-    preds.to_npz(temp_dir / "test.npz")
-    loaded = Prediction.from_npz(temp_dir / "test.npz")
+    preds.to_npz(temp_dir / NPZ)
+    loaded = Prediction.from_npz(temp_dir / NPZ)
     pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
     assert preds.info == loaded.info
 
@@ -65,7 +68,7 @@ def test_predictions_info_loaded_bad(temp_dir) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})  # type: ignore
     with pytest.raises(AssertionError):
-        preds.to_npz(temp_dir / "test.npz")
+        preds.to_npz(temp_dir / NPZ)
 
 
 def test_dataset_name_none() -> None:
