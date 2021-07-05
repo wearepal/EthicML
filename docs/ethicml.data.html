@@ -239,7 +239,7 @@
 <td><p>Data structure that holds all the information needed to load a given dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FeatureSplit</span></code></a>(**kwargs)</p></td>
-<td><p></p></td>
+<td><p>A dictionary of the list of columns that belong to the feature groups.</p></td>
 </tr>
 </tbody>
 </table>
@@ -344,13 +344,13 @@ those.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset.load" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
-<li><p><strong>keep_labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -383,6 +383,7 @@ then the continuous.</p>
 <dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FeatureSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>A dictionary of the list of columns that belong to the feature groups.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.__len__" title="Permalink to this definition">¶</a></dt>

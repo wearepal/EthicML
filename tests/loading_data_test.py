@@ -447,7 +447,7 @@ def test_celeba_all_attributes():
     """Test celeba with all attributes loaded into `data.x`."""
     celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
     assert celeba_data is not None
-    data = celeba_data.load(keep_labels_as_features=True)
+    data = celeba_data.load(labels_as_features=True)
 
     assert celeba_data.name == "CelebA, s=Male, y=Smiling"
 

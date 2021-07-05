@@ -147,12 +147,12 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(self, ordered: bool = False, keep_labels_as_features: bool = False) -> DataTuple:
+    def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
             ordered: if True, return features such that discrete come first, then continuous
-            keep_labels_as_features: if True, the s and y labels are included in the x features
+            labels_as_features: if True, the s and y labels are included in the x features
 
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
@@ -161,7 +161,7 @@ class Dataset:
         assert isinstance(dataframe, pd.DataFrame)
 
         feature_split = self.feature_split if not ordered else self.ordered_features
-        if keep_labels_as_features:
+        if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:
             feature_split_x = feature_split["x"]
