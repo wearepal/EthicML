@@ -8,7 +8,7 @@ from ethicml import common
 from ..dataset import Dataset
 from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 
-__all__ = ["CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
+__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
 
 
 CelebAttrs = Literal[
@@ -54,7 +54,8 @@ CelebAttrs = Literal[
     "Young",
 ]
 
-_BASE_FOLDER: Final = "celeba"
+CELEBA_BASE_FOLDER: Final = "celeba"
+"""The data is downloaded to `download_dir` / `CELEBA_BASE_FOLDER`."""
 
 CELEBA_FILE_LIST: Final = [
     (
@@ -73,6 +74,7 @@ CELEBA_FILE_LIST: Final = [
         "list_eval_partition.txt",
     ),
 ]
+"""Google drive IDs, MD5 hashes and filenames for the CelebA files."""
 
 
 def celeba(
@@ -132,7 +134,7 @@ def celeba(
     assert label in discrete_features
     continuous_features = ["filename"]
 
-    base = root / _BASE_FOLDER
+    base = root / CELEBA_BASE_FOLDER
     img_dir = base / "img_align_celeba"
     if download:
         _download(base)
