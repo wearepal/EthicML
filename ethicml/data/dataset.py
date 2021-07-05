@@ -20,6 +20,8 @@ __all__ = ["Dataset", "FeatureSplit"]
 
 
 class FeatureSplit(TypedDict):
+    """A dictionary of the list of columns that belong to the feature groups."""
+
     x: List[str]
     s: List[str]
     y: List[str]
