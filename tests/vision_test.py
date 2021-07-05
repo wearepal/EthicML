@@ -29,7 +29,6 @@ def test_label_dependent_transforms(transform):
     colorizer(data, labels)
 
 
-@pytest.mark.slow
 def test_celeba():
     """Test celeba."""
     train_set = emvi.create_celeba_dataset(
@@ -83,7 +82,6 @@ def test_celeba():
     assert torch.equal(tmp_smiling, train_set.s)
 
 
-@pytest.mark.slow
 def test_celeba_multi_s():
     """Test celeba."""
     data = emvi.create_celeba_dataset(
@@ -103,7 +101,6 @@ def test_celeba_multi_s():
     assert isinstance(data, emvi.TorchImageDataset)
 
 
-@pytest.mark.slow
 def test_gen_faces():
     """Test gen faces."""
     train_set = emvi.create_genfaces_dataset(

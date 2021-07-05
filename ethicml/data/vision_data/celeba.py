@@ -8,7 +8,7 @@ from ethicml import common
 from ..dataset import Dataset
 from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 
-__all__ = ["CelebAttrs", "celeba"]
+__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
 
 
 CelebAttrs = Literal[
@@ -54,9 +54,10 @@ CelebAttrs = Literal[
     "Young",
 ]
 
-_BASE_FOLDER: Final = "celeba"
+CELEBA_BASE_FOLDER: Final = "celeba"
+"""The data is downloaded to `download_dir` / `CELEBA_BASE_FOLDER`."""
 
-_FILE_LIST: Final = [
+CELEBA_FILE_LIST: Final = [
     (
         "1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR",  # File ID
         "00d2c5bc6d35e252742224ab0c1e8fcb",  # MD5 Hash
@@ -73,6 +74,7 @@ _FILE_LIST: Final = [
         "list_eval_partition.txt",
     ),
 ]
+"""Google drive IDs, MD5 hashes and filenames for the CelebA files."""
 
 
 def celeba(
@@ -132,7 +134,7 @@ def celeba(
     assert label in discrete_features
     continuous_features = ["filename"]
 
-    base = root / _BASE_FOLDER
+    base = root / CELEBA_BASE_FOLDER
     img_dir = base / "img_align_celeba"
     if download:
         _download(base)
@@ -161,7 +163,7 @@ def _check_integrity(base: Path) -> bool:
         raise RuntimeError("Need torchvision to download data.")
     from torchvision.datasets.utils import check_integrity
 
-    for (_, md5, filename) in _FILE_LIST:
+    for (_, md5, filename) in CELEBA_FILE_LIST:
         fpath = base / filename
         ext = fpath.suffix
         # Allow original archive to be deleted (zip and 7z)
@@ -185,7 +187,7 @@ def _download(base: Path) -> None:
         print("Files already downloaded and verified")
         return
 
-    for (file_id, md5, filename) in _FILE_LIST:
+    for (file_id, md5, filename) in CELEBA_FILE_LIST:
         download_file_from_google_drive(file_id, str(base), filename, md5)
 
     with zipfile.ZipFile(base / "img_align_celeba.zip", "r") as fhandle:
