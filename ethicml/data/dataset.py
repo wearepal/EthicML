@@ -2,7 +2,7 @@
 from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
-from typing_extensions import Literal
+from typing_extensions import Literal, TypedDict
 
 import pandas as pd
 
@@ -16,7 +16,13 @@ from .util import (
     label_spec_to_feature_list,
 )
 
-__all__ = ["Dataset"]
+__all__ = ["Dataset", "FeatureSplit"]
+
+
+class FeatureSplit(TypedDict):
+    x: List[str]
+    s: List[str]
+    y: List[str]
 
 
 @dataclass
@@ -87,7 +93,7 @@ class Dataset:
         return to_remove
 
     @property
-    def ordered_features(self) -> Dict[str, List[str]]:
+    def ordered_features(self) -> FeatureSplit:
         """Return an order features dictionary.
 
         This should have separate entries for the features, the labels and the
@@ -102,7 +108,7 @@ class Dataset:
         }
 
     @property
-    def feature_split(self) -> Dict[str, List[str]]:
+    def feature_split(self) -> FeatureSplit:
         """Return a feature split dictionary.
 
         This should have separate entries for the features, the labels and the sensitive attributes.
@@ -139,11 +145,12 @@ class Dataset:
         """Number of elements in the dataset."""
         return self.num_samples
 
-    def load(self, ordered: bool = False) -> DataTuple:
+    def load(self, ordered: bool = False, keep_labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
         Args:
             ordered: if True, return features such that discrete come first, then continuous
+            keep_labels_as_features: if True, the s and y labels are included in the x features
 
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
@@ -152,15 +159,17 @@ class Dataset:
         assert isinstance(dataframe, pd.DataFrame)
 
         feature_split = self.feature_split if not ordered else self.ordered_features
-        feature_split_x = feature_split["x"]
+        if keep_labels_as_features:
+            feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
+        else:
+            feature_split_x = feature_split["x"]
 
         # =========================================================================================
         # Check whether we have to generate some complementary columns for binary features.
         # This happens when we have for example several races: race-asian-pac-islander etc, but we
         # want to have a an attribute called "race_other" that summarizes them all. Now the problem
-        # is that this cannot be done in the before this point, because only here have we actually
-        # loaded the data. So, we have to do it here, with all the information we can piece
-        # together.
+        # is that this cannot be done before this point, because only here have we actually loaded
+        # the data. So, we have to do it here, with all the information we can piece together.
 
         disc_feature_groups = self.discrete_feature_groups
         if disc_feature_groups is not None:
@@ -192,6 +201,7 @@ class Dataset:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
+        # the following operations remove rows if a label group is not properly one-hot encoded
         s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)

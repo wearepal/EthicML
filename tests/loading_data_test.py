@@ -443,6 +443,23 @@ def test_celeba():
     assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
+def test_celeba_all_attributes():
+    """Test celeba with all attributes loaded into `data.x`."""
+    celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
+    assert celeba_data is not None
+    data = celeba_data.load(keep_labels_as_features=True)
+
+    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
+
+    assert (202599, 41) == data.x.shape
+    assert (202599, 1) == data.s.shape
+    assert (202599, 1) == data.y.shape
+    assert "Male" in data.x.columns
+    assert "Smiling" in data.x.columns
+
+    assert data.x["filename"].iloc[0] == "000001.jpg"
+
+
 def test_celeba_multi_s():
     """Test celeba w/ multi S."""
     sens_spec = dict(em.simple_spec({"Age": ["Young"], "Gender": ["Male"]}))
