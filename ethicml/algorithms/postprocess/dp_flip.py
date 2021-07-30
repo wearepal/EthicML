@@ -46,7 +46,7 @@ class DPFlip(PostAlgorithm):
         idx_s_y = _y.index & _s.index
         rng = np.random.RandomState(888)
         idxs = [i for i in rng.permutation(idx_s_y)]
-        preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})
+        preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
         return preds
 
     def _fit(self, test: TestTuple, preds: Prediction) -> Tuple[int, int]:

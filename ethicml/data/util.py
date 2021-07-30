@@ -2,7 +2,7 @@
 import functools
 import warnings
 from itertools import groupby
-from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
+from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Sequence, TypeVar
 
 __all__ = [
     "LabelGroup",
@@ -18,14 +18,14 @@ __all__ = [
 _F = TypeVar("_F", bound=Callable[..., Any])
 
 
-def deprecated(func: _F) -> _F:
+def deprecated(func: _F) -> Any:
     """This is a decorator which can be used to mark functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
     """
 
     @functools.wraps(func)
-    def new_func(*args: Any, **kwargs: Any) -> Callable:
+    def new_func(*args: Any, **kwargs: Any) -> Any:
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
             f"The {func.__name__} class is deprecated. "
@@ -109,8 +109,10 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     return feature_slices
 
 
-def flatten_dict(dictionary: Mapping[str, List[str]]) -> List[str]:
+def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
+    if dictionary is None:
+        return []
     return [x for inner_list in dictionary.values() for x in inner_list]
 
 

@@ -74,7 +74,7 @@ def run_metrics(
         diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute
     """
     result: Dict[str, float] = {}
-    if predictions.hard.isna().any(axis=None):
+    if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
         return {"algorithm_failed": 1.0}
     for metric in metrics:
         result[metric.name] = metric.score(predictions, actual)

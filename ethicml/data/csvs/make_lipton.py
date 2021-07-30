@@ -14,13 +14,13 @@ def main() -> None:
 
     z = rng.binomial(1, 0.5, SAMPLES)
 
-    hair_length_0 = 35 * rng.beta(2, 7, SAMPLES)
-    hair_length_1 = 35 * rng.beta(2, 2, SAMPLES)
+    hair_length_0: np.ndarray = 35 * rng.beta(2, 7, SAMPLES)
+    hair_length_1: np.ndarray = 35 * rng.beta(2, 2, SAMPLES)
     hair_length = np.where(z == 1, hair_length_1, hair_length_0)
 
     pois = rng.poisson((25 + 6 * z))
     norm = rng.normal(20, 0.2, SAMPLES)
-    work_experience = pois - norm
+    work_experience: np.ndarray = pois - norm
 
     p = 1 / (1 + (np.exp(-(-25.5 + 2.5 * work_experience))))
 

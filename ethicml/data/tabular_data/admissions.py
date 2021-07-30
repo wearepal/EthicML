@@ -41,6 +41,7 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 from typing_extensions import Literal
 
 from ..dataset import Dataset
+from ..util import flatten_dict
 
 __all__ = ["admissions"]
 
@@ -49,19 +50,8 @@ AdmissionsSplits = Literal["Gender"]
 
 def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) -> Dataset:
     """UFRGS Admissions dataset."""
-    features = [
-        "gender",
-        "physics",
-        "biology",
-        "history",
-        "language",
-        "geography",
-        "literature",
-        "essay",
-        "math",
-        "chemistry",
-        "gpa",
-    ]
+    disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}
+    discrete_features = flatten_dict(disc_feature_groups)
 
     continuous_features = [
         "physics",
@@ -88,7 +78,7 @@ def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) 
     return Dataset(
         name=name,
         num_samples=43_303,
-        features=features,
+        features=discrete_features + continuous_features,
         cont_features=continuous_features,
         sens_attr_spec=sens_attr_spec,
         class_label_spec=class_label_spec,
@@ -96,4 +86,5 @@ def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) 
         s_prefix=s_prefix,
         class_label_prefix=class_label_prefix,
         discrete_only=discrete_only,
+        discrete_feature_groups=disc_feature_groups,
     )

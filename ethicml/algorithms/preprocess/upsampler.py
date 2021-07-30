@@ -140,7 +140,7 @@ def upsample(
 
             weight = all_data.loc[s_y_mask][y_col].count()
             selected.append(
-                all_data.loc[s_y_mask]
+                all_data.loc[s_y_mask]  # type: ignore[call-overload]
                 .sort_values(by=["preds"], ascending=ascending)
                 .iloc[: int(percentages[key] * weight)]
             )

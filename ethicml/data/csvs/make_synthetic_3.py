@@ -54,8 +54,8 @@ def main() -> None:
     y_1f = np.random.binomial(1, sigmoid(x_1f))
     y_2 = np.random.binomial(1, sigmoid(x_2))
     y_2f = y_2
-    p = x_1 + x_2
-    pf = x_1f + x_2f
+    p: np.ndarray = x_1 + x_2
+    pf: np.ndarray = x_1f + x_2f
     y_3 = np.random.binomial(1, sigmoid(p + 0.5 * (s * 2 - 1)))
     y_3f = np.random.binomial(1, sigmoid(pf))
 
