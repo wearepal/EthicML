@@ -47,16 +47,21 @@ class Dataset:
     discrete_only: bool
     s_prefix: Sequence[str] = field(default_factory=list)
     class_label_prefix: Sequence[str] = field(default_factory=list)
-    discrete_feature_groups: Optional[Dict[str, List[str]]] = None
+    discrete_feature_groups: InitVar[Optional[Dict[str, List[str]]]] = None
     discard_non_one_hot: bool = False
     map_to_binary: bool = False
 
     _raw_file_name_or_path: Union[str, Path] = field(init=False)
     _cont_features_unfiltered: Sequence[str] = field(init=False)
+    _discrete_feature_groups: Optional[Dict[str, List[str]]] = field(init=False)
 
     def __post_init__(
-        self, filename_or_path: Union[str, Path], cont_features: Sequence[str]
+        self,
+        filename_or_path: Union[str, Path],
+        cont_features: Sequence[str],
+        discrete_feature_groups: Optional[Dict[str, List[str]]],
     ) -> None:
+        self._discrete_feature_groups = discrete_feature_groups
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = cont_features
 
@@ -138,9 +143,9 @@ class Dataset:
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
         """Dictionary of feature groups."""
-        if self.discrete_feature_groups is None:
+        if self._discrete_feature_groups is None:
             return None
-        dfgs = self.discrete_feature_groups
+        dfgs = self._discrete_feature_groups
         return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
 
     def __len__(self) -> int:
@@ -173,7 +178,7 @@ class Dataset:
         # is that this cannot be done before this point, because only here have we actually loaded
         # the data. So, we have to do it here, with all the information we can piece together.
 
-        disc_feature_groups = self.discrete_feature_groups
+        disc_feature_groups = self._discrete_feature_groups
         if disc_feature_groups is not None:
             for group in disc_feature_groups.values():
                 if len(group) == 1:

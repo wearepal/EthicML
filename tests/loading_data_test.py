@@ -7,6 +7,7 @@ import pytest
 
 import ethicml as em
 from ethicml import DataTuple
+from ethicml.data.util import flatten_dict
 
 
 def test_can_load_test_data(data_root: Path):
@@ -63,12 +64,12 @@ def test_can_load_test_data(data_root: Path):
         (em.compas(split="Sex"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
         (em.compas(split="Race"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Race"),
         (em.compas(split="Race-Sex"), 6_167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex"),
-        (em.credit(), 30_000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
-        (em.credit(split="Sex"), 30_000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (em.credit(), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
+        (em.credit(split="Sex"), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
         (em.crime(), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
         (em.crime(split="Race-Binary"), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
-        (em.german(), 1_000, 57, 50, 1, 2, 1, 2, "German Sex"),
-        (em.german(split="Sex"), 1_000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (em.german(), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
+        (em.german(split="Sex"), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
         (em.health(), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
         (em.health(split="Sex"), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
         (em.lipton(), 2_000, 2, 0, 1, 2, 1, 2, "Lipton"),
@@ -110,6 +111,10 @@ def test_data_shape(
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
+
+    assert (
+        len(flatten_dict(dataset.disc_feature_groups)) + len(dataset.continuous_features)
+    ) == len(data.x.columns)
 
 
 @pytest.mark.parametrize("fair", [False, True])
