@@ -41,7 +41,7 @@ def test_plot_tsne(toy_train_test: TrainTestPair):
 def test_plot_no_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
     train, _ = toy_train_test
-    train = DataTuple(x=train.x[train.x.columns[:2]], s=train.s, y=train.y)
+    train = DataTuple(x=train.x[train.x.columns[:2]], s=train.s, y=train.y)  # type: ignore[call-arg,arg-type]
     save_2d_plot(train, "./plots/test.png")
 
 
@@ -86,7 +86,7 @@ def test_plot_evals():
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410
     assert results["seed"][6] == results["seed"][7] == results["seed"][8] == 4820
 
-    figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]
+    figs_and_plots: List[Tuple[plt.Figure, plt.Axes]]  # type: ignore[name-defined]
 
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())

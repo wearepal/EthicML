@@ -864,7 +864,7 @@ tests = ["pytest (<5.0)", "pytest-timeout", "pytest-xdist (<2.0)", "flaky", "moc
 
 [[package]]
 name = "platformdirs"
-version = "2.1.0"
+version = "2.2.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "main"
 optional = false
@@ -1052,6 +1052,21 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+name = "python-type-stubs"
+version = "0.1.0.dev0"
+description = "A set of type stubs for popular Python packages."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+develop = false
+
+[package.source]
+type = "git"
+url = "https://github.com/predictive-analytics-lab/python-type-stubs.git"
+reference = "main"
+resolved_reference = "306b657debe8b29d516dcbe249eaa0b5eeab641f"
 
 [[package]]
 name = "pytz"
@@ -1438,7 +1453,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "torch", "torchvision"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4.0"
-content-hash = "11165f9f0b93ba7463c833558e895b988ce80fbb0de25f2fe1a75b27080ddd10"
+content-hash = "c7e644f571adc6112160e45c88015129143fc4a0722f64c5c85103c0a5fdb29a"
 
 [metadata.files]
 appdirs = [
@@ -2076,8 +2091,8 @@ pipenv = [
     {file = "pipenv-2021.5.29.tar.gz", hash = "sha256:05958fadcd70b2de6a27542fcd2bd72dd5c59c6d35307fdac3e06361fb06e30e"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.1.0-py3-none-any.whl", hash = "sha256:b2b30ae52404f93e2024e85bba29329b85715d6b2f18ffe90ecd25a5c67553df"},
-    {file = "platformdirs-2.1.0.tar.gz", hash = "sha256:1964be5aba107a7ccb7de0e6f1f1bfde0dee51641f0e733028121f8e02e2e16b"},
+    {file = "platformdirs-2.2.0-py3-none-any.whl", hash = "sha256:4666d822218db6a262bdfdc9c39d21f23b4cfdb08af331a81e92751daf6c866c"},
+    {file = "platformdirs-2.2.0.tar.gz", hash = "sha256:632daad3ab546bd8e6af0537d09805cec458dce201bccfe23012df73332e181e"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
@@ -2158,6 +2173,7 @@ python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
+python-type-stubs = []
 pytz = [
     {file = "pytz-2021.1-py2.py3-none-any.whl", hash = "sha256:eb10ce3e7736052ed3623d49975ce333bcd712c7bb19a58b9e2089d4057d0798"},
     {file = "pytz-2021.1.tar.gz", hash = "sha256:83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da"},

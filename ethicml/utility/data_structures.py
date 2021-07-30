@@ -429,4 +429,4 @@ def aggregate_results(
     results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
-    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
+    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]

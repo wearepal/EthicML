@@ -445,7 +445,7 @@ def test_celeba():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_celeba_all_attributes():
@@ -462,7 +462,7 @@ def test_celeba_all_attributes():
     assert "Male" in data.x.columns
     assert "Smiling" in data.x.columns
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_celeba_multi_s():
@@ -483,7 +483,7 @@ def test_celeba_multi_s():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 @pytest.mark.usefixtures("simulate_no_torch")
@@ -508,7 +508,7 @@ def test_genfaces():
     assert (148285, 1) == data.y.shape
     assert len(data) == len(gen_faces)
 
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_genfaces_multi_s():
@@ -530,7 +530,7 @@ def test_genfaces_multi_s():
     assert (148_285 - incomplete_entries, 1) == data.y.shape
     assert len(data) == len(gen_faces) - incomplete_entries
 
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_expand_s():
@@ -557,12 +557,12 @@ def test_expand_s():
         [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
         columns=["Blue", "Green", "Pink"],
     )
-    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")  # type: ignore[arg-type]
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
-        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df  # type: ignore[arg-type]
     )
 
 

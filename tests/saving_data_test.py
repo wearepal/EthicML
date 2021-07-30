@@ -44,7 +44,9 @@ def test_simple_saving() -> None:
             return ["-c", "pass"]
 
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
-    pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
+    pd.testing.assert_series_equal(  # type: ignore[call-arg]
+        data_tuple.x["a1"], data_x.hard, check_names=False
+    )  # tyoe: ignore[call-arg]
 
 
 def test_predictions_loaded(temp_dir) -> None:
@@ -52,7 +54,7 @@ def test_predictions_loaded(temp_dir) -> None:
     preds = Prediction(hard=pd.Series([1]))
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
 
 
 def test_predictions_info_loaded(temp_dir) -> None:
@@ -60,7 +62,7 @@ def test_predictions_info_loaded(temp_dir) -> None:
     preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
     assert preds.info == loaded.info
 
 

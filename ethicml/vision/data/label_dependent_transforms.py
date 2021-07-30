@@ -74,7 +74,7 @@ class LdColorizer(LdTransformation):
         super(LdColorizer, self).__init__()
         self.min_val = min_val
         self.max_val = max_val
-        self.scale = scale * np.eye(3)
+        self.scale: np.ndarray = scale * np.eye(3)
         self.binarize = binarize
         self.background = background
         self.black = black

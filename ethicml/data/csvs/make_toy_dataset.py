@@ -11,11 +11,11 @@ def main(seed: int, samples: int) -> None:
     np.random.seed(seed)
     random.seed(seed)
 
-    feat1_g1 = np.random.randn(samples // 2) - 0.1
-    feat1_g2 = np.random.randn(samples // 2) + 0.5
+    feat1_g1: np.ndarray = np.random.randn(samples // 2) - 0.1
+    feat1_g2: np.ndarray = np.random.randn(samples // 2) + 0.5
 
-    feat2_g1 = np.random.randn(samples // 2) * 0.9
-    feat2_g2 = np.random.randn(samples // 2) * 1.1
+    feat2_g1: np.ndarray = np.random.randn(samples // 2) * 0.9
+    feat2_g2: np.ndarray = np.random.randn(samples // 2) * 1.1
 
     disc_1 = np.random.choice(['a', 'b', 'c', 'd', 'e'], [samples], replace=True)
     disc_2 = np.random.choice(['x', 'y', 'z'], [samples], replace=True)
