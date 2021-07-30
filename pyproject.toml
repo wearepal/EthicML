@@ -57,6 +57,7 @@ pydocstyle = "^6.0.0"
 pylint = "^2.7.4"
 pytest = "^6.2.2"
 pytest-cov = "^2.11.1"
+python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", branch = "main"}
 
 
 [tool.black]
@@ -153,3 +154,11 @@ module = [
     "tqdm.*"
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "kit.*",
+    "pytest.*",
+]
+follow_imports = "skip"
+follow_imports_for_stubs = true

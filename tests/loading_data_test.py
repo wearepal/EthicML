@@ -7,6 +7,7 @@ import pytest
 
 import ethicml as em
 from ethicml import DataTuple
+from ethicml.data.util import flatten_dict
 
 
 def test_can_load_test_data(data_root: Path):
@@ -63,12 +64,12 @@ def test_can_load_test_data(data_root: Path):
         (em.compas(split="Sex"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
         (em.compas(split="Race"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Race"),
         (em.compas(split="Race-Sex"), 6_167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex"),
-        (em.credit(), 30_000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
-        (em.credit(split="Sex"), 30_000, 26, 6, 1, 2, 1, 2, "Credit Sex"),
+        (em.credit(), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
+        (em.credit(split="Sex"), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
         (em.crime(), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
         (em.crime(split="Race-Binary"), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
-        (em.german(), 1_000, 57, 50, 1, 2, 1, 2, "German Sex"),
-        (em.german(split="Sex"), 1_000, 57, 50, 1, 2, 1, 2, "German Sex"),
+        (em.german(), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
+        (em.german(split="Sex"), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
         (em.health(), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
         (em.health(split="Sex"), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
         (em.lipton(), 2_000, 2, 0, 1, 2, 1, 2, "Lipton"),
@@ -110,6 +111,10 @@ def test_data_shape(
     assert (samples, x_features) == data.x.shape
     assert (samples, s_features) == data.s.shape
     assert (samples, y_features) == data.y.shape
+
+    assert (
+        len(flatten_dict(dataset.disc_feature_groups)) + len(dataset.continuous_features)
+    ) == len(data.x.columns)
 
 
 @pytest.mark.parametrize("fair", [False, True])
@@ -440,7 +445,7 @@ def test_celeba():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_celeba_all_attributes():
@@ -457,7 +462,7 @@ def test_celeba_all_attributes():
     assert "Male" in data.x.columns
     assert "Smiling" in data.x.columns
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_celeba_multi_s():
@@ -478,7 +483,7 @@ def test_celeba_multi_s():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"
+    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
 
 
 @pytest.mark.usefixtures("simulate_no_torch")
@@ -503,7 +508,7 @@ def test_genfaces():
     assert (148285, 1) == data.y.shape
     assert len(data) == len(gen_faces)
 
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_genfaces_multi_s():
@@ -525,7 +530,7 @@ def test_genfaces_multi_s():
     assert (148_285 - incomplete_entries, 1) == data.y.shape
     assert len(data) == len(gen_faces) - incomplete_entries
 
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_expand_s():
@@ -552,12 +557,12 @@ def test_expand_s():
         [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
         columns=["Blue", "Green", "Pink"],
     )
-    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")  # type: ignore[arg-type]
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
-        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df  # type: ignore[arg-type]
     )
 
 
