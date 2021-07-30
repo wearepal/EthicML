@@ -46,7 +46,7 @@ def test_simple_saving() -> None:
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_series_equal(  # type: ignore[call-arg]
         data_tuple.x["a1"], data_x.hard, check_names=False
-    )  # tyoe: ignore[call-arg]
+    )  # type: ignore[call-arg]
 
 
 def test_predictions_loaded(temp_dir) -> None:
