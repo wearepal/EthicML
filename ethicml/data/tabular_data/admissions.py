@@ -38,6 +38,8 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 ```
 """
 from enum import Enum
+from typing import Union
+from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import flatten_dict
@@ -50,8 +52,11 @@ class AdmissionsSplits(Enum):
     CUSTOM = "Custom"
 
 
+VALID_STRS = Literal[tuple([e.value for e in AdmissionsSplits])]  # type: ignore[misc]
+
+
 def admissions(
-    split: AdmissionsSplits = "Gender",  # type: ignore[assignment]
+    split: Union[AdmissionsSplits, VALID_STRS] = "Gender",  # type: ignore[valid-type]
     discrete_only: bool = False,
 ) -> Dataset:
     """UFRGS Admissions dataset."""

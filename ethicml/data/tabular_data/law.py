@@ -19,6 +19,7 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
 """
 from enum import Enum
 from typing import Mapping, Union
+from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import LabelGroup, flatten_dict, simple_spec
@@ -33,8 +34,11 @@ class LawSplits(Enum):
     CUSTOM = "Custom"
 
 
+VALID_STRS = Literal[tuple([e.value for e in LawSplits])]  # type: ignore[misc]
+
+
 def law(
-    split: Union[LawSplits, LawSplits.value] = "Sex",
+    split: Union[LawSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
     discrete_only: bool = False,
 ) -> Dataset:
     """LSAC Law School dataset."""

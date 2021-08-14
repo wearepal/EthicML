@@ -1,6 +1,7 @@
 """Class to describe features of the Compas dataset."""
 from enum import Enum
 from typing import Union
+from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import LabelSpec, flatten_dict, simple_spec
@@ -15,8 +16,11 @@ class CompasSplits(Enum):
     CUSTOM = "Custom"
 
 
+VALID_STRS = Literal[tuple([e.value for e in CompasSplits])]  # type: ignore[misc]
+
+
 def compas(
-    split: Union[CompasSplits, CompasSplits.value] = "Sex",
+    split: Union[CompasSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
     discrete_only: bool = False,
 ) -> Dataset:
     """Compas (or ProPublica) dataset."""

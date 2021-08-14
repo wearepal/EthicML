@@ -1,6 +1,7 @@
 """Class to describe features of the German dataset."""
 from enum import Enum
 from typing import Union
+from typing_extensions import Literal
 
 from ..dataset import Dataset
 
@@ -14,8 +15,11 @@ class GermanSplits(Enum):
     CUSTOM = "Custom"
 
 
+VALID_STRS = Literal[tuple([e.value for e in GermanSplits])]  # type: ignore[misc]
+
+
 def german(
-    split: Union[GermanSplits, GermanSplits.value] = "Sex",
+    split: Union[GermanSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
     discrete_only: bool = False,
 ) -> Dataset:
     """German credit dataset."""
