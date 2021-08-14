@@ -7,6 +7,7 @@ import pytest
 
 import ethicml as em
 from ethicml import DataTuple
+from ethicml.data.tabular_data.adult import AdultSplits
 from ethicml.data.util import flatten_dict
 
 
@@ -56,7 +57,9 @@ def test_can_load_test_data(data_root: Path):
             "Adult Sex, binary nationality, binary race",
         ),
         (em.adult(split="Sex"), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
+        (em.adult(split=AdultSplits.SEX), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
         (em.adult(split="Race"), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
+        (em.adult(split=AdultSplits.RACE), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
         (em.adult(split="Race-Binary"), 45_222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary"),
         (em.adult(split="Nationality"), 45_222, 62, 57, 1, 41, 1, 2, "Adult Nationality"),
         (em.adult(split="Education"), 45_222, 86, 82, 1, 3, 1, 2, "Adult Education"),

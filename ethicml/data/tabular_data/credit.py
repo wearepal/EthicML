@@ -1,7 +1,6 @@
 """Class to describe features of the UCI Credit dataset."""
 from enum import Enum
 from typing import Union
-from typing_extensions import Literal
 
 from ..dataset import Dataset
 
@@ -15,13 +14,7 @@ class CreditSplits(Enum):
     CUSTOM = "Custom"
 
 
-VALID_STRS = Literal[tuple([e.value for e in CreditSplits])]  # type: ignore[misc]
-
-
-def credit(
-    split: Union[CreditSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
-    discrete_only: bool = False,
-) -> Dataset:
+def credit(split: Union[CreditSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """UCI Credit Card dataset."""
     _split = CreditSplits(split)
     disc_feature_groups = {

@@ -1,7 +1,6 @@
 """Class to describe features of the SQF dataset."""
 from enum import Enum
 from typing import Union
-from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import LabelSpec, flatten_dict, simple_spec
@@ -16,13 +15,7 @@ class SqfSplits(Enum):
     CUSTOM = "Custom"
 
 
-VALID_STRS = Literal[tuple([e.value for e in SqfSplits])]  # type: ignore[misc]
-
-
-def sqf(
-    split: Union[SqfSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
-    discrete_only: bool = False,
-) -> Dataset:
+def sqf(split: Union[SqfSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """Stop, question and frisk dataset."""
     _split = SqfSplits(split)
     disc_feature_groups = {

@@ -1,7 +1,6 @@
 """Class to describe features of the Adult dataset."""
 from enum import Enum
 from typing import Union
-from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
@@ -19,11 +18,8 @@ class AdultSplits(Enum):
     CUSTOM = "Custom"
 
 
-VALID_STRS = Literal[tuple([e.value for e in AdultSplits])]  # type: ignore[misc]
-
-
 def adult(
-    split: Union[AdultSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
+    split: Union[AdultSplits, str] = "Sex",
     discrete_only: bool = False,
     binarize_nationality: bool = False,
     binarize_race: bool = False,

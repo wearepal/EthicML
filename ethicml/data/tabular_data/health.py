@@ -1,7 +1,6 @@
 """Class to describe features of the Heritage Health dataset."""
 from enum import Enum
 from typing import Union
-from typing_extensions import Literal
 
 from ..dataset import Dataset
 
@@ -15,13 +14,7 @@ class HealthSplits(Enum):
     CUSTOM = "Custom"
 
 
-VALID_STRS = Literal[tuple([e.value for e in HealthSplits])]  # type: ignore[misc]
-
-
-def health(
-    split: Union[HealthSplits, VALID_STRS] = "Sex",  # type: ignore[valid-type]
-    discrete_only: bool = False,
-) -> Dataset:
+def health(split: Union[HealthSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """Heritage Health dataset."""
     _split = HealthSplits(split)
     disc_feature_groups = {
