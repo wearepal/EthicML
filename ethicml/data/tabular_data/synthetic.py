@@ -10,8 +10,8 @@ __all__ = ["synthetic"]
 
 
 def synthetic(
-    scenario: Literal[1, 2, 3, 4] = 1,  # pylint: disable=bad-whitespace
-    target: Literal[1, 2, 3] = 3,  # pylint: disable=bad-whitespace
+    scenario: Literal[1, 2, 3, 4] = 1,
+    target: Literal[1, 2, 3] = 3,
     fair: bool = False,
     num_samples: int = 1_000,
 ) -> Dataset:

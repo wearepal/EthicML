@@ -25,7 +25,6 @@ def kullback_leibler(
     """
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
     logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
-    # return -0.5 * torch.sum(1 + (logvar1-logvar2) - (mu1-mu2).pow(2) - (logvar1-logvar2).exp())
     return (
         0.5
         * (logvar2 - logvar1 - 1 + ((logvar1).exp() + ((mu1 - mu2) ** 2)) / (logvar2).exp()).sum()

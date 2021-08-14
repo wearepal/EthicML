@@ -1,4 +1,7 @@
 """Class to describe features of the UCI Credit dataset."""
+from enum import Enum
+from typing import Union
+
 from ..dataset import Dataset
 
 __all__ = ["credit"]
@@ -6,8 +9,17 @@ __all__ = ["credit"]
 from ..util import flatten_dict
 
 
-def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
+class CreditSplits(Enum):
+    SEX = "Sex"
+    CUSTOM = "Custom"
+
+
+def credit(
+    split: Union[CreditSplits, CreditSplits.value] = "Sex",
+    discrete_only: bool = False,
+) -> Dataset:
     """UCI Credit Card dataset."""
+    _split = CreditSplits(split)
     disc_feature_groups = {
         "SEX": ["SEX"],
         "EDUCATION": [
@@ -50,18 +62,21 @@ def credit(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         "PAY_AMT6",
     ]
 
-    if split == "Sex":
+    if _split is CreditSplits.SEX:
         sens_attr_spec = "SEX"
         s_prefix = ["SEX"]
         class_label_spec = "default-payment-next-month"
         class_label_prefix = ["default-payment-next-month"]
-    elif split == "Custom":
-        pass
+    elif _split is CreditSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
 
     return Dataset(
-        name=f"Credit {split}",
+        name=f"Credit {_split.value}",
         num_samples=30000,
         filename_or_path="UCI_Credit_Card.csv",
         features=disc_features + continuous_features,

@@ -1,4 +1,5 @@
 """Class to describe features of the SQF dataset."""
+from enum import Enum
 from typing import Union
 
 from ..dataset import Dataset
@@ -7,8 +8,19 @@ from ..util import LabelSpec, flatten_dict, simple_spec
 __all__ = ["sqf"]
 
 
-def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
+class SqfSplit(Enum):
+    SEX = "Sex"
+    RACE = "Race"
+    RACE_SEX = "Race-Sex"
+    CUSTOM = "Custom"
+
+
+def sqf(
+    split: Union[SqfSplit, SqfSplit.value] = "Sex",
+    discrete_only: bool = False,
+) -> Dataset:
     """Stop, question and frisk dataset."""
+    _split = SqfSplit(split)
     disc_feature_groups = {
         "sex": ["sex"],
         "race": ["race"],
@@ -105,25 +117,30 @@ def sqf(split: str = "Sex", discrete_only: bool = False) -> Dataset:
     continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
     sens_attr_spec: Union[str, LabelSpec]
-    if split == "Sex":
+    if _split is SqfSplit.SEX:
         sens_attr_spec = "sex"
         s_prefix = ["sex"]
         class_label_spec = "weapon"
         class_label_prefix = ["weapon"]
-    elif split == "Race":
+    elif _split is SqfSplit.RACE:
         sens_attr_spec = "race"
         s_prefix = ["race"]
         class_label_spec = "weapon"
         class_label_prefix = ["weapon"]
-    elif split == "Race-Sex":
+    elif _split is SqfSplit.RACE_SEX:
         sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
         s_prefix = ["race", "sex"]
         class_label_spec = "weapon"
         class_label_prefix = ["weapon"]
+    elif _split is SqfSplit.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
     return Dataset(
-        name=f"SQF {split}",
+        name=f"SQF {_split.value}",
         num_samples=12347,
         filename_or_path="sqf.csv",
         features=discrete_features + continuous_features,

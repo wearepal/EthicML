@@ -17,19 +17,28 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
  year = {2017}
 }
 """
-
-from typing_extensions import Literal
+from enum import Enum
+from typing import Mapping, Union
 
 from ..dataset import Dataset
-from ..util import flatten_dict, simple_spec
+from ..util import LabelGroup, flatten_dict, simple_spec
 
 __all__ = ["law"]
 
-LawSplits = Literal["Sex", "Race", "Sex-Race"]
+
+class LawSplits(Enum):
+    SEX = "Sex"
+    RACE = "Race"
+    SEX_RACE = "Sex-Race"
+    CUSTOM = "Custom"
 
 
-def law(split: LawSplits = "Sex", discrete_only: bool = False) -> Dataset:
+def law(
+    split: Union[LawSplits, LawSplits.value] = "Sex",
+    discrete_only: bool = False,
+) -> Dataset:
     """LSAC Law School dataset."""
+    _split = LawSplits(split)
     disc_feature_groups = {
         "Sex": ["Sex_1", "Sex_2"],
         "Race": [
@@ -48,25 +57,30 @@ def law(split: LawSplits = "Sex", discrete_only: bool = False) -> Dataset:
 
     continuous_features = ["LSAT", "UGPA", "ZFYA"]
 
-    if split == "Sex":
-        sens_attr_spec = "Sex_1"
+    if _split is LawSplits.SEX:
+        sens_attr_spec: Union[str, Mapping[str, LabelGroup]] = "Sex_1"
         s_prefix = ["Sex", "Race"]
         class_label_spec = "PF_1"
         class_label_prefix = ["PF"]
-    elif split == "Race":
+    elif _split is LawSplits.RACE:
         sens_attr_spec = "Race_White"
         s_prefix = ["Race", "Sex"]
         class_label_spec = "PF_1"
         class_label_prefix = ["PF"]
-    elif split == "Sex-Race":
+    elif _split is LawSplits.SEX_RACE:
         sens_attr_spec = simple_spec({"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]})
         s_prefix = ["Race", "Sex"]
         class_label_spec = "PF_1"
         class_label_prefix = ["PF"]
+    elif _split is LawSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
 
-    name = f"Law {split}"
+    name = f"Law {_split.value}"
 
     return Dataset(
         name=name,

@@ -2,7 +2,7 @@
 import pandas as pd
 
 
-def main():
+def main() -> None:
     """Main."""
     data = pd.read_csv("raw/law_data.csv", index_col=0).reset_index(drop=True)
     data = data[["LSAT", "UGPA", "ZFYA", "race", "sex", "first_pf"]]
