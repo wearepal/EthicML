@@ -81,7 +81,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
     plt.clf()
 
 
-def multivariateGrid(
+def multivariate_grid(
     col_x: str,
     col_y: str,
     sens_col: str,
@@ -122,7 +122,7 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = maybe_tsne(data)
 
-    multivariateGrid(
+    multivariate_grid(
         col_x=x1_name,
         col_y=x2_name,
         sens_col=data.s.columns[0],

@@ -1,4 +1,7 @@
 """Class to describe features of the Heritage Health dataset."""
+from enum import Enum
+from typing import Union
+
 from ..dataset import Dataset
 
 __all__ = ["health"]
@@ -6,8 +9,14 @@ __all__ = ["health"]
 from ..util import flatten_dict
 
 
-def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
+class HealthSplits(Enum):
+    SEX = "Sex"
+    CUSTOM = "Custom"
+
+
+def health(split: Union[HealthSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """Heritage Health dataset."""
+    _split = HealthSplits(split)
     disc_feature_groups = {
         "age": [
             "age_05",
@@ -30,8 +39,6 @@ def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         "Charlson>0": ["Charlson>0"],
     }
     discrete_features = flatten_dict(disc_feature_groups)
-    # features_to_remove = ["MemberID_t", "YEAR_t", "trainset", "sexMISS", "age_MISS"]
-    # features = [feature for feature in features if feature not in features_to_remove]
 
     continuous_features = [
         "no_Claims",
@@ -154,16 +161,21 @@ def health(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         "labcount_months",
     ]
 
-    if split == "Sex":
+    if _split is HealthSplits.SEX:
         sens_attr_spec = "sexMALE"
         s_prefix = ["sex"]
         class_label_spec = "Charlson>0"
         class_label_prefix = ["Charlson>0"]
+    elif _split is HealthSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
     return Dataset(
         name="Health",
-        num_samples=171067,
+        num_samples=171_067,
         filename_or_path="health.csv.zip",
         features=discrete_features + continuous_features,
         cont_features=continuous_features,

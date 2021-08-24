@@ -1,4 +1,7 @@
 """Class to describe features of the German dataset."""
+from enum import Enum
+from typing import Union
+
 from ..dataset import Dataset
 
 __all__ = ["german"]
@@ -6,8 +9,14 @@ __all__ = ["german"]
 from ..util import flatten_dict
 
 
-def german(split: str = "Sex", discrete_only: bool = False) -> Dataset:
+class GermanSplits(Enum):
+    SEX = "Sex"
+    CUSTOM = "Custom"
+
+
+def german(split: Union[GermanSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """German credit dataset."""
+    _split = GermanSplits(split)
     disc_feature_groups = {
         "sex": ["sex"],
         "age": ["age"],
@@ -93,17 +102,22 @@ def german(split: str = "Sex", discrete_only: bool = False) -> Dataset:
         "people-liable-for",
     ]
 
-    if split == "Sex":
+    if _split is GermanSplits.SEX:
         sens_attr_spec = "sex"
         s_prefix = ["sex"]
         class_label_spec = "credit-label"
         class_label_prefix = ["credit-label"]
+    elif _split is GermanSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
 
     return Dataset(
-        name=f"German {split}",
-        num_samples=1000,
+        name=f"German {_split.value}",
+        num_samples=1_000,
         filename_or_path="german.csv",
         features=discrete_features + continuous_features,
         cont_features=continuous_features,

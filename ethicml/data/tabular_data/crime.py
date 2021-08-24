@@ -1,5 +1,6 @@
 """Class to describe features of the Communities and Crime dataset."""
-from typing_extensions import Literal
+from enum import Enum
+from typing import Union
 
 from ..dataset import Dataset
 
@@ -8,8 +9,14 @@ __all__ = ["crime"]
 from ..util import flatten_dict
 
 
-def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = False) -> Dataset:
+class CrimeSplits(Enum):
+    RACE_BINARY = "Race-Binary"
+    CUSTOM = "Custom"
+
+
+def crime(split: Union[CrimeSplits, str] = "Race-Binary", discrete_only: bool = False) -> Dataset:
     """UCI Communities and Crime dataset."""
+    _split = CrimeSplits(split)
     disc_feature_groups = {
         "state": [
             "state_1",
@@ -170,15 +177,20 @@ def crime(split: Literal["Race-Binary"] = "Race-Binary", discrete_only: bool = F
     features_to_remove = ["communityname", "fold"]
     features = discrete_features + continuous_features
     features = [feature for feature in features if feature not in features_to_remove]
-    if split == "Race-Binary":
+    if _split is CrimeSplits.RACE_BINARY:
         sens_attr_spec = ">0.06black"
         s_prefix = [">0.06black", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
         class_label_spec = "high_crime"
         class_label_prefix = ["high_crime", "Violent"]
+    elif _split is CrimeSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
     return Dataset(
-        name=f"Crime {split}",
+        name=f"Crime {_split.value}",
         num_samples=1994,
         filename_or_path="crime.csv",
         features=features,
