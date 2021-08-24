@@ -37,19 +37,26 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 }
 ```
 """
-
-from typing_extensions import Literal
+from enum import Enum
+from typing import Union
 
 from ..dataset import Dataset
 from ..util import flatten_dict
 
 __all__ = ["admissions"]
 
-AdmissionsSplits = Literal["Gender"]
+
+class AdmissionsSplits(Enum):
+    GENDER = "Gender"
+    CUSTOM = "Custom"
 
 
-def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) -> Dataset:
+def admissions(
+    split: Union[AdmissionsSplits, str] = "Gender", discrete_only: bool = False
+) -> Dataset:
     """UFRGS Admissions dataset."""
+    _split = AdmissionsSplits(split)
+
     disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}
     discrete_features = flatten_dict(disc_feature_groups)
 
@@ -65,15 +72,20 @@ def admissions(split: AdmissionsSplits = "Gender", discrete_only: bool = False) 
         "chemistry",
     ]
 
-    if split == "Gender":
+    if _split is AdmissionsSplits.GENDER:
         sens_attr_spec = "gender"
         s_prefix = ["gender"]
         class_label_spec = "gpa"
         class_label_prefix = ["gpa"]
+    elif _split is AdmissionsSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
 
-    name = f"Admissions {split}"
+    name = f"Admissions {_split.value}"
 
     return Dataset(
         name=name,

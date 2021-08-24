@@ -1,6 +1,6 @@
 """Class to describe features of the Compas dataset."""
+from enum import Enum
 from typing import Union
-from typing_extensions import Literal
 
 from ..dataset import Dataset
 from ..util import LabelSpec, flatten_dict, simple_spec
@@ -8,10 +8,16 @@ from ..util import LabelSpec, flatten_dict, simple_spec
 __all__ = ["Compas", "compas"]
 
 
-def compas(
-    split: Literal["Sex", "Race", "Race-Sex"] = "Sex", discrete_only: bool = False
-) -> Dataset:
+class CompasSplits(Enum):
+    SEX = "Sex"
+    RACE = "Race"
+    RACE_SEX = "Race-Sex"
+    CUSTOM = "Custom"
+
+
+def compas(split: Union[CompasSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
     """Compas (or ProPublica) dataset."""
+    _split = CompasSplits(split)
     disc_feature_groups = {
         "sex": ["sex"],
         "race": ["race"],
@@ -421,26 +427,31 @@ def compas(
     ]
 
     sens_attr_spec: Union[str, LabelSpec]
-    if split == "Sex":
+    if _split is CompasSplits.SEX:
         sens_attr_spec = "sex"
         s_prefix = ["sex"]
         class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
-    elif split == "Race":
+    elif _split is CompasSplits.RACE:
         sens_attr_spec = "race"
         s_prefix = ["race"]
         class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
-    elif split == "Race-Sex":
+    elif _split is CompasSplits.RACE_SEX:
         sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
         s_prefix = ["race", "sex"]
         class_label_spec = "two-year-recid"
         class_label_prefix = ["two-year-recid"]
+    elif _split is CompasSplits.CUSTOM:
+        sens_attr_spec = ""
+        s_prefix = []
+        class_label_spec = ""
+        class_label_prefix = []
     else:
         raise NotImplementedError
 
     return Dataset(
-        name=f"Compas {split}",
+        name=f"Compas {_split.value}",
         num_samples=6167,
         filename_or_path="compas-recidivism.csv",
         features=discrete_features + continuous_features,
