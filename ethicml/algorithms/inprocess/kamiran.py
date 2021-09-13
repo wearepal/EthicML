@@ -60,42 +60,24 @@ def _obtain_conditionings(
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
-def compute_instance_weights(train: DataTuple) -> pd.DataFrame:
+def _get_groups_ids(dt: DataTuple) -> np.ndarray:
+    """Compute the unique group id for each sample based on its s and y labels."""
+    return (dt.y.to_numpy() * len(np.unique(dt.s)) + dt.s).squeeze()
+
+
+def compute_instance_weights(train: DataTuple, upweight: bool = False) -> pd.DataFrame:
     """Compute weights for all samples."""
-    np.random.seed(888)
-    (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
-
-    y_col = train.y.columns[0]
-    y_pos = train.y[y_col].max()
-    y_neg = train.y[y_col].min()
-    s_col = train.s.columns[0]
-    s_pos = train.s[s_col].max()
-    s_neg = train.s[s_col].min()
-
-    num_samples = train.x.shape[0]
-    n_p = train.s.loc[train.s[s_col] == s_pos].shape[0]
-    n_up = train.s.loc[train.s[s_col] == s_neg].shape[0]
-    n_fav = train.y.loc[train.y[y_col] == y_pos].shape[0]
-    n_unfav = train.y.loc[train.y[y_col] == y_neg].shape[0]
-
-    n_p_fav = cond_p_fav.shape[0]
-    n_p_unfav = cond_p_unfav.shape[0]
-    n_up_fav = cond_up_fav.shape[0]
-    n_up_unfav = cond_up_unfav.shape[0]
-
-    w_p_fav = n_fav * n_p / (num_samples * n_p_fav) if n_p_fav != 0 else float("NaN")
-    w_p_unfav = n_unfav * n_p / (num_samples * n_p_unfav) if n_p_unfav != 0 else float("NaN")
-    w_up_fav = n_fav * n_up / (num_samples * n_up_fav) if n_up_fav != 0 else float("NaN")
-    w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav) if n_up_unfav != 0 else float("NaN")
-
-    train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]), columns=["instance weights"])
-
-    train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_p_unfav.index] *= w_p_unfav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_up_fav.index] *= w_up_fav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_up_unfav.index] *= w_up_unfav  # type: ignore[call-overload]
-
-    return train_instance_weights
+    group_ids = _get_groups_ids(train)
+    _, indexes, counts = np.unique(group_ids, return_inverse=True, return_counts=True)
+    # Upweight samples according to the cardinality of their intersectional group
+    if upweight:
+        group_weights = len(group_ids) / counts
+    # Downweight samples according to the cardinality of their intersectional group
+    # - this approach should be preferred due to being more numerically stable
+    # (very small counts can lead to very large weighted loss values when upweighting)
+    else:
+        group_weights = 1 - (counts / len(group_ids))
+    return pd.DataFrame(group_weights[indexes], columns=["instance weights"])
 
 
 def _train_and_predict(
