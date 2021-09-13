@@ -15,7 +15,7 @@ from torch import Tensor
 from torchvision.datasets import VisionDataset
 
 from ethicml.data.util import LabelSpec, simple_spec
-from ethicml.data.vision_data.celeba import CelebAttrs, celeba
+from ethicml.data.vision_data.celeba import CelebAttr, celeba
 from ethicml.data.vision_data.genfaces import GenfacesAttributes, genfaces
 from ethicml.preprocessing import ProportionalSplit, get_biased_subset
 from ethicml.utility import DataTuple
@@ -135,8 +135,8 @@ def create_celeba_dataset(
     biased: bool,
     mixing_factor: float,
     unbiased_pcnt: float,
-    sens_attr_name: Union[CelebAttrs, Dict[str, List[CelebAttrs]]],
-    target_attr_name: CelebAttrs,
+    sens_attr_name: Union[CelebAttr, Dict[str, List[CelebAttr]]],
+    target_attr_name: CelebAttr,
     transform: Optional[Callable] = None,
     target_transform: Optional[Callable] = None,
     download: bool = False,
@@ -162,8 +162,11 @@ def create_celeba_dataset(
         seed: Random seed used to sample biased subset.
         check_integrity: If True, check whether the data has been downloaded correctly.
     """
-    sens_attr: Union[CelebAttrs, LabelSpec]
+    sens_attr: Union[CelebAttr, LabelSpec]
     if isinstance(sens_attr_name, dict):
+        # sens_attr_name_str = {}
+        # # for name, columns in sens_attr_name.items():
+        #     sens_attr_name_str[name] = [col.name for col in columns]
         sens_attr = dict(simple_spec(sens_attr_name))
     else:
         sens_attr = sens_attr_name

@@ -6,6 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 
 import ethicml.vision as emvi
+from ethicml.data.vision_data.celeba import CelebAttr
 
 
 @pytest.mark.slow
@@ -36,8 +37,8 @@ def test_celeba():
         biased=True,
         mixing_factor=0.0,
         unbiased_pcnt=0.4,
-        sens_attr_name="Male",
-        target_attr_name="Smiling",
+        sens_attr_name=CelebAttr.Male,
+        target_attr_name=CelebAttr.Smiling,
         check_integrity=False,
     )
     test_set = emvi.create_celeba_dataset(
@@ -45,8 +46,8 @@ def test_celeba():
         biased=False,
         mixing_factor=0.0,
         unbiased_pcnt=0.4,
-        sens_attr_name="Male",
-        target_attr_name="Smiling",
+        sens_attr_name=CelebAttr.Male,
+        target_attr_name=CelebAttr.Smiling,
         check_integrity=False,
     )
 
@@ -89,8 +90,10 @@ def test_celeba_multi_s():
         biased=False,
         mixing_factor=0.0,
         unbiased_pcnt=1.0,
-        sens_attr_name={"Hair_Color": ["Black_Hair", "Blond_Hair", "Brown_Hair"]},
-        target_attr_name="Smiling",
+        sens_attr_name={
+            "Hair_Color": [CelebAttr.Black_Hair, CelebAttr.Blond_Hair, CelebAttr.Brown_Hair]
+        },
+        target_attr_name=CelebAttr.Smiling,
         check_integrity=False,
     )
 

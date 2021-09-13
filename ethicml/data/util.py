@@ -1,6 +1,9 @@
 """Useful methods that are used in some of the data objects."""
+from __future__ import annotations
+
 import functools
 import warnings
+from enum import Enum
 from itertools import groupby
 from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Sequence, TypeVar
 
@@ -49,7 +52,9 @@ class LabelGroup(NamedTuple):
 LabelSpec = Mapping[str, LabelGroup]
 
 
-def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:
+def filter_features_by_prefixes(
+    features: Sequence[str | Enum], prefixes: Sequence[str]
+) -> List[str | Enum]:
     """Filter the features by prefixes.
 
     Args:
@@ -59,9 +64,9 @@ def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]
     Returns:
         filtered feature names
     """
-    res: List[str] = []
+    res: List[str | Enum] = []
     for name in features:
-        filtered = any(name.startswith(pref) for pref in prefixes)
+        filtered = any(str(name).startswith(str(pref)) for pref in prefixes)
         if not filtered:
             res.append(name)
     return res
@@ -109,7 +114,7 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     return feature_slices
 
 
-def flatten_dict(dictionary: Mapping[str, List[str]]) -> List[str]:
+def flatten_dict(dictionary: Mapping[str, List[Any]]) -> List[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
     return [x for inner_list in dictionary.values() for x in inner_list]
 

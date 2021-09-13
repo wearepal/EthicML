@@ -1,5 +1,8 @@
 """Data structure for all datasets that come with the framework."""
+from __future__ import annotations
+
 from dataclasses import InitVar, dataclass, field
+from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal, TypedDict
@@ -47,7 +50,7 @@ class Dataset:
     discrete_only: bool
     s_prefix: Sequence[str] = field(default_factory=list)
     class_label_prefix: Sequence[str] = field(default_factory=list)
-    discrete_feature_groups: Optional[Dict[str, List[str]]] = None
+    discrete_feature_groups: Optional[Dict[str, List[Union[str, Enum]]]] = None
     discard_non_one_hot: bool = False
     map_to_binary: bool = False
 
@@ -69,9 +72,9 @@ class Dataset:
         return label_spec_to_feature_list(self.sens_attr_spec)
 
     @property
-    def class_labels(self) -> List[str]:
+    def class_labels(self) -> List[str | Enum]:
         """Get the list of class labels."""
-        if isinstance(self.class_label_spec, str):
+        if isinstance(self.class_label_spec, (str, Enum)):
             return [self.class_label_spec]
         assert isinstance(self.class_label_spec, dict)
         return label_spec_to_feature_list(self.class_label_spec)
@@ -136,7 +139,7 @@ class Dataset:
         )
 
     @property
-    def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
+    def disc_feature_groups(self) -> Optional[Dict[str, List[Union[str, Enum]]]]:
         """Dictionary of feature groups."""
         if self.discrete_feature_groups is None:
             return None

@@ -1,58 +1,61 @@
 """Class to describe attributes of the CelebA dataset."""
+from enum import Enum, auto
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-from typing_extensions import Final, Literal
+from typing_extensions import Final
 
 from ethicml import common
 
 from ..dataset import Dataset
 from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 
-__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
+__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttr", "celeba"]
 
 
-CelebAttrs = Literal[
-    "5_o_Clock_Shadow",
-    "Arched_Eyebrows",
-    "Attractive",
-    "Bags_Under_Eyes",
-    "Bald",
-    "Bangs",
-    "Big_Lips",
-    "Big_Nose",
-    "Black_Hair",
-    "Blond_Hair",
-    "Blurry",
-    "Brown_Hair",
-    "Bushy_Eyebrows",
-    "Chubby",
-    "Double_Chin",
-    "Eyeglasses",
-    "Goatee",
-    "Gray_Hair",
-    "Heavy_Makeup",
-    "High_Cheekbones",
-    "Male",
-    "Mouth_Slightly_Open",
-    "Mustache",
-    "Narrow_Eyes",
-    "No_Beard",
-    "Oval_Face",
-    "Pale_Skin",
-    "Pointy_Nose",
-    "Receding_Hairline",
-    "Rosy_Cheeks",
-    "Sideburns",
-    "Smiling",
-    "Straight_Hair",
-    "Wavy_Hair",
-    "Wearing_Earrings",
-    "Wearing_Hat",
-    "Wearing_Lipstick",
-    "Wearing_Necklace",
-    "Wearing_Necktie",
-    "Young",
-]
+class CelebAttr(Enum):
+    """Enum for CelebA attributes."""
+
+    Five_o_Clock_Shadow = auto()
+    Arched_Eyebrows = auto()
+    Attractive = auto()
+    Bags_Under_Eyes = auto()
+    Bald = auto()
+    Bangs = auto()
+    Big_Lips = auto()
+    Big_Nose = auto()
+    Black_Hair = auto()
+    Blond_Hair = auto()
+    Blurry = auto()
+    Brown_Hair = auto()
+    Bushy_Eyebrows = auto()
+    Chubby = auto()
+    Double_Chin = auto()
+    Eyeglasses = auto()
+    Goatee = auto()
+    Gray_Hair = auto()
+    Heavy_Makeup = auto()
+    High_Cheekbones = auto()
+    Male = auto()
+    Mouth_Slightly_Open = auto()
+    Mustache = auto()
+    Narrow_Eyes = auto()
+    No_Beard = auto()
+    Oval_Face = auto()
+    Pale_Skin = auto()
+    Pointy_Nose = auto()
+    Receding_Hairline = auto()
+    Rosy_Cheeks = auto()
+    Sideburns = auto()
+    Smiling = auto()
+    Straight_Hair = auto()
+    Wavy_Hair = auto()
+    Wearing_Earrings = auto()
+    Wearing_Hat = auto()
+    Wearing_Lipstick = auto()
+    Wearing_Necklace = auto()
+    Wearing_Necktie = auto()
+    Young = auto()
+
 
 CELEBA_BASE_FOLDER: Final = "celeba"
 """The data is downloaded to `download_dir` / `CELEBA_BASE_FOLDER`."""
@@ -79,47 +82,58 @@ CELEBA_FILE_LIST: Final = [
 
 def celeba(
     download_dir: str,
-    label: CelebAttrs = "Smiling",
-    sens_attr: Union[CelebAttrs, Dict[str, LabelGroup]] = "Male",
+    label: CelebAttr = CelebAttr.Smiling,
+    sens_attr: Union[CelebAttr, Dict[str, LabelGroup]] = CelebAttr.Male,
     download: bool = False,
     check_integrity: bool = True,
 ) -> Tuple[Optional[Dataset], Path]:
     """Get CelebA dataset."""
     root = Path(download_dir)
     disc_feature_groups = {
-        "beard": ["5_o_Clock_Shadow", "Goatee", "Mustache", "No_Beard"],
-        "hair_color": ["Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair"],
+        "beard": [
+            CelebAttr.Five_o_Clock_Shadow,
+            CelebAttr.Goatee,
+            CelebAttr.Mustache,
+            CelebAttr.No_Beard,
+        ],
+        "hair_color": [
+            CelebAttr.Bald,
+            CelebAttr.Black_Hair,
+            CelebAttr.Blond_Hair,
+            CelebAttr.Brown_Hair,
+            CelebAttr.Gray_Hair,
+        ],
         # not yet sorted into categories:
-        "Arched_Eyebrows": ["Arched_Eyebrows"],
-        "Attractive": ["Attractive"],
-        "Bags_Under_Eyes": ["Bags_Under_Eyes"],
-        "Bangs": ["Bangs"],
-        "Big_Lips": ["Big_Lips"],
-        "Big_Nose": ["Big_Nose"],
-        "Blurry": ["Blurry"],
-        "Bushy_Eyebrows": ["Bushy_Eyebrows"],
-        "Chubby": ["Chubby"],
-        "Double_Chin": ["Double_Chin"],
-        "Eyeglasses": ["Eyeglasses"],
-        "Heavy_Makeup": ["Heavy_Makeup"],
-        "High_Cheekbones": ["High_Cheekbones"],
-        "Male": ["Male"],
-        "Mouth_Slightly_Open": ["Mouth_Slightly_Open"],
-        "Narrow_Eyes": ["Narrow_Eyes"],
-        "Oval_Face": ["Oval_Face"],
-        "Pale_Skin": ["Pale_Skin"],
-        "Pointy_Nose": ["Pointy_Nose"],
-        "Receding_Hairline": ["Receding_Hairline"],
-        "Rosy_Cheeks": ["Rosy_Cheeks"],
-        "Sideburns": ["Sideburns"],
-        "Smiling": ["Smiling"],
-        "hair_type": ["Straight_Hair", "Wavy_Hair"],
-        "Wearing_Earrings": ["Wearing_Earrings"],
-        "Wearing_Hat": ["Wearing_Hat"],
-        "Wearing_Lipstick": ["Wearing_Lipstick"],
-        "Wearing_Necklace": ["Wearing_Necklace"],
-        "Wearing_Necktie": ["Wearing_Necktie"],
-        "Young": ["Young"],
+        "Arched_Eyebrows": [CelebAttr.Arched_Eyebrows],
+        "Attractive": [CelebAttr.Attractive],
+        "Bags_Under_Eyes": [CelebAttr.Bags_Under_Eyes],
+        "Bangs": [CelebAttr.Bangs],
+        "Big_Lips": [CelebAttr.Big_Lips],
+        "Big_Nose": [CelebAttr.Big_Nose],
+        "Blurry": [CelebAttr.Blurry],
+        "Bushy_Eyebrows": [CelebAttr.Bushy_Eyebrows],
+        "Chubby": [CelebAttr.Chubby],
+        "Double_Chin": [CelebAttr.Double_Chin],
+        "Eyeglasses": [CelebAttr.Eyeglasses],
+        "Heavy_Makeup": [CelebAttr.Heavy_Makeup],
+        "High_Cheekbones": [CelebAttr.High_Cheekbones],
+        "Male": [CelebAttr.Male],
+        "Mouth_Slightly_Open": [CelebAttr.Mouth_Slightly_Open],
+        "Narrow_Eyes": [CelebAttr.Narrow_Eyes],
+        "Oval_Face": [CelebAttr.Oval_Face],
+        "Pale_Skin": [CelebAttr.Pale_Skin],
+        "Pointy_Nose": [CelebAttr.Pointy_Nose],
+        "Receding_Hairline": [CelebAttr.Receding_Hairline],
+        "Rosy_Cheeks": [CelebAttr.Rosy_Cheeks],
+        "Sideburns": [CelebAttr.Sideburns],
+        "Smiling": [CelebAttr.Smiling],
+        "hair_type": [CelebAttr.Straight_Hair, CelebAttr.Wavy_Hair],
+        "Wearing_Earrings": [CelebAttr.Wearing_Earrings],
+        "Wearing_Hat": [CelebAttr.Wearing_Earrings],
+        "Wearing_Lipstick": [CelebAttr.Wearing_Lipstick],
+        "Wearing_Necklace": [CelebAttr.Wearing_Necklace],
+        "Wearing_Necktie": [CelebAttr.Wearing_Necktie],
+        "Young": [CelebAttr.Young],
     }
     discrete_features = flatten_dict(disc_feature_groups)
     s_prefix: List[str]
@@ -129,7 +143,7 @@ def celeba(
         name = "[" + ", ".join(sens_attr) + "]"
     else:
         assert sens_attr in discrete_features
-        s_prefix = [sens_attr]
+        s_prefix = [sens_attr.name]
         name = sens_attr
     assert label in discrete_features
     continuous_features = ["filename"]
@@ -142,7 +156,7 @@ def celeba(
         return None, img_dir
     dataset_obj = Dataset(
         name=f"CelebA, s={name}, y={label}",
-        sens_attr_spec=sens_attr,
+        sens_attr_spec=sens_attr.name if isinstance(sens_attr, CelebAttr) else sens_attr,
         s_prefix=s_prefix,
         class_label_spec=label,
         class_label_prefix=[label],
