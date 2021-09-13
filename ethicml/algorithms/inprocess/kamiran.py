@@ -68,7 +68,7 @@ def compute_instance_weights(
     s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
     _, inv_indexes_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)
     group_ids = (inv_indexes_y * len(s_unique) + inv_indexes_s).squeeze()
-    unique_ids, inv_indexes, counts_joint = np.unique(
+    gi_unique, inv_indexes_gi, counts_joint = np.unique(
         group_ids, return_inverse=True, return_counts=True
     )
     if balance_groups:
@@ -82,9 +82,9 @@ def compute_instance_weights(
             group_weights = 1 - (counts_joint / num_samples)
     else:
         counts_factorized = np.outer(counts_y, counts_s).flatten()
-        group_weights = counts_factorized[unique_ids] / (num_samples * counts_joint)
+        group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)
 
-    return pd.DataFrame(group_weights[inv_indexes], columns=["instance weights"])
+    return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
 
 
 def _train_and_predict(
