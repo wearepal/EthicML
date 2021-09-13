@@ -60,24 +60,32 @@ def _obtain_conditionings(
     return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
-def _get_groups_ids(dt: DataTuple) -> np.ndarray:
-    """Compute the unique group id for each sample based on its s and y labels."""
-    return (dt.y.to_numpy() * len(np.unique(dt.s)) + dt.s).squeeze()
-
-
-def compute_instance_weights(train: DataTuple, upweight: bool = False) -> pd.DataFrame:
+def compute_instance_weights(
+    train: DataTuple, balance_groups: bool = False, upweight: bool = False
+) -> pd.DataFrame:
     """Compute weights for all samples."""
-    group_ids = _get_groups_ids(train)
-    _, indexes, counts = np.unique(group_ids, return_inverse=True, return_counts=True)
-    # Upweight samples according to the cardinality of their intersectional group
-    if upweight:
-        group_weights = len(group_ids) / counts
-    # Downweight samples according to the cardinality of their intersectional group
-    # - this approach should be preferred due to being more numerically stable
-    # (very small counts can lead to very large weighted loss values when upweighting)
+    num_samples = len(train.x)
+    s_unique, s_unique_counts = np.unique(train.s, return_counts=True)
+    group_ids = (train.y.to_numpy() * len(s_unique) + train.s).squeeze()
+
+    unique_ids, inv_indexes, counts_joint = np.unique(
+        group_ids, return_inverse=True, return_counts=True
+    )
+    if balance_groups:
+        # Upweight samples according to the cardinality of their intersectional group
+        if upweight:
+            group_weights = num_samples / counts_joint
+        # Downweight samples according to the cardinality of their intersectional group
+        # - this approach should be preferred due to being more numerically stable
+        # (very small counts can lead to very large weighted loss values when upweighting)
+        else:
+            group_weights = 1 - (counts_joint / num_samples)
     else:
-        group_weights = 1 - (counts / len(group_ids))
-    return pd.DataFrame(group_weights[indexes], columns=["instance weights"])
+        _, y_unique_counts = np.unique(train.y, return_counts=True)
+        counts_factorized = np.outer(y_unique_counts, s_unique_counts).flatten()
+        group_weights = counts_factorized[unique_ids] / (num_samples * counts_joint)
+
+    return pd.DataFrame(group_weights[inv_indexes], columns=["instance weights"])
 
 
 def _train_and_predict(

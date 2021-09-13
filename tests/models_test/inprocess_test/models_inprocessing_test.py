@@ -314,8 +314,8 @@ def test_kamiran(toy_train_test: TrainTestPair):
     assert kamiran_model.name == "Kamiran & Calders LR"
 
     predictions: Prediction = kamiran_model.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
 
     # remove all samples with s=0 & y=1 from the data
     train_no_s0y1 = query_dt(train, "`sensitive-attr` != 0 | decision != 1")
