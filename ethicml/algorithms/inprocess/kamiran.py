@@ -65,9 +65,9 @@ def compute_instance_weights(
 ) -> pd.DataFrame:
     """Compute weights for all samples."""
     num_samples = len(train.x)
-    s_unique, s_unique_counts = np.unique(train.s, return_counts=True)
-    group_ids = (train.y.to_numpy() * len(s_unique) + train.s).squeeze()
-
+    s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
+    _, inv_indexes_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)
+    group_ids = (inv_indexes_y * len(s_unique) + inv_indexes_s).squeeze()
     unique_ids, inv_indexes, counts_joint = np.unique(
         group_ids, return_inverse=True, return_counts=True
     )
@@ -81,8 +81,7 @@ def compute_instance_weights(
         else:
             group_weights = 1 - (counts_joint / num_samples)
     else:
-        _, y_unique_counts = np.unique(train.y, return_counts=True)
-        counts_factorized = np.outer(y_unique_counts, s_unique_counts).flatten()
+        counts_factorized = np.outer(counts_y, counts_s).flatten()
         group_weights = counts_factorized[unique_ids] / (num_samples * counts_joint)
 
     return pd.DataFrame(group_weights[inv_indexes], columns=["instance weights"])
