@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -38,26 +38,6 @@ class Kamiran(InAlgorithm):
         return _train_and_predict(
             train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
         )
-
-
-def _obtain_conditionings(
-    dataset: DataTuple,
-) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Obtain the necessary conditioning boolean vectors to compute instance level weights."""
-    y_col = dataset.y.columns[0]
-    y_pos = dataset.y[y_col].max()
-    y_neg = dataset.y[y_col].min()
-    s_col = dataset.s.columns[0]
-    s_pos = dataset.s[s_col].max()
-    s_neg = dataset.s[s_col].min()
-
-    # combination of label and privileged/unpriv. groups
-    cond_p_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_pos)]
-    cond_p_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_pos)]
-    cond_up_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_neg)]
-    cond_up_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_neg)]
-
-    return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
 
 
 def compute_instance_weights(
