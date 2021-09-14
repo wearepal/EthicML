@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -40,62 +40,31 @@ class Kamiran(InAlgorithm):
         )
 
 
-def _obtain_conditionings(
-    dataset: DataTuple,
-) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Obtain the necessary conditioning boolean vectors to compute instance level weights."""
-    y_col = dataset.y.columns[0]
-    y_pos = dataset.y[y_col].max()
-    y_neg = dataset.y[y_col].min()
-    s_col = dataset.s.columns[0]
-    s_pos = dataset.s[s_col].max()
-    s_neg = dataset.s[s_col].min()
-
-    # combination of label and privileged/unpriv. groups
-    cond_p_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_pos)]
-    cond_p_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_pos)]
-    cond_up_fav = dataset.x.loc[(dataset.y[y_col] == y_pos) & (dataset.s[s_col] == s_neg)]
-    cond_up_unfav = dataset.x.loc[(dataset.y[y_col] == y_neg) & (dataset.s[s_col] == s_neg)]
-
-    return cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav
-
-
-def compute_instance_weights(train: DataTuple) -> pd.DataFrame:
+def compute_instance_weights(
+    train: DataTuple, balance_groups: bool = False, upweight: bool = False
+) -> pd.DataFrame:
     """Compute weights for all samples."""
-    np.random.seed(888)
-    (cond_p_fav, cond_p_unfav, cond_up_fav, cond_up_unfav) = _obtain_conditionings(train)
+    num_samples = len(train.x)
+    s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
+    _, inv_indexes_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)
+    group_ids = (inv_indexes_y * len(s_unique) + inv_indexes_s).squeeze()
+    gi_unique, inv_indexes_gi, counts_joint = np.unique(
+        group_ids, return_inverse=True, return_counts=True
+    )
+    if balance_groups:
+        # Upweight samples according to the cardinality of their intersectional group
+        if upweight:
+            group_weights = num_samples / counts_joint
+        # Downweight samples according to the cardinality of their intersectional group
+        # - this approach should be preferred due to being more numerically stable
+        # (very small counts can lead to very large weighted loss values when upweighting)
+        else:
+            group_weights = 1 - (counts_joint / num_samples)
+    else:
+        counts_factorized = np.outer(counts_y, counts_s).flatten()
+        group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)
 
-    y_col = train.y.columns[0]
-    y_pos = train.y[y_col].max()
-    y_neg = train.y[y_col].min()
-    s_col = train.s.columns[0]
-    s_pos = train.s[s_col].max()
-    s_neg = train.s[s_col].min()
-
-    num_samples = train.x.shape[0]
-    n_p = train.s.loc[train.s[s_col] == s_pos].shape[0]
-    n_up = train.s.loc[train.s[s_col] == s_neg].shape[0]
-    n_fav = train.y.loc[train.y[y_col] == y_pos].shape[0]
-    n_unfav = train.y.loc[train.y[y_col] == y_neg].shape[0]
-
-    n_p_fav = cond_p_fav.shape[0]
-    n_p_unfav = cond_p_unfav.shape[0]
-    n_up_fav = cond_up_fav.shape[0]
-    n_up_unfav = cond_up_unfav.shape[0]
-
-    w_p_fav = n_fav * n_p / (num_samples * n_p_fav) if n_p_fav != 0 else float("NaN")
-    w_p_unfav = n_unfav * n_p / (num_samples * n_p_unfav) if n_p_unfav != 0 else float("NaN")
-    w_up_fav = n_fav * n_up / (num_samples * n_up_fav) if n_up_fav != 0 else float("NaN")
-    w_up_unfav = n_unfav * n_up / (num_samples * n_up_unfav) if n_up_unfav != 0 else float("NaN")
-
-    train_instance_weights = pd.DataFrame(np.ones(train.x.shape[0]), columns=["instance weights"])
-
-    train_instance_weights.iloc[cond_p_fav.index] *= w_p_fav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_p_unfav.index] *= w_p_unfav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_up_fav.index] *= w_up_fav  # type: ignore[call-overload]
-    train_instance_weights.iloc[cond_up_unfav.index] *= w_up_unfav  # type: ignore[call-overload]
-
-    return train_instance_weights
+    return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
 
 
 def _train_and_predict(
