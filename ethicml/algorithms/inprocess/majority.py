@@ -1,7 +1,7 @@
 """Simply returns the majority label from the train set."""
 
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -13,6 +13,7 @@ __all__ = ["Majority"]
 class Majority(InAlgorithm):
     """Simply returns the majority label from the train set."""
 
+    @parsable
     def __init__(self) -> None:
         super().__init__(name="Majority", is_fairness_algo=False)
 

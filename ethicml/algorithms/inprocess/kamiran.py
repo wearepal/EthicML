@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
@@ -21,6 +21,7 @@ VALID_MODELS = {"LR", "SVM"}
 class Kamiran(InAlgorithm):
     """Kamiran and Calders 2012."""
 
+    @parsable
     def __init__(
         self,
         classifier: ClassifierType = "LR",

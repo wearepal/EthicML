@@ -2,7 +2,7 @@
 from typing import Tuple
 
 import numpy as np
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -12,6 +12,7 @@ from .post_algorithm import PostAlgorithm
 class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
+    @parsable
     def __init__(self) -> None:
         super().__init__(name="DemPar. Post Process")
 

@@ -2,7 +2,7 @@
 from typing import Optional, Union
 
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 from sklearn.svm import SVC, LinearSVC
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -15,6 +15,7 @@ __all__ = ["SVM"]
 class SVM(InAlgorithm):
     """Support Vector Machine."""
 
+    @parsable
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         kernel_name = f" ({kernel})" if kernel is not None else ""
         super().__init__(name="SVM" + kernel_name, is_fairness_algo=False)

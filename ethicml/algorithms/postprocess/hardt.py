@@ -1,7 +1,7 @@
 """Post-processing method by Hardt et al."""
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 from numpy.random import RandomState
 from scipy.optimize import OptimizeResult, linprog
 
@@ -15,6 +15,7 @@ __all__ = ["Hardt"]
 class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
+    @parsable
     def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1):
         super().__init__(name="Hardt")
         self._unfavorable_label = unfavorable_label

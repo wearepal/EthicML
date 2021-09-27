@@ -3,7 +3,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
@@ -17,6 +17,7 @@ __all__ = ["LR", "LRCV", "LRProb"]
 class LR(InAlgorithm):
     """Logistic regression with hard predictions."""
 
+    @parsable
     def __init__(self, C: Optional[float] = None):
         self.C = LogisticRegression().C if C is None else C
         super().__init__(name=f"Logistic Regression (C={self.C})", is_fairness_algo=False)
@@ -31,6 +32,7 @@ class LR(InAlgorithm):
 class LRProb(InAlgorithm):
     """Logistic regression with soft output."""
 
+    @parsable
     def __init__(self, C: Optional[int] = None):
         self.C = LogisticRegression().C if C is None else C
         super().__init__(name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False)
@@ -45,6 +47,7 @@ class LRProb(InAlgorithm):
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
+    @parsable
     def __init__(self, n_splits: int = 3, seed: int = 888) -> None:
         super().__init__(name="LRCV", is_fairness_algo=False)
         self.n_splits = n_splits

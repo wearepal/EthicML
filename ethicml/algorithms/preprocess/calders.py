@@ -1,7 +1,7 @@
 """Kamiran&Calders 2012, massaging."""
 from typing import Dict, List, Tuple
 
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
@@ -14,6 +14,7 @@ __all__ = ["Calders"]
 class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
+    @parsable
     def __init__(self, preferable_class: int, disadvantaged_group: int):
         super().__init__(name="Calders")
         self.preferable_class = preferable_class

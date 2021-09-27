@@ -2,7 +2,7 @@
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -14,6 +14,7 @@ __all__ = ["Blind"]
 class Blind(InAlgorithm):
     """Returns a random label."""
 
+    @parsable
     def __init__(self, seed: int = 888) -> None:
         super().__init__(name="Blind", is_fairness_algo=False)
         self.seed = seed

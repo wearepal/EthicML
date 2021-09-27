@@ -2,6 +2,7 @@
 from pathlib import Path
 from typing import List, Optional
 
+from kit import parsable
 from sklearn.svm import SVC
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmAsync
@@ -14,6 +15,7 @@ __all__ = ["SVMAsync"]
 class SVMAsync(InAlgorithmAsync):
     """Support Vector Machine."""
 
+    @parsable
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
         super().__init__(name="SVM", is_fairness_algo=False)
         self.flags = {

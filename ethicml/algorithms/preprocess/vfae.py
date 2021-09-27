@@ -2,6 +2,8 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
+from kit import parsable
+
 from .interface import flag_interface
 from .pre_algorithm import PreAlgorithmAsync
 
@@ -11,6 +13,7 @@ __all__ = ["VFAE"]
 class VFAE(PreAlgorithmAsync):
     """VFAE Object - see implementation file for details."""
 
+    @parsable
     def __init__(
         self,
         dataset: str,

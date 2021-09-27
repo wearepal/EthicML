@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import git
+from kit import parsable
 
 from .in_algorithm import InAlgorithmAsync
 
@@ -22,6 +23,7 @@ __all__ = ["InstalledModel"]
 class InstalledModel(InAlgorithmAsync):
     """the model that does the magic."""
 
+    @parsable
     def __init__(
         self,
         name: str,

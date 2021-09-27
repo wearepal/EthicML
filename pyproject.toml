@@ -21,11 +21,11 @@ keywords=["ml", "fairness"]
 repository="https://github.com/predictive-analytics-lab/EthicML"
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0"
+python = "^3.7.1"
 GitPython = "^3.1"
 matplotlib = ">=3.0.2"
 numpy = ">=1.20.1"
-palkit = ">=0.1.10"
+palkit = "^0.4.1"
 pandas = "^1.0"
 pipenv = ">=2018.11.26"
 Pillow = "^8.1.2"

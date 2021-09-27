@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Tuple
 from typing_extensions import Literal
 
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
@@ -21,6 +21,7 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
+    @parsable
     def __init__(self, strategy: Literal["uniform", "preferential", "naive"] = "uniform"):
         super().__init__(name=f"Upsample {strategy}")
 

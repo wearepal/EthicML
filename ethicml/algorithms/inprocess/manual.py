@@ -1,7 +1,7 @@
 """Manually specified (i.e. not learned) models."""
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -18,6 +18,7 @@ class Corels(InAlgorithm):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
+    @parsable
     def __init__(self) -> None:
         """Constructor of the class."""
         super().__init__(name="CORELS")

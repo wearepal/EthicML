@@ -2,6 +2,8 @@
 from pathlib import Path
 from typing import Dict, List, Sequence, Union
 
+from kit import parsable
+
 from ethicml.utility import FairnessType
 
 from .interface import flag_interface
@@ -13,6 +15,7 @@ __all__ = ["Beutel"]
 class Beutel(PreAlgorithmAsync):
     """Beutel's adversarially learned fair representations."""
 
+    @parsable
     def __init__(
         self,
         fairness: FairnessType = "DP",

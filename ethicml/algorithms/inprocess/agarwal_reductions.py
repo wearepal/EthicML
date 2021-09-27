@@ -2,6 +2,8 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Union
 
+from kit import parsable
+
 from ethicml.utility import ClassifierType, FairnessType
 
 from .in_algorithm import InAlgorithmAsync
@@ -17,6 +19,7 @@ VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 class Agarwal(InAlgorithmAsync):
     """Agarwal class."""
 
+    @parsable
     def __init__(
         self,
         fairness: FairnessType = "DP",

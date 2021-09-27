@@ -5,7 +5,7 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -22,6 +22,7 @@ class Kamishima(InstalledModel):
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
     """
 
+    @parsable
     def __init__(self, eta: float = 1.0):
         super().__init__(
             name="Kamishima",

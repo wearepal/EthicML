@@ -7,6 +7,7 @@ from typing import Any, ClassVar, Dict, List, Union
 from typing_extensions import Final
 
 import pandas as pd
+from kit import parsable
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -80,6 +81,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 class ZafarBaseline(_ZafarAlgorithmBase):
     """Zafar without fairness."""
 
+    @parsable
     def __init__(self) -> None:
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
@@ -92,6 +94,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
+    @parsable
     def __init__(self, gamma: float = 0.5):
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
@@ -105,6 +108,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
+    @parsable
     def __init__(self, c: float = 0.001):
         super().__init__(name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT)
         self._c = c
@@ -121,6 +125,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _mode: ClassVar[str] = "fnr"  # class level constant
     _base_name: ClassVar[str] = "ZafarEqOpp"
 
+    @parsable
     def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
         super().__init__(name=f"{self._base_name}, τ={tau}, μ={mu}", sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
@@ -147,3 +152,7 @@ class ZafarEqOdds(ZafarEqOpp):
 
     _mode: ClassVar[str] = "fprfnr"
     _base_name: ClassVar[str] = "ZafarEqOdds"
+
+    @parsable
+    def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
+        super().__init__(tau=tau, mu=mu, eps=eps)

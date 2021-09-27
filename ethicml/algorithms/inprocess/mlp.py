@@ -2,7 +2,7 @@
 from typing import Dict, Optional, Tuple
 
 import pandas as pd
-from kit import implements
+from kit import implements, parsable
 from sklearn.neural_network import MLPClassifier
 
 from ethicml.utility import ActivationType, DataTuple, Prediction, TestTuple
@@ -23,6 +23,7 @@ ACTIVATIONS: Dict[str, ActivationType] = {
 class MLP(InAlgorithm):
     """Multi-layer Perceptron."""
 
+    @parsable
     def __init__(
         self,
         hidden_layer_sizes: Optional[Tuple[int]] = None,

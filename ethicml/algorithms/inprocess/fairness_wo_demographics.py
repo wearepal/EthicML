@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from kit import implements
+from kit import implements, parsable
 
 from .in_algorithm import InAlgorithmAsync
 from .shared import flag_interface
@@ -14,6 +14,7 @@ __all__ = ["DRO"]
 class DRO(InAlgorithmAsync):
     """Implementation of https://arxiv.org/abs/1806.08010 ."""
 
+    @parsable
     def __init__(
         self,
         eta: float = 0.5,
