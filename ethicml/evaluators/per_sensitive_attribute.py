@@ -20,7 +20,7 @@ class MetricNotApplicable(Exception):
 
 
 def metric_per_sensitive_attribute(
-    prediction: Prediction, actual: DataTuple, metric: Metric
+    prediction: Prediction, actual: DataTuple, metric: Metric, use_sens_name: bool = True
 ) -> Dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
@@ -64,7 +64,7 @@ def metric_per_sensitive_attribute(
                     pred_y = Prediction(
                         hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
                     )
-                key = s_col + "_" + str(unique_s)
+                key = (s_col if use_sens_name else "S") + "_" + str(unique_s)
                 per_sensitive_attr[key] = metric.score(pred_y, subset)
 
     return per_sensitive_attr

@@ -1,8 +1,12 @@
 """How would a perfect predictor perform?"""
 from kit import implements
 
-from ethicml import DataTuple, InAlgorithm, Prediction, TestTuple
 from ethicml.algorithms.postprocess.dp_flip import DPFlip
+from ethicml.utility import DataTuple, Prediction, TestTuple
+
+from .in_algorithm import InAlgorithm
+
+__all__ = ["Oracle", "DPOracle"]
 
 
 class Oracle(InAlgorithm):
@@ -20,7 +24,7 @@ class Oracle(InAlgorithm):
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
-        return Prediction(hard=test.y[test.y.columns[0]])
+        return Prediction(hard=test.y[test.y.columns[0]].copy())
 
 
 class DPOracle(InAlgorithm):
@@ -39,5 +43,5 @@ class DPOracle(InAlgorithm):
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         flipper = DPFlip()
-        test_preds = Prediction(test.y[test.y.columns[0]])
+        test_preds = Prediction(test.y[test.y.columns[0]].copy())
         return flipper.run(test_preds, test, test_preds, test)

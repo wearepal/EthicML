@@ -63,6 +63,7 @@ def run_metrics(
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
+    use_sens_name: bool = True,
 ) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
@@ -72,6 +73,8 @@ def run_metrics(
         metrics: list of metrics
         per_sens_metrics: list of metrics that are computed per sensitive attribute
         diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute
+        use_sens_name: if True, use the name of the senisitive variable in the returned results.
+                        If False, refer to the sensitive varibale as `S`.
     """
     result: Dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
@@ -80,7 +83,7 @@ def run_metrics(
         result[metric.name] = metric.score(predictions, actual)
 
     for metric in per_sens_metrics:
-        per_sens = metric_per_sensitive_attribute(predictions, actual, metric)
+        per_sens = metric_per_sensitive_attribute(predictions, actual, metric, use_sens_name)
         if diffs_and_ratios:
             diff_per_sens = diff_per_sensitive_attribute(per_sens)
             ratio_per_sens = ratio_per_sensitive_attribute(per_sens)
@@ -150,6 +153,7 @@ def evaluate_models(
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
     scaler: Optional[ScalerType] = None,
+    dataset_based_results: bool = True,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
@@ -167,6 +171,8 @@ def evaluate_models(
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
         fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
+        dataset_based_results: if True, use the name of the senisitive variable in the
+                                returned results. If False, refer to the sensitive varibale as `S`.
     """
     # pylint: disable=too-many-arguments
     per_sens_metrics_check(per_sens_metrics)
@@ -259,7 +265,15 @@ def evaluate_models(
 
                     predictions: Prediction = model.run(transformed_train, transformed_test)
 
-                    temp_res.update(run_metrics(predictions, test, metrics, per_sens_metrics))
+                    temp_res.update(
+                        run_metrics(
+                            predictions=predictions,
+                            actual=test,
+                            metrics=metrics,
+                            per_sens_metrics=per_sens_metrics,
+                            use_sens_name=dataset_based_results,
+                        )
+                    )
 
                     for _ in postprocess_models:
                         # Post-processing has yet to be defined
