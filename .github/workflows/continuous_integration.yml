@@ -104,9 +104,10 @@ jobs:
 
     steps:
       #----------------------------------------------
-      #  -----         install python         -----
+      #       check-out repo and set-up python
       #----------------------------------------------
-      - uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v2
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
