@@ -1,3 +1,4 @@
+"""Test the 'per sensitive attribute' evaluations."""
 from typing import Dict, NamedTuple, Tuple
 
 import pytest
@@ -150,17 +151,25 @@ PER_SENS = [
 def test_metric_per_sens_attr(
     dataset: Dataset, classifier: InAlgorithm, metric: Metric, expected_values: Dict[str, float]
 ):
-    """test accuracy per sens attr"""
+    """Test accuracy per sens attr."""
     data: DataTuple = load_data(dataset)
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = classifier
     predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(predictions, test, metric)
-
     try:
-        for key in acc_per_sens:
-            assert acc_per_sens[key] == approx(expected_values[key], abs=0.001)
+        for key, value in acc_per_sens.items():
+            assert value == approx(expected_values[key], abs=0.001)
+    except AssertionError:
+        print({key: round(value, 3) for key, value in acc_per_sens.items()})
+        raise AssertionError
+
+    acc_per_sens = metric_per_sensitive_attribute(predictions, test, metric, use_sens_name=False)
+    try:
+        for key, value in expected_values.items():
+            # Check that the sensitive attribute name is now just 'S'.
+            assert acc_per_sens[f"S_{''.join(key.split('_')[1:])}"] == approx(value, abs=0.001)
     except AssertionError:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
         raise AssertionError
