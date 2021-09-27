@@ -138,7 +138,7 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install -E ci --no-interaction --no-root --no-dev
+        run: poetry install -E ci --no-interaction --no-root
       - name: Set up Poetry cache for Python dependencies
         uses: actions/cache@v2
         if: startsWith(runner.os, 'Linux')
