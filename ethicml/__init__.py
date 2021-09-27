@@ -11,6 +11,7 @@ from .algorithms.inprocess.logistic_regression import *
 from .algorithms.inprocess.majority import *
 from .algorithms.inprocess.manual import *
 from .algorithms.inprocess.mlp import *
+from .algorithms.inprocess.oracle import *
 from .algorithms.inprocess.svm import *
 from .algorithms.inprocess.svm_async import *
 from .algorithms.inprocess.zafar import *

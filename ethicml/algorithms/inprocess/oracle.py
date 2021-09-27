@@ -4,6 +4,8 @@ from kit import implements
 from ethicml import DataTuple, InAlgorithm, Prediction, TestTuple
 from ethicml.algorithms.postprocess.dp_flip import DPFlip
 
+__all__ = ["Oracle", "DPOracle"]
+
 
 class Oracle(InAlgorithm):
     """A perfect predictor.
