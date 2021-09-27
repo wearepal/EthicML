@@ -20,7 +20,7 @@ def toy_train_test() -> TrainTestPair:
     data: DataTuple = em.toy().load()
     train: DataTuple
     test: DataTuple
-    train, test = em.train_test_split(data)
+    train, test = em.train_test_split(data, random_seed=0)
     return TrainTestPair(train, test)
 
 

@@ -20,6 +20,7 @@ from ethicml import (
     Corels,
     CrossValidator,
     DataTuple,
+    DPOracle,
     Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
@@ -28,6 +29,7 @@ from ethicml import (
     LRProb,
     Majority,
     Metric,
+    Oracle,
     Prediction,
     ProbPos,
     SoftPrediction,
@@ -43,7 +45,6 @@ from ethicml import (
     toy,
     train_test_split,
 )
-from ethicml.algorithms.inprocess.oracle import DPOracle, Oracle
 from tests.run_algorithm_test import count_true
 
 
@@ -56,15 +57,17 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="SVM", model=SVM(), num_pos=45),
-    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
-    InprocessTest(name="Majority", model=Majority(), num_pos=80),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
-    InprocessTest(name="MLP", model=MLP(), num_pos=43),
-    InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
-    InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
+    InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5), num_pos=45),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0), num_pos=59),
+    InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
+    InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
+    InprocessTest(name="Majority", model=Majority(), num_pos=80),
+    InprocessTest(name="MLP", model=MLP(), num_pos=43),
+    InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
+    InprocessTest(name="SVM", model=SVM(), num_pos=45),
+    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
 ]
 
 
@@ -78,56 +81,9 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
+    print(f"{test.y.sum()}")
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
-
-
-def test_oracle():
-    """Test an inprocess model."""
-    data: DataTuple = toy().load()
-    train, test = train_test_split(data)
-
-    model = Oracle()
-    name = "Oracle"
-    num_pos = 41
-
-    assert isinstance(model, InAlgorithm)
-    assert model.name == name
-
-    predictions: Prediction = model.run(train, test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
-
-    test = test.remove_y()
-    with pytest.raises(AssertionError):
-        _ = model.run(train, test)
-
-
-def test_dp_oracle():
-    """Test an inprocess model."""
-    data: DataTuple = toy().load()
-    train, test = train_test_split(data)
-
-    model = DPOracle()
-    name = "DemPar. Oracle"
-    num_pos = 53
-
-    assert isinstance(model, InAlgorithm)
-    assert model.name == name
-
-    predictions: Prediction = model.run(train, test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
-
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(predictions, test, ProbPos())
-    )
-    for name, diff in diffs.items():
-        assert 0 == pytest.approx(diff, abs=1e-2)
-
-    test = test.remove_y()
-    with pytest.raises(AssertionError):
-        _ = model.run(train, test)
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
