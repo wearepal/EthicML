@@ -131,7 +131,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
       #----------------------------------------------
       # install dependencies if cache does not exist
@@ -139,16 +139,9 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install -E ci --no-interaction --no-root
-      - name: Set up Poetry cache for Python dependencies
-        uses: actions/cache@v2
-        if: startsWith(runner.os, 'Linux')
-        with:
-          path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ runner.os }}-poetry-
 
         #----------------------------------------------
-        #  -----  install & configure poetry  -----
+        #  -----           Run Tests          -----
         #----------------------------------------------
       - name: Test with pytest
         run: |
