@@ -99,8 +99,6 @@ jobs:
   test_with_pytest:
     needs: [lint_with_pylint, format_with_black_and_isort, type_check_with_mypy, check_docstrings]
     runs-on: ubuntu-latest
-    env:
-      POETRY_VIRTUALENVS_CREATE: false
 
     steps:
       #----------------------------------------------
