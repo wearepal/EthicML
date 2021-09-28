@@ -1,19 +1,15 @@
 """Implementation of Agarwal model."""
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Union
+from typing import Dict, List, Optional, Union
 
 from kit import parsable
 
-from ethicml.utility import ClassifierType, FairnessType
+from ethicml.utility import ClassifierType, FairnessType, str_to_enum
 
 from .in_algorithm import InAlgorithmAsync
-from .shared import flag_interface, settings_for_svm_lr
+from .shared import SVMKernel, flag_interface, settings_for_svm_lr
 
 __all__ = ["Agarwal"]
-
-
-VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
-VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
 class Agarwal(InAlgorithmAsync):
@@ -22,26 +18,25 @@ class Agarwal(InAlgorithmAsync):
     @parsable
     def __init__(
         self,
-        fairness: FairnessType = "DP",
-        classifier: ClassifierType = "LR",
+        fairness: Union[str, FairnessType] = FairnessType.DP,
+        classifier: Union[str, ClassifierType] = ClassifierType.LR,
         eps: float = 0.1,
         iters: int = 50,
         C: Optional[float] = None,
-        kernel: Optional[str] = None,
+        kernel: Optional[Union[str, SVMKernel]] = None,
     ):
-        if fairness not in VALID_FAIRNESS:
-            raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
-        if classifier not in VALID_MODELS:
-            raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
-        super().__init__(name=f"Agarwal, {classifier}, {fairness}")
+        super().__init__(name=f"Agarwal, {str(classifier).upper()}, {fairness}")
+        fairness = str_to_enum(fairness, enum=FairnessType)
+        classifier = str_to_enum(classifier, enum=ClassifierType)
+        kernel = None if kernel is None else str_to_enum(kernel.upper(), enum=SVMKernel)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {
-            "classifier": classifier,
-            "fairness": fairness,
+            "classifier": str(classifier),
+            "fairness": str(fairness),
             "eps": eps,
             "iters": iters,
             "C": chosen_c,
-            "kernel": chosen_kernel,
+            "kernel": str(chosen_kernel),
         }
 
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:

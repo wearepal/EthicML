@@ -11,6 +11,8 @@ from .pre_algorithm import PreAlgorithmAsync
 
 __all__ = ["Beutel"]
 
+from ethicml.utility import str_to_enum
+
 
 class Beutel(PreAlgorithmAsync):
     """Beutel's adversarially learned fair representations."""
@@ -18,7 +20,7 @@ class Beutel(PreAlgorithmAsync):
     @parsable
     def __init__(
         self,
-        fairness: FairnessType = "DP",
+        fairness: Union[str, FairnessType] = FairnessType.DP,
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),
@@ -32,9 +34,10 @@ class Beutel(PreAlgorithmAsync):
         validation_pcnt: float = 0.1,
     ):
         # pylint: disable=too-many-arguments
-        super().__init__(name=f"Beutel {fairness}")
+        super().__init__(name=f"Beutel {str(fairness)}")
+        fairness = str_to_enum(fairness, enum=FairnessType)
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
-            "fairness": fairness,
+            "fairness": str(fairness),
             "enc_size": enc_size,
             "adv_size": adv_size,
             "pred_size": pred_size,

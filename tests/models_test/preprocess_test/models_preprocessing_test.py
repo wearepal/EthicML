@@ -1,4 +1,4 @@
-"""Test preprocessing models"""
+"""Test preprocessing models."""
 from typing import Tuple
 
 import numpy as np
@@ -25,7 +25,7 @@ from ethicml import (
 
 
 def test_vfae(toy_train_test: TrainTestPair):
-    """test vfae"""
+    """Test vfae."""
     train, test = toy_train_test
 
     vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
@@ -80,7 +80,7 @@ def test_vfae(toy_train_test: TrainTestPair):
 
 
 def test_threaded_zemel(toy_train_test: TrainTestPair):
-    """test threaded zemel"""
+    """Test threaded zemel."""
     train, test = toy_train_test
 
     model: PreAlgorithmAsync = Zemel()
@@ -123,20 +123,21 @@ def test_threaded_zemel(toy_train_test: TrainTestPair):
 
 
 def test_threaded_beutel(toy_train_test: TrainTestPair):
-    """test threaded beutel"""
+    """Test threaded beutel."""
     train, test = toy_train_test
+    _NAME = "Beutel DP"
 
     model: PreAlgorithmAsync = Beutel()
     assert model is not None
-    assert model.name == "Beutel DP"
+    assert model.name == f"{_NAME}"
 
     new_train_test: Tuple[DataTuple, TestTuple] = em.run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel DP: " + str(test.name)
-    assert new_train.name == "Beutel DP: " + str(train.name)
+    assert new_test.name == f"{_NAME}: " + str(test.name)
+    assert new_train.name == f"{_NAME}: " + str(train.name)
 
     classifier: InAlgorithm = SVM()
     assert classifier is not None
@@ -148,15 +149,15 @@ def test_threaded_beutel(toy_train_test: TrainTestPair):
 
     beut_model: PreAlgorithm = Beutel()
     assert beut_model is not None
-    assert beut_model.name == "Beutel DP"
+    assert beut_model.name == f"{_NAME}"
 
     new_train_test = beut_model.run(train, test)
     new_train, new_test = new_train_test
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel DP: " + str(test.name)
-    assert new_train.name == "Beutel DP: " + str(train.name)
+    assert new_test.name == f"{_NAME}: " + str(test.name)
+    assert new_train.name == f"{_NAME}: " + str(train.name)
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
@@ -168,7 +169,7 @@ def test_threaded_beutel(toy_train_test: TrainTestPair):
 
 
 def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
-    """test threaded custom beutel"""
+    """Test threaded custom beutel."""
     train, test = toy_train_test
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
@@ -211,7 +212,7 @@ def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
 
 
 def test_upsampler(toy_train_test: TrainTestPair):
-    """test upsampler"""
+    """Test Upsampler."""
     train, test = toy_train_test
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
@@ -258,7 +259,7 @@ def test_upsampler(toy_train_test: TrainTestPair):
 
 
 def test_calders():
-    """test calders"""
+    """Test Calders."""
     data = DataTuple(
         x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
         s=pd.DataFrame([1] * 75 + [0] * 25, columns=["s"]),

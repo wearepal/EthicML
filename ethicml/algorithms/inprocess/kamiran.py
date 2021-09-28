@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -9,13 +9,12 @@ from sklearn.linear_model import LogisticRegression
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm
-from .shared import settings_for_svm_lr
+from .shared import SVMKernel, settings_for_svm_lr
 from .svm import select_svm
 
 __all__ = ["Kamiran", "compute_instance_weights"]
 
-
-VALID_MODELS = {"LR", "SVM"}
+from ethicml.utility import str_to_enum
 
 
 class Kamiran(InAlgorithm):
@@ -24,15 +23,14 @@ class Kamiran(InAlgorithm):
     @parsable
     def __init__(
         self,
-        classifier: ClassifierType = "LR",
+        classifier: Union[ClassifierType, str] = ClassifierType.LR,
         C: Optional[float] = None,
         kernel: Optional[str] = None,
     ):
-        super().__init__(name=f"Kamiran & Calders {classifier}")
-        if classifier not in VALID_MODELS:
-            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
-        self.classifier = classifier
-        self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
+        super().__init__(name=f"Kamiran & Calders {str(classifier).upper()}")
+        self.classifier = str_to_enum(classifier, enum=ClassifierType)
+        kernel = str_to_enum(kernel, enum=SVMKernel) if kernel is not None else None
+        self.C, self.kernel = settings_for_svm_lr(self.classifier, C, kernel)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:

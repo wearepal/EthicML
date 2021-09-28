@@ -15,7 +15,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.train_test_split import train_test_split
-from ethicml.utility import DataTuple, FairnessType, TestTuple
+from ethicml.utility import DataTuple, FairnessType, TestTuple, str_to_enum
 
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
@@ -40,6 +40,12 @@ class BeutelArgs(PreAlgoArgs):
     epochs: int
     adv_weight: float
     validation_pcnt: float
+
+    def add_arguments(self):
+        """Add mapper function for non-builtin types."""
+        self.add_argument(
+            "--fairness", type=lambda t: str_to_enum(t, enum=FairnessType), required=True
+        )
 
 
 def set_seed(seed: int):
@@ -150,12 +156,14 @@ def train_and_transform(
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags.fairness == "EqOp":
+            if flags.fairness is FairnessType.EQOP:
                 mask = class_label.ge(0.5)
-            elif flags.fairness == "EqOd":
+            elif flags.fairness is FairnessType.EQOD:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags.fairness == "DP":
+            elif flags.fairness is FairnessType.DP:
                 mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+            else:
+                raise ValueError("FairnessType not valid.")
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
             )
@@ -199,14 +207,16 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
     scheduler.step(iteration)
 
 
-def get_mask(flags: BeutelArgs, s_pred, class_label):
+def get_mask(flags: BeutelArgs, s_pred, class_label) -> torch.Tensor:
     """Get a mask to enforce different fairness types."""
-    if flags.fairness == "EqOp":
+    if flags.fairness is FairnessType.EQOP:
         mask = class_label.ge(0.5)
-    elif flags.fairness == "EqOd":
+    elif flags.fairness is FairnessType.EQOD:
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags.fairness == "DP":
+    elif flags.fairness is FairnessType.DP:
         mask = torch.ones(s_pred.shape, dtype=torch.uint8)
+    else:
+        raise ValueError("Fairness Type not valid.")
 
     return mask
 
@@ -325,13 +335,13 @@ class Adversary(nn.Module):
         """Forward pass."""
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness == "EqOp":
+        if self.fairness is FairnessType.EQOP:
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness == "EqOd":
+        elif self.fairness is FairnessType.EQOD:
             raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness == "DP":
+        elif self.fairness is FairnessType.DP:
             x = self.adversary(x)
         return x
 

@@ -162,7 +162,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         def _script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
         ) -> (List[str]):
-            script = "./tests/local_installed_lr.py"
+            script = str(Path(__file__).parent.parent.parent / "local_installed_lr.py")
             return [
                 script,
                 str(train_path),

@@ -6,6 +6,8 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
+from ethicml import str_to_enum
+from ethicml.algorithms.inprocess.shared import SVMKernel
 from ethicml.algorithms.inprocess.svm import select_svm
 from ethicml.utility import ClassifierType, DataTuple, FairnessType, Prediction, TestTuple
 
@@ -20,7 +22,21 @@ class AgarwalArgs(InAlgoArgs):
     eps: float
     iters: int
     C: float
-    kernel: str
+    kernel: SVMKernel
+
+    def add_arguments(self):
+        """Add mapper function for non-builtin types."""
+        self.add_argument(
+            "--fairness", type=lambda t: str_to_enum(t, enum=FairnessType), required=True
+        )
+        self.add_argument(
+            "--classifier", type=lambda c: str_to_enum(c, enum=ClassifierType), required=True
+        )
+        self.add_argument(
+            "--kernel",
+            type=lambda k: str_to_enum(k, enum=SVMKernel) if k != '' else None,
+            required=True,
+        )
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
@@ -38,12 +54,12 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
     np.random.seed(888)
 
     fairness_class: ConditionalSelectionRate
-    if args.fairness == "DP":
+    if args.fairness is FairnessType.DP:
         fairness_class = DemographicParity()
     else:
         fairness_class = EqualizedOdds()
 
-    if args.classifier == "SVM":
+    if args.classifier is ClassifierType.SVM:
         model = select_svm(args.C, args.kernel)
     else:
         model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=args.C)

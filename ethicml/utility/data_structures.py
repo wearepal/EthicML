@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from enum import Enum, auto
 from pathlib import Path
 from typing import (
     Callable,
@@ -15,12 +16,14 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TypeVar,
     Union,
 )
 from typing_extensions import Final, Literal, TypeGuard
 
 import numpy as np
 import pandas as pd
+from kit import enum_name_str
 from pandas.testing import assert_index_equal
 
 __all__ = [
@@ -41,6 +44,7 @@ __all__ = [
     "filter_results",
     "make_results",
     "map_over_results_index",
+    "str_to_enum",
 ]
 
 AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -317,7 +321,15 @@ def concat_tt(
     )
 
 
-FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
+class FairnessType(Enum):
+    """Fairness Type to enforce."""
+
+    DP = "DP"
+    EQOP = "EqOp"
+    EQOD = "EqOd"
+
+    def __str__(self):
+        return self.value
 
 
 def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
@@ -325,8 +337,22 @@ def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
     return fair_str in {"DP", "EqOd", "EqOp"}
 
 
-ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType = Literal["identity", "logistic", "tanh", "relu"]  # pylint: disable=invalid-name
+@enum_name_str
+class ClassifierType(Enum):
+    """Classifier Type."""
+
+    LR = auto()
+    SVM = auto()
+
+
+@enum_name_str
+class ActivationType(Enum):
+    """Activation Type for predefined networks."""
+
+    IDENTITY = auto()
+    LOGISTIC = auto()
+    TANH = auto()
+    RELU = auto()
 
 
 class TrainTestPair(NamedTuple):
@@ -430,3 +456,28 @@ def aggregate_results(
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
+
+
+E = TypeVar("E", covariant=False, bound=Enum)
+
+
+def str_to_enum(str_: str | E, *, enum: type[E]) -> E:
+    """Convert a string to an enum based on name instead of value.
+
+    If the string is not a valid name of a member of the target enum,
+    an error will be raised.
+
+    :param str_: String to be converted to an enum member of type ``enum``.
+    :param enum: Enum class to convert ``str_`` to.
+
+    :returns: The enum member of type ``enum`` with name ``str_``.
+    """
+    if isinstance(str_, enum):
+        return str_
+    try:
+        return enum[str_.upper()]  # type: ignore
+    except KeyError:
+        valid_ls = [mem.name for mem in enum]
+        raise TypeError(
+            f"'{str_}' is not a valid option for enum '{enum.__name__}'; must be one of {valid_ls}."
+        )

@@ -11,12 +11,17 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
+from ethicml.utility import str_to_enum
+
+from .shared import SVMKernel
+
 
 class SVM(InAlgorithm):
     """Support Vector Machine."""
 
     @parsable
-    def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
+    def __init__(self, C: Optional[float] = None, kernel: Optional[Union[str, SVMKernel]] = None):
+        kernel = kernel if kernel is None else str_to_enum(kernel, enum=SVMKernel)
         kernel_name = f" ({kernel})" if kernel is not None else ""
         super().__init__(name="SVM" + kernel_name, is_fairness_algo=False)
         self.C = SVC().C if C is None else C
@@ -29,8 +34,8 @@ class SVM(InAlgorithm):
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: str) -> SVC:
+def select_svm(C: float, kernel: SVMKernel) -> SVC:
     """Select the appropriate SVM model for the given parameters."""
-    if kernel == "linear":
+    if kernel is SVMKernel.LINEAR:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=888)
-    return SVC(C=C, kernel=kernel, gamma="auto", random_state=888)
+    return SVC(C=C, kernel=str(kernel), gamma="auto", random_state=888)
