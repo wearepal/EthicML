@@ -110,7 +110,7 @@ def get_biased_subset(
         [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
     )
 
-    if mix_fact == 0:
+    if mix_fact == 0.0:
         # s and y should be very correlated in the biased subset
         assert all(biased_subset.s[s_name] == biased_subset.y[y_name])
 
@@ -241,7 +241,7 @@ def get_biased_and_debiased_subsets(
     # s and y should not be correlated in the debiased subset
     assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.5
 
-    if mixing_factor == 0:
+    if mixing_factor == 0.0:
         # s and y should be very correlated in the biased subset
         assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
 
