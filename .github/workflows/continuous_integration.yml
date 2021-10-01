@@ -72,7 +72,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install mypy
         pip install git+https://github.com/predictive-analytics-lab/python-type-stubs.git
-        pip install typed-argument-parser==1.4 teext numpy>=1.20.1 palkit Pillow GitPython
+        pip install typed-argument-parser==1.4 teext numpy>=1.20.1 palkit types-Pillow GitPython
     - name: Type check with mypy
       run: |
         python run_mypy.py
@@ -136,7 +136,7 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install -E ci --no-interaction --no-root
+        run: poetry install -E ci --no-interaction --no-root --no-dev
 
       #----------------------------------------------
       #  -----           Run Tests          -----
