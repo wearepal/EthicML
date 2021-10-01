@@ -58,6 +58,7 @@ pylint = "^2.7.4"
 pytest = "^6.2.2"
 pytest-cov = "^2.11.1"
 python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", rev = "63b7ae5"}
+types-Pillow = "^8.3.4"
 
 
 [tool.black]
