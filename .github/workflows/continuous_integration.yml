@@ -72,7 +72,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install mypy
         pip install git+https://github.com/predictive-analytics-lab/python-type-stubs.git
-        pip install typed-argument-parser==1.4 teext numpy>=1.20.1 palkit
+        pip install typed-argument-parser==1.4 teext numpy>=1.20.1 palkit Pillow GitPython
     - name: Type check with mypy
       run: |
         python run_mypy.py
