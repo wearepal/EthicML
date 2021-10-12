@@ -108,14 +108,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venvEM-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venvEM2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install -E ci --no-interaction --no-root --no-dev
+        run: poetry install -E ci --no-interaction --no-root
 
 
       #----------------------------------------------
