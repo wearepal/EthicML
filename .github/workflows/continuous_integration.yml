@@ -123,8 +123,8 @@ jobs:
       #----------------------------------------------
       - name: Type check with mypy
         run: |
-          python run_mypy.py
-          python run_mypy_tests.py
+          poetry run python run_mypy.py
+          poetry run python run_mypy_tests.py
 
       #----------------------------------------------
       #  -----           Run Tests            -----
