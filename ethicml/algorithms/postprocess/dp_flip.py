@@ -12,8 +12,9 @@ from .post_algorithm import PostAlgorithm
 class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
-    def __init__(self) -> None:
+    def __init__(self, seed: int = 888) -> None:
         super().__init__(name="DemPar. Post Process")
+        self.seed = seed
 
     @implements(PostAlgorithm)
     def run(
@@ -24,16 +25,21 @@ class DPFlip(PostAlgorithm):
         test: TestTuple,
     ) -> Prediction:
         x, y = self._fit(test, test_predictions)
-        _test_preds = self._flip(test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0)
-        return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1)
+        _test_preds = self._flip(
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+        )
+        return self._flip(
+            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
+        )
 
+    @staticmethod
     def _flip(
-        self,
         preds: Prediction,
         dt: TestTuple,
         flip_0_to_1: bool,
         num_to_flip: int,
         s_group: int,
+        seed: int,
     ) -> Prediction:
         if num_to_flip >= 0:
             pre_y_val = 0 if flip_0_to_1 else 1
@@ -46,8 +52,8 @@ class DPFlip(PostAlgorithm):
         _y = preds.hard[preds.hard == pre_y_val]
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
         idx_s_y = _y.index & _s.index
-        rng = np.random.RandomState(888)
-        idxs = [i for i in rng.permutation(idx_s_y)]
+        rng = np.random.RandomState(seed)
+        idxs = list(rng.permutation(idx_s_y))
         preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
         return preds
 

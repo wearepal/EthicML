@@ -71,7 +71,7 @@ class LdColorizer(LdTransformation):
             greyscale: Whether to greyscale the colorised images. Defaults to False.
             color_indices: Choose specific colors if you don't need all 10
         """
-        super(LdColorizer, self).__init__()
+        super().__init__()
         self.min_val = min_val
         self.max_val = max_val
         self.scale: np.ndarray = scale * np.eye(3)

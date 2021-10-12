@@ -53,6 +53,10 @@ class Hsic(Metric):
 
     _name: str = "HSIC"
 
+    def __init__(self, pos_class: int = 1, seed: int = 888) -> None:
+        super().__init__(pos_class=pos_class)
+        self.seed = seed
+
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """We add the ability to take the average of hsic score.
 
@@ -66,7 +70,7 @@ class Hsic(Metric):
 
         together = np.hstack((preds, sens_labels)).transpose()
 
-        random = RandomState(seed=888)
+        random = RandomState(seed=self.seed)
         col_idx = random.permutation(together.shape[1])
 
         together = np.take(together, col_idx, axis=1)

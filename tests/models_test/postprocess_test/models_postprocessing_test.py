@@ -34,7 +34,7 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
         em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     for diff in diffs.values():
-        assert 0 == pytest.approx(diff, abs=1e-2)
+        assert pytest.approx(diff, abs=1e-2) == 0
 
 
 def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
@@ -65,7 +65,7 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
         em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     for diff in diffs.values():
-        assert 0 == pytest.approx(diff, abs=1e-2)
+        assert pytest.approx(diff, abs=1e-2) == 0
 
 
 def test_hardt(toy_train_test: TrainTestPair) -> None:

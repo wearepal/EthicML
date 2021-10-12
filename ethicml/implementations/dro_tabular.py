@@ -22,9 +22,12 @@ class DroArgs(InAlgoArgs):
     epochs: int
     eta: float
     network_size: List[int]
+    seed: int
 
 
-def train_model(epoch: int, model: DROClassifier, train_loader: DataLoader, optimizer: Optimizer):
+def train_model(
+    epoch: int, model: DROClassifier, train_loader: DataLoader, optimizer: Optimizer
+) -> None:
     """Train a model."""
     model.train()
     train_loss = 0.0
@@ -39,17 +42,18 @@ def train_model(epoch: int, model: DROClassifier, train_loader: DataLoader, opti
         train_loss += loss.item()
         if batch_idx % 100 == 0:
             print(
-                f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
+                f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"  # type: ignore[arg-type]
                 f"\t({100. * batch_idx / len(train_loader):.0f}%)]"
                 f"\tLoss: {loss.item() / len(data_x):.6f}"
             )
 
-    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
+    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")  # type: ignore[arg-type]
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftPrediction:
     """Train a network and return predictions."""
     # Set up the data
+    set_seed(args.seed)
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=args.batch_size)
 
@@ -80,9 +84,8 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
     return SoftPrediction(soft=pd.Series([j for i in post_test for j in i]))
 
 
-def main():
+def main() -> None:
     """This function runs the FWD model as a standalone program on tabular data."""
-    set_seed(888)
     args = DroArgs().parse_args()
     train, test = load_data_from_flags(args)
     train_and_predict(train, test, args).to_npz(Path(args.predictions))

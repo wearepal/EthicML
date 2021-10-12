@@ -1,12 +1,30 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import torch
 import torch.nn.functional as F
 from torch import Tensor
 
 from ..pytorch_common import quadratic_time_mmd
+from ..utils import PreAlgoArgs
+from .vfae_network import LvInfo
+
+__all__ = ["VfaeArgs", "kullback_leibler", "loss_function"]
+
+
+class VfaeArgs(PreAlgoArgs):
+    """Args object of VFAE."""
+
+    supervised: bool
+    fairness: str
+    batch_size: int
+    epochs: int
+    dataset: str
+    z1_enc_size: List[int]
+    z2_enc_size: List[int]
+    z1_dec_size: List[int]
+    seed: int
 
 
 def kullback_leibler(
@@ -31,7 +49,15 @@ def kullback_leibler(
     )
 
 
-def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_dec, y_pred):
+def loss_function(
+    flags: VfaeArgs,
+    z1_triplet: LvInfo,
+    z2_triplet: Optional[LvInfo],
+    z1_d_triplet: Optional[LvInfo],
+    data_triplet: Tuple[Tensor, Tensor, Tensor],
+    x_dec: Tensor,
+    y_pred: Optional[Tensor],
+) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
     """Loss function for VFAE.
 
     Args:
@@ -48,8 +74,10 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
     """
     z1, z1_mu, z1_logvar = z1_triplet
     if flags.supervised:
-        z2, z2_mu, z2_logvar = z2_triplet
-        z1_dec, z1_dec_mu, z1_dec_logvar = z1_d_triplet
+        assert z2_triplet is not None
+        assert z1_d_triplet is not None
+        _, z2_mu, z2_logvar = z2_triplet
+        _, z1_dec_mu, z1_dec_logvar = z1_d_triplet
     x, s, y = data_triplet
 
     reconstruction_loss = F.mse_loss(x_dec, x, reduction="sum")
@@ -76,6 +104,7 @@ def loss_function(flags, z1_triplet, z2_triplet, z1_d_triplet, data_triplet, x_d
         first_kl = kullback_leibler(z2_mu, z2_logvar)
         second_kl = kullback_leibler(z1_dec_mu, z1_dec_logvar, z1_mu, z1_logvar)
         kl_div = first_kl + second_kl
+        assert y_pred is not None
         prediction_loss = F.binary_cross_entropy(y_pred, y, reduction="sum")
     else:
         kl_div = torch.zeros(1)

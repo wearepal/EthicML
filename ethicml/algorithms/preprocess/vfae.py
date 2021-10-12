@@ -21,6 +21,7 @@ class VFAE(PreAlgorithmAsync):
         z1_enc_size: Optional[List[int]] = None,
         z2_enc_size: Optional[List[int]] = None,
         z1_dec_size: Optional[List[int]] = None,
+        seed: int = 888,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(name="VFAE")
@@ -41,6 +42,7 @@ class VFAE(PreAlgorithmAsync):
             "z1_enc_size": z1_enc_size,
             "z2_enc_size": z2_enc_size,
             "z1_dec_size": z1_dec_size,
+            "seed": seed,
         }
 
     def _script_command(

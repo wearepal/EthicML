@@ -3,7 +3,7 @@
 # pylint: disable=arguments-differ
 
 import random
-from typing import Any, List, Sequence, Tuple
+from typing import Any, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -40,9 +40,10 @@ class BeutelArgs(PreAlgoArgs):
     epochs: int
     adv_weight: float
     validation_pcnt: float
+    seed: int
 
 
-def set_seed(seed: int):
+def set_seed(seed: int) -> None:
     """Set the seeds for numpy torch etc."""
     random.seed(seed)
     np.random.seed(seed)
@@ -50,7 +51,12 @@ def set_seed(seed: int):
     torch.cuda.manual_seed_all(seed)
 
 
-def build_networks(flags: BeutelArgs, train_data: CustomDataset, enc_activation, adv_activation):
+def build_networks(
+    flags: BeutelArgs,
+    train_data: CustomDataset,
+    enc_activation: nn.Module,
+    adv_activation: nn.Module,
+) -> Tuple[nn.Module, nn.Module]:
     """Build the networks we use.
 
     Pulled into a separate function to make the code a bit neater.
@@ -101,7 +107,7 @@ def train_and_transform(
     train: DataTuple, test: TestTuple, flags: BeutelArgs
 ) -> Tuple[DataTuple, TestTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
-    set_seed(888)
+    set_seed(flags.seed)
 
     post_process = False
     if flags.y_loss == "BCELoss()":
@@ -183,6 +189,7 @@ def train_and_transform(
                 best_val_loss = val_loss
                 best_enc = enc.state_dict()
 
+    assert best_enc is not None
     enc.load_state_dict(best_enc)
 
     transformed_train = encode_dataset(enc, all_train_data_loader, train)
@@ -199,7 +206,7 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
     scheduler.step(iteration)
 
 
-def get_mask(flags: BeutelArgs, s_pred, class_label):
+def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
     if flags.fairness == "EqOp":
         mask = class_label.ge(0.5)
@@ -252,13 +259,13 @@ class GradReverse(Function):
     """Gradient reversal layer."""
 
     @staticmethod
-    def forward(ctx, x: Tensor, lambda_: float) -> Tensor:  # type: ignore[override]
+    def forward(ctx: Any, x: Tensor, lambda_: float) -> Any:  # type: ignore[override]
         """Forward pass."""
         ctx.lambda_ = lambda_
         return x.view_as(x)
 
     @staticmethod
-    def backward(ctx, grad_output):
+    def backward(ctx: Any, grad_output: Tensor) -> Any:  # type: ignore[override]
         """Backward pass with Gradient reversed / inverted."""
         return grad_output.neg().mul(ctx.lambda_), None
 
@@ -270,7 +277,7 @@ def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
 class Encoder(nn.Module):
     """Encoder of the GAN."""
 
-    def __init__(self, enc_size: Sequence[int], init_size: int, activation):
+    def __init__(self, enc_size: Sequence[int], init_size: int, activation: Optional[nn.Module]):
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -384,7 +391,7 @@ class Model(nn.Module):
         return encoded, s_hat, y_hat
 
 
-def main():
+def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
     args = BeutelArgs().parse_args()
     train, test = load_data_from_flags(args)

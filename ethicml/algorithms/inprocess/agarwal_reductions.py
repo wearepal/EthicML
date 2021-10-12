@@ -25,6 +25,7 @@ class Agarwal(InAlgorithmAsync):
         iters: int = 50,
         C: Optional[float] = None,
         kernel: Optional[str] = None,
+        seed: int = 888,
     ):
         if fairness not in VALID_FAIRNESS:
             raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
@@ -39,6 +40,7 @@ class Agarwal(InAlgorithmAsync):
             "iters": iters,
             "C": chosen_c,
             "kernel": chosen_kernel,
+            "seed": seed,
         }
 
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:

@@ -88,7 +88,7 @@ class LdTransformedDataset(DatasetWrapper):
         label_independent: bool = False,
         correlation: float = 1.0,
     ):
-        super().__init__(dataset=dataset, transform=ld_transform)
+        super().__init__(dataset=dataset, transform=ld_transform)  # type: ignore[arg-type]
 
         if not 0 <= correlation <= 1:
             raise ValueError("Label correlation must be between 0 and 1.")
