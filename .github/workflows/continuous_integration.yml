@@ -76,7 +76,7 @@ jobs:
         pydocstyle --count -e ethicml
 
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, type_check_with_mypy, check_docstrings]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
     runs-on: ubuntu-latest
 
     steps:
