@@ -35,40 +35,39 @@ def LFR_optim_objective(
     A_x: float,
     A_y: float,
     A_z: float,
-    print_interval,
-    verbose,
+    print_interval: int,
+    verbose: bool,
 ) -> np.number:
     """LFR optim objective."""
-    num_unprivileged, features_dim = x_unprivileged.shape
-    num_privileged, _ = x_privileged.shape
+    _, features_dim = x_unprivileged.shape
 
     w = parameters[:clusters]
     prototypes = parameters[clusters:].reshape((clusters, features_dim))
 
-    M_unprivileged, x_hat_unprivileged, y_hat_unprivileged = get_xhat_y_hat(
+    m_unprivileged, x_hat_unprivileged, y_hat_unprivileged = get_xhat_y_hat(
         prototypes, w, x_unprivileged
     )
 
-    M_privileged, x_hat_privileged, y_hat_privileged = get_xhat_y_hat(prototypes, w, x_privileged)
+    m_privileged, x_hat_privileged, y_hat_privileged = get_xhat_y_hat(prototypes, w, x_privileged)
 
     y_hat = np.concatenate([y_hat_unprivileged, y_hat_privileged], axis=0)
     y = np.concatenate([y_unprivileged.reshape((-1, 1)), y_privileged.reshape((-1, 1))], axis=0)
 
-    L_x = np.mean((x_hat_unprivileged - x_unprivileged) ** 2) + np.mean(
+    l_x = np.mean((x_hat_unprivileged - x_unprivileged) ** 2) + np.mean(
         (x_hat_privileged - x_privileged) ** 2
     )
-    L_z = np.mean(abs(np.mean(M_unprivileged, axis=0) - np.mean(M_privileged, axis=0)))
-    L_y = -np.mean(y * np.log(y_hat) + (1.0 - y) * np.log(1.0 - y_hat))
+    l_z = np.mean(abs(np.mean(m_unprivileged, axis=0) - np.mean(m_privileged, axis=0)))
+    l_y = -np.mean(y * np.log(y_hat) + (1.0 - y) * np.log(1.0 - y_hat))
 
-    total_loss = A_x * L_x + A_y * L_y + A_z * L_z
+    total_loss = A_x * l_x + A_y * l_y + A_z * l_z
 
     if verbose and LFR_optim_objective.steps % print_interval == 0:  # type: ignore[attr-defined]
         print(
             f"step: {LFR_optim_objective.steps}, "  # type: ignore[attr-defined]
             f"loss: {total_loss}, "
-            f"L_x: {L_x},  "
-            f"L_y: {L_y},  "
-            f"L_z: {L_z}"
+            f"L_x: {l_x},  "
+            f"L_y: {l_y},  "
+            f"L_z: {l_z}"
         )
     LFR_optim_objective.steps += 1  # type: ignore[attr-defined]
 
@@ -102,7 +101,7 @@ def train_and_transform(
     print_interval = 100
     verbose = False
 
-    num_train_samples, features_dim = train.x.shape
+    _, features_dim = train.x.shape
 
     # Initialize the LFR optim objective parameters
     parameters_initialization = np.random.uniform(
@@ -148,11 +147,13 @@ def train_and_transform(
     )
 
 
-def trans(prototypes, w, nonsens, sens, dataset):
+def trans(
+    prototypes: np.ndarray, w: np.ndarray, nonsens: np.ndarray, sens: np.ndarray, dataset: TestTuple
+) -> pd.DataFrame:
     """Trans."""
-    _, features_hat_nonsensitive, labels_hat_nonsensitive = get_xhat_y_hat(prototypes, w, nonsens)
+    _, features_hat_nonsensitive, _ = get_xhat_y_hat(prototypes, w, nonsens)
 
-    _, features_hat_sensitive, labels_hat_sensitive = get_xhat_y_hat(prototypes, w, sens)
+    _, features_hat_sensitive, _ = get_xhat_y_hat(prototypes, w, sens)
 
     sens_col = dataset.s.columns[0]
 
@@ -167,7 +168,19 @@ def trans(prototypes, w, nonsens, sens, dataset):
 
 
 def main() -> None:
-    """Main method to run model."""
+    """LFR Model.
+
+    Learning fair representations is a pre-processing technique that finds a
+    latent representation which encodes the data well but obfuscates information
+    about protected attributes [2]_.
+
+    References:
+        .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
+           Fair Representations." International Conference on Machine Learning,
+           2013.
+    Based on code from https://github.com/zjelveh/learning-fair-representations
+    Which in turn, we've got from AIF360
+    """
     args = ZemelArgs()
     args.parse_args()
 
@@ -176,14 +189,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    """Learning fair representations is a pre-processing technique that finds a
-    latent representation which encodes the data well but obfuscates information
-    about protected attributes [2]_.
-    References:
-        .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
-           Fair Representations." International Conference on Machine Learning,
-           2013.
-    Based on code from https://github.com/zjelveh/learning-fair-representations
-    Which in turn, we've got from AIF360
-    """
     main()

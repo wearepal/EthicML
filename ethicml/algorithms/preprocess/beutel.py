@@ -27,6 +27,7 @@ class Beutel(PreAlgorithmAsync):
         epochs: int = 50,
         adv_weight: float = 1.0,
         validation_pcnt: float = 0.1,
+        seed: int = 888,
     ):
         # pylint: disable=too-many-arguments
         super().__init__(name=f"Beutel {fairness}")
@@ -43,6 +44,7 @@ class Beutel(PreAlgorithmAsync):
             "epochs": epochs,
             "adv_weight": adv_weight,
             "validation_pcnt": validation_pcnt,
+            "seed": seed,
         }
 
     def _script_command(

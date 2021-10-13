@@ -39,7 +39,7 @@ def load_data_from_flags(args: AlgoArgs) -> Tuple[DataTuple, TestTuple]:
     return DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
 
 
-def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoArgs):
+def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoArgs) -> None:
     """Save the data to the file that was specified in the commandline arguments."""
     train, test = transforms
     assert isinstance(train, DataTuple)

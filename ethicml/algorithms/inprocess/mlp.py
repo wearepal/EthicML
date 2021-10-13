@@ -1,6 +1,7 @@
 """Wrapper for SKLearn implementation of MLP."""
 from typing import Dict, Optional, Tuple
 
+import numpy as np
 import pandas as pd
 from kit import implements
 from sklearn.neural_network import MLPClassifier
@@ -27,6 +28,7 @@ class MLP(InAlgorithm):
         self,
         hidden_layer_sizes: Optional[Tuple[int]] = None,
         activation: Optional[ActivationType] = None,
+        seed: int = 888,
     ):
         super().__init__(name="MLP", is_fairness_algo=False)
         if hidden_layer_sizes is None:
@@ -36,18 +38,22 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
+        self.seed = seed
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        clf = select_mlp(self.hidden_layer_sizes, self.activation)
+        clf = select_mlp(self.hidden_layer_sizes, self.activation, seed=self.seed)
         clf.fit(train.x, train.y.to_numpy().ravel())
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
-def select_mlp(hidden_layer_sizes: Tuple[int], activation: ActivationType) -> MLPClassifier:
+def select_mlp(
+    hidden_layer_sizes: Tuple[int], activation: ActivationType, seed: int
+) -> MLPClassifier:
     """Create MLP model for the given parameters."""
     assert activation in ACTIVATIONS
 
+    random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(
-        hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=888
+        hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=random_state
     )

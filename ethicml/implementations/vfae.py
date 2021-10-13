@@ -8,24 +8,12 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 
 from ethicml.data.lookup import get_dataset_obj_by_name
+from ethicml.implementations.beutel import set_seed
 from ethicml.utility import DataTuple, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
-from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
-from .vfae_modules import VFAENetwork, loss_function
-
-
-class VfaeArgs(PreAlgoArgs):
-    """Args object of VFAE."""
-
-    supervised: bool
-    fairness: str
-    batch_size: int
-    epochs: int
-    dataset: str
-    z1_enc_size: List[int]
-    z2_enc_size: List[int]
-    z1_dec_size: List[int]
+from .utils import load_data_from_flags, save_transformations
+from .vfae_modules import VfaeArgs, VFAENetwork, loss_function
 
 
 def train_and_transform(
@@ -41,6 +29,7 @@ def train_and_transform(
     Returns:
         Tuple of Encoded Train Dataset and Test Dataset.
     """
+    set_seed(flags.seed)
     dataset = get_dataset_obj_by_name(flags.dataset)()
 
     # Set up the data
@@ -102,7 +91,7 @@ def train_model(
         None
     """
     model.train()
-    train_loss = 0
+    train_loss = 0.0
     for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):
         data_x = data_x.to("cpu")
         data_s = data_s.to("cpu")
@@ -121,7 +110,7 @@ def train_model(
         if batch_idx % 100 == 0:
             if flags.supervised:
                 print(
-                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
+                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"  # type: ignore[arg-type]
                     f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"pred_loss: {prediction_loss.item():.6f}\t"
@@ -131,17 +120,17 @@ def train_model(
                 )
             else:
                 print(
-                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
+                    f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"  # type: ignore[arg-type]
                     f"({100. * batch_idx / len(train_loader):.0f}%)]\t"
                     f"Loss: {loss.item() / len(data_x):.6f}\t"
                     f"recon_loss: {reconstruction_loss.item():.6f}\t"
                     f"mmd_loss: {flags.batch_size * mmd_loss.item():.6f}"
                 )
 
-    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
+    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")  # type: ignore[arg-type]
 
 
-def main():
+def main() -> None:
     """Main method to run model."""
     args = VfaeArgs(explicit_bool=True).parse_args()
     train, test = load_data_from_flags(args)

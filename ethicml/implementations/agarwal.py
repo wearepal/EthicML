@@ -21,9 +21,10 @@ class AgarwalArgs(InAlgoArgs):
     iters: int
     C: float
     kernel: str
+    seed: int
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
+def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data."""
     try:
         from fairlearn.reductions import (
@@ -34,8 +35,9 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
         )
     except ImportError as e:
         raise RuntimeError("In order to use Agarwal, install fairlearn.") from e
-    random.seed(888)
-    np.random.seed(888)
+
+    random.seed(args.seed)
+    np.random.seed(args.seed)
 
     fairness_class: ConditionalSelectionRate
     if args.fairness == "DP":
@@ -44,9 +46,12 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
         fairness_class = EqualizedOdds()
 
     if args.classifier == "SVM":
-        model = select_svm(args.C, args.kernel)
+        model = select_svm(C=args.C, kernel=args.kernel, seed=args.seed)
     else:
-        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=args.C)
+        random_state = np.random.RandomState(seed=args.seed)
+        model = LogisticRegression(
+            solver="liblinear", random_state=random_state, max_iter=5000, C=args.C
+        )
 
     data_x = train.x
     data_y = train.y[train.y.columns[0]]
@@ -66,7 +71,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs):
     return preds
 
 
-def main():
+def main() -> None:
     """This function runs the Agarwal model as a standalone program."""
     args: AgarwalArgs = AgarwalArgs().parse_args()
     train, test = DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))

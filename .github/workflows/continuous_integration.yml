@@ -57,27 +57,6 @@ jobs:
       run: |
         isort . --check --diff
 
-  type_check_with_mypy:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-    - name: Install mypy
-      run: |
-        python -m pip install --upgrade pip
-        pip install mypy
-        pip install git+https://github.com/predictive-analytics-lab/python-type-stubs.git
-        pip install typed-argument-parser==1.4 teext numpy>=1.20.1 palkit types-Pillow GitPython
-    - name: Type check with mypy
-      run: |
-        python run_mypy.py
-        python run_mypy_tests.py
-
   check_docstrings:
 
     runs-on: ubuntu-latest
@@ -97,7 +76,7 @@ jobs:
         pydocstyle --count -e ethicml
 
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, type_check_with_mypy, check_docstrings]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
     runs-on: ubuntu-latest
 
     steps:
@@ -129,17 +108,26 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venvEM-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          key: venvEM2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install -E ci --no-interaction --no-root --no-dev
+        run: poetry install -E ci --no-interaction --no-root
+
 
       #----------------------------------------------
-      #  -----           Run Tests          -----
+      #  -----           Run MyPy             -----
+      #----------------------------------------------
+      - name: Type check with mypy
+        run: |
+          poetry run python run_mypy.py
+          poetry run python run_mypy_tests.py
+
+      #----------------------------------------------
+      #  -----           Run Tests            -----
       #----------------------------------------------
       - name: Test with pytest
         run: |

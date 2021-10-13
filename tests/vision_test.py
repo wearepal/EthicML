@@ -15,7 +15,7 @@ def test_label_dependent_transforms(transform):
     data = torch.rand((9, 3, 4, 4))
     labels = torch.randint(low=0, high=10, size=(9,))
 
-    colorizer = emvi.LdColorizer(
+    colorizer = transform(
         scale=0.02,
         min_val=0.0,
         max_val=1.0,

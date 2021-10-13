@@ -25,7 +25,9 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
     return datatup.apply_to_joined_df(_query_func)
 
 
-def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTuple, DataTuple]:
+def domain_split(
+    datatup: DataTuple, tr_cond: str, te_cond: str, seed: int = 888
+) -> Tuple[DataTuple, DataTuple]:
     """Splits a datatuple based on a condition.
 
     Args:
@@ -49,7 +51,7 @@ def domain_split(datatup: DataTuple, tr_cond: str, te_cond: str) -> Tuple[DataTu
 
     train_train_pcnt = (1 - (test_pct * 2)) / train_pct
 
-    train_train = train_dataset.sample(frac=train_train_pcnt, random_state=888)
+    train_train = train_dataset.sample(frac=train_train_pcnt, random_state=seed)
     test_train = train_dataset.drop(train_train.index, axis="index")  # type: ignore[arg-type]
 
     test = pd.concat([test_train, test_dataset], axis="index")

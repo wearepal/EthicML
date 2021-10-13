@@ -1,7 +1,7 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 
-from typing import Any, List, Optional, Tuple
+from typing import Any, List, NamedTuple, Optional, Tuple
 
 import torch
 from torch import Tensor, nn
@@ -10,6 +10,14 @@ from ethicml.data.dataset import Dataset
 
 from .decoder import Decoder
 from .encoder import Encoder
+
+
+class LvInfo(NamedTuple):
+    """Hold Latent Variable Information."""
+
+    embed: Tensor
+    mean: Tensor
+    logvar: Tensor
 
 
 class VFAENetwork(nn.Module):
@@ -65,13 +73,7 @@ class VFAENetwork(nn.Module):
 
     def forward(
         self, x: Tensor, s: Tensor, y: Tensor
-    ) -> Tuple[
-        Tuple[Tensor, Tensor, Tensor],
-        Optional[Tuple[Tensor, Tensor, Tensor]],
-        Optional[Tuple[Tensor, Tensor, Tensor]],
-        Tensor,
-        Optional[Tensor],
-    ]:
+    ) -> Tuple[LvInfo, Optional[LvInfo], Optional[LvInfo], Tensor, Optional[Tensor],]:
         """Forward pass for network."""
         z1_mu, z1_logvar = self.encode_z1(x, s)
         z1 = self.reparameterize(z1_mu, z1_logvar)
@@ -90,8 +92,8 @@ class VFAENetwork(nn.Module):
 
             y_pred = torch.sigmoid(self.ypred(z1))
 
-            z2_triplet = z2, z2_mu, z2_logvar
-            z1_d_triplet = z1_dec, z1_dec_mu, z1_dec_logvar
+            z2_triplet = LvInfo(embed=z2, mean=z2_mu, logvar=z2_logvar)
+            z1_d_triplet = LvInfo(embed=z1_dec, mean=z1_dec_mu, logvar=z1_dec_logvar)
 
         else:
             x_dec = self.x_dec(z1, s)
@@ -99,6 +101,6 @@ class VFAENetwork(nn.Module):
             z1_d_triplet = None
             y_pred = None
 
-        z1_triplet = z1, z1_mu, z1_logvar
+        z1_triplet = LvInfo(embed=z1, mean=z1_mu, logvar=z1_logvar)
 
         return z1_triplet, z2_triplet, z1_d_triplet, x_dec, y_pred

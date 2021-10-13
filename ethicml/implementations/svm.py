@@ -12,9 +12,10 @@ class SvmArgs(InAlgoArgs):
 
     c: float
     kernel: str
+    seed: int
 
 
-def main():
+def main() -> None:
     """This function runs the SVM model as a standalone program."""
     args = SvmArgs().parse_args()
     with open(args.train, "rb") as train_file:
@@ -23,10 +24,11 @@ def main():
     with open(args.test, "rb") as test_file:
         test = np.load(test_file)
         test_x = test["x"]
+    random_state = np.random.RandomState(seed=args.seed)
     if args.kernel == "linear":
-        clf = LinearSVC(C=args.c, dual=False, tol=1e-12, random_state=888)
+        clf = LinearSVC(C=args.c, dual=False, tol=1e-12, random_state=random_state)
     else:
-        clf = SVC(C=args.c, kernel=args.kernel, gamma="auto", random_state=888)
+        clf = SVC(C=args.c, kernel=args.kernel, gamma="auto", random_state=random_state)
     clf.fit(train_x, train_y.ravel())
     predictions = clf.predict(test_x)
     np.savez(Path(args.predictions), hard=predictions)
