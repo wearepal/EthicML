@@ -103,6 +103,12 @@ MLP
 
 .. automodule:: ethicml.algorithms.inprocess.mlp
 
+
+Oracle
+------
+
+.. automodule:: ethicml.algorithms.inprocess.oracle
+
 SVM
 ---
 
@@ -127,6 +133,12 @@ Postprocess base
 ----------------
 
 .. automodule:: ethicml.algorithms.postprocess.post_algorithm
+
+
+DP Flip
+-------
+
+.. automodule:: ethicml.algorithms.postprocess.dp_flip
 
 Hardt
 -----

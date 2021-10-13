@@ -60,6 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.majority">Majority</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.manual">Manual methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.mlp">MLP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.oracle">Oracle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm">SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm_async">Asynchronous SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.inprocess.zafar">Zafar</a></li>
@@ -67,6 +68,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ethicml.algorithms.postprocess">Postprocess algorithms</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.postprocess.post_algorithm">Postprocess base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.postprocess.dp_flip">DP Flip</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ethicml.algorithms.postprocess.hardt">Hardt</a></li>
 </ul>
 </li>
@@ -133,15 +135,17 @@
 <li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.majority" id="id17">Majority</a></p></li>
 <li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.manual" id="id18">Manual methods</a></p></li>
 <li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.mlp" id="id19">MLP</a></p></li>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm" id="id20">SVM</a></p></li>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm_async" id="id21">Asynchronous SVM</a></p></li>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.zafar" id="id22">Zafar</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.oracle" id="id20">Oracle</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm" id="id21">SVM</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.svm_async" id="id22">Asynchronous SVM</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.inprocess.zafar" id="id23">Zafar</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess" id="id23">Postprocess algorithms</a></p>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess" id="id24">Postprocess algorithms</a></p>
 <ul>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess.post_algorithm" id="id24">Postprocess base</a></p></li>
-<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess.hardt" id="id25">Hardt</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess.post_algorithm" id="id25">Postprocess base</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess.dp_flip" id="id26">DP Flip</a></p></li>
+<li><p><a class="reference internal" href="#module-ethicml.algorithms.postprocess.hardt" id="id27">Hardt</a></p></li>
 </ul>
 </li>
 </ul>
@@ -2064,8 +2068,163 @@ simply the last part of the repository URL)</p></li>
 </dd></dl>
 
 </section>
+<section id="module-ethicml.algorithms.inprocess.oracle">
+<span id="oracle"></span><h3><a class="toc-backref" href="#id20">Oracle</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.oracle" title="Permalink to this headline"></a></h3>
+<p>How would a perfect predictor perform?</p>
+<p><strong>Classes:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.oracle.DPOracle" title="ethicml.algorithms.inprocess.oracle.DPOracle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DPOracle</span></code></a></p></td>
+<td><p>A perfect Demographic Parity Predictor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.oracle.Oracle" title="ethicml.algorithms.inprocess.oracle.Oracle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Oracle</span></code></a></p></td>
+<td><p>A perfect predictor.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DPOracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
+<p>A perfect Demographic Parity Predictor.</p>
+<p>Can only be used if test is a DataTuple, rather than the usual TestTuple.
+This model isn’t intended for general use,
+but can be useful if you want to either do a sanity check, or report potential values.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the algorithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.is_fairness_algo">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<dd><p>True if this class corresponds to a fair algorithm.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run Algorithm on the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predictions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.run_test" title="Permalink to this definition"></a></dt>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Oracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
+<p>A perfect predictor.</p>
+<p>Can only be used if test is a DataTuple, rather than the usual TestTuple.
+This model isn’t intended for general use,
+but can be useful if you want to either do a sanity check, or report potential values.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of the algorithm</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.is_fairness_algo">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<dd><p>True if this class corresponds to a fair algorithm.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run Algorithm on the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predictions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.run_test" title="Permalink to this definition"></a></dt>
+<dd><p>Run with reduced training set so that it finishes quicker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-ethicml.algorithms.inprocess.svm">
-<span id="svm"></span><h3><a class="toc-backref" href="#id20">SVM</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.svm" title="Permalink to this headline"></a></h3>
+<span id="svm"></span><h3><a class="toc-backref" href="#id21">SVM</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.svm" title="Permalink to this headline"></a></h3>
 <p>Wrapper for SKLearn implementation of SVM.</p>
 <p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
@@ -2148,7 +2307,7 @@ simply the last part of the repository URL)</p></li>
 
 </section>
 <section id="module-ethicml.algorithms.inprocess.svm_async">
-<span id="asynchronous-svm"></span><h3><a class="toc-backref" href="#id21">Asynchronous SVM</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.svm_async" title="Permalink to this headline"></a></h3>
+<span id="asynchronous-svm"></span><h3><a class="toc-backref" href="#id22">Asynchronous SVM</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.svm_async" title="Permalink to this headline"></a></h3>
 <p>Wrapper for SKLearn implementation of SVM.</p>
 <p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
@@ -2251,7 +2410,7 @@ simply the last part of the repository URL)</p></li>
 
 </section>
 <section id="module-ethicml.algorithms.inprocess.zafar">
-<span id="zafar"></span><h3><a class="toc-backref" href="#id22">Zafar</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.zafar" title="Permalink to this headline"></a></h3>
+<span id="zafar"></span><h3><a class="toc-backref" href="#id23">Zafar</a><a class="headerlink" href="#module-ethicml.algorithms.inprocess.zafar" title="Permalink to this headline"></a></h3>
 <p>Algorithms by Zafar et al. for Demographic Parity.</p>
 <p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
@@ -2791,10 +2950,10 @@ simply the last part of the repository URL)</p></li>
 </section>
 </section>
 <section id="module-ethicml.algorithms.postprocess">
-<span id="postprocess-algorithms"></span><h2><a class="toc-backref" href="#id23">Postprocess algorithms</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess" title="Permalink to this headline"></a></h2>
+<span id="postprocess-algorithms"></span><h2><a class="toc-backref" href="#id24">Postprocess algorithms</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess" title="Permalink to this headline"></a></h2>
 <p>Post-process algorithms take predictions and transform them.</p>
 <section id="module-ethicml.algorithms.postprocess.post_algorithm">
-<span id="postprocess-base"></span><h3><a class="toc-backref" href="#id24">Postprocess base</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess.post_algorithm" title="Permalink to this headline"></a></h3>
+<span id="postprocess-base"></span><h3><a class="toc-backref" href="#id25">Postprocess base</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess.post_algorithm" title="Permalink to this headline"></a></h3>
 <p>Abstract Base Class of all post-processing algorithms in the framework.</p>
 <p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
@@ -2850,8 +3009,71 @@ simply the last part of the repository URL)</p></li>
 </dd></dl>
 
 </section>
+<section id="module-ethicml.algorithms.postprocess.dp_flip">
+<span id="dp-flip"></span><h3><a class="toc-backref" href="#id26">DP Flip</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess.dp_flip" title="Permalink to this headline"></a></h3>
+<p>Demographic Parity Label flipping approach.</p>
+<p><strong>Classes:</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="ethicml.algorithms.postprocess.dp_flip.DPFlip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DPFlip</span></code></a></p></td>
+<td><p>Randomly flip a number of decisions such that perfect demographic parity is achieved.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DPFlip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
+<p>Randomly flip a number of decisions such that perfect demographic parity is achieved.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – name of the algorithm</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.name" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.run" title="Permalink to this definition"></a></dt>
+<dd><p>Make predictions fair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on a training set</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training set with the correct labels and sensitive attributes</p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on the test set</p></li>
+<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – the test set with the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>post-processed predictions on the test set</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-ethicml.algorithms.postprocess.hardt">
-<span id="hardt"></span><h3><a class="toc-backref" href="#id25">Hardt</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess.hardt" title="Permalink to this headline"></a></h3>
+<span id="hardt"></span><h3><a class="toc-backref" href="#id27">Hardt</a><a class="headerlink" href="#module-ethicml.algorithms.postprocess.hardt" title="Permalink to this headline"></a></h3>
 <p>Post-processing method by Hardt et al.</p>
 <p><strong>Classes:</strong></p>
 <table class="longtable docutils align-default">
