@@ -21,7 +21,7 @@ class CV(Metric):
             metric_per_sensitive_attribute,
         )
 
-        per_sens = metric_per_sensitive_attribute(prediction, actual, ProbPos())
+        per_sens = metric_per_sensitive_attribute(prediction, actual, metric=ProbPos())
         diffs = diff_per_sensitive_attribute(per_sens)
 
         return 1 - list(diffs.values())[0]

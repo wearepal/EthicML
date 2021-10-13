@@ -26,17 +26,19 @@ class Kamiran(InAlgorithm):
         classifier: ClassifierType = "LR",
         C: Optional[float] = None,
         kernel: Optional[str] = None,
+        seed: int = 888,
     ):
         super().__init__(name=f"Kamiran & Calders {classifier}")
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
+        self.seed = seed
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         return _train_and_predict(
-            train, test, classifier=self.classifier, C=self.C, kernel=self.kernel
+            train, test, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
         )
 
 
@@ -68,13 +70,16 @@ def compute_instance_weights(
 
 
 def _train_and_predict(
-    train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str
+    train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
 ) -> Prediction:
     """Train a logistic regression model and compute predictions on the given test data."""
     if classifier == "SVM":
-        model = select_svm(C, kernel)
+        model = select_svm(C=C, kernel=kernel, seed=seed)
     else:
-        model = LogisticRegression(solver="liblinear", random_state=888, max_iter=5000, C=C)
+        random_state = np.random.RandomState(seed=seed)
+        model = LogisticRegression(
+            solver="liblinear", random_state=random_state, max_iter=5000, C=C
+        )
     model.fit(
         train.x,
         train.y.to_numpy().ravel(),

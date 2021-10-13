@@ -143,8 +143,8 @@ def test_tpr_diff_non_binary_race():
         "race_4": approx(0.16, abs=0.01),
     }
 
-    for key in tprs:
-        assert tprs[key] == test_dict[key]
+    for key, val in tprs.items():
+        assert val == test_dict[key]
 
     tpr_diff = em.diff_per_sensitive_attribute(tprs)
     test_dict = {
@@ -160,8 +160,8 @@ def test_tpr_diff_non_binary_race():
         "race_3-race_4": approx(0.04, abs=0.01),
     }
 
-    for key in tpr_diff:
-        assert tpr_diff[key] == test_dict[key]
+    for key, val in tpr_diff.items():
+        assert val == test_dict[key]
 
 
 def test_tpr_ratio_non_binary_race():
@@ -181,8 +181,8 @@ def test_tpr_ratio_non_binary_race():
         "race_4": approx(0.16, abs=0.01),
     }
 
-    for key in tprs:
-        assert tprs[key] == test_dict[key]
+    for key, val in tprs.items():
+        assert val == test_dict[key]
 
     tpr_diff = em.ratio_per_sensitive_attribute(tprs)
     test_dict = {
@@ -198,8 +198,8 @@ def test_tpr_ratio_non_binary_race():
         "race_3/race_4": approx(0.74, abs=0.1),
     }
 
-    for key in tpr_diff:
-        assert tpr_diff[key] == test_dict[key]
+    for key, val in tpr_diff.items():
+        assert val == test_dict[key]
 
 
 def test_nb_acc():
@@ -240,7 +240,7 @@ def test_nb_tpr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z]))
+    print([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z])
 
     tpr_score = TPR(pos_class=1).score(predictions, test)
     assert tpr_score == 1.0
@@ -287,7 +287,7 @@ def test_nb_tnr():
     model = LR()
     predictions = model.run_test(train, test)
 
-    print(list([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z]))
+    print([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z])
 
     tnr_score = TNR(pos_class=1).score(predictions, test)
     assert tnr_score == 1.0

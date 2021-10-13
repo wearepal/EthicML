@@ -21,15 +21,18 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
-    def __init__(self, strategy: Literal["uniform", "preferential", "naive"] = "uniform"):
+    def __init__(
+        self, strategy: Literal["uniform", "preferential", "naive"] = "uniform", seed: int = 888
+    ):
         super().__init__(name=f"Upsample {strategy}")
 
         assert strategy in ["uniform", "preferential", "naive"]
         self.strategy = strategy
+        self.seed = seed
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        return upsample(train, test, self.strategy)
+        return upsample(train, test, self.strategy, self.seed)
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
@@ -54,7 +57,10 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
 
 
 def upsample(
-    dataset: DataTuple, test: TestTuple, strategy: Literal["uniform", "preferential", "naive"]
+    dataset: DataTuple,
+    test: TestTuple,
+    strategy: Literal["uniform", "preferential", "naive"],
+    seed: int,
 ) -> Tuple[DataTuple, TestTuple]:
     """Upsample a datatuple."""
     s_col = dataset.s.columns[0]
@@ -103,9 +109,9 @@ def upsample(
     upsampled: Dict[Tuple[int, int], DataTuple] = {}
     for key, val in data.items():
         all_data: pd.DataFrame = pd.concat([val.x, val.s, val.y], axis="columns")
-        all_data = all_data.sample(frac=percentages[key], random_state=1, replace=True).reset_index(
-            drop=True
-        )
+        all_data = all_data.sample(
+            frac=percentages[key], random_state=seed, replace=True
+        ).reset_index(drop=True)
         upsampled[key] = DataTuple(
             x=all_data[x_columns], s=all_data[s_columns], y=all_data[y_columns], name=dataset.name
         )

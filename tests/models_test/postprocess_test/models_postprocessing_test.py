@@ -2,17 +2,7 @@
 import pytest
 
 import ethicml as em
-from ethicml import (
-    LR,
-    Hardt,
-    InAlgorithm,
-    PostAlgorithm,
-    Prediction,
-    ProbPos,
-    TrainTestPair,
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-)
+from ethicml import LR, Hardt, InAlgorithm, PostAlgorithm, Prediction, ProbPos, TrainTestPair
 from ethicml.algorithms.postprocess.dp_flip import DPFlip
 from ethicml.utility.data_structures import TrainValPair
 from tests.run_algorithm_test import count_true
@@ -30,8 +20,8 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)  # type: ignore[call-overload]
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 
@@ -40,11 +30,11 @@ def test_dp_flip(toy_train_test: TrainValPair) -> None:
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert count_true(fair_preds.hard.values == 1) == 57
     assert count_true(fair_preds.hard.values == 0) == 23
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
+    diffs = em.diff_per_sensitive_attribute(
+        em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
-    for name, diff in diffs.items():
-        assert 0 == pytest.approx(diff, abs=1e-2)
+    for diff in diffs.values():
+        assert pytest.approx(diff, abs=1e-2) == 0
 
 
 def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
@@ -61,8 +51,8 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)  # type: ignore[call-overload]
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 
@@ -71,11 +61,11 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert count_true(fair_preds.hard.values == 1) == 57
     assert count_true(fair_preds.hard.values == 0) == 23
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
+    diffs = em.diff_per_sensitive_attribute(
+        em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
-    for name, diff in diffs.items():
-        assert 0 == pytest.approx(diff, abs=1e-2)
+    for diff in diffs.values():
+        assert pytest.approx(diff, abs=1e-2) == 0
 
 
 def test_hardt(toy_train_test: TrainTestPair) -> None:
@@ -94,8 +84,8 @@ def test_hardt(toy_train_test: TrainTestPair) -> None:
     predictions: Prediction = in_model.run(train, train_test)
 
     # seperate out predictions on train set and predictions on test set
-    pred_train = predictions.hard.iloc[: train.y.shape[0]]  # type: ignore[call-overload]
-    pred_test = predictions.hard.iloc[train.y.shape[0] :]  # type: ignore[call-overload]
+    pred_train = predictions.hard.iloc[: train.y.shape[0]]
+    pred_test = predictions.hard.iloc[train.y.shape[0] :]
     assert count_true(pred_test.values == 1) == 44
     assert count_true(pred_test.values == 0) == 36
 

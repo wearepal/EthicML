@@ -15,7 +15,7 @@ import os
 import sys
 from typing import List
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("../.."))
 
 
 # -- Project information -----------------------------------------------------
@@ -25,7 +25,7 @@ copyright = "2021, O. Thomas, T. Kehrenberg"
 author = "O. Thomas, T. Kehrenberg"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.0-alpha9"
+release = "0.3.3"
 
 
 # -- General configuration ---------------------------------------------------
@@ -38,9 +38,29 @@ autodoc_default_options = {
     "show-inheritance": True,
     "autosummary": True,
     "autosummary-no-nesting": True,
+    "autosummary-nosignatures": True,
     "special-members": "__len__",
 }
 autodoc_typehints = "description"
+autodoc_type_aliases = {
+    "pd.DataFrame": "pandas.DataFrame",
+}
+autodoc_mock_imports = [
+    "PIL",
+    "git",
+    "kit",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "scipy",
+    "seaborn",
+    "sklearn",
+    "teext",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "wandb",
+]
 napoleon_numpy_docstring = False  # Force consistency, leave only Google
 napoleon_use_rtype = False  # More legible
 add_module_names = False  # do not show classes and functions with full module name (ethicml.data..)

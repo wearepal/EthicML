@@ -31,14 +31,11 @@ from ethicml import (
     Metric,
     Oracle,
     Prediction,
-    ProbPos,
     SoftPrediction,
     TrainTestPair,
     compas,
-    diff_per_sensitive_attribute,
     evaluate_models_async,
     load_data,
-    metric_per_sensitive_attribute,
     query_dt,
     run_blocking,
     run_in_parallel,
@@ -81,7 +78,6 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
-    print(f"{test.y.sum()}")
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
 
@@ -162,7 +158,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         def _script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
         ) -> (List[str]):
-            script = "./tests/local_installed_lr.py"
+            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
             return [
                 script,
                 str(train_path),
@@ -220,6 +216,7 @@ def test_agarwal(toy_train_test: TrainTestPair):
         agarwal_variants, results, model_names, expected_results
     ):
         assert model.name == model_name
+        print(model.name)
         assert count_true(results_for_model[0].hard.to_numpy() == 1) == pred_true, model_name
         assert count_true(results_for_model[0].hard.to_numpy() == 0) == pred_false, model_name
 

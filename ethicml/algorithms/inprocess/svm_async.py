@@ -14,11 +14,12 @@ __all__ = ["SVMAsync"]
 class SVMAsync(InAlgorithmAsync):
     """Support Vector Machine."""
 
-    def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None):
+    def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None, seed: int = 888):
         super().__init__(name="SVM", is_fairness_algo=False)
         self.flags = {
             "c": SVC().C if C is None else C,
             "kernel": SVC().kernel if kernel is None else kernel,
+            "seed": seed,
         }
 
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:

@@ -63,8 +63,8 @@ def _calders_algorithm(
     dis_group_len = len(data[dis_group])
     adv_group_len = len(data[adv_group])
 
-    dis_group_rank = rank.soft.iloc[:dis_group_len]  # type: ignore[call-overload]
-    adv_group_rank = rank.soft.iloc[dis_group_len:].reset_index(drop=True)  # type: ignore[call-overload]
+    dis_group_rank = rank.soft.iloc[:dis_group_len]
+    adv_group_rank = rank.soft.iloc[dis_group_len:].reset_index(drop=True)
     assert len(adv_group_rank) == adv_group_len
 
     # sort the ranking

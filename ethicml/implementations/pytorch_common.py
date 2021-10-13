@@ -85,10 +85,10 @@ def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     x_sqnorms = torch.diagonal(xx_gm)
     y_sqnorms = torch.diagonal(yy_gm)
 
-    def pad_first(x):
+    def pad_first(x: Tensor) -> Tensor:
         return torch.unsqueeze(x, 0)
 
-    def pad_second(x):
+    def pad_second(x: Tensor) -> Tensor:
         return torch.unsqueeze(x, 1)
 
     gamma = 1 / (2 * sigma ** 2)
@@ -119,13 +119,13 @@ def compute_projection_gradients(
         loss_a (Tensor): Adversarial loss.
         alpha (float): Pre-factor for adversarial loss.
     """
-    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)
-    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)
+    grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
+    grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
 
     def _proj(a: Tensor, b: Tensor) -> Tensor:
         return b * torch.sum(a * b) / torch.sum(b * b)
 
-    grad_p = [p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a)]
+    grad_p = tuple(p - _proj(p, a) - alpha * a for p, a in zip(grad_p, grad_a))
 
     for param, grad in zip(model.parameters(), grad_p):
         param.grad = grad

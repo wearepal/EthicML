@@ -20,6 +20,7 @@ class DRO(InAlgorithmAsync):
         epochs: int = 10,
         batch_size: int = 32,
         network_size: Optional[List[int]] = None,
+        seed: int = 888,
     ):
         super().__init__(name="Dist Robust Optim")
         if network_size is None:
@@ -29,6 +30,7 @@ class DRO(InAlgorithmAsync):
             "batch_size": batch_size,
             "epochs": epochs,
             "network_size": network_size,
+            "seed": seed,
         }
 
     @implements(InAlgorithmAsync)

@@ -1,4 +1,4 @@
-"""Test preprocessing models"""
+"""Test preprocessing models."""
 from typing import Tuple
 
 import numpy as np
@@ -25,7 +25,7 @@ from ethicml import (
 
 
 def test_vfae(toy_train_test: TrainTestPair):
-    """test vfae"""
+    """Test vfae."""
     train, test = toy_train_test
 
     vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
@@ -80,7 +80,7 @@ def test_vfae(toy_train_test: TrainTestPair):
 
 
 def test_threaded_zemel(toy_train_test: TrainTestPair):
-    """test threaded zemel"""
+    """Test threaded zemel."""
     train, test = toy_train_test
 
     model: PreAlgorithmAsync = Zemel()
@@ -123,7 +123,7 @@ def test_threaded_zemel(toy_train_test: TrainTestPair):
 
 
 def test_threaded_beutel(toy_train_test: TrainTestPair):
-    """test threaded beutel"""
+    """Test threaded beutel."""
     train, test = toy_train_test
 
     model: PreAlgorithmAsync = Beutel()
@@ -168,7 +168,7 @@ def test_threaded_beutel(toy_train_test: TrainTestPair):
 
 
 def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
-    """test threaded custom beutel"""
+    """Test threaded custom beutel."""
     train, test = toy_train_test
 
     beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
@@ -211,7 +211,7 @@ def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
 
 
 def test_upsampler(toy_train_test: TrainTestPair):
-    """test upsampler"""
+    """Test upsampler."""
     train, test = toy_train_test
 
     upsampler: PreAlgorithm = Upsampler(strategy="naive")
@@ -231,8 +231,8 @@ def test_upsampler(toy_train_test: TrainTestPair):
     assert lr_model.name == "Logistic Regression (C=1.0)"
 
     predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 39
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 41
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 41
+    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 39
 
     upsampler = Upsampler(strategy="uniform")
     new_train, new_test = upsampler.run(train, test)
@@ -258,7 +258,7 @@ def test_upsampler(toy_train_test: TrainTestPair):
 
 
 def test_calders():
-    """test calders"""
+    """Test calders."""
     data = DataTuple(
         x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
         s=pd.DataFrame([1] * 75 + [0] * 25, columns=["s"]),
