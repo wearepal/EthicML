@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Postprocess algorithms &mdash; EthicML 0.1.0-alpha9 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Datasets" href="ethicml.data.html" />
+    <link rel="prev" title="Inprocess algorithms" href="ethicml.algorithms.inprocess.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> EthicML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.preprocess.html">Preprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Postprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EthicML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Postprocess algorithms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/ethicml.algorithms.postprocess.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-ethicml.algorithms.postprocess">
+<span id="postprocess-algorithms"></span><h1>Postprocess algorithms<a class="headerlink" href="#module-ethicml.algorithms.postprocess" title="Permalink to this headline">¶</a></h1>
+<p>Post-process algorithms take predictions and transform them.</p>
+<p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.Hardt" title="ethicml.algorithms.postprocess.Hardt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hardt</span></code></a>([unfavorable_label, favorable_label])</p></td>
+<td><p>Post-processing method by Hardt et al.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="ethicml.algorithms.postprocess.PostAlgorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PostAlgorithm</span></code></a>(name)</p></td>
+<td><p>Abstract Base Class for all algorithms that do post-processing.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="ethicml.algorithms.postprocess.Hardt">
+<em class="property">class </em><code class="sig-name descname">Hardt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unfavorable_label</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">favorable_label</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></p>
+<p>Post-processing method by Hardt et al.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – name of the algorithm</p></li>
+<li><p><strong>unfavorable_label</strong> (<em>int</em>) – </p></li>
+<li><p><strong>favorable_label</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="ethicml.algorithms.postprocess.Hardt.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ethicml.algorithms.postprocess.Hardt.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_predictions</span></em>, <em class="sig-param"><span class="n">train</span></em>, <em class="sig-param"><span class="n">test_predictions</span></em>, <em class="sig-param"><span class="n">test</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.Hardt.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make predictions fair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_predictions</strong> (<em>ethicml.utility.data_structures.Prediction</em>) – predictions on a training set</p></li>
+<li><p><strong>train</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – the training set with the correct labels and sensitive attributes</p></li>
+<li><p><strong>test_predictions</strong> (<em>ethicml.utility.data_structures.Prediction</em>) – predictions on the test set</p></li>
+<li><p><strong>test</strong> (<em>ethicml.utility.data_structures.TestTuple</em>) – the test set with the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>post-processed predictions on the test set</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ethicml.utility.data_structures.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="ethicml.algorithms.postprocess.PostAlgorithm">
+<em class="property">class </em><code class="sig-name descname">PostAlgorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></p>
+<p>Abstract Base Class for all algorithms that do post-processing.</p>
+<p>Base constructor for the Algorithm class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – name of the algorithm</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="ethicml.algorithms.postprocess.PostAlgorithm.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ethicml.algorithms.postprocess.PostAlgorithm.run">
+<em class="property">abstract </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_predictions</span></em>, <em class="sig-param"><span class="n">train</span></em>, <em class="sig-param"><span class="n">test_predictions</span></em>, <em class="sig-param"><span class="n">test</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.PostAlgorithm.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make predictions fair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_predictions</strong> (<em>ethicml.utility.data_structures.Prediction</em>) – predictions on a training set</p></li>
+<li><p><strong>train</strong> (<em>ethicml.utility.data_structures.DataTuple</em>) – the training set with the correct labels and sensitive attributes</p></li>
+<li><p><strong>test_predictions</strong> (<em>ethicml.utility.data_structures.Prediction</em>) – predictions on the test set</p></li>
+<li><p><strong>test</strong> (<em>ethicml.utility.data_structures.TestTuple</em>) – the test set with the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>post-processed predictions on the test set</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ethicml.utility.data_structures.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ethicml.data.html" class="btn btn-neutral float-right" title="Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethicml.algorithms.inprocess.html" class="btn btn-neutral float-left" title="Inprocess algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2019, O. Thomas, T. Kehrenberg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
