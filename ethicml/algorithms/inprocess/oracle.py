@@ -1,7 +1,7 @@
 """How would a perfect predictor perform?"""
 from kit import implements
 
-from ethicml import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from ..postprocess.dp_flip import DPFlip
 from .in_algorithm import InAlgorithm
