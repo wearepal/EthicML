@@ -15,6 +15,7 @@ from .algorithms.inprocess.oracle import *
 from .algorithms.inprocess.svm import *
 from .algorithms.inprocess.svm_async import *
 from .algorithms.inprocess.zafar import *
+from .algorithms.postprocess.dp_flip import *
 from .algorithms.postprocess.hardt import *
 from .algorithms.postprocess.post_algorithm import *
 from .algorithms.preprocess.beutel import *
