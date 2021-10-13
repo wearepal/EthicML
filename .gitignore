@@ -97,3 +97,5 @@ results/*
 !/ethicml/data/csvs/celeba.csv.zip
 !/ethicml/data/csvs/genfaces.csv.zip
 !/ethicml/data/csvs/health.csv.zip
+
+/docs/
