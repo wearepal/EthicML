@@ -1,5 +1,6 @@
 """Test the loading data capability."""
 from pathlib import Path
+from typing import NamedTuple
 
 import numpy as np
 import pandas as pd
@@ -18,108 +19,517 @@ def test_can_load_test_data(data_root: Path):
     assert data is not None
 
 
+class DT(NamedTuple):
+    """Describe data for the tests."""
+
+    dataset: em.Dataset
+    samples: int
+    x_features: int
+    discrete_features: int
+    s_features: int
+    num_sens: int
+    y_features: int
+    num_labels: int
+    name: str
+    sum_s: int
+    sum_y: int
+
+    def __repr__(self):
+        return f"{self.name}"
+
+
+def idfn(val: DT):
+    """Use the NamedTuple repr as the pytest ID."""
+    return f"{val}"
+
+
 @pytest.mark.parametrize(
-    "dataset,samples,x_features,discrete_features,s_features,num_sens,y_features,num_labels,name",
+    "dt",
     [
-        (em.admissions(), 43_303, 9, 0, 1, 2, 1, 2, "Admissions Gender"),
-        (em.adult(), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
-        (
-            em.adult("Sex", binarize_nationality=True),
-            45_222,
-            62,
-            57,
-            1,
-            2,
-            1,
-            2,
-            "Adult Sex, binary nationality",
+        DT(
+            dataset=em.admissions(),
+            samples=43_303,
+            x_features=9,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Admissions Gender",
+            sum_s=22_335,
+            sum_y=20_263,
         ),
-        (
-            em.adult("Sex", binarize_race=True),
-            45_222,
-            98,
-            93,
-            1,
-            2,
-            1,
-            2,
-            "Adult Sex, binary race",
+        DT(
+            dataset=em.admissions(split="Gender", invert_s=True),
+            samples=43_303,
+            x_features=9,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Admissions Gender",
+            sum_s=43_303 - 22_335,
+            sum_y=20_263,
         ),
-        (
-            em.adult("Sex", binarize_nationality=True, binarize_race=True),
-            45_222,
-            59,
-            54,
-            1,
-            2,
-            1,
-            2,
-            "Adult Sex, binary nationality, binary race",
+        DT(
+            dataset=em.adult(),
+            samples=45_222,
+            x_features=101,
+            discrete_features=96,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex",
+            sum_s=30_527,
+            sum_y=11_208,
         ),
-        (em.adult(split="Sex"), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
-        (em.adult(split=AdultSplits.SEX), 45_222, 101, 96, 1, 2, 1, 2, "Adult Sex"),
-        (em.adult(split="Race"), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
-        (em.adult(split=AdultSplits.RACE), 45_222, 98, 93, 1, 5, 1, 2, "Adult Race"),
-        (em.adult(split="Race-Binary"), 45_222, 98, 93, 1, 2, 1, 2, "Adult Race-Binary"),
-        (em.adult(split="Nationality"), 45_222, 62, 57, 1, 41, 1, 2, "Adult Nationality"),
-        (em.adult(split="Education"), 45_222, 86, 82, 1, 3, 1, 2, "Adult Education"),
-        (em.compas(), 6_167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
-        (em.compas(split="Sex"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Sex"),
-        (em.compas(split="Race"), 6_167, 400, 395, 1, 2, 1, 2, "Compas Race"),
-        (em.compas(split="Race-Sex"), 6_167, 399, 394, 1, 4, 1, 2, "Compas Race-Sex"),
-        (em.credit(), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
-        (em.credit(split="Sex"), 30_000, 29, 9, 1, 2, 1, 2, "Credit Sex"),
-        (em.crime(), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
-        (em.crime(split="Race-Binary"), 1_993, 136, 46, 1, 2, 1, 2, "Crime Race-Binary"),
-        (em.german(), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
-        (em.german(split="Sex"), 1_000, 57, 51, 1, 2, 1, 2, "German Sex"),
-        (em.health(), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
-        (em.health(split="Sex"), 171_067, 130, 12, 1, 2, 1, 2, "Health"),
-        (em.law(split="Sex"), 21_791, 3, 0, 1, 2, 1, 2, "Law Sex"),
-        (em.law(split="Race"), 21_791, 3, 0, 1, 2, 1, 2, "Law Race"),
-        (em.law(split="Sex-Race"), 21_791, 3, 0, 1, 16, 1, 2, "Law Sex-Race"),
-        (em.lipton(), 2_000, 2, 0, 1, 2, 1, 2, "Lipton"),
-        (em.nonbinary_toy(), 100, 2, 0, 1, 2, 1, 5, "NonBinaryToy"),
-        (em.sqf(), 12_347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
-        (em.sqf(split="Sex"), 12_347, 145, 139, 1, 2, 1, 2, "SQF Sex"),
-        (em.sqf(split="Race"), 12_347, 145, 139, 1, 2, 1, 2, "SQF Race"),
-        (em.sqf(split="Race-Sex"), 12_347, 144, 138, 1, 4, 1, 2, "SQF Race-Sex"),
-        (em.toy(), 400, 10, 8, 1, 2, 1, 2, "Toy"),
+        DT(
+            dataset=em.adult("Sex", binarize_nationality=True),
+            samples=45_222,
+            x_features=62,
+            discrete_features=57,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex, binary nationality",
+            sum_s=30_527,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult("Sex", binarize_race=True),
+            samples=45_222,
+            x_features=98,
+            discrete_features=93,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex, binary race",
+            sum_s=30_527,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult("Sex", binarize_nationality=True, binarize_race=True),
+            samples=45_222,
+            x_features=59,
+            discrete_features=54,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex, binary nationality, binary race",
+            sum_s=30_527,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split="Sex"),
+            samples=45_222,
+            x_features=101,
+            discrete_features=96,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex",
+            sum_s=30_527,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split=AdultSplits.SEX),
+            samples=45_222,
+            x_features=101,
+            discrete_features=96,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Sex",
+            sum_s=30_527,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split="Race"),
+            samples=45_222,
+            x_features=98,
+            discrete_features=93,
+            s_features=1,
+            num_sens=5,
+            y_features=1,
+            num_labels=2,
+            name="Adult Race",
+            sum_s=166_430,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split=AdultSplits.RACE),
+            samples=45_222,
+            x_features=98,
+            discrete_features=93,
+            s_features=1,
+            num_sens=5,
+            y_features=1,
+            num_labels=2,
+            name="Adult Race",
+            sum_s=166_430,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split="Race-Binary"),
+            samples=45_222,
+            x_features=98,
+            discrete_features=93,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Adult Race-Binary",
+            sum_s=38_903,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split="Nationality"),
+            samples=45_222,
+            x_features=62,
+            discrete_features=57,
+            s_features=1,
+            num_sens=41,
+            y_features=1,
+            num_labels=2,
+            name="Adult Nationality",
+            sum_s=1_646_127,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.adult(split="Education"),
+            samples=45_222,
+            x_features=86,
+            discrete_features=82,
+            s_features=1,
+            num_sens=3,
+            y_features=1,
+            num_labels=2,
+            name="Adult Education",
+            sum_s=50_979,
+            sum_y=11_208,
+        ),
+        DT(
+            dataset=em.compas(),
+            samples=6_167,
+            x_features=400,
+            discrete_features=395,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Compas Sex",
+            sum_s=4_994,
+            sum_y=2_809,
+        ),
+        DT(
+            dataset=em.compas(split="Sex"),
+            samples=6_167,
+            x_features=400,
+            discrete_features=395,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Compas Sex",
+            sum_s=4_994,
+            sum_y=2_809,
+        ),
+        DT(
+            dataset=em.compas(split="Race"),
+            samples=6_167,
+            x_features=400,
+            discrete_features=395,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Compas Race",
+            sum_s=2_100,
+            sum_y=2_809,
+        ),
+        DT(
+            dataset=em.compas(split="Race-Sex"),
+            samples=6_167,
+            x_features=399,
+            discrete_features=394,
+            s_features=1,
+            num_sens=4,
+            y_features=1,
+            num_labels=2,
+            name="Compas Race-Sex",
+            sum_s=9_194,
+            sum_y=2_809,
+        ),
+        DT(
+            dataset=em.credit(),
+            samples=30_000,
+            x_features=29,
+            discrete_features=9,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Credit Sex",
+            sum_s=18_112,
+            sum_y=6_636,
+        ),
+        DT(
+            dataset=em.credit(split="Sex"),
+            samples=30_000,
+            x_features=29,
+            discrete_features=9,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Credit Sex",
+            sum_s=18_112,
+            sum_y=6_636,
+        ),
+        DT(
+            dataset=em.crime(),
+            samples=1_993,
+            x_features=136,
+            discrete_features=46,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Crime Race-Binary",
+            sum_s=970,
+            sum_y=653,
+        ),
+        DT(
+            dataset=em.crime(split="Race-Binary"),
+            samples=1_993,
+            x_features=136,
+            discrete_features=46,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Crime Race-Binary",
+            sum_s=970,
+            sum_y=653,
+        ),
+        DT(
+            dataset=em.german(),
+            samples=1_000,
+            x_features=57,
+            discrete_features=51,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="German Sex",
+            sum_s=690,
+            sum_y=300,
+        ),
+        DT(
+            dataset=em.german(split="Sex"),
+            samples=1_000,
+            x_features=57,
+            discrete_features=51,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="German Sex",
+            sum_s=690,
+            sum_y=300,
+        ),
+        DT(
+            dataset=em.health(),
+            samples=171_067,
+            x_features=130,
+            discrete_features=12,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Health",
+            sum_s=76_450,
+            sum_y=54_052,
+        ),
+        DT(
+            dataset=em.health(split="Sex"),
+            samples=171_067,
+            x_features=130,
+            discrete_features=12,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Health",
+            sum_s=76_450,
+            sum_y=54_052,
+        ),
+        DT(
+            dataset=em.law(split="Sex"),
+            samples=21_791,
+            x_features=3,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Law Sex",
+            sum_s=9_537,
+            sum_y=19_360,
+        ),
+        DT(
+            dataset=em.law(split="Race"),
+            samples=21_791,
+            x_features=3,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Law Race",
+            sum_s=18_285,
+            sum_y=19_360,
+        ),
+        DT(
+            dataset=em.law(split="Sex-Race"),
+            samples=21_791,
+            x_features=3,
+            discrete_features=0,
+            s_features=1,
+            num_sens=16,
+            y_features=1,
+            num_labels=2,
+            name="Law Sex-Race",
+            sum_s=282_635,
+            sum_y=19_360,
+        ),
+        DT(
+            dataset=em.lipton(),
+            samples=2_000,
+            x_features=2,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Lipton",
+            sum_s=989,
+            sum_y=-562,
+        ),
+        DT(
+            dataset=em.nonbinary_toy(),
+            samples=100,
+            x_features=2,
+            discrete_features=0,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=5,
+            name="NonBinaryToy",
+            sum_s=48,
+            sum_y=300,
+        ),
+        DT(
+            dataset=em.sqf(),
+            samples=12_347,
+            x_features=145,
+            discrete_features=139,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="SQF Sex",
+            sum_s=11_394,
+            sum_y=1_289,
+        ),
+        DT(
+            dataset=em.sqf(split="Sex"),
+            samples=12_347,
+            x_features=145,
+            discrete_features=139,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="SQF Sex",
+            sum_s=11_394,
+            sum_y=1_289,
+        ),
+        DT(
+            dataset=em.sqf(split="Race"),
+            samples=12_347,
+            x_features=145,
+            discrete_features=139,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="SQF Race",
+            sum_s=6_471,
+            sum_y=1_289,
+        ),
+        DT(
+            dataset=em.sqf(split="Race-Sex"),
+            samples=12_347,
+            x_features=144,
+            discrete_features=138,
+            s_features=1,
+            num_sens=4,
+            y_features=1,
+            num_labels=2,
+            name="SQF Race-Sex",
+            sum_s=24_336,
+            sum_y=1_289,
+        ),
+        DT(
+            dataset=em.toy(),
+            samples=400,
+            x_features=10,
+            discrete_features=8,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Toy",
+            sum_s=200,
+            sum_y=231,
+        ),
     ],
+    ids=idfn,
 )
-def test_data_shape(
-    dataset,
-    samples,
-    x_features,
-    discrete_features,
-    s_features,
-    num_sens,
-    y_features,
-    num_labels,
-    name,
-):
+def test_data_shape(dt: DT):
     """Test loading data."""
-    data: DataTuple = dataset.load()
-    assert (samples, x_features) == data.x.shape
-    assert (samples, s_features) == data.s.shape
-    assert (samples, y_features) == data.y.shape
+    data: DataTuple = dt.dataset.load()
+    assert (dt.samples, dt.x_features) == data.x.shape
+    assert (dt.samples, dt.s_features) == data.s.shape
+    assert (dt.samples, dt.y_features) == data.y.shape
 
-    assert len(dataset.ordered_features["x"]) == x_features
-    assert len(dataset.discrete_features) == discrete_features
-    assert len(dataset.continuous_features) == (x_features - discrete_features)
+    assert len(dt.dataset.ordered_features["x"]) == dt.x_features
+    assert len(dt.dataset.discrete_features) == dt.discrete_features
+    assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
-    assert data.s.nunique()[0] == num_sens
-    assert data.y.nunique()[0] == num_labels
+    assert data.s.nunique()[0] == dt.num_sens
+    assert data.y.nunique()[0] == dt.num_labels
 
-    assert data.name == name
+    assert data.s.sum().values[0] == dt.sum_s
+    assert data.y.sum().values[0] == dt.sum_y
 
-    data: DataTuple = dataset.load(ordered=True)
-    assert (samples, x_features) == data.x.shape
-    assert (samples, s_features) == data.s.shape
-    assert (samples, y_features) == data.y.shape
+    assert data.name == dt.name
+
+    data: DataTuple = dt.dataset.load(ordered=True)
+    assert (dt.samples, dt.x_features) == data.x.shape
+    assert (dt.samples, dt.s_features) == data.s.shape
+    assert (dt.samples, dt.y_features) == data.y.shape
 
     assert (
-        len(flatten_dict(dataset.disc_feature_groups)) + len(dataset.continuous_features)
+        len(flatten_dict(dt.dataset.disc_feature_groups)) + len(dt.dataset.continuous_features)
     ) == len(data.x.columns)
 
 

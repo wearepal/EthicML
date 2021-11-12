@@ -14,7 +14,11 @@ class HealthSplits(Enum):
     CUSTOM = "Custom"
 
 
-def health(split: Union[HealthSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
+def health(
+    split: Union[HealthSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> Dataset:
     """Heritage Health dataset."""
     _split = HealthSplits(split)
     disc_feature_groups = {
@@ -185,4 +189,5 @@ def health(split: Union[HealthSplits, str] = "Sex", discrete_only: bool = False)
         class_label_spec=class_label_spec,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )

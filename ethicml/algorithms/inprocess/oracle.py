@@ -1,9 +1,9 @@
 """How would a perfect predictor perform?"""
 from kit import implements
 
-from ethicml.algorithms.postprocess.dp_flip import DPFlip
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
+from ..postprocess.dp_flip import DPFlip
 from .in_algorithm import InAlgorithm
 
 __all__ = ["Oracle", "DPOracle"]
@@ -17,7 +17,6 @@ class Oracle(InAlgorithm):
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
-    @implements(InAlgorithm)
     def __init__(self) -> None:
         super().__init__(name="Oracle", is_fairness_algo=False)
 
@@ -35,7 +34,6 @@ class DPOracle(InAlgorithm):
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
-    @implements(InAlgorithm)
     def __init__(self) -> None:
         super().__init__(name="DemPar. Oracle", is_fairness_algo=True)
 

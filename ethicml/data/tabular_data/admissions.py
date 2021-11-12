@@ -52,7 +52,9 @@ class AdmissionsSplits(Enum):
 
 
 def admissions(
-    split: Union[AdmissionsSplits, str] = "Gender", discrete_only: bool = False
+    split: Union[AdmissionsSplits, str] = "Gender",
+    discrete_only: bool = False,
+    invert_s: bool = False,
 ) -> Dataset:
     """UFRGS Admissions dataset."""
     _split = AdmissionsSplits(split)
@@ -99,4 +101,5 @@ def admissions(
         class_label_prefix=class_label_prefix,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )
