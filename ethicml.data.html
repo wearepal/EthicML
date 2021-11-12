@@ -154,7 +154,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">filename_or_path</span></em>, <em class="sig-param"><span class="pre">features</span></em>, <em class="sig-param"><span class="pre">cont_features</span></em>, <em class="sig-param"><span class="pre">sens_attr_spec</span></em>, <em class="sig-param"><span class="pre">class_label_spec</span></em>, <em class="sig-param"><span class="pre">num_samples</span></em>, <em class="sig-param"><span class="pre">discrete_only</span></em>, <em class="sig-param"><span class="pre">s_prefix=&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">class_label_prefix=&lt;factory&gt;</span></em>, <em class="sig-param"><span class="pre">discrete_feature_groups=None</span></em>, <em class="sig-param"><span class="pre">discard_non_one_hot=False</span></em>, <em class="sig-param"><span class="pre">map_to_binary=False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_or_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cont_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_prefix=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_prefix=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_feature_groups=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_non_one_hot=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_to_binary=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Data structure that holds all the information needed to load a given dataset.</p>
 <dl class="field-list simple">
@@ -174,6 +174,7 @@ those.</p></li>
 <li><p><strong>s_prefix</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>class_label_prefix</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_feature_groups</strong> (<em>dataclasses.InitVar</em><em>[</em><em>typing.Optional</em><em>[</em><em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>typing.List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -193,25 +194,25 @@ those.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.class_labels">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.class_labels" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.class_labels" title="Permalink to this definition"></a></dt>
 <dd><p>Get the list of class labels.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.continuous_features">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.continuous_features" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.continuous_features" title="Permalink to this definition"></a></dt>
 <dd><p>List of features that are continuous.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.disc_feature_groups">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.disc_feature_groups" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.disc_feature_groups" title="Permalink to this definition"></a></dt>
 <dd><p>Dictionary of feature groups.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.discrete_features">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.discrete_features" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.discrete_features" title="Permalink to this definition"></a></dt>
 <dd><p>List of features that are discrete.</p>
 </dd></dl>
 
@@ -234,20 +235,20 @@ those.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.feature_split">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.feature_split" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.feature_split" title="Permalink to this definition"></a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.features_to_remove">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.features_to_remove" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.features_to_remove" title="Permalink to this definition"></a></dt>
 <dd><p>Features that have to be removed from x.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.filepath">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="pre">:</span> <span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.filepath" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.filepath" title="Permalink to this definition"></a></dt>
 <dd><p>Filepath from which to load the data.</p>
 </dd></dl>
 
@@ -273,7 +274,7 @@ those.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.ordered_features">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="pre">:</span> <a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.ordered_features" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.ordered_features" title="Permalink to this definition"></a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -282,7 +283,7 @@ then the continuous.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.sens_attrs">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.sens_attrs" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.sens_attrs" title="Permalink to this definition"></a></dt>
 <dd><p>Get the list of sensitive attributes.</p>
 </dd></dl>
 
@@ -290,7 +291,7 @@ then the continuous.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">FeatureSplit</span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FeatureSplit</span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TypedDict</span></code></p>
 <p>A dictionary of the list of columns that belong to the feature groups.</p>
 <dl class="py method">
@@ -333,7 +334,7 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.pop">
-<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">k</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">d</span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.pop" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.pop" title="Permalink to this definition"></a></dt>
 <dd><p>If the key is not found, return the default if given; otherwise,
 raise a KeyError.</p>
 </dd></dl>
@@ -355,7 +356,7 @@ Raises KeyError if the dict is empty.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="pre">E</span></em>, <span class="optional">]</span><em class="sig-param"><span class="pre">**F</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">dict/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.update" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">dict/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.update" title="Permalink to this definition"></a></dt>
 <dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 In either case, this is followed by: for k in F:  D[k] = F[k]</p>
@@ -391,7 +392,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult">
-<span class="sig-name descname"><span class="pre">Adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition"></a></dt>
 <dd><p>UCI Adult dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -400,6 +401,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>binarize_race</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -410,7 +412,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.adult">
-<span class="sig-name descname"><span class="pre">adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.adult" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.adult" title="Permalink to this definition"></a></dt>
 <dd><p>UCI Adult dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,6 +421,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>binarize_race</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -448,13 +451,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas">
-<span class="sig-name descname"><span class="pre">Compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas" title="Permalink to this definition"></a></dt>
 <dd><p>Compas (or ProPublica) dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.compas.CompasSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -465,13 +469,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.compas">
-<span class="sig-name descname"><span class="pre">compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.compas" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.compas" title="Permalink to this definition"></a></dt>
 <dd><p>Compas (or ProPublica) dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.compas.CompasSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -498,13 +503,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.credit">
-<span class="sig-name descname"><span class="pre">credit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.credit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">credit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.credit" title="Permalink to this definition"></a></dt>
 <dd><p>UCI Credit Card dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.credit.CreditSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -531,13 +537,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.crime">
-<span class="sig-name descname"><span class="pre">crime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Race-Binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.crime" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">crime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Race-Binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.crime" title="Permalink to this definition"></a></dt>
 <dd><p>UCI Communities and Crime dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.crime.CrimeSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -564,13 +571,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.german.german">
-<span class="sig-name descname"><span class="pre">german</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.german" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">german</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.german" title="Permalink to this definition"></a></dt>
 <dd><p>German credit dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.german.GermanSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -597,13 +605,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.health.health">
-<span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.health" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.health" title="Permalink to this definition"></a></dt>
 <dd><p>Heritage Health dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.health.HealthSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -657,13 +666,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.sqf">
-<span class="sig-name descname"><span class="pre">sqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.sqf" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.sqf" title="Permalink to this definition"></a></dt>
 <dd><p>Stop, question and frisk dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>split</strong> (<em>Union</em><em>[</em><em>ethicml.data.tabular_data.sqf.SqfSplits</em><em>, </em><em>str</em><em>]</em>) – </p></li>
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -804,13 +814,13 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py data">
 <dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER">
-<span class="sig-name descname"><span class="pre">CELEBA_BASE_FOLDER</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">'celeba'</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CELEBA_BASE_FOLDER</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'celeba'</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER" title="Permalink to this definition"></a></dt>
 <dd><p>The data is downloaded to <cite>download_dir</cite> / <cite>CELEBA_BASE_FOLDER</cite>.</p>
 </dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CELEBA_FILE_LIST">
-<span class="sig-name descname"><span class="pre">CELEBA_FILE_LIST</span></span><em class="property"><span class="pre">:</span> <span class="pre">Final</span></em><em class="property"> <span class="pre">=</span> <span class="pre">[('1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR',</span> <span class="pre">'00d2c5bc6d35e252742224ab0c1e8fcb',</span> <span class="pre">'img_align_celeba.zip'),</span> <span class="pre">('1gxmFoeEPgF9sT65Wpo85AnHl3zsQ4NvS',</span> <span class="pre">'75e246fa4810816ffd6ee81facbd244c',</span> <span class="pre">'list_attr_celeba.txt'),</span> <span class="pre">('1ih_VMokoI774ErNWrb26lDeWlanUBpnX',</span> <span class="pre">'d32c9cbf5e040fd4025c592c306e6668',</span> <span class="pre">'list_eval_partition.txt')]</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_FILE_LIST" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CELEBA_FILE_LIST</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR',</span> <span class="pre">'00d2c5bc6d35e252742224ab0c1e8fcb',</span> <span class="pre">'img_align_celeba.zip'),</span> <span class="pre">('1gxmFoeEPgF9sT65Wpo85AnHl3zsQ4NvS',</span> <span class="pre">'75e246fa4810816ffd6ee81facbd244c',</span> <span class="pre">'list_attr_celeba.txt'),</span> <span class="pre">('1ih_VMokoI774ErNWrb26lDeWlanUBpnX',</span> <span class="pre">'d32c9cbf5e040fd4025c592c306e6668',</span> <span class="pre">'list_eval_partition.txt')]</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_FILE_LIST" title="Permalink to this definition"></a></dt>
 <dd><p>Google drive IDs, MD5 hashes and filenames for the CelebA files.</p>
 </dd></dl>
 
@@ -823,7 +833,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>download_dir</strong> (<em>str</em>) – </p></li>
 <li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em><em>, </em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>ethicml.data.util.LabelGroup</em><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>download</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>check_integrity</strong> (<em>bool</em>) – </p></li>
 </ul>
@@ -1024,7 +1034,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.util.LabelGroup">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LabelGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
 <p>Definition of a group of columns that should be interpreted as a single label.</p>
 <p>Create new instance of LabelGroup(columns, multiplier)</p>
@@ -1044,7 +1054,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.columns">
-<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="pre">:</span> <span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.columns" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.columns" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
@@ -1063,7 +1073,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.multiplier">
-<span class="sig-name descname"><span class="pre">multiplier</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.multiplier" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">multiplier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.multiplier" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 

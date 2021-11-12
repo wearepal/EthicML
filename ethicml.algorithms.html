@@ -182,7 +182,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for Algorithms.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -193,7 +193,7 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -201,7 +201,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.AlgorithmAsync">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">AlgorithmAsync</span></span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlgorithmAsync</span></span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
 </dd></dl>
@@ -244,7 +244,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PreAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a></p>
 <p>Abstract Base Class for all algorithms that do pre-processing.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -255,13 +255,13 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run" title="Permalink to this definition"></a></dt>
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -300,7 +300,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PreAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="ethicml.algorithms.algorithm_base.AlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></a></p>
 <p>Pre-Algorithm that can be run blocking and asynchronously.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -311,7 +311,7 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -337,7 +337,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Generate fair features with the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -392,7 +392,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Beutel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_pcnt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beutel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_pcnt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
 <p>Beutel’s adversarially learned fair representations.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -418,7 +418,7 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -444,7 +444,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Generate fair features with the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -499,7 +499,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Calders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preferable_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disadvantaged_group</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Calders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preferable_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disadvantaged_group</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
 <p>Massaging algorithm from Kamiran&amp;Calders 2012.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -514,7 +514,7 @@
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -575,7 +575,7 @@
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Upsampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Upsampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
 <p>Upsampler algorithm.</p>
 <p>Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
@@ -592,7 +592,7 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -653,7 +653,7 @@ of samples.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">VFAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supervised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DI'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_dec_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VFAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supervised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DI'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_dec_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
 <p>VFAE Object - see implementation file for details.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -675,7 +675,7 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -701,7 +701,7 @@ of samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Generate fair features with the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -756,7 +756,7 @@ of samples.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Zemel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zemel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
 <p>AIF360 implementation of Zemel’s LFR.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -781,7 +781,7 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -807,7 +807,7 @@ of samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Generate fair features with the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -869,7 +869,7 @@ of samples.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">InAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fairness_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fairness_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a></p>
 <p>Abstract Base Class for algorithms that run in the middle of the pipeline.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -883,19 +883,19 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.run">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.run" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm.run" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -934,7 +934,7 @@ of samples.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">InAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fairness_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fairness_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="ethicml.algorithms.algorithm_base.AlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></a></p>
 <p>In-Algorithm that can be run blocking and asynchronously.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -948,13 +948,13 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -980,7 +980,7 @@ of samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1035,7 +1035,7 @@ of samples.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.agarwal_reductions.Agarwal">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Agarwal class.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1055,13 +1055,13 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1087,7 +1087,7 @@ of samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1142,7 +1142,7 @@ of samples.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.fairness_wo_demographics.DRO">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Implementation of <a class="reference external" href="https://arxiv.org/abs/1806.08010">https://arxiv.org/abs/1806.08010</a> .</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1160,13 +1160,13 @@ of samples.</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1192,7 +1192,7 @@ of samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1251,7 +1251,7 @@ in its own venv and makes everyone happy.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>the model that does the magic.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -1269,13 +1269,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1312,7 +1312,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1379,7 +1379,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamiran.Kamiran">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Kamiran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Kamiran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Kamiran and Calders 2012.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1396,13 +1396,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamiran.Kamiran.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamiran.Kamiran.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1481,7 +1481,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Kamishima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Kamishima</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="ethicml.algorithms.inprocess.installed_model.InstalledModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.installed_model.InstalledModel</span></code></a></p>
 <p>Model that calls Kamishima’s code.</p>
 <p>Based on Algo-Fairness
@@ -1502,7 +1502,7 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.create_file_in_kamishima_format">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">create_file_in_kamishima_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.create_file_in_kamishima_format" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_file_in_kamishima_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.create_file_in_kamishima_format" title="Permalink to this definition"></a></dt>
 <dd><p>Create a text file with the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1519,13 +1519,13 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1623,7 +1623,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LR">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Logistic regression with hard predictions.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1638,13 +1638,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LR.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LR.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1689,7 +1689,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRCV">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LRCV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LRCV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Kind of a cheap hack for now, but gives a proper cross-valudeted LR.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1707,13 +1707,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRCV.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRCV.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRCV.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1758,7 +1758,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRProb">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">LRProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LRProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Logistic regression with soft output.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1773,13 +1773,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRProb.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.logistic_regression.LRProb.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LRProb.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1840,7 +1840,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.majority.Majority">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Majority</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Majority</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Simply returns the majority label from the train set.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -1854,13 +1854,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.majority.Majority.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.majority.Majority.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.majority.Majority.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -1921,7 +1921,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.manual.Corels">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Corels</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Corels</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset.</p>
 <p>This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.</p>
@@ -1934,13 +1934,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.manual.Corels.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.manual.Corels.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.manual.Corels.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2002,7 +2002,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.mlp.MLP">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layer_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layer_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Multi-layer Perceptron.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -2018,13 +2018,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.mlp.MLP.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.mlp.MLP.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2088,7 +2088,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DPOracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DPOracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>A perfect Demographic Parity Predictor.</p>
 <p>Can only be used if test is a DataTuple, rather than the usual TestTuple.
@@ -2105,13 +2105,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.DPOracle.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.DPOracle.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2156,7 +2156,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Oracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Oracle</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>A perfect predictor.</p>
 <p>Can only be used if test is a DataTuple, rather than the usual TestTuple.
@@ -2173,13 +2173,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.oracle.Oracle.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.oracle.Oracle.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2240,7 +2240,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm.SVM">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SVM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SVM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Support Vector Machine.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -2256,13 +2256,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm.SVM.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm.SVM.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2323,7 +2323,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm_async.SVMAsync">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">SVMAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SVMAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Support Vector Machine.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -2339,13 +2339,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm_async.SVMAsync.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm_async.SVMAsync.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2371,7 +2371,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm_async.SVMAsync.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm_async.SVMAsync.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2438,7 +2438,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ZafarAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -2457,13 +2457,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2500,7 +2500,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2539,7 +2539,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ZafarBaseline</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarBaseline</span></span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar without fairness.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -2560,13 +2560,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2603,7 +2603,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2642,7 +2642,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ZafarEqOdds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarEqOdds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp" title="ethicml.algorithms.inprocess.zafar.ZafarEqOpp"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar.ZafarEqOpp</span></code></a></p>
 <p>Zafar for Equalised Odds.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -2663,13 +2663,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2706,7 +2706,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2745,7 +2745,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ZafarEqOpp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarEqOpp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar for Equality of Opportunity.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -2766,13 +2766,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2809,7 +2809,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2848,7 +2848,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">ZafarFairness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarFairness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</span></code></p>
 <p>Zafar with fairness.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -2867,13 +2867,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness.is_fairness_algo">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.is_fairness_algo" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fairness_algo</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.is_fairness_algo" title="Permalink to this definition"></a></dt>
 <dd><p>True if this class corresponds to a fair algorithm.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -2910,7 +2910,7 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness.run_async">
-<em class="property"><span class="pre">async</span> </em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.run_async" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.run_async" title="Permalink to this definition"></a></dt>
 <dd><p>Run Algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2969,7 +2969,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PostAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a></p>
 <p>Abstract Base Class for all algorithms that do post-processing.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -2980,13 +2980,13 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run" title="Permalink to this definition"></a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3026,7 +3026,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">DPFlip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DPFlip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
 <p>Randomly flip a number of decisions such that perfect demographic parity is achieved.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -3043,7 +3043,7 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -3089,7 +3089,7 @@ simply the last part of the repository URL)</p></li>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Hardt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unfavorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hardt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unfavorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
 <p>Post-processing method by Hardt et al.</p>
 <p>Base constructor for the Algorithm class.</p>
@@ -3105,7 +3105,7 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt.name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.name" title="Permalink to this definition"></a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
