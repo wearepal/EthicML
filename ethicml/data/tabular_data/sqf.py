@@ -15,7 +15,11 @@ class SqfSplits(Enum):
     CUSTOM = "Custom"
 
 
-def sqf(split: Union[SqfSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
+def sqf(
+    split: Union[SqfSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> Dataset:
     """Stop, question and frisk dataset."""
     _split = SqfSplits(split)
     disc_feature_groups = {
@@ -148,4 +152,5 @@ def sqf(split: Union[SqfSplits, str] = "Sex", discrete_only: bool = False) -> Da
         class_label_spec=class_label_spec,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )

@@ -14,7 +14,11 @@ class CrimeSplits(Enum):
     CUSTOM = "Custom"
 
 
-def crime(split: Union[CrimeSplits, str] = "Race-Binary", discrete_only: bool = False) -> Dataset:
+def crime(
+    split: Union[CrimeSplits, str] = "Race-Binary",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> Dataset:
     """UCI Communities and Crime dataset."""
     _split = CrimeSplits(split)
     disc_feature_groups = {
@@ -201,4 +205,5 @@ def crime(split: Union[CrimeSplits, str] = "Race-Binary", discrete_only: bool = 
         class_label_spec=class_label_spec,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )

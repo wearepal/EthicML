@@ -33,7 +33,11 @@ class LawSplits(Enum):
     CUSTOM = "Custom"
 
 
-def law(split: Union[LawSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
+def law(
+    split: Union[LawSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> Dataset:
     """LSAC Law School dataset."""
     _split = LawSplits(split)
     disc_feature_groups = {
@@ -91,4 +95,5 @@ def law(split: Union[LawSplits, str] = "Sex", discrete_only: bool = False) -> Da
         class_label_prefix=class_label_prefix,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )

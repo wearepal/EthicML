@@ -50,6 +50,7 @@ class Dataset:
     discrete_feature_groups: InitVar[Optional[Dict[str, List[str]]]] = None
     discard_non_one_hot: bool = False
     map_to_binary: bool = False
+    invert_s: bool = False
 
     _raw_file_name_or_path: Union[str, Path] = field(init=False)
     _cont_features_unfiltered: Sequence[str] = field(init=False)
@@ -207,6 +208,10 @@ class Dataset:
         if self.map_to_binary:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
+
+        if self.invert_s:
+            assert s_data.nunique().values[0] == 2, "s must be binary"
+            s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
         s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
