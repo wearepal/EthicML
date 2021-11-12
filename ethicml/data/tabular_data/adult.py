@@ -23,6 +23,7 @@ def adult(
     discrete_only: bool = False,
     binarize_nationality: bool = False,
     binarize_race: bool = False,
+    invert_s: bool = False,
 ) -> Dataset:
     """UCI Adult dataset."""
     _split = AdultSplits(split)
@@ -236,6 +237,7 @@ def adult(
         class_label_prefix=class_label_prefix,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )
 
 

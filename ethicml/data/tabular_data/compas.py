@@ -15,7 +15,11 @@ class CompasSplits(Enum):
     CUSTOM = "Custom"
 
 
-def compas(split: Union[CompasSplits, str] = "Sex", discrete_only: bool = False) -> Dataset:
+def compas(
+    split: Union[CompasSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> Dataset:
     """Compas (or ProPublica) dataset."""
     _split = CompasSplits(split)
     disc_feature_groups = {
@@ -462,6 +466,7 @@ def compas(split: Union[CompasSplits, str] = "Sex", discrete_only: bool = False)
         class_label_spec=class_label_spec,
         discrete_only=discrete_only,
         discrete_feature_groups=disc_feature_groups,
+        invert_s=invert_s,
     )
 
 
