@@ -1,4 +1,6 @@
 """EthicML."""
+from ethicml.metrics.per_sensitive_attribute import *
+
 from .algorithms.algorithm_base import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
@@ -48,7 +50,6 @@ from .data.vision_data.genfaces import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
 from .evaluators.parallelism import *
-from .evaluators.per_sensitive_attribute import *
 from .metrics.accuracy import *
 from .metrics.anti_spur import AS
 from .metrics.average_odds import AverageOddsDiff

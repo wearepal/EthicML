@@ -59,7 +59,8 @@ class DPFlip(PostAlgorithm):
         preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
         return preds
 
-    def _fit(self, test: TestTuple, preds: Prediction) -> Tuple[int, int]:
+    @staticmethod
+    def _fit(test: TestTuple, preds: Prediction) -> Tuple[int, int]:
         y_0 = preds.hard[preds.hard == 0]
         y_1 = preds.hard[preds.hard == 1]
         s_0 = test.s[test.s[test.s.columns[0]] == 0]

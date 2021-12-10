@@ -9,7 +9,8 @@ __all__ = ["NoisyDequantize", "Quantize"]
 class Transformation:
     """Base class for tensor transformations."""
 
-    def _transform(self, data: Tensor) -> Tensor:
+    @staticmethod
+    def _transform(data: Tensor) -> Tensor:
         """Transform the input data.
 
         Args:

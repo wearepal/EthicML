@@ -37,8 +37,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         data: Union[DataTuple, TestTuple], file_path: Path, label_converter: LabelBinarizer
     ) -> None:
         """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants."""
-        out: Dict[str, Any] = {}
-        out["x"] = data.x.to_numpy().tolist()
+        out: Dict[str, Any] = {'x': data.x.to_numpy().tolist()}
         sens_attr = data.s.columns[0]
         out["sensitive"] = {}
         out["sensitive"][sens_attr] = data.s[sens_attr].to_numpy().tolist()
@@ -64,7 +63,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             cmd = self._create_command_line(str(train_path), str(test_path), str(predictions_path))
             working_dir = self._code_path.resolve() / self._sub_dir
             await self._call_script(cmd, cwd=working_dir)
-            predictions = predictions_path.open().read()
+            predictions = predictions_path.open(encoding="utf-8").read()
             predictions = json.loads(predictions)
 
         predictions_correct = pd.Series([0 if x == -1 else 1 for x in predictions])

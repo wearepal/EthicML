@@ -27,8 +27,8 @@ class Decoder(nn.Module):
         in_features = latent_dims + 1
         # add hidden layers according to the number of units specified in "hidden_sizes"
         for depth, num_units in enumerate([hidden_size]):
-            self.shared_net.add_module("hidden_layer_%d" % depth, nn.Linear(in_features, num_units))
-            self.shared_net.add_module("ReLu %d" % depth, nn.ReLU())
+            self.shared_net.add_module(f"hidden_layer_{depth:d}", nn.Linear(in_features, num_units))
+            self.shared_net.add_module(f"ReLu {depth:d}", nn.ReLU())
             in_features = num_units  # update input size to next layer
 
         def _add_output_layer(feature_group: List) -> nn.Module:

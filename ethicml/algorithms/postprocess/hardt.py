@@ -5,6 +5,9 @@ from numpy.random import RandomState
 from ranzen import implements
 from scipy.optimize import OptimizeResult, linprog
 
+from ethicml.metrics.per_sensitive_attribute import metric_per_sensitive_attribute
+from ethicml.metrics.tnr import TNR
+from ethicml.metrics.tpr import TPR
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .post_algorithm import PostAlgorithm
@@ -33,10 +36,6 @@ class Hardt(PostAlgorithm):
         return self._predict(model_params, test_predictions, test)
 
     def _fit(self, train_predictions: Prediction, train: DataTuple) -> OptimizeResult:
-        from ethicml.evaluators.per_sensitive_attribute import metric_per_sensitive_attribute
-        from ethicml.metrics.tnr import TNR
-        from ethicml.metrics.tpr import TPR
-
         # compute basic statistics
         fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()
         fraction_s1 = 1 - fraction_s0
