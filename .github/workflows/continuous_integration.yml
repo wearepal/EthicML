@@ -32,8 +32,8 @@ jobs:
         pip install pylint
     - name: Lint with pylint
       run: |
-        python run_pylint.py
-        python run_pylint_tests.py
+        pylint --fail-under=8.5 ethicml/
+        pylint --fail-under=8.5 tests/
 
   format_with_black_and_isort:
 

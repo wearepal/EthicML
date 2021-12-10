@@ -238,7 +238,7 @@ class Prediction:
         """Load prediction from npz file."""
         info = None
         if (npz_path.parent / "info.json").exists():
-            with open(npz_path.parent / "info.json") as json_file:
+            with open(npz_path.parent / "info.json", encoding="utf-8") as json_file:
                 info = json.load(json_file)
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)

@@ -3,7 +3,7 @@ from typing import Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
 from ethicml.utility import ActivationType, DataTuple, Prediction, TestTuple

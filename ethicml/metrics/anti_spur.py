@@ -1,7 +1,7 @@
 """Anti-spurious."""
 
 import numpy as np
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 

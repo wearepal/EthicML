@@ -2,7 +2,7 @@
 from typing import Callable, Optional
 
 import pandas as pd
-from kit import implements
+from ranzen import implements
 from sklearn.metrics import accuracy_score, f1_score
 
 from ethicml.utility import DataTuple, Prediction

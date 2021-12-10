@@ -3,7 +3,7 @@ from typing import ClassVar
 from typing_extensions import Literal
 
 import numpy as np
-from kit import implements
+from ranzen import implements
 from sklearn.metrics import normalized_mutual_info_score
 
 from ethicml.utility import DataTuple, Prediction

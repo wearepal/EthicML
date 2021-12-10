@@ -5,7 +5,7 @@ in turn based on the paper https://arxiv.org/abs/1807.00787
 """
 
 import numpy as np
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 

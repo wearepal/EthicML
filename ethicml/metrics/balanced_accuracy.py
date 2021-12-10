@@ -1,6 +1,6 @@
 """Accuracy that is balanced with respect to the class labels."""
 
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 

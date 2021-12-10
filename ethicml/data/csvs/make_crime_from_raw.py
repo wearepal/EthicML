@@ -185,7 +185,7 @@ def run_generate_crime() -> None:
     # Save the CSV
     data.to_csv("./crime.csv", index=False)
 
-    print([x for x in data.columns])
+    print(list(data.columns))
 
 
 if __name__ == "__main__":

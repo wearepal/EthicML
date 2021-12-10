@@ -288,9 +288,9 @@ class Encoder(nn.Module):
             self.encoder.add_module("encoder activation 0", activation)
             for k in range(len(enc_size) - 1):
                 self.encoder.add_module(
-                    "encoder layer {}".format(k + 1), nn.Linear(enc_size[k], enc_size[k + 1])
+                    f"encoder layer {k + 1}", nn.Linear(enc_size[k], enc_size[k + 1])
                 )
-                self.encoder.add_module("encoder activation {}".format(k + 1), activation)
+                self.encoder.add_module(f"encoder activation {k + 1}", activation)
 
     def forward(self, x: Tensor) -> Tensor:
         """Forward pass."""
@@ -322,9 +322,9 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary activation 0", activation)
             for k in range(len(adv_size) - 1):
                 self.adversary.add_module(
-                    "adversary layer {}".format(k + 1), nn.Linear(adv_size[k], adv_size[k + 1])
+                    f"adversary layer {k + 1}", nn.Linear(adv_size[k], adv_size[k + 1])
                 )
-                self.adversary.add_module("adversary activation {}".format(k + 1), activation)
+                self.adversary.add_module(f"adversary activation {k + 1}", activation)
             self.adversary.add_module("adversary last layer", nn.Linear(adv_size[-1], s_size))
             self.adversary.add_module("adversary last activation", activation)
 
@@ -361,9 +361,9 @@ class Predictor(nn.Module):
             self.predictor.add_module("adversary activation 0", activation)
             for k in range(len(pred_size) - 1):
                 self.predictor.add_module(
-                    "adversary layer {}".format(k + 1), nn.Linear(pred_size[k], pred_size[k + 1])
+                    f"adversary layer {k + 1}", nn.Linear(pred_size[k], pred_size[k + 1])
                 )
-                self.predictor.add_module("adversary activation {}".format(k + 1), activation)
+                self.predictor.add_module(f"adversary activation {k + 1}", activation)
             self.predictor.add_module(
                 "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
             )

@@ -1,7 +1,7 @@
 """Fairness without Demographics Classifier."""
 from typing import List
 
-from kit import implements
+from ranzen import implements
 from torch import Tensor, nn
 from torch.nn import BCELoss
 
