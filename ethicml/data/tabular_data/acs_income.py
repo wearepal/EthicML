@@ -84,6 +84,8 @@ class AcsIncome(Dataset):
     ):
 
         self.root = root
+        self.root.mkdir(exist_ok=True)
+
         self.year = year
         self.horizon = horizon
         self.survey = survey
