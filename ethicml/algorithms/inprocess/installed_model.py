@@ -88,7 +88,7 @@ class InstalledModel(InAlgorithmAsync):
         try:
             shutil.rmtree(self._store_dir)
         except OSError as excep:
-            print("Error: %s - %s." % (excep.filename, excep.strerror))
+            print(f"Error: {excep.filename} - {excep.strerror}.")
 
     def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         return []  # pylint was complaining when I didn't return anything here...

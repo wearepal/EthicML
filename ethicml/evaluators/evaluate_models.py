@@ -12,6 +12,12 @@ from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.metrics.metric import Metric
+from ethicml.metrics.per_sensitive_attribute import (
+    MetricNotApplicable,
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+    ratio_per_sensitive_attribute,
+)
 from ethicml.preprocessing import DataSplitter, RandomSplit, scale_continuous
 from ethicml.utility import (
     DataTuple,
@@ -24,12 +30,6 @@ from ethicml.utility import (
 )
 
 from .parallelism import run_in_parallel
-from .per_sensitive_attribute import (
-    MetricNotApplicable,
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-    ratio_per_sensitive_attribute,
-)
 
 __all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
 

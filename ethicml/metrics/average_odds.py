@@ -1,11 +1,17 @@
 """For assessing Average Odds Difference metric."""
 
 
-from kit import implements
+from ranzen import implements
 
+from ethicml.metrics.per_sensitive_attribute import (
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+)
 from ethicml.utility import DataTuple, Prediction
 
+from .fpr import FPR
 from .metric import Metric
+from .tpr import TPR
 
 
 class AverageOddsDiff(Metric):
@@ -20,13 +26,6 @@ class AverageOddsDiff(Metric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        # has to be imported on demand because otherwise we get circular imports
-        from ethicml import FPR, TPR
-        from ethicml.evaluators.per_sensitive_attribute import (
-            diff_per_sensitive_attribute,
-            metric_per_sensitive_attribute,
-        )
-
         tpr_per_sens = metric_per_sensitive_attribute(prediction, actual, TPR())
         fpr_per_sens = metric_per_sensitive_attribute(prediction, actual, FPR())
 

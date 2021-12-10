@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from kit import implements
+from ranzen import implements
 
 from .in_algorithm import InAlgorithmAsync
 from .shared import flag_interface

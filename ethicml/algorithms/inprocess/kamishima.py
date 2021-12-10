@@ -5,7 +5,7 @@ from typing import Union
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 

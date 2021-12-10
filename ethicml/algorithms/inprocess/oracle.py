@@ -1,5 +1,5 @@
 """How would a perfect predictor perform?"""
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 

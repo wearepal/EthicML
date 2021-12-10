@@ -4,8 +4,7 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 import torch
-import torch.nn as nn
-from torch import Tensor
+from torch import Tensor, nn
 from torch.utils.data import Dataset
 
 from ethicml.utility import DataTuple, TestTuple

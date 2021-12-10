@@ -1,7 +1,11 @@
 """For assessing Calder-Verwer metric, :math:`1-(P(Y=1|S=1)-P(Y=1|S!=1))`."""
 
-from kit import implements
+from ranzen import implements
 
+from ethicml.metrics.per_sensitive_attribute import (
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+)
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
@@ -15,12 +19,6 @@ class CV(Metric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        # has to be imported on demand because otherwise we get circular imports
-        from ethicml.evaluators.per_sensitive_attribute import (
-            diff_per_sensitive_attribute,
-            metric_per_sensitive_attribute,
-        )
-
         per_sens = metric_per_sensitive_attribute(prediction, actual, metric=ProbPos())
         diffs = diff_per_sensitive_attribute(per_sens)
 

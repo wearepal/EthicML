@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Tuple
 from typing_extensions import Literal
 
 import pandas as pd
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 

@@ -1,7 +1,7 @@
 """DRO Loss."""
 from typing import Optional, Type
 
-from kit import implements
+from ranzen import implements
 from torch import Tensor, nn
 from torch.nn.modules.loss import NLLLoss, _Loss
 

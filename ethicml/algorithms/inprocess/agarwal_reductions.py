@@ -28,9 +28,9 @@ class Agarwal(InAlgorithmAsync):
         seed: int = 888,
     ):
         if fairness not in VALID_FAIRNESS:
-            raise ValueError("results: fairness must be one of %r." % VALID_FAIRNESS)
+            raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
         if classifier not in VALID_MODELS:
-            raise ValueError("results: classifier must be one of %r." % VALID_MODELS)
+            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         super().__init__(name=f"Agarwal, {classifier}, {fairness}")
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {

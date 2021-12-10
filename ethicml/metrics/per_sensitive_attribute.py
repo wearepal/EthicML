@@ -4,8 +4,9 @@ from typing import Dict, List
 
 import pandas as pd
 
-from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
+
+from .metric import Metric
 
 __all__ = [
     "metric_per_sensitive_attribute",
@@ -84,9 +85,9 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
     diff_per_sens = {}
 
     for i, _ in enumerate(sens_values):
+        i_value: float = per_sens_res[sens_values[i]]
         for j in range(i + 1, len(sens_values)):
-            key: str = "{}-{}".format(sens_values[i], sens_values[j])
-            i_value: float = per_sens_res[sens_values[i]]
+            key: str = f"{sens_values[i]}-{sens_values[j]}"
             j_value: float = per_sens_res[sens_values[j]]
             diff_per_sens[key] = abs(i_value - j_value)
 
@@ -107,9 +108,9 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
     ratio_per_sens = {}
 
     for i, _ in enumerate(sens_values):
+        i_value: float = per_sens_res[sens_values[i]]
         for j in range(i + 1, len(sens_values)):
-            key: str = "{}/{}".format(sens_values[i], sens_values[j])
-            i_value: float = per_sens_res[sens_values[i]]
+            key: str = f"{sens_values[i]}/{sens_values[j]}"
             j_value: float = per_sens_res[sens_values[j]]
 
             min_val = min(i_value, j_value)

@@ -1,6 +1,6 @@
 """Test helper functions."""
 import pytest
-from kit import implements
+from ranzen import implements
 
 
 def test_implements() -> None:
