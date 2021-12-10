@@ -37,7 +37,7 @@ class AdultSplits(Enum):
 @contextlib.contextmanager
 def download_dir(root: Path):
     curdir = os.getcwd()
-    os.chdir(root.expanduser().resolve())
+    os.chdir(root)
     try:
         yield
     finally:
@@ -83,7 +83,7 @@ class AcsIncome(Dataset):
         invert_s: bool = False,
     ):
 
-        self.root = root
+        self.root = root.expanduser().resolve()
         self.root.mkdir(exist_ok=True)
 
         self.year = year
