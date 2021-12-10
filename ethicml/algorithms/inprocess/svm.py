@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from kit import implements
+from ranzen import implements
 from sklearn.svm import SVC, LinearSVC
 
 from ethicml.utility import DataTuple, Prediction, TestTuple

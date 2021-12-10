@@ -1,7 +1,7 @@
 """For assessing Average Odds Difference metric."""
 
 
-from kit import implements
+from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
