@@ -3,14 +3,11 @@
 
 from ranzen import implements
 
-from ethicml.metrics.per_sensitive_attribute import (
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-)
 from ethicml.utility import DataTuple, Prediction
 
 from .fpr import FPR
 from .metric import Metric
+from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
 
