@@ -72,7 +72,7 @@ class AcsIncome(Dataset):
 
     def __init__(
         self,
-        root: Path,
+        root: Union[str, Path],
         year: str,
         horizon: int,
         survey: str,
@@ -83,6 +83,8 @@ class AcsIncome(Dataset):
         invert_s: bool = False,
     ):
 
+        if isinstance(root, str):
+            root = Path(root)
         self.root = root.expanduser().resolve()
         self.root.mkdir(exist_ok=True)
 
