@@ -43,7 +43,7 @@ from typing import Union
 from ..dataset import Dataset
 from ..util import flatten_dict
 
-__all__ = ["admissions"]
+__all__ = ["admissions", "Admissions"]
 
 
 class AdmissionsSplits(Enum):
@@ -57,49 +57,61 @@ def admissions(
     invert_s: bool = False,
 ) -> Dataset:
     """UFRGS Admissions dataset."""
-    _split = AdmissionsSplits(split)
+    return Admissions(split=split, discrete_only=discrete_only, invert_s=invert_s)
 
-    disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}
-    discrete_features = flatten_dict(disc_feature_groups)
 
-    continuous_features = [
-        "physics",
-        "biology",
-        "history",
-        "language",
-        "geography",
-        "literature",
-        "essay",
-        "math",
-        "chemistry",
-    ]
+class Admissions(Dataset):
+    """UFRGS Admissions dataset."""
 
-    if _split is AdmissionsSplits.GENDER:
-        sens_attr_spec = "gender"
-        s_prefix = ["gender"]
-        class_label_spec = "gpa"
-        class_label_prefix = ["gpa"]
-    elif _split is AdmissionsSplits.CUSTOM:
-        sens_attr_spec = ""
-        s_prefix = []
-        class_label_spec = ""
-        class_label_prefix = []
-    else:
-        raise NotImplementedError
+    def __init__(
+        self,
+        split: Union[AdmissionsSplits, str] = "Gender",
+        discrete_only: bool = False,
+        invert_s: bool = False,
+    ):
+        _split = AdmissionsSplits(split)
 
-    name = f"Admissions {_split.value}"
+        disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}
+        discrete_features = flatten_dict(disc_feature_groups)
 
-    return Dataset(
-        name=name,
-        num_samples=43_303,
-        features=discrete_features + continuous_features,
-        cont_features=continuous_features,
-        sens_attr_spec=sens_attr_spec,
-        class_label_spec=class_label_spec,
-        filename_or_path="admissions.csv.zip",
-        s_prefix=s_prefix,
-        class_label_prefix=class_label_prefix,
-        discrete_only=discrete_only,
-        discrete_feature_groups=disc_feature_groups,
-        invert_s=invert_s,
-    )
+        continuous_features = [
+            "physics",
+            "biology",
+            "history",
+            "language",
+            "geography",
+            "literature",
+            "essay",
+            "math",
+            "chemistry",
+        ]
+
+        if _split is AdmissionsSplits.GENDER:
+            sens_attr_spec = "gender"
+            s_prefix = ["gender"]
+            class_label_spec = "gpa"
+            class_label_prefix = ["gpa"]
+        elif _split is AdmissionsSplits.CUSTOM:
+            sens_attr_spec = ""
+            s_prefix = []
+            class_label_spec = ""
+            class_label_prefix = []
+        else:
+            raise NotImplementedError
+
+        name = f"Admissions {_split.value}"
+
+        super().__init__(
+            name=name,
+            num_samples=43_303,
+            features=discrete_features + continuous_features,
+            cont_features=continuous_features,
+            sens_attr_spec=sens_attr_spec,
+            class_label_spec=class_label_spec,
+            filename_or_path="admissions.csv.zip",
+            s_prefix=s_prefix,
+            class_label_prefix=class_label_prefix,
+            discrete_only=discrete_only,
+            discrete_feature_groups=disc_feature_groups,
+            invert_s=invert_s,
+        )
