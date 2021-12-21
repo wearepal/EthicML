@@ -4,7 +4,7 @@ from typing import Union
 
 from ..dataset import Dataset
 
-__all__ = ["german"]
+__all__ = ["german", "German"]
 
 from ..util import flatten_dict
 
@@ -18,118 +18,130 @@ def german(
     split: Union[GermanSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+):
     """German credit dataset."""
-    _split = GermanSplits(split)
-    disc_feature_groups = {
-        "sex": ["sex"],
-        "age": ["age"],
-        "credit-label": ["credit-label"],
-        "status": ["status_A11", "status_A12", "status_A13", "status_A14"],
-        "credit-history": [
-            "credit-history_A30",
-            "credit-history_A31",
-            "credit-history_A32",
-            "credit-history_A33",
-            "credit-history_A34",
-        ],
-        "purpose": [
-            "purpose_A40",
-            "purpose_A41",
-            "purpose_A410",
-            "purpose_A42",
-            "purpose_A43",
-            "purpose_A44",
-            "purpose_A45",
-            "purpose_A46",
-            "purpose_A48",
-            "purpose_A49",
-        ],
-        "savings": [
-            "savings_A61",
-            "savings_A62",
-            "savings_A63",
-            "savings_A64",
-            "savings_A65",
-        ],
-        "employment": [
-            "employment_A71",
-            "employment_A72",
-            "employment_A73",
-            "employment_A74",
-            "employment_A75",
-        ],
-        "other-debtors": [
-            "other-debtors_A101",
-            "other-debtors_A102",
-            "other-debtors_A103",
-        ],
-        "property": [
-            "property_A121",
-            "property_A122",
-            "property_A123",
-            "property_A124",
-        ],
-        "installment-plans": [
-            "installment-plans_A141",
-            "installment-plans_A142",
-            "installment-plans_A143",
-        ],
-        "housing": [
-            "housing_A151",
-            "housing_A152",
-            "housing_A153",
-        ],
-        "skill-level": [
-            "skill-level_A171",
-            "skill-level_A172",
-            "skill-level_A173",
-            "skill-level_A174",
-        ],
-        "telephone": [
-            "telephone_A191",
-            "telephone_A192",
-        ],
-        "foreign-worker": [
-            "foreign-worker_A201",
-            "foreign-worker_A202",
-        ],
-    }
-    discrete_features = flatten_dict(disc_feature_groups)
+    return German(split=split, discrete_only=discrete_only, invert_s=invert_s)
 
-    continuous_features = [
-        "month",
-        "credit-amount",
-        "investment-as-income-percentage",
-        "residence-since",
-        "number-of-credits",
-        "people-liable-for",
-    ]
 
-    if _split is GermanSplits.SEX:
-        sens_attr_spec = "sex"
-        s_prefix = ["sex"]
-        class_label_spec = "credit-label"
-        class_label_prefix = ["credit-label"]
-    elif _split is GermanSplits.CUSTOM:
-        sens_attr_spec = ""
-        s_prefix = []
-        class_label_spec = ""
-        class_label_prefix = []
-    else:
-        raise NotImplementedError
+class German(Dataset):
+    """German credit dataset."""
 
-    return Dataset(
-        name=f"German {_split.value}",
-        num_samples=1_000,
-        filename_or_path="german.csv",
-        features=discrete_features + continuous_features,
-        cont_features=continuous_features,
-        s_prefix=s_prefix,
-        sens_attr_spec=sens_attr_spec,
-        class_label_prefix=class_label_prefix,
-        class_label_spec=class_label_spec,
-        discrete_only=discrete_only,
-        discrete_feature_groups=disc_feature_groups,
-        invert_s=invert_s,
-    )
+    def __init__(
+        self,
+        split: Union[GermanSplits, str] = "Sex",
+        discrete_only: bool = False,
+        invert_s: bool = False,
+    ):
+        _split = GermanSplits(split)
+        disc_feature_groups = {
+            "sex": ["sex"],
+            "age": ["age"],
+            "credit-label": ["credit-label"],
+            "status": ["status_A11", "status_A12", "status_A13", "status_A14"],
+            "credit-history": [
+                "credit-history_A30",
+                "credit-history_A31",
+                "credit-history_A32",
+                "credit-history_A33",
+                "credit-history_A34",
+            ],
+            "purpose": [
+                "purpose_A40",
+                "purpose_A41",
+                "purpose_A410",
+                "purpose_A42",
+                "purpose_A43",
+                "purpose_A44",
+                "purpose_A45",
+                "purpose_A46",
+                "purpose_A48",
+                "purpose_A49",
+            ],
+            "savings": [
+                "savings_A61",
+                "savings_A62",
+                "savings_A63",
+                "savings_A64",
+                "savings_A65",
+            ],
+            "employment": [
+                "employment_A71",
+                "employment_A72",
+                "employment_A73",
+                "employment_A74",
+                "employment_A75",
+            ],
+            "other-debtors": [
+                "other-debtors_A101",
+                "other-debtors_A102",
+                "other-debtors_A103",
+            ],
+            "property": [
+                "property_A121",
+                "property_A122",
+                "property_A123",
+                "property_A124",
+            ],
+            "installment-plans": [
+                "installment-plans_A141",
+                "installment-plans_A142",
+                "installment-plans_A143",
+            ],
+            "housing": [
+                "housing_A151",
+                "housing_A152",
+                "housing_A153",
+            ],
+            "skill-level": [
+                "skill-level_A171",
+                "skill-level_A172",
+                "skill-level_A173",
+                "skill-level_A174",
+            ],
+            "telephone": [
+                "telephone_A191",
+                "telephone_A192",
+            ],
+            "foreign-worker": [
+                "foreign-worker_A201",
+                "foreign-worker_A202",
+            ],
+        }
+        discrete_features = flatten_dict(disc_feature_groups)
+
+        continuous_features = [
+            "month",
+            "credit-amount",
+            "investment-as-income-percentage",
+            "residence-since",
+            "number-of-credits",
+            "people-liable-for",
+        ]
+
+        if _split is GermanSplits.SEX:
+            sens_attr_spec = "sex"
+            s_prefix = ["sex"]
+            class_label_spec = "credit-label"
+            class_label_prefix = ["credit-label"]
+        elif _split is GermanSplits.CUSTOM:
+            sens_attr_spec = ""
+            s_prefix = []
+            class_label_spec = ""
+            class_label_prefix = []
+        else:
+            raise NotImplementedError
+
+        super().__init__(
+            name=f"German {_split.value}",
+            num_samples=1_000,
+            filename_or_path="german.csv",
+            features=discrete_features + continuous_features,
+            cont_features=continuous_features,
+            s_prefix=s_prefix,
+            sens_attr_spec=sens_attr_spec,
+            class_label_prefix=class_label_prefix,
+            class_label_spec=class_label_spec,
+            discrete_only=discrete_only,
+            discrete_feature_groups=disc_feature_groups,
+            invert_s=invert_s,
+        )
