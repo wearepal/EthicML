@@ -502,9 +502,7 @@ def idfn(val: DT):
             sum_y=231,
         ),
         DT(
-            dataset=em.acs_income(
-                root=Path("~/Data"), year="2018", horizon=1, survey="person", states=["AL"]
-            ),
+            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
             samples=22_268,
             x_features=45,
             discrete_features=40,
@@ -512,14 +510,25 @@ def idfn(val: DT):
             num_sens=2,
             y_features=1,
             num_labels=2,
-            name="ACS_Income_2018_person_1_AL_Sex",
+            name="ACS_Income_2018_1_AL_Sex",
             sum_s=11_622,
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_income(
-                root=Path("~/Data"), year="2018", horizon=1, survey="person", states=["AL", "PA"]
-            ),
+            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
+            samples=68_308,
+            x_features=45,
+            discrete_features=40,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="ACS_Income_2018_1_PA_Sex",
+            sum_s=35_480,
+            sum_y=24_385,
+        ),
+        DT(
+            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
             samples=90_576,
             x_features=45,
             discrete_features=40,
@@ -527,18 +536,13 @@ def idfn(val: DT):
             num_sens=2,
             y_features=1,
             num_labels=2,
-            name="ACS_Income_2018_person_1_AL_PA_Sex",
+            name="ACS_Income_2018_1_AL_PA_Sex",
             sum_s=47_102,
             sum_y=31_309,
         ),
         DT(
             dataset=em.acs_income(
-                root=Path("~/Data"),
-                year="2018",
-                horizon=1,
-                survey="person",
-                states=["AL"],
-                split="Race",
+                root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Race"
             ),
             samples=22_268,
             x_features=38,
@@ -547,18 +551,13 @@ def idfn(val: DT):
             num_sens=9,
             y_features=1,
             num_labels=2,
-            name="ACS_Income_2018_person_1_AL_Race",
+            name="ACS_Income_2018_1_AL_Race",
             sum_s=9_947,
             sum_y=6_924,
         ),
         DT(
             dataset=em.acs_income(
-                root=Path("~/Data"),
-                year="2018",
-                horizon=1,
-                survey="person",
-                states=["AL"],
-                split="Sex-Race",
+                root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Sex-Race"
             ),
             samples=22_268,
             x_features=36,
@@ -567,7 +566,7 @@ def idfn(val: DT):
             num_sens=17,
             y_features=1,
             num_labels=2,
-            name="ACS_Income_2018_person_1_AL_Sex-Race",
+            name="ACS_Income_2018_1_AL_Sex-Race",
             sum_s=31_516,
             sum_y=6_924,
         ),

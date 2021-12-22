@@ -19,8 +19,22 @@ class LR(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None, seed: int = 888):
         self.C = LogisticRegression().C if C is None else C
-        super().__init__(name=f"Logistic Regression (C={self.C})", is_fairness_algo=False)
-        self.seed = seed
+        super().__init__(
+            name=f"Logistic Regression (C={self.C})", is_fairness_algo=False, seed=seed
+        )
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        random_state = np.random.RandomState(seed=self.seed)
+        self.clf = LogisticRegression(
+            solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
+        )
+        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -37,8 +51,22 @@ class LRProb(InAlgorithm):
 
     def __init__(self, C: Optional[int] = None, seed: int = 888):
         self.C = LogisticRegression().C if C is None else C
-        super().__init__(name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False)
-        self.seed = seed
+        super().__init__(
+            name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False, seed=seed
+        )
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        random_state = np.random.RandomState(seed=self.seed)
+        self.clf = LogisticRegression(
+            solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
+        )
+        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return SoftPrediction(soft=pd.Series(self.clf.predict_proba(test.x)[:, 1]))
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:
@@ -54,9 +82,22 @@ class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
     def __init__(self, n_splits: int = 3, seed: int = 888) -> None:
-        super().__init__(name="LRCV", is_fairness_algo=False)
+        super().__init__(name="LRCV", is_fairness_algo=False, seed=seed)
         self.n_splits = n_splits
-        self.seed = seed
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        random_state = np.random.RandomState(seed=self.seed)
+        folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
+        self.clf = LogisticRegressionCV(
+            cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
+        )
+        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return Prediction(hard=pd.Series(self.clf.predict(test.x)), info=dict(C=self.clf.C_[0]))
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:

@@ -1,8 +1,9 @@
 """Test preprocessing models."""
-from typing import Tuple
+from typing import NamedTuple
 
 import numpy as np
 import pandas as pd
+import pytest
 from pytest import approx
 
 import ethicml as em
@@ -24,237 +25,163 @@ from ethicml import (
 )
 
 
-def test_vfae(toy_train_test: TrainTestPair):
+class PreprocessTest(NamedTuple):
+    """Define a test for a preprocess model."""
+
+    model: PreAlgorithm
+    name: str
+    num_pos: int
+
+
+METHOD_LIST = [
+    PreprocessTest(
+        model=VFAE(
+            dir='/tmp',
+            dataset="Toy",
+            supervised=True,
+            epochs=10,
+            fairness="Eq. Opp",
+            batch_size=100,
+        ),
+        name="VFAE",
+        num_pos=56,
+    ),
+    PreprocessTest(
+        model=VFAE(
+            dir='/tmp',
+            dataset="Toy",
+            supervised=False,
+            epochs=10,
+            fairness="Eq. Opp",
+            batch_size=100,
+        ),
+        name="VFAE",
+        num_pos=47,
+    ),
+    PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
+    PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel DP", num_pos=49),
+    PreprocessTest(
+        model=Beutel(dir='/tmp', epochs=5, fairness="EqOp"), name="Beutel EqOp", num_pos=56
+    ),
+    PreprocessTest(model=Upsampler(strategy="naive"), name="Upsample naive", num_pos=43),
+    PreprocessTest(model=Upsampler(strategy="uniform"), name="Upsample uniform", num_pos=44),
+    PreprocessTest(
+        model=Upsampler(strategy="preferential"), name="Upsample preferential", num_pos=45
+    ),
+    PreprocessTest(
+        model=Calders(preferable_class=1, disadvantaged_group=0), name="Calders", num_pos=43
+    ),
+]
+
+
+@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
+    """Test preprocessing."""
+    train, test = toy_train_test
+
+    svm_model: InAlgorithm = SVM()
+
+    assert model.name == name
+    new_train, new_test = model.run(train, test)
+
+    if not isinstance(model, Upsampler):
+        assert new_train.x.shape[0] == train.x.shape[0]
+        assert new_test.x.shape[0] == test.x.shape[0]
+
+    assert new_train.x.shape[1] == model.out_size
+    assert new_test.x.shape[1] == model.out_size
+    assert new_test.name == f"{name}: " + str(test.name)
+    assert new_train.name == f"{name}: " + str(train.name)
+
+    preds = svm_model.run_test(new_train, new_test)
+    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
+    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+
+
+@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+def test_pre_sep_fit_transform(
+    toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int
+):
+    """Test preprocessing."""
+    train, test = toy_train_test
+
+    svm_model: InAlgorithm = SVM()
+
+    assert model.name == name
+    model, new_train = model.fit(train)
+    new_test = model.transform(test)
+
+    if not isinstance(model, Upsampler):
+        assert new_train.x.shape[0] == train.x.shape[0]
+        assert new_test.x.shape[0] == test.x.shape[0]
+
+    assert new_train.x.shape[1] == model.out_size
+    assert new_test.x.shape[1] == model.out_size
+    assert new_test.name == f"{name}: " + str(test.name)
+    assert new_train.name == f"{name}: " + str(train.name)
+
+    preds = svm_model.run_test(new_train, new_test)
+    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
+    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+
+
+@pytest.mark.parametrize(
+    "model,name,num_pos",
+    [
+        PreprocessTest(
+            model=VFAE(
+                dir='/tmp',
+                dataset="Toy",
+                supervised=True,
+                epochs=10,
+                fairness="Eq. Opp",
+                batch_size=100,
+            ),
+            name="VFAE",
+            num_pos=56,
+        ),
+        PreprocessTest(
+            model=VFAE(
+                dir='/tmp',
+                dataset="Toy",
+                supervised=False,
+                epochs=10,
+                fairness="Eq. Opp",
+                batch_size=100,
+            ),
+            name="VFAE",
+            num_pos=47,
+        ),
+        PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
+        PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel DP", num_pos=49),
+        PreprocessTest(
+            model=Beutel(dir='/tmp', epochs=5, fairness="EqOp"), name="Beutel EqOp", num_pos=56
+        ),
+    ],
+)
+def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test vfae."""
     train, test = toy_train_test
 
-    vfae_model: PreAlgorithm = VFAE(dataset="Toy", epochs=10, batch_size=100)
-    assert vfae_model is not None
-    assert vfae_model.name == "VFAE"
+    svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM"
 
-    new_train_test: Tuple[DataTuple, TestTuple] = vfae_model.run(train, test)
+    assert model.name == name
+    new_train_test = em.run_blocking(model.run_async(train, test))
     new_train, new_test = new_train_test
 
     assert len(new_train) == len(train)
     assert new_test.x.shape[0] == test.x.shape[0]
 
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions: Prediction = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 65
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 15
-
-    vfae_model = VFAE(dataset="Toy", supervised=True, epochs=10, fairness="Eq. Opp", batch_size=100)
-    assert vfae_model is not None
-    assert vfae_model.name == "VFAE"
-
-    new_train_test = vfae_model.run(train, test)
-    new_train, new_test = new_train_test
-
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "VFAE: " + str(test.name)
-    assert new_train.name == "VFAE: " + str(train.name)
+    assert new_test.name == f"{name}: " + str(test.name)
+    assert new_train.name == f"{name}: " + str(train.name)
 
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 65
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 15
-
-    vfae_model = VFAE(
-        dataset="Toy", supervised=False, epochs=10, fairness="Eq. Opp", batch_size=100
-    )
-    assert vfae_model is not None
-    assert vfae_model.name == "VFAE"
-
-    new_train_test = vfae_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
-
-
-def test_threaded_zemel(toy_train_test: TrainTestPair):
-    """Test threaded zemel."""
-    train, test = toy_train_test
-
-    model: PreAlgorithmAsync = Zemel()
-    assert model is not None
-    assert model.name == "Zemel"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = em.run_blocking(model.run_async(train, test))
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    classifier: InAlgorithm = SVM()
-    assert classifier is not None
-    assert classifier.name == "SVM"
-
-    predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 51
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 29
-
-    beut_model: PreAlgorithm = Zemel()
-    assert beut_model is not None
-    assert beut_model.name == "Zemel"
-
-    new_train_test = beut_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Zemel: " + str(test.name)
-    assert new_train.name == "Zemel: " + str(train.name)
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 51
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 29
-
-
-def test_threaded_beutel(toy_train_test: TrainTestPair):
-    """Test threaded beutel."""
-    train, test = toy_train_test
-
-    model: PreAlgorithmAsync = Beutel()
-    assert model is not None
-    assert model.name == "Beutel DP"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = em.run_blocking(model.run_async(train, test))
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel DP: " + str(test.name)
-    assert new_train.name == "Beutel DP: " + str(train.name)
-
-    classifier: InAlgorithm = SVM()
-    assert classifier is not None
-    assert classifier.name == "SVM"
-
-    predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 49
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 31
-
-    beut_model: PreAlgorithm = Beutel()
-    assert beut_model is not None
-    assert beut_model.name == "Beutel DP"
-
-    new_train_test = beut_model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel DP: " + str(test.name)
-    assert new_train.name == "Beutel DP: " + str(train.name)
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions = svm_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 49
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 31
-
-
-def test_threaded_custom_beutel(toy_train_test: TrainTestPair):
-    """Test threaded custom beutel."""
-    train, test = toy_train_test
-
-    beut_model: PreAlgorithm = Beutel(epochs=5, fairness="EqOp")
-    assert beut_model is not None
-    assert beut_model.name == "Beutel EqOp"
-
-    new_train_test_non_thread: Tuple[DataTuple, TestTuple] = beut_model.run(train, test)
-    new_train_nt, new_test_nt = new_train_test_non_thread
-
-    assert new_train_nt.x.shape[0] == train.x.shape[0]
-    assert new_test_nt.x.shape[0] == test.x.shape[0]
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM"
-
-    predictions = svm_model.run_test(new_train_nt, new_test_nt)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 56
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 24
-
-    model: PreAlgorithmAsync = Beutel(epochs=5, fairness="EqOp")
-    assert model is not None
-    assert model.name == "Beutel EqOp"
-
-    new_train_test: Tuple[DataTuple, TestTuple] = em.run_blocking(model.run_async(train, test))
-    new_train, new_test = new_train_test
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == "Beutel EqOp: " + str(test.name)
-    assert new_train.name == "Beutel EqOp: " + str(train.name)
-
-    classifier: InAlgorithm = SVM()
-    assert classifier is not None
-    assert classifier.name == "SVM"
-
-    treaded_predictions: Prediction = classifier.run_test(new_train, new_test)
-    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 1].shape[0] == 56
-    assert treaded_predictions.hard.values[treaded_predictions.hard.values == 0].shape[0] == 24
-
-
-def test_upsampler(toy_train_test: TrainTestPair):
-    """Test upsampler."""
-    train, test = toy_train_test
-
-    upsampler: PreAlgorithm = Upsampler(strategy="naive")
-    assert upsampler is not None
-    assert upsampler.name == "Upsample naive"
-
-    new_train: DataTuple
-    new_test: TestTuple
-    new_train, new_test = upsampler.run(train, test)
-
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
-    assert new_train.name == train.name
-
-    lr_model: InAlgorithm = LR()
-    assert lr_model is not None
-    assert lr_model.name == "Logistic Regression (C=1.0)"
-
-    predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 41
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 39
-
-    upsampler = Upsampler(strategy="uniform")
-    new_train, new_test = upsampler.run(train, test)
-
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
-    assert new_train.name == train.name
-
-    predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 43
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 37
-
-    upsampler = Upsampler(strategy="preferential")
-    new_train, new_test = upsampler.run(train, test)
-
-    assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == test.name
-    assert new_train.name == train.name
-
-    predictions = lr_model.run_test(new_train, new_test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
+    preds = svm_model.run_test(new_train, new_test)
+    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
+    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
 
 
 def test_calders():

@@ -3,11 +3,13 @@
 # pylint: disable=arguments-differ
 
 import random
+from pathlib import Path
 from typing import Any, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
 import torch
+from joblib import dump, load
 from torch import Tensor, nn
 from torch.autograd import Function
 from torch.optim import Adam
@@ -103,9 +105,7 @@ def make_dataset_and_loader(
     return dataset, dataloader
 
 
-def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: BeutelArgs
-) -> Tuple[DataTuple, TestTuple]:
+def fit(train: DataTuple, flags: BeutelArgs):
     """Train the fair autoencoder on the training data and then transform both training and test."""
     set_seed(flags.seed)
 
@@ -124,11 +124,6 @@ def train_and_transform(
     train_data, train_loader = make_dataset_and_loader(train_, flags)
     _, validation_loader = make_dataset_and_loader(validation, flags)
     _, all_train_data_loader = make_dataset_and_loader(train, flags)
-
-    test_data = TestDataset(test)
-    test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=flags.batch_size, shuffle=False
-    )
 
     # convert flags to Python objects
     enc_activation = STRING_TO_ACTIVATION_MAP[flags.enc_activation]
@@ -195,7 +190,25 @@ def train_and_transform(
     transformed_train = encode_dataset(enc, all_train_data_loader, train)
     if post_process:
         transformed_train = processor.post(encode_dataset(enc, all_train_data_loader, train))
-    return transformed_train, encode_testset(enc, test_loader, test)
+    return transformed_train, enc
+
+
+def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestTuple:
+    """Transform the test data using the trained autoencoder."""
+    test_data = TestDataset(data)
+    test_loader = torch.utils.data.DataLoader(
+        dataset=test_data, batch_size=flags.batch_size, shuffle=False
+    )
+    return encode_testset(enc, test_loader, data)
+
+
+def train_and_transform(
+    train: DataTuple, test: TestTuple, flags: BeutelArgs
+) -> Tuple[DataTuple, TestTuple]:
+    """Train the fair autoencoder on the training data and then transform both training and test."""
+    transformed_train, enc = fit(train, flags)
+    transformed_test = transform(test, enc, flags)
+    return transformed_train, transformed_test
 
 
 def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR) -> None:
@@ -394,8 +407,29 @@ class Model(nn.Module):
 def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
     args = BeutelArgs().parse_args()
-    train, test = load_data_from_flags(args)
-    save_transformations(train_and_transform(train, test, args), args)
+    if args.mode == "run":
+        assert args.train is not None
+        assert args.new_train is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        train, test = load_data_from_flags(args)
+        save_transformations(train_and_transform(train, test, args), args)
+    elif args.mode == "fit":
+        assert args.model is not None
+        assert args.train is not None
+        assert args.new_train is not None
+        train = DataTuple.from_npz(Path(args.train))
+        transformed_train, enc = fit(train, args)
+        transformed_train.to_npz(Path(args.new_train))
+        dump(enc, Path(args.model))
+    elif args.mode == "transform":
+        assert args.model is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        test = DataTuple.from_npz(Path(args.test))
+        model = load(Path(args.model))
+        transformed_test = transform(test, model, args)
+        transformed_test.to_npz(Path(args.new_test))
 
 
 if __name__ == "__main__":

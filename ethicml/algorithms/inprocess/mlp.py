@@ -30,7 +30,7 @@ class MLP(InAlgorithm):
         activation: Optional[ActivationType] = None,
         seed: int = 888,
     ):
-        super().__init__(name="MLP", is_fairness_algo=False)
+        super().__init__(name="MLP", is_fairness_algo=False, seed=seed)
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
         else:
@@ -38,7 +38,16 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
-        self.seed = seed
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        self.clf = select_mlp(self.hidden_layer_sizes, self.activation, seed=self.seed)
+        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:

@@ -18,10 +18,19 @@ class SVM(InAlgorithm):
 
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None, seed: int = 888):
         kernel_name = f" ({kernel})" if kernel is not None else ""
-        super().__init__(name="SVM" + kernel_name, is_fairness_algo=False)
+        super().__init__(name="SVM" + kernel_name, is_fairness_algo=False, seed=seed)
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
-        self.seed = seed
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        self.clf = select_svm(self.C, self.kernel, self.seed)
+        self.clf.fit(train.x, train.y.to_numpy().ravel())
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> Prediction:
