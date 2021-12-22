@@ -1,9 +1,8 @@
 """EthicML Tests."""
 import sys
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Tuple
+from typing import Dict, List, NamedTuple
 
-import pandas as pd
 import pytest
 from pytest import approx
 
@@ -33,6 +32,9 @@ from ethicml import (
     Prediction,
     SoftPrediction,
     TrainTestPair,
+    ZafarAccuracy,
+    ZafarBaseline,
+    ZafarFairness,
     compas,
     evaluate_models_async,
     load_data,
@@ -42,6 +44,7 @@ from ethicml import (
     toy,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.shared import flag_interface
 from tests.run_algorithm_test import count_true
 
 
@@ -54,17 +57,40 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
+    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
+    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
+    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
+    InprocessTest(
+        name="Agarwal, SVM, DP",
+        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
+        num_pos=42,
+    ),
+    InprocessTest(
+        name="Agarwal, SVM, EqOd",
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
+        num_pos=45,
+    ),
+    InprocessTest(
+        name="Agarwal, SVM, EqOd",
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
+        num_pos=42,
+    ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5), num_pos=45),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0), num_pos=59),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
+    InprocessTest(name="Kamiran & Calders LR", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
+    InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
+    # InprocessTest(name="Zafar", model=ZafarAccuracy(), num_pos=41),
+    # InprocessTest(name="Zafar", model=ZafarBaseline(), num_pos=41),
+    # InprocessTest(name="Zafar", model=ZafarFairness(), num_pos=41),
 ]
 
 
@@ -78,6 +104,23 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+
+@pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+def test_inprocess_sep_train_pred(
+    toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int
+):
+    """Test an inprocess model with distinct train and predict steps."""
+    train, test = toy_train_test
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    model = model.fit(train)
+    predictions: Prediction = model.predict(test)
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
 
@@ -155,7 +198,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
                 name="local installed LR", dir_name="../..", top_dir="", executable=sys.executable
             )
 
-        def _script_command(
+        def _run_script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
         ) -> (List[str]):
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
@@ -165,6 +208,18 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
                 str(test_path),
                 str(pred_path),
             ]
+
+        def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
+            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
+            args = flag_interface(train_path=train_path, model_path=model_path)
+            return [script, args]
+
+        def _predict_script_command(
+            self, model_path: Path, test_path: Path, pred_path: Path
+        ) -> List[str]:
+            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
+            args = flag_interface(model_path=model_path, test_path=test_path, pred_path=pred_path)
+            return [script, args]
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None
@@ -176,54 +231,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
-def test_agarwal(toy_train_test: TrainTestPair):
-    """Test agarwal."""
-    train, test = toy_train_test
-
-    agarwal_variants: List[InAlgorithmAsync] = []
-    model_names: List[str] = []
-    expected_results: List[Tuple[int, int]] = []
-
-    agarwal_variants.append(Agarwal())
-    model_names.append("Agarwal, LR, DP")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(fairness="EqOd"))
-    model_names.append("Agarwal, LR, EqOd")
-    expected_results.append((44, 36))
-
-    agarwal_variants.append(Agarwal(classifier="SVM"))
-    model_names.append("Agarwal, SVM, DP")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", kernel="linear"))
-    model_names.append("Agarwal, SVM, DP")
-    expected_results.append((42, 38))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd"))
-    model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd", kernel="linear"))
-    model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((42, 38))
-
-    results = run_blocking(
-        run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
-    )
-
-    for model, results_for_model, model_name, (pred_true, pred_false) in zip(
-        agarwal_variants, results, model_names, expected_results
-    ):
-        assert model.name == model_name
-        print(model.name)
-        assert count_true(results_for_model[0].hard.to_numpy() == 1) == pred_true, model_name
-        assert count_true(results_for_model[0].hard.to_numpy() == 0) == pred_false, model_name
-
-
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(classifier="SVM", fairness="EqOd")]
+    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
 
     class AssertResult(Metric):
         _name = "assert_result"
@@ -240,36 +250,3 @@ def test_threaded_agarwal():
         )
     )
     assert results["assert_result"].iloc[0] == 0.0
-
-
-def test_lr_prob(toy_train_test: TrainTestPair):
-    """Test lr prob."""
-    train, test = toy_train_test
-
-    model: LRProb = LRProb()
-    assert model.name == "Logistic Regression Prob (C=1.0)"
-
-    heavi = Heaviside()
-
-    predictions: SoftPrediction = model.run(train, test)
-    hard_predictions = pd.Series(heavi.apply(predictions.soft.to_numpy()))
-    pd.testing.assert_series_equal(hard_predictions, predictions.hard)
-    assert hard_predictions.values[hard_predictions.values == 1].shape[0] == 44
-    assert hard_predictions.values[hard_predictions.values == 0].shape[0] == 36
-
-
-def test_kamiran(toy_train_test: TrainTestPair):
-    """Test kamiran."""
-    train, test = toy_train_test
-
-    kamiran_model: InAlgorithm = Kamiran()
-    assert kamiran_model is not None
-    assert kamiran_model.name == "Kamiran & Calders LR"
-
-    predictions: Prediction = kamiran_model.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 44
-    assert predictions.hard.values[predictions.hard.values == 0].shape[0] == 36
-
-    # remove all samples with s=0 & y=1 from the data
-    train_no_s0y1 = query_dt(train, "`sensitive-attr` != 0 | decision != 1")
-    predictions = kamiran_model.run(train_no_s0y1, test)

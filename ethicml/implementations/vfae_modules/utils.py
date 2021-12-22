@@ -21,6 +21,7 @@ class VfaeArgs(PreAlgoArgs):
     batch_size: int
     epochs: int
     dataset: str
+    latent_dims: int
     z1_enc_size: List[int]
     z2_enc_size: List[int]
     z1_dec_size: List[int]

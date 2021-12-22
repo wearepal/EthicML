@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import numpy as np
+from joblib import dump, load
 from sklearn.svm import SVC, LinearSVC
 
 from .utils import InAlgoArgs
@@ -18,20 +19,48 @@ class SvmArgs(InAlgoArgs):
 def main() -> None:
     """This function runs the SVM model as a standalone program."""
     args = SvmArgs().parse_args()
-    with open(args.train, "rb") as train_file:
-        train = np.load(train_file)
-        train_x, train_y = train["x"], train["y"]
-    with open(args.test, "rb") as test_file:
-        test = np.load(test_file)
-        test_x = test["x"]
-    random_state = np.random.RandomState(seed=args.seed)
-    if args.kernel == "linear":
-        clf = LinearSVC(C=args.c, dual=False, tol=1e-12, random_state=random_state)
-    else:
-        clf = SVC(C=args.c, kernel=args.kernel, gamma="auto", random_state=random_state)
-    clf.fit(train_x, train_y.ravel())
-    predictions = clf.predict(test_x)
-    np.savez(Path(args.predictions), hard=predictions)
+
+    if args.mode == "run":
+        assert args.train is not None
+        assert args.test is not None
+        assert args.predictions is not None
+        with open(args.train, "rb") as train_file:
+            train = np.load(train_file)
+            train_x, train_y = train["x"], train["y"]
+        with open(args.test, "rb") as test_file:
+            test = np.load(test_file)
+            test_x = test["x"]
+        random_state = np.random.RandomState(seed=args.seed)
+        if args.kernel == "linear":
+            clf = LinearSVC(C=args.c, dual=False, tol=1e-12, random_state=random_state)
+        else:
+            clf = SVC(C=args.c, kernel=args.kernel, gamma="auto", random_state=random_state)
+        clf.fit(train_x, train_y.ravel())
+        predictions = clf.predict(test_x)
+        np.savez(Path(args.predictions), hard=predictions)
+    if args.mode == "fit":
+        assert args.train is not None
+        assert args.model is not None
+        with open(args.train, "rb") as train_file:
+            train = np.load(train_file)
+            train_x, train_y = train["x"], train["y"]
+        random_state = np.random.RandomState(seed=args.seed)
+        if args.kernel == "linear":
+            clf = LinearSVC(C=args.c, dual=False, tol=1e-12, random_state=random_state)
+        else:
+            clf = SVC(C=args.c, kernel=args.kernel, gamma="auto", random_state=random_state)
+        clf.fit(train_x, train_y.ravel())
+        dump(clf, Path(args.model))
+    if args.mode == "predict":
+        assert args.model is not None
+        assert args.predictions is not None
+        assert args.test is not None
+        clf = load(Path(args.model))
+        with open(args.test, "rb") as test_file:
+            test = np.load(test_file)
+            test_x = test["x"]
+        predictions = clf.predict(test_x)
+        np.savez(Path(args.predictions), hard=predictions)
 
 
 if __name__ == "__main__":

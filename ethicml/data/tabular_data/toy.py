@@ -14,7 +14,7 @@ def toy() -> Dataset:
 class Toy(Dataset):
     """Dataset with toy data for testing."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         disc_feature_groups = {
             "disc_1": ["disc_1_a", "disc_1_b", "disc_1_c", "disc_1_d", "disc_1_e"],
             "disc_2": ["disc_2_x", "disc_2_y", "disc_2_z"],

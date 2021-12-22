@@ -15,8 +15,21 @@ class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
     def __init__(self, seed: int = 888) -> None:
-        super().__init__(name="DemPar. Post Process")
-        self.seed = seed
+        super().__init__(name="DemPar. Post Process", seed=seed)
+
+    @implements(PostAlgorithm)
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+        return self
+
+    @implements(PostAlgorithm)
+    def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
+        x, y = self._fit(test, test_predictions)
+        _test_preds = self._flip(
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+        )
+        return self._flip(
+            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
+        )
 
     @implements(PostAlgorithm)
     def run(

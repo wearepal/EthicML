@@ -3,6 +3,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+import sklearn.linear_model._base
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression
 
@@ -28,12 +29,22 @@ class Kamiran(InAlgorithm):
         kernel: Optional[str] = None,
         seed: int = 888,
     ):
-        super().__init__(name=f"Kamiran & Calders {classifier}")
+        super().__init__(name=f"Kamiran & Calders {classifier}", seed=seed)
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
-        self.seed = seed
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        self.clf = _train(
+            train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
+        )
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        return _predict(model=self.clf, test=test)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -67,6 +78,28 @@ def compute_instance_weights(
         group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)
 
     return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
+
+
+def _train(
+    train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
+) -> sklearn.linear_model._base.LinearModel:
+    if classifier == "SVM":
+        model = select_svm(C=C, kernel=kernel, seed=seed)
+    else:
+        random_state = np.random.RandomState(seed=seed)
+        model = LogisticRegression(
+            solver="liblinear", random_state=random_state, max_iter=5000, C=C
+        )
+    model.fit(
+        train.x,
+        train.y.to_numpy().ravel(),
+        sample_weight=compute_instance_weights(train)["instance weights"],
+    )
+    return model
+
+
+def _predict(model: sklearn.linear_model._base.LinearModel, test: TestTuple) -> Prediction:
+    return Prediction(hard=pd.Series(model.predict(test.x)))
 
 
 def _train_and_predict(
