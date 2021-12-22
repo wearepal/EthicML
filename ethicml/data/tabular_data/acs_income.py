@@ -35,7 +35,7 @@ class AdultSplits(Enum):
 
 
 @contextlib.contextmanager
-def download_dir(root: Path):
+def download_dir(root: Path) -> None:
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve())
     try:

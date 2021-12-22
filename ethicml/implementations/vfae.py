@@ -1,6 +1,6 @@
 """Implementation of VFAE."""
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 import pandas as pd
 import torch
@@ -47,6 +47,7 @@ def fit(train, flags):
 
 def transform(model: VFAENetwork, dataset: T, flags) -> T:
     """Transform the dataset."""
+    data: Union[CustomDataset, TestDataset]
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
         loader = DataLoader(data, batch_size=flags.batch_size, shuffle=False)

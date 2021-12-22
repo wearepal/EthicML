@@ -1,7 +1,7 @@
 """EthicML Tests."""
 import sys
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Tuple
+from typing import Dict, List, NamedTuple
 
 import pandas as pd
 import pytest
@@ -55,6 +55,24 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
+    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
+    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
+    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
+    InprocessTest(
+        name="Agarwal, SVM, DP",
+        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
+        num_pos=42,
+    ),
+    InprocessTest(
+        name="Agarwal, SVM, EqOd",
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
+        num_pos=45,
+    ),
+    InprocessTest(
+        name="Agarwal, SVM, EqOd",
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
+        num_pos=42,
+    ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
@@ -204,51 +222,6 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     expected_num_pos = 44
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
-
-
-def test_agarwal(toy_train_test: TrainTestPair):
-    """Test agarwal."""
-    train, test = toy_train_test
-
-    agarwal_variants: List[InAlgorithmAsync] = []
-    model_names: List[str] = []
-    expected_results: List[Tuple[int, int]] = []
-
-    agarwal_variants.append(Agarwal())
-    model_names.append("Agarwal, LR, DP")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(fairness="EqOd"))
-    model_names.append("Agarwal, LR, EqOd")
-    expected_results.append((44, 36))
-
-    agarwal_variants.append(Agarwal(classifier="SVM"))
-    model_names.append("Agarwal, SVM, DP")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", kernel="linear"))
-    model_names.append("Agarwal, SVM, DP")
-    expected_results.append((42, 38))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd"))
-    model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((45, 35))
-
-    agarwal_variants.append(Agarwal(classifier="SVM", fairness="EqOd", kernel="linear"))
-    model_names.append("Agarwal, SVM, EqOd")
-    expected_results.append((42, 38))
-
-    results = run_blocking(
-        run_in_parallel(agarwal_variants, [TrainTestPair(train, test)], max_parallel=1)
-    )
-
-    for model, results_for_model, model_name, (pred_true, pred_false) in zip(
-        agarwal_variants, results, model_names, expected_results
-    ):
-        assert model.name == model_name
-        print(model.name)
-        assert count_true(results_for_model[0].hard.to_numpy() == 1) == pred_true, model_name
-        assert count_true(results_for_model[0].hard.to_numpy() == 0) == pred_false, model_name
 
 
 def test_threaded_agarwal():

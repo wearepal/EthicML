@@ -3,6 +3,7 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
+import sklearn.linear_model._base
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression
 
@@ -79,7 +80,9 @@ def compute_instance_weights(
     return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
 
 
-def _train(train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int):
+def _train(
+    train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
+) -> sklearn.linear_model._base.LinearModel:
     if classifier == "SVM":
         model = select_svm(C=C, kernel=kernel, seed=seed)
     else:
@@ -95,7 +98,7 @@ def _train(train: DataTuple, classifier: ClassifierType, C: float, kernel: str, 
     return model
 
 
-def _predict(model, test: TestTuple):
+def _predict(model: sklearn.linear_model._base.LinearModel, test: TestTuple) -> Prediction:
     return Prediction(hard=pd.Series(model.predict(test.x)))
 
 
