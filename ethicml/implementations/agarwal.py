@@ -80,7 +80,7 @@ def predict(exponentiated_gradient, test: TestTuple) -> pd.DataFrame:
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data."""
-    exponentiated_gradient = train(train, args)
+    exponentiated_gradient = fit(train, args)
     return predict(exponentiated_gradient, test)
 
 
@@ -134,8 +134,6 @@ def main() -> None:
         Prediction(hard=predict(model, data)["preds"]).to_npz(Path(args.predictions))
     else:
         raise RuntimeError(f"Unknown mode: {args.mode}")
-        model = pickle.loads(model_file)
-        predict(model, data, args).to_npz(Path(args.predictions))
 
 
 if __name__ == "__main__":

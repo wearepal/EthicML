@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import git
+from ranzen import implements
 
 from .in_algorithm import InAlgorithmAsync
 
@@ -92,5 +93,16 @@ class InstalledModel(InAlgorithmAsync):
         except OSError as excep:
             print(f"Error: {excep.filename} - {excep.strerror}.")
 
+    @implements(InAlgorithmAsync)
     def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         return []  # pylint was complaining when I didn't return anything here...
+
+    @implements(InAlgorithmAsync)
+    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
+        return []
+
+    @implements(InAlgorithmAsync)
+    def _predict_script_command(
+        self, model_path: Path, test_path: Path, pred_path: Path
+    ) -> List[str]:
+        return []

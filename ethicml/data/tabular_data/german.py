@@ -14,15 +14,6 @@ class GermanSplits(Enum):
     CUSTOM = "Custom"
 
 
-def german(
-    split: Union[GermanSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-):
-    """German credit dataset."""
-    return German(split=split, discrete_only=discrete_only, invert_s=invert_s)
-
-
 class German(Dataset):
     """German credit dataset."""
 
@@ -145,3 +136,12 @@ class German(Dataset):
             discrete_feature_groups=disc_feature_groups,
             invert_s=invert_s,
         )
+
+
+def german(
+    split: Union[GermanSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> German:
+    """German credit dataset."""
+    return German(split=split, discrete_only=discrete_only, invert_s=invert_s)

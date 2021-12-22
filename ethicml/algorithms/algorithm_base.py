@@ -35,6 +35,8 @@ class Algorithm(ABC):
 class AlgorithmAsync(metaclass=ABCMeta):  # pylint: disable=too-few-public-methods
     """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
 
+    model_dir: Path
+
     @property
     def _executable(self) -> str:
         """Path to a (Python) executable.

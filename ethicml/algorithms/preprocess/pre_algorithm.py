@@ -73,8 +73,9 @@ class PreAlgorithm(Algorithm):
         return self.run(train_testing, test)
 
     @property
-    def out_size(self):
+    def out_size(self) -> int:
         """The number of features to generate."""
+        assert self._out_size is not None
         return self._out_size
 
 

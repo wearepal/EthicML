@@ -46,5 +46,7 @@ def save_transformations(transforms: Tuple[DataTuple, TestTuple], args: PreAlgoA
     train, test = transforms
     assert isinstance(train, DataTuple)
     assert isinstance(test, TestTuple)
+    assert args.new_train is not None
+    assert args.new_test is not None
     train.to_npz(Path(args.new_train))
     test.to_npz(Path(args.new_test))
