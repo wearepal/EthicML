@@ -9,7 +9,7 @@ from ranzen import implements
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from ..inprocess.logistic_regression import LRProb
-from .pre_algorithm import PreAlgorithm
+from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Upsampler"]
 
@@ -24,14 +24,25 @@ class Upsampler(PreAlgorithm):
     def __init__(
         self, strategy: Literal["uniform", "preferential", "naive"] = "uniform", seed: int = 888
     ):
-        super().__init__(name=f"Upsample {strategy}", seed=seed)
+        super().__init__(name=f"Upsample {strategy}", seed=seed, out_size=None)
 
         assert strategy in ["uniform", "preferential", "naive"]
         self.strategy = strategy
 
     @implements(PreAlgorithm)
+    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+        self._out_size = train.x.shape[1]
+        new_train, _ = upsample(train, train, self.strategy, self.seed, name=self.name)
+        return self, new_train
+
+    @implements(PreAlgorithm)
+    def transform(self, data: T) -> T:
+        return data.replace(name=f"{self.name}: {data.name}")
+
+    @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        return upsample(train, test, self.strategy, self.seed)
+        self._out_size = train.x.shape[1]
+        return upsample(train, test, self.strategy, self.seed, name=self.name)
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
@@ -60,6 +71,7 @@ def upsample(
     test: TestTuple,
     strategy: Literal["uniform", "preferential", "naive"],
     seed: int,
+    name: str,
 ) -> Tuple[DataTuple, TestTuple]:
     """Upsample a datatuple."""
     s_col = dataset.s.columns[0]
@@ -121,6 +133,7 @@ def upsample(
             upsampled_datatuple = val
         else:
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
+            upsampled_datatuple = upsampled_datatuple.replace(name=f"{name}: {dataset.name}")
 
     if strategy == "preferential":
         ranker = LRProb()
@@ -162,8 +175,8 @@ def upsample(
             x=upsampled_dataframes[x_columns],
             s=upsampled_dataframes[s_columns],
             y=upsampled_dataframes[y_columns],
-            name=dataset.name,
+            name=f"{name}: {dataset.name}",
         )
 
     assert upsampled_datatuple is not None
-    return upsampled_datatuple, TestTuple(x=test.x, s=test.s, name=test.name)
+    return upsampled_datatuple, TestTuple(x=test.x, s=test.s, name=f"{name}: {test.name}")

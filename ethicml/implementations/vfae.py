@@ -1,12 +1,15 @@
 """Implementation of VFAE."""
+from pathlib import Path
 from typing import List, Tuple
 
 import pandas as pd
 import torch
+from joblib import dump, load
 from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
+from ethicml.algorithms.preprocess.pre_algorithm import T
 from ethicml.data.lookup import get_dataset_obj_by_name
 from ethicml.implementations.beutel import set_seed
 from ethicml.utility import DataTuple, TestTuple
@@ -14,6 +17,61 @@ from ethicml.utility import DataTuple, TestTuple
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import load_data_from_flags, save_transformations
 from .vfae_modules import VfaeArgs, VFAENetwork, loss_function
+
+
+def fit(train, flags):
+    """Train the model."""
+    dataset = get_dataset_obj_by_name(flags.dataset)()
+
+    # Set up the data
+    train_data = CustomDataset(train)
+    train_loader = DataLoader(train_data, batch_size=flags.batch_size)
+
+    # Build Network
+    model = VFAENetwork(
+        dataset,
+        flags.supervised,
+        train_data.xdim,
+        latent_dims=flags.latent_dims,
+        z1_enc_size=flags.z1_enc_size,
+        z2_enc_size=flags.z2_enc_size,
+        z1_dec_size=flags.z1_dec_size,
+    ).to("cpu")
+    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+
+    # Run Network
+    for epoch in range(int(flags.epochs)):
+        train_model(epoch, model, train_loader, optimizer, flags)
+    return model
+
+
+def transform(model: VFAENetwork, dataset: T, flags) -> T:
+    """Transform the dataset."""
+    if isinstance(dataset, DataTuple):
+        data = CustomDataset(dataset)
+        loader = DataLoader(data, batch_size=flags.batch_size, shuffle=False)
+    elif isinstance(dataset, TestTuple):
+        data = TestDataset(dataset)
+        loader = DataLoader(data, batch_size=flags.batch_size, shuffle=False)
+
+    post_train: List[List[float]] = []
+    model.eval()
+    with torch.no_grad():
+        for sample in loader:
+            if isinstance(dataset, DataTuple):
+                _x, _s, _ = sample
+            elif isinstance(dataset, TestTuple):
+                _x, _s = sample
+            z1_mu, z1_logvar = model.encode_z1(_x, _s)
+            # z1 = model.reparameterize(z1_mu, z1_logvar)
+            post_train += z1_mu.data.tolist()
+
+    if isinstance(dataset, DataTuple):
+        return DataTuple(
+            x=pd.DataFrame(post_train), s=dataset.s, y=dataset.y, name=f"VFAE: {dataset.name}"
+        )
+    elif isinstance(dataset, TestTuple):
+        return TestTuple(x=pd.DataFrame(post_train), s=dataset.s, name=f"VFAE: {dataset.name}")
 
 
 def train_and_transform(
@@ -29,50 +87,10 @@ def train_and_transform(
     Returns:
         Tuple of Encoded Train Dataset and Test Dataset.
     """
-    set_seed(flags.seed)
-    dataset = get_dataset_obj_by_name(flags.dataset)()
-
-    # Set up the data
-    train_data = CustomDataset(train)
-    train_loader = DataLoader(train_data, batch_size=flags.batch_size)
-
-    test_data = TestDataset(test)
-    test_loader = DataLoader(test_data, batch_size=flags.batch_size)
-
-    # Build Network
-    model = VFAENetwork(
-        dataset,
-        flags.supervised,
-        train_data.xdim,
-        latent_dims=50,
-        z1_enc_size=flags.z1_enc_size,
-        z2_enc_size=flags.z2_enc_size,
-        z1_dec_size=flags.z1_dec_size,
-    ).to("cpu")
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
-
-    # Run Network
-    for epoch in range(int(flags.epochs)):
-        train_model(epoch, model, train_loader, optimizer, flags)
+    model = fit(train, flags)
 
     # Transform output
-    post_train: List[List[float]] = []
-    post_test: List[List[float]] = []
-    model.eval()
-    with torch.no_grad():
-        for _x, _s, _ in train_loader:
-            z1_mu, z1_logvar = model.encode_z1(_x, _s)
-            z1 = model.reparameterize(z1_mu, z1_logvar)
-            post_train += z1.data.tolist()
-        for _x, _s in test_loader:
-            z1_mu, z1_logvar = model.encode_z1(_x, _s)
-            z1 = model.reparameterize(z1_mu, z1_logvar)
-            post_test += z1.data.tolist()
-
-    return (
-        DataTuple(x=pd.DataFrame(post_train), s=train.s, y=train.y, name=f"VFAE: {train.name}"),
-        TestTuple(x=pd.DataFrame(post_test), s=test.s, name=f"VFAE: {test.name}"),
-    )
+    return transform(model, train, flags), transform(model, test, flags)
 
 
 def train_model(
@@ -133,8 +151,31 @@ def train_model(
 def main() -> None:
     """Main method to run model."""
     args = VfaeArgs(explicit_bool=True).parse_args()
-    train, test = load_data_from_flags(args)
-    save_transformations(train_and_transform(train, test, args), args)
+    set_seed(args.seed)
+    if args.mode == "run":
+        assert args.train is not None
+        assert args.new_train is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        train, test = load_data_from_flags(args)
+        save_transformations(train_and_transform(train, test, args), args)
+    elif args.mode == "fit":
+        assert args.model is not None
+        assert args.train is not None
+        assert args.new_train is not None
+        train = DataTuple.from_npz(Path(args.train))
+        enc = fit(train, args)
+        transformed_train = transform(enc, train, args)
+        transformed_train.to_npz(Path(args.new_train))
+        dump(enc, Path(args.model))
+    elif args.mode == "transform":
+        assert args.model is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        test = DataTuple.from_npz(Path(args.test))
+        model = load(Path(args.model))
+        transformed_test = transform(model, test, args)
+        transformed_test.to_npz(Path(args.new_test))
 
 
 if __name__ == "__main__":

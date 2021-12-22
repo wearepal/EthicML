@@ -1,14 +1,24 @@
 """Zemel algorithm."""
-from typing import Tuple
+from pathlib import Path
+from typing import NamedTuple, Tuple
 
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
+from joblib import dump, load
 from scipy.spatial.distance import cdist
 from scipy.special import softmax
 
+from ethicml.algorithms.preprocess.pre_algorithm import T
 from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple
+
+
+class Model(NamedTuple):
+    """Model."""
+
+    prototypes: np.ndarray
+    w: np.ndarray
 
 
 class ZemelArgs(PreAlgoArgs):
@@ -89,6 +99,38 @@ def get_xhat_y_hat(
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: ZemelArgs
 ) -> (Tuple[DataTuple, TestTuple]):
+    """Train and transform."""
+    prototypes, w = fit(train, flags)
+    sens_col = train.s.columns[0]
+
+    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
+    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+
+    testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
+    testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
+
+    train_transformed = trans(prototypes, w, training_nonsensitive, training_sensitive, train)
+    test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
+
+    return (
+        DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name),
+        TestTuple(x=test_transformed, s=test.s, name=test.name),
+    )
+
+
+def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
+    """Transform."""
+    sens_col = data.s.columns[0]
+    data_sens = data.x.loc[data.s[sens_col] == 0].to_numpy()
+    data_nons = data.x.loc[data.s[sens_col] == 1].to_numpy()
+    transformed = trans(prototypes, w, data_nons, data_sens, data)
+    if isinstance(data, DataTuple):
+        return DataTuple(x=transformed, s=data.s, y=data.y, name=data.name)
+    elif isinstance(data, TestTuple):
+        return TestTuple(x=transformed, s=data.s, name=data.name)
+
+
+def fit(train: DataTuple, flags: ZemelArgs) -> Model:
     """Train the Zemel model and return the transformed features of the train and test sets."""
     np.random.seed(flags.seed)
 
@@ -107,7 +149,9 @@ def train_and_transform(
     parameters_initialization = np.random.uniform(
         size=flags.clusters + features_dim * flags.clusters
     )
-    bnd = [(0, 1)] * flags.clusters + [(None, None)] * features_dim * flags.clusters  # type: ignore[operator]
+    bnd = [(0, 1)] * flags.clusters + [
+        (None, None)
+    ] * features_dim * flags.clusters  # type: ignore[operator]
     LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
     learned_model = optim.fmin_l_bfgs_b(
@@ -135,16 +179,7 @@ def train_and_transform(
     w = learned_model[: flags.clusters]
     prototypes = learned_model[flags.clusters :].reshape((flags.clusters, features_dim))
 
-    testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
-    testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
-
-    train_transformed = trans(prototypes, w, training_nonsensitive, training_sensitive, train)
-    test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
-
-    return (
-        DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name),
-        TestTuple(x=test_transformed, s=test.s, name=test.name),
-    )
+    return Model(prototypes=prototypes, w=w)
 
 
 def trans(
@@ -183,9 +218,36 @@ def main() -> None:
     """
     args = ZemelArgs()
     args.parse_args()
-
-    train, test = load_data_from_flags(args)
-    save_transformations(train_and_transform(train, test, args), args)
+    if args.mode == "run":
+        assert args.train is not None
+        assert args.new_train is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        train, test = load_data_from_flags(args)
+        save_transformations(train_and_transform(train, test, args), args)
+    elif args.mode == "fit":
+        assert args.model is not None
+        assert args.train is not None
+        assert args.new_train is not None
+        train = DataTuple.from_npz(Path(args.train))
+        model = fit(train, args)
+        sens_col = train.s.columns[0]
+        training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
+        training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+        train_transformed = trans(
+            model.prototypes, model.w, training_nonsensitive, training_sensitive, train
+        )
+        data = DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name)
+        data.to_npz(Path(args.new_train))
+        dump(model, Path(args.model))
+    elif args.mode == "transform":
+        assert args.model is not None
+        assert args.test is not None
+        assert args.new_test is not None
+        test = DataTuple.from_npz(Path(args.test))
+        model = load(Path(args.model))
+        transformed_test = transform(test, model.prototypes, model.w)
+        transformed_test.to_npz(Path(args.new_test))
 
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@
 from pathlib import Path
 from typing import Dict, List, Sequence, Union
 
+from ranzen import implements
+
 from ethicml.utility import FairnessType
 
 from .interface import flag_interface
@@ -15,6 +17,7 @@ class Beutel(PreAlgorithmAsync):
 
     def __init__(
         self,
+        dir: Union[str, Path],
         fairness: FairnessType = "DP",
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
@@ -30,7 +33,8 @@ class Beutel(PreAlgorithmAsync):
         seed: int = 888,
     ):
         # pylint: disable=too-many-arguments
-        super().__init__(name=f"Beutel {fairness}", seed=seed)
+        super().__init__(name=f"Beutel {fairness}", seed=seed, out_size=enc_size[-1])
+        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
             "fairness": fairness,
             "enc_size": enc_size,
@@ -47,8 +51,39 @@ class Beutel(PreAlgorithmAsync):
             "seed": seed,
         }
 
-    def _script_command(
+    @implements(PreAlgorithmAsync)
+    def _run_script_command(
         self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
     ) -> List[str]:
-        args = flag_interface(train_path, test_path, new_train_path, new_test_path, self.flags)
+        args = flag_interface(
+            train_path=train_path,
+            test_path=test_path,
+            new_train_path=new_train_path,
+            new_test_path=new_test_path,
+            flags=self.flags,
+        )
+        return ["-m", "ethicml.implementations.beutel"] + args
+
+    @implements(PreAlgorithmAsync)
+    def _fit_script_command(
+        self, train_path: Path, new_train_path: Path, model_path: Path
+    ) -> List[str]:
+        args = flag_interface(
+            train_path=train_path,
+            new_train_path=new_train_path,
+            model_path=model_path,
+            flags=self.flags,
+        )
+        return ["-m", "ethicml.implementations.beutel"] + args
+
+    @implements(PreAlgorithmAsync)
+    def _transform_script_command(
+        self, model_path: Path, test_path: Path, new_test_path: Path
+    ) -> List[str]:
+        args = flag_interface(
+            model_path=model_path,
+            test_path=test_path,
+            new_test_path=new_test_path,
+            flags=self.flags,
+        )
         return ["-m", "ethicml.implementations.beutel"] + args

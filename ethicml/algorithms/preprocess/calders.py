@@ -6,7 +6,7 @@ from ranzen import implements
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
 from ..inprocess.logistic_regression import LRProb
-from .pre_algorithm import PreAlgorithm
+from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Calders"]
 
@@ -15,13 +15,31 @@ class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
     def __init__(self, preferable_class: int, disadvantaged_group: int, seed: int = 888):
-        super().__init__(name="Calders", seed=seed)
+        super().__init__(name="Calders", seed=seed, out_size=None)
         self.preferable_class = preferable_class
         self.disadvantaged_group = disadvantaged_group
 
     @implements(PreAlgorithm)
+    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+        self._out_size = train.x.shape[1]
+        new_train, _ = _calders_algorithm(
+            train, train, self.preferable_class, self.disadvantaged_group
+        )
+        return self, new_train.replace(name=f"{self.name}: {train.name}")
+
+    @implements(PreAlgorithm)
+    def transform(self, data: T) -> T:
+        return data.replace(name=f"{self.name}: {data.name}")
+
+    @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        return _calders_algorithm(train, test, self.preferable_class, self.disadvantaged_group)
+        self._out_size = train.x.shape[1]
+        new_train, new_test = _calders_algorithm(
+            train, test, self.preferable_class, self.disadvantaged_group
+        )
+        return new_train.replace(name=f"{self.name}: {train.name}"), new_test.replace(
+            name=f"{self.name}: {test.name}"
+        )
 
 
 def _calders_algorithm(

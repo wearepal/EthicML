@@ -25,6 +25,15 @@ class Hardt(PostAlgorithm):
         self._random = RandomState(seed=self.seed)
 
     @implements(PostAlgorithm)
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+        self.model_params = self._fit(train_predictions, train)
+        return self
+
+    @implements(PostAlgorithm)
+    def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
+        return self._predict(self.model_params, test_predictions, test)
+
+    @implements(PostAlgorithm)
     def run(
         self,
         train_predictions: Prediction,

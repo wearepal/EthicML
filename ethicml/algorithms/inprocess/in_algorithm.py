@@ -91,7 +91,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
         """
         return run_blocking(self.run_async(train, test))
 
-    async def fit_async(self, train: DataTuple) -> Prediction:
+    async def fit_async(self, train: DataTuple) -> InAlgorithmAsync:
         """Run Algorithm on the given data asynchronously.
 
         Args:
