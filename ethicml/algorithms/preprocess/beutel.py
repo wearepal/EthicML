@@ -30,7 +30,7 @@ class Beutel(PreAlgorithmAsync):
         seed: int = 888,
     ):
         # pylint: disable=too-many-arguments
-        super().__init__(name=f"Beutel {fairness}")
+        super().__init__(name=f"Beutel {fairness}", seed=seed)
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
             "fairness": fairness,
             "enc_size": enc_size,

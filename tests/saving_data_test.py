@@ -33,7 +33,7 @@ def test_simple_saving() -> None:
         def __init__(self) -> None:
             super().__init__(name="Check equality")
 
-        def _script_command(self, train_path, _, pred_path):
+        def _run_script_command(self, train_path, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones."""
             loaded = DataTuple.from_npz(train_path)
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)

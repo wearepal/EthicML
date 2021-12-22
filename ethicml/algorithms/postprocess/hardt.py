@@ -19,10 +19,10 @@ class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
     def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1, seed: int = 888):
-        super().__init__(name="Hardt")
+        super().__init__(name="Hardt", seed=seed)
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label
-        self._random = RandomState(seed=seed)
+        self._random = RandomState(seed=self.seed)
 
     @implements(PostAlgorithm)
     def run(

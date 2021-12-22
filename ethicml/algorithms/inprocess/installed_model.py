@@ -29,6 +29,7 @@ class InstalledModel(InAlgorithmAsync):
         top_dir: str,
         url: Optional[str] = None,
         executable: Optional[str] = None,
+        seed: int = 888,
     ):
         """Download code from given URL and create Pip environment with Pipfile found in the code.
 
@@ -39,6 +40,7 @@ class InstalledModel(InAlgorithmAsync):
                      simply the last part of the repository URL)
             url: (optional) URL of the repository
             executable: (optional) path to a Python executable
+            seed: Random seed to use for reproducibility
         """
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
         self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
@@ -54,7 +56,7 @@ class InstalledModel(InAlgorithmAsync):
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
-        super().__init__(name=name)
+        super().__init__(name=name, seed=seed)
 
     @property
     def _code_path(self) -> Path:
@@ -90,5 +92,5 @@ class InstalledModel(InAlgorithmAsync):
         except OSError as excep:
             print(f"Error: {excep.filename} - {excep.strerror}.")
 
-    def _script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
+    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
         return []  # pylint was complaining when I didn't return anything here...

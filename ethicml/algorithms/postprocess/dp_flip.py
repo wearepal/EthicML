@@ -15,8 +15,7 @@ class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
     def __init__(self, seed: int = 888) -> None:
-        super().__init__(name="DemPar. Post Process")
-        self.seed = seed
+        super().__init__(name="DemPar. Post Process", seed=seed)
 
     @implements(PostAlgorithm)
     def run(

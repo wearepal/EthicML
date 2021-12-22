@@ -24,11 +24,10 @@ class Upsampler(PreAlgorithm):
     def __init__(
         self, strategy: Literal["uniform", "preferential", "naive"] = "uniform", seed: int = 888
     ):
-        super().__init__(name=f"Upsample {strategy}")
+        super().__init__(name=f"Upsample {strategy}", seed=seed)
 
         assert strategy in ["uniform", "preferential", "naive"]
         self.strategy = strategy
-        self.seed = seed
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:

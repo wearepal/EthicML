@@ -18,9 +18,27 @@ class Corels(InAlgorithm):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
-    def __init__(self) -> None:
+    def __init__(self, seed: int = 888) -> None:
         """Constructor of the class."""
-        super().__init__(name="CORELS")
+        super().__init__(name="CORELS", seed=seed)
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
+            raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
+        age = test.x["age-num"].to_numpy()
+        priors = test.x["priors-count"].to_numpy()
+        sex = test.s["sex"].to_numpy()
+        male = 1
+        condition1 = (age >= 18) & (age <= 20) & (sex == male)
+        condition2 = (age >= 21) & (age <= 23) & (priors >= 2) & (priors <= 3)
+        condition3: np.ndarray = priors > 3
+        pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
+        return Prediction(hard=pd.Series(pred))
 
     @implements(InAlgorithm)
     def run(self, _: DataTuple, test: TestTuple) -> Prediction:

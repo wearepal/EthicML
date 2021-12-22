@@ -24,7 +24,7 @@ class VFAE(PreAlgorithmAsync):
         seed: int = 888,
     ):
         # pylint: disable=too-many-arguments
-        super().__init__(name="VFAE")
+        super().__init__(name="VFAE", seed=seed)
 
         if z1_enc_size is None:
             z1_enc_size = [100]

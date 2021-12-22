@@ -17,8 +17,17 @@ class Oracle(InAlgorithm):
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
-    def __init__(self) -> None:
-        super().__init__(name="Oracle", is_fairness_algo=False)
+    def __init__(self, seed: int = 888) -> None:
+        super().__init__(name="Oracle", is_fairness_algo=False, seed=seed)
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        assert isinstance(test, DataTuple), "test must be a DataTuple."
+        return Prediction(hard=test.y[test.y.columns[0]].copy())
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -34,12 +43,23 @@ class DPOracle(InAlgorithm):
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
-    def __init__(self) -> None:
-        super().__init__(name="DemPar. Oracle", is_fairness_algo=True)
+    def __init__(self, seed: int = 888) -> None:
+        super().__init__(name="DemPar. Oracle", is_fairness_algo=True, seed=seed)
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> InAlgorithm:
+        return self
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        assert isinstance(test, DataTuple), "test must be a DataTuple."
+        flipper = DPFlip(seed=self.seed)
+        test_preds = Prediction(test.y[test.y.columns[0]].copy())
+        return flipper.run(test_preds, test, test_preds, test)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
-        flipper = DPFlip()
+        flipper = DPFlip(seed=self.seed)
         test_preds = Prediction(test.y[test.y.columns[0]].copy())
         return flipper.run(test_preds, test, test_preds, test)

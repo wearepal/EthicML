@@ -1,6 +1,6 @@
 """Useful functions used in implementations."""
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import tap
 
@@ -11,8 +11,8 @@ class AlgoArgs(tap.Tap):
     """Base arguments needed for all algorithms."""
 
     # paths to the files with the data
-    train: str
-    test: str
+    train: Optional[str] = None
+    test: Optional[str] = None
 
 
 class PreAlgoArgs(AlgoArgs):
@@ -31,7 +31,9 @@ class InAlgoArgs(AlgoArgs):
     """ArgumentParser that already has arguments for the paths needed for InAlgorithms."""
 
     # path to where the predictions should be stored
-    predictions: str
+    mode: str
+    predictions: Optional[str] = None
+    model: Optional[str] = None
 
 
 def load_data_from_flags(args: AlgoArgs) -> Tuple[DataTuple, TestTuple]:

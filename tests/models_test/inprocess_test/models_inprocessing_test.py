@@ -42,6 +42,7 @@ from ethicml import (
     toy,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.shared import flag_interface
 from tests.run_algorithm_test import count_true
 
 
@@ -56,8 +57,8 @@ class InprocessTest(NamedTuple):
 INPROCESS_TESTS = [
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5), num_pos=45),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0), num_pos=59),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
@@ -78,6 +79,23 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
+    assert count_true(predictions.hard.values == 1) == num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+
+
+@pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+def test_inprocess_sep_train_pred(
+    toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int
+):
+    """Test an inprocess model with distinct train and predict steps."""
+    train, test = toy_train_test
+
+    assert isinstance(model, InAlgorithm)
+    assert model is not None
+    assert model.name == name
+
+    model = model.fit(train)
+    predictions: Prediction = model.predict(test)
     assert count_true(predictions.hard.values == 1) == num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
 
@@ -155,7 +173,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
                 name="local installed LR", dir_name="../..", top_dir="", executable=sys.executable
             )
 
-        def _script_command(
+        def _run_script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
         ) -> (List[str]):
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
@@ -165,6 +183,18 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
                 str(test_path),
                 str(pred_path),
             ]
+
+        def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
+            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
+            args = flag_interface(train_path=train_path, model_path=model_path)
+            return [script, args]
+
+        def _predict_script_command(
+            self, model_path: Path, test_path: Path, pred_path: Path
+        ) -> List[str]:
+            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
+            args = flag_interface(model_path=model_path, test_path=test_path, pred_path=pred_path)
+            return [script, args]
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None

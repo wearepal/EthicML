@@ -48,7 +48,6 @@ def acs_income(
     root: Path,
     year: str,
     horizon: int,
-    survey: str,
     states: List[str],
     split: str = "Sex",
     target_threshold: int = 50_000,
@@ -59,7 +58,6 @@ def acs_income(
         root=root,
         year=year,
         horizon=horizon,
-        survey=survey,
         states=states,
         split=split,
         target_threshold=target_threshold,
@@ -75,7 +73,6 @@ class AcsIncome(Dataset):
         root: Union[str, Path],
         year: str,
         horizon: int,
-        survey: str,
         states: List[str],
         split: str = "Sex",
         target_threshold: int = 50_000,
@@ -90,7 +87,7 @@ class AcsIncome(Dataset):
 
         self.year = year
         self.horizon = horizon
-        self.survey = survey
+        self.survey = "person"
         self.states = states
         self.split = split
         self.target = "PINCP"
@@ -102,7 +99,7 @@ class AcsIncome(Dataset):
         self.sens_lookup = {"Sex": "SEX", "Race": "RAC1P"}
 
         state_string = "_".join(states)
-        self.name = f"ACS_Income_{year}_{survey}_{horizon}_{state_string}_{split}"
+        self.name = f"ACS_Income_{year}_{horizon}_{state_string}_{split}"
         self.class_label_spec = "PINCP_1"
         self.class_label_prefix = ["PINCP"]
         self.discard_non_one_hot = False

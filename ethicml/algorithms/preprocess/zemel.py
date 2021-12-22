@@ -23,7 +23,7 @@ class Zemel(PreAlgorithmAsync):
         epsilon: float = 1e-5,
         seed: int = 888,
     ) -> None:
-        super().__init__(name="Zemel")
+        super().__init__(name="Zemel", seed=seed)
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
             "Ax": Ax,

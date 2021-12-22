@@ -9,13 +9,24 @@ __all__ = ["flag_interface", "settings_for_svm_lr"]
 
 
 def flag_interface(
-    train_path: Path, test_path: Path, pred_path: Path, flags: Dict[str, Any]
+    flags: Dict[str, Any],
+    *,
+    train_path: Optional[Path] = None,
+    test_path: Optional[Path] = None,
+    model_path: Optional[Path] = None,
+    pred_path: Optional[Path] = None,
 ) -> List[str]:
     """Generate the commandline arguments that are expected by the script about to be called."""
     # paths to training and test data
-    data_flags: Dict[str, Any] = {"train": train_path, "test": test_path}
-    # paths to output files
-    data_flags.update({"predictions": pred_path})
+    data_flags: Dict[str, Any] = {}
+    if train_path is not None:
+        data_flags["train"] = train_path
+    if test_path is not None:
+        data_flags["test"] = test_path
+    if model_path is not None:
+        data_flags["model"] = model_path
+    if pred_path is not None:
+        data_flags["predictions"] = pred_path
     data_flags.update(flags)
 
     flags_list: List[str] = []
