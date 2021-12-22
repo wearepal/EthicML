@@ -31,7 +31,7 @@ def test_simple_saving() -> None:
         """Dummy algorithm class for testing whether writing and reading feather files works."""
 
         def __init__(self) -> None:
-            super().__init__(name="Check equality")
+            super().__init__(name="Check equality", seed=-1)
 
         def _run_script_command(self, train_path, _, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones."""
@@ -42,6 +42,12 @@ def test_simple_saving() -> None:
             # write a file for the predictions
             np.savez(pred_path, hard=np.load(train_path)["x"])
             return ["-c", "pass"]
+
+        def _fit_script_command(self, train_path, model_path):
+            """Check if the dataframes loaded from the files are the same as the original ones."""
+
+        def _predict_script_command(self, model_path, test_path, pred_path):
+            """Check if the dataframes loaded from the files are the same as the original ones."""
 
     data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
     pd.testing.assert_series_equal(  # type: ignore[call-arg]
