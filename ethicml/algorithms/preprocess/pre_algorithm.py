@@ -74,6 +74,7 @@ class PreAlgorithm(Algorithm):
 
     @property
     def out_size(self):
+        """The number of features to generate."""
         return self._out_size
 
 
