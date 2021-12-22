@@ -28,6 +28,7 @@ class Algorithm(ABC):
 
     @property
     def seed(self) -> int:
+        """Seed for the random number generator."""
         return self.__seed
 
 
