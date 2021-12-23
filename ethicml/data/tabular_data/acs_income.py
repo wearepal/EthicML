@@ -9,7 +9,7 @@ import contextlib
 import os
 from enum import Enum
 from pathlib import Path
-from typing import List, Union
+from typing import Iterable, List, Union
 
 import numpy as np
 import pandas as pd
@@ -106,6 +106,20 @@ class AcsIncome(Dataset):
         self.map_to_binary = False
         self.invert_s = invert_s
 
+    @staticmethod
+    def cat_lookup(key: str) -> Iterable:
+        """Return the lookup for the given key."""
+        table = {
+            "COW": range(1, 9),
+            'MAR': range(1, 6),
+            'RELP': range(18),
+            'SEX': range(1, 3),
+            'RAC1P': range(1, 10),
+            'PINCP': range(2),
+        }
+
+        return table[key]
+
     @implements(Dataset)
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         datasource = ACSDataSource(
@@ -144,7 +158,13 @@ class AcsIncome(Dataset):
         dataframe = data_obj._preprocess(dataframe)
         dataframe[data_obj.target] = dataframe[data_obj.target].apply(data_obj._target_transform)
 
-        dataframe[disc_feats] = dataframe[disc_feats].astype('int').astype('category')
+        for feat in disc_feats:
+            dataframe[feat] = (
+                dataframe[feat]
+                .astype('int')
+                .astype(pd.CategoricalDtype(categories=self.cat_lookup(feat)))
+            )
+
         dataframe[continuous_features] = dataframe[continuous_features].astype('int')
 
         dataframe = pd.get_dummies(dataframe[disc_feats + continuous_features])
