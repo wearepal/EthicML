@@ -28,6 +28,7 @@ def compas(
 @dataclass
 class Compas(Dataset):
     """Compas (or ProPublica) dataset."""
+
     split: Union[CompasSplits, str] = "Sex"
     discrete_only: bool = False
 
