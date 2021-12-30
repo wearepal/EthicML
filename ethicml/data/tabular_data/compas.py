@@ -1,4 +1,5 @@
 """Class to describe features of the Compas dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
@@ -24,16 +25,14 @@ def compas(
     return Compas(split=split, discrete_only=discrete_only, invert_s=invert_s)
 
 
+@dataclass
 class Compas(Dataset):
     """Compas (or ProPublica) dataset."""
+    split: Union[CompasSplits, str] = "Sex"
+    discrete_only: bool = False
 
-    def __init__(
-        self,
-        split: Union[CompasSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = CompasSplits(split)
+    def __post_init__(self):
+        _split = CompasSplits(self.split)
         disc_feature_groups = {
             "sex": ["sex"],
             "race": ["race"],
@@ -476,7 +475,6 @@ class Compas(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )
