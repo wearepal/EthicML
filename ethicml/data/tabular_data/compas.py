@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
@@ -20,19 +20,19 @@ def compas(
     split: Union[CompasSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Compas":
     """Compas (or ProPublica) dataset."""
     return Compas(split=split, discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass
-class Compas(Dataset):
+class Compas(LoadableDataset):
     """Compas (or ProPublica) dataset."""
 
     split: Union[CompasSplits, str] = "Sex"
     discrete_only: bool = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         _split = CompasSplits(self.split)
         disc_feature_groups = {
             "sex": ["sex"],
@@ -477,5 +477,6 @@ class Compas(Dataset):
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
             discrete_only=self.discrete_only,
+            invert_s=self.invert_s,
             discrete_feature_groups=disc_feature_groups,
         )

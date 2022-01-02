@@ -16,7 +16,7 @@ from .util import (
     label_spec_to_feature_list,
 )
 
-__all__ = ["Dataset", "FeatureSplit"]
+__all__ = ["Dataset", "FeatureSplit", "LoadableDataset"]
 
 
 class FeatureSplit(TypedDict):
@@ -27,7 +27,7 @@ class FeatureSplit(TypedDict):
     y: List[str]
 
 
-class BaseDataset:
+class Dataset:
     """Data structure that holds all the information needed to load a given dataset.
 
     Args:
@@ -48,6 +48,7 @@ class BaseDataset:
         num_samples: int,
         discard_non_one_hot: bool = False,
         map_to_binary: bool = False,
+        invert_s: bool = False,
         s_prefix: Optional[Sequence[str]] = None,
         class_label_prefix: Optional[Sequence[str]] = None,
         discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
@@ -62,6 +63,7 @@ class BaseDataset:
         self._class_label_prefix = [] if class_label_prefix is None else class_label_prefix
         self._discard_non_one_hot = discard_non_one_hot
         self._map_to_binary = map_to_binary
+        self._invert_s = invert_s
         self._discrete_feature_groups = discrete_feature_groups
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = cont_features
@@ -158,13 +160,6 @@ class BaseDataset:
         """Number of elements in the dataset."""
         return self._num_samples
 
-
-@dataclass(init=False)
-class Dataset(BaseDataset):
-    """Loadable dataset."""
-
-    invert_s: bool = False
-
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
@@ -221,7 +216,7 @@ class Dataset(BaseDataset):
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        if self.invert_s:
+        if self._invert_s:
             assert s_data.nunique().values[0] == 2, "s must be binary"
             s_data = 1 - s_data
 
@@ -290,3 +285,11 @@ class Dataset(BaseDataset):
             final_df[name] = restored  # for the multi-level column index
 
         return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
+
+
+@dataclass(init=False)
+class LoadableDataset(Dataset):
+    """Dataset that uses the default load function."""
+
+    # TODO: actually move the loading code into this class. This will require some wider changes.
+    invert_s: bool

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
 
 __all__ = ["Adult", "adult"]
@@ -25,7 +25,7 @@ def adult(
     binarize_nationality: bool = False,
     binarize_race: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Adult":
     """UCI Adult dataset."""
     return Adult(
         split=split,
@@ -37,7 +37,7 @@ def adult(
 
 
 @dataclass
-class Adult(Dataset):
+class Adult(LoadableDataset):
     """UCI Adult dataset."""
 
     split: Union[AdultSplits, str] = "Sex"
@@ -45,7 +45,7 @@ class Adult(Dataset):
     binarize_nationality: bool = False
     binarize_race: bool = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         _split = AdultSplits(self.split)
         disc_feature_groups = {
             "education": [
@@ -257,4 +257,5 @@ class Adult(Dataset):
             class_label_prefix=class_label_prefix,
             discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
+            invert_s=self.invert_s,
         )
