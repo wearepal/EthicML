@@ -1,7 +1,7 @@
 """Generated faces."""
 from pathlib import Path
 from typing import Optional, Tuple
-from typing_extensions import Literal
+from typing_extensions import Literal, TypeAlias
 
 from ..dataset import Dataset
 from ..util import flatten_dict, simple_spec
@@ -9,7 +9,7 @@ from ..util import flatten_dict, simple_spec
 __all__ = ["GenfacesAttributes", "genfaces"]
 
 
-GenfacesAttributes = Literal[
+GenfacesAttributes: TypeAlias = Literal[
     "gender", "age", "ethnicity", "eye_color", "hair_color", "hair_length", "emotion"
 ]
 
