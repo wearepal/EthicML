@@ -192,24 +192,24 @@ class AcsIncome(Dataset):
         }
         discrete_features = flatten_dict(disc_feature_groups)
 
-        self.features = discrete_features + continuous_features
-        self.cont_features = continuous_features
+        # set all the attributes manually that we couldn't set in the __init__
+        self._features = discrete_features + continuous_features
+        self._cont_features_unfiltered = continuous_features
 
-        self.num_samples = dataframe.shape[0]
+        self._num_samples = dataframe.shape[0]
 
-        self.discrete_feature_groups = disc_feature_groups
+        self._discrete_feature_groups = disc_feature_groups
 
-        self.sens_attr_spec: Union[str, LabelSpec]
         if self.split == "Sex":
-            self.sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
-            self.s_prefix = [self.sens_lookup[self.split]]
+            self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
+            self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Race":
-            self.sens_attr_spec = simple_spec(
+            self._sens_attr_spec = simple_spec(
                 {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
             )
-            self.s_prefix = [self.sens_lookup[self.split]]
+            self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Sex-Race":
-            self.sens_attr_spec = simple_spec(
+            self._sens_attr_spec = simple_spec(
                 {
                     f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
                     f"{self.sens_lookup['Race']}": disc_feature_groups[
@@ -217,12 +217,9 @@ class AcsIncome(Dataset):
                     ],
                 }
             )
-            self.s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
+            self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
         else:
             raise NotImplementedError
-
-        self._discrete_feature_groups = self.discrete_feature_groups
-        self._cont_features_unfiltered = self.cont_features
 
         dataframe = dataframe.reset_index(drop=True)
 
