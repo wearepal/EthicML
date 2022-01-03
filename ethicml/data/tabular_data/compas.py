@@ -477,6 +477,6 @@ class Compas(LoadableDataset):
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
             discrete_only=self.discrete_only,
-            invert_s=self.invert_s,
             discrete_feature_groups=disc_feature_groups,
+            invert_s=self.invert_s,
         )
