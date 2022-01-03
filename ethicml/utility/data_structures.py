@@ -17,7 +17,7 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Final, Literal, TypeGuard
+from typing_extensions import Final, Literal, TypeAlias, TypeGuard
 
 import numpy as np
 import pandas as pd
@@ -43,7 +43,7 @@ __all__ = [
     "map_over_results_index",
 ]
 
-AxisType = Literal["columns", "index"]  # pylint: disable=invalid-name
+AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
 
 
 class TestTuple:
@@ -317,7 +317,7 @@ def concat_tt(
     )
 
 
-FairnessType = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
+FairnessType: TypeAlias = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
 
 
 def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
@@ -325,8 +325,10 @@ def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
     return fair_str in {"DP", "EqOd", "EqOp"}
 
 
-ClassifierType = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType = Literal["identity", "logistic", "tanh", "relu"]  # pylint: disable=invalid-name
+ClassifierType: TypeAlias = Literal["LR", "SVM"]  # pylint: disable=invalid-name
+ActivationType: TypeAlias = Literal[
+    "identity", "logistic", "tanh", "relu"
+]  # pylint: disable=invalid-name
 
 
 class TrainTestPair(NamedTuple):

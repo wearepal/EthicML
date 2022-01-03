@@ -1,7 +1,7 @@
 """Class to describe attributes of the CelebA dataset."""
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-from typing_extensions import Final, Literal
+from typing_extensions import Final, Literal, TypeAlias
 
 from ethicml import common
 
@@ -11,7 +11,7 @@ from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 __all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
 
 
-CelebAttrs = Literal[
+CelebAttrs: TypeAlias = Literal[
     "5_o_Clock_Shadow",
     "Arched_Eyebrows",
     "Attractive",
