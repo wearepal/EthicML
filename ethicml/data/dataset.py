@@ -1,4 +1,5 @@
 """Data structure for all datasets that come with the framework."""
+import typing
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
@@ -234,6 +235,49 @@ class Dataset:
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
+    @staticmethod
+    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
+        out = data.copy()
+
+        for col_parent, filter_col in categorical_cols.items():
+            if len(filter_col) > 1:
+                undummified = (
+                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
+                )
+
+                out[col_parent] = undummified
+                out.drop(filter_col, axis=1, inplace=True)
+
+        return out
+
+    @typing.no_type_check
+    def load_aif(self):  # Returns aif.360 Standard Dataset
+        """Load the dataset as an AIF360 dataset.
+
+        Experimental.
+        Requires the aif360 library.
+
+        Ignores the type check as the return type is not yet defined.
+        """
+        from aif360.datasets import StandardDataset
+
+        data = self.load()
+        if self.disc_feature_groups is not None:
+            data_collapsed = self._from_dummies(data.x, self.disc_feature_groups)
+            data = data.replace(x=data_collapsed)
+        df = pd.concat([data.x, data.s, data.y], axis="columns")
+
+        return StandardDataset(
+            df=df,
+            label_name=data.y.columns[0],
+            favorable_classes=lambda x: x > 0,
+            protected_attribute_names=data.s.columns,
+            privileged_classes=[lambda x: x == 1],
+            categorical_features=self.disc_feature_groups.keys()
+            if self.disc_feature_groups is not None
+            else None,
+        )
+
     def _maybe_combine_labels(
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
     ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
@@ -292,4 +336,4 @@ class LoadableDataset(Dataset):
     """Dataset that uses the default load function."""
 
     # TODO: actually move the loading code into this class. This will require some wider changes.
-    invert_s: bool
+    invert_s: bool = False

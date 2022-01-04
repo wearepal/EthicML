@@ -7,8 +7,8 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import DataTuple
-from ethicml.data.tabular_data.adult import AdultSplits
+from ethicml import Admissions, Compas, Credit, Crime, Dataset, DataTuple, German
+from ethicml.data.tabular_data.adult import Adult, AdultSplits
 from ethicml.data.util import flatten_dict
 
 
@@ -1059,3 +1059,13 @@ def test_simple_spec():
         "gender": em.LabelGroup(["female", "male"], multiplier=3),
         "race": em.LabelGroup(["blue", "green", "pink"], multiplier=1),
     }
+
+
+@pytest.mark.parametrize("data", [Adult(), Admissions(), Compas(), Credit(), Crime(), German()])
+def test_aif_conversion(data: Dataset):
+    """Load a dataset in AIF form.
+
+    There might be a case where you want to load an EthicML dataset
+    and use it with a model that exists in AIF360 that we don't have in EthicML.
+    """
+    data.load_aif()
