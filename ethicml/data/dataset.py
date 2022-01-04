@@ -1,4 +1,5 @@
 """Data structure for all datasets that come with the framework."""
+import typing
 from dataclasses import InitVar, dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
@@ -234,10 +235,7 @@ class Dataset:
         for col_parent, filter_col in categorical_cols.items():
             if len(filter_col) > 1:
                 undummified = (
-                    out[filter_col]
-                    .idxmax(axis=1)
-                    .apply(lambda x: x.split(col_parent + "_", 1)[1])
-                    .rename(col_parent)
+                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
                 )
 
                 out[col_parent] = undummified
@@ -245,17 +243,21 @@ class Dataset:
 
         return out
 
+    @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset
         """Load the dataset as an AIF360 dataset.
 
         Experimental.
         Requires the aif360 library.
+
+        Ignores the type check as the return type is not yet defined.
         """
         from aif360.datasets import StandardDataset
 
         data = self.load()
-        data_collapsed = self._from_dummies(data.x, self.disc_feature_groups)
-        data = data.replace(x=data_collapsed)
+        if self.disc_feature_groups is not None:
+            data_collapsed = self._from_dummies(data.x, self.disc_feature_groups)
+            data = data.replace(x=data_collapsed)
         df = pd.concat([data.x, data.s, data.y], axis="columns")
 
         return StandardDataset(
@@ -264,7 +266,9 @@ class Dataset:
             favorable_classes=lambda x: x > 0,
             protected_attribute_names=data.s.columns,
             privileged_classes=[lambda x: x == 1],
-            categorical_features=self.disc_feature_groups.keys(),
+            categorical_features=self.disc_feature_groups.keys()
+            if self.disc_feature_groups is not None
+            else None,
         )
 
     def _maybe_combine_labels(
