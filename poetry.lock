@@ -1747,12 +1747,12 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 
 [extras]
 all = ["fairlearn", "cloudpickle", "aif360"]
-ci = ["fairlearn", "pytest", "pytest-cov", "torch", "torchvision", "cloudpickle"]
+ci = ["fairlearn", "pytest", "pytest-cov", "torch", "torchvision", "cloudpickle", "aif360"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1,<4.0"
-content-hash = "32aafd3c5e4dae6fa2079249ee9e4cb90807758e83a54b42c34da208666f71fc"
+content-hash = "66719b8e83cd55e7b8d5fe0aa20ddb5920b1c5c200a95e6751db34257af3b06a"
 
 [metadata.files]
 aif360 = [
