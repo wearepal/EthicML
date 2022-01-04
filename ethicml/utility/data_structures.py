@@ -150,9 +150,9 @@ class DataTuple(TestTuple):
         *,
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.DataFrame] = None,
-        y: Optional[pd.DataFrame] = None,
         name: Optional[str] = None,
-    ) -> "DataTuple":
+        y: Optional[pd.DataFrame] = None,
+    ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
         return DataTuple(
             x=x if x is not None else self.x,

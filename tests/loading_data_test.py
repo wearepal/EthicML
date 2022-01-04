@@ -723,10 +723,10 @@ def test_load_adult_race_sex():
 def test_race_feature_split():
     """Test race feature split."""
     adult_data: em.Dataset = em.adult(split="Custom")
-    adult_data.sens_attr_spec = "race_White"
-    adult_data.s_prefix = ["race"]
-    adult_data.class_label_spec = "salary_>50K"
-    adult_data.class_label_prefix = ["salary"]
+    adult_data._sens_attr_spec = "race_White"
+    adult_data._s_prefix = ["race"]
+    adult_data._class_label_spec = "salary_>50K"
+    adult_data._class_label_prefix = ["salary"]
 
     data: DataTuple = adult_data.load()
 

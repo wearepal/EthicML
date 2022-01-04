@@ -9,11 +9,11 @@ import contextlib
 import os
 from enum import Enum
 from pathlib import Path
-from typing import Iterable, List, Union
+from typing import Generator, Iterable, List, Union
 
 import numpy as np
 import pandas as pd
-from folktables import ACSDataSource, ACSIncome, adult_filter, folktables, state_list
+from folktables import ACSDataSource, adult_filter, folktables, state_list
 from ranzen import implements
 
 from ethicml.utility import DataTuple
@@ -35,7 +35,7 @@ class AdultSplits(Enum):
 
 
 @contextlib.contextmanager
-def download_dir(root: Path) -> None:
+def download_dir(root: Path) -> Generator[None, None, None]:
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve())
     try:
@@ -52,7 +52,7 @@ def acs_income(
     split: str = "Sex",
     target_threshold: int = 50_000,
     discrete_only: bool = False,
-) -> ACSIncome:
+) -> "AcsIncome":
     """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
     return AcsIncome(
         root=root,
@@ -92,19 +92,24 @@ class AcsIncome(Dataset):
         self.split = split
         self.target = "PINCP"
         self.target_threshold = target_threshold
-        self.discrete_only = discrete_only
 
         assert all(state in state_list for state in states)
 
         self.sens_lookup = {"Sex": "SEX", "Race": "RAC1P"}
 
         state_string = "_".join(states)
-        self.name = f"ACS_Income_{year}_{horizon}_{state_string}_{split}"
-        self.class_label_spec = "PINCP_1"
-        self.class_label_prefix = ["PINCP"]
-        self.discard_non_one_hot = False
-        self.map_to_binary = False
-        self.invert_s = invert_s
+        super().__init__(
+            name=f"ACS_Income_{year}_{horizon}_{state_string}_{split}",
+            filename_or_path=self.root,
+            features=[],
+            cont_features=[],
+            sens_attr_spec="",
+            class_label_spec="PINCP_1",
+            class_label_prefix=["PINCP"],
+            discrete_only=discrete_only,
+            num_samples=0,
+            invert_s=invert_s,
+        )
 
     @staticmethod
     def cat_lookup(key: str) -> Iterable:
@@ -187,24 +192,24 @@ class AcsIncome(Dataset):
         }
         discrete_features = flatten_dict(disc_feature_groups)
 
-        self.features = discrete_features + continuous_features
-        self.cont_features = continuous_features
+        # set all the attributes manually that we couldn't set in the __init__
+        self._features = discrete_features + continuous_features
+        self._cont_features_unfiltered = continuous_features
 
-        self.num_samples = dataframe.shape[0]
+        self._num_samples = dataframe.shape[0]
 
-        self.discrete_feature_groups = disc_feature_groups
+        self._discrete_feature_groups = disc_feature_groups
 
-        sens_attr_spec: Union[str, LabelSpec]
         if self.split == "Sex":
-            self.sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
-            self.s_prefix = [self.sens_lookup[self.split]]
+            self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
+            self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Race":
-            self.sens_attr_spec = simple_spec(
+            self._sens_attr_spec = simple_spec(
                 {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
             )
-            self.s_prefix = [self.sens_lookup[self.split]]
+            self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Sex-Race":
-            self.sens_attr_spec = simple_spec(
+            self._sens_attr_spec = simple_spec(
                 {
                     f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
                     f"{self.sens_lookup['Race']}": disc_feature_groups[
@@ -212,12 +217,9 @@ class AcsIncome(Dataset):
                     ],
                 }
             )
-            self.s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
+            self._s_prefix = [self.sens_lookup["Sex"], self.sens_lookup["Race"]]
         else:
             raise NotImplementedError
-
-        self._discrete_feature_groups = self.discrete_feature_groups
-        self._cont_features_unfiltered = self.cont_features
 
         dataframe = dataframe.reset_index(drop=True)
 
@@ -264,11 +266,11 @@ class AcsIncome(Dataset):
         s_data = dataframe[feature_split["s"]]
         y_data = dataframe[feature_split["y"]]
 
-        if self.map_to_binary:
+        if self._map_to_binary:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        if self.invert_s:
+        if self._invert_s:
             assert s_data.nunique().values[0] == 2, "s must be binary"
             s_data = 1 - s_data
 
