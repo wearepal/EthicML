@@ -1,8 +1,9 @@
 """Class to describe features of the Compas dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "compas"]
@@ -19,21 +20,20 @@ def compas(
     split: Union[CompasSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Compas":
     """Compas (or ProPublica) dataset."""
     return Compas(split=split, discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Compas(Dataset):
+@dataclass
+class Compas(LoadableDataset):
     """Compas (or ProPublica) dataset."""
 
-    def __init__(
-        self,
-        split: Union[CompasSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = CompasSplits(split)
+    split: Union[CompasSplits, str] = "Sex"
+    discrete_only: bool = False
+
+    def __post_init__(self) -> None:
+        _split = CompasSplits(self.split)
         disc_feature_groups = {
             "sex": ["sex"],
             "race": ["race"],
@@ -476,7 +476,7 @@ class Compas(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
+            invert_s=self.invert_s,
         )
