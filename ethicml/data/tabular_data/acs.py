@@ -330,7 +330,6 @@ def acs_employment(
     horizon: int,
     states: List[str],
     split: str = "Sex",
-    target_threshold: int = 50_000,
     discrete_only: bool = False,
 ) -> "AcsEmployment":
     """The ACS Employment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
