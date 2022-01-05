@@ -1,4 +1,4 @@
-"""Progress Bar for Ray Actors (tqdm)
+"""Progress Bar for Ray Actors.
 
 Tracking progress of distributed tasks can be tricky.
 
@@ -44,9 +44,7 @@ class ProgressBarActor:
         self.event = Event()
 
     def update(self, num_items_completed: int) -> None:
-        """Updates the ProgressBar with the incremental
-        number of items that were just completed.
-        """
+        """Updates the ProgressBar with the incremental number of items that were just completed."""
         self.counter += num_items_completed
         self.delta += num_items_completed
         self.event.set()
@@ -65,9 +63,7 @@ class ProgressBarActor:
         return saved_delta, self.counter
 
     def get_counter(self) -> int:
-        """
-        Returns the total number of complete items.
-        """
+        """Returns the total number of complete items."""
         return self.counter
 
 
@@ -84,6 +80,8 @@ class ProgressBarActor:
 
 
 class ProgressBar:
+    """Progress bar for ray."""
+
     progress_actor: ActorHandle
     total: int
     description: str

@@ -342,7 +342,7 @@ def evaluate_models_async(
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
         fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
-        max_parallel: max number of threads ot run in parallel (default: 1)
+        num_cpus: number of CPUs to use
     """
     from .parallelism import run_in_parallel
 
