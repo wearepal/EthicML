@@ -7,7 +7,6 @@ Paper: https://arxiv.org/abs/2108.04884
 # Pylint will go crazy as we're reimplementing the Dataset Init.
 import contextlib
 import os
-from enum import Enum
 from pathlib import Path
 from typing import Generator, Iterable, List, Union
 
@@ -22,16 +21,6 @@ from ..dataset import Dataset
 from ..util import flatten_dict, simple_spec
 
 __all__ = ["acs_income", "AcsIncome", "acs_employment", "AcsEmployment"]
-
-
-class AdultSplits(Enum):
-    SEX = "Sex"
-    EDUCTAION = "Education"
-    NATIONALITY = "Nationality"
-    RACE = "Race"
-    RACE_BINARY = "Race-Binary"
-    RACE_SEX = "Race-Sex"
-    CUSTOM = "Custom"
 
 
 @contextlib.contextmanager

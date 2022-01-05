@@ -6,7 +6,7 @@ from typing import Union
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["Compas", "compas"]
+__all__ = ["Compas", "CompasSplits", "compas"]
 
 
 class CompasSplits(Enum):
@@ -22,18 +22,16 @@ def compas(
     invert_s: bool = False,
 ) -> "Compas":
     """Compas (or ProPublica) dataset."""
-    return Compas(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Compas(split=CompasSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass
 class Compas(LoadableDataset):
     """Compas (or ProPublica) dataset."""
 
-    split: Union[CompasSplits, str] = "Sex"
-    discrete_only: bool = False
+    split: CompasSplits = CompasSplits.SEX
 
     def __post_init__(self) -> None:
-        _split = CompasSplits(self.split)
         disc_feature_groups = {
             "sex": ["sex"],
             "race": ["race"],
@@ -443,22 +441,22 @@ class Compas(LoadableDataset):
         ]
 
         sens_attr_spec: Union[str, LabelSpec]
-        if _split is CompasSplits.SEX:
+        if self.split is CompasSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.RACE:
+        elif self.split is CompasSplits.RACE:
             sens_attr_spec = "race"
             s_prefix = ["race"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.RACE_SEX:
+        elif self.split is CompasSplits.RACE_SEX:
             sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
             s_prefix = ["race", "sex"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.CUSTOM:
+        elif self.split is CompasSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -467,7 +465,7 @@ class Compas(LoadableDataset):
             raise NotImplementedError
 
         super().__init__(
-            name=f"Compas {_split.value}",
+            name=f"Compas {self.split.value}",
             num_samples=6167,
             filename_or_path="compas-recidivism.csv",
             features=discrete_features + continuous_features,

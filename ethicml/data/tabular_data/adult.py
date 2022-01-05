@@ -6,7 +6,7 @@ from typing import Union
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
 
-__all__ = ["Adult", "adult"]
+__all__ = ["Adult", "AdultSplits", "adult"]
 
 
 class AdultSplits(Enum):
@@ -28,7 +28,7 @@ def adult(
 ) -> "Adult":
     """UCI Adult dataset."""
     return Adult(
-        split=split,
+        split=AdultSplits(split),
         discrete_only=discrete_only,
         binarize_nationality=binarize_nationality,
         binarize_race=binarize_race,
@@ -40,13 +40,11 @@ def adult(
 class Adult(LoadableDataset):
     """UCI Adult dataset."""
 
-    split: Union[AdultSplits, str] = "Sex"
-    discrete_only: bool = False
+    split: AdultSplits = AdultSplits.SEX
     binarize_nationality: bool = False
     binarize_race: bool = False
 
     def __post_init__(self) -> None:
-        _split = AdultSplits(self.split)
         disc_feature_groups = {
             "education": [
                 "education_10th",
@@ -172,38 +170,38 @@ class Adult(LoadableDataset):
         ]
 
         sens_attr_spec: Union[str, LabelSpec]
-        if _split is AdultSplits.SEX:
+        if self.split is AdultSplits.SEX:
             sens_attr_spec = "sex_Male"
             s_prefix = ["sex"]
             class_label_spec = "salary_>50K"
             class_label_prefix = ["salary"]
-        elif _split is AdultSplits.RACE:
+        elif self.split is AdultSplits.RACE:
             sens_attr_spec = simple_spec({"race": disc_feature_groups["race"]})
             s_prefix = ["race"]
             class_label_spec = "salary_>50K"
             class_label_prefix = ["salary"]
-        elif _split is AdultSplits.RACE_BINARY:
+        elif self.split is AdultSplits.RACE_BINARY:
             sens_attr_spec = "race_White"
             s_prefix = ["race"]
             class_label_spec = "salary_>50K"
             class_label_prefix = ["salary"]
-        elif _split is AdultSplits.CUSTOM:
+        elif self.split is AdultSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
             class_label_prefix = []
-        elif _split is AdultSplits.RACE_SEX:
+        elif self.split is AdultSplits.RACE_SEX:
             sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": disc_feature_groups["race"]})
             s_prefix = ["race", "sex"]
             class_label_spec = "salary_>50K"
             class_label_prefix = ["salary"]
-        elif _split is AdultSplits.NATIONALITY:
+        elif self.split is AdultSplits.NATIONALITY:
             sens = "native-country"
             sens_attr_spec = simple_spec({sens: disc_feature_groups[sens]})
             s_prefix = ["native-country"]
             class_label_spec = "salary_>50K"
             class_label_prefix = ["salary"]
-        elif _split is AdultSplits.EDUCTAION:
+        elif self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
             remaining_feature_name = "other"
             discrete_features = reduce_feature_group(
@@ -221,7 +219,7 @@ class Adult(LoadableDataset):
         else:
             raise NotImplementedError
 
-        name = f"Adult {_split.value}"
+        name = f"Adult {self.split.value}"
         if self.binarize_nationality:
             discrete_features = reduce_feature_group(
                 disc_feature_groups=disc_feature_groups,
@@ -229,7 +227,7 @@ class Adult(LoadableDataset):
                 to_keep=["native-country_United-States"],
                 remaining_feature_name="_not_United-States",
             )
-            if _split is AdultSplits.SEX:
+            if self.split is AdultSplits.SEX:
                 assert len(discrete_features) == 61  # 57 (discrete) features + 4 class labels
             name += ", binary nationality"
         if self.binarize_race:
@@ -239,9 +237,9 @@ class Adult(LoadableDataset):
                 to_keep=["race_White"],
                 remaining_feature_name="_not_White",
             )
-            if _split is AdultSplits.SEX and self.binarize_nationality:
+            if self.split is AdultSplits.SEX and self.binarize_nationality:
                 assert len(discrete_features) == 58  # 54 (discrete) features + 4 class labels
-            if _split is AdultSplits.SEX and not self.binarize_nationality:
+            if self.split is AdultSplits.SEX and not self.binarize_nationality:
                 assert len(discrete_features) == 97  # 93 (discrete) features + 4 class labels
             name += ", binary race"
 
