@@ -27,7 +27,7 @@ class ThreadedParams(NamedTuple):
 #     assert model is not None
 #     assert model.name == name
 
-#     predictions: Prediction = em.run_blocking(model.run_async(train, test))
+#     predictions: Prediction = model.run(train, test)
 #     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == num_pos
 #     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
 #     assert num_neg == len(predictions) - num_pos
@@ -43,8 +43,8 @@ class ThreadedParams(NamedTuple):
 #     assert model is not None
 #     assert model.name == name
 
-#     model = em.run_blocking(model.fit_async(train))
-#     predictions: Prediction = em.run_blocking(model.predict_async(test))
+#     model = model.fit(train)
+#     predictions: Prediction = model.predict(test)
 #     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == num_pos
 #     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
 #     assert num_neg == len(predictions) - num_pos

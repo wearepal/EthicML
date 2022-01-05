@@ -54,7 +54,7 @@ def test_parallel_cv(
     measure = Accuracy()
 
     cross_validator = em.CrossValidator(model, hyperparams, max_parallel=1)
-    cv_results: em.CVResults = em.run_blocking(cross_validator.run_async(train, measures=[measure]))
+    cv_results: em.CVResults = cross_validator.run_async(train, measures=[measure])
     best_model = cv_results.best(measure)
     assert isinstance(best_model, InAlgorithm)
 
