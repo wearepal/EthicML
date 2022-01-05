@@ -50,7 +50,7 @@ omegaconf = { version = "^2.1.1", optional = true }
 ray = { version = "^1.9.1", optional = true }
 
 [tool.poetry.extras]
-ci = ["fairlearn","pytest","pytest-cov","torch","torchvision","cloudpickle","aif360","omegaconf"]
+ci = ["fairlearn","pytest","pytest-cov","torch","torchvision","cloudpickle","aif360","omegaconf","ray"]
 all = ["fairlearn","cloudpickle","aif360"]
 parallel = ["ray"]
 
