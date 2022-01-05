@@ -10,6 +10,8 @@ __all__ = ["Compas", "CompasSplits", "compas"]
 
 
 class CompasSplits(Enum):
+    """Available dataset splits for the COMPAS dataset."""
+
     SEX = "Sex"
     RACE = "Race"
     RACE_SEX = "Race-Sex"

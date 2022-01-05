@@ -10,6 +10,8 @@ __all__ = ["Adult", "AdultSplits", "adult"]
 
 
 class AdultSplits(Enum):
+    """Available dataset splits for the Adult dataset."""
+
     SEX = "Sex"
     EDUCTAION = "Education"
     NATIONALITY = "Nationality"
