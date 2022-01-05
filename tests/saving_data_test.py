@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple, run_blocking
+from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple
 
 NPZ: Final[str] = "test.npz"
 
@@ -33,8 +33,9 @@ def test_simple_saving() -> None:
         def __init__(self) -> None:
             super().__init__(name="Check equality", seed=-1)
 
-        def _run_script_command(self, train_path, _, pred_path):
+        def _run_script_command(self, train_path, test_path, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones."""
+            del test_path
             loaded = DataTuple.from_npz(train_path)
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
@@ -49,7 +50,7 @@ def test_simple_saving() -> None:
         def _predict_script_command(self, model_path, test_path, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones."""
 
-    data_x = run_blocking(CheckEquality().run_async(data_tuple, data_tuple))
+    data_x = CheckEquality().run(data_tuple, data_tuple)
     pd.testing.assert_series_equal(  # type: ignore[call-arg]
         data_tuple.x["a1"], data_x.hard, check_names=False
     )

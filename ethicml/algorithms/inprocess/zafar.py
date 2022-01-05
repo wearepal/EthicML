@@ -50,7 +50,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         with file_path.open("w") as out_file:
             json.dump(out, out_file)
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         label_converter = LabelBinarizer()
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -62,7 +62,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 
             cmd = self._create_command_line(str(train_path), str(test_path), str(predictions_path))
             working_dir = self._code_path.resolve() / self._sub_dir
-            await self._call_script(cmd, cwd=working_dir)
+            self._call_script(cmd, cwd=working_dir)
             predictions = predictions_path.open(encoding="utf-8").read()
             predictions = json.loads(predictions)
 

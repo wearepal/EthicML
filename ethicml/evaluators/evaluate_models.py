@@ -29,8 +29,6 @@ from ethicml.utility import (
     make_results,
 )
 
-from .parallelism import run_in_parallel
-
 __all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
 
 from ..preprocessing.scaling import ScalerType
@@ -311,7 +309,8 @@ class _DataInfo(NamedTuple):
     scaler: str
 
 
-async def evaluate_models_async(
+def evaluate_models_async(
+    *,
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
@@ -324,7 +323,7 @@ async def evaluate_models_async(
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
-    max_parallel: int = 1,
+    num_cpus: int = 1,
     scaler: Optional[ScalerType] = None,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -345,7 +344,8 @@ async def evaluate_models_async(
         fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
         max_parallel: max number of threads ot run in parallel (default: 1)
     """
-    # pylint: disable=too-many-arguments
+    from .parallelism import run_in_parallel
+
     del postprocess_models  # not used at the moment
     per_sens_metrics_check(per_sens_metrics)
     if splitter is None:
@@ -388,7 +388,7 @@ async def evaluate_models_async(
             )
 
     # ============================= inprocess models on untransformed =============================
-    all_predictions = await run_in_parallel(inprocess_models, data_splits, max_parallel)
+    all_predictions = run_in_parallel(inprocess_models, data_splits, num_cpus)
     inprocess_untransformed = _gather_metrics(
         all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
     )
@@ -396,7 +396,7 @@ async def evaluate_models_async(
 
     # ===================================== preprocess models =====================================
     # run all preprocess models
-    all_transformed = await run_in_parallel(preprocess_models, data_splits, max_parallel)
+    all_transformed = run_in_parallel(preprocess_models, data_splits, num_cpus)
 
     # append the transformed data to `transformed_data`
     transformed_data: List[TrainTestPair] = []
@@ -421,7 +421,7 @@ async def evaluate_models_async(
         # if not fair pipeline, run only the non-fair models on the transformed data
         run_on_transformed = [model for model in inprocess_models if not model.is_fairness_algo]
 
-    transf_preds = await run_in_parallel(run_on_transformed, transformed_data, max_parallel)
+    transf_preds = run_in_parallel(run_on_transformed, transformed_data, num_cpus)
     transf_results = _gather_metrics(
         transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
     )

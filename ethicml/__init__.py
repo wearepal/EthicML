@@ -15,7 +15,6 @@ from .algorithms.inprocess.manual import *
 from .algorithms.inprocess.mlp import *
 from .algorithms.inprocess.oracle import *
 from .algorithms.inprocess.svm import *
-from .algorithms.inprocess.svm_async import *
 from .algorithms.inprocess.zafar import *
 from .algorithms.postprocess.dp_flip import *
 from .algorithms.postprocess.hardt import *
@@ -49,7 +48,6 @@ from .data.vision_data.celeba import *
 from .data.vision_data.genfaces import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
-from .evaluators.parallelism import *
 from .metrics.accuracy import *
 from .metrics.anti_spur import AS
 from .metrics.average_odds import AverageOddsDiff

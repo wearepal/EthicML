@@ -39,8 +39,6 @@ from ethicml import (
     evaluate_models_async,
     load_data,
     query_dt,
-    run_blocking,
-    run_in_parallel,
     toy,
     train_test_split,
 )
@@ -231,22 +229,20 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
-def test_threaded_agarwal():
-    """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
+# def test_threaded_agarwal():
+#     """Test threaded agarwal."""
+#     models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
 
-    class AssertResult(Metric):
-        _name = "assert_result"
+#     class AssertResult(Metric):
+#         _name = "assert_result"
 
-        def score(self, prediction, actual) -> float:
-            return (
-                count_true(prediction.hard.values == 1) == 241
-                and count_true(prediction.hard.values == 0) == 159
-            )
+#         def score(self, prediction, actual) -> float:
+#             return (
+#                 count_true(prediction.hard.values == 1) == 241
+#                 and count_true(prediction.hard.values == 0) == 159
+#             )
 
-    results = run_blocking(
-        evaluate_models_async(
-            datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
-        )
-    )
-    assert results["assert_result"].iloc[0] == 0.0
+#     results = evaluate_models_async(
+#         datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
+#     )
+#     assert results["assert_result"].iloc[0] == 0.0

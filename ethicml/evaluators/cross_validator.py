@@ -11,8 +11,6 @@ from ethicml.metrics.metric import Metric
 from ethicml.preprocessing.train_test_split import fold_data
 from ethicml.utility import DataTuple, Prediction, TrainTestPair
 
-from .parallelism import run_in_parallel
-
 __all__ = ["CrossValidator", "CVResults"]
 
 
@@ -141,10 +139,10 @@ class CrossValidator:
         Args:
             model: the class (not an instance) of the model for cross validation
             hyperparams: a dictionary where the keys are the names of hyperparameters and the values
-                         are lists of possible values for the hyperparameters
+                are lists of possible values for the hyperparameters
             folds: the number of folds
             max_parallel: the maximum number of parallel processes; if set to 0, use the default
-                          which is the number of available CPUs
+                which is the number of available CPUs
         """
         self.model = model
         self.hyperparams = hyperparams
@@ -154,10 +152,10 @@ class CrossValidator:
         keys, values = zip(*hyperparams.items())
         self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
-    async def run_async(
-        self, train: DataTuple, measures: Optional[List[Metric]] = None
-    ) -> CVResults:
+    def run_async(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
         """Run the cross validation experiments asynchronously."""
+        from .parallelism import run_in_parallel
+
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
         models = [self.model(**experiment) for experiment in self.experiments]
@@ -166,7 +164,7 @@ class CrossValidator:
         # convert to right format
         pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
         # run everything in parallel
-        all_results = await run_in_parallel(models, pair_folds, self.max_parallel)
+        all_results = run_in_parallel(models, pair_folds, self.max_parallel)
 
         # finally, iterate over all results, compute scores and store them
         for preds_for_dataset, experiment in zip(all_results, self.experiments):

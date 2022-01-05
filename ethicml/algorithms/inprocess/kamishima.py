@@ -46,7 +46,7 @@ class Kamishima(InstalledModel):
         np.savetxt(file_path, result)
 
     @implements(InAlgorithmAsync)
-    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = str(tmp_path / "train.txt")
@@ -58,7 +58,7 @@ class Kamishima(InstalledModel):
             output_path = str(tmp_path / "output.txt")
 
             # try:
-            await self._call_script(
+            self._call_script(
                 [
                     str(self._code_path / "train_pr.py"),
                     "-e",
@@ -71,7 +71,7 @@ class Kamishima(InstalledModel):
                 ]
             )
 
-            await self._call_script(
+            self._call_script(
                 [
                     str(self._code_path / "predict_lr.py"),
                     "-i",

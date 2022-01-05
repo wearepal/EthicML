@@ -8,7 +8,7 @@ from typing import List
 
 from ranzen import implements
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
+from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]
@@ -70,28 +70,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
     """In-Algorithm that can be run blocking and asynchronously."""
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
-        run_blocking(self.fit_async(train))
-        return self
-
-    @implements(InAlgorithm)
-    def predict(self, test: TestTuple) -> Prediction:
-        return run_blocking(self.predict_async(test))
-
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        """Run this asynchronous Algorithm as blocking on the given data.
-
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            predictions
-        """
-        return run_blocking(self.run_async(train, test))
-
-    async def fit_async(self, train: DataTuple) -> InAlgorithmAsync:
+    def fit(self, train: DataTuple) -> InAlgorithmAsync:
         """Run Algorithm on the given data asynchronously.
 
         Args:
@@ -107,10 +86,11 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
             train_path = tmp_path / "train.npz"
             train.to_npz(train_path)
             cmd = self._fit_script_command(train_path, self.model_path)
-            await self._call_script(cmd + ["--mode", "fit"])  # wait for script to run
+            self._call_script(cmd + ["--mode", "fit"])  # wait for script to run
             return self
 
-    async def predict_async(self, test: TestTuple) -> Prediction:
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data asynchronously.
 
         Args:
@@ -126,10 +106,11 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
             pred_path = tmp_path / "predictions.npz"
             test.to_npz(test_path)
             cmd = self._predict_script_command(self.model_path, test_path, pred_path)
-            await self._call_script(cmd + ["--mode", "predict"])  # wait for scrip to run
+            self._call_script(cmd + ["--mode", "predict"])  # wait for scrip to run
             return Prediction.from_npz(pred_path)
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> Prediction:
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data asynchronously.
 
         Args:
@@ -147,7 +128,7 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
             train.to_npz(train_path)
             test.to_npz(test_path)
             cmd = self._run_script_command(train_path, test_path, pred_path)
-            await self._call_script(cmd + ["--mode", "run"])  # wait for scrip to run
+            self._call_script(cmd + ["--mode", "run"])  # wait for scrip to run
             return Prediction.from_npz(pred_path)
 
     @abstractmethod
