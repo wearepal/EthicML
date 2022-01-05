@@ -336,4 +336,5 @@ class LoadableDataset(Dataset):
     """Dataset that uses the default load function."""
 
     # TODO: actually move the loading code into this class. This will require some wider changes.
+    discrete_only: bool = False
     invert_s: bool = False
