@@ -21,7 +21,6 @@ from .fpr import FPR
 from .hsic import Hsic
 from .metric import Metric
 from .npv import NPV
-from .per_sensitive_attribute import *
 from .ppv import PPV
 from .prob_neg import ProbNeg
 from .prob_outcome import ProbOutcome

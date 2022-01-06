@@ -1,6 +1,4 @@
 """EthicML."""
-from ethicml.metrics.per_sensitive_attribute import *
-
 from .algorithms.algorithm_base import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
@@ -61,6 +59,7 @@ from .metrics.fpr import FPR
 from .metrics.hsic import Hsic
 from .metrics.metric import Metric
 from .metrics.npv import NPV
+from .metrics.per_sensitive_attribute import *
 from .metrics.ppv import PPV
 from .metrics.prob_neg import ProbNeg
 from .metrics.prob_outcome import ProbOutcome
