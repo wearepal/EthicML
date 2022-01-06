@@ -32,8 +32,8 @@ class Dataset:
     """Data structure that holds all the information needed to load a given dataset.
 
     Args:
-        discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded,
-            discard those.
+        discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded, discard
+            those.
         map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
     """
 
