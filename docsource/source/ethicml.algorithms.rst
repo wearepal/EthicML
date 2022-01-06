@@ -114,11 +114,6 @@ SVM
 
 .. automodule:: ethicml.algorithms.inprocess.svm
 
-Asynchronous SVM
-----------------
-
-.. automodule:: ethicml.algorithms.inprocess.svm_async
-
 Zafar
 -----
 
