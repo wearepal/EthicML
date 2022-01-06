@@ -47,6 +47,7 @@ autodoc_type_aliases = {
 }
 autodoc_mock_imports = [
     "PIL",
+    "folktables",
     "git",
     "kit",
     "matplotlib",
