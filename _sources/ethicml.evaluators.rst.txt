@@ -27,9 +27,3 @@ Parallel evaluation
 ===================
 
 .. automodule:: ethicml.evaluators.parallelism
-
-
-Compare metrics between groups
-==============================
-
-.. automodule:: ethicml.evaluators.per_sensitive_attribute
