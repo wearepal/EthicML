@@ -37,16 +37,19 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 }
 ```
 """
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["admissions", "Admissions"]
+__all__ = ["Admissions", "AdmissionsSplits", "admissions"]
 
 
 class AdmissionsSplits(Enum):
+    """Splits for the Admissions dataset."""
+
     GENDER = "Gender"
     CUSTOM = "Custom"
 
@@ -55,22 +58,18 @@ def admissions(
     split: Union[AdmissionsSplits, str] = "Gender",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Admissions":
     """UFRGS Admissions dataset."""
-    return Admissions(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Admissions(split=AdmissionsSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Admissions(Dataset):
+@dataclass
+class Admissions(LoadableDataset):
     """UFRGS Admissions dataset."""
 
-    def __init__(
-        self,
-        split: Union[AdmissionsSplits, str] = "Gender",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = AdmissionsSplits(split)
+    split: AdmissionsSplits = AdmissionsSplits.GENDER
 
+    def __post_init__(self) -> None:
         disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}
         discrete_features = flatten_dict(disc_feature_groups)
 
@@ -86,12 +85,12 @@ class Admissions(Dataset):
             "chemistry",
         ]
 
-        if _split is AdmissionsSplits.GENDER:
+        if self.split is AdmissionsSplits.GENDER:
             sens_attr_spec = "gender"
             s_prefix = ["gender"]
             class_label_spec = "gpa"
             class_label_prefix = ["gpa"]
-        elif _split is AdmissionsSplits.CUSTOM:
+        elif self.split is AdmissionsSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -99,7 +98,7 @@ class Admissions(Dataset):
         else:
             raise NotImplementedError
 
-        name = f"Admissions {_split.value}"
+        name = f"Admissions {self.split.value}"
 
         super().__init__(
             name=name,
@@ -111,7 +110,6 @@ class Admissions(Dataset):
             filename_or_path="admissions.csv.zip",
             s_prefix=s_prefix,
             class_label_prefix=class_label_prefix,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

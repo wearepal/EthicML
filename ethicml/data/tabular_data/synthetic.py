@@ -1,20 +1,39 @@
 """Class to describe features of the Synthetic dataset."""
-
+from dataclasses import dataclass
+from enum import Enum
+from typing import Union
 from typing_extensions import Literal
 
 import teext as tx
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 
-__all__ = ["synthetic", "Synthetic"]
+__all__ = ["Synthetic", "SyntheticScenarios", "SyntheticTargets", "synthetic"]
+
+
+class SyntheticScenarios(Enum):
+    """Scenarios for the synthetic dataset."""
+
+    S1 = 1
+    S2 = 2
+    S3 = 3
+    S4 = 4
+
+
+class SyntheticTargets(Enum):
+    """Targets for the synthetic dataset."""
+
+    Y1 = 1
+    Y2 = 2
+    Y3 = 3
 
 
 def synthetic(
-    scenario: Literal[1, 2, 3, 4] = 1,
-    target: Literal[1, 2, 3] = 3,
+    scenario: Union[SyntheticScenarios, Literal[1, 2, 3, 4]] = 1,
+    target: Union[SyntheticTargets, Literal[1, 2, 3]] = 3,
     fair: bool = False,
     num_samples: int = 1_000,
-) -> Dataset:
+) -> "Synthetic":
     r"""Dataset with synthetic data.
 
     ⊥ = is independent of
@@ -29,10 +48,16 @@ def synthetic(
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
     """
-    return Synthetic(scenario=scenario, target=target, fair=fair, num_samples=num_samples)
+    return Synthetic(
+        scenario=SyntheticScenarios(scenario),
+        target=SyntheticTargets(target),
+        fair=fair,
+        num_samples=num_samples,
+    )
 
 
-class Synthetic(Dataset):
+@dataclass
+class Synthetic(LoadableDataset):
     r"""Dataset with synthetic data.
 
     ⊥ = is independent of
@@ -47,26 +72,25 @@ class Synthetic(Dataset):
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
     """
+    scenario: SyntheticScenarios = SyntheticScenarios.S1
+    target: SyntheticTargets = SyntheticTargets.Y3
+    fair: bool = False
+    num_samples: int = 1_000
 
-    def __init__(
-        self,
-        scenario: Literal[1, 2, 3, 4] = 1,
-        target: Literal[1, 2, 3] = 3,
-        fair: bool = False,
-        num_samples: int = 1_000,
-    ):
-        assert scenario in [1, 2, 3, 4]
-        assert target in [1, 2, 3]
-        assert num_samples <= 100_000
-        num_samples = tx.assert_positive_int(num_samples)
+    def __post_init__(self) -> None:
+        scenario: int = self.scenario.value
+        target: int = self.target.value
+        assert self.num_samples <= 100_000
+        num_samples = tx.assert_positive_int(self.num_samples)
 
         super().__init__(
-            name=f"Synthetic - Scenario {scenario}, target {target}" + (" fair" if fair else ""),
+            name=f"Synthetic - Scenario {scenario}, target {target}"
+            + (" fair" if self.fair else ""),
             num_samples=num_samples,
             filename_or_path=f"synthetic_scenario_{scenario}.csv",
-            features=["x1f", "x2f", "n1", "n2"] if fair else ["x1", "x2", "n1", "n2"],
-            cont_features=["x1f", "x2f", "n1", "n2"] if fair else ["x1", "x2", "n1", "n2"],
+            features=["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"],
+            cont_features=["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"],
             sens_attr_spec="s",
-            class_label_spec=f"y{target}" + ("f" if fair else ""),
-            discrete_only=False,
+            class_label_spec=f"y{target}" + ("f" if self.fair else ""),
+            discrete_only=self.discrete_only,
         )

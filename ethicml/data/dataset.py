@@ -1,11 +1,13 @@
 """Data structure for all datasets that come with the framework."""
 import typing
+from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal, TypedDict
 
 import pandas as pd
+from ranzen import implements
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
@@ -49,7 +51,6 @@ class Dataset:
         num_samples: int,
         discard_non_one_hot: bool = False,
         map_to_binary: bool = False,
-        invert_s: bool = False,
         s_prefix: Optional[Sequence[str]] = None,
         class_label_prefix: Optional[Sequence[str]] = None,
         discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
@@ -64,7 +65,6 @@ class Dataset:
         self._class_label_prefix = [] if class_label_prefix is None else class_label_prefix
         self._discard_non_one_hot = discard_non_one_hot
         self._map_to_binary = map_to_binary
-        self._invert_s = invert_s
         self._discrete_feature_groups = discrete_feature_groups
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = cont_features
@@ -161,6 +161,88 @@ class Dataset:
         """Number of elements in the dataset."""
         return self._num_samples
 
+    @abstractmethod
+    def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
+        """Load the dataset."""
+        raise NotImplementedError("Dataset is abstract.")
+
+    def _maybe_combine_labels(
+        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
+    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
+        """Construct a new label according to the LabelSpecs."""
+        mask = None  # the mask is needed when we have to discard samples
+
+        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
+        if isinstance(label_mapping, str):
+            return attributes, mask
+
+        # create a Series of zeroes with the same length as the dataframe
+        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
+
+        for name, spec in label_mapping.items():
+            if len(spec.columns) > 1:  # data is one-hot encoded
+                raw_values = attributes[spec.columns]
+                if self._discard_non_one_hot:
+                    # only use those samples where exactly one of the specified attributes is true
+                    mask = raw_values.sum(axis="columns") == 1
+                else:
+                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+                values = undo_one_hot(raw_values)
+            else:
+                values = attributes[spec.columns[0]]
+            combination += spec.multiplier * values
+        return combination.to_frame(name=",".join(label_mapping)), mask
+
+    @staticmethod
+    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
+        out = data.copy()
+
+        for col_parent, filter_col in categorical_cols.items():
+            if len(filter_col) > 1:
+                undummified = (
+                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
+                )
+
+                out[col_parent] = undummified
+                out.drop(filter_col, axis=1, inplace=True)
+
+        return out
+
+    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+        """Expand a label in the form of an index into all the subfeatures."""
+        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
+        assert not isinstance(label_mapping, str)
+        label_mapping: LabelSpec  # redefine the variable for mypy's sake
+
+        # first order the multipliers; this is important for disentangling the values
+        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
+
+        labels = label[label.columns[0]]
+
+        final_df = {}
+        for i, name in enumerate(names_ordered):
+            spec = label_mapping[name]
+            value = labels
+            if i + 1 < len(names_ordered):
+                next_group = label_mapping[names_ordered[i + 1]]
+                value = labels % next_group.multiplier
+            value = value // spec.multiplier
+            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
+            restored = pd.get_dummies(value)
+            final_df[name] = restored  # for the multi-level column index
+
+        return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
+
+
+@dataclass(init=False)
+class LoadableDataset(Dataset):
+    """Dataset that uses the default load function."""
+
+    # TODO: actually move the loading code into this class. This will require some wider changes.
+    discrete_only: bool = False
+    invert_s: bool = False
+
+    @implements(Dataset)
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
@@ -217,7 +299,7 @@ class Dataset:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
-        if self._invert_s:
+        if self.invert_s:
             assert s_data.nunique().values[0] == 2, "s must be binary"
             s_data = 1 - s_data
 
@@ -234,21 +316,6 @@ class Dataset:
             y_data = y_data.loc[y_mask].reset_index(drop=True)
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
-
-    @staticmethod
-    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
-        out = data.copy()
-
-        for col_parent, filter_col in categorical_cols.items():
-            if len(filter_col) > 1:
-                undummified = (
-                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
-                )
-
-                out[col_parent] = undummified
-                out.drop(filter_col, axis=1, inplace=True)
-
-        return out
 
     @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset
@@ -277,64 +344,3 @@ class Dataset:
             if self.disc_feature_groups is not None
             else None,
         )
-
-    def _maybe_combine_labels(
-        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
-    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
-        """Construct a new label according to the LabelSpecs."""
-        mask = None  # the mask is needed when we have to discard samples
-
-        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
-        if isinstance(label_mapping, str):
-            return attributes, mask
-
-        # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
-
-        for name, spec in label_mapping.items():
-            if len(spec.columns) > 1:  # data is one-hot encoded
-                raw_values = attributes[spec.columns]
-                if self._discard_non_one_hot:
-                    # only use those samples where exactly one of the specified attributes is true
-                    mask = raw_values.sum(axis="columns") == 1
-                else:
-                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
-                values = undo_one_hot(raw_values)
-            else:
-                values = attributes[spec.columns[0]]
-            combination += spec.multiplier * values
-        return combination.to_frame(name=",".join(label_mapping)), mask
-
-    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
-        """Expand a label in the form of an index into all the subfeatures."""
-        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
-        assert not isinstance(label_mapping, str)
-        label_mapping: LabelSpec  # redefine the variable for mypy's sake
-
-        # first order the multipliers; this is important for disentangling the values
-        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
-
-        labels = label[label.columns[0]]
-
-        final_df = {}
-        for i, name in enumerate(names_ordered):
-            spec = label_mapping[name]
-            value = labels
-            if i + 1 < len(names_ordered):
-                next_group = label_mapping[names_ordered[i + 1]]
-                value = labels % next_group.multiplier
-            value = value // spec.multiplier
-            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
-            restored = pd.get_dummies(value)
-            final_df[name] = restored  # for the multi-level column index
-
-        return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
-
-
-@dataclass(init=False)
-class LoadableDataset(Dataset):
-    """Dataset that uses the default load function."""
-
-    # TODO: actually move the loading code into this class. This will require some wider changes.
-    discrete_only: bool = False
-    invert_s: bool = False

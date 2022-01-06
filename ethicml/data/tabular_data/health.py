@@ -1,15 +1,17 @@
 """Class to describe features of the Heritage Health dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
-
-__all__ = ["health", "Health"]
-
+from ..dataset import LoadableDataset
 from ..util import flatten_dict
+
+__all__ = ["health", "Health", "HealthSplits"]
 
 
 class HealthSplits(Enum):
+    """Splits for the Health dataset."""
+
     SEX = "Sex"
     CUSTOM = "Custom"
 
@@ -18,21 +20,18 @@ def health(
     split: Union[HealthSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Health":
     """Heritage Health dataset."""
-    return Health(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Health(split=HealthSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Health(Dataset):
+@dataclass
+class Health(LoadableDataset):
     """Heritage Health dataset."""
 
-    def __init__(
-        self,
-        split: Union[HealthSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = HealthSplits(split)
+    split: HealthSplits = HealthSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "age": [
                 "age_05",
@@ -177,12 +176,12 @@ class Health(Dataset):
             "labcount_months",
         ]
 
-        if _split is HealthSplits.SEX:
+        if self.split is HealthSplits.SEX:
             sens_attr_spec = "sexMALE"
             s_prefix = ["sex"]
             class_label_spec = "Charlson>0"
             class_label_prefix = ["Charlson>0"]
-        elif _split is HealthSplits.CUSTOM:
+        elif self.split is HealthSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -199,7 +198,6 @@ class Health(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

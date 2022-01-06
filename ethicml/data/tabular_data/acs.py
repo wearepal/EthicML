@@ -79,6 +79,7 @@ class AcsBase(Dataset):
         self.horizon = horizon
         self.survey = "person"
         self.states = states
+        self._invert_s = invert_s
 
         assert all(state in state_list for state in states)
 
@@ -93,7 +94,6 @@ class AcsBase(Dataset):
             class_label_prefix=class_label_prefix,
             discrete_only=discrete_only,
             num_samples=0,
-            invert_s=invert_s,
         )
 
     def _backend_load(
