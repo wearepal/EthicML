@@ -52,6 +52,8 @@ autodoc_mock_imports = [
     "matplotlib",
     "numpy",
     "pandas",
+    "ranzen",
+    "ray",
     "scipy",
     "seaborn",
     "sklearn",
