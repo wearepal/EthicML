@@ -243,6 +243,6 @@ def test_threaded_agarwal():
             )
 
     results = evaluate_models_async(
-        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True,
+        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
     assert results["assert_result"].iloc[0] == 0.0

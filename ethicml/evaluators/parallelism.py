@@ -45,7 +45,7 @@ def run_in_parallel(
     Returns:
         list of the results
     """
-    if not algos:
+    if not algos or not data:
         return cast(List[List[Prediction]], [[]])
     if isinstance(algos[0], InAlgorithm):
         in_algos = cast(Sequence[InAlgorithm], algos)

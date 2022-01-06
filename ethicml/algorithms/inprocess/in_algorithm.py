@@ -67,7 +67,7 @@ class InAlgorithm(Algorithm):
 
 
 class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
-    """In-Algorithm that can be run blocking and asynchronously."""
+    """In-Algorithm that use a subprocess to run."""
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithmAsync:
