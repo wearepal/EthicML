@@ -53,11 +53,6 @@ class Zemel(PreAlgorithmAsync):
         return super().fit(train)
 
     @implements(PreAlgorithmAsync)
-    def fit_async(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
-        self._out_size = train.x.shape[1]
-        return super().fit_async(train)
-
-    @implements(PreAlgorithmAsync)
     def _run_script_command(
         self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
     ) -> List[str]:

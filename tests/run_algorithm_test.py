@@ -9,6 +9,7 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
+from ethicml.evaluators import parallelism
 
 
 def count_true(mask: np.ndarray) -> int:
@@ -27,12 +28,10 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
     """Test run parallel."""
     data0 = toy_train_test
     data1 = toy_train_test
-    result = em.run_blocking(
-        em.run_in_parallel(
-            [em.LR(), em.SVM(), em.Majority()],
-            [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
-            max_parallel=2,
-        )
+    result = parallelism.run_in_parallel(
+        [em.LR(), em.SVM(), em.Majority()],
+        [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        num_cpus=2,
     )
     # LR
     assert count_true(result[0][0].hard.values == 1) == 44
@@ -113,18 +112,16 @@ def test_run_alg_suite():
     postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
-    parallel_results = em.run_blocking(
-        em.evaluate_models_async(
-            datasets,
-            preprocess_models,
-            inprocess_models,
-            postprocess_models,
-            metrics,
-            per_sens_metrics,
-            repeats=1,
-            test_mode=True,
-            topic="pytest",
-        )
+    parallel_results = em.evaluate_models_async(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        postprocess_models=postprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        topic="pytest",
     )
     results = em.evaluate_models(
         datasets,
@@ -194,19 +191,17 @@ def test_run_alg_suite_no_pipeline():
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
-    parallel_results = em.run_blocking(
-        em.evaluate_models_async(
-            datasets,
-            preprocess_models,
-            inprocess_models,
-            postprocess_models,
-            metrics,
-            per_sens_metrics,
-            repeats=1,
-            test_mode=True,
-            topic="pytest",
-            fair_pipeline=False,
-        )
+    parallel_results = em.evaluate_models_async(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        postprocess_models=postprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        topic="pytest",
+        fair_pipeline=False,
     )
     results = em.evaluate_models(
         datasets,

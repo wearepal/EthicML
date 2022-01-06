@@ -1,11 +1,11 @@
 """Base class for Algorithms."""
-import asyncio
+import subprocess
 import sys
 from abc import ABC, ABCMeta
 from pathlib import Path
-from typing import Any, Coroutine, Dict, List, Optional, TypeVar
+from typing import Dict, List, Optional
 
-__all__ = ["run_blocking", "Algorithm", "AlgorithmAsync"]
+__all__ = ["Algorithm", "AlgorithmAsync"]
 
 
 class Algorithm(ABC):
@@ -45,7 +45,7 @@ class AlgorithmAsync(metaclass=ABCMeta):  # pylint: disable=too-few-public-metho
         """
         return sys.executable
 
-    async def _call_script(
+    def _call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
     ) -> None:
         """This function calls a (Python) script as a separate process.
@@ -57,34 +57,23 @@ class AlgorithmAsync(metaclass=ABCMeta):  # pylint: disable=too-few-public-metho
             env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
             cwd: if not None, change working directory to the given path before running command
         """
-        process = await asyncio.create_subprocess_exec(  # wait for process creation to finish
-            self._executable,
-            *cmd_args,
-            stderr=asyncio.subprocess.PIPE,  # we capture the stderr for errors
-            env=env,
-            cwd=cwd,
-        )
-        # print(f"Started: {cmd_args!r} (pid = {process.pid})")
-
-        try:  # wait for process itself to finish
-            one_hour = 3600
-            _, stderr = await asyncio.wait_for(process.communicate(), one_hour)
-        except asyncio.TimeoutError as error:
+        one_hour = 3600
+        try:
+            process = subprocess.run(  # wait for process creation to finish
+                [self._executable] + cmd_args,
+                capture_output=True,
+                env=env,
+                cwd=cwd,
+                timeout=one_hour,
+            )
+        except subprocess.TimeoutExpired as error:
             raise RuntimeError("The script timed out.") from error
 
         if process.returncode != 0:
-            print(f"Failure: {cmd_args!r} (pid = {process.pid})")
+            print(f"Failure: {cmd_args!r}")
+            stderr = process.stderr
             if stderr:
                 print(stderr.decode().strip())
             raise RuntimeError(
                 f"The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}"
             )
-
-
-_T = TypeVar("_T")
-
-
-def run_blocking(promise: Coroutine[Any, Any, _T]) -> _T:
-    """Run an asynchronous process as a blocking process."""
-    loop = asyncio.get_event_loop()
-    return loop.run_until_complete(promise)

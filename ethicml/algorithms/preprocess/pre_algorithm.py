@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple, TypeVar
 
 from ranzen import implements
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync, run_blocking
+from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
 from ethicml.utility import DataTuple, TestTuple
 
 __all__ = ["PreAlgorithm", "PreAlgorithmAsync"]
@@ -84,27 +84,6 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
-        model, data = run_blocking(self.fit_async(train))
-        return self, data
-
-    @implements(PreAlgorithm)
-    def transform(self, data: T) -> T:
-        return run_blocking(self.transform_async(data))
-
-    @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data by running as a blocking function.
-
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
-        """
-        return run_blocking(self.run_async(train, test))
-
-    async def fit_async(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
         """Generate fair features with the given data asynchronously.
 
         Args:
@@ -126,7 +105,7 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
             cmd = self._fit_script_command(train_path, transformed_train_path, self.model_path)
 
             # ============================= run the generated command =============================
-            await self._call_script(cmd + ["--mode", "fit"])
+            self._call_script(cmd + ["--mode", "fit"])
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)
@@ -137,7 +116,8 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         )
         return self, transformed_train
 
-    async def transform_async(self, data: T) -> T:
+    @implements(PreAlgorithm)
+    def transform(self, data: T) -> T:
         """Generate fair features with the given data asynchronously.
 
         Args:
@@ -160,7 +140,7 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
             )
 
             # ============================= run the generated command =============================
-            await self._call_script(cmd + ["--mode", "transform"])
+            self._call_script(cmd + ["--mode", "transform"])
 
             # ================================== load results =====================================
             transformed_test = TestTuple.from_npz(transformed_test_path)
@@ -171,7 +151,8 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
         )
         return transformed_test
 
-    async def run_async(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    @implements(PreAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data asynchronously.
 
         Args:
@@ -196,7 +177,7 @@ class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
             )
 
             # ============================= run the generated command =============================
-            await self._call_script(cmd + ["--mode", "run"])
+            self._call_script(cmd + ["--mode", "run"])
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)

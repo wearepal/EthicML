@@ -168,7 +168,7 @@ def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: 
     assert svm_model.name == "SVM"
 
     assert model.name == name
-    new_train_test = em.run_blocking(model.run_async(train, test))
+    new_train_test = model.run(train, test)
     new_train, new_test = new_train_test
 
     assert len(new_train) == len(train)

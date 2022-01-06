@@ -17,7 +17,6 @@ from ethicml import (
     ZafarEqOdds,
     ZafarEqOpp,
     ZafarFairness,
-    run_blocking,
 )
 
 
@@ -56,7 +55,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
 
-    predictions = run_blocking(model.run_async(train, test))
+    predictions = model.run(train, test)
     expected_num_pos = 42
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
@@ -90,7 +89,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
 
-    predictions = run_blocking(model.run_async(train, test))
+    predictions = model.run(train, test)
     expected_num_pos = 40
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
@@ -107,7 +106,7 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
     assert num_neg == len(predictions) - expected_num_pos
 
-    predictions = run_blocking(model.run_async(train, test))
+    predictions = model.run(train, test)
     expected_num_pos = 51
     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
     num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]

@@ -39,8 +39,6 @@ from ethicml import (
     evaluate_models_async,
     load_data,
     query_dt,
-    run_blocking,
-    run_in_parallel,
     toy,
     train_test_split,
 )
@@ -183,7 +181,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 #     assert model is not None
 
-#     predictions: Prediction = run_blocking(model.run_async(train, test))
+#     predictions: Prediction = model.run(train, test)
 #     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
 #     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
 
@@ -244,9 +242,7 @@ def test_threaded_agarwal():
                 and count_true(prediction.hard.values == 0) == 159
             )
 
-    results = run_blocking(
-        evaluate_models_async(
-            datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
-        )
+    results = evaluate_models_async(
+        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
     assert results["assert_result"].iloc[0] == 0.0
