@@ -99,6 +99,7 @@ def celeba(
 @dataclass
 class CelebA(LoadableDataset):
     """CelebA dataset."""
+
     label: CelebAttrs = "Smiling"
     sens_attr: Union[CelebAttrs, Dict[str, LabelGroup]] = "Male"
 
