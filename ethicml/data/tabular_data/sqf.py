@@ -1,14 +1,17 @@
 """Class to describe features of the SQF dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["sqf", "Sqf"]
+__all__ = ["sqf", "Sqf", "SqfSplits"]
 
 
 class SqfSplits(Enum):
+    """Splits for the SQF dataset."""
+
     SEX = "Sex"
     RACE = "Race"
     RACE_SEX = "Race-Sex"
@@ -19,21 +22,18 @@ def sqf(
     split: Union[SqfSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Sqf":
     """Stop, question and frisk dataset."""
-    return Sqf(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Sqf(split=SqfSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Sqf(Dataset):
+@dataclass
+class Sqf(LoadableDataset):
     """Stop, question and frisk dataset."""
 
-    def __init__(
-        self,
-        split: Union[SqfSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = SqfSplits(split)
+    split: SqfSplits = SqfSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "sex": ["sex"],
             "race": ["race"],
@@ -130,22 +130,22 @@ class Sqf(Dataset):
         continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
         sens_attr_spec: Union[str, LabelSpec]
-        if _split is SqfSplits.SEX:
+        if self.split is SqfSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]
             class_label_spec = "weapon"
             class_label_prefix = ["weapon"]
-        elif _split is SqfSplits.RACE:
+        elif self.split is SqfSplits.RACE:
             sens_attr_spec = "race"
             s_prefix = ["race"]
             class_label_spec = "weapon"
             class_label_prefix = ["weapon"]
-        elif _split is SqfSplits.RACE_SEX:
+        elif self.split is SqfSplits.RACE_SEX:
             sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
             s_prefix = ["race", "sex"]
             class_label_spec = "weapon"
             class_label_prefix = ["weapon"]
-        elif _split is SqfSplits.CUSTOM:
+        elif self.split is SqfSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -153,7 +153,7 @@ class Sqf(Dataset):
         else:
             raise NotImplementedError
         super().__init__(
-            name=f"SQF {_split.value}",
+            name=f"SQF {self.split.value}",
             num_samples=12347,
             filename_or_path="sqf.csv",
             features=discrete_features + continuous_features,
@@ -162,7 +162,6 @@ class Sqf(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

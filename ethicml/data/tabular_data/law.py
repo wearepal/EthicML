@@ -17,16 +17,19 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
  year = {2017}
 }
 """
+from dataclasses import dataclass
 from enum import Enum
 from typing import Mapping, Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelGroup, flatten_dict, simple_spec
 
-__all__ = ["law", "Law"]
+__all__ = ["law", "Law", "LawSplits"]
 
 
 class LawSplits(Enum):
+    """Splits for the Law dataset."""
+
     SEX = "Sex"
     RACE = "Race"
     SEX_RACE = "Sex-Race"
@@ -37,21 +40,18 @@ def law(
     split: Union[LawSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Law":
     """LSAC Law School dataset."""
-    return Law(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Law(split=LawSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Law(Dataset):
+@dataclass
+class Law(LoadableDataset):
     """LSAC Law School dataset."""
 
-    def __init__(
-        self,
-        split: Union[LawSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = LawSplits(split)
+    split: LawSplits = LawSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "Sex": ["Sex_1", "Sex_2"],
             "Race": [
@@ -70,22 +70,22 @@ class Law(Dataset):
 
         continuous_features = ["LSAT", "UGPA", "ZFYA"]
 
-        if _split is LawSplits.SEX:
+        if self.split is LawSplits.SEX:
             sens_attr_spec: Union[str, Mapping[str, LabelGroup]] = "Sex_1"
             s_prefix = ["Sex", "Race"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
-        elif _split is LawSplits.RACE:
+        elif self.split is LawSplits.RACE:
             sens_attr_spec = "Race_White"
             s_prefix = ["Race", "Sex"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
-        elif _split is LawSplits.SEX_RACE:
+        elif self.split is LawSplits.SEX_RACE:
             sens_attr_spec = simple_spec({"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]})
             s_prefix = ["Race", "Sex"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
-        elif _split is LawSplits.CUSTOM:
+        elif self.split is LawSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -93,7 +93,7 @@ class Law(Dataset):
         else:
             raise NotImplementedError
 
-        name = f"Law {_split.value}"
+        name = f"Law {self.split.value}"
 
         super().__init__(
             name=name,
@@ -105,7 +105,6 @@ class Law(Dataset):
             filename_or_path="law.csv.zip",
             s_prefix=s_prefix,
             class_label_prefix=class_label_prefix,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

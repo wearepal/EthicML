@@ -1,29 +1,37 @@
 """Class to describe features of the German dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
-
-__all__ = ["german", "German"]
-
+from ..dataset import LoadableDataset
 from ..util import flatten_dict
+
+__all__ = ["german", "German", "GermanSplits"]
 
 
 class GermanSplits(Enum):
+    """Splits for the German dataset."""
+
     SEX = "Sex"
     CUSTOM = "Custom"
 
 
-class German(Dataset):
+def german(
+    split: Union[GermanSplits, str] = "Sex",
+    discrete_only: bool = False,
+    invert_s: bool = False,
+) -> "German":
+    """German credit dataset."""
+    return German(split=GermanSplits(split), discrete_only=discrete_only, invert_s=invert_s)
+
+
+@dataclass
+class German(LoadableDataset):
     """German credit dataset."""
 
-    def __init__(
-        self,
-        split: Union[GermanSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = GermanSplits(split)
+    split: GermanSplits = GermanSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "sex": ["sex"],
             "age": ["age"],
@@ -109,12 +117,12 @@ class German(Dataset):
             "people-liable-for",
         ]
 
-        if _split is GermanSplits.SEX:
+        if self.split is GermanSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]
             class_label_spec = "credit-label"
             class_label_prefix = ["credit-label"]
-        elif _split is GermanSplits.CUSTOM:
+        elif self.split is GermanSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -123,7 +131,7 @@ class German(Dataset):
             raise NotImplementedError
 
         super().__init__(
-            name=f"German {_split.value}",
+            name=f"German {self.split.value}",
             num_samples=1_000,
             filename_or_path="german.csv",
             features=discrete_features + continuous_features,
@@ -132,16 +140,6 @@ class German(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )
-
-
-def german(
-    split: Union[GermanSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> German:
-    """German credit dataset."""
-    return German(split=split, discrete_only=discrete_only, invert_s=invert_s)

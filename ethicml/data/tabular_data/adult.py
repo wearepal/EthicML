@@ -257,5 +257,4 @@ class Adult(LoadableDataset):
             class_label_prefix=class_label_prefix,
             discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=self.invert_s,
         )

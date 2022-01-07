@@ -1,9 +1,10 @@
 """Generated faces."""
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Tuple
 from typing_extensions import Literal, TypeAlias
 
-from ..dataset import Dataset
+from ..dataset import Dataset, LoadableDataset
 from ..util import flatten_dict, simple_spec
 
 __all__ = ["GenfacesAttributes", "genfaces"]
@@ -28,48 +29,62 @@ def genfaces(
 ) -> Tuple[Optional[Dataset], Path]:
     """Generated Faces dataset."""
     root = Path(download_dir)
-    disc_feature_groups = {
-        "gender": ["gender_male"],
-        "age": ["age_young-adult"],
-        "ethnicity": ["ethnicity_asian", "ethnicity_black", "ethnicity_latino", "ethnicity_white"],
-        "eye_color": ["eye_color_blue", "eye_color_brown", "eye_color_gray", "eye_color_green"],
-        "hair_color": [
-            "hair_color_black",
-            "hair_color_blond",
-            "hair_color_brown",
-            "hair_color_gray",
-            "hair_color_red",
-        ],
-        "hair_length": ["hair_length_long", "hair_length_medium", "hair_length_short"],
-        "emotion": ["emotion_joy"],
-    }
-    discrete_features = flatten_dict(disc_feature_groups)
-    assert sens_attr in disc_feature_groups
-    assert label in disc_feature_groups
-    continuous_features = ["filename"]
-
     base = root / _BASE_FOLDER
     img_dir = base / _SUBDIR
     if download:
         _download(base)
     elif check_integrity and not _check_integrity(base):
         return None, img_dir
+    return GenFaces(label=label, sens_attr=sens_attr), img_dir
 
-    dataset_obj = Dataset(
-        name=f"GenFaces, s={sens_attr}, y={label}",
-        sens_attr_spec=simple_spec({sens_attr: disc_feature_groups[sens_attr]}),
-        s_prefix=[sens_attr],
-        class_label_spec=simple_spec({label: disc_feature_groups[label]}),
-        class_label_prefix=[label],
-        discrete_feature_groups=disc_feature_groups,
-        features=discrete_features + continuous_features,
-        cont_features=continuous_features,
-        num_samples=148_285,
-        filename_or_path="genfaces.csv.zip",
-        discrete_only=False,
-        discard_non_one_hot=True,
-    )
-    return dataset_obj, img_dir
+
+@dataclass
+class GenFaces(LoadableDataset):
+    """Generated Faces dataset."""
+
+    label: GenfacesAttributes = "emotion"
+    sens_attr: GenfacesAttributes = "gender"
+
+    def __post_init__(self) -> None:
+        disc_feature_groups = {
+            "gender": ["gender_male"],
+            "age": ["age_young-adult"],
+            "ethnicity": [
+                "ethnicity_asian",
+                "ethnicity_black",
+                "ethnicity_latino",
+                "ethnicity_white",
+            ],
+            "eye_color": ["eye_color_blue", "eye_color_brown", "eye_color_gray", "eye_color_green"],
+            "hair_color": [
+                "hair_color_black",
+                "hair_color_blond",
+                "hair_color_brown",
+                "hair_color_gray",
+                "hair_color_red",
+            ],
+            "hair_length": ["hair_length_long", "hair_length_medium", "hair_length_short"],
+            "emotion": ["emotion_joy"],
+        }
+        discrete_features = flatten_dict(disc_feature_groups)
+        assert self.sens_attr in disc_feature_groups
+        assert self.label in disc_feature_groups
+        continuous_features = ["filename"]
+
+        super().__init__(
+            name=f"GenFaces, s={self.sens_attr}, y={self.label}",
+            sens_attr_spec=simple_spec({self.sens_attr: disc_feature_groups[self.sens_attr]}),
+            s_prefix=[self.sens_attr],
+            class_label_spec=simple_spec({self.label: disc_feature_groups[self.label]}),
+            class_label_prefix=[self.label],
+            discrete_feature_groups=disc_feature_groups,
+            features=discrete_features + continuous_features,
+            cont_features=continuous_features,
+            num_samples=148_285,
+            filename_or_path="genfaces.csv.zip",
+            discrete_only=False,
+            discard_non_one_hot=True,
+        )
 
 
 def _check_integrity(base: Path) -> bool:
