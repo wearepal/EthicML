@@ -42,8 +42,6 @@ from ethicml import (
     toy,
     train_test_split,
 )
-from ethicml.algorithms.algorithm_base import SubprocessAlgorithmMixin
-from ethicml.algorithms.inprocess.kamishima import Kamishima
 from ethicml.algorithms.inprocess.shared import flag_interface
 from tests.run_algorithm_test import count_true
 
@@ -184,8 +182,8 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
-    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
+    assert count_true(predictions.hard.values == 1) == 42
+    assert count_true(predictions.hard.values == -1) == 358
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
