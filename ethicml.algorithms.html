@@ -161,7 +161,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
 <td><p>Base class for Algorithms.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="ethicml.algorithms.algorithm_base.AlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AlgorithmAsync</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin</span></code></a></p></td>
 <td><p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -195,8 +195,8 @@
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.AlgorithmAsync">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AlgorithmAsync</span></span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubprocessAlgorithmMixin</span></span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
 </dd></dl>
@@ -339,7 +339,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="ethicml.algorithms.algorithm_base.AlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
 <p>Pre-Algorithm that can be run blocking and asynchronously.</p>
 <p>Base constructor for the Algorithm class.</p>
 <dl class="field-list simple">
@@ -1153,7 +1153,7 @@ of samples.</p>
 <td><p>Abstract Base Class for algorithms that run in the middle of the pipeline.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InAlgorithmAsync</span></code></a></p></td>
-<td><p>In-Algorithm that use a subprocess to run.</p></td>
+<td><p>In-Algorithm that uses a subprocess to run.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1178,13 +1178,16 @@ of samples.</p>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.inprocess.in_algorithm._I</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._I</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1266,14 +1269,13 @@ of samples.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_fairness_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.algorithm_base.AlgorithmAsync" title="ethicml.algorithms.algorithm_base.AlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.AlgorithmAsync</span></code></a></p>
-<p>In-Algorithm that use a subprocess to run.</p>
-<p>Base constructor for the Algorithm class.</p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
+<p>In-Algorithm that uses a subprocess to run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – name of the algorithm</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – seed for the random number generator</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 <li><p><strong>is_fairness_algo</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
@@ -1281,19 +1283,20 @@ of samples.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Fit algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
 <li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.inprocess.in_algorithm._IA</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1396,12 +1399,9 @@ of samples.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Agarwal class.</p>
-<p>Base constructor for the Algorithm class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – seed for the random number generator</p></li>
 <li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
 <li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>'DP'</em><em>, </em><em>'EqOp'</em><em>, </em><em>'EqOd'</em><em>]</em>) – </p></li>
 <li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><em>'LR'</em><em>, </em><em>'SVM'</em><em>]</em>) – </p></li>
@@ -1409,25 +1409,27 @@ of samples.</p>
 <li><p><strong>iters</strong> (<em>int</em>) – </p></li>
 <li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
 <li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Fit algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
 <li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.inprocess.in_algorithm._IA</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1530,36 +1532,35 @@ of samples.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Implementation of <a class="reference external" href="https://arxiv.org/abs/1806.08010">https://arxiv.org/abs/1806.08010</a> .</p>
-<p>Base constructor for the Algorithm class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – name of the algorithm</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – seed for the random number generator</p></li>
 <li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – </p></li>
 <li><p><strong>epochs</strong> (<em>int</em>) – </p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – </p></li>
 <li><p><strong>network_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Fit algorithm on the given data asynchronously.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
 <li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.inprocess.in_algorithm._IA</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1657,15 +1658,15 @@ in its own venv and makes everyone happy.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="ethicml.algorithms.inprocess.installed_model.InstalledModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">InstalledModel</span></code></a></p></td>
-<td><p>the model that does the magic.</p></td>
+<td><p>The model that does the magic.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
-<p>the model that does the magic.</p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
+<p>The model that does the magic.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1682,20 +1683,20 @@ simply the last part of the repository URL)</p></li>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.inprocess.in_algorithm._I</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._I</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1714,14 +1715,11 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -1745,8 +1743,8 @@ simply the last part of the repository URL)</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.run" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1981,38 +1979,18 @@ simply the last part of the repository URL)</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.create_file_in_kamishima_format">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_file_in_kamishima_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.create_file_in_kamishima_format" title="Permalink to this definition"></a></dt>
-<dd><p>Create a text file with the data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>Union</em><em>[</em><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>, </em><a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a><em>]</em>) – </p></li>
-<li><p><strong>file_path</strong> (<em>str</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.kamishima.Kamishima" title="ethicml.algorithms.inprocess.kamishima.Kamishima">ethicml.algorithms.inprocess.kamishima.Kamishima</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2032,13 +2010,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamishima.Kamishima.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamishima.Kamishima.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -3234,19 +3209,16 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3266,13 +3238,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarAccuracy.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarAccuracy.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -3364,19 +3333,16 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3396,13 +3362,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarBaseline.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarBaseline.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -3494,19 +3457,16 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3526,13 +3486,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOdds.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOdds.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -3624,19 +3581,16 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3656,13 +3610,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarEqOpp.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarEqOpp.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
@@ -3752,19 +3703,16 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>self, but trained.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</a></p>
+<dd class="field-odd"><p>ethicml.algorithms.inprocess.zafar._ZafarAlgorithmBase</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3784,13 +3732,10 @@ simply the last part of the repository URL)</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.zafar.ZafarFairness.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.zafar.ZafarFairness.predict" title="Permalink to this definition"></a></dt>
-<dd><p>Run Algorithm on the given data asynchronously.</p>
+<dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
+<dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>predictions</p>
