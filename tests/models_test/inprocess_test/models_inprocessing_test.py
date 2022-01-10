@@ -183,7 +183,12 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
 
     predictions: Prediction = model.run(train, test)
     assert count_true(predictions.hard.values == 1) == 42
-    assert count_true(predictions.hard.values == -1) == 358
+    assert count_true(predictions.hard.values == 0) == 358
+
+    another_model = Kamishima()
+    new_predictions: Prediction = another_model.fit(train).predict(test)
+    assert count_true(new_predictions.hard.values == 1) == 42
+    assert count_true(new_predictions.hard.values == 0) == 358
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
