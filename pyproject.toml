@@ -145,6 +145,7 @@ disallow_incomplete_defs = false
 
 [[tool.mypy.overrides]]
 module = [
+    "aif360.*",
     "black.*",
     "cloudpickle",
     "fairlearn.*",
@@ -154,6 +155,7 @@ module = [
     "pandas.testing",
     "pylint.*",
     "pytest.*",
+    "ray.*",
     "scipy.*",
     "seaborn",
     "setuptools.*",

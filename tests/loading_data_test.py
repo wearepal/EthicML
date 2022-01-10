@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import Admissions, Compas, Credit, Crime, Dataset, DataTuple, German
+from ethicml import Admissions, Compas, Credit, Crime, DataTuple, German, LoadableDataset
 from ethicml.data.tabular_data.adult import Adult, AdultSplits
 from ethicml.data.util import flatten_dict
 
@@ -943,7 +943,7 @@ def test_celeba():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
+    assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
 def test_celeba_all_attributes():
@@ -960,7 +960,7 @@ def test_celeba_all_attributes():
     assert "Male" in data.x.columns
     assert "Smiling" in data.x.columns
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
+    assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
 def test_celeba_multi_s():
@@ -981,7 +981,7 @@ def test_celeba_multi_s():
     assert (202599, 1) == data.y.shape
     assert len(data) == len(celeba_data)
 
-    assert data.x["filename"].iloc[0] == "000001.jpg"  # type: ignore[comparison-overlap]
+    assert data.x["filename"].iloc[0] == "000001.jpg"
 
 
 @pytest.mark.usefixtures("simulate_no_torch")
@@ -1006,7 +1006,7 @@ def test_genfaces():
     assert (148285, 1) == data.y.shape
     assert len(data) == len(gen_faces)
 
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
+    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
 
 
 def test_genfaces_multi_s():
@@ -1033,7 +1033,7 @@ def test_genfaces_multi_s():
 
 def test_expand_s():
     """Test expanding s."""
-    data = em.Dataset(
+    data = em.LoadableDataset(
         name="test",
         filename_or_path="non-existent",
         features=[],
@@ -1075,7 +1075,7 @@ def test_simple_spec():
 
 
 @pytest.mark.parametrize("data", [Adult(), Admissions(), Compas(), Credit(), Crime(), German()])
-def test_aif_conversion(data: Dataset):
+def test_aif_conversion(data: LoadableDataset):
     """Load a dataset in AIF form.
 
     There might be a case where you want to load an EthicML dataset

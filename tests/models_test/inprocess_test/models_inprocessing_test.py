@@ -1,10 +1,10 @@
 """EthicML Tests."""
-import sys
 from pathlib import Path
-from typing import Dict, List, NamedTuple
+from typing import Dict, Generator, List, NamedTuple
 
 import pytest
 from pytest import approx
+from ranzen import implements
 
 from ethicml import (
     DRO,
@@ -23,8 +23,8 @@ from ethicml import (
     Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
-    InstalledModel,
     Kamiran,
+    Kamishima,
     LRProb,
     Majority,
     Metric,
@@ -42,6 +42,8 @@ from ethicml import (
     toy,
     train_test_split,
 )
+from ethicml.algorithms.algorithm_base import SubprocessAlgorithmMixin
+from ethicml.algorithms.inprocess.kamishima import Kamishima
 from ethicml.algorithms.inprocess.shared import flag_interface
 from tests.run_algorithm_test import count_true
 
@@ -165,59 +167,51 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert best_result.scores["CV absolute"] == approx(0.832, abs=0.001)
 
 
-# @pytest.fixture(scope="module")
-# def kamishima():
-#     kamishima_algo = Kamishima()
-#     yield kamishima_algo
-#     print("teardown Kamishima")
-#     kamishima_algo.remove()
+@pytest.fixture(scope="module")
+def kamishima() -> Generator[Kamishima, None, None]:
+    kamishima_algo = Kamishima()
+    yield kamishima_algo
+    print("teardown Kamishima")
+    kamishima_algo.remove()
 
 
-# def test_kamishima(kamishima):
-#     train, test = get_train_test()
+def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
+    train, test = toy_train_test
 
-#     model: InAlgorithmAsync = kamishima
-#     assert model.name == "Kamishima"
+    model: InAlgorithm = kamishima
+    assert model.name == "Kamishima"
 
-#     assert model is not None
+    assert model is not None
 
-#     predictions: Prediction = model.run(train, test)
-#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
-#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
+    predictions: Prediction = model.run(train, test)
+    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
+    assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
     """Test local installed lr."""
     train, test = toy_train_test
 
-    class _LocalInstalledLR(InstalledModel):
+    class _LocalInstalledLR(InAlgorithmAsync):
         def __init__(self):
-            super().__init__(
-                name="local installed LR", dir_name="../..", top_dir="", executable=sys.executable
-            )
+            super().__init__(name="local installed LR", seed=0, is_fairness_algo=False)
 
+        @implements(InAlgorithmAsync)
         def _run_script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
-        ) -> (List[str]):
+        ) -> List[str]:
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [
-                script,
-                str(train_path),
-                str(test_path),
-                str(pred_path),
-            ]
+            return [script, str(train_path), str(test_path), str(pred_path)]
 
+        @implements(InAlgorithmAsync)
         def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            args = flag_interface(train_path=train_path, model_path=model_path)
-            return [script, args]
+            raise NotImplementedError("this model doesn't support the fit/predict split yet")
 
+        @implements(InAlgorithmAsync)
         def _predict_script_command(
             self, model_path: Path, test_path: Path, pred_path: Path
         ) -> List[str]:
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            args = flag_interface(model_path=model_path, test_path=test_path, pred_path=pred_path)
-            return [script, args]
+            raise NotImplementedError("this model doesn't support the fit/predict split yet")
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None

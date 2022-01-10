@@ -4,14 +4,16 @@ from __future__ import annotations
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List
+from typing import List, TypeVar
 
 from ranzen import implements
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
+from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 __all__ = ["InAlgorithm", "InAlgorithmAsync"]
+
+_I = TypeVar("_I", bound="InAlgorithm")
 
 
 class InAlgorithm(Algorithm):
@@ -22,7 +24,7 @@ class InAlgorithm(Algorithm):
         self.__is_fairness_algo = is_fairness_algo
 
     @abstractmethod
-    def fit(self, train: DataTuple) -> InAlgorithm:
+    def fit(self: _I, train: DataTuple) -> _I:
         """Run Algorithm on the given data.
 
         Args:
@@ -66,12 +68,15 @@ class InAlgorithm(Algorithm):
         return self.__is_fairness_algo
 
 
-class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
-    """In-Algorithm that use a subprocess to run."""
+_IA = TypeVar("_IA", bound="InAlgorithmAsync")
+
+
+class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm):
+    """In-Algorithm that uses a subprocess to run."""
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithmAsync:
-        """Run Algorithm on the given data asynchronously.
+    def fit(self: _IA, train: DataTuple) -> _IA:
+        """Fit algorithm on the given data asynchronously.
 
         Args:
             train: training data
@@ -137,10 +142,10 @@ class InAlgorithmAsync(InAlgorithm, AlgorithmAsync):
 
     @abstractmethod
     def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        """The command that will run the script."""
+        """The command that will make the script fit."""
 
     @abstractmethod
     def _predict_script_command(
         self, model_path: Path, test_path: Path, pred_path: Path
     ) -> List[str]:
-        """The command that will run the script."""
+        """The command that will make the script predict."""

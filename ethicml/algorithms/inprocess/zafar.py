@@ -7,10 +7,12 @@ from typing import Any, ClassVar, Dict, List, Union
 from typing_extensions import Final
 
 import pandas as pd
+from ranzen import implements
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
+from .in_algorithm import InAlgorithm
 from .installed_model import InstalledModel
 
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
@@ -50,6 +52,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         with file_path.open("w") as out_file:
             json.dump(out, out_file)
 
+    @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         label_converter = LabelBinarizer()
         with TemporaryDirectory() as tmpdir:
@@ -68,6 +71,14 @@ class _ZafarAlgorithmBase(InstalledModel):
 
         predictions_correct = pd.Series([0 if x == -1 else 1 for x in predictions])
         return Prediction(hard=label_converter.post_only_labels(predictions_correct))
+
+    @implements(InAlgorithm)
+    def fit(self, train: DataTuple) -> "_ZafarAlgorithmBase":
+        raise NotImplementedError("Zafar doesn't have the fit/predict split yet.")
+
+    @implements(InAlgorithm)
+    def predict(self, test: TestTuple) -> Prediction:
+        raise NotImplementedError("Zafar doesn't have the fit/predict split yet.")
 
     @abstractmethod
     def _create_command_line(
@@ -95,6 +106,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
+    @implements(_ZafarAlgorithmBase)
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
@@ -108,6 +120,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT)
         self._c = c
 
+    @implements(_ZafarAlgorithmBase)
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
@@ -126,6 +139,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._mu = mu
         self._eps = eps
 
+    @implements(_ZafarAlgorithmBase)
     def _create_command_line(
         self, train_name: str, test_name: str, predictions_name: str
     ) -> List[str]:
