@@ -37,7 +37,7 @@ def fit(train: DataTuple, args):
             ExponentiatedGradient,
         )
     except ImportError as e:
-        raise RuntimeError("In order to use Agarwal, install fairlearn.") from e
+        raise RuntimeError("In order to use Agarwal, install fairlearn==0.4.6.") from e
 
     fairness_class: ConditionalSelectionRate
     if args.fairness == "DP":

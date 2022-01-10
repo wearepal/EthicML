@@ -5,7 +5,7 @@ from abc import ABC, ABCMeta
 from pathlib import Path
 from typing import Dict, List, Optional
 
-__all__ = ["Algorithm", "AlgorithmAsync"]
+__all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
 
 
 class Algorithm(ABC):
@@ -32,7 +32,7 @@ class Algorithm(ABC):
         return self.__seed
 
 
-class AlgorithmAsync(metaclass=ABCMeta):  # pylint: disable=too-few-public-methods
+class SubprocessAlgorithmMixin(metaclass=ABCMeta):  # pylint: disable=too-few-public-methods
     """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
 
     model_dir: Path

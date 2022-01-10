@@ -105,7 +105,8 @@ jobs:
       #----------------------------------------------
       - name: Set up Poetry cache for Python dependencies
         id: cached-poetry-dependencies
-        uses: actions/cache@v2
+        # uses: actions/cache@v2
+        uses: pat-s/always-upload-cache@v2
         with:
           path: .venv
           key: venvEM2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}

@@ -9,7 +9,7 @@ from typing import List, Optional, Tuple, TypeVar
 
 from ranzen import implements
 
-from ethicml.algorithms.algorithm_base import Algorithm, AlgorithmAsync
+from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, TestTuple
 
 __all__ = ["PreAlgorithm", "PreAlgorithmAsync"]
@@ -79,7 +79,7 @@ class PreAlgorithm(Algorithm):
         return self._out_size
 
 
-class PreAlgorithmAsync(PreAlgorithm, AlgorithmAsync):
+class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
     """Pre-Algorithm that can be run blocking and asynchronously."""
 
     @implements(PreAlgorithm)
