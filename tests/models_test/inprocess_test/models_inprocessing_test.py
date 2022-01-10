@@ -1,6 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import Dict, Generator, List, NamedTuple
+from typing import Dict, List, NamedTuple
 
 import pytest
 from pytest import approx
@@ -20,7 +20,6 @@ from ethicml import (
     CrossValidator,
     DataTuple,
     DPOracle,
-    Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
     Kamiran,
@@ -30,19 +29,13 @@ from ethicml import (
     Metric,
     Oracle,
     Prediction,
-    SoftPrediction,
     TrainTestPair,
-    ZafarAccuracy,
-    ZafarBaseline,
-    ZafarFairness,
     compas,
     evaluate_models_async,
     load_data,
-    query_dt,
     toy,
     train_test_split,
 )
-from ethicml.algorithms.inprocess.shared import flag_interface
 from tests.run_algorithm_test import count_true
 
 
@@ -86,9 +79,6 @@ INPROCESS_TESTS = [
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarAccuracy(), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarBaseline(), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarFairness(), num_pos=41),
 ]
 
 
@@ -165,18 +155,11 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert best_result.scores["CV absolute"] == approx(0.832, abs=0.001)
 
 
-@pytest.fixture(scope="module")
-def kamishima() -> Generator[Kamishima, None, None]:
-    kamishima_algo = Kamishima()
-    yield kamishima_algo
-    print("teardown Kamishima")
-    kamishima_algo.remove()
-
-
-def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
+@pytest.mark.slow
+def test_kamishima(toy_train_test: TrainTestPair):
     train, test = toy_train_test
 
-    model: InAlgorithm = kamishima
+    model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
     assert model.name == "Kamishima"
 
     assert model is not None
@@ -189,6 +172,9 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
     new_predictions: Prediction = another_model.fit(train).predict(test)
     assert count_true(new_predictions.hard.values == 1) == 42
     assert count_true(new_predictions.hard.values == 0) == 38
+
+    print("teardown Kamishima")
+    model.remove()  # delete the downloaded code
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):

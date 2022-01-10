@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Type
 
 import pytest
 from pytest import approx
@@ -9,7 +9,6 @@ from ethicml import (
     CrossValidator,
     CVResults,
     InAlgorithm,
-    InAlgorithmAsync,
     Prediction,
     TrainTestPair,
     ZafarAccuracy,
@@ -18,53 +17,37 @@ from ethicml import (
     ZafarEqOpp,
     ZafarFairness,
 )
+from tests.run_algorithm_test import count_true
 
 
-@pytest.fixture(scope="module")
-def zafar_models():
-    """Create and destroy Zafar models
-
-    Returns:
-        Tuple of three Zafar model classes
-    """
-    zafarAcc_algo = ZafarAccuracy
-    zafarBas_algo = ZafarBaseline
-    zafarFai_algo = ZafarFairness
-    yield (zafarAcc_algo, zafarBas_algo, zafarFai_algo)
-    print("teardown Zafar Accuracy")
-    zafarAcc_algo().remove()
-
-
-def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
+@pytest.mark.slow
+def test_zafar(toy_train_test: TrainTestPair) -> None:
     """
 
     Args:
-        zafarModels:
         toy_train_test:
     """
     train, test = toy_train_test
 
-    model: InAlgorithmAsync = zafar_models[0]()
+    model: InAlgorithm = ZafarAccuracy()
     assert model.name == "ZafarAccuracy, γ=0.5"
 
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 42
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     predictions = model.run(train, test)
     expected_num_pos = 42
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     hyperparams: Dict[str, List[float]] = {"gamma": [1, 1e-1, 1e-2]}
 
-    model = zafar_models[0]
-    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+    model_class: Type[InAlgorithm] = ZafarAccuracy
+    zafar_cv = CrossValidator(model_class, hyperparams, folds=3)
 
     assert zafar_cv is not None
 
@@ -78,44 +61,40 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert best_result.scores["Accuracy"] == approx(0.956, abs=1e-3)
     assert best_result.scores["CV absolute"] == approx(0.834, abs=1e-3)
 
-    model = zafar_models[1]()
+    model = ZafarBaseline()
     assert model.name == "ZafarBaseline"
 
     assert model is not None
 
     predictions = model.run(train, test)
     expected_num_pos = 40
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     predictions = model.run(train, test)
     expected_num_pos = 40
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
-    model = zafar_models[2]()
+    model = ZafarFairness()
     assert model.name == "ZafarFairness, c=0.001"
 
     assert model is not None
 
     predictions = model.run(train, test)
     expected_num_pos = 51
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     predictions = model.run(train, test)
     expected_num_pos = 51
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     hyperparams = {"c": [1, 1e-1, 1e-2]}
 
-    model = zafar_models[2]
-    zafar_cv = CrossValidator(model, hyperparams, folds=3)
+    model_class = ZafarFairness
+    zafar_cv = CrossValidator(model_class, hyperparams, folds=3)
 
     assert zafar_cv is not None
 
@@ -134,11 +113,14 @@ def test_zafar(zafar_models, toy_train_test: TrainTestPair) -> None:
     assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
 
     predictions = zafar_eq_opp.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 40
+    assert count_true(predictions.hard.values == 1) == 40
 
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
     assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
 
     predictions = zafar_eq_odds.run(train, test)
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 40
+    assert count_true(predictions.hard.values == 1) == 40
+
+    print("teardown Zafar")
+    ZafarBaseline().remove()
