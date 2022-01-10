@@ -183,12 +183,12 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima):
 
     predictions: Prediction = model.run(train, test)
     assert count_true(predictions.hard.values == 1) == 42
-    assert count_true(predictions.hard.values == 0) == 358
+    assert count_true(predictions.hard.values == 0) == 38
 
     another_model = Kamishima()
     new_predictions: Prediction = another_model.fit(train).predict(test)
     assert count_true(new_predictions.hard.values == 1) == 42
-    assert count_true(new_predictions.hard.values == 0) == 358
+    assert count_true(new_predictions.hard.values == 0) == 38
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
@@ -234,12 +234,15 @@ def test_threaded_agarwal():
         _name = "assert_result"
 
         def score(self, prediction, actual) -> float:
+            x = count_true(prediction.hard.values == 1)
+            y = count_true(prediction.hard.values == 0)
+            assert x == 41 and y == 39, str(x) + " " + str(y)
             return (
-                count_true(prediction.hard.values == 1) == 241
-                and count_true(prediction.hard.values == 0) == 159
+                count_true(prediction.hard.values == 1) == 41
+                and count_true(prediction.hard.values == 0) == 39
             )
 
     results = evaluate_models_async(
         datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
-    assert results["assert_result"].iloc[0] == 0.0
+    assert results["assert_result"].iloc[0] == 1.0
