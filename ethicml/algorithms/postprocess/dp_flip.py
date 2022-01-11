@@ -66,7 +66,7 @@ class DPFlip(PostAlgorithm):
 
         _y = preds.hard[preds.hard == pre_y_val]
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
-        idx_s_y = _y.index & _s.index
+        idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
         preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
