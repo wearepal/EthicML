@@ -1,6 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import Dict, List, NamedTuple
+from typing import Dict, Generator, List, NamedTuple
 
 import pytest
 from pytest import approx
@@ -155,8 +155,19 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert best_result.scores["CV absolute"] == approx(0.832, abs=0.001)
 
 
+@pytest.fixture(scope="session")
+def kamishima_teardown() -> Generator[None, None, None]:
+    """This fixtures tears down Kamishima after all tests have finished.
+
+    This has to be done with a fixture because otherwise it will not happen when the test fails.
+    """
+    yield
+    print("teardown Kamishima")
+    Kamishima().remove()  # delete the downloaded code
+
+
 @pytest.mark.slow
-def test_kamishima(toy_train_test: TrainTestPair):
+def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
     train, test = toy_train_test
 
     model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
@@ -172,9 +183,6 @@ def test_kamishima(toy_train_test: TrainTestPair):
     new_predictions: Prediction = another_model.fit(train).predict(test)
     assert count_true(new_predictions.hard.values == 1) == 42
     assert count_true(new_predictions.hard.values == 0) == 38
-
-    print("teardown Kamishima")
-    model.remove()  # delete the downloaded code
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):

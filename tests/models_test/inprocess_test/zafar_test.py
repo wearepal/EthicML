@@ -1,4 +1,4 @@
-from typing import Dict, List, Type
+from typing import Dict, Generator, List, Type
 
 import pytest
 from pytest import approx
@@ -20,8 +20,19 @@ from ethicml import (
 from tests.run_algorithm_test import count_true
 
 
+@pytest.fixture(scope="session")
+def zafar_teardown() -> Generator[None, None, None]:
+    """This fixtures tears down Zafar after all tests have finished.
+
+    This has to be done with a fixture because otherwise it will not happen when the test fails.
+    """
+    yield
+    print("teardown Zafar")
+    ZafarBaseline().remove()
+
+
 @pytest.mark.slow
-def test_zafar(toy_train_test: TrainTestPair) -> None:
+def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     """
 
     Args:
@@ -35,12 +46,12 @@ def test_zafar(toy_train_test: TrainTestPair) -> None:
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
-    expected_num_pos = 42
+    expected_num_pos = 41
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     predictions = model.run(train, test)
-    expected_num_pos = 42
+    expected_num_pos = 41
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
@@ -121,6 +132,3 @@ def test_zafar(toy_train_test: TrainTestPair) -> None:
 
     predictions = zafar_eq_odds.run(train, test)
     assert count_true(predictions.hard.values == 1) == 40
-
-    print("teardown Zafar")
-    ZafarBaseline().remove()
