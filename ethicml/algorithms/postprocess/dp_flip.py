@@ -2,6 +2,7 @@
 from typing import Tuple
 
 import numpy as np
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -65,11 +66,14 @@ class DPFlip(PostAlgorithm):
             num_to_flip = abs(num_to_flip)
 
         _y = preds.hard[preds.hard == pre_y_val]
+        assert len(_y) > 0
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
+        assert len(_s) > 0
         idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
-        preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
+        update = pd.Series({idx: post_y_val for idx in idxs[:num_to_flip]}, dtype=preds.hard.dtype)
+        preds.hard.update(update)
         return preds
 
     @staticmethod
@@ -79,10 +83,10 @@ class DPFlip(PostAlgorithm):
         s_0 = test.s[test.s[test.s.columns[0]] == 0]
         s_1 = test.s[test.s[test.s.columns[0]] == 1]
         # Naming is nSY
-        n00 = preds.hard[(s_0.index) & (y_0.index)].count()
-        n01 = preds.hard[(s_0.index) & (y_1.index)].count()
-        n10 = preds.hard[(s_1.index) & (y_0.index)].count()
-        n11 = preds.hard[(s_1.index) & (y_1.index)].count()
+        n00 = preds.hard[s_0.index.intersection(y_0.index)].count()
+        n01 = preds.hard[s_0.index.intersection(y_1.index)].count()
+        n10 = preds.hard[s_1.index.intersection(y_0.index)].count()
+        n11 = preds.hard[s_1.index.intersection(y_1.index)].count()
 
         a = (((n00 + n01) * n11) - ((n10 + n11) * n01)) / (n00 + n01)
         b = (n10 + n11) / (n00 + n01)

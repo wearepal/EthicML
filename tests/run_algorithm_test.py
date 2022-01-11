@@ -3,13 +3,12 @@ import os
 from pathlib import Path
 from typing import List
 
-import numpy as np  # pylint: disable=unused-import  # import needed for mypy
+import numpy as np
 import pandas as pd
 import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
-from ethicml.evaluators import parallelism
 
 
 def count_true(mask: np.ndarray) -> int:
@@ -26,6 +25,8 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_test: em.TrainTestPair):
     """Test run parallel."""
+    from ethicml.evaluators import parallelism  # this import requires ray, so do it only on demand
+
     data0 = toy_train_test
     data1 = toy_train_test
     result = parallelism.run_in_parallel(
