@@ -48,22 +48,22 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir="/tmp"), num_pos=45),
-    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir="/tmp", fairness="EqOd"), num_pos=44),
-    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir="/tmp", classifier="SVM"), num_pos=45),
+    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
+    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
+    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
     InprocessTest(
         name="Agarwal, SVM, DP",
-        model=Agarwal(dir="/tmp", classifier="SVM", kernel="linear"),
+        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
         num_pos=42,
     ),
     InprocessTest(
         name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir="/tmp", classifier="SVM", fairness="EqOd"),
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
         num_pos=45,
     ),
     InprocessTest(
         name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir="/tmp", classifier="SVM", fairness="EqOd", kernel="linear"),
+        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
         num_pos=42,
     ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
@@ -222,7 +222,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(dir="/tmp", classifier="SVM", fairness="EqOd")]
+    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
 
     class AssertResult(Metric):
         _name = "assert_result"
