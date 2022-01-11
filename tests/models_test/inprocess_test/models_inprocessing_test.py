@@ -220,6 +220,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
+@pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
