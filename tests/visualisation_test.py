@@ -30,6 +30,7 @@ from ethicml import (
 )
 
 
+@pytest.mark.slow
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
 def test_plot_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
@@ -52,6 +53,7 @@ def test_joint_plot(toy_train_test: TrainTestPair):
     save_jointplot(train, "./plots/joint.png")
 
 
+@pytest.mark.slow
 @pytest.mark.usefixtures("plot_cleanup")
 def test_multijoint_plot(toy_train_test: TrainTestPair):
     """Test joint plot."""

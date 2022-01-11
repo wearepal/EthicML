@@ -181,9 +181,10 @@ def test_run_alg_suite_wrong_metrics():
         )
 
 
+@pytest.mark.slow
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
-    """Test run alg suite no pipeline."""
+    """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
