@@ -1664,7 +1664,7 @@ in its own venv and makes everyone happy.</p>
 </table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.installed_model.InstalledModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_poetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.installed_model.InstalledModel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>The model that does the magic.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
@@ -1678,6 +1678,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> (<em>bool</em>) – if True, will try to use poetry instead of pipenv</p></li>
 </ul>
 </dd>
 </dl>
@@ -1974,6 +1975,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 <li><p><strong>eta</strong> (<em>float</em>) – </p></li>
 </ul>
 </dd>
@@ -3202,6 +3204,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 <li><p><strong>gamma</strong> (<em>float</em>) – </p></li>
 </ul>
 </dd>
@@ -3324,6 +3327,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -3448,6 +3452,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 <li><p><strong>tau</strong> (<em>float</em>) – </p></li>
 <li><p><strong>mu</strong> (<em>float</em>) – </p></li>
 <li><p><strong>eps</strong> (<em>float</em>) – </p></li>
@@ -3572,6 +3577,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 <li><p><strong>tau</strong> (<em>float</em>) – </p></li>
 <li><p><strong>mu</strong> (<em>float</em>) – </p></li>
 <li><p><strong>eps</strong> (<em>float</em>) – </p></li>
@@ -3696,6 +3702,7 @@ simply the last part of the repository URL)</p></li>
 <li><p><strong>url</strong> – (optional) URL of the repository</p></li>
 <li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
 <li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
+<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
 <li><p><strong>c</strong> (<em>float</em>) – </p></li>
 </ul>
 </dd>
