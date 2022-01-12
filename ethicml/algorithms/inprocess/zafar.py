@@ -37,6 +37,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             use_poetry=True,
         )
         self._sub_dir = sub_dir
+        self._fit_params: Optional[FitParams] = None
 
     @staticmethod
     def _create_file_in_zafar_format(
