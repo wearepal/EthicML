@@ -50,6 +50,11 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
+    predictions = model.fit(train).predict(test)
+    expected_num_pos = 41
+    assert count_true(predictions.hard.values == 1) == expected_num_pos
+    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+
     predictions = model.run(train, test)
     expected_num_pos = 41
     assert count_true(predictions.hard.values == 1) == expected_num_pos
@@ -82,7 +87,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
-    predictions = model.run(train, test)
+    predictions = model.fit(train).predict(test)
     expected_num_pos = 40
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
@@ -97,7 +102,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
-    predictions = model.run(train, test)
+    predictions = model.fit(train).predict(test)
     expected_num_pos = 51
     assert count_true(predictions.hard.values == 1) == expected_num_pos
     assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
@@ -126,9 +131,15 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     predictions = zafar_eq_opp.run(train, test)
     assert count_true(predictions.hard.values == 1) == 40
 
+    predictions = zafar_eq_opp.fit(train).predict(test)
+    assert count_true(predictions.hard.values == 1) == 40
+
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
     assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
 
     predictions = zafar_eq_odds.run(train, test)
+    assert count_true(predictions.hard.values == 1) == 40
+
+    predictions = zafar_eq_odds.fit(train).predict(test)
     assert count_true(predictions.hard.values == 1) == 40

@@ -3,7 +3,7 @@ import json
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, Dict, List, Union
+from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 from typing_extensions import Final
 
 import pandas as pd
@@ -18,10 +18,13 @@ from .installed_model import InstalledModel
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
 
 
-SUB_DIR_IMPACT = Path(".") / "disparate_impact" / "run-classifier"
-SUB_DIR_MISTREAT = Path(".") / "disparate_mistreatment" / "run_classifier"
+SUB_DIR_IMPACT: Final = Path(".") / "disparate_impact" / "run-classifier"
+SUB_DIR_MISTREAT: Final = Path(".") / "disparate_mistreatment" / "run_classifier"
 
-MAIN: Final = "main.py"
+
+class FitParams(NamedTuple):
+    model_path: Path
+    label_converter: LabelBinarizer
 
 
 class _ZafarAlgorithmBase(InstalledModel):
@@ -31,6 +34,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             dir_name="zafar",
             url="https://github.com/predictive-analytics-lab/fair-classification.git",
             top_dir="fair-classification",
+            use_poetry=True,
         )
         self._sub_dir = sub_dir
 
@@ -54,37 +58,56 @@ class _ZafarAlgorithmBase(InstalledModel):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        label_converter = LabelBinarizer()
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            train_path = tmp_path / "train.json"
-            test_path = tmp_path / "test.json"
-            self._create_file_in_zafar_format(train, train_path, label_converter)
-            self._create_file_in_zafar_format(test, test_path, label_converter)
-            predictions_path = tmp_path / "predictions.json"
-
-            cmd = self._create_command_line(str(train_path), str(test_path), str(predictions_path))
-            working_dir = self._code_path.resolve() / self._sub_dir
-            self._call_script(cmd, cwd=working_dir)
-            predictions = predictions_path.open(encoding="utf-8").read()
-            predictions = json.loads(predictions)
-
-        predictions_correct = pd.Series([0 if x == -1 else 1 for x in predictions])
-        return Prediction(hard=label_converter.post_only_labels(predictions_correct))
+            fit_params = self._fit(train, tmp_path)
+            return self._predict(test, tmp_path, fit_params)
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> "_ZafarAlgorithmBase":
-        raise NotImplementedError("Zafar doesn't have the fit/predict split yet.")
+        with TemporaryDirectory() as tmpdir:
+            self._fit_params = self._fit(train, tmp_path=Path(tmpdir), model_dir=self._code_path)
+        return self
 
     @implements(InAlgorithm)
     def predict(self, test: TestTuple) -> Prediction:
-        raise NotImplementedError("Zafar doesn't have the fit/predict split yet.")
+        assert self._fit_params is not None, "call fit() first"
+        with TemporaryDirectory() as tmpdir:
+            return self._predict(test, tmp_path=Path(tmpdir), fit_params=self._fit_params)
+
+    def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Optional[Path] = None) -> FitParams:
+        model_path = (model_dir.resolve() if model_dir is not None else tmp_path) / "model.npy"
+        label_converter = LabelBinarizer()
+        train_path = tmp_path / "train.json"
+        self._create_file_in_zafar_format(train, train_path, label_converter)
+
+        cmd = self._get_fit_cmd(str(train_path), str(model_path))
+        working_dir = self._code_path.resolve() / self._sub_dir
+        self._call_script(cmd, cwd=working_dir)
+
+        return FitParams(model_path, label_converter)
+
+    def _predict(self, test: TestTuple, tmp_path: Path, fit_params: FitParams) -> Prediction:
+        test_path = tmp_path / "test.json"
+        self._create_file_in_zafar_format(test, test_path, fit_params.label_converter)
+        predictions_path = tmp_path / "predictions.json"
+        cmd = self._get_predict_cmd(
+            str(test_path), str(fit_params.model_path), str(predictions_path)
+        )
+        working_dir = self._code_path.resolve() / self._sub_dir
+        self._call_script(cmd, cwd=working_dir)
+        predictions = predictions_path.open().read()
+        predictions = json.loads(predictions)
+
+        predictions_correct = pd.Series([0 if x == -1 else 1 for x in predictions])
+        return Prediction(hard=fit_params.label_converter.post_only_labels(predictions_correct))
 
     @abstractmethod
-    def _create_command_line(
-        self, train_name: str, test_name: str, predictions_name: str
-    ) -> List[str]:
+    def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
         pass
+
+    def _get_predict_cmd(self, test_name: str, model_path: str, output_file: str) -> List[str]:
+        return ["predict.py", test_name, model_path, output_file]
 
 
 class ZafarBaseline(_ZafarAlgorithmBase):
@@ -93,10 +116,9 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def __init__(self) -> None:
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
-    def _create_command_line(
-        self, train_name: str, test_name: str, predictions_name: str
-    ) -> List[str]:
-        return [MAIN, train_name, test_name, predictions_name, "baseline", "0"]
+    @implements(_ZafarAlgorithmBase)
+    def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
+        return ["fit.py", train_name, model_path, "baseline", "0"]
 
 
 class ZafarAccuracy(_ZafarAlgorithmBase):
@@ -107,10 +129,8 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
         self.gamma = gamma
 
     @implements(_ZafarAlgorithmBase)
-    def _create_command_line(
-        self, train_name: str, test_name: str, predictions_name: str
-    ) -> List[str]:
-        return [MAIN, train_name, test_name, predictions_name, "gamma", str(self.gamma)]
+    def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
+        return ["fit.py", train_name, model_path, "gamma", str(self.gamma)]
 
 
 class ZafarFairness(_ZafarAlgorithmBase):
@@ -121,10 +141,8 @@ class ZafarFairness(_ZafarAlgorithmBase):
         self._c = c
 
     @implements(_ZafarAlgorithmBase)
-    def _create_command_line(
-        self, train_name: str, test_name: str, predictions_name: str
-    ) -> List[str]:
-        return [MAIN, train_name, test_name, predictions_name, "c", str(self._c)]
+    def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
+        return ["fit.py", train_name, model_path, "c", str(self._c)]
 
 
 class ZafarEqOpp(_ZafarAlgorithmBase):
@@ -140,14 +158,11 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._eps = eps
 
     @implements(_ZafarAlgorithmBase)
-    def _create_command_line(
-        self, train_name: str, test_name: str, predictions_name: str
-    ) -> List[str]:
+    def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
         return [
-            MAIN,
+            "fit.py",
             train_name,
-            test_name,
-            predictions_name,
+            model_path,
             self._mode,
             str(self._tau),
             str(self._mu),
