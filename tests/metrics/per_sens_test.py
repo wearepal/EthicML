@@ -1,12 +1,15 @@
 """Test the 'per sensitive attribute' evaluations."""
 from typing import Dict, NamedTuple, Tuple
 
+import numpy as np
+import pandas as pd
 import pytest
 from pytest import approx
 
 from ethicml import (
     LR,
     SVM,
+    TPR,
     Accuracy,
     Dataset,
     DataTuple,
@@ -35,6 +38,22 @@ class PerSensMetricTest(NamedTuple):
     classifier: InAlgorithm
     metric: Metric
     expected_values: Dict[str, float]
+
+
+def test_issue_431():
+    """This issue highlighted that error would be raised due to not all values existing in subsets of the data."""
+    x = pd.DataFrame(np.random.randn(100), columns=["x"])
+    s = pd.DataFrame(np.random.randn(100), columns=["s"])
+    y = pd.DataFrame(np.random.randint(0, 5, 100), columns=["y"])
+    data = DataTuple(x=x, s=s, y=y)
+    train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
+    train, test = train_test
+    model: InAlgorithm = LR()
+    predictions: Prediction = model.run(train, test)
+    acc_per_sens = metric_per_sensitive_attribute(
+        predictions, test, TPR(pos_class=1, labels=list(range(y.nunique()[0])))
+    )
+    print(acc_per_sens)
 
 
 PER_SENS = [

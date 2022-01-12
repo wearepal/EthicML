@@ -5,17 +5,19 @@ from ranzen import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .confusion_matrix import confusion_matrix
-from .metric import Metric
+from .metric import CfmMetric, Metric
 
 
-class BalancedAccuracy(Metric):
+class BalancedAccuracy(CfmMetric):
     """Accuracy that is balanced with respect to the class labels."""
 
     _name: str = "Balanced Accuracy"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        t_neg, f_pos, f_neg, t_pos = confusion_matrix(prediction, actual, self.positive_class)
+        t_neg, f_pos, f_neg, t_pos = confusion_matrix(
+            prediction=prediction, actual=actual, pos_cls=self.positive_class, labels=self.labels
+        )
         tpr = t_pos / (t_pos + f_neg)
         tnr = t_neg / (t_neg + f_pos)
         return 0.5 * (tpr + tnr)
