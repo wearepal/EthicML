@@ -428,15 +428,16 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.BalancedAccuracy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BalancedAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BalancedAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>Accuracy that is balanced with respect to the class labels.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -566,15 +567,16 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.FNR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FNR" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FNR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>False negative rate.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -613,15 +615,16 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.FPR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FPR" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FPR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>False positive rate.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -817,15 +820,16 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.NPV">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>Negative predictive value.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -864,15 +868,16 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.PPV">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>Positive predictive value.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -911,15 +916,16 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbNeg">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbNeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbNeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>Probability of negative prediction.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -1005,15 +1011,16 @@ set self.__traceback__ to tb and return self.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbPos">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbPos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbPos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>Probability of positive prediction.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -1149,15 +1156,16 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.TNR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>True negative rate.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -1196,15 +1204,16 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.TPR">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
 <p>True positive rate.</p>
+<p>Confusion Matrix based Metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – The class to treat as being “positive”</p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – List of possible target values. If <cite>None</cite> is provided then this is inferred from the data when run.</p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py property">
@@ -1338,7 +1347,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.metrics.confusion_matrix">
-<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_cls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.confusion_matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.confusion_matrix" title="Permalink to this definition"></a></dt>
 <dd><p>Apply sci-kit learn’s confusion matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1346,6 +1355,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
 <li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>pos_cls</strong> (<em>int</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
