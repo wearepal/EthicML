@@ -1,6 +1,7 @@
 """Abstract Base Class of all metrics in the framework."""
 
 from abc import ABC, abstractmethod
+from typing import List, Optional
 
 from ethicml.utility import DataTuple, Prediction
 
@@ -37,3 +38,17 @@ class Metric(ABC):
     def apply_per_sensitive(self) -> bool:
         """Whether the metric can be applied per sensitive attribute."""
         return True
+
+
+class CfmMetric(Metric):
+    """Confusion Matrix based Metric."""
+
+    def __init__(self, pos_class: int = 1, labels: Optional[List[int]] = None):
+        """Confusion Matrix based Metrics.
+
+        Args:
+            pos_class: The class to treat as being "positive"
+            labels: List of possible target values. If `None` is provided then this is inferred from the data when run.
+        """
+        super().__init__(pos_class=pos_class)
+        self.labels = labels

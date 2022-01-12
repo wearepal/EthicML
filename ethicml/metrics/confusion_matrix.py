@@ -1,6 +1,6 @@
 """Applies sci-kit learn's confusion matrix."""
 
-from typing import Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
@@ -13,19 +13,19 @@ class LabelOutOfBounds(Exception):
 
 
 def confusion_matrix(
-    prediction: Prediction, actual: DataTuple, pos_cls: int
+    prediction: Prediction, actual: DataTuple, pos_cls: int, labels: Optional[List[int]] = None
 ) -> Tuple[int, int, int, int]:
     """Apply sci-kit learn's confusion matrix."""
     actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[type-var]
-    labels: np.ndarray = np.unique(actual_y)
-    if labels.size == 1:
-        labels = np.array([0, 1], dtype=np.int32)
-    conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=labels)
+    _labels: np.ndarray = np.unique(actual_y) if labels is None else np.array(labels)
+    if _labels.size == 1:
+        _labels = np.array([0, 1], dtype=np.int32)
+    conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=_labels)
 
-    if pos_cls not in labels:
+    if pos_cls not in _labels:
         raise LabelOutOfBounds("Positive class specified must exist in the test set")
 
-    tp_idx: np.int64 = (labels == pos_cls).nonzero()[0].item()
+    tp_idx: np.int64 = (_labels == pos_cls).nonzero()[0].item()
     tp_idx = int(tp_idx)
 
     true_pos = conf_matr[tp_idx, tp_idx]
