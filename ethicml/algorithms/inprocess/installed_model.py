@@ -31,6 +31,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         url: Optional[str] = None,
         executable: Optional[str] = None,
         seed: int = 888,
+        use_poetry: bool = False,
     ):
         """Download code from given URL and create Pip environment with Pipfile found in the code.
 
@@ -42,6 +43,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             url: (optional) URL of the repository
             executable: (optional) path to a Python executable
             seed: Random seed to use for reproducibility
+            use_poetry: if True, will try to use poetry instead of pipenv
         """
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
         self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
@@ -53,7 +55,9 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
 
         if executable is None:
             # create virtual environment
-            self._create_venv()
+            del use_poetry  # see https://github.com/python-poetry/poetry/issues/4055
+            # self._create_venv(use_poetry=use_poetry)
+            self._create_venv(use_poetry=False)
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
@@ -74,17 +78,26 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             self._store_dir.mkdir()
             git.Git(self._store_dir).clone(url)
 
-    def _create_venv(self) -> None:
+    def _create_venv(self, use_poetry: bool) -> None:
         """Creates a venv based on the Pipfile in the repository."""
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
+            if use_poetry and shutil.which("poetry") is not None:  # use poetry instead of pipenv
+                environ = os.environ.copy()
+                environ["POETRY_VIRTUALENVS_CREATE"] = "true"
+                environ["POETRY_VIRTUALENVS_IN_PROJECT"] = "true"
+                subprocess.run(
+                    ["poetry", "install", "--no-root"], env=environ, check=True, cwd=self._code_path
+                )
+                return
+
             environ = os.environ.copy()
             environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
             environ["PIPENV_VENV_IN_PROJECT"] = "true"
             environ["PIPENV_YES"] = "true"
             environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
-            subprocess.check_call([sys.executable, "-m", "pipenv", "install"], env=environ)
+            subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
 
     def remove(self) -> None:
         """Removes the directory that we created in _clone_directory()."""
