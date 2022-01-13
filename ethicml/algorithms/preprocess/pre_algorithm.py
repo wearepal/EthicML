@@ -32,15 +32,14 @@ class PreAlgorithm(Algorithm):
         self._out_size = out_size
 
     @abstractmethod
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple) -> PreAlgorithm:
         """Generate fair features with the given data.
 
         Args:
             train: training data
-            test: test data
 
         Returns:
-            a tuple of the pre-processed training data and the test data
+            a trained model
         """
 
     @abstractmethod
@@ -48,11 +47,10 @@ class PreAlgorithm(Algorithm):
         """Generate fair features with the given data.
 
         Args:
-            train: training data
             test: test data
 
         Returns:
-            a tuple of the pre-processed training data and the test data
+            transformed test data
         """
 
     @abstractmethod

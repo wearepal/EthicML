@@ -22,6 +22,7 @@ from ethicml import (
     TrainTestPair,
     Upsampler,
     Zemel,
+    ZemelAif,
 )
 
 
@@ -34,6 +35,13 @@ class PreprocessTest(NamedTuple):
 
 
 METHOD_LIST = [
+    PreprocessTest(
+        model=ZemelAif(
+            dir='/tmp',
+        ),
+        name="Zemel",
+        num_pos=5,
+    ),
     PreprocessTest(
         model=VFAE(
             dir='/tmp',

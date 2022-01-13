@@ -23,6 +23,7 @@ from .algorithms.preprocess.pre_algorithm import *
 from .algorithms.preprocess.upsampler import *
 from .algorithms.preprocess.vfae import *
 from .algorithms.preprocess.zemel import *
+from .algorithms.preprocess.zemel_aif import *
 from .common import *
 from .data.dataset import *
 from .data.load import *
