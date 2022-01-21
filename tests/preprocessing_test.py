@@ -2,13 +2,12 @@
 import math
 from typing import Tuple
 
+import numpy as np
 import pandas as pd
 from pytest import approx
 
 import ethicml as em
 from ethicml import DataTuple, ProportionalSplit
-
-from .run_algorithm_test import count_true
 
 
 def test_train_test_split():
@@ -85,29 +84,33 @@ def test_prop_train_test_split():
     assert test.s.shape[0] == NUM_SAMPLES - len_default
 
     # assert that the proportion of s=0 to s=1 has remained the same (and also test for y=0/y=1)
-    assert count_true(train.s.to_numpy() == 0) == round(0.8 * count_true(data.s.to_numpy() == 0))
-    assert count_true(train.y.to_numpy() == 0) == round(0.8 * count_true(data.y.to_numpy() == 0))
+    assert np.count_nonzero(train.s.to_numpy() == 0) == round(
+        0.8 * np.count_nonzero(data.s.to_numpy() == 0)
+    )
+    assert np.count_nonzero(train.y.to_numpy() == 0) == round(
+        0.8 * np.count_nonzero(data.y.to_numpy() == 0)
+    )
 
     len_0_9 = math.floor((NUM_SAMPLES / 100) * 90)
     train, test, _ = ProportionalSplit(train_percentage=0.9)(data, split_id=0)
     assert train.s.shape[0] == len_0_9
     assert test.s.shape[0] == NUM_SAMPLES - len_0_9
-    assert count_true(train.s.to_numpy() == 0) == approx(
-        round(0.9 * count_true(data.s.to_numpy() == 0)), abs=1
+    assert np.count_nonzero(train.s.to_numpy() == 0) == approx(
+        round(0.9 * np.count_nonzero(data.s.to_numpy() == 0)), abs=1
     )
-    assert count_true(train.y.to_numpy() == 0) == approx(
-        round(0.9 * count_true(data.y.to_numpy() == 0)), abs=1
+    assert np.count_nonzero(train.y.to_numpy() == 0) == approx(
+        round(0.9 * np.count_nonzero(data.y.to_numpy() == 0)), abs=1
     )
 
     len_0_7 = math.floor((NUM_SAMPLES / 100) * 70)
     train, test, _ = ProportionalSplit(train_percentage=0.7)(data, split_id=0)
     assert train.s.shape[0] == len_0_7
     assert test.s.shape[0] == NUM_SAMPLES - len_0_7
-    assert count_true(train.s.to_numpy() == 0) == approx(
-        round(0.7 * count_true(data.s.to_numpy() == 0)), abs=1
+    assert np.count_nonzero(train.s.to_numpy() == 0) == approx(
+        round(0.7 * np.count_nonzero(data.s.to_numpy() == 0)), abs=1
     )
-    assert count_true(train.y.to_numpy() == 0) == approx(
-        round(0.7 * count_true(data.y.to_numpy() == 0)), abs=1
+    assert np.count_nonzero(train.y.to_numpy() == 0) == approx(
+        round(0.7 * np.count_nonzero(data.y.to_numpy() == 0)), abs=1
     )
 
     len_0_5 = math.floor((NUM_SAMPLES / 100) * 50)
@@ -243,7 +246,7 @@ def test_biased_split():
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
-    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
 
     # ================================= mixing factor = 0.5 =======================================
@@ -277,7 +280,7 @@ def test_biased_split():
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
-    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
 
     # ================================== mixing factor = 1 ========================================
@@ -307,7 +310,7 @@ def test_biased_split():
     assert debiased.s.shape == (374, 1)
     assert debiased.y.shape == (374, 1)
     # for the debiased subset, s=y half of the time
-    count = count_true(debiased.s.to_numpy() == debiased.y.to_numpy())
+    count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
 
 
@@ -355,8 +358,8 @@ def test_balanced_test_split(simple_data: DataTuple):
     train, test, split_info = em.BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
     # check that the split for training set was proportional
-    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
-    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
+    assert np.count_nonzero(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert np.count_nonzero(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
     assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 150)
@@ -376,8 +379,8 @@ def test_balanced_test_split_by_s(simple_data: DataTuple):
     )(simple_data)
 
     # check that the split for training set was proportional
-    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
-    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
+    assert np.count_nonzero(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert np.count_nonzero(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
     assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)
@@ -397,8 +400,8 @@ def test_balanced_test_split_by_s_and_y(simple_data: DataTuple):
     )(simple_data)
 
     # check that the split for training set was proportional
-    assert count_true(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
-    assert count_true(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
+    assert np.count_nonzero(train.s.to_numpy() == 0) == approx(round(train_percentage * 250), abs=1)
+    assert np.count_nonzero(train.y.to_numpy() == 0) == approx(round(train_percentage * 400), abs=1)
 
     # check that the test set is balanced
     assert len(em.query_dt(test, "s == 0 & y == 0")) == round((1 - train_percentage) * 100)

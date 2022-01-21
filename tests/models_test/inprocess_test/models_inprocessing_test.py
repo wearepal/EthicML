@@ -2,6 +2,7 @@
 from pathlib import Path
 from typing import Dict, Generator, List, NamedTuple
 
+import numpy as np
 import pytest
 from pytest import approx
 from ranzen import implements
@@ -36,7 +37,6 @@ from ethicml import (
     toy,
     train_test_split,
 )
-from tests.run_algorithm_test import count_true
 
 
 class InprocessTest(NamedTuple):
@@ -92,8 +92,8 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
@@ -109,8 +109,8 @@ def test_inprocess_sep_train_pred(
 
     model = model.fit(train)
     predictions: Prediction = model.predict(test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
@@ -176,13 +176,13 @@ def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> N
     assert model is not None
 
     predictions: Prediction = model.run(train, test)
-    assert count_true(predictions.hard.values == 1) == 42
-    assert count_true(predictions.hard.values == 0) == 38
+    assert np.count_nonzero(predictions.hard.values == 1) == 42
+    assert np.count_nonzero(predictions.hard.values == 0) == 38
 
     another_model = Kamishima()
     new_predictions: Prediction = another_model.fit(train).predict(test)
-    assert count_true(new_predictions.hard.values == 1) == 42
-    assert count_true(new_predictions.hard.values == 0) == 38
+    assert np.count_nonzero(new_predictions.hard.values == 1) == 42
+    assert np.count_nonzero(new_predictions.hard.values == 0) == 38
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
@@ -216,8 +216,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 44
-    assert count_true(predictions.hard.values == 1) == expected_num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
 @pytest.mark.slow
@@ -230,8 +230,8 @@ def test_threaded_agarwal():
 
         def score(self, prediction, actual) -> float:
             return (
-                count_true(prediction.hard.values == 1) == 45
-                and count_true(prediction.hard.values == 0) == 35
+                np.count_nonzero(prediction.hard.values == 1) == 45
+                and np.count_nonzero(prediction.hard.values == 0) == 35
             )
 
     results = evaluate_models_async(
