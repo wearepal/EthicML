@@ -1,13 +1,13 @@
 """EthicML tests."""
 from typing import NamedTuple
 
+import numpy as np
 import pytest
 
 import ethicml as em
 from ethicml import LR, Hardt, InAlgorithm, PostAlgorithm, Prediction, ProbPos
 from ethicml.algorithms.postprocess.dp_flip import DPFlip
 from ethicml.utility.data_structures import TrainValPair
-from tests.run_algorithm_test import count_true
 
 
 class PostprocessTest(NamedTuple):
@@ -41,13 +41,13 @@ def test_post(
     # seperate out predictions on train set and predictions on test set
     pred_train = predictions.hard.iloc[: train.y.shape[0]]
     pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
-    assert count_true(pred_test.values == 1) == 44
-    assert count_true(pred_test.values == 0) == 36
+    assert np.count_nonzero(pred_test.values == 1) == 44
+    assert np.count_nonzero(pred_test.values == 0) == 36
 
     assert post_model.name == name
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == num_pos
-    assert count_true(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
+    assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
     diffs = em.diff_per_sensitive_attribute(
         em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
@@ -79,14 +79,14 @@ def test_post_sep_fit_pred(
     # seperate out predictions on train set and predictions on test set
     pred_train = predictions.hard.iloc[: train.y.shape[0]]
     pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
-    assert count_true(pred_test.values == 1) == 44
-    assert count_true(pred_test.values == 0) == 36
+    assert np.count_nonzero(pred_test.values == 1) == 44
+    assert np.count_nonzero(pred_test.values == 0) == 36
 
     assert post_model.name == name
     fair_model = post_model.fit(Prediction(pred_train), train)
     fair_preds = fair_model.predict(Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == num_pos
-    assert count_true(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
+    assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
     diffs = em.diff_per_sensitive_attribute(
         em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
@@ -111,14 +111,14 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     # seperate out predictions on train set and predictions on test set
     pred_train = predictions.hard.iloc[: train.y.shape[0]]
     pred_test = predictions.hard.iloc[train.y.shape[0] :].reset_index(drop=True)
-    assert count_true(pred_test.values == 1) == 44
-    assert count_true(pred_test.values == 0) == 36
+    assert np.count_nonzero(pred_test.values == 1) == 44
+    assert np.count_nonzero(pred_test.values == 0) == 36
 
     post_model: PostAlgorithm = DPFlip()
     assert post_model.name == "DemPar. Post Process"
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
-    assert count_true(fair_preds.hard.values == 1) == 57
-    assert count_true(fair_preds.hard.values == 0) == 23
+    assert np.count_nonzero(fair_preds.hard.values == 1) == 57
+    assert np.count_nonzero(fair_preds.hard.values == 0) == 23
     diffs = em.diff_per_sensitive_attribute(
         em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )

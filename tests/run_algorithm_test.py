@@ -11,11 +11,6 @@ from sklearn.preprocessing import StandardScaler
 import ethicml as em
 
 
-def count_true(mask: np.ndarray) -> int:
-    """Count the number of elements that are True."""
-    return mask.nonzero()[0].shape[0]
-
-
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
     """Test whether we can load test data."""
     train, test = toy_train_test
@@ -35,20 +30,20 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
         num_cpus=2,
     )
     # LR
-    assert count_true(result[0][0].hard.values == 1) == 44
-    assert count_true(result[0][0].hard.values == 0) == 36
-    assert count_true(result[0][1].hard.values == 1) == 44
-    assert count_true(result[0][1].hard.values == 0) == 36
+    assert np.count_nonzero(result[0][0].hard.values == 1) == 44
+    assert np.count_nonzero(result[0][0].hard.values == 0) == 36
+    assert np.count_nonzero(result[0][1].hard.values == 1) == 44
+    assert np.count_nonzero(result[0][1].hard.values == 0) == 36
     # SVM
-    assert count_true(result[1][0].hard.values == 1) == 45
-    assert count_true(result[1][0].hard.values == 0) == 35
-    assert count_true(result[1][1].hard.values == 1) == 45
-    assert count_true(result[1][1].hard.values == 0) == 35
+    assert np.count_nonzero(result[1][0].hard.values == 1) == 45
+    assert np.count_nonzero(result[1][0].hard.values == 0) == 35
+    assert np.count_nonzero(result[1][1].hard.values == 1) == 45
+    assert np.count_nonzero(result[1][1].hard.values == 0) == 35
     # Majority
-    assert count_true(result[2][0].hard.values == 1) == 80
-    assert count_true(result[2][0].hard.values == 0) == 0
-    assert count_true(result[2][1].hard.values == 1) == 80
-    assert count_true(result[2][1].hard.values == 0) == 0
+    assert np.count_nonzero(result[2][0].hard.values == 1) == 80
+    assert np.count_nonzero(result[2][0].hard.values == 0) == 0
+    assert np.count_nonzero(result[2][1].hard.values == 1) == 80
+    assert np.count_nonzero(result[2][1].hard.values == 0) == 0
 
 
 @pytest.mark.usefixtures("results_cleanup")
