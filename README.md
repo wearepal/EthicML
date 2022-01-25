@@ -1,4 +1,4 @@
-# EthicML
+# EthicML: A featureful framework for developing fair algorithms
 
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![](https://github.com/predictive-analytics-lab/EthicML/workflows/EthicML%20CI/badge.svg)
