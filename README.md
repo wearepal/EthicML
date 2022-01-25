@@ -52,7 +52,7 @@ because there are many different versions for different systems.
 
 ## Documentation
 
-The documentation can be found here: https://predictive-analytics-lab.com/EthicML/
+The documentation can be found here: https://wearepal.ai/EthicML/
 
 ## Design Principles
 
