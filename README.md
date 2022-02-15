@@ -56,6 +56,14 @@ The documentation can be found here: https://wearepal.ai/EthicML/
 
 ## Design Principles
 
+```mermaid
+flowchart TD
+    A(Datasets) -- load --> B(Date tuples);
+    B --> C[evaluate_models];
+    G(Algorithms) --> C;
+    C --> D(Metrics);
+```
+
 Keep things simple.
 
 ### The Triplet
