@@ -58,7 +58,7 @@ The documentation can be found here: https://wearepal.ai/EthicML/
 
 ```mermaid
 flowchart TD
-    A(Datasets) -- load --> B(Date tuples);
+    A(Datasets) -- load --> B(Data tuples);
     B --> C[evaluate_models];
     G(Algorithms) --> C;
     C --> D(Metrics);
