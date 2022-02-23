@@ -27,8 +27,8 @@ def hsic(
     def exp_c(x: np.ndarray) -> np.ndarray:
         return np.expand_dims(x, 1)
 
-    gamma_first = 1.0 / (2 * sigma_first ** 2)
-    gamma_second = 1.0 / (2 * sigma_second ** 2)
+    gamma_first = 1.0 / (2 * sigma_first**2)
+    gamma_second = 1.0 / (2 * sigma_second**2)
     # use the second binomial formula
     kernel_xx = np.exp(-gamma_first * (-2 * xx_gram + exp_c(x_sqnorms) + exp_r(x_sqnorms)))
     kernel_yy = np.exp(-gamma_second * (-2 * yy_gram + exp_c(y_sqnorms) + exp_r(y_sqnorms)))
