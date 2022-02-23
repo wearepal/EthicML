@@ -31,7 +31,13 @@ def test_simple_saving() -> None:
         """Dummy algorithm class for testing whether writing and reading feather files works."""
 
         def __init__(self) -> None:
-            super().__init__(name="Check equality", seed=-1)
+            self.seed = -1
+            self.is_fairness_algo = False
+            self.model_dir = Path(".")
+
+        @property
+        def name(self) -> str:
+            return "Check equality"
 
         def _run_script_command(self, train_path, test_path, pred_path):
             """Check if the dataframes loaded from the files are the same as the original ones."""

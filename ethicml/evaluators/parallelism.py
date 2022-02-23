@@ -47,6 +47,8 @@ def run_in_parallel(
     """
     if not algos or not data:
         return cast(List[List[Prediction]], [[]])
+    # The following isinstance check is not at all reliable because `InAlgorithm` is a Protocol,
+    # but that's completely fine because this check is only here for mypy anyway.
     if isinstance(algos[0], InAlgorithm):
         in_algos = cast(Sequence[InAlgorithm], algos)
         return arrange_in_parallel(algos=in_algos, data=data, num_cpus=num_cpus)

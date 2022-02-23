@@ -13,8 +13,9 @@ from pathlib import Path
 from typing import Optional
 
 import git
+from ranzen.decorators import implements
 
-from ..algorithm_base import SubprocessAlgorithmMixin
+from ..algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from .in_algorithm import InAlgorithm
 
 __all__ = ["InstalledModel"]
@@ -28,6 +29,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         name: str,
         dir_name: str,
         top_dir: str,
+        is_fairness_algo: bool,
         url: Optional[str] = None,
         executable: Optional[str] = None,
         seed: int = 888,
@@ -61,7 +63,14 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
-        super().__init__(name=name, seed=seed)
+        self.__name = name
+        self.seed = seed
+        self.is_fairness_algo = is_fairness_algo
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return self.__name
 
     @property
     def _code_path(self) -> Path:

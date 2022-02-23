@@ -1,6 +1,6 @@
 """Zemel's Learned Fair Representations."""
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 from ranzen import implements
 
@@ -28,7 +28,8 @@ class Zemel(PreAlgorithmAsync):
         epsilon: float = 1e-5,
         seed: int = 888,
     ) -> None:
-        super().__init__(name="Zemel", seed=seed, out_size=None)
+        self.seed = seed
+        self._out_size: Optional[int] = None
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,
@@ -41,6 +42,11 @@ class Zemel(PreAlgorithmAsync):
             "threshold": threshold,
             "seed": seed,
         }
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "Zemel"
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:

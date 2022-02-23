@@ -1,43 +1,34 @@
 """Abstract Base Class of all algorithms in the framework."""
-
 from __future__ import annotations
 
 from abc import abstractmethod
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import List, Optional, Tuple, TypeVar
+from typing_extensions import Protocol, runtime_checkable
 
 from ranzen import implements
 
 from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, TestTuple
 
-__all__ = ["PreAlgorithm", "PreAlgorithmAsync"]
+__all__ = ["PreAlgorithm", "PreAlgorithmAsync", "PreAlgorithmDC"]
 
 T = TypeVar("T", DataTuple, TestTuple)
 
 
-class PreAlgorithm(Algorithm):
+@runtime_checkable
+class PreAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for all algorithms that do pre-processing."""
 
-    def __init__(self, name: str, seed: int, out_size: Optional[int]):
-        """Base constructor for the Algorithm class.
-
-        Args:
-            name: name of the algorithm
-            seed: seed for the random number generator
-            out_size: number of features to generate
-        """
-        super().__init__(name=name, seed=seed)
-        self._out_size = out_size
+    _out_size: Optional[int]
 
     @abstractmethod
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
-        """Generate fair features with the given data.
+        """Fit transformer on the given data.
 
         Args:
             train: training data
-            test: test data
 
         Returns:
             a tuple of the pre-processed training data and the test data
@@ -79,8 +70,19 @@ class PreAlgorithm(Algorithm):
         return self._out_size
 
 
-class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class PreAlgorithmDC(PreAlgorithm):
+    """PreAlgorithm dataclass base class."""
+
+    _out_size = None  # this is not a dataclass field and so it must not have a type annotation
+    is_fairness_algo = True
+    seed: int = 888
+
+
+class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     """Pre-Algorithm that can be run blocking and asynchronously."""
+
+    model_dir: Path
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
@@ -93,7 +95,6 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
         Returns:
             a tuple of the pre-processed training data and the test data
         """
-        self.model_path = self.model_dir / f"model_{self.name}.joblib"
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -102,7 +103,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
-            cmd = self._fit_script_command(train_path, transformed_train_path, self.model_path)
+            cmd = self._fit_script_command(train_path, transformed_train_path, self._model_path)
 
             # ============================= run the generated command =============================
             self._call_script(cmd + ["--mode", "fit"])
@@ -136,7 +137,9 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
             # ========================== generate commandline arguments ===========================
             transformed_test_path = tmp_path / "transformed_test.npz"
             cmd = self._transform_script_command(
-                model_path=self.model_path, test_path=test_path, new_test_path=transformed_test_path
+                model_path=self._model_path,
+                test_path=test_path,
+                new_test_path=transformed_test_path,
             )
 
             # ============================= run the generated command =============================
@@ -191,6 +194,10 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm):
             name=None if test.name is None else f"{self.name}: {test.name}"
         )
         return transformed_train, transformed_test
+
+    @property
+    def _model_path(self) -> Path:
+        return self.model_dir / f"model_{self.name}.joblib"
 
     @abstractmethod
     def _run_script_command(

@@ -1,4 +1,5 @@
 """Demographic Parity Label flipping approach."""
+from dataclasses import dataclass
 from typing import Tuple
 
 import numpy as np
@@ -7,22 +8,25 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .post_algorithm import PostAlgorithm
+from .post_algorithm import PostAlgorithmDC
 
 __all__ = ["DPFlip"]
 
 
-class DPFlip(PostAlgorithm):
+@dataclass
+class DPFlip(PostAlgorithmDC):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
-    def __init__(self, seed: int = 888) -> None:
-        super().__init__(name="DemPar. Post Process", seed=seed)
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "DemPar. Post Process"
 
-    @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+    @implements(PostAlgorithmDC)
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
         return self
 
-    @implements(PostAlgorithm)
+    @implements(PostAlgorithmDC)
     def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
@@ -32,7 +36,7 @@ class DPFlip(PostAlgorithm):
             _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
         )
 
-    @implements(PostAlgorithm)
+    @implements(PostAlgorithmDC)
     def run(
         self,
         train_predictions: Prediction,

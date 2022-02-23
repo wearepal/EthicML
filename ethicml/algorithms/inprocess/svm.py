@@ -16,11 +16,19 @@ __all__ = ["SVM"]
 class SVM(InAlgorithm):
     """Support Vector Machine."""
 
+    is_fairness_algo = False
+
     def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None, seed: int = 888):
         kernel_name = f" ({kernel})" if kernel is not None else ""
-        super().__init__(name="SVM" + kernel_name, is_fairness_algo=False, seed=seed)
+        self.__name = "SVM" + kernel_name
+        self.seed = seed
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return self.__name
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -31,12 +39,6 @@ class SVM(InAlgorithm):
     @implements(InAlgorithm)
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
-
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: Union[DataTuple, TestTuple]) -> Prediction:
-        clf = select_svm(self.C, self.kernel, self.seed)
-        clf.fit(train.x, train.y.to_numpy().ravel())
-        return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
 def select_svm(C: float, kernel: str, seed: int) -> Union[LinearSVC, SVC]:

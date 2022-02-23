@@ -2,19 +2,24 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from dataclasses import dataclass
+from typing import TypeVar
+from typing_extensions import Protocol
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from ..algorithm_base import Algorithm
 
-__all__ = ["PostAlgorithm"]
+__all__ = ["PostAlgorithm", "PostAlgorithmDC"]
+
+_PA = TypeVar("_PA", bound="PostAlgorithm")
 
 
-class PostAlgorithm(Algorithm):
+class PostAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for all algorithms that do post-processing."""
 
     @abstractmethod
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+    def fit(self: _PA, train_predictions: Prediction, train: DataTuple) -> _PA:
         """Run Algorithm on the given data.
 
         Args:
@@ -35,7 +40,6 @@ class PostAlgorithm(Algorithm):
             predictions
         """
 
-    @abstractmethod
     def run(
         self,
         train_predictions: Prediction,
@@ -54,3 +58,13 @@ class PostAlgorithm(Algorithm):
         Returns:
             post-processed predictions on the test set
         """
+        self.fit(train_predictions, train)
+        return self.predict(test_predictions, test)
+
+
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class PostAlgorithmDC(PostAlgorithm):
+    """PostAlgorithm dataclass base class."""
+
+    is_fairness_algo = True
+    seed: int = 888

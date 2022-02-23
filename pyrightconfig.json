@@ -1,4 +1,5 @@
 {
+  "pythonVersion": "3.7",
   "reportMissingTypeStubs": "none",
   "reportUnknownParameterType": "none",
   "reportUnknownArgumentType": "none",

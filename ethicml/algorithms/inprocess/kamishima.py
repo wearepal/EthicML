@@ -35,6 +35,7 @@ class Kamishima(InstalledModel):
             dir_name="kamishima",
             url="https://github.com/predictive-analytics-lab/kamfadm.git",
             top_dir="kamfadm",
+            is_fairness_algo=True,
         )
         self.eta = eta
         self._fit_info: Optional[_FitInfo] = None
