@@ -15,6 +15,7 @@ from ethicml.utility import DataTuple, TestTuple
 __all__ = ["PreAlgorithm", "PreAlgorithmAsync", "PreAlgorithmDC"]
 
 T = TypeVar("T", DataTuple, TestTuple)
+_PA = TypeVar("_PA", bound="PreAlgorithm")
 
 
 @runtime_checkable
@@ -24,7 +25,7 @@ class PreAlgorithm(Algorithm, Protocol):
     _out_size: Optional[int]
 
     @abstractmethod
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self: _PA, train: DataTuple) -> Tuple[_PA, DataTuple]:
         """Fit transformer on the given data.
 
         Args:

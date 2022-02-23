@@ -7,13 +7,13 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .in_algorithm import InAlgorithm
+from .in_algorithm import InAlgorithmDC
 
 __all__ = ["Corels"]
 
 
 @dataclass
-class Corels(InAlgorithm):
+class Corels(InAlgorithmDC):
     """CORELS (Certifiably Optimal RulE ListS) algorithm for the COMPAS dataset.
 
     This algorithm uses if-statements to make predictions. It only works on COMPAS with s as sex.
@@ -21,19 +21,16 @@ class Corels(InAlgorithm):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
-    seed: int = 888
-    is_fairness_algo = True
-
     @property
     def name(self) -> str:
         """Name of the algorithm."""
         return "CORELS"
 
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
+    @implements(InAlgorithmDC)
+    def fit(self, train: DataTuple) -> InAlgorithmDC:
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")

@@ -24,8 +24,6 @@ ACTIVATIONS: Dict[str, ActivationType] = {
 class MLP(InAlgorithm):
     """Multi-layer Perceptron."""
 
-    is_fairness_algo = False
-
     def __init__(
         self,
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,

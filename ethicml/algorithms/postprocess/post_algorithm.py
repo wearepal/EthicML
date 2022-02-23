@@ -4,7 +4,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from dataclasses import dataclass
 from typing import TypeVar
-from typing_extensions import Protocol
+from typing_extensions import Protocol, runtime_checkable
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
@@ -15,6 +15,7 @@ __all__ = ["PostAlgorithm", "PostAlgorithmDC"]
 _PA = TypeVar("_PA", bound="PostAlgorithm")
 
 
+@runtime_checkable
 class PostAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for all algorithms that do post-processing."""
 
