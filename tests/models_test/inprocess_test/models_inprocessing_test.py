@@ -191,7 +191,13 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     class _LocalInstalledLR(InAlgorithmAsync):
         def __init__(self):
-            super().__init__(name="local installed LR", seed=0, is_fairness_algo=False)
+            self.seed = 0
+            self.is_fairness_algo = False
+            self.model_dir = Path(".")
+
+        @property
+        def name(self) -> str:
+            return "local installed LR"
 
         @implements(InAlgorithmAsync)
         def _run_script_command(

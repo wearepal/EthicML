@@ -19,6 +19,7 @@ class Beutel(PreAlgorithmAsync):
         self,
         dir: Union[str, Path],
         fairness: FairnessType = "DP",
+        *,
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),
@@ -32,8 +33,8 @@ class Beutel(PreAlgorithmAsync):
         validation_pcnt: float = 0.1,
         seed: int = 888,
     ):
-        # pylint: disable=too-many-arguments
-        super().__init__(name=f"Beutel {fairness}", seed=seed, out_size=enc_size[-1])
+        self.seed = seed
+        self._out_size = enc_size[-1]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
             "fairness": fairness,
@@ -50,6 +51,11 @@ class Beutel(PreAlgorithmAsync):
             "validation_pcnt": validation_pcnt,
             "seed": seed,
         }
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Beutel {self.flags['fairness']}"
 
     @implements(PreAlgorithmAsync)
     def _run_script_command(

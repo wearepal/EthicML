@@ -17,6 +17,7 @@ class VFAE(PreAlgorithmAsync):
         self,
         dir: Union[str, Path],
         dataset: str,
+        *,
         supervised: bool = True,
         epochs: int = 10,
         batch_size: int = 32,
@@ -27,8 +28,8 @@ class VFAE(PreAlgorithmAsync):
         z1_dec_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
-        # pylint: disable=too-many-arguments
-        super().__init__(name="VFAE", seed=seed, out_size=latent_dims)
+        self.seed = seed
+        self._out_size = latent_dims
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
 
         if z1_enc_size is None:
@@ -50,6 +51,11 @@ class VFAE(PreAlgorithmAsync):
             "z1_dec_size": z1_dec_size,
             "seed": seed,
         }
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "VFAE"
 
     @implements(PreAlgorithmAsync)
     def _run_script_command(

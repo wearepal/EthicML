@@ -26,11 +26,12 @@ class MLP(InAlgorithm):
 
     def __init__(
         self,
-        hidden_layer_sizes: Optional[Tuple[int]] = None,
+        hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
         activation: Optional[ActivationType] = None,
         seed: int = 888,
     ):
-        super().__init__(name="MLP", is_fairness_algo=False, seed=seed)
+        self.is_fairness_algo = False
+        self.seed = seed
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
         else:
@@ -38,6 +39,11 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "MLP"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -49,15 +55,9 @@ class MLP(InAlgorithm):
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        clf = select_mlp(self.hidden_layer_sizes, self.activation, seed=self.seed)
-        clf.fit(train.x, train.y.to_numpy().ravel())
-        return Prediction(hard=pd.Series(clf.predict(test.x)))
-
 
 def select_mlp(
-    hidden_layer_sizes: Tuple[int], activation: ActivationType, seed: int
+    hidden_layer_sizes: Tuple[int, ...], activation: ActivationType, seed: int
 ) -> MLPClassifier:
     """Create MLP model for the given parameters."""
     assert activation in ACTIVATIONS

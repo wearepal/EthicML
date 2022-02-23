@@ -1,41 +1,27 @@
 """Base class for Algorithms."""
 import subprocess
 import sys
-from abc import ABC, ABCMeta
+from abc import abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional
+from typing_extensions import Protocol
 
 __all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
 
 
-class Algorithm(ABC):
+class Algorithm(Protocol):
     """Base class for Algorithms."""
 
-    def __init__(self, name: str, seed: int):
-        """Base constructor for the Algorithm class.
-
-        Args:
-            name: name of the algorithm
-            seed: seed for the random number generator
-        """
-        self.__name = name
-        self.__seed = seed
+    seed: int
 
     @property
+    @abstractmethod
     def name(self) -> str:
         """Name of the algorithm."""
-        return self.__name
-
-    @property
-    def seed(self) -> int:
-        """Seed for the random number generator."""
-        return self.__seed
 
 
-class SubprocessAlgorithmMixin(metaclass=ABCMeta):  # pylint: disable=too-few-public-methods
+class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-methods
     """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
-
-    model_dir: Path
 
     @property
     def _executable(self) -> str:
