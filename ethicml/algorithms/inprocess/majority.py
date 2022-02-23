@@ -17,6 +17,7 @@ class Majority(InAlgorithmDC):
 
     @property
     def name(self) -> str:
+        """Name of the algorithm."""
         return "Majority"
 
     @implements(InAlgorithmDC)

@@ -13,9 +13,8 @@ from pathlib import Path
 from typing import Optional
 
 import git
-from ranzen.decorators import implements
 
-from ..algorithm_base import Algorithm, SubprocessAlgorithmMixin
+from ..algorithm_base import SubprocessAlgorithmMixin
 from .in_algorithm import InAlgorithm
 
 __all__ = ["InstalledModel"]
@@ -42,6 +41,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             dir_name: where to download the code to (can be chosen freely)
             top_dir: top directory of the repository where the Pipfile can be found (this is usually
                      simply the last part of the repository URL)
+            is_fairness_algo: if True, this object corresponds to an algorithm enforcing fairness
             url: (optional) URL of the repository
             executable: (optional) path to a Python executable
             seed: Random seed to use for reproducibility
