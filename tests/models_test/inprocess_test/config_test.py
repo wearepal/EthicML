@@ -15,7 +15,7 @@ def test_logistic_regression(algo_class: Type[em.InAlgorithm]) -> None:
     assert not hasattr(conf, "is_fairness_algo")  # this attribute should not be configurable
 
     # instantiate object from the config
-    lr = OmegaConf.to_object(conf)
-    assert isinstance(lr, algo_class)
-    assert lr.seed == conf.seed
-    assert isinstance(lr.is_fairness_algo, bool)
+    model = OmegaConf.to_object(conf)
+    assert isinstance(model, algo_class)
+    assert model.seed == conf.seed
+    assert isinstance(model.is_fairness_algo, bool)
