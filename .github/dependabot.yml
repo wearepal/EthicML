@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Enable version updates for poetry
+  - package-ecosystem: "poetry"
+    # Look for `pyproject.toml` and `poetry.lock` files in the `root` directory
+    directory: "/"
+    # Check the pypi registry for updates every week
+    schedule:
+      interval: "weekly"
