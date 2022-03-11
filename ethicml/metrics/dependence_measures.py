@@ -4,7 +4,7 @@ from enum import Enum, auto
 from typing import ClassVar
 
 import numpy as np
-from ranzen import implements
+from ranzen import enum_name_str, implements
 from sklearn.metrics import normalized_mutual_info_score
 
 from ethicml.utility import DataTuple, Prediction
@@ -14,6 +14,7 @@ from .metric import Metric
 __all__ = ["DependencyTarget", "NMI", "RenyiCorrelation", "Yanovich"]
 
 
+@enum_name_str
 class DependencyTarget(Enum):
     """The variable that is compared to the predictions in order to check how similar they are."""
 

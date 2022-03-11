@@ -15,8 +15,6 @@ class Metric(Protocol):
 
     apply_per_sensitive: bool
     """Whether the metric can be applied per sensitive attribute."""
-    # name: str
-    # """Name of the metric."""
 
     @abstractmethod
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
