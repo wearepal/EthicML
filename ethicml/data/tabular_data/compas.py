@@ -1,14 +1,17 @@
 """Class to describe features of the Compas dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["Compas", "compas"]
+__all__ = ["Compas", "CompasSplits", "compas"]
 
 
 class CompasSplits(Enum):
+    """Available dataset splits for the COMPAS dataset."""
+
     SEX = "Sex"
     RACE = "Race"
     RACE_SEX = "Race-Sex"
@@ -19,21 +22,18 @@ def compas(
     split: Union[CompasSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Compas":
     """Compas (or ProPublica) dataset."""
-    return Compas(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Compas(split=CompasSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Compas(Dataset):
+@dataclass
+class Compas(LoadableDataset):
     """Compas (or ProPublica) dataset."""
 
-    def __init__(
-        self,
-        split: Union[CompasSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = CompasSplits(split)
+    split: CompasSplits = CompasSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "sex": ["sex"],
             "race": ["race"],
@@ -443,22 +443,22 @@ class Compas(Dataset):
         ]
 
         sens_attr_spec: Union[str, LabelSpec]
-        if _split is CompasSplits.SEX:
+        if self.split is CompasSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.RACE:
+        elif self.split is CompasSplits.RACE:
             sens_attr_spec = "race"
             s_prefix = ["race"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.RACE_SEX:
+        elif self.split is CompasSplits.RACE_SEX:
             sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
             s_prefix = ["race", "sex"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
-        elif _split is CompasSplits.CUSTOM:
+        elif self.split is CompasSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -467,7 +467,7 @@ class Compas(Dataset):
             raise NotImplementedError
 
         super().__init__(
-            name=f"Compas {_split.value}",
+            name=f"Compas {self.split.value}",
             num_samples=6167,
             filename_or_path="compas-recidivism.csv",
             features=discrete_features + continuous_features,
@@ -476,7 +476,6 @@ class Compas(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

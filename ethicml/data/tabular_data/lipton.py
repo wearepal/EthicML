@@ -1,11 +1,12 @@
 """Class to describe features of the Lipton dataset."""
+from dataclasses import dataclass
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 
 __all__ = ["lipton", "Lipton"]
 
 
-def lipton() -> Dataset:
+def lipton() -> "Lipton":
     """Synthetic dataset from the Lipton et al. 2018.
 
     Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`
@@ -24,7 +25,8 @@ def lipton() -> Dataset:
     return Lipton()
 
 
-class Lipton(Dataset):
+@dataclass
+class Lipton(LoadableDataset):
     """Synthetic dataset from the Lipton et al. 2018.
 
     Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`
@@ -41,8 +43,7 @@ class Lipton(Dataset):
     ```
     """
 
-    def __init__(self) -> None:
-
+    def __post_init__(self) -> None:
         continuous_features = ["hair_length", "work_experience"]
         super().__init__(
             name="Lipton",

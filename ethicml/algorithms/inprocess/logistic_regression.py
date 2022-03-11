@@ -1,5 +1,5 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
-from typing import Optional
+from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
@@ -14,14 +14,18 @@ from .in_algorithm import InAlgorithm
 __all__ = ["LR", "LRCV", "LRProb"]
 
 
+@dataclass
 class LR(InAlgorithm):
     """Logistic regression with hard predictions."""
 
-    def __init__(self, C: Optional[float] = None, seed: int = 888):
-        self.C = LogisticRegression().C if C is None else C
-        super().__init__(
-            name=f"Logistic Regression (C={self.C})", is_fairness_algo=False, seed=seed
-        )
+    C: float = field(default_factory=lambda: LogisticRegression().C)
+    seed: int = 888
+    is_fairness_algo = False
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Logistic Regression (C={self.C})"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -46,14 +50,18 @@ class LR(InAlgorithm):
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
+@dataclass
 class LRProb(InAlgorithm):
     """Logistic regression with soft output."""
 
-    def __init__(self, C: Optional[int] = None, seed: int = 888):
-        self.C = LogisticRegression().C if C is None else C
-        super().__init__(
-            name=f"Logistic Regression Prob (C={self.C})", is_fairness_algo=False, seed=seed
-        )
+    C: float = field(default_factory=lambda: LogisticRegression().C)
+    seed: int = 888
+    is_fairness_algo = False
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Logistic Regression Prob (C={self.C})"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -78,12 +86,18 @@ class LRProb(InAlgorithm):
         return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
 
 
+@dataclass
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
 
-    def __init__(self, n_splits: int = 3, seed: int = 888) -> None:
-        super().__init__(name="LRCV", is_fairness_algo=False, seed=seed)
-        self.n_splits = n_splits
+    n_splits: int = 3
+    seed: int = 888
+    is_fairness_algo = False
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "LRCV"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:

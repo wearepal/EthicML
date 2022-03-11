@@ -90,7 +90,7 @@ def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     def pad_second(x: Tensor) -> Tensor:
         return torch.unsqueeze(x, 1)
 
-    gamma = 1 / (2 * sigma ** 2)
+    gamma = 1 / (2 * sigma**2)
     # use the second binomial formula
     kernel_xx = torch.exp(-gamma * (-2 * xx_gm + pad_second(x_sqnorms) + pad_first(x_sqnorms)))
     kernel_xy = torch.exp(-gamma * (-2 * xy_gm + pad_second(x_sqnorms) + pad_first(y_sqnorms)))

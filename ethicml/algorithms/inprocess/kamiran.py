@@ -29,11 +29,17 @@ class Kamiran(InAlgorithm):
         kernel: Optional[str] = None,
         seed: int = 888,
     ):
-        super().__init__(name=f"Kamiran & Calders {classifier}", seed=seed)
+        self.seed = seed
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
+        self.is_fairness_algo = True
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Kamiran & Calders {self.classifier}"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -48,9 +54,10 @@ class Kamiran(InAlgorithm):
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        return _train_and_predict(
-            train, test, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
+        clf = _train(
+            train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
         )
+        return _predict(model=clf, test=test)
 
 
 def compute_instance_weights(
@@ -99,23 +106,4 @@ def _train(
 
 
 def _predict(model: sklearn.linear_model._base.LinearModel, test: TestTuple) -> Prediction:
-    return Prediction(hard=pd.Series(model.predict(test.x)))
-
-
-def _train_and_predict(
-    train: DataTuple, test: TestTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
-) -> Prediction:
-    """Train a logistic regression model and compute predictions on the given test data."""
-    if classifier == "SVM":
-        model = select_svm(C=C, kernel=kernel, seed=seed)
-    else:
-        random_state = np.random.RandomState(seed=seed)
-        model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=C
-        )
-    model.fit(
-        train.x,
-        train.y.to_numpy().ravel(),
-        sample_weight=compute_instance_weights(train)["instance weights"],
-    )
     return Prediction(hard=pd.Series(model.predict(test.x)))

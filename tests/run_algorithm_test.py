@@ -3,17 +3,12 @@ import os
 from pathlib import Path
 from typing import List
 
-import numpy as np  # pylint: disable=unused-import  # import needed for mypy
+import numpy as np
 import pandas as pd
 import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
-
-
-def count_true(mask: np.ndarray) -> int:
-    """Count the number of elements that are True."""
-    return mask.nonzero()[0].shape[0]
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
@@ -25,30 +20,30 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_test: em.TrainTestPair):
     """Test run parallel."""
+    from ethicml.evaluators import parallelism  # this import requires ray, so do it only on demand
+
     data0 = toy_train_test
     data1 = toy_train_test
-    result = em.run_blocking(
-        em.run_in_parallel(
-            [em.LR(), em.SVM(), em.Majority()],
-            [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
-            max_parallel=2,
-        )
+    result = parallelism.run_in_parallel(
+        [em.LR(), em.SVM(), em.Majority()],
+        [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        num_cpus=2,
     )
     # LR
-    assert count_true(result[0][0].hard.values == 1) == 44
-    assert count_true(result[0][0].hard.values == 0) == 36
-    assert count_true(result[0][1].hard.values == 1) == 44
-    assert count_true(result[0][1].hard.values == 0) == 36
+    assert np.count_nonzero(result[0][0].hard.values == 1) == 44
+    assert np.count_nonzero(result[0][0].hard.values == 0) == 36
+    assert np.count_nonzero(result[0][1].hard.values == 1) == 44
+    assert np.count_nonzero(result[0][1].hard.values == 0) == 36
     # SVM
-    assert count_true(result[1][0].hard.values == 1) == 45
-    assert count_true(result[1][0].hard.values == 0) == 35
-    assert count_true(result[1][1].hard.values == 1) == 45
-    assert count_true(result[1][1].hard.values == 0) == 35
+    assert np.count_nonzero(result[1][0].hard.values == 1) == 45
+    assert np.count_nonzero(result[1][0].hard.values == 0) == 35
+    assert np.count_nonzero(result[1][1].hard.values == 1) == 45
+    assert np.count_nonzero(result[1][1].hard.values == 0) == 35
     # Majority
-    assert count_true(result[2][0].hard.values == 1) == 80
-    assert count_true(result[2][0].hard.values == 0) == 0
-    assert count_true(result[2][1].hard.values == 1) == 80
-    assert count_true(result[2][1].hard.values == 0) == 0
+    assert np.count_nonzero(result[2][0].hard.values == 1) == 80
+    assert np.count_nonzero(result[2][0].hard.values == 0) == 0
+    assert np.count_nonzero(result[2][1].hard.values == 1) == 80
+    assert np.count_nonzero(result[2][1].hard.values == 0) == 0
 
 
 @pytest.mark.usefixtures("results_cleanup")
@@ -113,18 +108,16 @@ def test_run_alg_suite():
     postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
-    parallel_results = em.run_blocking(
-        em.evaluate_models_async(
-            datasets,
-            preprocess_models,
-            inprocess_models,
-            postprocess_models,
-            metrics,
-            per_sens_metrics,
-            repeats=1,
-            test_mode=True,
-            topic="pytest",
-        )
+    parallel_results = em.evaluate_models_async(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        postprocess_models=postprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        topic="pytest",
     )
     results = em.evaluate_models(
         datasets,
@@ -184,9 +177,10 @@ def test_run_alg_suite_wrong_metrics():
         )
 
 
+@pytest.mark.slow
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
-    """Test run alg suite no pipeline."""
+    """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
@@ -194,19 +188,17 @@ def test_run_alg_suite_no_pipeline():
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
-    parallel_results = em.run_blocking(
-        em.evaluate_models_async(
-            datasets,
-            preprocess_models,
-            inprocess_models,
-            postprocess_models,
-            metrics,
-            per_sens_metrics,
-            repeats=1,
-            test_mode=True,
-            topic="pytest",
-            fair_pipeline=False,
-        )
+    parallel_results = em.evaluate_models_async(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        postprocess_models=postprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=1,
+        test_mode=True,
+        topic="pytest",
+        fair_pipeline=False,
     )
     results = em.evaluate_models(
         datasets,

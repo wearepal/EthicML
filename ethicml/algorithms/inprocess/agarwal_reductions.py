@@ -34,7 +34,8 @@ class Agarwal(InAlgorithmAsync):
             raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
-        super().__init__(name=f"Agarwal, {classifier}, {fairness}", seed=seed)
+        self.seed = seed
+        self.is_fairness_algo = True
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {
@@ -46,6 +47,11 @@ class Agarwal(InAlgorithmAsync):
             "kernel": chosen_kernel,
             "seed": seed,
         }
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"
 
     @implements(InAlgorithmAsync)
     def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:

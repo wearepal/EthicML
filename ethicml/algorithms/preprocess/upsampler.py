@@ -1,5 +1,6 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 from typing_extensions import Literal
 
@@ -14,6 +15,7 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Upsampler"]
 
 
+@dataclass
 class Upsampler(PreAlgorithm):
     """Upsampler algorithm.
 
@@ -21,16 +23,20 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
-    def __init__(
-        self, strategy: Literal["uniform", "preferential", "naive"] = "uniform", seed: int = 888
-    ):
-        super().__init__(name=f"Upsample {strategy}", seed=seed, out_size=None)
+    strategy: Literal["uniform", "preferential", "naive"] = "uniform"
+    seed: int = 888
+    is_fairness_algo = True
 
-        assert strategy in ["uniform", "preferential", "naive"]
-        self.strategy = strategy
+    def __post_init__(self) -> None:
+        assert self.strategy in ["uniform", "preferential", "naive"]
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return f"Upsample {self.strategy}"
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple) -> Tuple["Upsampler", DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = upsample(train, train, self.strategy, self.seed, name=self.name)
         return self, new_train

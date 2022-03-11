@@ -14,6 +14,7 @@ from ethicml import (
     Accuracy,
     AverageOddsDiff,
     BalancedAccuracy,
+    DependencyTarget,
     Hsic,
     InAlgorithm,
     Kamiran,
@@ -38,7 +39,9 @@ METRIC_TESTS = [
     MetricTest(model=SVM(), metric=Accuracy(), name="Accuracy", expected=0.925),
     MetricTest(model=SVM(), metric=F1(), name="F1", expected=0.930),
     MetricTest(model=SVM(), metric=BalancedAccuracy(), name="Balanced Accuracy", expected=0.923),
-    MetricTest(model=SVM(), metric=NMI(base="s"), name="NMI preds and s", expected=0.102),
+    MetricTest(
+        model=SVM(), metric=NMI(base=DependencyTarget.s), name="NMI preds and s", expected=0.102
+    ),
     MetricTest(model=SVM(), metric=CV(), name="CV", expected=0.630),
     MetricTest(model=SVM(), metric=AverageOddsDiff(), name="AverageOddsDiff", expected=0.105),
     MetricTest(model=SVM(), metric=Theil(), name="Theil_Index", expected=0.033),
@@ -46,7 +49,9 @@ METRIC_TESTS = [
     MetricTest(model=Kamiran(), metric=Theil(), name="Theil_Index", expected=0.030),
     MetricTest(model=SVM(), metric=Hsic(), name="HSIC", expected=0.020),
     MetricTest(model=SVM(), metric=AS(), name="anti_spurious", expected=0.852),
-    MetricTest(model=SVM(), metric=NMI(base="y"), name="NMI preds and y", expected=0.638),
+    MetricTest(
+        model=SVM(), metric=NMI(base=DependencyTarget.y), name="NMI preds and y", expected=0.638
+    ),
 ]
 
 

@@ -1,9 +1,16 @@
 """Test modifiactions to a dataset."""
 import pandas
+import pandas as pd
 import pytest
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from ethicml import available_tabular, get_dataset_obj_by_name, scale_continuous, train_test_split
+from ethicml import (
+    Dataset,
+    available_tabular,
+    get_dataset_obj_by_name,
+    scale_continuous,
+    train_test_split,
+)
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
@@ -64,3 +71,13 @@ def test_scaling_separate_test(dataset_name, scaler):
 
     pandas.testing.assert_frame_equal(train.x, train_post.x, check_dtype=False)  # type: ignore[call-arg]
     pandas.testing.assert_frame_equal(test.x, test_post.x, check_dtype=False)  # type: ignore[call-arg]
+
+
+def test_from_dummies():
+    """Test that the _from_dummies method produces the inverse of pd.get_dummies for an em.Datase."""
+    df = pd.DataFrame({"a": ["a", "b", "c"], "b": ["q", "w", "e"]})
+    dummied = pd.get_dummies(df)
+    repacked = Dataset._from_dummies(
+        dummied, {"a": ["a_a", "a_b", "a_c"], "b": ["b_q", "b_w", "b_e"]}
+    )
+    pandas.testing.assert_frame_equal(df, repacked)

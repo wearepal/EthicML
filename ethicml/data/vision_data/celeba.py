@@ -1,17 +1,18 @@
 """Class to describe attributes of the CelebA dataset."""
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
-from typing_extensions import Final, Literal
+from typing_extensions import Final, Literal, TypeAlias
 
 from ethicml import common
 
-from ..dataset import Dataset
+from ..dataset import LoadableDataset
 from ..util import LabelGroup, flatten_dict, label_spec_to_feature_list
 
-__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebAttrs", "celeba"]
+__all__ = ["CELEBA_BASE_FOLDER", "CELEBA_FILE_LIST", "CelebA", "CelebAttrs", "celeba"]
 
 
-CelebAttrs = Literal[
+CelebAttrs: TypeAlias = Literal[
     "5_o_Clock_Shadow",
     "Arched_Eyebrows",
     "Attractive",
@@ -83,79 +84,89 @@ def celeba(
     sens_attr: Union[CelebAttrs, Dict[str, LabelGroup]] = "Male",
     download: bool = False,
     check_integrity: bool = True,
-) -> Tuple[Optional[Dataset], Path]:
+) -> Tuple[Optional["CelebA"], Path]:
     """Get CelebA dataset."""
     root = Path(download_dir)
-    disc_feature_groups = {
-        "beard": ["5_o_Clock_Shadow", "Goatee", "Mustache", "No_Beard"],
-        "hair_color": ["Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair"],
-        # not yet sorted into categories:
-        "Arched_Eyebrows": ["Arched_Eyebrows"],
-        "Attractive": ["Attractive"],
-        "Bags_Under_Eyes": ["Bags_Under_Eyes"],
-        "Bangs": ["Bangs"],
-        "Big_Lips": ["Big_Lips"],
-        "Big_Nose": ["Big_Nose"],
-        "Blurry": ["Blurry"],
-        "Bushy_Eyebrows": ["Bushy_Eyebrows"],
-        "Chubby": ["Chubby"],
-        "Double_Chin": ["Double_Chin"],
-        "Eyeglasses": ["Eyeglasses"],
-        "Heavy_Makeup": ["Heavy_Makeup"],
-        "High_Cheekbones": ["High_Cheekbones"],
-        "Male": ["Male"],
-        "Mouth_Slightly_Open": ["Mouth_Slightly_Open"],
-        "Narrow_Eyes": ["Narrow_Eyes"],
-        "Oval_Face": ["Oval_Face"],
-        "Pale_Skin": ["Pale_Skin"],
-        "Pointy_Nose": ["Pointy_Nose"],
-        "Receding_Hairline": ["Receding_Hairline"],
-        "Rosy_Cheeks": ["Rosy_Cheeks"],
-        "Sideburns": ["Sideburns"],
-        "Smiling": ["Smiling"],
-        "hair_type": ["Straight_Hair", "Wavy_Hair"],
-        "Wearing_Earrings": ["Wearing_Earrings"],
-        "Wearing_Hat": ["Wearing_Hat"],
-        "Wearing_Lipstick": ["Wearing_Lipstick"],
-        "Wearing_Necklace": ["Wearing_Necklace"],
-        "Wearing_Necktie": ["Wearing_Necktie"],
-        "Young": ["Young"],
-    }
-    discrete_features = flatten_dict(disc_feature_groups)
-    s_prefix: List[str]
-    if isinstance(sens_attr, dict):
-        s_prefix = label_spec_to_feature_list(sens_attr)
-        assert all(feat in discrete_features for feat in s_prefix)
-        name = "[" + ", ".join(sens_attr) + "]"
-    else:
-        assert sens_attr in discrete_features
-        s_prefix = [sens_attr]
-        name = sens_attr
-    assert label in discrete_features
-    continuous_features = ["filename"]
-
     base = root / CELEBA_BASE_FOLDER
     img_dir = base / "img_align_celeba"
     if download:
         _download(base)
     elif check_integrity and not _check_integrity(base):
         return None, img_dir
-    dataset_obj = Dataset(
-        name=f"CelebA, s={name}, y={label}",
-        sens_attr_spec=sens_attr,
-        s_prefix=s_prefix,
-        class_label_spec=label,
-        class_label_prefix=[label],
-        discrete_feature_groups=disc_feature_groups,
-        features=discrete_features + continuous_features,
-        cont_features=continuous_features,
-        num_samples=202599,
-        filename_or_path="celeba.csv.zip",
-        discrete_only=False,
-        discard_non_one_hot=True,
-        map_to_binary=True,
-    )
-    return dataset_obj, img_dir
+    return CelebA(sens_attr=sens_attr, label=label), img_dir
+
+
+@dataclass
+class CelebA(LoadableDataset):
+    """CelebA dataset."""
+
+    label: CelebAttrs = "Smiling"
+    sens_attr: Union[CelebAttrs, Dict[str, LabelGroup]] = "Male"
+
+    def __post_init__(self) -> None:
+        disc_feature_groups = {
+            "beard": ["5_o_Clock_Shadow", "Goatee", "Mustache", "No_Beard"],
+            "hair_color": ["Bald", "Black_Hair", "Blond_Hair", "Brown_Hair", "Gray_Hair"],
+            # not yet sorted into categories:
+            "Arched_Eyebrows": ["Arched_Eyebrows"],
+            "Attractive": ["Attractive"],
+            "Bags_Under_Eyes": ["Bags_Under_Eyes"],
+            "Bangs": ["Bangs"],
+            "Big_Lips": ["Big_Lips"],
+            "Big_Nose": ["Big_Nose"],
+            "Blurry": ["Blurry"],
+            "Bushy_Eyebrows": ["Bushy_Eyebrows"],
+            "Chubby": ["Chubby"],
+            "Double_Chin": ["Double_Chin"],
+            "Eyeglasses": ["Eyeglasses"],
+            "Heavy_Makeup": ["Heavy_Makeup"],
+            "High_Cheekbones": ["High_Cheekbones"],
+            "Male": ["Male"],
+            "Mouth_Slightly_Open": ["Mouth_Slightly_Open"],
+            "Narrow_Eyes": ["Narrow_Eyes"],
+            "Oval_Face": ["Oval_Face"],
+            "Pale_Skin": ["Pale_Skin"],
+            "Pointy_Nose": ["Pointy_Nose"],
+            "Receding_Hairline": ["Receding_Hairline"],
+            "Rosy_Cheeks": ["Rosy_Cheeks"],
+            "Sideburns": ["Sideburns"],
+            "Smiling": ["Smiling"],
+            "hair_type": ["Straight_Hair", "Wavy_Hair"],
+            "Wearing_Earrings": ["Wearing_Earrings"],
+            "Wearing_Hat": ["Wearing_Hat"],
+            "Wearing_Lipstick": ["Wearing_Lipstick"],
+            "Wearing_Necklace": ["Wearing_Necklace"],
+            "Wearing_Necktie": ["Wearing_Necktie"],
+            "Young": ["Young"],
+        }
+        discrete_features = flatten_dict(disc_feature_groups)
+        s_prefix: List[str]
+        if isinstance(self.sens_attr, dict):
+            s_prefix = label_spec_to_feature_list(self.sens_attr)
+            assert all(feat in discrete_features for feat in s_prefix)
+            name = "[" + ", ".join(self.sens_attr) + "]"
+        else:
+            assert self.sens_attr in discrete_features
+            s_prefix = [self.sens_attr]
+            name = self.sens_attr
+        assert self.label in discrete_features
+        continuous_features = ["filename"]
+
+        super().__init__(
+            name=f"CelebA, s={name}, y={self.label}",
+            sens_attr_spec=self.sens_attr,
+            s_prefix=s_prefix,
+            class_label_spec=self.label,
+            class_label_prefix=[self.label],
+            discrete_feature_groups=disc_feature_groups,
+            features=discrete_features + continuous_features,
+            cont_features=continuous_features,
+            num_samples=202599,
+            filename_or_path="celeba.csv.zip",
+            discrete_only=False,
+            discard_non_one_hot=True,
+            map_to_binary=True,
+        )
 
 
 def _check_integrity(base: Path) -> bool:

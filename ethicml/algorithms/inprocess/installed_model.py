@@ -10,27 +10,29 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 import git
-from ranzen import implements
 
-from .in_algorithm import InAlgorithmAsync
+from ..algorithm_base import SubprocessAlgorithmMixin
+from .in_algorithm import InAlgorithm
 
 __all__ = ["InstalledModel"]
 
 
-class InstalledModel(InAlgorithmAsync):
-    """the model that does the magic."""
+class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
+    """The model that does the magic."""
 
     def __init__(
         self,
         name: str,
         dir_name: str,
         top_dir: str,
+        is_fairness_algo: bool,
         url: Optional[str] = None,
         executable: Optional[str] = None,
         seed: int = 888,
+        use_poetry: bool = False,
     ):
         """Download code from given URL and create Pip environment with Pipfile found in the code.
 
@@ -39,9 +41,11 @@ class InstalledModel(InAlgorithmAsync):
             dir_name: where to download the code to (can be chosen freely)
             top_dir: top directory of the repository where the Pipfile can be found (this is usually
                      simply the last part of the repository URL)
+            is_fairness_algo: if True, this object corresponds to an algorithm enforcing fairness
             url: (optional) URL of the repository
             executable: (optional) path to a Python executable
             seed: Random seed to use for reproducibility
+            use_poetry: if True, will try to use poetry instead of pipenv
         """
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
         self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
@@ -53,11 +57,20 @@ class InstalledModel(InAlgorithmAsync):
 
         if executable is None:
             # create virtual environment
-            self._create_venv()
+            del use_poetry  # see https://github.com/python-poetry/poetry/issues/4055
+            # self._create_venv(use_poetry=use_poetry)
+            self._create_venv(use_poetry=False)
             self.__executable = str(self._code_path.resolve() / ".venv" / "bin" / "python")
         else:
             self.__executable = executable
-        super().__init__(name=name, seed=seed)
+        self.__name = name
+        self.seed = seed
+        self.is_fairness_algo = is_fairness_algo
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return self.__name
 
     @property
     def _code_path(self) -> Path:
@@ -74,17 +87,26 @@ class InstalledModel(InAlgorithmAsync):
             self._store_dir.mkdir()
             git.Git(self._store_dir).clone(url)
 
-    def _create_venv(self) -> None:
+    def _create_venv(self, use_poetry: bool) -> None:
         """Creates a venv based on the Pipfile in the repository."""
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
+            if use_poetry and shutil.which("poetry") is not None:  # use poetry instead of pipenv
+                environ = os.environ.copy()
+                environ["POETRY_VIRTUALENVS_CREATE"] = "true"
+                environ["POETRY_VIRTUALENVS_IN_PROJECT"] = "true"
+                subprocess.run(
+                    ["poetry", "install", "--no-root"], env=environ, check=True, cwd=self._code_path
+                )
+                return
+
             environ = os.environ.copy()
             environ["PIPENV_IGNORE_VIRTUALENVS"] = "1"
             environ["PIPENV_VENV_IN_PROJECT"] = "true"
             environ["PIPENV_YES"] = "true"
             environ["PIPENV_PIPFILE"] = str(self._code_path / "Pipfile")
 
-            subprocess.check_call([sys.executable, "-m", "pipenv", "install"], env=environ)
+            subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
 
     def remove(self) -> None:
         """Removes the directory that we created in _clone_directory()."""
@@ -92,17 +114,3 @@ class InstalledModel(InAlgorithmAsync):
             shutil.rmtree(self._store_dir)
         except OSError as excep:
             print(f"Error: {excep.filename} - {excep.strerror}.")
-
-    @implements(InAlgorithmAsync)
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        return []  # pylint was complaining when I didn't return anything here...
-
-    @implements(InAlgorithmAsync)
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        return []
-
-    @implements(InAlgorithmAsync)
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        return []

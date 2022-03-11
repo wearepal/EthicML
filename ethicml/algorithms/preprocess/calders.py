@@ -1,5 +1,5 @@
 """Kamiran&Calders 2012, massaging."""
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from ranzen import implements
 
@@ -15,9 +15,15 @@ class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
     def __init__(self, preferable_class: int, disadvantaged_group: int, seed: int = 888):
-        super().__init__(name="Calders", seed=seed, out_size=None)
+        self.seed = seed
+        self._out_size: Optional[int] = None
         self.preferable_class = preferable_class
         self.disadvantaged_group = disadvantaged_group
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "Calders"
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:

@@ -1,10 +1,11 @@
 """EthicML Tests."""
-import sys
 from pathlib import Path
-from typing import Dict, List, NamedTuple
+from typing import ClassVar, Dict, Generator, List, NamedTuple
 
+import numpy as np
 import pytest
 from pytest import approx
+from ranzen import implements
 
 from ethicml import (
     DRO,
@@ -15,37 +16,27 @@ from ethicml import (
     AbsCV,
     Accuracy,
     Agarwal,
+    BaseMetric,
     Blind,
     Corels,
     CrossValidator,
     DataTuple,
     DPOracle,
-    Heaviside,
     InAlgorithm,
     InAlgorithmAsync,
-    InstalledModel,
     Kamiran,
+    Kamishima,
     LRProb,
     Majority,
-    Metric,
     Oracle,
     Prediction,
-    SoftPrediction,
     TrainTestPair,
-    ZafarAccuracy,
-    ZafarBaseline,
-    ZafarFairness,
     compas,
     evaluate_models_async,
     load_data,
-    query_dt,
-    run_blocking,
-    run_in_parallel,
     toy,
     train_test_split,
 )
-from ethicml.algorithms.inprocess.shared import flag_interface
-from tests.run_algorithm_test import count_true
 
 
 class InprocessTest(NamedTuple):
@@ -88,9 +79,6 @@ INPROCESS_TESTS = [
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarAccuracy(), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarBaseline(), num_pos=41),
-    # InprocessTest(name="Zafar", model=ZafarFairness(), num_pos=41),
 ]
 
 
@@ -104,8 +92,8 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     assert model.name == name
 
     predictions: Prediction = model.run(train, test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
@@ -121,8 +109,8 @@ def test_inprocess_sep_train_pred(
 
     model = model.fit(train)
     predictions: Prediction = model.predict(test)
-    assert count_true(predictions.hard.values == 1) == num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
 
 
 def test_corels(toy_train_test: TrainTestPair) -> None:
@@ -167,59 +155,66 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
     assert best_result.scores["CV absolute"] == approx(0.832, abs=0.001)
 
 
-# @pytest.fixture(scope="module")
-# def kamishima():
-#     kamishima_algo = Kamishima()
-#     yield kamishima_algo
-#     print("teardown Kamishima")
-#     kamishima_algo.remove()
+@pytest.fixture(scope="session")
+def kamishima_teardown() -> Generator[None, None, None]:
+    """This fixtures tears down Kamishima after all tests have finished.
+
+    This has to be done with a fixture because otherwise it will not happen when the test fails.
+    """
+    yield
+    print("teardown Kamishima")
+    Kamishima().remove()  # delete the downloaded code
 
 
-# def test_kamishima(kamishima):
-#     train, test = get_train_test()
+@pytest.mark.slow
+def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
+    train, test = toy_train_test
 
-#     model: InAlgorithmAsync = kamishima
-#     assert model.name == "Kamishima"
+    model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
+    assert model.name == "Kamishima"
 
-#     assert model is not None
+    assert model is not None
 
-#     predictions: Prediction = run_blocking(model.run_async(train, test))
-#     assert predictions.hard.values[predictions.hard.values == 1].shape[0] == 208
-#     assert predictions.hard.values[predictions.hard.values == -1].shape[0] == 192
+    predictions: Prediction = model.run(train, test)
+    assert np.count_nonzero(predictions.hard.values == 1) == 42
+    assert np.count_nonzero(predictions.hard.values == 0) == 38
+
+    another_model = Kamishima()
+    new_predictions: Prediction = another_model.fit(train).predict(test)
+    assert np.count_nonzero(new_predictions.hard.values == 1) == 42
+    assert np.count_nonzero(new_predictions.hard.values == 0) == 38
 
 
 def test_local_installed_lr(toy_train_test: TrainTestPair):
     """Test local installed lr."""
     train, test = toy_train_test
 
-    class _LocalInstalledLR(InstalledModel):
+    class _LocalInstalledLR(InAlgorithmAsync):
         def __init__(self):
-            super().__init__(
-                name="local installed LR", dir_name="../..", top_dir="", executable=sys.executable
-            )
+            self.seed = 0
+            self.is_fairness_algo = False
+            self.model_dir = Path(".")
 
+        @property
+        def name(self) -> str:
+            return "local installed LR"
+
+        @implements(InAlgorithmAsync)
         def _run_script_command(
             self, train_path: Path, test_path: Path, pred_path: Path
-        ) -> (List[str]):
+        ) -> List[str]:
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [
-                script,
-                str(train_path),
-                str(test_path),
-                str(pred_path),
-            ]
+            return [script, str(train_path), str(test_path), str(pred_path)]
 
+        @implements(InAlgorithmAsync)
         def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            args = flag_interface(train_path=train_path, model_path=model_path)
-            return [script, args]
+            raise NotImplementedError("this model doesn't support the fit/predict split yet")
 
+        @implements(InAlgorithmAsync)
         def _predict_script_command(
             self, model_path: Path, test_path: Path, pred_path: Path
         ) -> List[str]:
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            args = flag_interface(model_path=model_path, test_path=test_path, pred_path=pred_path)
-            return [script, args]
+            raise NotImplementedError("this model doesn't support the fit/predict split yet")
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None
@@ -227,26 +222,26 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 44
-    assert count_true(predictions.hard.values == 1) == expected_num_pos
-    assert count_true(predictions.hard.values == 0) == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
+@pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
 
-    class AssertResult(Metric):
-        _name = "assert_result"
+    class AssertResult(BaseMetric):
+        apply_per_sensitive: ClassVar[bool] = True
+        _name: ClassVar[str] = "assert_result"
 
         def score(self, prediction, actual) -> float:
             return (
-                count_true(prediction.hard.values == 1) == 241
-                and count_true(prediction.hard.values == 0) == 159
+                np.count_nonzero(prediction.hard.values == 1) == 45
+                and np.count_nonzero(prediction.hard.values == 0) == 35
             )
 
-    results = run_blocking(
-        evaluate_models_async(
-            datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
-        )
+    results = evaluate_models_async(
+        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
-    assert results["assert_result"].iloc[0] == 0.0
+    assert results["assert_result"].iloc[0]

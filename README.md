@@ -1,4 +1,4 @@
-# EthicML
+# EthicML: A featureful framework for developing fair algorithms
 
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![](https://github.com/predictive-analytics-lab/EthicML/workflows/EthicML%20CI/badge.svg)
@@ -52,9 +52,17 @@ because there are many different versions for different systems.
 
 ## Documentation
 
-The documentation can be found here: https://predictive-analytics-lab.com/EthicML/
+The documentation can be found here: https://wearepal.ai/EthicML/
 
 ## Design Principles
+
+```mermaid
+flowchart LR
+    A(Datasets) -- load --> B(Data tuples);
+    B --> C[evaluate_models];
+    G(Algorithms) --> C;
+    C --> D(Metrics);
+```
 
 Keep things simple.
 

@@ -1,10 +1,13 @@
 """Data structure for all datasets that come with the framework."""
-from dataclasses import InitVar, dataclass, field
+import typing
+from abc import abstractmethod
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal, TypedDict
 
 import pandas as pd
+from ranzen import implements
 
 from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
@@ -16,7 +19,7 @@ from .util import (
     label_spec_to_feature_list,
 )
 
-__all__ = ["Dataset", "FeatureSplit"]
+__all__ = ["Dataset", "FeatureSplit", "LoadableDataset"]
 
 
 class FeatureSplit(TypedDict):
@@ -27,7 +30,6 @@ class FeatureSplit(TypedDict):
     y: List[str]
 
 
-@dataclass
 class Dataset:
     """Data structure that holds all the information needed to load a given dataset.
 
@@ -37,50 +39,56 @@ class Dataset:
         map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
     """
 
-    name: str
-    filename_or_path: InitVar[Union[str, Path]]
-    features: Sequence[str]
-    cont_features: InitVar[Sequence[str]]
-    sens_attr_spec: Union[str, LabelSpec]
-    class_label_spec: Union[str, LabelSpec]
-    num_samples: int
-    discrete_only: bool
-    s_prefix: Sequence[str] = field(default_factory=list)
-    class_label_prefix: Sequence[str] = field(default_factory=list)
-    discrete_feature_groups: InitVar[Optional[Dict[str, List[str]]]] = None
-    discard_non_one_hot: bool = False
-    map_to_binary: bool = False
-    invert_s: bool = False
-
-    _raw_file_name_or_path: Union[str, Path] = field(init=False)
-    _cont_features_unfiltered: Sequence[str] = field(init=False)
-    _discrete_feature_groups: Optional[Dict[str, List[str]]] = field(init=False)
-
-    def __post_init__(
+    def __init__(
         self,
+        name: str,
         filename_or_path: Union[str, Path],
+        features: Sequence[str],
         cont_features: Sequence[str],
-        discrete_feature_groups: Optional[Dict[str, List[str]]],
+        sens_attr_spec: Union[str, LabelSpec],
+        class_label_spec: Union[str, LabelSpec],
+        discrete_only: bool,
+        num_samples: int,
+        discard_non_one_hot: bool = False,
+        map_to_binary: bool = False,
+        s_prefix: Optional[Sequence[str]] = None,
+        class_label_prefix: Optional[Sequence[str]] = None,
+        discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
     ) -> None:
+        self._name = name
+        self._features = features
+        self._sens_attr_spec = sens_attr_spec
+        self._class_label_spec = class_label_spec
+        self._num_samples = num_samples
+        self._discrete_only = discrete_only
+        self._s_prefix = [] if s_prefix is None else s_prefix
+        self._class_label_prefix = [] if class_label_prefix is None else class_label_prefix
+        self._discard_non_one_hot = discard_non_one_hot
+        self._map_to_binary = map_to_binary
         self._discrete_feature_groups = discrete_feature_groups
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = cont_features
 
     @property
+    def name(self) -> str:
+        """Name of the dataset."""
+        return self._name
+
+    @property
     def sens_attrs(self) -> List[str]:
         """Get the list of sensitive attributes."""
-        if isinstance(self.sens_attr_spec, str):
-            return [self.sens_attr_spec]
-        assert isinstance(self.sens_attr_spec, dict)
-        return label_spec_to_feature_list(self.sens_attr_spec)
+        if isinstance(self._sens_attr_spec, str):
+            return [self._sens_attr_spec]
+        assert isinstance(self._sens_attr_spec, dict)
+        return label_spec_to_feature_list(self._sens_attr_spec)
 
     @property
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
-        if isinstance(self.class_label_spec, str):
-            return [self.class_label_spec]
-        assert isinstance(self.class_label_spec, dict)
-        return label_spec_to_feature_list(self.class_label_spec)
+        if isinstance(self._class_label_spec, str):
+            return [self._class_label_spec]
+        assert isinstance(self._class_label_spec, dict)
+        return label_spec_to_feature_list(self._class_label_spec)
 
     @property
     def filepath(self) -> Path:
@@ -94,9 +102,9 @@ class Dataset:
     def features_to_remove(self) -> List[str]:
         """Features that have to be removed from x."""
         to_remove: List[str] = []
-        to_remove += self.s_prefix
-        to_remove += self.class_label_prefix
-        if self.discrete_only:
+        to_remove += self._s_prefix
+        to_remove += self._class_label_prefix
+        if self._discrete_only:
             to_remove += self.continuous_features
         return to_remove
 
@@ -124,7 +132,7 @@ class Dataset:
         features_to_remove = self.features_to_remove
 
         return {
-            "x": filter_features_by_prefixes(self.features, features_to_remove),
+            "x": filter_features_by_prefixes(self._features, features_to_remove),
             "s": self.sens_attrs,
             "y": self.class_labels,
         }
@@ -138,7 +146,7 @@ class Dataset:
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
         return get_discrete_features(
-            list(self.features), self.features_to_remove, self.continuous_features
+            list(self._features), self.features_to_remove, self.continuous_features
         )
 
     @property
@@ -151,8 +159,90 @@ class Dataset:
 
     def __len__(self) -> int:
         """Number of elements in the dataset."""
-        return self.num_samples
+        return self._num_samples
 
+    @abstractmethod
+    def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
+        """Load the dataset."""
+        raise NotImplementedError("Dataset is abstract.")
+
+    def _maybe_combine_labels(
+        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
+    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
+        """Construct a new label according to the LabelSpecs."""
+        mask = None  # the mask is needed when we have to discard samples
+
+        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
+        if isinstance(label_mapping, str):
+            return attributes, mask
+
+        # create a Series of zeroes with the same length as the dataframe
+        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
+
+        for name, spec in label_mapping.items():
+            if len(spec.columns) > 1:  # data is one-hot encoded
+                raw_values = attributes[spec.columns]
+                if self._discard_non_one_hot:
+                    # only use those samples where exactly one of the specified attributes is true
+                    mask = raw_values.sum(axis="columns") == 1
+                else:
+                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+                values = undo_one_hot(raw_values)
+            else:
+                values = attributes[spec.columns[0]]
+            combination += spec.multiplier * values
+        return combination.to_frame(name=",".join(label_mapping)), mask
+
+    @staticmethod
+    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
+        out = data.copy()
+
+        for col_parent, filter_col in categorical_cols.items():
+            if len(filter_col) > 1:
+                undummified = (
+                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
+                )
+
+                out[col_parent] = undummified
+                out.drop(filter_col, axis=1, inplace=True)
+
+        return out
+
+    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+        """Expand a label in the form of an index into all the subfeatures."""
+        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
+        assert not isinstance(label_mapping, str)
+        label_mapping: LabelSpec  # redefine the variable for mypy's sake
+
+        # first order the multipliers; this is important for disentangling the values
+        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
+
+        labels = label[label.columns[0]]
+
+        final_df = {}
+        for i, name in enumerate(names_ordered):
+            spec = label_mapping[name]
+            value = labels
+            if i + 1 < len(names_ordered):
+                next_group = label_mapping[names_ordered[i + 1]]
+                value = labels % next_group.multiplier
+            value = value // spec.multiplier
+            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
+            restored = pd.get_dummies(value)
+            final_df[name] = restored  # for the multi-level column index
+
+        return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
+
+
+@dataclass(init=False)
+class LoadableDataset(Dataset):
+    """Dataset that uses the default load function."""
+
+    # TODO: actually move the loading code into this class. This will require some wider changes.
+    discrete_only: bool = False
+    invert_s: bool = False
+
+    @implements(Dataset)
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
@@ -163,7 +253,7 @@ class Dataset:
         Returns:
             DataTuple with dataframes of features, labels and sensitive attributes
         """
-        dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self.num_samples)
+        dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self._num_samples)
         assert isinstance(dataframe, pd.DataFrame)
 
         feature_split = self.feature_split if not ordered else self.ordered_features
@@ -205,7 +295,7 @@ class Dataset:
         s_data = dataframe[feature_split["s"]]
         y_data = dataframe[feature_split["y"]]
 
-        if self.map_to_binary:
+        if self._map_to_binary:
             s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
@@ -227,54 +317,30 @@ class Dataset:
 
         return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
 
-    def _maybe_combine_labels(
-        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
-    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
-        """Construct a new label according to the LabelSpecs."""
-        mask = None  # the mask is needed when we have to discard samples
+    @typing.no_type_check
+    def load_aif(self):  # Returns aif.360 Standard Dataset
+        """Load the dataset as an AIF360 dataset.
 
-        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
-        if isinstance(label_mapping, str):
-            return attributes, mask
+        Experimental.
+        Requires the aif360 library.
 
-        # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
+        Ignores the type check as the return type is not yet defined.
+        """
+        from aif360.datasets import StandardDataset
 
-        for name, spec in label_mapping.items():
-            if len(spec.columns) > 1:  # data is one-hot encoded
-                raw_values = attributes[spec.columns]
-                if self.discard_non_one_hot:
-                    # only use those samples where exactly one of the specified attributes is true
-                    mask = raw_values.sum(axis="columns") == 1
-                else:
-                    assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
-                values = undo_one_hot(raw_values)
-            else:
-                values = attributes[spec.columns[0]]
-            combination += spec.multiplier * values
-        return combination.to_frame(name=",".join(label_mapping)), mask
+        data = self.load()
+        if self.disc_feature_groups is not None:
+            data_collapsed = self._from_dummies(data.x, self.disc_feature_groups)
+            data = data.replace(x=data_collapsed)
+        df = pd.concat([data.x, data.s, data.y], axis="columns")
 
-    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
-        """Expand a label in the form of an index into all the subfeatures."""
-        label_mapping = self.sens_attr_spec if label_type == "s" else self.class_label_spec
-        assert not isinstance(label_mapping, str)
-        label_mapping: LabelSpec  # redefine the variable for mypy's sake
-
-        # first order the multipliers; this is important for disentangling the values
-        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
-
-        labels = label[label.columns[0]]
-
-        final_df = {}
-        for i, name in enumerate(names_ordered):
-            spec = label_mapping[name]
-            value = labels
-            if i + 1 < len(names_ordered):
-                next_group = label_mapping[names_ordered[i + 1]]
-                value = labels % next_group.multiplier
-            value = value // spec.multiplier
-            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
-            restored = pd.get_dummies(value)
-            final_df[name] = restored  # for the multi-level column index
-
-        return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
+        return StandardDataset(
+            df=df,
+            label_name=data.y.columns[0],
+            favorable_classes=lambda x: x > 0,
+            protected_attribute_names=data.s.columns,
+            privileged_classes=[lambda x: x == 1],
+            categorical_features=self.disc_feature_groups.keys()
+            if self.disc_feature_groups is not None
+            else None,
+        )

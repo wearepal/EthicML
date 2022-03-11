@@ -1,15 +1,17 @@
 """Class to describe features of the UCI Credit dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
-
-__all__ = ["credit", "Credit"]
-
+from ..dataset import LoadableDataset
 from ..util import flatten_dict
+
+__all__ = ["credit", "Credit", "CreditSplits"]
 
 
 class CreditSplits(Enum):
+    """Splits for the Credit dataset."""
+
     SEX = "Sex"
     CUSTOM = "Custom"
 
@@ -18,21 +20,18 @@ def credit(
     split: Union[CreditSplits, str] = "Sex",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Credit":
     """UCI Credit Card dataset."""
-    return Credit(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Credit(split=CreditSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Credit(Dataset):
+@dataclass
+class Credit(LoadableDataset):
     """UCI Credit Card dataset."""
 
-    def __init__(
-        self,
-        split: Union[CreditSplits, str] = "Sex",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = CreditSplits(split)
+    split: CreditSplits = CreditSplits.SEX
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "SEX": ["SEX"],
             "EDUCATION": [
@@ -75,12 +74,12 @@ class Credit(Dataset):
             "PAY_AMT6",
         ]
 
-        if _split is CreditSplits.SEX:
+        if self.split is CreditSplits.SEX:
             sens_attr_spec = "SEX"
             s_prefix = ["SEX"]
             class_label_spec = "default-payment-next-month"
             class_label_prefix = ["default-payment-next-month"]
-        elif _split is CreditSplits.CUSTOM:
+        elif self.split is CreditSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -89,7 +88,7 @@ class Credit(Dataset):
             raise NotImplementedError
 
         super().__init__(
-            name=f"Credit {_split.value}",
+            name=f"Credit {self.split.value}",
             num_samples=30000,
             filename_or_path="UCI_Credit_Card.csv",
             features=disc_features + continuous_features,
@@ -98,7 +97,6 @@ class Credit(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

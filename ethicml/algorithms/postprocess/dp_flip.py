@@ -1,27 +1,32 @@
 """Demographic Parity Label flipping approach."""
+from dataclasses import dataclass
 from typing import Tuple
 
 import numpy as np
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .post_algorithm import PostAlgorithm
+from .post_algorithm import PostAlgorithmDC
 
 __all__ = ["DPFlip"]
 
 
-class DPFlip(PostAlgorithm):
+@dataclass
+class DPFlip(PostAlgorithmDC):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
-    def __init__(self, seed: int = 888) -> None:
-        super().__init__(name="DemPar. Post Process", seed=seed)
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "DemPar. Post Process"
 
-    @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+    @implements(PostAlgorithmDC)
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
         return self
 
-    @implements(PostAlgorithm)
+    @implements(PostAlgorithmDC)
     def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
@@ -31,7 +36,7 @@ class DPFlip(PostAlgorithm):
             _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
         )
 
-    @implements(PostAlgorithm)
+    @implements(PostAlgorithmDC)
     def run(
         self,
         train_predictions: Prediction,
@@ -66,10 +71,11 @@ class DPFlip(PostAlgorithm):
 
         _y = preds.hard[preds.hard == pre_y_val]
         _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
-        idx_s_y = _y.index & _s.index
+        idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
-        preds.hard.update({idx: post_y_val for idx in idxs[:num_to_flip]})  # type: ignore[arg-type]
+        update = pd.Series({idx: post_y_val for idx in idxs[:num_to_flip]}, dtype=preds.hard.dtype)
+        preds.hard.update(update)
         return preds
 
     @staticmethod
@@ -79,10 +85,10 @@ class DPFlip(PostAlgorithm):
         s_0 = test.s[test.s[test.s.columns[0]] == 0]
         s_1 = test.s[test.s[test.s.columns[0]] == 1]
         # Naming is nSY
-        n00 = preds.hard[(s_0.index) & (y_0.index)].count()
-        n01 = preds.hard[(s_0.index) & (y_1.index)].count()
-        n10 = preds.hard[(s_1.index) & (y_0.index)].count()
-        n11 = preds.hard[(s_1.index) & (y_1.index)].count()
+        n00 = preds.hard[s_0.index.intersection(y_0.index)].count()
+        n01 = preds.hard[s_0.index.intersection(y_1.index)].count()
+        n10 = preds.hard[s_1.index.intersection(y_0.index)].count()
+        n11 = preds.hard[s_1.index.intersection(y_1.index)].count()
 
         a = (((n00 + n01) * n11) - ((n10 + n11) * n01)) / (n00 + n01)
         b = (n10 + n11) / (n00 + n01)

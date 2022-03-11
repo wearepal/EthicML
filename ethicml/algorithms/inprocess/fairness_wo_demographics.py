@@ -23,7 +23,8 @@ class DRO(InAlgorithmAsync):
         network_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
-        super().__init__(name="Dist Robust Optim", seed=seed)
+        self.seed = seed
+        self.is_fairness_algo = True
         if network_size is None:
             network_size = [50]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
@@ -34,6 +35,11 @@ class DRO(InAlgorithmAsync):
             "network_size": network_size,
             "seed": seed,
         }
+
+    @property
+    def name(self) -> str:
+        """Name of the algorithm."""
+        return "Dist Robust Optim"
 
     @implements(InAlgorithmAsync)
     def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:

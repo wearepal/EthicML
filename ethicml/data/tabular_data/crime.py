@@ -1,15 +1,17 @@
 """Class to describe features of the Communities and Crime dataset."""
+from dataclasses import dataclass
 from enum import Enum
 from typing import Union
 
-from ..dataset import Dataset
-
-__all__ = ["crime", "Crime"]
-
+from ..dataset import LoadableDataset
 from ..util import flatten_dict
+
+__all__ = ["crime", "Crime", "CrimeSplits"]
 
 
 class CrimeSplits(Enum):
+    """Splits for the Crime dataset."""
+
     RACE_BINARY = "Race-Binary"
     CUSTOM = "Custom"
 
@@ -18,21 +20,18 @@ def crime(
     split: Union[CrimeSplits, str] = "Race-Binary",
     discrete_only: bool = False,
     invert_s: bool = False,
-) -> Dataset:
+) -> "Crime":
     """UCI Communities and Crime dataset."""
-    return Crime(split=split, discrete_only=discrete_only, invert_s=invert_s)
+    return Crime(split=CrimeSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
-class Crime(Dataset):
+@dataclass
+class Crime(LoadableDataset):
     """UCI Communities and Crime dataset."""
 
-    def __init__(
-        self,
-        split: Union[CrimeSplits, str] = "Race-Binary",
-        discrete_only: bool = False,
-        invert_s: bool = False,
-    ):
-        _split = CrimeSplits(split)
+    split: CrimeSplits = CrimeSplits.RACE_BINARY
+
+    def __post_init__(self) -> None:
         disc_feature_groups = {
             "state": [
                 "state_1",
@@ -193,12 +192,12 @@ class Crime(Dataset):
         features_to_remove = ["communityname", "fold"]
         features = discrete_features + continuous_features
         features = [feature for feature in features if feature not in features_to_remove]
-        if _split is CrimeSplits.RACE_BINARY:
+        if self.split is CrimeSplits.RACE_BINARY:
             sens_attr_spec = ">0.06black"
             s_prefix = [">0.06black", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
             class_label_spec = "high_crime"
             class_label_prefix = ["high_crime", "Violent"]
-        elif _split is CrimeSplits.CUSTOM:
+        elif self.split is CrimeSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
             class_label_spec = ""
@@ -206,7 +205,7 @@ class Crime(Dataset):
         else:
             raise NotImplementedError
         super().__init__(
-            name=f"Crime {_split.value}",
+            name=f"Crime {self.split.value}",
             num_samples=1994,
             filename_or_path="crime.csv",
             features=features,
@@ -215,7 +214,6 @@ class Crime(Dataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=discrete_only,
+            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
-            invert_s=invert_s,
         )

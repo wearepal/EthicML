@@ -1,6 +1,4 @@
 """EthicML."""
-from ethicml.metrics.per_sensitive_attribute import *
-
 from .algorithms.algorithm_base import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
@@ -15,7 +13,6 @@ from .algorithms.inprocess.manual import *
 from .algorithms.inprocess.mlp import *
 from .algorithms.inprocess.oracle import *
 from .algorithms.inprocess.svm import *
-from .algorithms.inprocess.svm_async import *
 from .algorithms.inprocess.zafar import *
 from .algorithms.postprocess.dp_flip import *
 from .algorithms.postprocess.hardt import *
@@ -30,7 +27,7 @@ from .common import *
 from .data.dataset import *
 from .data.load import *
 from .data.lookup import *
-from .data.tabular_data.acs_income import *
+from .data.tabular_data.acs import *
 from .data.tabular_data.admissions import *
 from .data.tabular_data.adult import *
 from .data.tabular_data.compas import *
@@ -49,7 +46,6 @@ from .data.vision_data.celeba import *
 from .data.vision_data.genfaces import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
-from .evaluators.parallelism import *
 from .metrics.accuracy import *
 from .metrics.anti_spur import AS
 from .metrics.average_odds import AverageOddsDiff
@@ -61,8 +57,9 @@ from .metrics.dependence_measures import *
 from .metrics.fnr import FNR
 from .metrics.fpr import FPR
 from .metrics.hsic import Hsic
-from .metrics.metric import Metric
+from .metrics.metric import *
 from .metrics.npv import NPV
+from .metrics.per_sensitive_attribute import *
 from .metrics.ppv import PPV
 from .metrics.prob_neg import ProbNeg
 from .metrics.prob_outcome import ProbOutcome
