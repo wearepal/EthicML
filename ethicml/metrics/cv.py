@@ -6,17 +6,16 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import Metric
+from .metric import FairnessMetric, Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .prob_pos import ProbPos
 
 
 @dataclass
-class CV(Metric):
+class CV(FairnessMetric):
     """Calder-Verwer."""
 
     _name: ClassVar[str] = "CV"
-    apply_per_sensitive = False
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -24,11 +23,6 @@ class CV(Metric):
         diffs = diff_per_sensitive_attribute(per_sens)
 
         return 1 - list(diffs.values())[0]
-
-    @property
-    def name(self) -> str:
-        """Name of the metric."""
-        return self._name
 
 
 @dataclass
