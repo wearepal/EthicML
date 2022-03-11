@@ -7,13 +7,13 @@ from ranzen import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .fpr import FPR
-from .metric import ClassificationMetric, Metric
+from .metric import FairnessMetric, Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
 
 @dataclass
-class AverageOddsDiff(ClassificationMetric):
+class AverageOddsDiff(FairnessMetric):
     r"""Average Odds Difference.
 
     :math:`\tfrac{1}{2}\left[(FPR_{s=0} - FPR_{s=1}) + (TPR_{s=0} - TPR_{s=1}))\right]`.
