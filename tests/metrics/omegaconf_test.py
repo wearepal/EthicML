@@ -1,7 +1,8 @@
 """Test whether metrics classes are compatible with OmegaConf and thus hydra."""
 from typing import Type
-from omegaconf import OmegaConf
+
 import pytest
+from omegaconf import OmegaConf
 
 import ethicml as em
 
@@ -29,7 +30,7 @@ import ethicml as em
         em.RenyiCorrelation,
         em.TNR,
         em.TPR,
-        em.Theil
+        em.Theil,
     ],
 )
 def test_omegaconf(metric_class: Type[em.Metric]):

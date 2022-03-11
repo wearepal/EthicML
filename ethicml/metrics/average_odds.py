@@ -8,10 +8,7 @@ from ethicml.utility import DataTuple, Prediction
 
 from .fpr import FPR
 from .metric import ClassificationMetric, Metric
-from .per_sensitive_attribute import (
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-)
+from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
 

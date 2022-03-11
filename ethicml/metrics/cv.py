@@ -7,10 +7,7 @@ from ranzen import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
-from .per_sensitive_attribute import (
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-)
+from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .prob_pos import ProbPos
 
 

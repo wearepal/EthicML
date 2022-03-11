@@ -2,8 +2,8 @@
 
 a score of 0 denotes independence
 """
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 from typing import ClassVar
 
 import numpy as np
