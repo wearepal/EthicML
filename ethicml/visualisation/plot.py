@@ -340,20 +340,20 @@ def plot_results(
             cols = [col for col in cols if ("-" in col) or ("/" in col)]
         return cols
 
-    if isinstance(metric_x, Metric):
-        # if the metric is given as a Metric object, look for matching columns
-        cols_x = _get_columns(metric_x)
-    else:
+    if isinstance(metric_x, str):
         if metric_x not in results.columns:
             raise ValueError(f'No column named "{metric_x}".')
         cols_x = [metric_x]
-
-    if isinstance(metric_y, Metric):
-        cols_y = _get_columns(metric_y)
     else:
+        # if the metric is given as a Metric object, look for matching columns
+        cols_x = _get_columns(metric_x)
+
+    if isinstance(metric_y, str):
         if metric_y not in results.columns:
             raise ValueError(f'No column named "{metric_y}".')
         cols_y = [metric_y]
+    else:
+        cols_y = _get_columns(metric_y)
 
     # generate the Cartesian product of `cols_x` and `cols_y`; i.e. all possible combinations
     # this preserves the order of x and y

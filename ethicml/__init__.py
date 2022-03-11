@@ -57,7 +57,7 @@ from .metrics.dependence_measures import *
 from .metrics.fnr import FNR
 from .metrics.fpr import FPR
 from .metrics.hsic import Hsic
-from .metrics.metric import Metric
+from .metrics.metric import *
 from .metrics.npv import NPV
 from .metrics.per_sensitive_attribute import *
 from .metrics.ppv import PPV

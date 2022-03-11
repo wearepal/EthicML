@@ -1,21 +1,20 @@
 """Abstract Base Class of all metrics in the framework."""
 
-from abc import ABC, abstractmethod
-from typing import List, Optional
+from abc import abstractmethod
+from dataclasses import dataclass
+from typing import ClassVar, List, Optional
+from typing_extensions import Protocol
 
 from ethicml.utility import DataTuple, Prediction
 
+__all__ = ["CfmMetric", "BaseMetric", "Metric"]
 
-class Metric(ABC):
+
+class Metric(Protocol):
     """Base class for all metrics."""
 
-    # the following instance attribute should be overwritten in the subclass
-    # unfortunately this cannot be enforced with mypy yet
-    # see https://github.com/python/mypy/issues/4019 for more information on this limitation
-    _name: str = "<unnamed metric>"
-
-    def __init__(self, pos_class: int = 1) -> None:
-        self.positive_class = pos_class
+    apply_per_sensitive: ClassVar[bool]
+    """Whether the metric can be applied per sensitive attribute."""
 
     @abstractmethod
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -30,25 +29,29 @@ class Metric(ABC):
         """
 
     @property
+    @abstractmethod
+    def name(self) -> str:
+        """Name of the metric."""
+
+
+class BaseMetric(Metric, Protocol):
+    """Metric base class for metrics whose name does not depend on instance variables."""
+
+    _name: ClassVar[str]
+
+    @property
     def name(self) -> str:
         """Name of the metric."""
         return self._name
 
-    @property
-    def apply_per_sensitive(self) -> bool:
-        """Whether the metric can be applied per sensitive attribute."""
-        return True
 
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class CfmMetric(BaseMetric):
+    """Confusion Matrix based metric."""
 
-class CfmMetric(Metric):
-    """Confusion Matrix based Metric."""
-
-    def __init__(self, pos_class: int = 1, labels: Optional[List[int]] = None):
-        """Confusion Matrix based Metrics.
-
-        Args:
-            pos_class: The class to treat as being "positive"
-            labels: List of possible target values. If `None` is provided then this is inferred from the data when run.
-        """
-        super().__init__(pos_class=pos_class)
-        self.labels = labels
+    pos_class: int = 1
+    """The class to treat as being "positive"."""
+    labels: Optional[List[int]] = None
+    """List of possible target values. If `None`, then this is inferred from the data when run."""
+    apply_per_sensitive: ClassVar[bool] = True
+    _name: ClassVar[str] = "<please overwrite me>"

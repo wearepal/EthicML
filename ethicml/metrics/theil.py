@@ -3,21 +3,25 @@
 https://github.com/IBM/AIF360/blob/b5f4591c7c7374b9c88706827080a931209e7a24/aif360/metrics/classification_metric.py
 in turn based on the paper https://arxiv.org/abs/1807.00787
 """
+from dataclasses import dataclass
+from typing import ClassVar
 
 import numpy as np
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import Metric
+from .metric import BaseMetric
 
 
-class Theil(Metric):
+@dataclass
+class Theil(BaseMetric):
     """Theil Index."""
 
-    _name: str = "Theil_Index"
+    _name: ClassVar[str] = "Theil_Index"
+    apply_per_sensitive: ClassVar[bool] = True
 
-    @implements(Metric)
+    @implements(BaseMetric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         y_true_df = actual.y
         act_col = y_true_df.columns[0]
