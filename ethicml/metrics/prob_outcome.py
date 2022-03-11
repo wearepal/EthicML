@@ -1,16 +1,19 @@
 """For assessing mean of logits."""
+from dataclasses import dataclass
+from typing import ClassVar
 
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
-from .metric import Metric
+from .metric import ClassificationMetric, Metric
 
 
-class ProbOutcome(Metric):
+@dataclass
+class ProbOutcome(ClassificationMetric):
     """Mean of logits."""
 
-    _name: str = "prob_outcome"
+    _name: ClassVar[str] = "prob_outcome"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:

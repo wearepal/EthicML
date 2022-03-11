@@ -1,18 +1,25 @@
 """For assessing Calder-Verwer metric, :math:`1-(P(Y=1|S=1)-P(Y=1|S!=1))`."""
+from dataclasses import dataclass
+from typing import ClassVar
 
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
-from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from .per_sensitive_attribute import (
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+)
 from .prob_pos import ProbPos
 
 
+@dataclass
 class CV(Metric):
     """Calder-Verwer."""
 
-    _name: str = "CV"
+    _name: ClassVar[str] = "CV"
+    apply_per_sensitive = False
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -22,18 +29,19 @@ class CV(Metric):
         return 1 - list(diffs.values())[0]
 
     @property
-    def apply_per_sensitive(self) -> bool:
-        """Can this metric be applied per sensitive attribute group?"""
-        return False
+    def name(self) -> str:
+        """Name of the metric."""
+        return self._name
 
 
+@dataclass
 class AbsCV(CV):
     """Absolute value of Calder-Verwer.
 
     This metric is supposed to make it easier to compare results.
     """
 
-    _name: str = "CV absolute"
+    _name: ClassVar[str] = "CV absolute"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:

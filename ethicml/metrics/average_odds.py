@@ -1,17 +1,22 @@
 """For assessing Average Odds Difference metric."""
-
+from dataclasses import dataclass
+from typing import ClassVar
 
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
 from .fpr import FPR
-from .metric import Metric
-from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from .metric import ClassificationMetric, Metric
+from .per_sensitive_attribute import (
+    diff_per_sensitive_attribute,
+    metric_per_sensitive_attribute,
+)
 from .tpr import TPR
 
 
-class AverageOddsDiff(Metric):
+@dataclass
+class AverageOddsDiff(ClassificationMetric):
     r"""Average Odds Difference.
 
     :math:`\tfrac{1}{2}\left[(FPR_{s=0} - FPR_{s=1}) + (TPR_{s=0} - TPR_{s=1}))\right]`.
@@ -19,7 +24,7 @@ class AverageOddsDiff(Metric):
     A value of 0 indicates equality of odds.
     """
 
-    _name: str = "AverageOddsDiff"
+    _name: ClassVar[str] = "AverageOddsDiff"
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -38,8 +43,3 @@ class AverageOddsDiff(Metric):
             fpr_sum += fpr_v
 
         return 0.5 * ((fpr_sum / total) + (tpr_sum / total))
-
-    @property
-    def apply_per_sensitive(self) -> bool:
-        """Can this metric be applied per sensitive attribute group?"""
-        return False

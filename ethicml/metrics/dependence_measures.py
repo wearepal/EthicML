@@ -1,6 +1,7 @@
 """For assessing the Mutual Information between s and yhat."""
+from dataclasses import dataclass
+from enum import Enum, auto
 from typing import ClassVar
-from typing_extensions import Literal
 
 import numpy as np
 from ranzen import implements
@@ -10,29 +11,31 @@ from ethicml.utility import DataTuple, Prediction
 
 from .metric import Metric
 
-__all__ = ["NMI", "RenyiCorrelation", "Yanovich"]
+__all__ = ["DependencyTarget", "NMI", "RenyiCorrelation", "Yanovich"]
 
 
+class DependencyTarget(Enum):
+    """The variable that is compared to the predictions in order to check how similar they are."""
+
+    s = auto()
+    y = auto()
+
+
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
 class _DependenceMeasure(Metric):
     """Base class for dependence measures, which tell you how dependent two variables are."""
 
-    _base_name: ClassVar[str]
-
-    def __init__(self, pos_class: int = 1, base: Literal["y", "s"] = "s"):
-        super().__init__(pos_class=pos_class)
-        if base not in ["s", "y"]:
-            raise NotImplementedError(
-                "Can only calculate NMI of prediction.hards with regard to y or s"
-            )
-        self._name = f"{self._base_name} preds and {base}"
-        self.base = base
+    base: DependencyTarget = DependencyTarget.s
+    _base_name: ClassVar[str] = "<please overwrite me>"
+    apply_per_sensitive = False
 
     @property
-    def apply_per_sensitive(self) -> bool:
-        """Can this metric be applied per sensitive attribute group?"""
-        return False
+    def name(self) -> str:
+        """Name of the metric."""
+        return f"{self._base_name} preds and {self.base}"
 
 
+@dataclass
 class NMI(_DependenceMeasure):
     """Normalized Mutual Information.
 
@@ -43,7 +46,7 @@ class NMI(_DependenceMeasure):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        base_values = actual.y if self.base == "y" else actual.s
+        base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return normalized_mutual_info_score(
             base_values.to_numpy().ravel(),
             prediction.hard.to_numpy().ravel(),
@@ -51,6 +54,7 @@ class NMI(_DependenceMeasure):
         )
 
 
+@dataclass
 class Yanovich(_DependenceMeasure):
     """Yanovich Metric. Measures how dependent two random variables are.
 
@@ -61,7 +65,7 @@ class Yanovich(_DependenceMeasure):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        base_values = actual.y if self.base == "y" else actual.s
+        base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._dependence(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 
     @staticmethod
@@ -90,7 +94,7 @@ class Yanovich(_DependenceMeasure):
                     # k < l
                     for l in range(k + 1, len(y_vals)):
                         determinant = joint[i, k] * joint[j, l] - joint[j, k] * joint[i, l]
-                        sum_sq_determinants += determinant**2
+                        sum_sq_determinants += determinant ** 2
 
         marginal = np.sum(joint, axis=1)
 
@@ -103,6 +107,7 @@ class Yanovich(_DependenceMeasure):
         return sum_sq_determinants / denominator
 
 
+@dataclass
 class RenyiCorrelation(_DependenceMeasure):
     """Renyi correlation. Measures how dependent two random variables are.
 
@@ -114,7 +119,7 @@ class RenyiCorrelation(_DependenceMeasure):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        base_values = actual.y if self.base == "y" else actual.s
+        base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._corr(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 
     @staticmethod
@@ -146,4 +151,4 @@ class RenyiCorrelation(_DependenceMeasure):
 
 def _count_true(mask: np.ndarray) -> int:
     """Count the number of elements that are True."""
-    return mask.nonzero()[0].shape[0]
+    return np.count_nonzero(mask)

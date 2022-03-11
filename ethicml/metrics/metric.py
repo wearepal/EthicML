@@ -1,21 +1,22 @@
 """Abstract Base Class of all metrics in the framework."""
 
-from abc import ABC, abstractmethod
-from typing import List, Optional
+from abc import abstractmethod
+from dataclasses import dataclass
+from typing import ClassVar, List, Optional
+from typing_extensions import Protocol
 
 from ethicml.utility import DataTuple, Prediction
 
+__all__ = ["CfmMetric", "ClassificationMetric", "FairnessMetric", "Metric"]
 
-class Metric(ABC):
+
+class Metric(Protocol):
     """Base class for all metrics."""
 
-    # the following instance attribute should be overwritten in the subclass
-    # unfortunately this cannot be enforced with mypy yet
-    # see https://github.com/python/mypy/issues/4019 for more information on this limitation
-    _name: str = "<unnamed metric>"
-
-    def __init__(self, pos_class: int = 1) -> None:
-        self.positive_class = pos_class
+    apply_per_sensitive: bool
+    """Whether the metric can be applied per sensitive attribute."""
+    # name: str
+    # """Name of the metric."""
 
     @abstractmethod
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
@@ -30,25 +31,49 @@ class Metric(ABC):
         """
 
     @property
+    @abstractmethod
+    def name(self) -> str:
+        """Name of the metric."""
+
+
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class CfmMetric(Metric):
+    """Confusion Matrix based metric."""
+
+    pos_class: int = 1
+    """The class to treat as being "positive"."""
+    labels: Optional[List[int]] = None
+    """List of possible target values. If `None`, then this is inferred from the data when run."""
+    _name: ClassVar[str] = "<please overwrite me>"
+    apply_per_sensitive = True
+
+    @property
     def name(self) -> str:
         """Name of the metric."""
         return self._name
 
+
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class ClassificationMetric(Metric):
+    """Classification metrics are not explicitly fairness related."""
+
+    _name: ClassVar[str] = "<please overwrite me>"
+    apply_per_sensitive = True
+
     @property
-    def apply_per_sensitive(self) -> bool:
-        """Whether the metric can be applied per sensitive attribute."""
-        return True
+    def name(self) -> str:
+        """Name of the metric."""
+        return self._name
 
 
-class CfmMetric(Metric):
-    """Confusion Matrix based Metric."""
+@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class FairnessMetric(Metric):
+    """Fairness metrics explicitly measure something related to fairness."""
 
-    def __init__(self, pos_class: int = 1, labels: Optional[List[int]] = None):
-        """Confusion Matrix based Metrics.
+    _name: ClassVar[str] = "<please overwrite me>"
+    apply_per_sensitive = False
 
-        Args:
-            pos_class: The class to treat as being "positive"
-            labels: List of possible target values. If `None` is provided then this is inferred from the data when run.
-        """
-        super().__init__(pos_class=pos_class)
-        self.labels = labels
+    @property
+    def name(self) -> str:
+        """Name of the metric."""
+        return self._name
