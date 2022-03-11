@@ -7,13 +7,13 @@ from ranzen import implements
 from ethicml.utility import DataTuple, Prediction
 
 from .fpr import FPR
-from .metric import FairnessMetric, Metric
+from .metric import CfmMetric, Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
 
 @dataclass
-class AverageOddsDiff(FairnessMetric):
+class AverageOddsDiff(CfmMetric):
     r"""Average Odds Difference.
 
     :math:`\tfrac{1}{2}\left[(FPR_{s=0} - FPR_{s=1}) + (TPR_{s=0} - TPR_{s=1}))\right]`.
@@ -22,11 +22,14 @@ class AverageOddsDiff(FairnessMetric):
     """
 
     _name: ClassVar[str] = "AverageOddsDiff"
+    apply_per_sensitive: ClassVar[bool] = False
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        tpr_per_sens = metric_per_sensitive_attribute(prediction, actual, TPR())
-        fpr_per_sens = metric_per_sensitive_attribute(prediction, actual, FPR())
+        tpr = TPR(pos_class=self.pos_class, labels=self.labels)
+        tpr_per_sens = metric_per_sensitive_attribute(prediction, actual, tpr)
+        fpr = FPR(pos_class=self.pos_class, labels=self.labels)
+        fpr_per_sens = metric_per_sensitive_attribute(prediction, actual, fpr)
 
         tpr_diff = diff_per_sensitive_attribute(tpr_per_sens)
         fpr_diff = diff_per_sensitive_attribute(fpr_per_sens)

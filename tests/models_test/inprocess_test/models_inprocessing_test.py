@@ -1,6 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import Dict, Generator, List, NamedTuple
+from typing import ClassVar, Dict, Generator, List, NamedTuple
 
 import numpy as np
 import pytest
@@ -16,6 +16,7 @@ from ethicml import (
     AbsCV,
     Accuracy,
     Agarwal,
+    BaseMetric,
     Blind,
     Corels,
     CrossValidator,
@@ -27,7 +28,6 @@ from ethicml import (
     Kamishima,
     LRProb,
     Majority,
-    Metric,
     Oracle,
     Prediction,
     TrainTestPair,
@@ -231,18 +231,15 @@ def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
 
-    class AssertResult:
-        apply_per_sensitive: bool = True
+    class AssertResult(BaseMetric):
+        apply_per_sensitive: ClassVar[bool] = True
+        _name: ClassVar[str] = "assert_result"
 
         def score(self, prediction, actual) -> float:
             return (
                 np.count_nonzero(prediction.hard.values == 1) == 45
                 and np.count_nonzero(prediction.hard.values == 0) == 35
             )
-
-        @property
-        def name(self) -> str:
-            return "assert_result"
 
     results = evaluate_models_async(
         datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True

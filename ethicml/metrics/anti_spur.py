@@ -7,17 +7,18 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import ClassificationMetric, Metric
+from .metric import BaseMetric, Metric
 
 
 @dataclass
-class AS(ClassificationMetric):
+class AS(BaseMetric):
     r"""Anti-spurious metric.
 
     Computes :math:`P(\hat{y}=y|y\neq s)`.
     """
 
     _name: ClassVar[str] = "anti_spurious"
+    apply_per_sensitive: ClassVar[bool] = True
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:

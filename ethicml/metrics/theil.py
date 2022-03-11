@@ -11,16 +11,17 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import ClassificationMetric
+from .metric import BaseMetric
 
 
 @dataclass
-class Theil(ClassificationMetric):
+class Theil(BaseMetric):
     """Theil Index."""
 
     _name: ClassVar[str] = "Theil_Index"
+    apply_per_sensitive: ClassVar[bool] = True
 
-    @implements(ClassificationMetric)
+    @implements(BaseMetric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         y_true_df = actual.y
         act_col = y_true_df.columns[0]

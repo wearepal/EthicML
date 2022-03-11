@@ -9,7 +9,7 @@ from typing import ClassVar
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.metrics.metric import FairnessMetric
+from ethicml.metrics.metric import BaseMetric
 from ethicml.utility import DataTuple, Prediction
 
 
@@ -51,11 +51,12 @@ def hsic(
 
 
 @dataclass
-class Hsic(FairnessMetric):
+class Hsic(BaseMetric):
     """See module string."""
 
     seed: int = 888
     _name: ClassVar[str] = "HSIC"
+    apply_per_sensitive: ClassVar[bool] = False
 
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """We add the ability to take the average of hsic score.

@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import ClassVar
+from typing_extensions import Protocol
 
 import numpy as np
 from ranzen import enum_name_str, implements
@@ -22,13 +23,12 @@ class DependencyTarget(Enum):
     y = auto()
 
 
-@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class _DependenceMeasure(Metric):
+class _DependenceMeasure(Metric, Protocol):
     """Base class for dependence measures, which tell you how dependent two variables are."""
 
-    base: DependencyTarget = DependencyTarget.s
-    _base_name: ClassVar[str] = "<please overwrite me>"
-    apply_per_sensitive = False
+    base: DependencyTarget
+    _base_name: ClassVar[str]
+    apply_per_sensitive: ClassVar[bool] = False
 
     @property
     def name(self) -> str:
@@ -43,6 +43,7 @@ class NMI(_DependenceMeasure):
     Also called V-Measure. Defined in this paper: https://www.aclweb.org/anthology/D07-1043.pdf
     """
 
+    base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "NMI"
 
     @implements(Metric)
@@ -62,6 +63,7 @@ class Yanovich(_DependenceMeasure):
     As defined in this paper: https://arxiv.org/abs/1008.0492
     """
 
+    base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "Yanovich"
 
     @implements(Metric)
@@ -116,6 +118,7 @@ class RenyiCorrelation(_DependenceMeasure):
     titled "On Measures of Dependence" by Alfréd Rényi.
     """
 
+    base: DependencyTarget = DependencyTarget.s
     _base_name: ClassVar[str] = "Renyi"
 
     @implements(Metric)

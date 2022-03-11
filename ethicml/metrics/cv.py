@@ -6,20 +6,22 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import FairnessMetric, Metric
+from .metric import BaseMetric, CfmMetric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .prob_pos import ProbPos
 
 
 @dataclass
-class CV(FairnessMetric):
+class CV(CfmMetric):
     """Calder-Verwer."""
 
     _name: ClassVar[str] = "CV"
+    apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(Metric)
+    @implements(BaseMetric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        per_sens = metric_per_sensitive_attribute(prediction, actual, metric=ProbPos())
+        prob_pos = ProbPos(pos_class=self.pos_class, labels=self.labels)
+        per_sens = metric_per_sensitive_attribute(prediction, actual, metric=prob_pos)
         diffs = diff_per_sensitive_attribute(per_sens)
 
         return 1 - list(diffs.values())[0]
@@ -34,7 +36,7 @@ class AbsCV(CV):
 
     _name: ClassVar[str] = "CV absolute"
 
-    @implements(Metric)
+    @implements(BaseMetric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)
