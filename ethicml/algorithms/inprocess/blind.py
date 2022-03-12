@@ -14,7 +14,11 @@ __all__ = ["Blind"]
 
 @dataclass
 class Blind(InAlgorithmDC):
-    """Returns a random label."""
+    """A Random classifier.
+
+    This is useful as a baseline method and operates a 'coin flip' to assign a label.
+    Returns a random label.
+    """
 
     @property
     def name(self) -> str:

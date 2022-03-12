@@ -1,5 +1,6 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
 from dataclasses import dataclass, field
+from typing import Final
 
 import numpy as np
 import pandas as pd
@@ -16,11 +17,19 @@ __all__ = ["LR", "LRCV", "LRProb"]
 
 @dataclass
 class LR(InAlgorithm):
-    """Logistic regression with hard predictions."""
+    """Logistic regression with hard predictions.
+
+    This is a wrapper around Sci-Kit Learn's LogisticRegression.
+    The documentation for which is available [here](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+
+    Args:
+        C (float): The regularization parameter.
+        seed (int): The seed for the random number generator.
+    """
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
     seed: int = 888
-    is_fairness_algo = False
+    is_fairness_algo: Final[bool] = False
 
     @property
     def name(self) -> str:
@@ -52,11 +61,16 @@ class LR(InAlgorithm):
 
 @dataclass
 class LRProb(InAlgorithm):
-    """Logistic regression with soft output."""
+    """Logistic regression with soft output.
+
+    Args:
+        C (float): The regularization parameter.
+        seed (int): The seed for the random number generator.
+    """
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
     seed: int = 888
-    is_fairness_algo = False
+    is_fairness_algo: Final[bool] = False
 
     @property
     def name(self) -> str:
@@ -88,11 +102,16 @@ class LRProb(InAlgorithm):
 
 @dataclass
 class LRCV(InAlgorithm):
-    """Kind of a cheap hack for now, but gives a proper cross-valudeted LR."""
+    """Kind of a cheap hack for now, but gives a proper cross-valudeted LR.
+
+    Args:
+        n_splits (int): The number of splits for the cross-validation.
+        seed (int): The seed for the random number generator.
+    """
 
     n_splits: int = 3
     seed: int = 888
-    is_fairness_algo = False
+    is_fairness_algo: Final[bool] = False
 
     @property
     def name(self) -> str:

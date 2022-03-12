@@ -43,7 +43,7 @@ class InAlgorithm(Algorithm, Protocol):
             test: data to evaluate on
 
         Returns:
-            predictions
+            Prediction
         """
 
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -54,7 +54,7 @@ class InAlgorithm(Algorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         self.fit(train)
         return self.predict(test)
@@ -90,7 +90,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -109,7 +109,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -129,7 +129,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)

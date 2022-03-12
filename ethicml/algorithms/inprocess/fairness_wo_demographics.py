@@ -23,6 +23,16 @@ class DRO(InAlgorithmAsync):
         network_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
+        """Initialize the DostributionallyRobust Optimization method.
+
+        Args:
+            dir: Directory to store the model.
+            eta: Tolerance.
+            epochs: The number of epochs to train for.
+            batch_size: The batch size.
+            network_size: The size of the network.
+            seed: The seed for the random number generator.
+        """
         self.seed = seed
         self.is_fairness_algo = True
         if network_size is None:

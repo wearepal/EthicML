@@ -1,5 +1,5 @@
 """Wrapper for SKLearn implementation of SVM."""
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -12,15 +12,22 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
+KernelType = Literal["linear", "rbf", "poly", "sigmoid"]
+
 
 class SVM(InAlgorithm):
-    """Support Vector Machine."""
+    """A wraper around the SciKitLearn Support Vector Classifier (SVC) model.
+
+    Documentation for the underlying classifier can be found [here](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html).
+    """
 
     is_fairness_algo = False
 
-    def __init__(self, C: Optional[float] = None, kernel: Optional[str] = None, seed: int = 888):
+    def __init__(
+        self, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
+    ):
         kernel_name = f" ({kernel})" if kernel is not None else ""
-        self.__name = "SVM" + kernel_name
+        self.__name = f"SVM{kernel_name}"
         self.seed = seed
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
