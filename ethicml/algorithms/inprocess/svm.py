@@ -1,5 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
-from typing import Literal, Optional, Union
+from typing import Optional, Union
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
