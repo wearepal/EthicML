@@ -1,6 +1,5 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
 from dataclasses import dataclass, field
-from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
@@ -29,7 +28,7 @@ class LR(InAlgorithm):
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
     seed: int = 888
-    is_fairness_algo: Final[bool] = False
+    is_fairness_algo = False
 
     @property
     def name(self) -> str:
@@ -70,7 +69,7 @@ class LRProb(InAlgorithm):
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
     seed: int = 888
-    is_fairness_algo: Final[bool] = False
+    is_fairness_algo = False
 
     @property
     def name(self) -> str:
@@ -111,7 +110,7 @@ class LRCV(InAlgorithm):
 
     n_splits: int = 3
     seed: int = 888
-    is_fairness_algo: Final[bool] = False
+    is_fairness_algo = False
 
     @property
     def name(self) -> str:
