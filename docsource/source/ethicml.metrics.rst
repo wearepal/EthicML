@@ -5,6 +5,7 @@ Metrics
 .. automodule:: ethicml.metrics
    :members:
    :imported-members:
+   :inherited-members:
 
 .. contents::
     :depth: 2

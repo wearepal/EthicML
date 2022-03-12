@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- Project information -----------------------------------------------------
 
 project = "EthicML"
-copyright = "2021, O. Thomas, T. Kehrenberg"
+copyright = "2022, O. Thomas, T. Kehrenberg"
 author = "O. Thomas, T. Kehrenberg"
 
 # The full version, including alpha/beta/rc tags
@@ -38,13 +38,18 @@ autodoc_default_options = {
     "show-inheritance": True,
     "autosummary": True,
     "autosummary-no-nesting": True,
-    "autosummary-nosignatures": True,
+    "autosummary-nosignatures": False,
     "special-members": "__len__",
 }
-autodoc_typehints = "description"
+autodoc_typehints = "description"  # show typehints in the descriptions of the parameters
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "documented"
+autodoc_inherit_docstrings = True
 autodoc_type_aliases = {
     "pd.DataFrame": "pandas.DataFrame",
 }
+autodoc_member_order = "bysource"
+autodoc_class_signature = "mixed"
 autodoc_mock_imports = [
     "PIL",
     "folktables",

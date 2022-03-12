@@ -47,11 +47,16 @@ class BaseMetric(Metric, Protocol):
 
 @dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
 class CfmMetric(BaseMetric):
-    """Confusion Matrix based metric."""
+    """Confusion Matrix based metric.
+
+    Attributes:
+        pos_class: The class to treat as being "positive".
+        labels: List of possible target values. If `None`, this is inferred from the data when run.
+    """
 
     pos_class: int = 1
-    """The class to treat as being "positive"."""
+    # """The class to treat as being "positive"."""
     labels: Optional[List[int]] = None
-    """List of possible target values. If `None`, then this is inferred from the data when run."""
+    # """List of possible target values. If `None`, then this is inferred from the data when run."""
     apply_per_sensitive: ClassVar[bool] = True
     _name: ClassVar[str] = "<please overwrite me>"

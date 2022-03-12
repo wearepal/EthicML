@@ -19,7 +19,7 @@ from .dependence_measures import *
 from .fnr import FNR
 from .fpr import FPR
 from .hsic import Hsic
-from .metric import Metric
+from .metric import *
 from .npv import NPV
 from .ppv import PPV
 from .prob_neg import ProbNeg

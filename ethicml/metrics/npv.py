@@ -12,7 +12,12 @@ from .metric import CfmMetric, Metric
 
 @dataclass
 class NPV(CfmMetric):
-    """Negative predictive value."""
+    """Negative predictive value.
+
+    Args:
+        pos_class: index of the "positive" class.
+        labels: List of possible target values. If `None`, then this is inferred from the data when run.
+    """
 
     _name: ClassVar[str] = "NPV"
 
