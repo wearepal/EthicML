@@ -1,6 +1,6 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
 from dataclasses import dataclass, field
-from typing import Final
+from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
