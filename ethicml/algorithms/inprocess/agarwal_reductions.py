@@ -20,7 +20,7 @@ VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 class Agarwal(InAlgorithmAsync):
     """Agarwal class.
 
-    A wrapper around the Exponentiated Gradient method documented [here](https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient).
+    A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
     """
 
     def __init__(
