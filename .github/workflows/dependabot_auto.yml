@@ -1,34 +1,14 @@
-name: Dependabot auto-approve
-on:
-  workflow_run:
-    workflows:
-      - "EthicML CI"
-    types:
-      - completed
+name: Dependabot auto-merge
+on: pull_request
 
 permissions:
   pull-requests: write
   contents: write
 
 jobs:
-  dependabot-auto-approve:
+  dependabot:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.1.1
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Approve a PR
-        run: gh pr review --approve "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-  dependabot-auto-merge:
-    needs: [dependabot-auto-approve]
-    runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata
         id: metadata
