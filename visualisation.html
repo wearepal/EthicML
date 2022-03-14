@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Vision data helpers" href="ethicml.vision.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Vision data helpers" href="vision.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Visualisation helpers - EthicML 0.6.0 documentation</title>
@@ -153,13 +153,26 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Visualisation helpers</a></li>
 </ul>
 
@@ -231,8 +244,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>ethicml.utility.data_structures.Results</em>) – a DataFrame that already contains the values of the metrics</p></li>
-<li><p><strong>metric_y</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
-<li><p><strong>metric_x</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
+<li><p><strong>metric_y</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
+<li><p><strong>metric_x</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
 <li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type</p></li>
 <li><p><strong>save</strong> (<em>bool</em>) – if True, save the plot as a PDF</p></li>
 <li><p><strong>dpi</strong> (<em>int</em>) – DPI of the plots</p></li>
@@ -254,7 +267,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -270,7 +283,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 <li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – </p></li>
 </ul>
@@ -287,7 +300,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>filename</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -303,7 +316,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -351,7 +364,7 @@ not generate a Figure object itself.</p>
         
         <div class="related-pages">
           
-          <a class="prev-page" href="ethicml.vision.html">
+          <a class="prev-page" href="vision.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">

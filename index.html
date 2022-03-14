@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Algorithms" href="ethicml.algorithms.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Algorithms" href="algorithms/index.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>EthicML 0.6.0 documentation</title>
@@ -153,14 +153,27 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 
 </div>
@@ -217,34 +230,43 @@ which aim to increase fairness, accountability and/or transparency of machine le
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.algorithm_base">Algorithms base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.preprocess">Preprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.inprocess">Inprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.algorithms.html#module-ethicml.algorithms.postprocess">Postprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithms/index.html">Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/index.html#module-ethicml.algorithms.algorithm_base">Algorithms base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/index.html#specific-datasets">Specific datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="algorithms/preprocess.html">Preprocess algorithms</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#module-ethicml.data.dataset">Dataset base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#tabular-datasets">Tabular datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#vision-dataset">Vision dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.data.html#utils">Utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.evaluators.html#module-ethicml.evaluators.evaluate_models">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.evaluators.html#module-ethicml.evaluators.cross_validator">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.evaluators.html#module-ethicml.evaluators.parallelism">Parallel evaluation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/index.html">Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/index.html#module-ethicml.data.dataset">Dataset base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/index.html#specific-datasets">Specific datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/util.html">Utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml.metrics.html#module-ethicml.metrics.per_sensitive_attribute">Compare metrics between groups</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluators.html">Evaluation helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="evaluators.html#module-ethicml.evaluators.evaluate_models">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluators.html#module-ethicml.evaluators.cross_validator">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluators.html#module-ethicml.evaluators.parallelism">Parallel evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics/index.html">Metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/index.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 </div>
 </section>
@@ -263,7 +285,7 @@ which aim to increase fairness, accountability and/or transparency of machine le
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ethicml.algorithms.html">
+          <a class="next-page" href="algorithms/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>

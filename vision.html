@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Visualisation helpers" href="ethicml.visualisation.html" /><link rel="prev" title="Utils" href="ethicml.utility.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Visualisation helpers" href="visualisation.html" /><link rel="prev" title="Utils" href="utility.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Vision data helpers - EthicML 0.6.0 documentation</title>
@@ -153,14 +153,27 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 
 </div>
@@ -380,7 +393,7 @@ landmarks).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple with x containing the filepaths to the generated faces images.</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple with x containing the filepaths to the generated faces images.</p></li>
 <li><p><strong>root</strong> (<em>pathlib.Path</em>) – Root directory where images are downloaded to.</p></li>
 <li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – A function/transform that  takes in an PIL image and returns a transformed
 version. E.g, <cite>transforms.ToTensor</cite></p></li>
@@ -553,7 +566,7 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ethicml.visualisation.html">
+          <a class="next-page" href="visualisation.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
@@ -562,7 +575,7 @@ directory. If dataset is already downloaded, it is not downloaded again.</p></li
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ethicml.utility.html">
+          <a class="prev-page" href="utility.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">

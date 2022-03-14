@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utils" href="ethicml.utility.html" /><link rel="prev" title="Metrics" href="ethicml.metrics.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utils" href="utility.html" /><link rel="prev" title="Compare metrics between groups" href="metrics/per_sensitive_attribute.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Data preprocessing - EthicML 0.6.0 documentation</title>
@@ -153,14 +153,27 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 
 </div>
@@ -334,10 +347,10 @@
 <dd><p>Take a datatuple and make the labels [0,1].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataset</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
+<dd class="field-odd"><p><strong>dataset</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-even"><p><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,10 +360,10 @@
 <dd><p>Inverse of adjust.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataset</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
+<dd class="field-odd"><p><strong>dataset</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-even"><p><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -417,10 +430,10 @@
 and return as afresh new DataTuple.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-even"><p><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -447,7 +460,7 @@ and return as afresh new DataTuple.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datatup</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple</p></li>
+<li><p><strong>datatup</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple</p></li>
 <li><p><strong>tr_cond</strong> (<em>str</em>) – condition for the training set</p></li>
 <li><p><strong>te_cond</strong> (<em>str</em>) – condition for the test set</p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – </p></li>
@@ -458,7 +471,7 @@ and return as afresh new DataTuple.</p>
 the test condition plus the same percentage again of the train set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -478,7 +491,7 @@ unbiased.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data in form of a DataTuple</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data in form of a DataTuple</p></li>
 <li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
 factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
@@ -490,7 +503,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-even"><p>biased and unbiased dataset</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -508,7 +521,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data in form of a DataTuple</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data in form of a DataTuple</p></li>
 <li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
 factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
@@ -520,7 +533,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-even"><p>biased and unbiased dataset</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -531,12 +544,12 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datatup</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>datatup</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>query_str</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-even"><p><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -547,8 +560,8 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference internal" href="ethicml.data.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a>) – Dataset object. Used to find the continuous features.</p></li>
-<li><p><strong>datatuple</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple on which to sclae the continuous features.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference internal" href="data/index.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a>) – Dataset object. Used to find the continuous features.</p></li>
+<li><p><strong>datatuple</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple on which to sclae the continuous features.</p></li>
 <li><p><strong>scaler</strong> (<em>ethicml.preprocessing.scaling.ScalerType</em>) – Scaler object to scale the features. Must fit the SKLearn scaler API.</p></li>
 <li><p><strong>inverse</strong> (<em>bool</em>) – Should the scaling be reversed?</p></li>
 <li><p><strong>fit</strong> (<em>bool</em>) – If not <cite>inverse</cite>, should the scaler be fit to the data? If <cite>True</cite>, do
@@ -559,7 +572,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-even"><p>Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.preprocessing.scaling.ScalerType]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.preprocessing.scaling.ScalerType]</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -578,7 +591,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data tuple to split</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data tuple to split</p></li>
 <li><p><strong>train_percentage</strong> (<em>float</em>) – percentage for train split</p></li>
 <li><p><strong>random_seed</strong> (<em>int</em>) – seed to make splitting reproducible</p></li>
 </ul>
@@ -587,7 +600,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-even"><p>train split and test split</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -598,7 +611,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ethicml.utility.html">
+          <a class="next-page" href="utility.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
@@ -607,14 +620,14 @@ factor is 0, the biased subset is maximally biased.</p></li>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ethicml.metrics.html">
+          <a class="prev-page" href="metrics/per_sensitive_attribute.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Metrics</div>
+                <div class="title">Compare metrics between groups</div>
                 
               </div>
             </a>

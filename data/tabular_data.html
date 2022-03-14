@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Evaluation helpers" href="ethicml.evaluators.html" /><link rel="prev" title="Algorithms" href="ethicml.algorithms.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utils" href="util.html" /><link rel="prev" title="Datasets" href="index.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Datasets - EthicML 0.6.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+        <title>Tabular datasets - EthicML 0.6.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
     
 
@@ -121,7 +121,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 0.6.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 0.6.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -141,26 +141,39 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
   <span class="sidebar-brand-text">EthicML 0.6.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Datasets</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
 </div>
@@ -193,394 +206,15 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-ethicml.data">
-<span id="datasets"></span><h1>Datasets<a class="headerlink" href="#module-ethicml.data" title="Permalink to this headline">#</a></h1>
-<p>This module contains items related to data, such as raw csv’s and data objects.</p>
-<section id="module-ethicml.data.dataset">
-<span id="dataset-base"></span><h2>Dataset base<a class="headerlink" href="#module-ethicml.data.dataset" title="Permalink to this headline">#</a></h2>
-<p>Data structure for all datasets that come with the framework.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></a></p></td>
-<td><p>Data structure that holds all the information needed to load a given dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FeatureSplit</span></code></a></p></td>
-<td><p>A dictionary of the list of columns that belong to the feature groups.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LoadableDataset</span></code></a></p></td>
-<td><p>Dataset that uses the default load function.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_or_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cont_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_non_one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_to_binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_feature_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Data structure that holds all the information needed to load a given dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>discard_non_one_hot</strong> (<em>bool</em>) – If some entries in s or y are not correctly one-hot encoded, discard
-those.</p></li>
-<li><p><strong>map_to_binary</strong> (<em>bool</em>) – If True, convert labels from {-1, 1} to {0, 1}.</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>filename_or_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
-<li><p><strong>features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>cont_features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>class_label_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
-<li><p><strong>s_prefix</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>class_label_prefix</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_feature_groups</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of elements in the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.class_labels">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.class_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of class labels.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.continuous_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.continuous_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.disc_feature_groups">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.disc_feature_groups" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of feature groups.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.discrete_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.discrete_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are discrete.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.feature_split" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a feature split dictionary.</p>
-<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.features_to_remove">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.features_to_remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Features that have to be removed from x.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.filepath">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.filepath" title="Permalink to this definition">#</a></dt>
-<dd><p>Filepath from which to load the data.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.load">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.Dataset.load" title="Permalink to this definition">#</a></dt>
-<dd><p>Load the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ordered</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the dataset.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.ordered_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an order features dictionary.</p>
-<p>This should have separate entries for the features, the labels and the
-sensitive attributes, but the x features are ordered so first are the discrete features,
-then the continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.Dataset.sens_attrs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.Dataset.sens_attrs" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of sensitive attributes.</p>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FeatureSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_typename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>A dictionary of the list of columns that belong to the feature groups.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Return len(self).</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.clear">
-<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None.</span>  <span class="pre">Remove</span> <span class="pre">all</span> <span class="pre">items</span> <span class="pre">from</span> <span class="pre">D.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.clear" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">shallow</span> <span class="pre">copy</span> <span class="pre">of</span> <span class="pre">D</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.copy" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.fromkeys">
-<span class="sig-name descname"><span class="pre">fromkeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.fromkeys" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.get" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the value for key if key is in the dictionary, else default.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.items">
-<span class="sig-name descname"><span class="pre">items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">items</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.items" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.keys">
-<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">a</span> <span class="pre">set-like</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">keys</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.keys" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.pop">
-<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="optional">]</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">v,</span> <span class="pre">remove</span> <span class="pre">specified</span> <span class="pre">key</span> <span class="pre">and</span> <span class="pre">return</span> <span class="pre">the</span> <span class="pre">corresponding</span> <span class="pre">value.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.pop" title="Permalink to this definition">#</a></dt>
-<dd><p>If the key is not found, return the default if given; otherwise,
-raise a KeyError.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.popitem">
-<span class="sig-name descname"><span class="pre">popitem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.popitem" title="Permalink to this definition">#</a></dt>
-<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
-<p>Pairs are returned in LIFO (last-in, first-out) order.
-Raises KeyError if the dict is empty.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.setdefault">
-<span class="sig-name descname"><span class="pre">setdefault</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.setdefault" title="Permalink to this definition">#</a></dt>
-<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
-<p>Return the value for key if key is in the dictionary, else default.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <span class="optional">]</span><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None.</span>  <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">dict/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.update" title="Permalink to this definition">#</a></dt>
-<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
-If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
-In either case, this is followed by: for k in F:  D[k] = F[k]</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.FeatureSplit.values">
-<span class="sig-name descname"><span class="pre">values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">an</span> <span class="pre">object</span> <span class="pre">providing</span> <span class="pre">a</span> <span class="pre">view</span> <span class="pre">on</span> <span class="pre">D's</span> <span class="pre">values</span></span></span><a class="headerlink" href="#ethicml.data.dataset.FeatureSplit.values" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LoadableDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_or_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cont_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_non_one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_to_binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_feature_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.Dataset</span></code></a></p>
-<p>Dataset that uses the default load function.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – </p></li>
-<li><p><strong>filename_or_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
-<li><p><strong>features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>cont_features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>class_label_spec</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
-<li><p><strong>discard_non_one_hot</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>map_to_binary</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>s_prefix</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>class_label_prefix</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>discrete_feature_groups</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of elements in the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.class_labels">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.class_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of class labels.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.continuous_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.continuous_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.disc_feature_groups">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.disc_feature_groups" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of feature groups.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.discrete_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.discrete_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are discrete.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.feature_split" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a feature split dictionary.</p>
-<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.features_to_remove">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.features_to_remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Features that have to be removed from x.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.filepath">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.filepath" title="Permalink to this definition">#</a></dt>
-<dd><p>Filepath from which to load the data.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.load" title="Permalink to this definition">#</a></dt>
-<dd><p>Load dataset from its CSV file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.load_aif">
-<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.load_aif" title="Permalink to this definition">#</a></dt>
-<dd><p>Load the dataset as an AIF360 dataset.</p>
-<p>Experimental.
-Requires the aif360 library.</p>
-<p>Ignores the type check as the return type is not yet defined.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the dataset.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.ordered_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an order features dictionary.</p>
-<p>This should have separate entries for the features, the labels and the
-sensitive attributes, but the x features are ordered so first are the discrete features,
-then the continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.dataset.LoadableDataset.sens_attrs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.dataset.LoadableDataset.sens_attrs" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of sensitive attributes.</p>
-</dd></dl>
-</dd></dl>
-</section>
-<section id="tabular-datasets">
-<h2>Tabular datasets<a class="headerlink" href="#tabular-datasets" title="Permalink to this headline">#</a></h2>
+          <section id="tabular-datasets">
+<h1>Tabular datasets<a class="headerlink" href="#tabular-datasets" title="Permalink to this headline">#</a></h1>
 <section id="module-ethicml.data.tabular_data.adult">
-<span id="adult"></span><h3>Adult<a class="headerlink" href="#module-ethicml.data.tabular_data.adult" title="Permalink to this headline">#</a></h3>
+<span id="adult"></span><h2>Adult<a class="headerlink" href="#module-ethicml.data.tabular_data.adult" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Adult dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.adult.Adult" title="ethicml.data.tabular_data.adult.Adult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adult</span></code></a></p></td>
-<td><p>UCI Adult dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.adult.AdultSplits" title="ethicml.data.tabular_data.adult.AdultSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AdultSplits</span></code></a></p></td>
-<td><p>Available dataset splits for the Adult dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.adult.adult" title="ethicml.data.tabular_data.adult.adult"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adult</span></code></a></p></td>
-<td><p>UCI Adult dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AdultSplits.SEX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>UCI Adult dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -644,7 +278,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -673,7 +307,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -692,7 +326,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -731,39 +365,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.compas">
-<span id="compas"></span><h3>Compas<a class="headerlink" href="#module-ethicml.data.tabular_data.compas" title="Permalink to this headline">#</a></h3>
+<span id="compas"></span><h2>Compas<a class="headerlink" href="#module-ethicml.data.tabular_data.compas" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Compas dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.compas.Compas" title="ethicml.data.tabular_data.compas.Compas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Compas</span></code></a></p></td>
-<td><p>Compas (or ProPublica) dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.compas.CompasSplits" title="ethicml.data.tabular_data.compas.CompasSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CompasSplits</span></code></a></p></td>
-<td><p>Available dataset splits for the COMPAS dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.compas.compas" title="ethicml.data.tabular_data.compas.compas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compas</span></code></a></p></td>
-<td><p>Compas (or ProPublica) dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CompasSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Compas (or ProPublica) dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -825,7 +432,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -854,7 +461,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -873,7 +480,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -910,39 +517,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.credit">
-<span id="credit"></span><h3>Credit<a class="headerlink" href="#module-ethicml.data.tabular_data.credit" title="Permalink to this headline">#</a></h3>
+<span id="credit"></span><h2>Credit<a class="headerlink" href="#module-ethicml.data.tabular_data.credit" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the UCI Credit dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.credit.Credit" title="ethicml.data.tabular_data.credit.Credit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Credit</span></code></a></p></td>
-<td><p>UCI Credit Card dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.credit.CreditSplits" title="ethicml.data.tabular_data.credit.CreditSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CreditSplits</span></code></a></p></td>
-<td><p>Splits for the Credit dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.credit.credit" title="ethicml.data.tabular_data.credit.credit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">credit</span></code></a></p></td>
-<td><p>UCI Credit Card dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Credit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CreditSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>UCI Credit Card dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1004,7 +584,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1033,7 +613,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1052,7 +632,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1089,39 +669,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.crime">
-<span id="crime"></span><h3>Crime<a class="headerlink" href="#module-ethicml.data.tabular_data.crime" title="Permalink to this headline">#</a></h3>
+<span id="crime"></span><h2>Crime<a class="headerlink" href="#module-ethicml.data.tabular_data.crime" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Communities and Crime dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.crime.Crime" title="ethicml.data.tabular_data.crime.Crime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Crime</span></code></a></p></td>
-<td><p>UCI Communities and Crime dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.crime.CrimeSplits" title="ethicml.data.tabular_data.crime.CrimeSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CrimeSplits</span></code></a></p></td>
-<td><p>Splits for the Crime dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.crime.crime" title="ethicml.data.tabular_data.crime.crime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crime</span></code></a></p></td>
-<td><p>UCI Communities and Crime dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Crime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CrimeSplits.RACE_BINARY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>UCI Communities and Crime dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1183,7 +736,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1212,7 +765,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1231,7 +784,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1268,39 +821,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.german">
-<span id="german"></span><h3>German<a class="headerlink" href="#module-ethicml.data.tabular_data.german" title="Permalink to this headline">#</a></h3>
+<span id="german"></span><h2>German<a class="headerlink" href="#module-ethicml.data.tabular_data.german" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the German dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.german.German" title="ethicml.data.tabular_data.german.German"><code class="xref py py-obj docutils literal notranslate"><span class="pre">German</span></code></a></p></td>
-<td><p>German credit dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.german.GermanSplits" title="ethicml.data.tabular_data.german.GermanSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GermanSplits</span></code></a></p></td>
-<td><p>Splits for the German dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.german.german" title="ethicml.data.tabular_data.german.german"><code class="xref py py-obj docutils literal notranslate"><span class="pre">german</span></code></a></p></td>
-<td><p>German credit dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">German</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">GermanSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>German credit dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1362,7 +888,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1391,7 +917,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1410,7 +936,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1447,39 +973,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.health">
-<span id="health"></span><h3>Health<a class="headerlink" href="#module-ethicml.data.tabular_data.health" title="Permalink to this headline">#</a></h3>
+<span id="health"></span><h2>Health<a class="headerlink" href="#module-ethicml.data.tabular_data.health" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Heritage Health dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.health.Health" title="ethicml.data.tabular_data.health.Health"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Health</span></code></a></p></td>
-<td><p>Heritage Health dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.health.HealthSplits" title="ethicml.data.tabular_data.health.HealthSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HealthSplits</span></code></a></p></td>
-<td><p>Splits for the Health dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.health.health" title="ethicml.data.tabular_data.health.health"><code class="xref py py-obj docutils literal notranslate"><span class="pre">health</span></code></a></p></td>
-<td><p>Heritage Health dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">HealthSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Heritage Health dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1541,7 +1040,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1570,7 +1069,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1589,7 +1088,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1626,36 +1125,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.non_binary_toy">
-<span id="non-binary-toy"></span><h3>Non-binary toy<a class="headerlink" href="#module-ethicml.data.tabular_data.non_binary_toy" title="Permalink to this headline">#</a></h3>
+<span id="non-binary-toy"></span><h2>Non-binary toy<a class="headerlink" href="#module-ethicml.data.tabular_data.non_binary_toy" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the toy dataset with more than 2 classes.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy" title="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonBinaryToy</span></code></a></p></td>
-<td><p>Dataset with non-binary toy data for testing.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.non_binary_toy.nonbinary_toy" title="ethicml.data.tabular_data.non_binary_toy.nonbinary_toy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonbinary_toy</span></code></a></p></td>
-<td><p>Dataset with non-binary toy data for testing.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NonBinaryToy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Dataset with non-binary toy data for testing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1716,7 +1191,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1745,7 +1220,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1764,7 +1239,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1788,39 +1263,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.sqf">
-<span id="stop-question-frisk"></span><h3>Stop, question, frisk<a class="headerlink" href="#module-ethicml.data.tabular_data.sqf" title="Permalink to this headline">#</a></h3>
+<span id="stop-question-frisk"></span><h2>Stop, question, frisk<a class="headerlink" href="#module-ethicml.data.tabular_data.sqf" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the SQF dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.sqf.Sqf" title="ethicml.data.tabular_data.sqf.Sqf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sqf</span></code></a></p></td>
-<td><p>Stop, question and frisk dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.sqf.SqfSplits" title="ethicml.data.tabular_data.sqf.SqfSplits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SqfSplits</span></code></a></p></td>
-<td><p>Splits for the SQF dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.sqf.sqf" title="ethicml.data.tabular_data.sqf.sqf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sqf</span></code></a></p></td>
-<td><p>Stop, question and frisk dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SqfSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Stop, question and frisk dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1882,7 +1330,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -1911,7 +1359,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1930,7 +1378,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1967,42 +1415,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.synthetic">
-<span id="synthetic"></span><h3>Synthetic<a class="headerlink" href="#module-ethicml.data.tabular_data.synthetic" title="Permalink to this headline">#</a></h3>
+<span id="synthetic"></span><h2>Synthetic<a class="headerlink" href="#module-ethicml.data.tabular_data.synthetic" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Synthetic dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.Synthetic" title="ethicml.data.tabular_data.synthetic.Synthetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Synthetic</span></code></a></p></td>
-<td><p>Dataset with synthetic data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticScenarios" title="ethicml.data.tabular_data.synthetic.SyntheticScenarios"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SyntheticScenarios</span></code></a></p></td>
-<td><p>Scenarios for the synthetic dataset.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticTargets" title="ethicml.data.tabular_data.synthetic.SyntheticTargets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SyntheticTargets</span></code></a></p></td>
-<td><p>Targets for the synthetic dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.synthetic" title="ethicml.data.tabular_data.synthetic.synthetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">synthetic</span></code></a></p></td>
-<td><p>Dataset with synthetic data.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Synthetic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SyntheticScenarios.S1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SyntheticTargets.Y3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Dataset with synthetic data.</p>
 <p>⊥ = is independent of
 ~ = is an ancestor of in the causal model used to generate the data</p>
@@ -2087,7 +1505,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -2116,7 +1534,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2135,7 +1553,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2199,36 +1617,12 @@ then the continuous.</p>
 </dd></dl>
 </section>
 <section id="module-ethicml.data.tabular_data.toy">
-<span id="toy"></span><h3>Toy<a class="headerlink" href="#module-ethicml.data.tabular_data.toy" title="Permalink to this headline">#</a></h3>
+<span id="toy"></span><h2>Toy<a class="headerlink" href="#module-ethicml.data.tabular_data.toy" title="Permalink to this headline">#</a></h2>
 <p>Class to describe features of the Toy dataset.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.toy.Toy" title="ethicml.data.tabular_data.toy.Toy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Toy</span></code></a></p></td>
-<td><p>Dataset with toy data for testing.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.tabular_data.toy.toy" title="ethicml.data.tabular_data.toy.toy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toy</span></code></a></p></td>
-<td><p>Dataset with toy data for testing.</p></td>
-</tr>
-</tbody>
-</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Toy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
 <p>Dataset with toy data for testing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2289,7 +1683,7 @@ then the continuous.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a feature split dictionary.</p>
 <p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
 </dd></dl>
@@ -2318,7 +1712,7 @@ then the continuous.</p>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2337,7 +1731,7 @@ Requires the aif360 library.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.ordered_features" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.ordered_features" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2361,551 +1755,29 @@ then the continuous.</p>
 </dd></dl>
 </section>
 </section>
-<section id="vision-dataset">
-<h2>Vision dataset<a class="headerlink" href="#vision-dataset" title="Permalink to this headline">#</a></h2>
-<section id="module-ethicml.data.vision_data.celeba">
-<span id="celeba"></span><h3>CelebA<a class="headerlink" href="#module-ethicml.data.vision_data.celeba" title="Permalink to this headline">#</a></h3>
-<p>Class to describe attributes of the CelebA dataset.</p>
-<p><strong>Data:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER" title="ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CELEBA_BASE_FOLDER</span></code></a></p></td>
-<td><p>The data is downloaded to <cite>download_dir</cite> / <cite>CELEBA_BASE_FOLDER</cite>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.vision_data.celeba.CELEBA_FILE_LIST" title="ethicml.data.vision_data.celeba.CELEBA_FILE_LIST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CELEBA_FILE_LIST</span></code></a></p></td>
-<td><p>Google drive IDs, MD5 hashes and filenames for the CelebA files.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.vision_data.celeba.CelebA" title="ethicml.data.vision_data.celeba.CelebA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CelebA</span></code></a></p></td>
-<td><p>CelebA dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.vision_data.celeba.celeba" title="ethicml.data.vision_data.celeba.celeba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">celeba</span></code></a></p></td>
-<td><p>Get CelebA dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py data">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER">
-<span class="sig-name descname"><span class="pre">CELEBA_BASE_FOLDER</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'celeba'</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_BASE_FOLDER" title="Permalink to this definition">#</a></dt>
-<dd><p>The data is downloaded to <cite>download_dir</cite> / <cite>CELEBA_BASE_FOLDER</cite>.</p>
-</dd></dl>
-<dl class="py data">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CELEBA_FILE_LIST">
-<span class="sig-name descname"><span class="pre">CELEBA_FILE_LIST</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('1zmsC4yvw-e089uHXj5EdP0BSZ0AlDQRR',</span> <span class="pre">'00d2c5bc6d35e252742224ab0c1e8fcb',</span> <span class="pre">'img_align_celeba.zip'),</span> <span class="pre">('1gxmFoeEPgF9sT65Wpo85AnHl3zsQ4NvS',</span> <span class="pre">'75e246fa4810816ffd6ee81facbd244c',</span> <span class="pre">'list_attr_celeba.txt'),</span> <span class="pre">('1ih_VMokoI774ErNWrb26lDeWlanUBpnX',</span> <span class="pre">'d32c9cbf5e040fd4025c592c306e6668',</span> <span class="pre">'list_eval_partition.txt')]</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CELEBA_FILE_LIST" title="Permalink to this definition">#</a></dt>
-<dd><p>Google drive IDs, MD5 hashes and filenames for the CelebA files.</p>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CelebA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Smiling'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Male'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
-<p>CelebA dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em><em>, </em><em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>ethicml.data.util.LabelGroup</em><em>]</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of elements in the dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.class_labels">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.class_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of class labels.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.continuous_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.continuous_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.disc_feature_groups">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.disc_feature_groups" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of feature groups.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.discrete_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.discrete_features" title="Permalink to this definition">#</a></dt>
-<dd><p>List of features that are discrete.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.feature_split">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.feature_split" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a feature split dictionary.</p>
-<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.features_to_remove">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.features_to_remove" title="Permalink to this definition">#</a></dt>
-<dd><p>Features that have to be removed from x.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.filepath">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.filepath" title="Permalink to this definition">#</a></dt>
-<dd><p>Filepath from which to load the data.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.load" title="Permalink to this definition">#</a></dt>
-<dd><p>Load dataset from its CSV file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.load_aif">
-<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.load_aif" title="Permalink to this definition">#</a></dt>
-<dd><p>Load the dataset as an AIF360 dataset.</p>
-<p>Experimental.
-Requires the aif360 library.</p>
-<p>Ignores the type check as the return type is not yet defined.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the dataset.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.ordered_features">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.ordered_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an order features dictionary.</p>
-<p>This should have separate entries for the features, the labels and the
-sensitive attributes, but the x features are ordered so first are the discrete features,
-then the continuous.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.CelebA.sens_attrs">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.vision_data.celeba.CelebA.sens_attrs" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the list of sensitive attributes.</p>
-</dd></dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.celeba.celeba">
-<span class="sig-name descname"><span class="pre">celeba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Smiling'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Male'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_integrity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.celeba.celeba" title="Permalink to this definition">#</a></dt>
-<dd><p>Get CelebA dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>download_dir</strong> (<em>str</em>) – </p></li>
-<li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>'5_o_Clock_Shadow'</em><em>, </em><em>'Arched_Eyebrows'</em><em>, </em><em>'Attractive'</em><em>, </em><em>'Bags_Under_Eyes'</em><em>, </em><em>'Bald'</em><em>, </em><em>'Bangs'</em><em>, </em><em>'Big_Lips'</em><em>, </em><em>'Big_Nose'</em><em>, </em><em>'Black_Hair'</em><em>, </em><em>'Blond_Hair'</em><em>, </em><em>'Blurry'</em><em>, </em><em>'Brown_Hair'</em><em>, </em><em>'Bushy_Eyebrows'</em><em>, </em><em>'Chubby'</em><em>, </em><em>'Double_Chin'</em><em>, </em><em>'Eyeglasses'</em><em>, </em><em>'Goatee'</em><em>, </em><em>'Gray_Hair'</em><em>, </em><em>'Heavy_Makeup'</em><em>, </em><em>'High_Cheekbones'</em><em>, </em><em>'Male'</em><em>, </em><em>'Mouth_Slightly_Open'</em><em>, </em><em>'Mustache'</em><em>, </em><em>'Narrow_Eyes'</em><em>, </em><em>'No_Beard'</em><em>, </em><em>'Oval_Face'</em><em>, </em><em>'Pale_Skin'</em><em>, </em><em>'Pointy_Nose'</em><em>, </em><em>'Receding_Hairline'</em><em>, </em><em>'Rosy_Cheeks'</em><em>, </em><em>'Sideburns'</em><em>, </em><em>'Smiling'</em><em>, </em><em>'Straight_Hair'</em><em>, </em><em>'Wavy_Hair'</em><em>, </em><em>'Wearing_Earrings'</em><em>, </em><em>'Wearing_Hat'</em><em>, </em><em>'Wearing_Lipstick'</em><em>, </em><em>'Wearing_Necklace'</em><em>, </em><em>'Wearing_Necktie'</em><em>, </em><em>'Young'</em><em>]</em><em>, </em><em>typing.Dict</em><em>[</em><em>str</em><em>, </em><em>ethicml.data.util.LabelGroup</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>download</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>check_integrity</strong> (<em>bool</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<em>Optional</em>[<a class="reference internal" href="#ethicml.data.vision_data.celeba.CelebA" title="ethicml.data.vision_data.celeba.CelebA">ethicml.data.vision_data.celeba.CelebA</a>], pathlib.Path]</p>
-</dd>
-</dl>
-</dd></dl>
-</section>
-<section id="module-ethicml.data.vision_data.genfaces">
-<span id="generated-faces"></span><h3>Generated faces<a class="headerlink" href="#module-ethicml.data.vision_data.genfaces" title="Permalink to this headline">#</a></h3>
-<p>Generated faces.</p>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.vision_data.genfaces.genfaces" title="ethicml.data.vision_data.genfaces.genfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">genfaces</span></code></a></p></td>
-<td><p>Generated Faces dataset.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.vision_data.genfaces.genfaces">
-<span class="sig-name descname"><span class="pre">genfaces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'emotion'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gender'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_integrity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.vision_data.genfaces.genfaces" title="Permalink to this definition">#</a></dt>
-<dd><p>Generated Faces dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>download_dir</strong> (<em>str</em>) – </p></li>
-<li><p><strong>label</strong> (<em>Literal</em><em>[</em><em>'gender'</em><em>, </em><em>'age'</em><em>, </em><em>'ethnicity'</em><em>, </em><em>'eye_color'</em><em>, </em><em>'hair_color'</em><em>, </em><em>'hair_length'</em><em>, </em><em>'emotion'</em><em>]</em>) – </p></li>
-<li><p><strong>sens_attr</strong> (<em>Literal</em><em>[</em><em>'gender'</em><em>, </em><em>'age'</em><em>, </em><em>'ethnicity'</em><em>, </em><em>'eye_color'</em><em>, </em><em>'hair_color'</em><em>, </em><em>'hair_length'</em><em>, </em><em>'emotion'</em><em>]</em>) – </p></li>
-<li><p><strong>download</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>check_integrity</strong> (<em>bool</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<em>Optional</em>[<a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a>], pathlib.Path]</p>
-</dd>
-</dl>
-</dd></dl>
-</section>
-</section>
-<section id="utils">
-<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">#</a></h2>
-<section id="module-ethicml.data.load">
-<span id="loading"></span><h3>Loading<a class="headerlink" href="#module-ethicml.data.load" title="Permalink to this headline">#</a></h3>
-<p>Load Data from .csv files.</p>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.load.create_data_obj" title="ethicml.data.load.create_data_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_data_obj</span></code></a></p></td>
-<td><p>Create a <cite>ConfigurableDataset</cite> from the given file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.load.load_data" title="ethicml.data.load.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a></p></td>
-<td><p>Load dataset from its CSV file.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.load.create_data_obj">
-<span class="sig-name descname"><span class="pre">create_data_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_to_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.load.create_data_obj" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a <cite>ConfigurableDataset</cite> from the given file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> (<em>pathlib.Path</em>) – path to a CSV file</p></li>
-<li><p><strong>s_column</strong> (<em>str</em>) – column that represents sensitive attributes</p></li>
-<li><p><strong>y_column</strong> (<em>str</em>) – column that contains lables</p></li>
-<li><p><strong>additional_to_drop</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – other columns that should be dropped</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Dataset object</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.data.load.ConfigurableDataset</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.load.load_data">
-<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.load.load_data" title="Permalink to this definition">#</a></dt>
-<dd><p>Load dataset from its CSV file.</p>
-<p>This function only exists for backwards compatibility. Use dataset.load() instead.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a>) – dataset object</p></li>
-<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
-</dd>
-</dl>
-</dd></dl>
-</section>
-<section id="module-ethicml.data.lookup">
-<span id="lookup"></span><h3>Lookup<a class="headerlink" href="#module-ethicml.data.lookup" title="Permalink to this headline">#</a></h3>
-<p>Lookup tables / switch statements for project level objects.</p>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.lookup.available_tabular" title="ethicml.data.lookup.available_tabular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">available_tabular</span></code></a></p></td>
-<td><p>List of tabular dataset names.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.lookup.get_dataset_obj_by_name" title="ethicml.data.lookup.get_dataset_obj_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_dataset_obj_by_name</span></code></a></p></td>
-<td><p>Given a dataset name, get the corresponding dataset object.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.lookup.available_tabular">
-<span class="sig-name descname"><span class="pre">available_tabular</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.lookup.available_tabular" title="Permalink to this definition">#</a></dt>
-<dd><p>List of tabular dataset names.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>List</em>[str]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.lookup.get_dataset_obj_by_name">
-<span class="sig-name descname"><span class="pre">get_dataset_obj_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.lookup.get_dataset_obj_by_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Given a dataset name, get the corresponding dataset object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Callable</em>[[], <a class="reference internal" href="#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-</section>
-<section id="module-ethicml.data.util">
-<span id="other"></span><h3>Other<a class="headerlink" href="#module-ethicml.data.util" title="Permalink to this headline">#</a></h3>
-<p>Useful methods that are used in some of the data objects.</p>
-<p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelGroup</span></code></a></p></td>
-<td><p>Definition of a group of columns that should be interpreted as a single label.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.deprecated" title="ethicml.data.util.deprecated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated</span></code></a></p></td>
-<td><p>This is a decorator which can be used to mark functions as deprecated.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.filter_features_by_prefixes" title="ethicml.data.util.filter_features_by_prefixes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_features_by_prefixes</span></code></a></p></td>
-<td><p>Filter the features by prefixes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.get_discrete_features" title="ethicml.data.util.get_discrete_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_discrete_features</span></code></a></p></td>
-<td><p>Get a list of the discrete features in a dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.group_disc_feat_indexes" title="ethicml.data.util.group_disc_feat_indexes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_disc_feat_indexes</span></code></a></p></td>
-<td><p>Group discrete features names according to the first segment of their name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.util.label_spec_to_feature_list" title="ethicml.data.util.label_spec_to_feature_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">label_spec_to_feature_list</span></code></a></p></td>
-<td><p>Extract all the feature column names from a dictionary of label specifications.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.util.simple_spec" title="ethicml.data.util.simple_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simple_spec</span></code></a></p></td>
-<td><p>Create label specs for the most common case where columns contain 0s and 1s.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
-<p>Definition of a group of columns that should be interpreted as a single label.</p>
-<p>Create new instance of LabelGroup(columns, multiplier)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>columns</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>multiplier</strong> (<em>int</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Return len(self).</p>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.columns">
-<span class="sig-name descname"><span class="pre">columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.columns" title="Permalink to this definition">#</a></dt>
-<dd><p>Alias for field number 0</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.count" title="Permalink to this definition">#</a></dt>
-<dd><p>Return number of occurrences of value.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup.index" title="Permalink to this definition">#</a></dt>
-<dd><p>Return first index of value.</p>
-<p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.data.util.LabelGroup.multiplier">
-<span class="sig-name descname"><span class="pre">multiplier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.data.util.LabelGroup.multiplier" title="Permalink to this definition">#</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.deprecated">
-<span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.deprecated" title="Permalink to this definition">#</a></dt>
-<dd><p>This is a decorator which can be used to mark functions as deprecated.</p>
-<p>It will result in a warning being emitted when the function is used.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>func</strong> (<em>ethicml.data.util._F</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Any</em></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.filter_features_by_prefixes">
-<span class="sig-name descname"><span class="pre">filter_features_by_prefixes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefixes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.filter_features_by_prefixes" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter the features by prefixes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>features</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – list of features names</p></li>
-<li><p><strong>prefixes</strong> (<em>Sequence</em><em>[</em><em>str</em><em>]</em>) – list of prefixes</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>filtered feature names</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>List</em>[str]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.get_discrete_features">
-<span class="sig-name descname"><span class="pre">get_discrete_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_feats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats_to_remove</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cont_feats</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.get_discrete_features" title="Permalink to this definition">#</a></dt>
-<dd><p>Get a list of the discrete features in a dataset.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>all_feats</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of all features in the dataset.</p></li>
-<li><p><strong>feats_to_remove</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of features that aren’t used.</p></li>
-<li><p><strong>cont_feats</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of continuous features in the dataset.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of features not marked as continuous or to be removed.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>List</em>[str]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.group_disc_feat_indexes">
-<span class="sig-name descname"><span class="pre">group_disc_feat_indexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disc_feat_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.group_disc_feat_indexes" title="Permalink to this definition">#</a></dt>
-<dd><p>Group discrete features names according to the first segment of their name.</p>
-<p>Returns a list of their corresponding slices (assumes order is maintained).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>disc_feat_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>prefix_sep</strong> (<em>str</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>List</em>[slice]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.label_spec_to_feature_list">
-<span class="sig-name descname"><span class="pre">label_spec_to_feature_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.label_spec_to_feature_list" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract all the feature column names from a dictionary of label specifications.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>spec</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>List</em>[str]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.simple_spec">
-<span class="sig-name descname"><span class="pre">simple_spec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label_defs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.simple_spec" title="Permalink to this definition">#</a></dt>
-<dd><p>Create label specs for the most common case where columns contain 0s and 1s.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label_defs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Mapping</em>[str, <a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup">ethicml.data.util.LabelGroup</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-</section>
-</section>
-</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ethicml.evaluators.html">
+          <a class="next-page" href="util.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Evaluation helpers</div>
+                <div class="title">Utils</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ethicml.algorithms.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Algorithms</div>
+                <div class="title">Datasets</div>
                 
               </div>
             </a>
@@ -2941,9 +1813,7 @@ then the continuous.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Datasets</a><ul>
-<li><a class="reference internal" href="#module-ethicml.data.dataset">Dataset base</a></li>
-<li><a class="reference internal" href="#tabular-datasets">Tabular datasets</a><ul>
+<li><a class="reference internal" href="#">Tabular datasets</a><ul>
 <li><a class="reference internal" href="#module-ethicml.data.tabular_data.adult">Adult</a></li>
 <li><a class="reference internal" href="#module-ethicml.data.tabular_data.compas">Compas</a></li>
 <li><a class="reference internal" href="#module-ethicml.data.tabular_data.credit">Credit</a></li>
@@ -2956,19 +1826,6 @@ then the continuous.</p>
 <li><a class="reference internal" href="#module-ethicml.data.tabular_data.toy">Toy</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#vision-dataset">Vision dataset</a><ul>
-<li><a class="reference internal" href="#module-ethicml.data.vision_data.celeba">CelebA</a></li>
-<li><a class="reference internal" href="#module-ethicml.data.vision_data.genfaces">Generated faces</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#utils">Utils</a><ul>
-<li><a class="reference internal" href="#module-ethicml.data.load">Loading</a></li>
-<li><a class="reference internal" href="#module-ethicml.data.lookup">Lookup</a></li>
-<li><a class="reference internal" href="#module-ethicml.data.util">Other</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 
           </div>
@@ -2978,10 +1835,10 @@ then the continuous.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
     </body>
 </html>

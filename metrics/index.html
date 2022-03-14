@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Data preprocessing" href="ethicml.preprocessing.html" /><link rel="prev" title="Evaluation helpers" href="ethicml.evaluators.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Compare metrics between groups" href="per_sensitive_attribute.html" /><link rel="prev" title="Evaluation helpers" href="../evaluators.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
         <title>Metrics - EthicML 0.6.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
     
     
 
@@ -121,7 +121,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 0.6.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 0.6.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -141,26 +141,39 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
   <span class="sidebar-brand-text">EthicML 0.6.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="ethicml.algorithms.html">Algorithms</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">Datasets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.vision.html">Vision data helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ethicml.visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data/tabular_data.html">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluators.html">Evaluation helpers</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
 </div>
@@ -333,8 +346,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -375,8 +388,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -410,8 +423,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -453,8 +466,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -494,8 +507,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -535,8 +548,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -576,8 +589,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -617,8 +630,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -658,8 +671,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -699,8 +712,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -738,8 +751,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -782,8 +795,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -821,8 +834,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -862,8 +875,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -903,8 +916,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -944,8 +957,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -979,8 +992,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1020,8 +1033,8 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1060,8 +1073,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1095,8 +1108,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1136,8 +1149,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1177,8 +1190,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1212,8 +1225,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1251,8 +1264,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1271,8 +1284,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
 <li><p><strong>pos_cls</strong> (<em>int</em>) – </p></li>
 <li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
 </ul>
@@ -1282,101 +1295,13 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd>
 </dl>
 </dd></dl>
-<section id="module-ethicml.metrics.per_sensitive_attribute">
-<span id="compare-metrics-between-groups"></span><h2>Compare metrics between groups<a class="headerlink" href="#module-ethicml.metrics.per_sensitive_attribute" title="Permalink to this headline">#</a></h2>
-<p>Evaluator for a metric per sensitive attribute class.</p>
-<p><strong>Exceptions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable" title="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a></p></td>
-<td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute the difference in the metrics per sensitive attribute.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute the ratios in the metrics per sensitive attribute.</p></td>
-</tr>
-</tbody>
-</table></div>
-<dl class="py exception">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricNotApplicable</span></span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable.with_traceback" title="Permalink to this definition">#</a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">diff_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the difference in the metrics per sensitive attribute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary of differences</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">metric_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="ethicml.utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>metric</strong> (<a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p></li>
-<li><p><strong>use_sens_name</strong> (<em>bool</em>) – </p></li>
+<section id="utils">
+<h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="per_sensitive_attribute.html">Compare metrics between groups</a></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Dict</em>[str, float]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">ratio_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary of ratios</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
-</dd>
-</dl>
-</dd></dl>
+</div>
 </section>
 </section>
 
@@ -1385,16 +1310,16 @@ set self.__traceback__ to tb and return self.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="ethicml.preprocessing.html">
+          <a class="next-page" href="per_sensitive_attribute.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Data preprocessing</div>
+                <div class="title">Compare metrics between groups</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ethicml.evaluators.html">
+          <a class="prev-page" href="../evaluators.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
@@ -1438,7 +1363,7 @@ set self.__traceback__ to tb and return self.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Metrics</a><ul>
-<li><a class="reference internal" href="#module-ethicml.metrics.per_sensitive_attribute">Compare metrics between groups</a></li>
+<li><a class="reference internal" href="#utils">Utils</a></li>
 </ul>
 </li>
 </ul>
@@ -1450,11 +1375,11 @@ set self.__traceback__ to tb and return self.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>
