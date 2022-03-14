@@ -6,9 +6,9 @@ Evaluation helpers
     :no-members:
     :no-imported-members:
 
-.. contents::
-    :depth: 2
-    :local:
+.. .. contents::
+..     :depth: 2
+..     :local:
 
 
 Model evaluation

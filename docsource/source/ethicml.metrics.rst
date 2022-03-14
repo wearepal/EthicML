@@ -6,9 +6,9 @@ Metrics
    :members:
    :imported-members:
 
-.. contents::
-    :depth: 2
-    :local:
+.. .. contents::
+..     :depth: 2
+..     :local:
 
 
 Compare metrics between groups
