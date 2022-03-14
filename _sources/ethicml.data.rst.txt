@@ -4,9 +4,9 @@ Datasets
 
 .. automodule:: ethicml.data
 
-.. contents::
-    :depth: 2
-    :local:
+.. .. contents::
+..     :depth: 2
+..     :local:
 
 Dataset base
 ============
