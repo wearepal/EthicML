@@ -11,13 +11,17 @@ from .shared import flag_interface, settings_for_svm_lr
 
 __all__ = ["Agarwal"]
 
+from .svm import KernelType
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
 VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
 class Agarwal(InAlgorithmAsync):
-    """Agarwal class."""
+    """Agarwal class.
+
+    A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+    """
 
     def __init__(
         self,
@@ -27,9 +31,21 @@ class Agarwal(InAlgorithmAsync):
         eps: float = 0.1,
         iters: int = 50,
         C: Optional[float] = None,
-        kernel: Optional[str] = None,
+        kernel: Optional[KernelType] = None,
         seed: int = 888,
     ):
+        """Initialize the Agarwal algorithm.
+
+        Args:
+            dir: Directory to store the model.
+            fairness: Type of fairness to enforce.
+            classifier: Type of classifier to use.
+            eps: Epsilon fo.
+            iters: Number of iterations for the DP algorithm.
+            C: C parameter for the SVM algorithm.
+            kernel: Kernel type for the SVM algorithm.
+            seed: Random seed.
+        """
         if fairness not in VALID_FAIRNESS:
             raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
         if classifier not in VALID_MODELS:

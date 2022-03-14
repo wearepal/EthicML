@@ -9,16 +9,16 @@ repos:
           - --remove-unused-variable
           - --ignore-init-module-imports
 -   repo: https://github.com/timothycrosley/isort
-    rev: 5.6.4  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
+    rev: 5.10.1  # pick the isort version you'd like to use from https://github.com/timothycrosley/isort/releases
     hooks:
     - id: isort
 -   repo: https://github.com/ambv/black
-    rev: 20.8b1
+    rev: 22.1.0
     hooks:
     - id: black
       language_version: python3.7
 -   repo: https://github.com/pycqa/pydocstyle
-    rev: 5.1.0  # pick a git hash / tag to point to
+    rev: 6.1.1  # pick a git hash / tag to point to
     hooks:
       - id: pydocstyle
         args:
@@ -26,7 +26,7 @@ repos:
           - --add-ignore=D105,D107
           - --ignore-decorators=implements|overload|property
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.3.0
+    rev: v4.1.0
     hooks:
     -   id: check-merge-conflict
     -   id: check-toml
