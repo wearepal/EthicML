@@ -40,7 +40,7 @@ cloudpickle = { version = "^2.0.0", optional= true }
 pytest = { version = ">=6.2.2,<8.0.0", optional = true }
 pytest-cov = { version = ">=2.6,<4.0", optional = true }
 torch = { version = "^1.8", optional = true }
-torchvision = { version = "^0.9.0", optional = true }
+torchvision = { version = ">=0.9,<0.13", optional = true }
 gitdb2 = "4.0.2"
 smmap2 = "3.0.1"
 folktables = "^0.0.11"
