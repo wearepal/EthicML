@@ -36,7 +36,7 @@ autodoc_default_options = {
     "imported-members": True,
     "inherited-members": True,
     "show-inheritance": True,
-    "autosummary": True,
+    # "autosummary": True,  # if True, every page has this small summary table at the top
     "autosummary-no-nesting": True,
     "autosummary-nosignatures": True,
     "special-members": "__len__",
