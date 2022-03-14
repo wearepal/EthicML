@@ -4,9 +4,9 @@ Algorithms
 
 .. automodule:: ethicml.algorithms
 
-.. contents::
-    :depth: 2
-    :local:
+.. .. contents::
+..     :depth: 2
+..     :local:
 
 Algorithms base
 ===============

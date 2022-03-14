@@ -22,7 +22,7 @@ jobs:
     - name: Install sphinx
       run: |
         pip install wheel
-        pip install sphinx autodocsumm typing_extensions sphinx_rtd_theme
+        pip install sphinx autodocsumm typing_extensions furo
     - name: Build docs
       run: |
         cd docsource

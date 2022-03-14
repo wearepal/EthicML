@@ -21,11 +21,11 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- Project information -----------------------------------------------------
 
 project = "EthicML"
-copyright = "2021, O. Thomas, T. Kehrenberg"
-author = "O. Thomas, T. Kehrenberg"
+copyright = "2022, O. Thomas, T. Kehrenberg, M. Bartlett"
+author = "O. Thomas, T. Kehrenberg, M. Bartlett"
 
 # The full version, including alpha/beta/rc tags
-release = "0.3.3"
+release = "0.6.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -93,8 +93,8 @@ exclude_patterns: List[str] = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"  # 'alabaster'
-pygments_style = "sphinx"  # syntax highlighting style to use
+html_theme = "furo"
+# pygments_style = "sphinx"  # syntax highlighting style to use
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
