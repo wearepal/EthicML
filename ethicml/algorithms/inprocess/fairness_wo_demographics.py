@@ -23,7 +23,7 @@ class DRO(InAlgorithmAsync):
         network_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
-        """Initialize the DostributionallyRobust Optimization method.
+        """Initialize the Distributionally Robust Optimization method.
 
         Args:
             dir: Directory to store the model.
