@@ -250,7 +250,7 @@
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -269,7 +269,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -311,7 +311,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
@@ -335,7 +335,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -354,7 +354,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -424,7 +424,7 @@
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -443,7 +443,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -476,17 +476,19 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Agarwal class.</p>
+<p>A wrapper around the Exponentiated Gradient method documented <a class="reference external" href="https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient">here</a>.</p>
+<p>Initialize the Agarwal algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
-<li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>'DP'</em><em>, </em><em>'EqOp'</em><em>, </em><em>'EqOd'</em><em>]</em>) – </p></li>
-<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><em>'LR'</em><em>, </em><em>'SVM'</em><em>]</em>) – </p></li>
-<li><p><strong>eps</strong> (<em>float</em>) – </p></li>
-<li><p><strong>iters</strong> (<em>int</em>) – </p></li>
-<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
-<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Directory to store the model.</p></li>
+<li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>'DP'</em><em>, </em><em>'EqOp'</em><em>, </em><em>'EqOd'</em><em>]</em>) – Type of fairness to enforce.</p></li>
+<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><em>'LR'</em><em>, </em><em>'SVM'</em><em>]</em>) – Type of classifier to use.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – Epsilon fo.</p></li>
+<li><p><strong>iters</strong> (<em>int</em>) – Number of iterations for the DP algorithm.</p></li>
+<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – C parameter for the SVM algorithm.</p></li>
+<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'linear'</em><em>, </em><em>'rbf'</em><em>, </em><em>'poly'</em><em>, </em><em>'sigmoid'</em><em>]</em><em>]</em>) – Kernel type for the SVM algorithm.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed.</p></li>
 </ul>
 </dd>
 </dl>
@@ -503,7 +505,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
@@ -527,7 +529,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -546,7 +548,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -579,15 +581,16 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.fairness_wo_demographics.DRO" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithmAsync</span></code></a></p>
 <p>Implementation of <a class="reference external" href="https://arxiv.org/abs/1806.08010">https://arxiv.org/abs/1806.08010</a> .</p>
+<p>Initialize the Distributionally Robust Optimization method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
-<li><p><strong>eta</strong> (<em>float</em>) – </p></li>
-<li><p><strong>epochs</strong> (<em>int</em>) – </p></li>
-<li><p><strong>batch_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>network_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – Directory to store the model.</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – Tolerance.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – The number of epochs to train for.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size.</p></li>
+<li><p><strong>network_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – The size of the network.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the random number generator.</p></li>
 </ul>
 </dd>
 </dl>
@@ -604,7 +607,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.inprocess.in_algorithm._IA</p>
@@ -628,7 +631,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -647,7 +650,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -733,7 +736,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -762,7 +765,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -794,14 +797,16 @@ simply the last part of the repository URL)</p></li>
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.kamiran.Kamiran">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Kamiran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.kamiran.Kamiran" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
-<p>Kamiran and Calders 2012.</p>
+<p>An implementation of the Reweighing method from <a class="reference external" href="https://link.springer.com/article/10.1007/s10115-011-0463-8">Kamiran and Calders 2012</a>.</p>
+<p>Each sample is assigned an instance-weight based on the joing probability of S and Y which is used during training of a classifier.</p>
+<p>Reweighing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><em>'LR'</em><em>, </em><em>'SVM'</em><em>]</em>) – </p></li>
-<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
-<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>classifier</strong> (<em>Literal</em><em>[</em><em>'LR'</em><em>, </em><em>'SVM'</em><em>]</em>) – The classifier to use.</p></li>
+<li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – The C parameter for the classifier.</p></li>
+<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'linear'</em><em>, </em><em>'rbf'</em><em>, </em><em>'poly'</em><em>, </em><em>'sigmoid'</em><em>]</em><em>]</em>) – The kernel to use for the classifier if SVM selected.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random number generator seed to use for the classifier.</p></li>
 </ul>
 </dd>
 </dl>
@@ -835,7 +840,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -854,7 +859,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -906,21 +911,10 @@ simply the last part of the repository URL)</p></li>
 <p>Model that calls Kamishima’s code.</p>
 <p>Based on Algo-Fairness
 <a class="reference external" href="https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py">https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py</a></p>
-<p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
+<p>Initialize Kamishima model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – name of the model</p></li>
-<li><p><strong>dir_name</strong> – where to download the code to (can be chosen freely)</p></li>
-<li><p><strong>top_dir</strong> – top directory of the repository where the Pipfile can be found (this is usually
-simply the last part of the repository URL)</p></li>
-<li><p><strong>is_fairness_algo</strong> – if True, this object corresponds to an algorithm enforcing fairness</p></li>
-<li><p><strong>url</strong> – (optional) URL of the repository</p></li>
-<li><p><strong>executable</strong> – (optional) path to a Python executable</p></li>
-<li><p><strong>seed</strong> – Random seed to use for reproducibility</p></li>
-<li><p><strong>use_poetry</strong> – if True, will try to use poetry instead of pipenv</p></li>
-<li><p><strong>eta</strong> (<em>float</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>eta</strong> (<em>float</em>) – Tolerance.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -953,7 +947,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -982,7 +976,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1015,11 +1009,13 @@ simply the last part of the repository URL)</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed=888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.logistic_regression.LR" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Logistic regression with hard predictions.</p>
+<p>This is a wrapper around Sci-Kit Learn’s LogisticRegression.
+The documentation for which is available <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">here</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C</strong> (<em>float</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>C</strong> (<em>float</em>) – The regularization parameter.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the random number generator.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1056,7 +1052,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1075,7 +1071,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1107,8 +1103,8 @@ simply the last part of the repository URL)</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_splits</strong> (<em>int</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>) – The number of splits for the cross-validation.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the random number generator.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1145,7 +1141,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1164,7 +1160,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1196,8 +1192,8 @@ simply the last part of the repository URL)</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>C</strong> (<em>float</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>C</strong> (<em>float</em>) – The regularization parameter.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the random number generator.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1234,7 +1230,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1253,7 +1249,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.SoftPrediction" title="ethicml.utility.data_structures.SoftPrediction">ethicml.utility.data_structures.SoftPrediction</a></p>
@@ -1324,7 +1320,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1343,7 +1339,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1416,7 +1412,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1435,7 +1431,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1468,12 +1464,15 @@ simply the last part of the repository URL)</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MLP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hidden_layer_sizes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.mlp.MLP" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>Multi-layer Perceptron.</p>
+<p>This is a wraper around the SKLearn implementation of the MLP.
+Documentation: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html">https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html</a></p>
+<p>Multi-Layer Perceptron.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hidden_layer_sizes</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>activation</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'identity'</em><em>, </em><em>'logistic'</em><em>, </em><em>'tanh'</em><em>, </em><em>'relu'</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>hidden_layer_sizes</strong> (<em>Optional</em><em>[</em><em>Tuple</em><em>[</em><em>int</em><em>, </em><em>...</em><em>]</em><em>]</em>) – The number of neurons in each hidden layer.</p></li>
+<li><p><strong>activation</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'identity'</em><em>, </em><em>'logistic'</em><em>, </em><em>'tanh'</em><em>, </em><em>'relu'</em><em>]</em><em>]</em>) – The activation function to use.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The seed for the random number generator.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1507,7 +1506,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1526,7 +1525,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1600,7 +1599,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1619,7 +1618,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1689,7 +1688,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1708,7 +1707,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1740,12 +1739,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.algorithms.inprocess.svm.SVM">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SVM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.inprocess.svm.SVM" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
-<p>Support Vector Machine.</p>
+<p>A wraper around the SciKitLearn Support Vector Classifier (SVC) model.</p>
+<p>Documentation for the underlying classifier can be found <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">here</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>C</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
-<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>kernel</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'linear'</em><em>, </em><em>'rbf'</em><em>, </em><em>'poly'</em><em>, </em><em>'sigmoid'</em><em>]</em><em>]</em>) – </p></li>
 <li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
@@ -1780,7 +1780,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1799,7 +1799,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1879,7 +1879,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1908,7 +1908,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -1986,7 +1986,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2015,7 +2015,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2093,7 +2093,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2122,7 +2122,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2200,7 +2200,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2229,7 +2229,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2305,7 +2305,7 @@ simply the last part of the repository URL)</p></li>
 <dd class="field-odd"><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -2334,7 +2334,7 @@ simply the last part of the repository URL)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Prediction</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
