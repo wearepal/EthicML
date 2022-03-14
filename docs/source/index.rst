@@ -27,16 +27,16 @@ API
 ===
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   ethicml.algorithms
-   ethicml.data
-   ethicml.evaluators
-   ethicml.metrics
-   ethicml.preprocessing
-   ethicml.utility
-   ethicml.vision
-   ethicml.visualisation
+   algorithms/index
+   data/index
+   evaluators
+   metrics/index
+   preprocessing
+   utility
+   vision
+   visualisation
 
 
 

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 make clean
-make github
+make html
