@@ -12,7 +12,7 @@ permissions:
 jobs:
   dependabot-auto-approve:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Dependabot metadata
         id: metadata
@@ -27,7 +27,7 @@ jobs:
   dependabot-auto-merge:
     needs: [dependabot-auto-approve]
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Dependabot metadata
         id: metadata
