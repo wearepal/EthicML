@@ -20,7 +20,7 @@ VALID_MODELS = {"LR", "SVM"}
 
 
 class Kamiran(InAlgorithm):
-    """An implementation of the Reweighing method from [Kamiran and Calders 2012](https://link.springer.com/article/10.1007/s10115-011-0463-8).
+    """An implementation of the Reweighing method from `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
 
     Each sample is assigned an instance-weight based on the joing probability of S and Y which is used during training of a classifier.
     """
