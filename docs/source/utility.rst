@@ -6,5 +6,3 @@ Utils
    :members:
    :imported-members:
    :autosummary:
-   :autosummary-no-nesting:
-   :autosummary-nosignatures:
