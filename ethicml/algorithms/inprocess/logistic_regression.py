@@ -19,7 +19,7 @@ class LR(InAlgorithm):
     """Logistic regression with hard predictions.
 
     This is a wrapper around Sci-Kit Learn's LogisticRegression.
-    The documentation for which is available [here](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+    The documentation for which is available `here <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_.
 
     Args:
         C (float): The regularization parameter.

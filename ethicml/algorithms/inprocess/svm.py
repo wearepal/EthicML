@@ -19,7 +19,7 @@ KernelType = Literal["linear", "rbf", "poly", "sigmoid"]
 class SVM(InAlgorithm):
     """A wraper around the SciKitLearn Support Vector Classifier (SVC) model.
 
-    Documentation for the underlying classifier can be found [here](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html).
+    Documentation for the underlying classifier can be found `here <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_.
     """
 
     is_fairness_algo = False
