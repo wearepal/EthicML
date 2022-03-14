@@ -1,7 +1,7 @@
 name: Dependabot auto-approve
 on:
   workflow_run:
-    workflows: [continuous_integration]
+    workflows: [EthicML CI]
     types:
       - completed
 
