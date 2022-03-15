@@ -28,6 +28,27 @@ class CVResults:
     This object isn't meant to be iterated over directly.
     Instead, use the `raw_storage` property to access the results across all folds.
     Or, use the `mean_storage` property to access the average results for each parameter setting.
+
+
+    .. code-block:: python
+
+        import ethicml as em
+
+        train, test = em.train_test_split(em.Compas().load())
+        hyperparams = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
+
+        cv = em.CrossValidator(em.LR, hyperparams, folds=3)
+        primary = em.Accuracy()
+        fair_measure = em.AbsCV()
+        cv_results = cv.run(train, measures=[primary, fair_measure])
+        best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
+
+        print(f"Best C: {best_result.params['C']}")
+        print(f"Best Accuracy: {best_result.scores['Accuracy']}")
+        print(f"Best CV Score: {best_result.scores['CV absolute']}")
+        print(cv_results.mean_storage)
+        print(cv_results.raw_storage)
+
     """
 
     def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
@@ -139,6 +160,20 @@ class CrossValidator:
 
     The CrossValidator object is used to run cross-validation on a model.
     Results are returned in a CVResults object.
+
+    .. code-block:: python
+
+        import ethicml as em
+
+        train, test = em.train_test_split(em.Compas().load())
+        hyperparams = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
+
+        lr_cv = em.CrossValidator(em.LR, hyperparams, folds=3)
+
+        primary = em.Accuracy()
+        fair_measure = em.AbsCV()
+        cv_results = lr_cv.run(train, measures=[primary, fair_measure])
+
     """
 
     def __init__(
@@ -194,7 +229,7 @@ class CrossValidator:
         return CVResults(compute_scores_and_append.results, self.model)
 
     def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
-        """Run the cross validation experiments asynchronously.
+        """Run the cross validation experiments.
 
         Args:
             train: the training data
