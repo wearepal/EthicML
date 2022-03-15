@@ -320,6 +320,27 @@ If False, refer to the sensitive varibale as <cite>S</cite>.</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CVResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stores the results of a cross validation experiment.</p>
+<p>This object isn’t meant to be iterated over directly.
+Instead, use the <cite>raw_storage</cite> property to access the results across all folds.
+Or, use the <cite>mean_storage</cite> property to access the average results for each parameter setting.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
+
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"C"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">primary</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
+<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">])</span>
+<span class="n">best_result</span> <span class="o">=</span> <span class="n">cv_results</span><span class="o">.</span><span class="n">get_best_in_top_k</span><span class="p">(</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best C: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">'C'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best Accuracy: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best CV Score: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">'CV absolute'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cv_results</span><span class="o">.</span><span class="n">mean_storage</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cv_results</span><span class="o">.</span><span class="n">raw_storage</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -331,7 +352,7 @@ If False, refer to the sensitive varibale as <cite>S</cite>.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.best">
 <span class="sig-name descname"><span class="pre">best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.best" title="Permalink to this definition">#</a></dt>
-<dd><p>Get best model.</p>
+<dd><p>Returns a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
@@ -344,7 +365,7 @@ If False, refer to the sensitive varibale as <cite>S</cite>.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.best_hyper_params">
 <span class="sig-name descname"><span class="pre">best_hyper_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.best_hyper_params" title="Permalink to this definition">#</a></dt>
-<dd><p>Get best hyper-params.</p>
+<dd><p>Get hyper-parameters that return the ‘best’ result for the metric of interest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
@@ -357,15 +378,15 @@ If False, refer to the sensitive varibale as <cite>S</cite>.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.get_best_in_top_k">
 <span class="sig-name descname"><span class="pre">get_best_in_top_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.get_best_in_top_k" title="Permalink to this definition">#</a></dt>
-<dd><p>Get best result in top K entries.</p>
+<dd><p>Get best result in top-K entries.</p>
 <p>First sort the results according to the primary metric, then take the best according to the
 secondary metric from the top K.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>primary</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p></li>
-<li><p><strong>secondary</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p></li>
-<li><p><strong>top_k</strong> (<em>int</em>) – </p></li>
+<li><p><strong>primary</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – Metric to first sort by.</p></li>
+<li><p><strong>secondary</strong> (<a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – Metric to sort the top-K models by for a second time, the top will be selected.</p></li>
+<li><p><strong>top_k</strong> (<em>int</em>) – Number of entries to consider.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -391,7 +412,21 @@ secondary metric from the top K.</p>
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CrossValidator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CrossValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CrossValidator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Object used to run cross-validation on a model.</p>
+<p>A simple approach to Cross Validation.</p>
+<p>The CrossValidator object is used to run cross-validation on a model.
+Results are returned in a CVResults object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
+
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"C"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
+
+<span class="n">lr_cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">primary</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
+<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">lr_cv</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">])</span>
+</pre></div>
+</div>
 <p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -412,12 +447,15 @@ which is the number of available CPUs</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training data</p></li>
+<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – an optional list of metrics to compute</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>CVResults</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -428,12 +466,15 @@ which is the number of available CPUs</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training data</p></li>
+<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – an optional list of metrics to compute</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>CVResults</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
 </dd>
 </dl>
 </dd></dl>
