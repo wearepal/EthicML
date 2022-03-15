@@ -23,7 +23,12 @@ class ResultTuple(NamedTuple):
 
 
 class CVResults:
-    """Stores the results of a cross validation experiment."""
+    """Stores the results of a cross validation experiment.
+
+    This object isn't meant to be iterated over directly.
+    Instead, use the `raw_storage` property to access the results across all folds.
+    Or, use the `mean_storage` property to access the average results for each parameter setting.
+    """
 
     def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
         self.raw_storage = results
@@ -79,18 +84,23 @@ class CVResults:
         return mean_vals[best_hyp_string]
 
     def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
-        """Get best hyper-params."""
+        """Get hyper-parameters that return the 'best' result for the metric of interest."""
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
-        """Get best model."""
+        """Returns a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric."""
         return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
-        """Get best result in top K entries.
+        """Get best result in top-K entries.
 
         First sort the results according to the primary metric, then take the best according to the
         secondary metric from the top K.
+
+        Args:
+            primary: Metric to first sort by.
+            secondary: Metric to sort the top-K models by for a second time, the top will be selected.
+            top_k: Number of entries to consider.
         """
         mean_vals = self.mean_storage
 
@@ -125,7 +135,11 @@ class _ResultsAccumulator:
 
 
 class CrossValidator:
-    """Object used to run cross-validation on a model."""
+    """A simple approach to Cross Validation.
+
+    The CrossValidator object is used to run cross-validation on a model.
+    Results are returned in a CVResults object.
+    """
 
     def __init__(
         self,
@@ -153,7 +167,14 @@ class CrossValidator:
         self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
     def run_async(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
-        """Run the cross validation experiments asynchronously."""
+        """Run the cross validation experiments asynchronously.
+
+        Args:
+            train: the training data
+            measures: an optional list of metrics to compute
+        Returns:
+            CVResults
+        """
         from .parallelism import run_in_parallel
 
         compute_scores_and_append = _ResultsAccumulator(measures)
@@ -173,7 +194,14 @@ class CrossValidator:
         return CVResults(compute_scores_and_append.results, self.model)
 
     def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
-        """Run the cross validation experiments."""
+        """Run the cross validation experiments asynchronously.
+
+        Args:
+            train: the training data
+            measures: an optional list of metrics to compute
+        Returns:
+            CVResults
+        """
         compute_scores_and_append = _ResultsAccumulator(measures)
         for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
             # run the models one by one and *immediately* report the scores on the measures
