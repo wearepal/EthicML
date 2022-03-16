@@ -44,6 +44,7 @@ class Kamishima(InstalledModel):
         )
         self.eta = eta
         self._fit_info: Optional[_FitInfo] = None
+        self._hyperparameters = {"eta": eta}
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:

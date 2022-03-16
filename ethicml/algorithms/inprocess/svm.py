@@ -32,6 +32,7 @@ class SVM(InAlgorithm):
         self.seed = seed
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
+        self._hyperparameters = {"C": self.C, "kernel": self.kernel}
 
     @property
     def name(self) -> str:
