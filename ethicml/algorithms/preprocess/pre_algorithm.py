@@ -77,7 +77,6 @@ class PreAlgorithmDC(PreAlgorithm):
     """PreAlgorithm dataclass base class."""
 
     _out_size = None  # this is not a dataclass field and so it must not have a type annotation
-    is_fairness_algo = True
     seed: int = 888
 
 

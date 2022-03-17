@@ -25,7 +25,6 @@ class Upsampler(PreAlgorithm):
 
     strategy: Literal["uniform", "preferential", "naive"] = "uniform"
     seed: int = 888
-    is_fairness_algo = True
 
     def __post_init__(self) -> None:
         assert self.strategy in ["uniform", "preferential", "naive"]
