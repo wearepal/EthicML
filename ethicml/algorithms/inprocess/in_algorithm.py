@@ -5,7 +5,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Dict, List, TypeVar, Union
+from typing import ClassVar, Dict, List, TypeVar, Union
 from typing_extensions import Protocol, runtime_checkable
 
 from ranzen import implements
@@ -22,7 +22,7 @@ _I = TypeVar("_I", bound="InAlgorithm")
 class InAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
-    is_fairness_algo: bool
+    is_fairness_algo: ClassVar[bool]
     _hyperparameters: Dict[str, Union[str, int, float]] = {}
 
     @abstractmethod
@@ -75,7 +75,7 @@ class InAlgorithm(Algorithm, Protocol):
 class InAlgorithmDC(InAlgorithm):
     """InAlgorithm dataclass base class."""
 
-    is_fairness_algo = True
+    is_fairness_algo: ClassVar[bool] = True
     seed: int = 888
 
 

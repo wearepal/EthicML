@@ -1,6 +1,7 @@
 """Test the saving data capability."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import ClassVar
 from typing_extensions import Final
 
 import numpy as np
@@ -30,9 +31,10 @@ def test_simple_saving() -> None:
     class CheckEquality(InAlgorithmAsync):
         """Dummy algorithm class for testing whether writing and reading feather files works."""
 
+        is_fairness_algo: ClassVar[bool] = False
+
         def __init__(self) -> None:
             self.seed = -1
-            self.is_fairness_algo = False
             self.model_dir = Path(".")
 
         @property
