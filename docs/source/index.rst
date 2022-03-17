@@ -35,7 +35,6 @@ API
    metrics/index
    preprocessing
    utility
-   vision
    visualisation
 
 

@@ -2,7 +2,6 @@
 from pathlib import Path
 from typing import NamedTuple
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -926,109 +925,6 @@ def test_group_prefixes():
     assert grouped_indexes[0] == slice(0, 2)
     assert grouped_indexes[1] == slice(2, 4)
     assert grouped_indexes[2] == slice(4, 5)
-
-
-def test_celeba():
-    """Test celeba."""
-    celeba_data, _ = em.celeba(download_dir="non-existent")
-    assert celeba_data is None  # data should not be there
-    celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
-    assert celeba_data is not None
-    data = celeba_data.load()
-
-    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
-
-    assert (202599, 39) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert len(data) == len(celeba_data)
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-def test_celeba_all_attributes():
-    """Test celeba with all attributes loaded into `data.x`."""
-    celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
-    assert celeba_data is not None
-    data = celeba_data.load(labels_as_features=True)
-
-    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
-
-    assert (202599, 41) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert "Male" in data.x.columns
-    assert "Smiling" in data.x.columns
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-def test_celeba_multi_s():
-    """Test celeba w/ multi S."""
-    sens_spec = dict(em.simple_spec({"Age": ["Young"], "Gender": ["Male"]}))
-    celeba_data, _ = em.celeba(
-        sens_attr=sens_spec, download_dir="non-existent", check_integrity=False
-    )
-    assert celeba_data is not None
-    data = celeba_data.load()
-
-    assert celeba_data.name == "CelebA, s=[Age, Gender], y=Smiling"
-
-    assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
-    assert data.s.columns[0] == "Age,Gender"
-    assert (202599, 38) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert len(data) == len(celeba_data)
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-@pytest.mark.usefixtures("simulate_no_torch")
-def test_celeba_no_torch():
-    """Test celeba."""
-    with pytest.raises(RuntimeError, match="Need torchvision to download data."):
-        em.celeba(download_dir="some_dir", download=True)
-
-
-def test_genfaces():
-    """Test genfaces."""
-    gen_faces, _ = em.genfaces(download_dir="non-existent")
-    assert gen_faces is None  # data should not be there
-    gen_faces, _ = em.genfaces(download_dir="non-existent", check_integrity=False)
-    assert gen_faces is not None
-    data = gen_faces.load()
-
-    assert gen_faces.name == "GenFaces, s=gender, y=emotion"
-
-    assert (148285, 18) == data.x.shape
-    assert (148285, 1) == data.s.shape
-    assert (148285, 1) == data.y.shape
-    assert len(data) == len(gen_faces)
-
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
-
-
-def test_genfaces_multi_s():
-    """Test genfaces."""
-    gen_faces, _ = em.genfaces(
-        label="hair_color",
-        sens_attr="eye_color",
-        download_dir="non-existent",
-        check_integrity=False,
-    )
-    assert gen_faces is not None
-    data = gen_faces.load()
-
-    assert gen_faces.name == "GenFaces, s=eye_color, y=hair_color"
-
-    incomplete_entries = 11_003  # entries that are missing either s or y
-    assert (148_285 - incomplete_entries, 11) == data.x.shape
-    assert (148_285 - incomplete_entries, 1) == data.s.shape
-    assert (148_285 - incomplete_entries, 1) == data.y.shape
-    assert len(data) == len(gen_faces) - incomplete_entries
-
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
 
 
 def test_expand_s():

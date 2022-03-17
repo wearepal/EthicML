@@ -42,8 +42,6 @@ from .data.tabular_data.sqf import *
 from .data.tabular_data.synthetic import *
 from .data.tabular_data.toy import *
 from .data.util import *
-from .data.vision_data.celeba import *
-from .data.vision_data.genfaces import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
 from .metrics.accuracy import *

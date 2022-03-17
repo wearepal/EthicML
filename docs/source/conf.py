@@ -60,7 +60,6 @@ autodoc_mock_imports = [
     "sklearn",
     "teext",
     "torch",
-    "torchvision",
     "tqdm",
     "wandb",
 ]
