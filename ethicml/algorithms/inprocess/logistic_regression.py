@@ -30,7 +30,7 @@ class LR(InAlgorithm):
     seed: int = 888
     is_fairness_algo = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._hyperparameters = {"C": self.C}
 
     @property

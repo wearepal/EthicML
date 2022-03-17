@@ -185,7 +185,7 @@ def fit(train: DataTuple, flags: BeutelArgs):
                 best_enc = enc.state_dict()
 
     assert best_enc is not None
-    enc.load_state_dict(best_enc)
+    enc.load_state_dict(best_enc)  # type: ignore[arg-type]
 
     transformed_train = encode_dataset(enc, all_train_data_loader, train)
     if post_process:

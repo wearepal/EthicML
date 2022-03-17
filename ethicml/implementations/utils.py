@@ -38,6 +38,7 @@ class InAlgoArgs(AlgoArgs):
 
 def load_data_from_flags(args: AlgoArgs) -> Tuple[DataTuple, TestTuple]:
     """Load data from the paths specified in the flags."""
+    assert args.train is not None
     return DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
 
 

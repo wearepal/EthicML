@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Optional
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -50,6 +50,7 @@ class Kamiran(InAlgorithm):
         self._hyperparameters = {"C": self.C}
         if self.classifier == "SVM":
             self._hyperparameters["kernel"] = self.kernel
+        self.group_weights: Optional[Dict[str, Any]] = None
 
     @property
     def name(self) -> str:
@@ -60,21 +61,52 @@ class Kamiran(InAlgorithm):
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
-        self.clf = _train(
+        self.clf = self._train(
             train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
         )
         return self
 
     @implements(InAlgorithm)
     def predict(self, test: TestTuple) -> Prediction:
-        return _predict(model=self.clf, test=test)
+        return self._predict(model=self.clf, test=test)
 
     @implements(InAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        clf = _train(
+        clf = self._train(
             train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
         )
-        return _predict(model=clf, test=test)
+        return self._predict(model=clf, test=test)
+
+    def _train(
+        self, train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
+    ) -> sklearn.linear_model._base.LinearModel:
+        if classifier == "SVM":
+            model = select_svm(C=C, kernel=kernel, seed=seed)
+        else:
+            random_state = np.random.RandomState(seed=seed)
+            model = LogisticRegression(
+                solver="liblinear", random_state=random_state, max_iter=50_00, C=C
+            )
+        weights = compute_instance_weights(train)["instance weights"]
+        model.fit(
+            train.x,
+            train.y.to_numpy().ravel(),
+            sample_weight=weights,
+        )
+        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')  # type: ignore[union-attr]
+        groups = (
+            pd.concat([train.s, train.y], axis=1)
+            .groupby([train.s.columns[0], train.y.columns[0]])
+            .size()
+            .reset_index(name="count")
+        )
+        self.group_weights = pd.merge(weights, groups, on="count").T.to_dict()
+        return model
+
+    def _predict(
+        self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
+    ) -> Prediction:
+        return Prediction(hard=pd.Series(model.predict(test.x)))
 
 
 def compute_instance_weights(
@@ -115,25 +147,3 @@ def compute_instance_weights(
         group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)
 
     return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
-
-
-def _train(
-    train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
-) -> sklearn.linear_model._base.LinearModel:
-    if classifier == "SVM":
-        model = select_svm(C=C, kernel=kernel, seed=seed)
-    else:
-        random_state = np.random.RandomState(seed=seed)
-        model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=C
-        )
-    model.fit(
-        train.x,
-        train.y.to_numpy().ravel(),
-        sample_weight=compute_instance_weights(train)["instance weights"],
-    )
-    return model
-
-
-def _predict(model: sklearn.linear_model._base.LinearModel, test: TestTuple) -> Prediction:
-    return Prediction(hard=pd.Series(model.predict(test.x)))
