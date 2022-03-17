@@ -6,7 +6,6 @@ on:
     - main
     paths-ignore:
     - 'docs/**'
-    - 'docsource/**'
     - 'examples/**'
     - '**/*.md'
     - .gitignore

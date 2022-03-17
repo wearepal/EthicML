@@ -16,13 +16,24 @@ class DRO(InAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
+        *,
+        dir: Union[str, Path] = ".",
         eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,
         network_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
+        """Initialize the Distributionally Robust Optimization method.
+
+        Args:
+            dir: Directory to store the model.
+            eta: Tolerance.
+            epochs: The number of epochs to train for.
+            batch_size: The batch size.
+            network_size: The size of the network.
+            seed: The seed for the random number generator.
+        """
         self.seed = seed
         self.is_fairness_algo = True
         if network_size is None:
@@ -34,6 +45,12 @@ class DRO(InAlgorithmAsync):
             "epochs": epochs,
             "network_size": network_size,
             "seed": seed,
+        }
+        self._hyperparameters = {
+            "eta": eta,
+            "epochs": epochs,
+            "batch_size": batch_size,
+            "network_size": f"{network_size}",
         }
 
     @property

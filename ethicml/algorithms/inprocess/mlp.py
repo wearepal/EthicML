@@ -22,14 +22,26 @@ ACTIVATIONS: Dict[str, ActivationType] = {
 
 
 class MLP(InAlgorithm):
-    """Multi-layer Perceptron."""
+    """Multi-layer Perceptron.
+
+    This is a wraper around the SKLearn implementation of the MLP.
+    Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+    """
 
     def __init__(
         self,
+        *,
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
         activation: Optional[ActivationType] = None,
         seed: int = 888,
     ):
+        """Multi-Layer Perceptron.
+
+        Args:
+            hidden_layer_sizes: The number of neurons in each hidden layer.
+            activation: The activation function to use.
+            seed: The seed for the random number generator.
+        """
         self.is_fairness_algo = False
         self.seed = seed
         if hidden_layer_sizes is None:
@@ -39,6 +51,10 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
+        self._hyperparameters = {
+            "hidden_layer_sizes": f"{self.hidden_layer_sizes}",
+            "activation": self.activation,
+        }
 
     @property
     def name(self) -> str:

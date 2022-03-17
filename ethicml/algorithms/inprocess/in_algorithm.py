@@ -5,7 +5,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List, TypeVar
+from typing import Dict, List, TypeVar, Union
 from typing_extensions import Protocol, runtime_checkable
 
 from ranzen import implements
@@ -23,6 +23,7 @@ class InAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
     is_fairness_algo: bool
+    _hyperparameters: Dict[str, Union[str, int, float]] = {}
 
     @abstractmethod
     def fit(self: _I, train: DataTuple) -> _I:
@@ -35,6 +36,11 @@ class InAlgorithm(Algorithm, Protocol):
             self, but trained.
         """
 
+    @property
+    def hyperparameters(self) -> Dict[str, Union[str, int, float]]:
+        """Return list of hyperparameters."""
+        return self._hyperparameters
+
     @abstractmethod
     def predict(self, test: TestTuple) -> Prediction:
         """Make predictions on the given data.
@@ -43,7 +49,7 @@ class InAlgorithm(Algorithm, Protocol):
             test: data to evaluate on
 
         Returns:
-            predictions
+            Prediction
         """
 
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
@@ -54,7 +60,7 @@ class InAlgorithm(Algorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         self.fit(train)
         return self.predict(test)
@@ -90,7 +96,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -109,7 +115,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -129,7 +135,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test: test data
 
         Returns:
-            predictions
+            Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)

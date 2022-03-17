@@ -22,13 +22,13 @@ jobs:
     - name: Install sphinx
       run: |
         pip install wheel
-        pip install sphinx autodocsumm typing_extensions sphinx_rtd_theme
+        pip install sphinx autodocsumm typing_extensions furo
     - name: Build docs
       run: |
-        cd docsource
+        cd docs
         bash generate_docs.sh
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
-        publish_dir: ./docs
+        publish_dir: ./docs/_build/html
         github_token: ${{ secrets.GITHUB_TOKEN }}

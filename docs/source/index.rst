@@ -24,19 +24,19 @@ Example
 
 
 API
-===
+---
 
 .. toctree::
    :maxdepth: 2
 
-   ethicml.algorithms
-   ethicml.data
-   ethicml.evaluators
-   ethicml.metrics
-   ethicml.preprocessing
-   ethicml.utility
-   ethicml.vision
-   ethicml.visualisation
+   algorithms/index
+   data/index
+   evaluators/index
+   metrics/index
+   preprocessing
+   utility
+   vision
+   visualisation
 
 
 
