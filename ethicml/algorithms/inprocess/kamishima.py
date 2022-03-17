@@ -29,7 +29,7 @@ class Kamishima(InstalledModel):
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
     """
 
-    def __init__(self, eta: float = 1.0):
+    def __init__(self, *, eta: float = 1.0):
         """Initialize Kamishima model.
 
         Args:

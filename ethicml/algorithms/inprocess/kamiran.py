@@ -27,6 +27,7 @@ class Kamiran(InAlgorithm):
 
     def __init__(
         self,
+        *,
         classifier: ClassifierType = "LR",
         C: Optional[float] = None,
         kernel: Optional[KernelType] = None,
