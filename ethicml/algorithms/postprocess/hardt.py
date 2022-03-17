@@ -18,7 +18,7 @@ __all__ = ["Hardt"]
 class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
-    def __init__(self, unfavorable_label: int = 0, favorable_label: int = 1, seed: int = 888):
+    def __init__(self, *, unfavorable_label: int = 0, favorable_label: int = 1, seed: int = 888):
         self.seed = seed
         self.is_fairness_algo = True
         self._unfavorable_label = unfavorable_label

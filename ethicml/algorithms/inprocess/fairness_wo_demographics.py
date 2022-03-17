@@ -16,7 +16,8 @@ class DRO(InAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
+        *,
+        dir: Union[str, Path] = ".",
         eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,

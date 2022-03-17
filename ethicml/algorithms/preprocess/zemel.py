@@ -17,7 +17,8 @@ class Zemel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
+        *,
+        dir: Union[str, Path] = ".",
         threshold: float = 0.5,
         clusters: int = 2,
         Ax: float = 0.01,

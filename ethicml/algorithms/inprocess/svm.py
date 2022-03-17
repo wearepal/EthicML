@@ -25,7 +25,7 @@ class SVM(InAlgorithm):
     is_fairness_algo = False
 
     def __init__(
-        self, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
+        self, *, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
     ):
         kernel_name = f" ({kernel})" if kernel is not None else ""
         self.__name = f"SVM{kernel_name}"

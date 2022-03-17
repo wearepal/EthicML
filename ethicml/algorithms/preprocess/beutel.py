@@ -17,9 +17,9 @@ class Beutel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
         fairness: FairnessType = "DP",
         *,
+        dir: Union[str, Path] = ".",
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),

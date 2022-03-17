@@ -30,6 +30,7 @@ class MLP(InAlgorithm):
 
     def __init__(
         self,
+        *,
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
         activation: Optional[ActivationType] = None,
         seed: int = 888,

@@ -25,7 +25,8 @@ class Agarwal(InAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
+        *,
+        dir: Union[str, Path] = ".",
         fairness: FairnessType = "DP",
         classifier: ClassifierType = "LR",
         eps: float = 0.1,

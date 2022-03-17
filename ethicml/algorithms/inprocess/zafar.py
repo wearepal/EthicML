@@ -126,7 +126,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
 class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
-    def __init__(self, gamma: float = 0.5):
+    def __init__(self, *, gamma: float = 0.5):
         super().__init__(
             name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
         )
@@ -141,12 +141,12 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
 class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
-    def __init__(self, c: float = 0.001):
+    def __init__(self, *, C: float = 0.001):
         super().__init__(
-            name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
+            name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
         )
-        self._c = c
-        self._hyperparameters = {"C": c}
+        self._c = C
+        self._hyperparameters = {"C": C}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -159,7 +159,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _mode: ClassVar[str] = "fnr"  # class level constant
     _base_name: ClassVar[str] = "ZafarEqOpp"
 
-    def __init__(self, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
+    def __init__(self, *, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
         name = f"{self._base_name}, τ={tau}, μ={mu}"
         super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT, is_fairness_algo=True)
         self._tau = tau
