@@ -27,6 +27,7 @@ class Kamiran(InAlgorithm):
 
     def __init__(
         self,
+        *,
         classifier: ClassifierType = "LR",
         C: Optional[float] = None,
         kernel: Optional[KernelType] = None,
@@ -46,11 +47,16 @@ class Kamiran(InAlgorithm):
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
         self.is_fairness_algo = True
+        self._hyperparameters = {"C": self.C}
+        if self.classifier == "SVM":
+            self._hyperparameters["kernel"] = self.kernel
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        return f"Kamiran & Calders {self.classifier}"
+        lr_params = f" C={self.C}" if self.classifier == "LR" else ""
+        svm_params = f" C={self.C}, kernel={self.kernel}" if self.classifier == "SVM" else ""
+        return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
@@ -74,7 +80,20 @@ class Kamiran(InAlgorithm):
 def compute_instance_weights(
     train: DataTuple, balance_groups: bool = False, upweight: bool = False
 ) -> pd.DataFrame:
-    """Compute weights for all samples."""
+    """Compute weights for all samples.
+
+    Args:
+        train: The training data.
+        balance_groups: Whether to balance the groups. When False, the groups are balanced as in
+            `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
+            When True, the groups are numerically balanced.
+        upweight: If balance_groups is True, whether to upweight the groups, or to downweight them.
+            Downweighting is done by multiplying the weights by the inverse of the group size
+            and is more numerically stable for small group sizes.
+
+    Returns:
+        A dataframe with the instance weights for each sample in the training data.
+    """
     num_samples = len(train.x)
     s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
     _, inv_indexes_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)

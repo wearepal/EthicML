@@ -4,15 +4,13 @@ Datasets
 
 .. automodule:: ethicml.data
 
-Dataset base
-============
-
-.. automodule:: ethicml.data.dataset
-
-Specific datasets
-=================
-
 .. toctree::
    :glob:
 
    ./*
+
+
+Dataset base
+============
+
+.. automodule:: ethicml.data.dataset

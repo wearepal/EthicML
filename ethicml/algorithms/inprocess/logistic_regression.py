@@ -30,6 +30,9 @@ class LR(InAlgorithm):
     seed: int = 888
     is_fairness_algo = False
 
+    def __post_init__(self):
+        self._hyperparameters = {"C": self.C}
+
     @property
     def name(self) -> str:
         """Name of the algorithm."""

@@ -14,7 +14,7 @@ __all__ = ["Calders"]
 class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
-    def __init__(self, preferable_class: int, disadvantaged_group: int, seed: int = 888):
+    def __init__(self, *, preferable_class: int, disadvantaged_group: int, seed: int = 888):
         self.seed = seed
         self._out_size: Optional[int] = None
         self.preferable_class = preferable_class
