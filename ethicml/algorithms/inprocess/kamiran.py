@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -49,7 +49,7 @@ class Kamiran(InAlgorithm):
         self._hyperparameters = {"C": self.C}
         if self.classifier == "SVM":
             self._hyperparameters["kernel"] = self.kernel
-        self.group_weights: Optional[Dict[int, Dict[str, float]]] = None
+        self.group_weights: Optional[Dict[str, Any]] = None
 
     @property
     def name(self) -> str:
@@ -92,7 +92,7 @@ class Kamiran(InAlgorithm):
             train.y.to_numpy().ravel(),
             sample_weight=weights,
         )
-        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')
+        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')  # type: ignore[union-attr]
         groups = (
             pd.concat([train.s, train.y], axis=1)
             .groupby([train.s.columns[0], train.y.columns[0]])

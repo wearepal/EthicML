@@ -1,6 +1,6 @@
 """Implementation of Fairness without Demographics."""
 from pathlib import Path
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 import torch
@@ -127,6 +127,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
 def main() -> None:
     """This function runs the FWD model as a standalone program on tabular data."""
     args = DroArgs().parse_args()
+    data: Union[DataTuple, TestTuple]
     if args.mode == "run":
         assert args.train is not None
         assert args.test is not None
