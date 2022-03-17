@@ -7,7 +7,6 @@ import pandas as pd
 from tqdm import tqdm
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.postprocess.post_algorithm import PostAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
@@ -141,7 +140,6 @@ def evaluate_models(
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
-    postprocess_models: Sequence[PostAlgorithm] = (),
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 1,
@@ -160,7 +158,6 @@ def evaluate_models(
         scaler: scaler to use on the continuous features of the dataset.
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
-        postprocess_models: list of postprocess model objects
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         repeats: number of repeats to perform for the experiments
@@ -259,6 +256,7 @@ def evaluate_models(
                         "model": model.name,
                         "split_id": split_id,
                         **split_info,
+                        **model.hyperparameters,
                     }
 
                     predictions: Prediction = model.run(transformed_train, transformed_test)
@@ -273,10 +271,11 @@ def evaluate_models(
                         )
                     )
 
-                    for _ in postprocess_models:
-                        # Post-processing has yet to be defined
-                        # - leaving blank until we have an implementation to work with
-                        pass
+                    # TODO: add the below!
+                    # for _ in postprocess_models:
+                    #     Post-processing has yet to be defined
+                    #     - leaving blank until we have an implementation to work with
+                    #     pass
 
                     results_df = results_df.append(temp_res, ignore_index=True, sort=False)
                     pbar.update()
@@ -314,7 +313,6 @@ def evaluate_models_async(
     datasets: List[Dataset],
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
-    postprocess_models: Sequence[PostAlgorithm] = (),
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 1,
@@ -333,7 +331,6 @@ def evaluate_models_async(
         scaler: Sklearn-style scaler to be used on the continuous features.
         preprocess_models: list of preprocess model objects
         inprocess_models: list of inprocess model objects
-        postprocess_models: list of postprocess model objects
         metrics: list of metric objects
         per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
         repeats: number of repeats to perform for the experiments
@@ -346,7 +343,6 @@ def evaluate_models_async(
     """
     from .parallelism import run_in_parallel
 
-    del postprocess_models  # not used at the moment
     per_sens_metrics_check(per_sens_metrics)
     if splitter is None:
         train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=0)
@@ -462,6 +458,7 @@ def _gather_metrics(
                 "transform": data_info.transform_name,
                 "model": model.name,
                 **data_info.split_info,
+                **model.hyperparameters,
             }
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 

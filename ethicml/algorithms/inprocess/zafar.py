@@ -131,6 +131,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
             name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
         )
         self.gamma = gamma
+        self._hyperparameters = {"gamma": gamma}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -145,6 +146,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
             name=f"ZafarFairness, c={c}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
         )
         self._c = c
+        self._hyperparameters = {"C": c}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -163,6 +165,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._tau = tau
         self._mu = mu
         self._eps = eps
+        self._hyperparameters = {"tau": tau, "mu": mu, "eps": eps}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:

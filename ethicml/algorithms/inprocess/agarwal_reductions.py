@@ -63,6 +63,9 @@ class Agarwal(InAlgorithmAsync):
             "kernel": chosen_kernel,
             "seed": seed,
         }
+        self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
+        if classifier == "SVM":
+            self._hyperparameters["kernel"] = chosen_kernel
 
     @property
     def name(self) -> str:

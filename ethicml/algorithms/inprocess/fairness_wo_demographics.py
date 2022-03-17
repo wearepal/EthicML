@@ -45,6 +45,12 @@ class DRO(InAlgorithmAsync):
             "network_size": network_size,
             "seed": seed,
         }
+        self._hyperparameters = {
+            "eta": eta,
+            "epochs": epochs,
+            "batch_size": batch_size,
+            "network_size": f"{network_size}",
+        }
 
     @property
     def name(self) -> str:

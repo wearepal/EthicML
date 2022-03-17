@@ -50,6 +50,10 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
+        self._hyperparameters = {
+            "hidden_layer_sizes": f"{self.hidden_layer_sizes}",
+            "activation": self.activation,
+        }
 
     @property
     def name(self) -> str:
