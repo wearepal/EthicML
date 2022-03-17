@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Data preprocessing" href="../preprocessing.html" /><link rel="prev" title="Metrics" href="index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Metrics" href="../metrics/index.html" /><link rel="prev" title="Model evaluation" href="evaluate_models.html" />
 
     <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Compare metrics between groups - EthicML 0.6.0 documentation</title>
+        <title>Parallel evaluation - EthicML 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
@@ -165,14 +165,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../evaluators/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../evaluators/evaluate_models.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../evaluators/parallelism.html">Parallel evaluation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Evaluation helpers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Parallel evaluation</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Metrics</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Compare metrics between groups</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
@@ -211,21 +211,9 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-ethicml.metrics.per_sensitive_attribute">
-<span id="compare-metrics-between-groups"></span><h1>Compare metrics between groups<a class="headerlink" href="#module-ethicml.metrics.per_sensitive_attribute" title="Permalink to this headline">#</a></h1>
-<p>Evaluator for a metric per sensitive attribute class.</p>
-<p><strong>Exceptions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable" title="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a></p></td>
-<td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
-</tr>
-</tbody>
-</table></div>
+          <section id="module-ethicml.evaluators.parallelism">
+<span id="parallel-evaluation"></span><h1>Parallel evaluation<a class="headerlink" href="#module-ethicml.evaluators.parallelism" title="Permalink to this headline">#</a></h1>
+<p>Collection of functions that enable parallelism.</p>
 <p><strong>Functions:</strong></p>
 <div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
@@ -233,76 +221,51 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute the difference in the metrics per sensitive attribute.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.parallelism.arrange_in_parallel" title="ethicml.evaluators.parallelism.arrange_in_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_in_parallel</span></code></a></p></td>
+<td><p>Arrange the given algorithms to run (embarrassingly) parallel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute" title="ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a></p></td>
-<td><p>Compute the ratios in the metrics per sensitive attribute.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.parallelism.run_in_parallel" title="ethicml.evaluators.parallelism.run_in_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_parallel</span></code></a></p></td>
+<td><p>Run the given algorithms (embarrassingly) parallel.</p></td>
 </tr>
 </tbody>
 </table></div>
-<dl class="py exception">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricNotApplicable</span></span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.MetricNotApplicable.with_traceback">
-<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.MetricNotApplicable.with_traceback" title="Permalink to this definition">#</a></dt>
-<dd><p>Exception.with_traceback(tb) –
-set self.__traceback__ to tb and return self.</p>
-</dd></dl>
-</dd></dl>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">diff_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.diff_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the difference in the metrics per sensitive attribute.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary of differences</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">metric_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.metric_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p>
+<dt class="sig sig-object py" id="ethicml.evaluators.parallelism.arrange_in_parallel">
+<span class="sig-name descname"><span class="pre">arrange_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.parallelism.arrange_in_parallel" title="Permalink to this definition">#</a></dt>
+<dd><p>Arrange the given algorithms to run (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>metric</strong> (<a class="reference internal" href="index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p></li>
-<li><p><strong>use_sens_name</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>algos</strong> (<em>Sequence</em><em>[</em><em>ethicml.evaluators.parallelism.Algorithm</em><em>[</em><em>ethicml.evaluators.parallelism._RT</em><em>]</em><em>]</em>) – list of tuples consisting of a <cite>run_async</cite> function of an algorithm and a name</p></li>
+<li><p><strong>data</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><em>ethicml.utility.data_structures.TrainTestPair</em></a><em>]</em>) – list of pairs of data tuples (train and test)</p></li>
+<li><p><strong>num_cpus</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – number of CPUs to use. <cite>None</cite> means all.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Dict</em>[str, float]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of the results</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>List</em>[<em>List</em>[ethicml.evaluators.parallelism._RT]]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">ratio_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sensitive_attribute.ratio_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
+<dt class="sig sig-object py" id="ethicml.evaluators.parallelism.run_in_parallel">
+<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/inprocess.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><span class="pre">ethicml.utility.data_structures.TrainTestPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><span class="pre">ethicml.utility.data_structures.Prediction</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethicml.evaluators.parallelism.run_in_parallel" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/preprocess.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><span class="pre">ethicml.utility.data_structures.TrainTestPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><span class="pre">ethicml.utility.data_structures.DataTuple</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><span class="pre">ethicml.utility.data_structures.TestTuple</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span></dt>
+<dd><p>Run the given algorithms (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>algos</strong> – list of algorithms</p></li>
+<li><p><strong>data</strong> – list of pairs of data tuples (train and test)</p></li>
+<li><p><strong>num_cpus</strong> – how many processes can run in parallel at most. if zero (or negative), then
+there is no maximum</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>dictionary of ratios</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
+<dd class="field-even"><p>list of the results</p>
 </dd>
 </dl>
 </dd></dl>
@@ -313,23 +276,23 @@ set self.__traceback__ to tb and return self.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../preprocessing.html">
+          <a class="next-page" href="../metrics/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Data preprocessing</div>
+                <div class="title">Metrics</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="evaluate_models.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Metrics</div>
+                <div class="title">Model evaluation</div>
                 
               </div>
             </a>

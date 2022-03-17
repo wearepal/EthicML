@@ -165,8 +165,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/cross_validator.html">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/parallelism.html">Parallel evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
 </ul>
 </li>
@@ -209,29 +214,6 @@
           <section id="module-ethicml.algorithms">
 <span id="algorithms"></span><h1>Algorithms<a class="headerlink" href="#module-ethicml.algorithms" title="Permalink to this headline">#</a></h1>
 <p>Definitions of algorithms.</p>
-<section id="module-ethicml.algorithms.algorithm_base">
-<span id="algorithms-base"></span><h2>Algorithms base<a class="headerlink" href="#module-ethicml.algorithms.algorithm_base" title="Permalink to this headline">#</a></h2>
-<p>Base class for Algorithms.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>Base class for Algorithms.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the algorithm.</p>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubprocessAlgorithmMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
-</dd></dl>
-</section>
-<section id="specific-datasets">
-<h2>Specific datasets<a class="headerlink" href="#specific-datasets" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="inprocess.html">Inprocess algorithms</a><ul>
@@ -267,6 +249,26 @@
 </li>
 </ul>
 </div>
+<section id="module-ethicml.algorithms.algorithm_base">
+<span id="algorithms-base"></span><h2>Algorithms base<a class="headerlink" href="#module-ethicml.algorithms.algorithm_base" title="Permalink to this headline">#</a></h2>
+<p>Base class for Algorithms.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Algorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Base class for Algorithms.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.Algorithm.name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.algorithm_base.Algorithm.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubprocessAlgorithmMixin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Base class of async methods; meant to be used in conjuction with <a class="reference internal" href="#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
+</dd></dl>
 </section>
 </section>
 
@@ -329,7 +331,6 @@
             <ul>
 <li><a class="reference internal" href="#">Algorithms</a><ul>
 <li><a class="reference internal" href="#module-ethicml.algorithms.algorithm_base">Algorithms base</a></li>
-<li><a class="reference internal" href="#specific-datasets">Specific datasets</a></li>
 </ul>
 </li>
 </ul>

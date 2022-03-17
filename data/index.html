@@ -165,8 +165,13 @@
 <li class="toctree-l2"><a class="reference internal" href="vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../evaluators.html">Evaluation helpers</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/cross_validator.html">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/parallelism.html">Parallel evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
 </ul>
 </li>
@@ -209,6 +214,34 @@
           <section id="module-ethicml.data">
 <span id="datasets"></span><h1>Datasets<a class="headerlink" href="#module-ethicml.data" title="Permalink to this headline">#</a></h1>
 <p>This module contains items related to data, such as raw csv’s and data objects.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tabular_data.html">Tabular datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.adult">Adult</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.compas">Compas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.credit">Credit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.crime">Crime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.german">German</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.health">Health</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.non_binary_toy">Non-binary toy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.sqf">Stop, question, frisk</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.synthetic">Synthetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.toy">Toy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">Utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.load">Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.lookup">Lookup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.util">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vision_data.html">Vision dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vision_data.html#module-ethicml.data.vision_data.celeba">CelebA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vision_data.html#module-ethicml.data.vision_data.genfaces">Generated faces</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <section id="module-ethicml.data.dataset">
 <span id="dataset-base"></span><h2>Dataset base<a class="headerlink" href="#module-ethicml.data.dataset" title="Permalink to this headline">#</a></h2>
 <p>Data structure for all datasets that come with the framework.</p>
@@ -540,37 +573,6 @@ then the continuous.</p>
 </dd></dl>
 </dd></dl>
 </section>
-<section id="specific-datasets">
-<h2>Specific datasets<a class="headerlink" href="#specific-datasets" title="Permalink to this headline">#</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tabular_data.html">Tabular datasets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.adult">Adult</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.compas">Compas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.credit">Credit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.crime">Crime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.german">German</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.health">Health</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.non_binary_toy">Non-binary toy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.sqf">Stop, question, frisk</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.synthetic">Synthetic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tabular_data.html#module-ethicml.data.tabular_data.toy">Toy</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="util.html">Utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.load">Loading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.lookup">Lookup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="util.html#module-ethicml.data.util">Other</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="vision_data.html">Vision dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="vision_data.html#module-ethicml.data.vision_data.celeba">CelebA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vision_data.html#module-ethicml.data.vision_data.genfaces">Generated faces</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
 </section>
 
         </article>
@@ -632,7 +634,6 @@ then the continuous.</p>
             <ul>
 <li><a class="reference internal" href="#">Datasets</a><ul>
 <li><a class="reference internal" href="#module-ethicml.data.dataset">Dataset base</a></li>
-<li><a class="reference internal" href="#specific-datasets">Specific datasets</a></li>
 </ul>
 </li>
 </ul>
