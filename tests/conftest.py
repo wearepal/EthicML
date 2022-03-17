@@ -94,15 +94,12 @@ def simulate_no_torch() -> Generator[None, None, None]:
     """Make it appear that Torch is not avaiable."""
     # ======= set up ========
     torch_available = em.common.TORCH_AVAILABLE
-    torchvision_available = em.common.TORCHVISION_AVAILABLE
     em.common.TORCH_AVAILABLE = False
-    em.common.TORCHVISION_AVAILABLE = False
 
     yield  # run test
 
     # ====== tear down =======
     em.common.TORCH_AVAILABLE = torch_available
-    em.common.TORCHVISION_AVAILABLE = torchvision_available
 
 
 def pytest_addoption(parser):
