@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Optional
+from typing import Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -49,6 +49,7 @@ class Kamiran(InAlgorithm):
         self._hyperparameters = {"C": self.C}
         if self.classifier == "SVM":
             self._hyperparameters["kernel"] = self.kernel
+        self.group_weights: Optional[Dict[int, Dict[str, float]]] = None
 
     @property
     def name(self) -> str:
