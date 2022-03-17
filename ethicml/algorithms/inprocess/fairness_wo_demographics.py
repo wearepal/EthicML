@@ -17,7 +17,7 @@ class DRO(InAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Optional[Union[str, Path]] = None,
+        dir: Union[str, Path] = ".",
         eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,
@@ -38,7 +38,6 @@ class DRO(InAlgorithmAsync):
         self.is_fairness_algo = True
         if network_size is None:
             network_size = [50]
-        dir = dir if dir is not None else "."
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[float, int, str, List[int]]] = {
             "eta": eta,

@@ -26,7 +26,7 @@ class Agarwal(InAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Optional[Union[str, Path]] = None,
+        dir: Union[str, Path] = ".",
         fairness: FairnessType = "DP",
         classifier: ClassifierType = "LR",
         eps: float = 0.1,
@@ -53,7 +53,6 @@ class Agarwal(InAlgorithmAsync):
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.seed = seed
         self.is_fairness_algo = True
-        dir = dir if dir is not None else "."
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {

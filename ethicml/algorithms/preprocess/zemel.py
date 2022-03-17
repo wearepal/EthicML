@@ -18,7 +18,7 @@ class Zemel(PreAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Optional[Union[str, Path]] = None,
+        dir: Union[str, Path] = ".",
         threshold: float = 0.5,
         clusters: int = 2,
         Ax: float = 0.01,
@@ -31,7 +31,6 @@ class Zemel(PreAlgorithmAsync):
     ) -> None:
         self.seed = seed
         self._out_size: Optional[int] = None
-        dir = dir if dir is not None else "."
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[int, float]] = {
             "clusters": clusters,

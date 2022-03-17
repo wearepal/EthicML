@@ -1,6 +1,6 @@
 """Beutel's algorithm."""
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Union
+from typing import Dict, List, Sequence, Union
 
 from ranzen import implements
 
@@ -19,7 +19,7 @@ class Beutel(PreAlgorithmAsync):
         self,
         fairness: FairnessType = "DP",
         *,
-        dir: Optional[Union[str, Path]] = None,
+        dir: Union[str, Path] = ".",
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),
@@ -35,7 +35,6 @@ class Beutel(PreAlgorithmAsync):
     ):
         self.seed = seed
         self._out_size = enc_size[-1]
-        dir = dir if dir is not None else "."
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
             "fairness": fairness,
