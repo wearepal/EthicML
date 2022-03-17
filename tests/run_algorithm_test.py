@@ -70,24 +70,22 @@ def test_run_alg_suite_scaler():
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     results_no_scaler = em.evaluate_models(
-        datasets,
-        preprocess_models,
-        inprocess_models,
-        postprocess_models,
-        metrics,
-        per_sens_metrics,
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
         delete_prev=True,
         topic="pytest",
     )
     results_scaler = em.evaluate_models(
-        datasets,
-        preprocess_models,
-        inprocess_models,
-        postprocess_models,
-        metrics,
-        per_sens_metrics,
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
         scaler=StandardScaler(),
         repeats=1,
         test_mode=True,
@@ -112,7 +110,6 @@ def test_run_alg_suite():
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        postprocess_models=postprocess_models,
         metrics=metrics,
         per_sens_metrics=per_sens_metrics,
         repeats=1,
@@ -120,12 +117,11 @@ def test_run_alg_suite():
         topic="pytest",
     )
     results = em.evaluate_models(
-        datasets,
-        preprocess_models,
-        inprocess_models,
-        postprocess_models,
-        metrics,
-        per_sens_metrics,
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
         delete_prev=True,
@@ -146,7 +142,7 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 16)
+        assert written_file.shape == (2, 18)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
@@ -166,12 +162,11 @@ def test_run_alg_suite_wrong_metrics():
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
     with pytest.raises(em.MetricNotApplicable):
         em.evaluate_models(
-            datasets,
-            preprocess_models,
-            inprocess_models,
-            postprocess_models,
-            metrics,
-            per_sens_metrics,
+            datasets=datasets,
+            preprocess_models=preprocess_models,
+            inprocess_models=inprocess_models,
+            metrics=metrics,
+            per_sens_metrics=per_sens_metrics,
             repeats=1,
             test_mode=True,
         )

@@ -25,13 +25,14 @@ class SVM(InAlgorithm):
     is_fairness_algo = False
 
     def __init__(
-        self, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
+        self, *, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
     ):
         kernel_name = f" ({kernel})" if kernel is not None else ""
         self.__name = f"SVM{kernel_name}"
         self.seed = seed
         self.C = SVC().C if C is None else C
         self.kernel = SVC().kernel if kernel is None else kernel
+        self._hyperparameters = {"C": self.C, "kernel": self.kernel}
 
     @property
     def name(self) -> str:

@@ -70,7 +70,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
-    InprocessTest(name="Kamiran & Calders LR", model=Kamiran(), num_pos=44),
+    InprocessTest(name="Kamiran & Calders LR C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
@@ -168,6 +168,7 @@ def kamishima_teardown() -> Generator[None, None, None]:
 
 @pytest.mark.slow
 def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
+    """Test Kamishima."""
     train, test = toy_train_test
 
     model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv

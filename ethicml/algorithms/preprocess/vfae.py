@@ -15,9 +15,9 @@ class VFAE(PreAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
         dataset: str,
         *,
+        dir: Union[str, Path] = ".",
         supervised: bool = True,
         epochs: int = 10,
         batch_size: int = 32,

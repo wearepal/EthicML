@@ -5,7 +5,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List, TypeVar
+from typing import Dict, List, TypeVar, Union
 from typing_extensions import Protocol, runtime_checkable
 
 from ranzen import implements
@@ -23,6 +23,7 @@ class InAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
     is_fairness_algo: bool
+    _hyperparameters: Dict[str, Union[str, int, float]] = {}
 
     @abstractmethod
     def fit(self: _I, train: DataTuple) -> _I:
@@ -34,6 +35,11 @@ class InAlgorithm(Algorithm, Protocol):
         Returns:
             self, but trained.
         """
+
+    @property
+    def hyperparameters(self) -> Dict[str, Union[str, int, float]]:
+        """Return list of hyperparameters."""
+        return self._hyperparameters
 
     @abstractmethod
     def predict(self, test: TestTuple) -> Prediction:

@@ -30,6 +30,7 @@ class MLP(InAlgorithm):
 
     def __init__(
         self,
+        *,
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
         activation: Optional[ActivationType] = None,
         seed: int = 888,
@@ -50,6 +51,10 @@ class MLP(InAlgorithm):
         self.activation: ActivationType = (
             MLPClassifier().activation if activation is None else activation
         )
+        self._hyperparameters = {
+            "hidden_layer_sizes": f"{self.hidden_layer_sizes}",
+            "activation": self.activation,
+        }
 
     @property
     def name(self) -> str:

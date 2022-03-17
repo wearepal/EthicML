@@ -16,7 +16,8 @@ class DRO(InAlgorithmAsync):
 
     def __init__(
         self,
-        dir: Union[str, Path],
+        *,
+        dir: Union[str, Path] = ".",
         eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,
@@ -44,6 +45,12 @@ class DRO(InAlgorithmAsync):
             "epochs": epochs,
             "network_size": network_size,
             "seed": seed,
+        }
+        self._hyperparameters = {
+            "eta": eta,
+            "epochs": epochs,
+            "batch_size": batch_size,
+            "network_size": f"{network_size}",
         }
 
     @property
