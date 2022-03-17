@@ -1,6 +1,6 @@
 """Implementation of Agarwal model."""
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Union
+from typing import ClassVar, Dict, List, Optional, Set, Union
 
 from ranzen import implements
 
@@ -22,6 +22,8 @@ class Agarwal(InAlgorithmAsync):
 
     A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
     """
+
+    is_fairness_algo: ClassVar[bool] = True
 
     def __init__(
         self,
@@ -52,7 +54,6 @@ class Agarwal(InAlgorithmAsync):
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.seed = seed
-        self.is_fairness_algo = True
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: Dict[str, Union[str, float, int]] = {

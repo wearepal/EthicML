@@ -10,7 +10,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
+from typing import ClassVar, Optional
 
 import git
 
@@ -23,12 +23,13 @@ __all__ = ["InstalledModel"]
 class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
     """The model that does the magic."""
 
+    is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
+
     def __init__(
         self,
         name: str,
         dir_name: str,
         top_dir: str,
-        is_fairness_algo: bool,
         url: Optional[str] = None,
         executable: Optional[str] = None,
         seed: int = 888,
@@ -65,7 +66,6 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             self.__executable = executable
         self.__name = name
         self.seed = seed
-        self.is_fairness_algo = is_fairness_algo
 
     @property
     def name(self) -> str:

@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from typing import Any, Dict, Optional
+from typing import Any, ClassVar, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -25,6 +25,8 @@ class Kamiran(InAlgorithm):
     Each sample is assigned an instance-weight based on the joing probability of S and Y which is used during training of a classifier.
     """
 
+    is_fairness_algo: ClassVar[bool] = True
+
     def __init__(
         self,
         *,
@@ -46,7 +48,6 @@ class Kamiran(InAlgorithm):
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
-        self.is_fairness_algo = True
         self._hyperparameters = {"C": self.C}
         if self.classifier == "SVM":
             self._hyperparameters["kernel"] = self.kernel
