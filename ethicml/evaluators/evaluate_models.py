@@ -367,6 +367,9 @@ def evaluate_models_async(
             train: DataTuple
             test: DataTuple
             train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
+            if scaler is not None:
+                train, scaler_post = scale_continuous(dataset, train, scaler)
+                test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_subset()
