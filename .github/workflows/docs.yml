@@ -1,9 +1,9 @@
 name: Build docs
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types:
+      - published
 
 jobs:
   docs:
@@ -22,7 +22,7 @@ jobs:
     - name: Install sphinx
       run: |
         pip install wheel
-        pip install sphinx autodocsumm typing_extensions furo
+        pip install sphinx autodocsumm typing_extensions furo toml
     - name: Build docs
       run: |
         cd docs

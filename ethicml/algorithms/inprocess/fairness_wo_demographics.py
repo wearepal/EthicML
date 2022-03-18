@@ -1,7 +1,7 @@
 """Fairness without Demographics."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import ClassVar, Dict, List, Optional, Union
 
 from ranzen import implements
 
@@ -13,6 +13,8 @@ __all__ = ["DRO"]
 
 class DRO(InAlgorithmAsync):
     """Implementation of https://arxiv.org/abs/1806.08010 ."""
+
+    is_fairness_algo: ClassVar[bool] = True
 
     def __init__(
         self,
@@ -35,7 +37,6 @@ class DRO(InAlgorithmAsync):
             seed: The seed for the random number generator.
         """
         self.seed = seed
-        self.is_fairness_algo = True
         if network_size is None:
             network_size = [50]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)

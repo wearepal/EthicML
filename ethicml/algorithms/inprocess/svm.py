@@ -1,5 +1,5 @@
 """Wrapper for SKLearn implementation of SVM."""
-from typing import Optional, Union
+from typing import ClassVar, Optional, Union
 from typing_extensions import Literal
 
 import numpy as np
@@ -22,7 +22,7 @@ class SVM(InAlgorithm):
     Documentation for the underlying classifier can be found `here <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_.
     """
 
-    is_fairness_algo = False
+    is_fairness_algo: ClassVar[bool] = False
 
     def __init__(
         self, *, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888

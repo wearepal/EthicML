@@ -207,9 +207,10 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     train, test = toy_train_test
 
     class _LocalInstalledLR(InAlgorithmAsync):
+        is_fairness_algo: ClassVar[bool] = False
+
         def __init__(self):
             self.seed = 0
-            self.is_fairness_algo = False
             self.model_dir = Path(".")
 
         @property

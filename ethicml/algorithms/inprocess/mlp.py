@@ -1,5 +1,5 @@
 """Wrapper for SKLearn implementation of MLP."""
-from typing import Dict, Optional, Tuple
+from typing import ClassVar, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -28,6 +28,8 @@ class MLP(InAlgorithm):
     Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
     """
 
+    is_fairness_algo: ClassVar[bool] = False
+
     def __init__(
         self,
         *,
@@ -42,7 +44,6 @@ class MLP(InAlgorithm):
             activation: The activation function to use.
             seed: The seed for the random number generator.
         """
-        self.is_fairness_algo = False
         self.seed = seed
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
