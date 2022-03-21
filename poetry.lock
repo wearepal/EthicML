@@ -1335,7 +1335,7 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "ranzen"
-version = "1.1.4"
+version = "1.2.2"
 description = "A toolkit facilitating machine-learning experimentation."
 category = "main"
 optional = false
@@ -2983,8 +2983,8 @@ pyzmq = [
     {file = "pyzmq-22.3.0.tar.gz", hash = "sha256:8eddc033e716f8c91c6a2112f0a8ebc5e00532b4a6ae1eb0ccc48e027f9c671c"},
 ]
 ranzen = [
-    {file = "ranzen-1.1.4-py3-none-any.whl", hash = "sha256:8beb337fd0ef3cf9463efee17673e4a62d1ec31f3c8016f28b4a82a8296e6de2"},
-    {file = "ranzen-1.1.4.tar.gz", hash = "sha256:3c9335b017440ab22c7cd259dfcd2aa8c5704c182e97d7c6a9603c4a6ed35caf"},
+    {file = "ranzen-1.2.2-py3-none-any.whl", hash = "sha256:5bdd0b3c1c3e17d0921d57fdac90e1e730409dc440d6b9d8ec38a04948e9922f"},
+    {file = "ranzen-1.2.2.tar.gz", hash = "sha256:98fa1b97dd156928b547c5c863f91e038734731f9e2e2ec76b8cec4485e17acc"},
 ]
 ray = [
     {file = "ray-1.11.0-cp36-cp36m-macosx_10_15_intel.whl", hash = "sha256:944b5845b80565fb85fbe554a09be4d5c9781a695c469bafe6f039b8489031bd"},
