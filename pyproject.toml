@@ -65,7 +65,7 @@ pylint = "^2.7.4"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", rev = "63b7ae5"}
-types-Pillow = "^9.0.6"
+types-Pillow = "^9.0.8"
 omegaconf = "^2.1.1"
 
 
