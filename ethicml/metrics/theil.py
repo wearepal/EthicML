@@ -13,6 +13,8 @@ from ethicml.utility import DataTuple, Prediction
 
 from .metric import BaseMetric
 
+__all__ = ["Theil"]
+
 
 @dataclass
 class Theil(BaseMetric):

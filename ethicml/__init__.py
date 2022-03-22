@@ -46,27 +46,7 @@ from .data.vision_data.celeba import *
 from .data.vision_data.genfaces import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
-from .metrics.accuracy import *
-from .metrics.anti_spur import AS
-from .metrics.average_odds import AverageOddsDiff
-from .metrics.balanced_accuracy import BalancedAccuracy
-from .metrics.bcr import BCR
-from .metrics.confusion_matrix import LabelOutOfBounds, confusion_matrix
-from .metrics.cv import CV, AbsCV
-from .metrics.dependence_measures import *
-from .metrics.fnr import FNR
-from .metrics.fpr import FPR
-from .metrics.hsic import Hsic
-from .metrics.metric import *
-from .metrics.npv import NPV
-from .metrics.per_sensitive_attribute import *
-from .metrics.ppv import PPV
-from .metrics.prob_neg import ProbNeg
-from .metrics.prob_outcome import ProbOutcome
-from .metrics.prob_pos import ProbPos
-from .metrics.theil import Theil
-from .metrics.tnr import TNR
-from .metrics.tpr import TPR
+from .metrics import *
 from .preprocessing.adjust_labels import *
 from .preprocessing.biased_split import *
 from .preprocessing.domain_adaptation import *

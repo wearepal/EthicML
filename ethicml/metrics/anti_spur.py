@@ -9,6 +9,8 @@ from ethicml.utility import DataTuple, Prediction
 
 from .metric import BaseMetric, Metric
 
+__all__ = ["AS"]
+
 
 @dataclass
 class AS(BaseMetric):

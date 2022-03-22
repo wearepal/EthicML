@@ -7,6 +7,8 @@ from sklearn.metrics import confusion_matrix as conf_mtx
 
 from ethicml.utility import DataTuple, Prediction
 
+__all__ = ["LabelOutOfBounds", "confusion_matrix"]
+
 
 class LabelOutOfBounds(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""

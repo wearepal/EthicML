@@ -8,6 +8,8 @@ from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
 from .metric import BaseMetric, Metric
 
+__all__ = ["ProbOutcome"]
+
 
 @dataclass
 class ProbOutcome(BaseMetric):

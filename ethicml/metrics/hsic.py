@@ -12,6 +12,8 @@ from numpy.random import RandomState
 from ethicml.metrics.metric import BaseMetric
 from ethicml.utility import DataTuple, Prediction
 
+__all__ = ["Hsic"]
+
 
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
