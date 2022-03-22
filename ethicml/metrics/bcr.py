@@ -10,6 +10,8 @@ from .metric import CfmMetric, Metric
 from .tnr import TNR
 from .tpr import TPR
 
+__all__ = ["BCR"]
+
 
 @dataclass
 class BCR(CfmMetric):

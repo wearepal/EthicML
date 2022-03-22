@@ -11,6 +11,8 @@ from .metric import CfmMetric, Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
+__all__ = ["AverageOddsDiff"]
+
 
 @dataclass
 class AverageOddsDiff(CfmMetric):
