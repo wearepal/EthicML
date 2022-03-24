@@ -231,7 +231,7 @@ class Dataset:
             restored = pd.get_dummies(value)
             final_df[name] = restored  # for the multi-level column index
 
-        return pd.concat(final_df, axis=1)  # type: ignore[arg-type,return-value]
+        return pd.concat(final_df, axis=1)
 
 
 @dataclass(init=False)

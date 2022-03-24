@@ -83,7 +83,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     post_test: List[List[float]] = []
     model.eval()
     with torch.no_grad():
-        for _x, _s in test_loader:
+        for _x, _ in test_loader:
             out = model.forward(_x)
             post_test += out.data.tolist()
 
@@ -117,7 +117,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
     post_test: List[List[float]] = []
     model.eval()
     with torch.no_grad():
-        for _x, _s in test_loader:
+        for _x, _ in test_loader:
             out = model.forward(_x)
             post_test += out.data.tolist()
 

@@ -6,7 +6,7 @@ import pandas as pd
 df = pd.read_csv("raw/health.csv")
 
 # Drop columns which contains NaNs
-print(f"Dropping columns: {df.columns[df.isna().any()].tolist()}")  # type: ignore[attr-defined]
+print(f"Dropping columns: {df.columns[df.isna().any()].tolist()}")
 df = df.dropna(axis=1)
 
 # Add binary class column
