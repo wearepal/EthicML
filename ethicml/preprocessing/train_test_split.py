@@ -7,7 +7,6 @@ from typing_extensions import Literal
 import numpy as np
 import pandas as pd
 from numpy.random import RandomState
-from pandas.testing import assert_index_equal
 from ranzen import implements
 
 from ethicml.utility import DataTuple
@@ -120,18 +119,18 @@ def train_test_split(
 
     assert isinstance(train.x, pd.DataFrame)
     assert isinstance(test.x, pd.DataFrame)
-    assert_index_equal(train.x.columns, x_columns)
-    assert_index_equal(test.x.columns, x_columns)
+    pd.testing.assert_index_equal(train.x.columns, x_columns)
+    pd.testing.assert_index_equal(test.x.columns, x_columns)
 
     assert isinstance(train.s, pd.DataFrame)
     assert isinstance(test.s, pd.DataFrame)
-    assert_index_equal(train.s.columns, s_columns)
-    assert_index_equal(test.s.columns, s_columns)
+    pd.testing.assert_index_equal(train.s.columns, s_columns)
+    pd.testing.assert_index_equal(test.s.columns, s_columns)
 
     assert isinstance(train.y, pd.DataFrame)
     assert isinstance(test.y, pd.DataFrame)
-    assert_index_equal(train.y.columns, y_columns)
-    assert_index_equal(test.y.columns, y_columns)
+    pd.testing.assert_index_equal(train.y.columns, y_columns)
+    pd.testing.assert_index_equal(test.y.columns, y_columns)
 
     return train, test
 
