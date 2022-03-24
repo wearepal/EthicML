@@ -94,7 +94,7 @@ class Kamiran(InAlgorithm):
             train.y.to_numpy().ravel(),
             sample_weight=weights,
         )
-        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')  # type: ignore[union-attr]
+        weights = weights.value_counts().rename_axis('weight').reset_index(name='count')
         groups = (
             pd.concat([train.s, train.y], axis=1)
             .groupby([train.s.columns[0], train.y.columns[0]])

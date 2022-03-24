@@ -59,29 +59,27 @@ def test_simple_saving() -> None:
             """Check if the dataframes loaded from the files are the same as the original ones."""
 
     data_x = CheckEquality().run(data_tuple, data_tuple)
-    pd.testing.assert_series_equal(  # type: ignore[call-arg]
-        data_tuple.x["a1"], data_x.hard, check_names=False
-    )
+    pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
 
 
-def test_predictions_loaded(temp_dir) -> None:
+def test_predictions_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]))
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
 
 
-def test_predictions_info_loaded(temp_dir) -> None:
+def test_predictions_info_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
     assert preds.info == loaded.info
 
 
-def test_predictions_info_loaded_bad(temp_dir) -> None:
+def test_predictions_info_loaded_bad(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})  # type: ignore
     with pytest.raises(AssertionError):

@@ -52,19 +52,19 @@ def domain_split(
     train_train_pcnt = (1 - (test_pct * 2)) / train_pct
 
     train_train = train_dataset.sample(frac=train_train_pcnt, random_state=seed)
-    test_train = train_dataset.drop(train_train.index, axis="index")  # type: ignore[arg-type]
+    test_train = train_dataset.drop(train_train.index, axis="index")
 
     test = pd.concat([test_train, test_dataset], axis="index")
 
-    train_x = datatup.x.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
-    train_s = datatup.s.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
-    train_y = datatup.y.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
+    train_x = datatup.x.iloc[train_train.index].reset_index(drop=True)
+    train_s = datatup.s.iloc[train_train.index].reset_index(drop=True)
+    train_y = datatup.y.iloc[train_train.index].reset_index(drop=True)
 
     train_datatup = DataTuple(x=train_x, s=train_s, y=train_y, name=datatup.name)
 
-    test_x = datatup.x.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
-    test_s = datatup.s.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
-    test_y = datatup.y.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
+    test_x = datatup.x.iloc[test.index].reset_index(drop=True)
+    test_s = datatup.s.iloc[test.index].reset_index(drop=True)
+    test_y = datatup.y.iloc[test.index].reset_index(drop=True)
 
     test_datatup = DataTuple(x=test_x, s=test_s, y=test_y, name=datatup.name)
 

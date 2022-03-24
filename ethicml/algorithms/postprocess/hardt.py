@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from numpy.random import RandomState
 from ranzen import implements
-from scipy.optimize import OptimizeResult, linprog
+from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 
 from ethicml.metrics.per_sensitive_attribute import metric_per_sensitive_attribute
 from ethicml.metrics.tnr import TNR
