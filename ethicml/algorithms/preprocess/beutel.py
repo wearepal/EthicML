@@ -1,15 +1,36 @@
 """Beutel's algorithm."""
 from pathlib import Path
-from typing import Dict, List, Sequence, Union
+from typing import List, Sequence, Union
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
 from ethicml.utility import FairnessType
 
 from .interface import flag_interface
-from .pre_algorithm import PreAlgorithmAsync
+from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
 
 __all__ = ["Beutel"]
+
+
+class _Flags(TypedDict):
+    fairness: FairnessType
+    enc_size: List[int]
+    adv_size: List[int]
+    pred_size: List[int]
+    enc_activation: str
+    adv_activation: str
+    batch_size: int
+    y_loss: str
+    s_loss: str
+    epochs: int
+    adv_weight: float
+    validation_pcnt: float
+    seed: int
+
+
+class BeutelArgs(PreAlgoArgs, _Flags):
+    """Args for the Beutel Implementation."""
 
 
 class Beutel(PreAlgorithmAsync):
@@ -36,11 +57,11 @@ class Beutel(PreAlgorithmAsync):
         self.seed = seed
         self._out_size = enc_size[-1]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: Dict[str, Union[str, Sequence[int], int, float]] = {
+        self.flags: _Flags = {
             "fairness": fairness,
-            "enc_size": enc_size,
-            "adv_size": adv_size,
-            "pred_size": pred_size,
+            "enc_size": list(enc_size),
+            "adv_size": list(adv_size),
+            "pred_size": list(pred_size),
             "enc_activation": enc_activation,
             "adv_activation": adv_activation,
             "batch_size": batch_size,
@@ -58,38 +79,5 @@ class Beutel(PreAlgorithmAsync):
         return f"Beutel {self.flags['fairness']}"
 
     @implements(PreAlgorithmAsync)
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            test_path=test_path,
-            new_train_path=new_train_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.beutel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            new_train_path=new_train_path,
-            model_path=model_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.beutel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path,
-            test_path=test_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.beutel"] + args
+    def _script_command(self, args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.beutel", flag_interface(self.flags, args)]

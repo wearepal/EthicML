@@ -1,14 +1,27 @@
 """Fairness without Demographics."""
 
 from pathlib import Path
-from typing import ClassVar, Dict, List, Optional, Union
+from typing import ClassVar, List, Optional, Union
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .in_algorithm import InAlgorithmAsync
+from .in_algorithm import InAlgoArgs, InAlgorithmAsync
 from .shared import flag_interface
 
 __all__ = ["DRO"]
+
+
+class _Flags(TypedDict):
+    batch_size: int
+    epochs: int
+    eta: float
+    network_size: List[int]
+    seed: int
+
+
+class DroArgs(InAlgoArgs, _Flags):
+    """Args used in this module."""
 
 
 class DRO(InAlgorithmAsync):
@@ -40,7 +53,7 @@ class DRO(InAlgorithmAsync):
         if network_size is None:
             network_size = [50]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: Dict[str, Union[float, int, str, List[int]]] = {
+        self.flags: _Flags = {
             "eta": eta,
             "batch_size": batch_size,
             "epochs": epochs,
@@ -60,22 +73,5 @@ class DRO(InAlgorithmAsync):
         return "Dist Robust Optim"
 
     @implements(InAlgorithmAsync)
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        args = flag_interface(
-            train_path=train_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
-
-    @implements(InAlgorithmAsync)
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        args = flag_interface(train_path=train_path, model_path=model_path, flags=self.flags)
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
-
-    @implements(InAlgorithmAsync)
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
+    def _script_command(self, args: InAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.dro_tabular", flag_interface(self.flags, args)]

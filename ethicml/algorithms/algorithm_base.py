@@ -4,9 +4,9 @@ import sys
 from abc import abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional
-from typing_extensions import Protocol
+from typing_extensions import NotRequired, Protocol, TypedDict
 
-__all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
+__all__ = ["AlgoArgs", "Algorithm", "SubprocessAlgorithmMixin"]
 
 
 class Algorithm(Protocol):
@@ -18,6 +18,18 @@ class Algorithm(Protocol):
     @abstractmethod
     def name(self) -> str:
         """Name of the algorithm."""
+
+
+class AlgoArgs(TypedDict):
+    """Base commandline interface for algorithms.
+
+    This is a TypedDict so that we can easily turn it into JSON and back.
+    """
+
+    # paths to the files with the data
+    train: NotRequired[str]
+    test: NotRequired[str]
+    model: NotRequired[str]
 
 
 class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-methods

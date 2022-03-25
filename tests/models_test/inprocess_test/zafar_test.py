@@ -93,7 +93,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     model = ZafarFairness()
-    assert model.name == "ZafarFairness, c=0.001"
+    assert model.name == "ZafarFairness, C=0.001"
 
     assert model is not None
 
@@ -107,7 +107,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
-    hyperparams = {"c": [1, 1e-1, 1e-2]}
+    hyperparams = {"C": [1, 1e-1, 1e-2]}
 
     model_class = ZafarFairness
     zafar_cv = CrossValidator(model_class, hyperparams, folds=3)
@@ -120,7 +120,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
-    assert best_result.params["c"] == 0.01
+    assert best_result.params["C"] == 0.01
     assert best_result.scores["Accuracy"] == approx(0.703, abs=1e-3)
     assert best_result.scores["CV absolute"] == approx(0.855, rel=1e-3)
 

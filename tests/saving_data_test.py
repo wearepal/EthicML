@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple
+from ethicml import DataTuple, InAlgoArgs, InAlgorithmAsync, Prediction, TestTuple
 
 NPZ: Final[str] = "test.npz"
 
@@ -41,22 +41,18 @@ def test_simple_saving() -> None:
         def name(self) -> str:
             return "Check equality"
 
-        def _run_script_command(self, train_path, test_path, pred_path):
+        def _script_command(self, args: InAlgoArgs):
             """Check if the dataframes loaded from the files are the same as the original ones."""
-            del test_path
-            loaded = DataTuple.from_npz(train_path)
+            assert args["mode"] == "run", "this model doesn't support the fit/predict split yet"
+            assert "train" in args
+            assert "predictions" in args
+            loaded = DataTuple.from_npz(Path(args["train"]))
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
             pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
             # write a file for the predictions
-            np.savez(pred_path, hard=np.load(train_path)["x"])
+            np.savez(args["predictions"], hard=np.load(args["train"])["x"])
             return ["-c", "pass"]
-
-        def _fit_script_command(self, train_path, model_path):
-            """Check if the dataframes loaded from the files are the same as the original ones."""
-
-        def _predict_script_command(self, model_path, test_path, pred_path):
-            """Check if the dataframes loaded from the files are the same as the original ones."""
 
     data_x = CheckEquality().run(data_tuple, data_tuple)
     pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)

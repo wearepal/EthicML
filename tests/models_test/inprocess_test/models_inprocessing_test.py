@@ -22,6 +22,7 @@ from ethicml import (
     CrossValidator,
     DataTuple,
     DPOracle,
+    InAlgoArgs,
     InAlgorithm,
     InAlgorithmAsync,
     Kamiran,
@@ -218,21 +219,13 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
             return "local installed LR"
 
         @implements(InAlgorithmAsync)
-        def _run_script_command(
-            self, train_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
+        def _script_command(self, args: InAlgoArgs) -> List[str]:
+            assert args["mode"] == "run", "this model doesn't support the fit/predict split yet"
+            assert "train" in args
+            assert "test" in args
+            assert "predictions" in args
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [script, str(train_path), str(test_path), str(pred_path)]
-
-        @implements(InAlgorithmAsync)
-        def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
-
-        @implements(InAlgorithmAsync)
-        def _predict_script_command(
-            self, model_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
+            return [script, args["train"], args["test"], args["predictions"]]
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None

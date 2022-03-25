@@ -1,17 +1,24 @@
 """Zemel algorithm."""
+from __future__ import annotations
+
+import json
+import sys
 from pathlib import Path
-from typing import NamedTuple, Tuple
+from typing import TYPE_CHECKING, NamedTuple, Tuple
 
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
 from joblib import dump, load
 from scipy.spatial.distance import cdist
-from scipy.special import softmax  # type: ignore[attr-defined]
+from scipy.special import softmax
 
-from ethicml.algorithms.preprocess.pre_algorithm import T
-from ethicml.implementations.utils import PreAlgoArgs, load_data_from_flags, save_transformations
+from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple
+
+if TYPE_CHECKING:
+    from ethicml.algorithms.preprocess.pre_algorithm import T
+    from ethicml.algorithms.preprocess.zemel import ZemelArgs
 
 
 class Model(NamedTuple):
@@ -19,20 +26,6 @@ class Model(NamedTuple):
 
     prototypes: np.ndarray
     w: np.ndarray
-
-
-class ZemelArgs(PreAlgoArgs):
-    """Arguments for the Zemel algorithm."""
-
-    clusters: int
-    Ax: float
-    Ay: float
-    Az: float
-    max_iter: int
-    maxfun: int
-    epsilon: float
-    threshold: float
-    seed: int
 
 
 def LFR_optim_objective(
@@ -132,7 +125,7 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
 
 def fit(train: DataTuple, flags: ZemelArgs) -> Model:
     """Train the Zemel model and return the transformed features of the train and test sets."""
-    np.random.seed(flags.seed)
+    np.random.seed(flags["seed"])
 
     sens_col = train.s.columns[0]
     training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
@@ -147,11 +140,11 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
 
     # Initialize the LFR optim objective parameters
     parameters_initialization = np.random.uniform(
-        size=flags.clusters + features_dim * flags.clusters
+        size=flags["clusters"] + features_dim * flags["clusters"]
     )
-    bnd = [(0, 1)] * flags.clusters + [
-        (None, None)
-    ] * features_dim * flags.clusters  # type: ignore[operator]
+    bnd = [(0, 1)] * flags["clusters"] + [(None, None)] * features_dim * flags[
+        "clusters"
+    ]  # type: ignore[operator]
     LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
     learned_model = optim.fmin_l_bfgs_b(  # type: ignore[attr-defined]
@@ -163,21 +156,21 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
             training_sensitive,
             ytrain_nonsensitive[:, 0],
             ytrain_sensitive[:, 0],
-            flags.clusters,
-            flags.Ax,
-            flags.Ay,
-            flags.Az,
+            flags["clusters"],
+            flags["Ax"],
+            flags["Ay"],
+            flags["Az"],
             print_interval,
             verbose,
         ),
         bounds=bnd,
         approx_grad=True,
-        maxfun=flags.maxfun,
-        maxiter=flags.max_iter,
+        maxfun=flags["maxfun"],
+        maxiter=flags["max_iter"],
         disp=verbose,
     )[0]
-    w = learned_model[: flags.clusters]
-    prototypes = learned_model[flags.clusters :].reshape((flags.clusters, features_dim))
+    w = learned_model[: flags["clusters"]]
+    prototypes = learned_model[flags["clusters"] :].reshape((flags["clusters"], features_dim))
 
     return Model(prototypes=prototypes, w=w)
 
@@ -216,20 +209,19 @@ def main() -> None:
     Based on code from https://github.com/zjelveh/learning-fair-representations
     Which in turn, we've got from AIF360
     """
-    args = ZemelArgs()
-    args.parse_args()
-    if args.mode == "run":
-        assert args.train is not None
-        assert args.new_train is not None
-        assert args.test is not None
-        assert args.new_test is not None
+    args: ZemelArgs = json.loads(sys.argv[1])
+    if args["mode"] == "run":
+        assert "train" in args
+        assert "new_train" in args
+        assert "test" in args
+        assert "new_test" in args
         train, test = load_data_from_flags(args)
         save_transformations(train_and_transform(train, test, args), args)
-    elif args.mode == "fit":
-        assert args.model is not None
-        assert args.train is not None
-        assert args.new_train is not None
-        train = DataTuple.from_npz(Path(args.train))
+    elif args["mode"] == "fit":
+        assert "model" in args
+        assert "train" in args
+        assert "new_train" in args
+        train = DataTuple.from_npz(Path(args["train"]))
         model = fit(train, args)
         sens_col = train.s.columns[0]
         training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
@@ -238,16 +230,16 @@ def main() -> None:
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )
         data = DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name)
-        data.to_npz(Path(args.new_train))
-        dump(model, Path(args.model))
-    elif args.mode == "transform":
-        assert args.model is not None
-        assert args.test is not None
-        assert args.new_test is not None
-        test = DataTuple.from_npz(Path(args.test))
-        model = load(Path(args.model))
+        data.to_npz(Path(args["new_train"]))
+        dump(model, Path(args["model"]))
+    elif args["mode"] == "transform":
+        assert "model" in args
+        assert "test" in args
+        assert "new_test" in args
+        test = DataTuple.from_npz(Path(args["test"]))
+        model = load(Path(args["model"]))
         transformed_test = transform(test, model.prototypes, model.w)
-        transformed_test.to_npz(Path(args.new_test))
+        transformed_test.to_npz(Path(args["new_test"]))
 
 
 if __name__ == "__main__":

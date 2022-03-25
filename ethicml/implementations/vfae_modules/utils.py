@@ -1,31 +1,17 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 import torch
 import torch.nn.functional as F
 from torch import Tensor
 
+from ethicml.algorithms.preprocess.vfae import VfaeArgs
+
 from ..pytorch_common import quadratic_time_mmd
-from ..utils import PreAlgoArgs
 from .vfae_network import LvInfo
 
-__all__ = ["VfaeArgs", "kullback_leibler", "loss_function"]
-
-
-class VfaeArgs(PreAlgoArgs):
-    """Args object of VFAE."""
-
-    supervised: bool
-    fairness: str
-    batch_size: int
-    epochs: int
-    dataset: str
-    latent_dims: int
-    z1_enc_size: List[int]
-    z2_enc_size: List[int]
-    z1_dec_size: List[int]
-    seed: int
+__all__ = ["kullback_leibler", "loss_function"]
 
 
 def kullback_leibler(
@@ -74,7 +60,7 @@ def loss_function(
         Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
     """
     z1, z1_mu, z1_logvar = z1_triplet
-    if flags.supervised:
+    if flags["supervised"]:
         assert z2_triplet is not None
         assert z1_d_triplet is not None
         _, z2_mu, z2_logvar = z2_triplet
@@ -83,10 +69,10 @@ def loss_function(
 
     reconstruction_loss = F.mse_loss(x_dec, x, reduction="sum")
 
-    if flags.fairness == "DI":
+    if flags["fairness"] == "DI":
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
         z1_s1 = torch.masked_select(z1, s.ge(0.5)).view(-1, 50)
-    elif flags.fairness == "Eq. Opp":
+    elif flags["fairness"] == "Eq. Opp":
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
         y_s0 = torch.masked_select(y, s.le(0.5)).view(-1, 1)
         z1_s0_y1 = torch.masked_select(z1_s0, y_s0.ge(0.5)).view(-1, 50)
@@ -101,7 +87,7 @@ def loss_function(
 
     mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)
 
-    if flags.supervised:
+    if flags["supervised"]:
         first_kl = kullback_leibler(z2_mu, z2_logvar)
         second_kl = kullback_leibler(z1_dec_mu, z1_dec_logvar, z1_mu, z1_logvar)
         kl_div = first_kl + second_kl

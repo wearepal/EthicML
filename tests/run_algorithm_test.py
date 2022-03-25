@@ -211,7 +211,7 @@ def test_run_alg_suite_no_pipeline():
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results) == expected_num
 
-    kc_name = "Kamiran & Calders LR"
+    kc_name = "Kamiran & Calders LR C=1.0"
 
     assert len(em.filter_results(results, [kc_name])) == 2  # result for Toy and Adult
     assert (

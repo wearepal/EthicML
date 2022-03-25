@@ -1,4 +1,6 @@
 """Implementation of Fairness without Demographics."""
+import json
+import sys
 from pathlib import Path
 from typing import List, Union
 
@@ -6,24 +8,15 @@ import pandas as pd
 import torch
 from joblib import dump, load
 from torch import optim
-from torch.optim.optimizer import Optimizer  # pylint: disable=no-name-in-module
+from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 
+from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
-from ethicml.implementations.utils import InAlgoArgs, load_data_from_flags
+from ethicml.implementations.utils import load_data_from_flags
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
-
-
-class DroArgs(InAlgoArgs):
-    """Args used in this module."""
-
-    batch_size: int
-    epochs: int
-    eta: float
-    network_size: List[int]
-    seed: int
 
 
 def train_model(
@@ -54,21 +47,21 @@ def train_model(
 def fit(train: DataTuple, args: DroArgs) -> DROClassifier:
     """Train a network and return predictions."""
     # Set up the data
-    set_seed(args.seed)
+    set_seed(args["seed"])
     train_data = CustomDataset(train)
-    train_loader = DataLoader(train_data, batch_size=args.batch_size)
+    train_loader = DataLoader(train_data, batch_size=args["batch_size"])
 
     # Build Network
     model = DROClassifier(
         in_size=train_data.xdim,
         out_size=train_data.ydim,
-        network_size=args.network_size,
-        eta=args.eta,
+        network_size=args["network_size"],
+        eta=args["eta"],
     ).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Run Network
-    for epoch in range(int(args.epochs)):
+    for epoch in range(int(args["epochs"])):
         train_model(epoch, model, train_loader, optimizer)
     return model
 
@@ -77,7 +70,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     """Train a network and return predictions."""
     # Set up the data
     test_data = TestDataset(test)
-    test_loader = DataLoader(test_data, batch_size=args.batch_size)
+    test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Transform output
     post_test: List[List[float]] = []
@@ -93,24 +86,24 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
 def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftPrediction:
     """Train a network and return predictions."""
     # Set up the data
-    set_seed(args.seed)
+    set_seed(args["seed"])
     train_data = CustomDataset(train)
-    train_loader = DataLoader(train_data, batch_size=args.batch_size)
+    train_loader = DataLoader(train_data, batch_size=args["batch_size"])
 
     test_data = TestDataset(test)
-    test_loader = DataLoader(test_data, batch_size=args.batch_size)
+    test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Build Network
     model = DROClassifier(
         in_size=train_data.xdim,
         out_size=train_data.ydim,
-        network_size=args.network_size,
-        eta=args.eta,
+        network_size=args["network_size"],
+        eta=args["eta"],
     ).to("cpu")
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Run Network
-    for epoch in range(int(args.epochs)):
+    for epoch in range(int(args["epochs"])):
         train_model(epoch, model, train_loader, optimizer)
 
     # Transform output
@@ -126,27 +119,27 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
 
 def main() -> None:
     """This function runs the FWD model as a standalone program on tabular data."""
-    args = DroArgs().parse_args()
+    args: DroArgs = json.loads(sys.argv[1])
     data: Union[DataTuple, TestTuple]
-    if args.mode == "run":
-        assert args.train is not None
-        assert args.test is not None
-        assert args.predictions is not None
+    if args["mode"] == "run":
+        assert "train" in args
+        assert "test" in args
+        assert "predictions" in args
         train, test = load_data_from_flags(args)
-        train_and_predict(train, test, args).to_npz(Path(args.predictions))
-    elif args.mode == "fit":
-        assert args.train is not None
-        assert args.model is not None
-        data = DataTuple.from_npz(Path(args.train))
+        train_and_predict(train, test, args).to_npz(Path(args["predictions"]))
+    elif args["mode"] == "fit":
+        assert "train" in args
+        assert "model" in args
+        data = DataTuple.from_npz(Path(args["train"]))
         model = fit(data, args)
-        dump(model, Path(args.model))
-    elif args.mode == "predict":
-        assert args.model is not None
-        assert args.predictions is not None
-        assert args.test is not None
-        data = TestTuple.from_npz(Path(args.test))
-        model = load(Path(args.model))
-        predict(model, data, args).to_npz(Path(args.predictions))
+        dump(model, Path(args["model"]))
+    elif args["mode"] == "predict":
+        assert "model" in args
+        assert "predictions" in args
+        assert "test" in args
+        data = TestTuple.from_npz(Path(args["test"]))
+        model = load(Path(args["model"]))
+        predict(model, data, args).to_npz(Path(args["predictions"]))
 
 
 if __name__ == "__main__":
