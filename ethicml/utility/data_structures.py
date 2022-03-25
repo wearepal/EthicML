@@ -4,7 +4,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import (
-    Any,
     Callable,
     Dict,
     Iterable,
@@ -42,7 +41,6 @@ __all__ = [
     "filter_results",
     "make_results",
     "map_over_results_index",
-    "minimal_json",
 ]
 
 AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
@@ -434,8 +432,3 @@ def aggregate_results(
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
-
-
-def minimal_json(obj: Any) -> str:
-    """Convert an object to a minimal JSON string."""
-    return json.dumps(obj, separators=(',', ':'))
