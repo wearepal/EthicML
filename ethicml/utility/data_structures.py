@@ -21,7 +21,6 @@ from typing_extensions import Final, Literal, TypeAlias, TypeGuard
 
 import numpy as np
 import pandas as pd
-from pandas.testing import assert_index_equal
 
 __all__ = [
     "ActivationType",
@@ -171,9 +170,9 @@ class DataTuple(TestTuple):
         result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
         # assert that the columns haven't changed
-        assert_index_equal(result.x.columns, cols_x)
-        assert_index_equal(result.s.columns, cols_s)
-        assert_index_equal(result.y.columns, cols_y)
+        pd.testing.assert_index_equal(result.x.columns, cols_x)
+        pd.testing.assert_index_equal(result.s.columns, cols_s)
+        pd.testing.assert_index_equal(result.y.columns, cols_y)
 
         return result
 
