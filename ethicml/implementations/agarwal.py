@@ -1,8 +1,13 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
+from __future__ import annotations
+
 import contextlib
+import json
 import os
 import random
+import sys
 from pathlib import Path
+from typing import TYPE_CHECKING, Generator
 
 import numpy as np
 import pandas as pd
@@ -10,24 +15,15 @@ from joblib import dump, load
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import ClassifierType, DataTuple, FairnessType, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .utils import InAlgoArgs
+if TYPE_CHECKING:
+    from fairlearn.reductions import ExponentiatedGradient
 
-
-class AgarwalArgs(InAlgoArgs):
-    """Args for the Agarwal implementation."""
-
-    classifier: ClassifierType
-    fairness: FairnessType
-    eps: float
-    iters: int
-    C: float
-    kernel: str
-    seed: int
+    from ethicml.algorithms.inprocess.agarwal_reductions import AgarwalArgs
 
 
-def fit(train: DataTuple, args):
+def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
     """Fit a model."""
     try:
         from fairlearn.reductions import (
@@ -40,17 +36,17 @@ def fit(train: DataTuple, args):
         raise RuntimeError("In order to use Agarwal, install fairlearn==0.4.6.") from e
 
     fairness_class: ConditionalSelectionRate
-    if args.fairness == "DP":
+    if args["fairness"] == "DP":
         fairness_class = DemographicParity()
     else:
         fairness_class = EqualizedOdds()
 
-    if args.classifier == "SVM":
-        model = select_svm(C=args.C, kernel=args.kernel, seed=args.seed)
+    if args["classifier"] == "SVM":
+        model = select_svm(C=args["C"], kernel=args["kernel"], seed=args["seed"])
     else:
-        random_state = np.random.RandomState(seed=args.seed)
+        random_state = np.random.RandomState(seed=args["seed"])
         model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=args.C
+            solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
         )
 
     data_x = train.x
@@ -58,7 +54,7 @@ def fit(train: DataTuple, args):
     data_a = train.s[train.s.columns[0]]
 
     exponentiated_gradient = ExponentiatedGradient(
-        model, constraints=fairness_class, eps=args.eps, T=args.iters
+        model, constraints=fairness_class, eps=args["eps"], T=args["iters"]
     )
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
@@ -68,7 +64,7 @@ def fit(train: DataTuple, args):
     return exponentiated_gradient
 
 
-def predict(exponentiated_gradient, test: TestTuple) -> pd.DataFrame:
+def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> pd.DataFrame:
     """Compute predictions on the given test data."""
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
@@ -85,7 +81,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> p
 
 
 @contextlib.contextmanager
-def working_dir(root: Path) -> None:
+def working_dir(root: Path) -> Generator[None, None, None]:
     """Change the working directory to the given path."""
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve().parent)
@@ -97,9 +93,9 @@ def working_dir(root: Path) -> None:
 
 def main() -> None:
     """This function runs the Agarwal model as a standalone program."""
-    args: AgarwalArgs = AgarwalArgs().parse_args()
-    random.seed(args.seed)
-    np.random.seed(args.seed)
+    args: AgarwalArgs = json.loads(sys.argv[1])
+    random.seed(args["seed"])
+    np.random.seed(args["seed"])
     try:
         import cloudpickle
 
@@ -107,33 +103,35 @@ def main() -> None:
     except ImportError as e:
         raise RuntimeError("In order to use Agarwal, install fairlearn and cloudpickle.") from e
 
-    if args.mode == "run":
-        assert args.train is not None
-        assert args.test is not None
-        assert args.predictions is not None
-        train, test = DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
-        Prediction(hard=train_and_predict(train, test, args)["preds"]).to_npz(
-            Path(args.predictions)
+    if args["mode"] == "run":
+        assert "train" in args
+        assert "test" in args
+        assert "predictions" in args
+        train, test = DataTuple.from_npz(Path(args["train"])), TestTuple.from_npz(
+            Path(args["test"])
         )
-    elif args.mode == "fit":
-        assert args.train is not None
-        assert args.model is not None
-        data = DataTuple.from_npz(Path(args.train))
+        Prediction(hard=train_and_predict(train, test, args)["preds"]).to_npz(
+            Path(args["predictions"])
+        )
+    elif args["mode"] == "fit":
+        assert "train" in args
+        assert "model" in args
+        data = DataTuple.from_npz(Path(args["train"]))
         model = fit(data, args)
-        with working_dir(Path(args.model)):
+        with working_dir(Path(args["model"])):
             model_file = cloudpickle.dumps(model)
-        dump(model_file, Path(args.model))
-    elif args.mode == "predict":
-        assert args.model is not None
-        assert args.predictions is not None
-        assert args.test is not None
-        data = TestTuple.from_npz(Path(args.test))
-        model_file = load(Path(args.model))
-        with working_dir(Path(args.model)):
+        dump(model_file, Path(args["model"]))
+    elif args["mode"] == "predict":
+        assert "model" in args
+        assert "predictions" in args
+        assert "test" in args
+        data = TestTuple.from_npz(Path(args["test"]))
+        model_file = load(Path(args["model"]))
+        with working_dir(Path(args["model"])):
             model = cloudpickle.loads(model_file)
-        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(args.predictions))
+        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(args["predictions"]))
     else:
-        raise RuntimeError(f"Unknown mode: {args.mode}")
+        raise RuntimeError(f"Unknown mode: {args['mode']}")
 
 
 if __name__ == "__main__":
