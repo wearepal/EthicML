@@ -29,7 +29,10 @@ def sqf(
 
 @dataclass
 class Sqf(LoadableDataset):
-    """Stop, question and frisk dataset."""
+    """Stop, question and frisk dataset.
+    
+    This data is from the 2016, source: http://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
+    """
 
     split: SqfSplits = SqfSplits.SEX
 
