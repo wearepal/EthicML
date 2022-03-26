@@ -188,6 +188,7 @@ class DataTuple(TestTuple):
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
 
     def get_s_subset(self, s: int) -> DataTuple:
+        """Returns a subset of the DataTuple where S=s."""
         return DataTuple(
             x=self.x[self.s.iloc[:, 0] == s],
             s=self.s[self.s.iloc[:, 0] == s],
@@ -230,6 +231,7 @@ class Prediction:
         return len(self._hard)
 
     def get_s_subset(self, s_data: pd.DataFrame, s: int) -> Prediction:
+        """Returns a subset of the DataTuple where S=s."""
         return Prediction(hard=self.hard[s_data.iloc[:, 0] == s])
 
     @property
