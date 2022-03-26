@@ -62,7 +62,7 @@ class PreAlgorithm(Algorithm, Protocol):
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker."""
-        train_testing = train.get_subset()
+        train_testing = train.get_n_samples()
         return self.run(train_testing, test)
 
     @property

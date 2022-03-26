@@ -20,6 +20,7 @@ from ethicml import (
     Kamiran,
     Metric,
     Prediction,
+    RobustAccuracy,
     Theil,
 )
 from ethicml.utility.data_structures import TrainValPair
@@ -37,6 +38,7 @@ class MetricTest(NamedTuple):
 
 METRIC_TESTS = [
     MetricTest(model=SVM(), metric=Accuracy(), name="Accuracy", expected=0.925),
+    MetricTest(model=SVM(), metric=RobustAccuracy(), name="Robust Accuracy", expected=0.921),
     MetricTest(model=SVM(), metric=F1(), name="F1", expected=0.930),
     MetricTest(model=SVM(), metric=BalancedAccuracy(), name="Balanced Accuracy", expected=0.923),
     MetricTest(
