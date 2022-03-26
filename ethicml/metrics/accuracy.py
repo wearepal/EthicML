@@ -11,7 +11,7 @@ from ethicml.utility import DataTuple, Prediction
 
 from .metric import BaseMetric
 
-__all__ = ["Accuracy", "F1", "SklearnMetric"]
+__all__ = ["Accuracy", "F1", "SklearnMetric", "RobustAccuracy"]
 
 
 class SklearnMetric(BaseMetric, Protocol):
@@ -41,3 +41,25 @@ class F1(SklearnMetric):
     sklearn_metric = (f1_score,)
     apply_per_sensitive: ClassVar[bool] = True
     _name: ClassVar[str] = "F1"
+
+
+@dataclass
+class RobustAccuracy(SklearnMetric):
+    """Classification accuracy."""
+
+    sklearn_metric = (accuracy_score,)
+    apply_per_sensitive: ClassVar[bool] = False
+    _name: ClassVar[str] = "Robust Accuracy"
+
+    @implements(SklearnMetric)
+    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+        scores = []
+        for _s in actual.s[actual.s.columns[0]].unique():
+            preds_subset = Prediction(hard=prediction.hard[actual.s[actual.s.columns[0]] == _s])
+            data_subset = DataTuple(
+                x=actual.x[actual.s[actual.s.columns[0]] == _s],
+                s=actual.s[actual.s[actual.s.columns[0]] == _s],
+                y=actual.y[actual.s[actual.s.columns[0]] == _s],
+            )
+            scores.append(super().score(preds_subset, data_subset))
+        return min(scores)
