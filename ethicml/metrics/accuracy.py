@@ -55,11 +55,11 @@ class RobustAccuracy(SklearnMetric):
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         scores = []
         for _s in actual.s[actual.s.columns[0]].unique():
-            preds_subset = Prediction(hard=prediction.hard[actual.s[actual.s.columns[0]] == _s])
+            preds_subset = Prediction(hard=prediction.hard[actual.s.iloc[:, 0] == _s])
             data_subset = DataTuple(
-                x=actual.x[actual.s[actual.s.columns[0]] == _s],
-                s=actual.s[actual.s[actual.s.columns[0]] == _s],
-                y=actual.y[actual.s[actual.s.columns[0]] == _s],
+                x=actual.x[actual.s.iloc[:, 0] == _s],
+                s=actual.s[actual.s.iloc[:, 0] == _s],
+                y=actual.y[actual.s.iloc[:, 0] == _s],
             )
             scores.append(super().score(preds_subset, data_subset))
         return min(scores)
