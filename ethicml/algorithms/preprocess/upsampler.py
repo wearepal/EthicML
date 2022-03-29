@@ -150,7 +150,6 @@ def upsample(
         all_data = pd.concat([all_data, pd.DataFrame(rank.soft, columns=["preds"])], axis="columns")
 
         for key, val in data.items():
-
             s_val = key[0]
             y_val = key[1]
             s_y_mask = (dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)
