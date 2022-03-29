@@ -8,6 +8,9 @@ on:
     - 'docs/**'
     - 'examples/**'
     - '**/*.md'
+    - '.github/workflows/docs.yml'
+    - '.github/workflows/labeler.yml'
+    - '.github/workflows/dependabot_auto.yml'
     - .gitignore
     - CODEOWNERS
     - LICENSE
