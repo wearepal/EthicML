@@ -1,3 +1,0 @@
-# Add 'code-change` label to any change to *.py files
-code-change:
-- any: ['**/*.py']
