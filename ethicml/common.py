@@ -5,6 +5,7 @@ from pathlib import Path
 
 __all__ = ["TORCH_AVAILABLE", "TORCHVISION_AVAILABLE", "ROOT_DIR", "ROOT_PATH"]
 
+
 TORCH_AVAILABLE = util.find_spec("torch") is not None
 TORCHVISION_AVAILABLE = util.find_spec("torchvision") is not None
 
