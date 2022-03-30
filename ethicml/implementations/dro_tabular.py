@@ -1,8 +1,10 @@
 """Implementation of Fairness without Demographics."""
+from __future__ import annotations
+
 import json
 import sys
 from pathlib import Path
-from typing import List, Union
+from typing import TYPE_CHECKING, List, Union
 
 import pandas as pd
 import torch
@@ -11,12 +13,15 @@ from torch import optim
 from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 
-from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.utils import load_data_from_flags
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
+
+if TYPE_CHECKING:
+    from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
+    from ethicml.algorithms.inprocess.in_algorithm import InAlgoArgs
 
 
 def train_model(
@@ -119,27 +124,20 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
 
 def main() -> None:
     """This function runs the FWD model as a standalone program on tabular data."""
-    args: DroArgs = json.loads(sys.argv[1])
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: DroArgs = json.loads(sys.argv[2])
     data: Union[DataTuple, TestTuple]
-    if args["mode"] == "run":
-        assert "train" in args
-        assert "test" in args
-        assert "predictions" in args
-        train, test = load_data_from_flags(args)
-        train_and_predict(train, test, args).to_npz(Path(args["predictions"]))
-    elif args["mode"] == "fit":
-        assert "train" in args
-        assert "model" in args
-        data = DataTuple.from_npz(Path(args["train"]))
-        model = fit(data, args)
-        dump(model, Path(args["model"]))
-    elif args["mode"] == "predict":
-        assert "model" in args
-        assert "predictions" in args
-        assert "test" in args
-        data = TestTuple.from_npz(Path(args["test"]))
-        model = load(Path(args["model"]))
-        predict(model, data, args).to_npz(Path(args["predictions"]))
+    if in_algo_args["mode"] == "run":
+        train, test = load_data_from_flags(in_algo_args)
+        train_and_predict(train, test, flags).to_npz(Path(in_algo_args["predictions"]))
+    elif in_algo_args["mode"] == "fit":
+        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        model = fit(data, flags)
+        dump(model, Path(in_algo_args["model"]))
+    elif in_algo_args["mode"] == "predict":
+        data = TestTuple.from_npz(Path(in_algo_args["test"]))
+        model = load(Path(in_algo_args["model"]))
+        predict(model, data, flags).to_npz(Path(in_algo_args["predictions"]))
 
 
 if __name__ == "__main__":

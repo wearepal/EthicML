@@ -13,7 +13,9 @@ from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
 __all__ = ["Beutel"]
 
 
-class _Flags(TypedDict):
+class BeutelArgs(TypedDict):
+    """Args for the Beutel Implementation."""
+
     fairness: FairnessType
     enc_size: List[int]
     adv_size: List[int]
@@ -27,10 +29,6 @@ class _Flags(TypedDict):
     adv_weight: float
     validation_pcnt: float
     seed: int
-
-
-class BeutelArgs(PreAlgoArgs, _Flags):
-    """Args for the Beutel Implementation."""
 
 
 class Beutel(PreAlgorithmAsync):
@@ -57,7 +55,7 @@ class Beutel(PreAlgorithmAsync):
         self.seed = seed
         self._out_size = enc_size[-1]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: _Flags = {
+        self.flags: BeutelArgs = {
             "fairness": fairness,
             "enc_size": list(enc_size),
             "adv_size": list(adv_size),
@@ -79,5 +77,5 @@ class Beutel(PreAlgorithmAsync):
         return f"Beutel {self.flags['fairness']}"
 
     @implements(PreAlgorithmAsync)
-    def _script_command(self, args: PreAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.beutel", flag_interface(self.flags, args)]
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.beutel"] + flag_interface(pre_algo_args, self.flags)

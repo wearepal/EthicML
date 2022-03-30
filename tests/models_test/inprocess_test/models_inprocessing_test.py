@@ -219,13 +219,15 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
             return "local installed LR"
 
         @implements(InAlgorithmAsync)
-        def _script_command(self, args: InAlgoArgs) -> List[str]:
-            assert args["mode"] == "run", "this model doesn't support the fit/predict split yet"
-            assert "train" in args
-            assert "test" in args
-            assert "predictions" in args
+        def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+            assert in_algo_args["mode"] == "run", "model doesn’t support the fit/predict split yet"
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [script, args["train"], args["test"], args["predictions"]]
+            return [
+                script,
+                in_algo_args["train"],
+                in_algo_args["test"],
+                in_algo_args["predictions"],
+            ]
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None

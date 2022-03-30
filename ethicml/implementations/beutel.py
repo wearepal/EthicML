@@ -28,6 +28,7 @@ from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
     from ethicml.algorithms.preprocess.beutel import BeutelArgs
+    from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -395,30 +396,21 @@ class Model(nn.Module):
 
 def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
-    args: BeutelArgs = json.loads(sys.argv[1])
-    if args["mode"] == "run":
-        assert "train" in args
-        assert "new_train" in args
-        assert "test" in args
-        assert "new_test" in args
-        train, test = load_data_from_flags(args)
-        save_transformations(train_and_transform(train, test, args), args)
-    elif args["mode"] == "fit":
-        assert "model" in args
-        assert "train" in args
-        assert "new_train" in args
-        train = DataTuple.from_npz(Path(args["train"]))
-        transformed_train, enc = fit(train, args)
-        transformed_train.to_npz(Path(args["new_train"]))
-        dump(enc, Path(args["model"]))
-    elif args["mode"] == "transform":
-        assert "model" in args
-        assert "test" in args
-        assert "new_test" in args
-        test = DataTuple.from_npz(Path(args["test"]))
-        model = load(Path(args["model"]))
-        transformed_test = transform(test, model, args)
-        transformed_test.to_npz(Path(args["new_test"]))
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: BeutelArgs = json.loads(sys.argv[2])
+    if pre_algo_args["mode"] == "run":
+        train, test = load_data_from_flags(pre_algo_args)
+        save_transformations(train_and_transform(train, test, flags), pre_algo_args)
+    elif pre_algo_args["mode"] == "fit":
+        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        transformed_train, enc = fit(train, flags)
+        transformed_train.to_npz(Path(pre_algo_args["new_train"]))
+        dump(enc, Path(pre_algo_args["model"]))
+    elif pre_algo_args["mode"] == "transform":
+        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
+        model = load(Path(pre_algo_args["model"]))
+        transformed_test = transform(test, model, flags)
+        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":

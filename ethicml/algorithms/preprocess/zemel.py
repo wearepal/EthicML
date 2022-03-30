@@ -13,7 +13,9 @@ __all__ = ["Zemel"]
 from ethicml.utility import DataTuple, TestTuple
 
 
-class _Flags(TypedDict):
+class ZemelArgs(TypedDict):
+    """Arguments for the Zemel algorithm."""
+
     clusters: int
     Ax: float
     Ay: float
@@ -23,10 +25,6 @@ class _Flags(TypedDict):
     epsilon: float
     threshold: float
     seed: int
-
-
-class ZemelArgs(PreAlgoArgs, _Flags):
-    """Arguments for the Zemel algorithm."""
 
 
 class Zemel(PreAlgorithmAsync):
@@ -49,7 +47,7 @@ class Zemel(PreAlgorithmAsync):
         self.seed = seed
         self._out_size: Optional[int] = None
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: _Flags = {
+        self.flags: ZemelArgs = {
             "clusters": clusters,
             "Ax": Ax,
             "Ay": Ay,
@@ -77,5 +75,5 @@ class Zemel(PreAlgorithmAsync):
         return super().fit(train)
 
     @implements(PreAlgorithmAsync)
-    def _script_command(self, args: PreAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.zemel", flag_interface(self.flags, args)]
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.zemel"] + flag_interface(pre_algo_args, self.flags)

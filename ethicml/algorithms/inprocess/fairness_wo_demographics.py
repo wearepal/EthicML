@@ -12,16 +12,14 @@ from .shared import flag_interface
 __all__ = ["DRO"]
 
 
-class _Flags(TypedDict):
+class DroArgs(TypedDict):
+    """Args used in this module."""
+
     batch_size: int
     epochs: int
     eta: float
     network_size: List[int]
     seed: int
-
-
-class DroArgs(InAlgoArgs, _Flags):
-    """Args used in this module."""
 
 
 class DRO(InAlgorithmAsync):
@@ -53,7 +51,7 @@ class DRO(InAlgorithmAsync):
         if network_size is None:
             network_size = [50]
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: _Flags = {
+        self.flags: DroArgs = {
             "eta": eta,
             "batch_size": batch_size,
             "epochs": epochs,
@@ -73,5 +71,6 @@ class DRO(InAlgorithmAsync):
         return "Dist Robust Optim"
 
     @implements(InAlgorithmAsync)
-    def _script_command(self, args: InAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.dro_tabular", flag_interface(self.flags, args)]
+    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+        args = flag_interface(in_algo_args, self.flags)
+        return ["-m", "ethicml.implementations.dro_tabular"] + args

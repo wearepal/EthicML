@@ -41,17 +41,15 @@ def test_simple_saving() -> None:
         def name(self) -> str:
             return "Check equality"
 
-        def _script_command(self, args: InAlgoArgs):
+        def _script_command(self, in_algo_args: InAlgoArgs):
             """Check if the dataframes loaded from the files are the same as the original ones."""
-            assert args["mode"] == "run", "this model doesn't support the fit/predict split yet"
-            assert "train" in args
-            assert "predictions" in args
-            loaded = DataTuple.from_npz(Path(args["train"]))
+            assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
+            loaded = DataTuple.from_npz(Path(in_algo_args["train"]))
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
             pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
             # write a file for the predictions
-            np.savez(args["predictions"], hard=np.load(args["train"])["x"])
+            np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["x"])
             return ["-c", "pass"]
 
     data_x = CheckEquality().run(data_tuple, data_tuple)

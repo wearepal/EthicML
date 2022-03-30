@@ -11,7 +11,9 @@ from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
 __all__ = ["VFAE"]
 
 
-class _Flags(TypedDict):
+class VfaeArgs(TypedDict):
+    """Args object of VFAE."""
+
     supervised: bool
     fairness: str
     batch_size: int
@@ -22,10 +24,6 @@ class _Flags(TypedDict):
     z2_enc_size: List[int]
     z1_dec_size: List[int]
     seed: int
-
-
-class VfaeArgs(PreAlgoArgs, _Flags):
-    """Args object of VFAE."""
 
 
 class VFAE(PreAlgorithmAsync):
@@ -57,7 +55,7 @@ class VFAE(PreAlgorithmAsync):
         if z1_dec_size is None:
             z1_dec_size = [100]
 
-        self.flags: _Flags = {
+        self.flags: VfaeArgs = {
             "supervised": supervised,
             "fairness": fairness,
             "batch_size": batch_size,
@@ -76,5 +74,5 @@ class VFAE(PreAlgorithmAsync):
         return "VFAE"
 
     @implements(PreAlgorithmAsync)
-    def _script_command(self, args: PreAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.vfae", flag_interface(self.flags, args)]
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.vfae"] + flag_interface(pre_algo_args, self.flags)

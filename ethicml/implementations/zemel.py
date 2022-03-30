@@ -17,7 +17,7 @@ from ethicml.implementations.utils import load_data_from_flags, save_transformat
 from ethicml.utility import DataTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.pre_algorithm import T
+    from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs, T
     from ethicml.algorithms.preprocess.zemel import ZemelArgs
 
 
@@ -206,23 +206,18 @@ def main() -> None:
         .. [2] R. Zemel, Y. Wu, K. Swersky, T. Pitassi, and C. Dwork,  "Learning
            Fair Representations." International Conference on Machine Learning,
            2013.
+
     Based on code from https://github.com/zjelveh/learning-fair-representations
     Which in turn, we've got from AIF360
     """
-    args: ZemelArgs = json.loads(sys.argv[1])
-    if args["mode"] == "run":
-        assert "train" in args
-        assert "new_train" in args
-        assert "test" in args
-        assert "new_test" in args
-        train, test = load_data_from_flags(args)
-        save_transformations(train_and_transform(train, test, args), args)
-    elif args["mode"] == "fit":
-        assert "model" in args
-        assert "train" in args
-        assert "new_train" in args
-        train = DataTuple.from_npz(Path(args["train"]))
-        model = fit(train, args)
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: ZemelArgs = json.loads(sys.argv[2])
+    if pre_algo_args["mode"] == "run":
+        train, test = load_data_from_flags(pre_algo_args)
+        save_transformations(train_and_transform(train, test, flags), pre_algo_args)
+    elif pre_algo_args["mode"] == "fit":
+        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        model = fit(train, flags)
         sens_col = train.s.columns[0]
         training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
         training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
@@ -230,16 +225,13 @@ def main() -> None:
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )
         data = DataTuple(x=train_transformed, s=train.s, y=train.y, name=train.name)
-        data.to_npz(Path(args["new_train"]))
-        dump(model, Path(args["model"]))
-    elif args["mode"] == "transform":
-        assert "model" in args
-        assert "test" in args
-        assert "new_test" in args
-        test = DataTuple.from_npz(Path(args["test"]))
-        model = load(Path(args["model"]))
+        data.to_npz(Path(pre_algo_args["new_train"]))
+        dump(model, Path(pre_algo_args["model"]))
+    elif pre_algo_args["mode"] == "transform":
+        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
+        model = load(Path(pre_algo_args["model"]))
         transformed_test = transform(test, model.prototypes, model.w)
-        transformed_test.to_npz(Path(args["new_test"]))
+        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":
