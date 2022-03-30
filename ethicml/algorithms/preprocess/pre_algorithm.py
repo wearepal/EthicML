@@ -5,12 +5,12 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List, Optional, Tuple, TypeVar
-from typing_extensions import Literal, NotRequired, Protocol, runtime_checkable
+from typing import List, Optional, Tuple, TypeVar, Union
+from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_checkable
 
 from ranzen import implements
 
-from ethicml.algorithms.algorithm_base import AlgoArgs, Algorithm, SubprocessAlgorithmMixin
+from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, TestTuple
 
 __all__ = ["PreAlgoArgs", "PreAlgorithm", "PreAlgorithmAsync", "PreAlgorithmDC"]
@@ -80,17 +80,36 @@ class PreAlgorithmDC(PreAlgorithm):
     seed: int = 888
 
 
-class PreAlgoArgs(AlgoArgs):
-    """ArgumentParser for pre-processing algorithms.
+class PreAlgoRunArgs(TypedDict):
+    """Base arguments for the ``run`` function of async pre-process methods."""
 
-    This is a quick way to create a parser that can parse the filenames for the data. This class
-    can be used by pre-algorithms to implement a commandline interface.
-    """
-
-    mode: Literal["run", "fit", "transform"]
+    mode: Literal["run"]
+    train: str
+    test: str
     # paths to where the processed inputs should be stored
-    new_train: NotRequired[str]
-    new_test: NotRequired[str]
+    new_train: str
+    new_test: str
+
+
+class PreAlgoFitArgs(TypedDict):
+    """Base arguments for the ``fit`` function of async pre-process methods."""
+
+    mode: Literal["fit"]
+    train: str
+    new_train: str
+    model: str  # path to where the model weights are stored
+
+
+class PreAlgoTformArgs(TypedDict):
+    """Base arguments for the ``transform`` function of async pre-process methods."""
+
+    mode: Literal["transform"]
+    test: str
+    new_test: str
+    model: str
+
+
+PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
 
 
 class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
@@ -117,7 +136,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
-            args: PreAlgoArgs = {
+            args: PreAlgoFitArgs = {
                 "mode": "fit",
                 "model": str(self._model_path),
                 "train": str(train_path),
@@ -155,7 +174,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
             # ========================== generate commandline arguments ===========================
             transformed_test_path = tmp_path / "transformed_test.npz"
-            args: PreAlgoArgs = {
+            args: PreAlgoTformArgs = {
                 "mode": "transform",
                 "model": str(self._model_path),
                 "test": str(test_path),
@@ -195,7 +214,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
             transformed_test_path = tmp_path / "transformed_test.npz"
-            args: PreAlgoArgs = {
+            args: PreAlgoRunArgs = {
                 "mode": "run",
                 "train": str(train_path),
                 "test": str(test_path),
@@ -224,5 +243,5 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
         return self.model_dir / f"model_{self.name}.joblib"
 
     @abstractmethod
-    def _script_command(self, args: PreAlgoArgs) -> List[str]:
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
         """The command that will run the script."""

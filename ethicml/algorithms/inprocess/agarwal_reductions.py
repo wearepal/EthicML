@@ -18,7 +18,9 @@ VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
 VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
 
 
-class _Flags(TypedDict):
+class AgarwalArgs(TypedDict):
+    """Args for the Agarwal implementation."""
+
     classifier: ClassifierType
     fairness: FairnessType
     eps: float
@@ -26,10 +28,6 @@ class _Flags(TypedDict):
     C: float
     kernel: str
     seed: int
-
-
-class AgarwalArgs(InAlgoArgs, _Flags):
-    """Args for the Agarwal implementation."""
 
 
 class Agarwal(InAlgorithmAsync):
@@ -71,7 +69,7 @@ class Agarwal(InAlgorithmAsync):
         self.seed = seed
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
-        self.flags: _Flags = {
+        self.flags: AgarwalArgs = {
             "classifier": classifier,
             "fairness": fairness,
             "eps": eps,
@@ -90,5 +88,5 @@ class Agarwal(InAlgorithmAsync):
         return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"
 
     @implements(InAlgorithmAsync)
-    def _script_command(self, args: InAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.agarwal", flag_interface(self.flags, args)]
+    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.agarwal"] + flag_interface(in_algo_args, self.flags)

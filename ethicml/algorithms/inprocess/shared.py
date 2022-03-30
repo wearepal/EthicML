@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any, Mapping, Optional, Tuple
+from typing import TYPE_CHECKING, Any, List, Mapping, Optional, Tuple
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -13,9 +13,16 @@ if TYPE_CHECKING:
 __all__ = ["flag_interface", "settings_for_svm_lr"]
 
 
-def flag_interface(flags: Mapping[str, Any], in_algo_args: InAlgoArgs) -> str:
-    """Generate the commandline arguments that are expected by the script about to be called."""
-    return json.dumps({**flags, **in_algo_args}, separators=(',', ':'))
+def flag_interface(in_algo_args: InAlgoArgs, flags: Mapping[str, Any]) -> List[str]:
+    """Generate the commandline arguments that are expected by the script about to be called.
+
+    The flag interface consists of two strings, both JSON strings: the general in-algo flags
+    and then the more specific flags for the algorithm.
+    """
+    return [
+        json.dumps(in_algo_args, separators=(',', ':')),
+        json.dumps(flags, separators=(',', ':')),
+    ]
 
 
 def settings_for_svm_lr(

@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from fairlearn.reductions import ExponentiatedGradient
 
     from ethicml.algorithms.inprocess.agarwal_reductions import AgarwalArgs
+    from ethicml.algorithms.inprocess.in_algorithm import InAlgoArgs
 
 
 def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
@@ -93,9 +94,10 @@ def working_dir(root: Path) -> Generator[None, None, None]:
 
 def main() -> None:
     """This function runs the Agarwal model as a standalone program."""
-    args: AgarwalArgs = json.loads(sys.argv[1])
-    random.seed(args["seed"])
-    np.random.seed(args["seed"])
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: AgarwalArgs = json.loads(sys.argv[2])
+    random.seed(flags["seed"])
+    np.random.seed(flags["seed"])
     try:
         import cloudpickle
 
@@ -103,35 +105,27 @@ def main() -> None:
     except ImportError as e:
         raise RuntimeError("In order to use Agarwal, install fairlearn and cloudpickle.") from e
 
-    if args["mode"] == "run":
-        assert "train" in args
-        assert "test" in args
-        assert "predictions" in args
-        train, test = DataTuple.from_npz(Path(args["train"])), TestTuple.from_npz(
-            Path(args["test"])
+    if in_algo_args["mode"] == "run":
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
+            Path(in_algo_args["test"])
         )
-        Prediction(hard=train_and_predict(train, test, args)["preds"]).to_npz(
-            Path(args["predictions"])
+        Prediction(hard=train_and_predict(train, test, flags)["preds"]).to_npz(
+            Path(in_algo_args["predictions"])
         )
-    elif args["mode"] == "fit":
-        assert "train" in args
-        assert "model" in args
-        data = DataTuple.from_npz(Path(args["train"]))
-        model = fit(data, args)
-        with working_dir(Path(args["model"])):
+    elif in_algo_args["mode"] == "fit":
+        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        model = fit(data, flags)
+        with working_dir(Path(in_algo_args["model"])):
             model_file = cloudpickle.dumps(model)
-        dump(model_file, Path(args["model"]))
-    elif args["mode"] == "predict":
-        assert "model" in args
-        assert "predictions" in args
-        assert "test" in args
-        data = TestTuple.from_npz(Path(args["test"]))
-        model_file = load(Path(args["model"]))
-        with working_dir(Path(args["model"])):
+        dump(model_file, Path(in_algo_args["model"]))
+    elif in_algo_args["mode"] == "predict":
+        data = TestTuple.from_npz(Path(in_algo_args["test"]))
+        model_file = load(Path(in_algo_args["model"]))
+        with working_dir(Path(in_algo_args["model"])):
             model = cloudpickle.loads(model_file)
-        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(args["predictions"]))
+        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(in_algo_args["predictions"]))
     else:
-        raise RuntimeError(f"Unknown mode: {args['mode']}")
+        raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 
 
 if __name__ == "__main__":
