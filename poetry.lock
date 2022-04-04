@@ -1364,16 +1364,18 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "ranzen"
-version = "1.2.2"
+version = "1.2.5"
 description = "A toolkit facilitating machine-learning experimentation."
 category = "main"
 optional = false
 python-versions = ">=3.7.1,<4.0.0"
 
+[package.dependencies]
+tqdm = ">=4.62.0,<5.0.0"
+
 [package.extras]
+all = ["torch (>=1.8,<2.0)", "hydra-core (>=1.1.0,<2.0.0)", "neoconfigen (>=2.0.0,<3.0.0)", "numpy (>=1.20.3,<2.0.0)", "pandas (>=1.3.1,<2.0.0)", "wandb (>=0.12.0,<0.13.0)"]
 torch = ["torch (>=1.8,<2.0)", "numpy (>=1.20.3,<2.0.0)"]
-all = ["pytorch-lightning (>=1.4.2,<2.0.0)", "hydra-core (>=1.1.0,<2.0.0)", "neoconfigen (>=2.0.0,<3.0.0)", "pandas (>=1.3.1,<2.0.0)", "wandb (>=0.12.0,<0.13.0)"]
-pl = ["pytorch-lightning (>=1.4.2,<2.0.0)", "tqdm (>=4.62.0,<5.0.0)"]
 hydra = ["hydra-core (>=1.1.0,<2.0.0)", "neoconfigen (>=2.0.0,<3.0.0)"]
 wandb = ["pandas (>=1.3.1,<2.0.0)", "wandb (>=0.12.0,<0.13.0)"]
 
@@ -2983,8 +2985,8 @@ pyzmq = [
     {file = "pyzmq-22.3.0.tar.gz", hash = "sha256:8eddc033e716f8c91c6a2112f0a8ebc5e00532b4a6ae1eb0ccc48e027f9c671c"},
 ]
 ranzen = [
-    {file = "ranzen-1.2.2-py3-none-any.whl", hash = "sha256:5bdd0b3c1c3e17d0921d57fdac90e1e730409dc440d6b9d8ec38a04948e9922f"},
-    {file = "ranzen-1.2.2.tar.gz", hash = "sha256:98fa1b97dd156928b547c5c863f91e038734731f9e2e2ec76b8cec4485e17acc"},
+    {file = "ranzen-1.2.5-py3-none-any.whl", hash = "sha256:d99dbc20028d3fedfe54dcae22d25b4ff72eb29f45592699e62d139c2b96e8a1"},
+    {file = "ranzen-1.2.5.tar.gz", hash = "sha256:b55b93698095d275d442466e28f7e4e8c6477947969202758177f5c28162306d"},
 ]
 ray = [
     {file = "ray-1.11.0-cp36-cp36m-macosx_10_15_intel.whl", hash = "sha256:944b5845b80565fb85fbe554a09be4d5c9781a695c469bafe6f039b8489031bd"},
