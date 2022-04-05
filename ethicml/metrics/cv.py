@@ -10,6 +10,8 @@ from .metric import BaseMetric, CfmMetric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .prob_pos import ProbPos
 
+__all__ = ["AbsCV", "CV"]
+
 
 @dataclass
 class CV(CfmMetric):

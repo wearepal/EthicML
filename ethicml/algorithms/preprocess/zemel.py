@@ -1,15 +1,30 @@
 """Zemel's Learned Fair Representations."""
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
 from .interface import flag_interface
-from .pre_algorithm import PreAlgorithm, PreAlgorithmAsync
+from .pre_algorithm import PreAlgoArgs, PreAlgorithm, PreAlgorithmAsync
 
 __all__ = ["Zemel"]
 
 from ethicml.utility import DataTuple, TestTuple
+
+
+class ZemelArgs(TypedDict):
+    """Arguments for the Zemel algorithm."""
+
+    clusters: int
+    Ax: float
+    Ay: float
+    Az: float
+    max_iter: int
+    maxfun: int
+    epsilon: float
+    threshold: float
+    seed: int
 
 
 class Zemel(PreAlgorithmAsync):
@@ -32,7 +47,7 @@ class Zemel(PreAlgorithmAsync):
         self.seed = seed
         self._out_size: Optional[int] = None
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: Dict[str, Union[int, float]] = {
+        self.flags: ZemelArgs = {
             "clusters": clusters,
             "Ax": Ax,
             "Ay": Ay,
@@ -60,38 +75,5 @@ class Zemel(PreAlgorithmAsync):
         return super().fit(train)
 
     @implements(PreAlgorithmAsync)
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            test_path=test_path,
-            new_train_path=new_train_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            new_train_path=new_train_path,
-            model_path=model_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path,
-            test_path=test_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.zemel"] + flag_interface(pre_algo_args, self.flags)

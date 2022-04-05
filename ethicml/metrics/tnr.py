@@ -10,6 +10,8 @@ from ethicml.utility import DataTuple, Prediction
 from .confusion_matrix import confusion_matrix
 from .metric import CfmMetric, Metric
 
+__all__ = ["TNR"]
+
 
 @dataclass
 class TNR(CfmMetric):

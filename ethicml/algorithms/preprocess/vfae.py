@@ -1,13 +1,29 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import List, Optional, Union
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
 from .interface import flag_interface
-from .pre_algorithm import PreAlgorithmAsync
+from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
 
 __all__ = ["VFAE"]
+
+
+class VfaeArgs(TypedDict):
+    """Args object of VFAE."""
+
+    supervised: bool
+    fairness: str
+    batch_size: int
+    epochs: int
+    dataset: str
+    latent_dims: int
+    z1_enc_size: List[int]
+    z2_enc_size: List[int]
+    z1_dec_size: List[int]
+    seed: int
 
 
 class VFAE(PreAlgorithmAsync):
@@ -39,7 +55,7 @@ class VFAE(PreAlgorithmAsync):
         if z1_dec_size is None:
             z1_dec_size = [100]
 
-        self.flags: Dict[str, Union[int, str, List[int]]] = {
+        self.flags: VfaeArgs = {
             "supervised": supervised,
             "fairness": fairness,
             "batch_size": batch_size,
@@ -58,38 +74,5 @@ class VFAE(PreAlgorithmAsync):
         return "VFAE"
 
     @implements(PreAlgorithmAsync)
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            test_path=test_path,
-            new_train_path=new_train_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            new_train_path=new_train_path,
-            model_path=model_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path,
-            test_path=test_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.vfae"] + flag_interface(pre_algo_args, self.flags)

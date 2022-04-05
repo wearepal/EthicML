@@ -2,9 +2,13 @@
 # Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
 # pylint: disable=arguments-differ
 
+from __future__ import annotations
+
+import json
 import random
+import sys
 from pathlib import Path
-from typing import Any, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
@@ -20,29 +24,15 @@ from ethicml.preprocessing.train_test_split import train_test_split
 from ethicml.utility import DataTuple, FairnessType, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
-from .utils import PreAlgoArgs, load_data_from_flags, save_transformations
+from .utils import load_data_from_flags, save_transformations
+
+if TYPE_CHECKING:
+    from ethicml.algorithms.preprocess.beutel import BeutelArgs
+    from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
 STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
-
-
-class BeutelArgs(PreAlgoArgs):
-    """Args for the Beutel Implementation."""
-
-    fairness: FairnessType
-    enc_size: List[int]
-    adv_size: List[int]
-    pred_size: List[int]
-    enc_activation: str
-    adv_activation: str
-    batch_size: int
-    y_loss: str
-    s_loss: str
-    epochs: int
-    adv_weight: float
-    validation_pcnt: float
-    seed: int
 
 
 def set_seed(seed: int) -> None:
@@ -64,19 +54,19 @@ def build_networks(
     Pulled into a separate function to make the code a bit neater.
     """
     enc = Encoder(
-        enc_size=flags.enc_size, init_size=int(train_data.xdim), activation=enc_activation
+        enc_size=flags["enc_size"], init_size=int(train_data.xdim), activation=enc_activation
     )
     adv = Adversary(
-        fairness=flags.fairness,
-        adv_size=flags.adv_size,
-        init_size=flags.enc_size[-1],
+        fairness=flags["fairness"],
+        adv_size=flags["adv_size"],
+        init_size=flags["enc_size"][-1],
         s_size=int(train_data.sdim),
         activation=adv_activation,
-        adv_weight=flags.adv_weight,
+        adv_weight=flags["adv_weight"],
     )
     pred = Predictor(
-        pred_size=flags.pred_size,
-        init_size=flags.enc_size[-1],
+        pred_size=flags["pred_size"],
+        init_size=flags["enc_size"][-1],
         class_label_size=int(train_data.ydim),
         activation=adv_activation,
     )
@@ -100,17 +90,17 @@ def make_dataset_and_loader(
     """
     dataset = CustomDataset(data)
     dataloader = torch.utils.data.DataLoader(
-        dataset=dataset, batch_size=flags.batch_size, shuffle=False
+        dataset=dataset, batch_size=flags["batch_size"], shuffle=False
     )
     return dataset, dataloader
 
 
 def fit(train: DataTuple, flags: BeutelArgs):
     """Train the fair autoencoder on the training data and then transform both training and test."""
-    set_seed(flags.seed)
+    set_seed(flags["seed"])
 
     post_process = False
-    if flags.y_loss == "BCELoss()":
+    if flags["y_loss"] == "BCELoss()":
         try:
             assert_binary_labels(train)
         except AssertionError:
@@ -119,17 +109,17 @@ def fit(train: DataTuple, flags: BeutelArgs):
             post_process = True
 
     # By default we use 10% of the training data for validation
-    train_, validation = train_test_split(train, train_percentage=1 - flags.validation_pcnt)
+    train_, validation = train_test_split(train, train_percentage=1 - flags["validation_pcnt"])
 
     train_data, train_loader = make_dataset_and_loader(train_, flags)
     _, validation_loader = make_dataset_and_loader(validation, flags)
     _, all_train_data_loader = make_dataset_and_loader(train, flags)
 
     # convert flags to Python objects
-    enc_activation = STRING_TO_ACTIVATION_MAP[flags.enc_activation]
-    adv_activation = STRING_TO_ACTIVATION_MAP[flags.adv_activation]
-    y_loss_fn = STRING_TO_LOSS_MAP[flags.y_loss]
-    s_loss_fn = STRING_TO_LOSS_MAP[flags.s_loss]
+    enc_activation = STRING_TO_ACTIVATION_MAP[flags["enc_activation"]]
+    adv_activation = STRING_TO_ACTIVATION_MAP[flags["adv_activation"]]
+    y_loss_fn = STRING_TO_LOSS_MAP[flags["y_loss"]]
+    s_loss_fn = STRING_TO_LOSS_MAP[flags["s_loss"]]
 
     enc, model = build_networks(
         flags=flags,
@@ -144,18 +134,18 @@ def fit(train: DataTuple, flags: BeutelArgs):
     best_val_loss = torch.ones(1) * np.inf
     best_enc = None
 
-    for i in range(1, flags.epochs + 1):
+    for i in range(1, flags["epochs"] + 1):
         model.train()
         for embedding, sens_label, class_label in train_loader:
             _, s_pred, y_pred = model(embedding, class_label)
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags.fairness == "EqOp":
+            if flags["fairness"] == "EqOp":
                 mask = class_label.ge(0.5)
-            elif flags.fairness == "EqOd":
+            elif flags["fairness"] == "EqOd":
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags.fairness == "DP":
+            elif flags["fairness"] == "DP":
                 mask = torch.ones(s_pred.shape, dtype=torch.uint8)
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
@@ -163,7 +153,7 @@ def fit(train: DataTuple, flags: BeutelArgs):
 
             step(i, loss, optimizer, scheduler)
 
-        if i % 5 == 0 or i == flags.epochs:
+        if i % 5 == 0 or i == flags["epochs"]:
             model.eval()
             val_y_loss = torch.zeros(1)
             val_s_loss = torch.zeros(1)
@@ -197,7 +187,7 @@ def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestT
     """Transform the test data using the trained autoencoder."""
     test_data = TestDataset(data)
     test_loader = torch.utils.data.DataLoader(
-        dataset=test_data, batch_size=flags.batch_size, shuffle=False
+        dataset=test_data, batch_size=flags["batch_size"], shuffle=False
     )
     return encode_testset(enc, test_loader, data)
 
@@ -221,11 +211,11 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
 
 def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
-    if flags.fairness == "EqOp":
+    if flags["fairness"] == "EqOp":
         mask = class_label.ge(0.5)
-    elif flags.fairness == "EqOd":
+    elif flags["fairness"] == "EqOd":
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags.fairness == "DP":
+    elif flags["fairness"] == "DP":
         mask = torch.ones(s_pred.shape, dtype=torch.uint8)
 
     return mask
@@ -406,30 +396,21 @@ class Model(nn.Module):
 
 def main() -> None:
     """Load data from feather files, pass it to `train_and_transform` and then save the result."""
-    args = BeutelArgs().parse_args()
-    if args.mode == "run":
-        assert args.train is not None
-        assert args.new_train is not None
-        assert args.test is not None
-        assert args.new_test is not None
-        train, test = load_data_from_flags(args)
-        save_transformations(train_and_transform(train, test, args), args)
-    elif args.mode == "fit":
-        assert args.model is not None
-        assert args.train is not None
-        assert args.new_train is not None
-        train = DataTuple.from_npz(Path(args.train))
-        transformed_train, enc = fit(train, args)
-        transformed_train.to_npz(Path(args.new_train))
-        dump(enc, Path(args.model))
-    elif args.mode == "transform":
-        assert args.model is not None
-        assert args.test is not None
-        assert args.new_test is not None
-        test = DataTuple.from_npz(Path(args.test))
-        model = load(Path(args.model))
-        transformed_test = transform(test, model, args)
-        transformed_test.to_npz(Path(args.new_test))
+    pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
+    flags: BeutelArgs = json.loads(sys.argv[2])
+    if pre_algo_args["mode"] == "run":
+        train, test = load_data_from_flags(pre_algo_args)
+        save_transformations(train_and_transform(train, test, flags), pre_algo_args)
+    elif pre_algo_args["mode"] == "fit":
+        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        transformed_train, enc = fit(train, flags)
+        transformed_train.to_npz(Path(pre_algo_args["new_train"]))
+        dump(enc, Path(pre_algo_args["model"]))
+    elif pre_algo_args["mode"] == "transform":
+        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
+        model = load(Path(pre_algo_args["model"]))
+        transformed_test = transform(test, model, flags)
+        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":

@@ -66,7 +66,6 @@ def test_run_alg_suite_scaler():
     datasets: List[em.Dataset] = [dataset, em.toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
-    postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     results_no_scaler = em.evaluate_models(
@@ -103,7 +102,6 @@ def test_run_alg_suite():
     datasets: List[em.Dataset] = [dataset, em.toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
-    postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     parallel_results = em.evaluate_models_async(
@@ -157,7 +155,6 @@ def test_run_alg_suite_wrong_metrics():
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel="linear"), em.LR()]
-    postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
     with pytest.raises(em.MetricNotApplicable):
@@ -179,7 +176,6 @@ def test_run_alg_suite_no_pipeline():
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
-    postprocess_models: List[em.PostAlgorithm] = []
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
@@ -187,7 +183,6 @@ def test_run_alg_suite_no_pipeline():
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        postprocess_models=postprocess_models,
         metrics=metrics,
         per_sens_metrics=per_sens_metrics,
         repeats=1,
@@ -199,7 +194,6 @@ def test_run_alg_suite_no_pipeline():
         datasets,
         preprocess_models,
         inprocess_models,
-        postprocess_models,
         metrics,
         per_sens_metrics,
         repeats=1,
@@ -217,7 +211,7 @@ def test_run_alg_suite_no_pipeline():
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results) == expected_num
 
-    kc_name = "Kamiran & Calders LR"
+    kc_name = "Kamiran & Calders LR C=1.0"
 
     assert len(em.filter_results(results, [kc_name])) == 2  # result for Toy and Adult
     assert (

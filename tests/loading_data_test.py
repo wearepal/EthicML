@@ -596,8 +596,8 @@ def test_data_shape(dt: DT):
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
-    assert data.s.nunique()[0] == dt.num_sens
-    assert data.y.nunique()[0] == dt.num_labels
+    assert data.s.nunique()[0] == dt.num_sens  # type: ignore[comparison-overlap]
+    assert data.y.nunique()[0] == dt.num_labels  # type: ignore[comparison-overlap]
 
     assert data.s.sum().values[0] == dt.sum_s
     assert data.y.sum().values[0] == dt.sum_y
@@ -630,8 +630,8 @@ def test_synth_data_shape(scenario, target, fair, samples):
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
-    assert data.s.nunique()[0] == 2
-    assert data.y.nunique()[0] == 2
+    assert data.s.nunique()[0] == 2  # type: ignore[comparison-overlap]
+    assert data.y.nunique()[0] == 2  # type: ignore[comparison-overlap]
 
     if fair:
         assert data.name == f"Synthetic - Scenario {scenario}, target {target} fair"
@@ -711,7 +711,7 @@ def test_load_adult_race():
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
     assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 5
+    assert data.s.nunique()[0] == 5  # type: ignore[comparison-overlap]
     assert (45222, 1) == data.y.shape
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
@@ -724,7 +724,7 @@ def test_load_adult_race_sex():
     data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
     assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 2 * 5
+    assert data.s.nunique()[0] == 2 * 5  # type: ignore[comparison-overlap]
     assert (45222, 1) == data.y.shape
     assert adult_race_sex.disc_feature_groups is not None
     assert "race" not in adult_race_sex.disc_feature_groups
@@ -951,12 +951,12 @@ def test_expand_s():
         [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
         columns=["Blue", "Green", "Pink"],
     )
-    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")  # type: ignore[arg-type]
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
-        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df  # type: ignore[arg-type]
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )
 
 

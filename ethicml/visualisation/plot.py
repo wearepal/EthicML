@@ -4,12 +4,11 @@ from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
 from typing_extensions import Literal
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from matplotlib import figure, legend
-from sklearn.manifold import TSNE
+from sklearn.manifold import TSNE  # type: ignore[attr-defined]
 
 from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
@@ -52,7 +51,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = maybe_tsne(data)
 
-    plot = sns.scatterplot(
+    plot = sns.scatterplot(  # type: ignore[attr-defined]
         x=x1_name,
         y=x2_name,
         hue=data.y.columns[0],
@@ -74,7 +73,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")  # type: ignore[attr-defined]
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
@@ -99,16 +98,16 @@ def multivariate_grid(
 
         return scatter
 
-    sns.set_palette("husl")
+    sns.set_palette("husl")  # type: ignore[attr-defined]
 
-    g = sns.JointGrid(x=col_x, y=col_y, data=df)
+    g = sns.JointGrid(x=col_x, y=col_y, data=df)  # type: ignore[attr-defined]
     color = None
     legends = []
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
-        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)
-        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)
+        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)  # type: ignore[attr-defined]
+        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)  # type: ignore[attr-defined]
     # Do also global Hist:
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
     # sns.distplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
@@ -168,7 +167,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
 
-    mpl.style.use("seaborn-pastel")
+    plt.style.use("seaborn-pastel")
     # plt.xkcd()
 
     fig, plot = plt.subplots()

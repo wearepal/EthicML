@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from numpy.random import RandomState
 from ranzen import implements
-from scipy.optimize import OptimizeResult, linprog
+from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 
 from ethicml.metrics.per_sensitive_attribute import metric_per_sensitive_attribute
 from ethicml.metrics.tnr import TNR
@@ -20,7 +20,6 @@ class Hardt(PostAlgorithm):
 
     def __init__(self, *, unfavorable_label: int = 0, favorable_label: int = 1, seed: int = 888):
         self.seed = seed
-        self.is_fairness_algo = True
         self._unfavorable_label = unfavorable_label
         self._favorable_label = favorable_label
         self._random = RandomState(seed=self.seed)

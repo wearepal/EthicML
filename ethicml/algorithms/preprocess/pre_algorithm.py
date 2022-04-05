@@ -5,15 +5,15 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import List, Optional, Tuple, TypeVar
-from typing_extensions import Protocol, runtime_checkable
+from typing import List, Optional, Tuple, TypeVar, Union
+from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_checkable
 
 from ranzen import implements
 
 from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, TestTuple
 
-__all__ = ["PreAlgorithm", "PreAlgorithmAsync", "PreAlgorithmDC"]
+__all__ = ["PreAlgoArgs", "PreAlgorithm", "PreAlgorithmAsync", "PreAlgorithmDC"]
 
 T = TypeVar("T", DataTuple, TestTuple)
 _PA = TypeVar("_PA", bound="PreAlgorithm")
@@ -62,7 +62,7 @@ class PreAlgorithm(Algorithm, Protocol):
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker."""
-        train_testing = train.get_subset()
+        train_testing = train.get_n_samples()
         return self.run(train_testing, test)
 
     @property
@@ -77,8 +77,39 @@ class PreAlgorithmDC(PreAlgorithm):
     """PreAlgorithm dataclass base class."""
 
     _out_size = None  # this is not a dataclass field and so it must not have a type annotation
-    is_fairness_algo = True
     seed: int = 888
+
+
+class PreAlgoRunArgs(TypedDict):
+    """Base arguments for the ``run`` function of async pre-process methods."""
+
+    mode: Literal["run"]
+    train: str
+    test: str
+    # paths to where the processed inputs should be stored
+    new_train: str
+    new_test: str
+
+
+class PreAlgoFitArgs(TypedDict):
+    """Base arguments for the ``fit`` function of async pre-process methods."""
+
+    mode: Literal["fit"]
+    train: str
+    new_train: str
+    model: str  # path to where the model weights are stored
+
+
+class PreAlgoTformArgs(TypedDict):
+    """Base arguments for the ``transform`` function of async pre-process methods."""
+
+    mode: Literal["transform"]
+    test: str
+    new_test: str
+    model: str
+
+
+PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
 
 
 class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
@@ -100,15 +131,20 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
-            train_path, test_path = tmp_path / "train.npz", tmp_path / "test.npz"
+            train_path = tmp_path / "train.npz"
             train.to_npz(train_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
-            cmd = self._fit_script_command(train_path, transformed_train_path, self._model_path)
+            args: PreAlgoFitArgs = {
+                "mode": "fit",
+                "model": str(self._model_path),
+                "train": str(train_path),
+                "new_train": str(transformed_train_path),
+            }
 
             # ============================= run the generated command =============================
-            self._call_script(cmd + ["--mode", "fit"])
+            self._call_script(self._script_command(args))
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)
@@ -138,14 +174,15 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
             # ========================== generate commandline arguments ===========================
             transformed_test_path = tmp_path / "transformed_test.npz"
-            cmd = self._transform_script_command(
-                model_path=self._model_path,
-                test_path=test_path,
-                new_test_path=transformed_test_path,
-            )
+            args: PreAlgoTformArgs = {
+                "mode": "transform",
+                "model": str(self._model_path),
+                "test": str(test_path),
+                "new_test": str(transformed_test_path),
+            }
 
             # ============================= run the generated command =============================
-            self._call_script(cmd + ["--mode", "transform"])
+            self._call_script(self._script_command(args))
 
             # ================================== load results =====================================
             transformed_test = TestTuple.from_npz(transformed_test_path)
@@ -177,12 +214,16 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
             transformed_test_path = tmp_path / "transformed_test.npz"
-            cmd = self._run_script_command(
-                train_path, test_path, transformed_train_path, transformed_test_path
-            )
+            args: PreAlgoRunArgs = {
+                "mode": "run",
+                "train": str(train_path),
+                "test": str(test_path),
+                "new_train": str(transformed_train_path),
+                "new_test": str(transformed_test_path),
+            }
 
             # ============================= run the generated command =============================
-            self._call_script(cmd + ["--mode", "run"])
+            self._call_script(self._script_command(args))
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)
@@ -202,19 +243,5 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
         return self.model_dir / f"model_{self.name}.joblib"
 
     @abstractmethod
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        """The command that will run the script."""
-
-    @abstractmethod
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        """The command that will run the script."""
-
-    @abstractmethod
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
         """The command that will run the script."""

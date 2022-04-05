@@ -25,7 +25,6 @@ class Upsampler(PreAlgorithm):
 
     strategy: Literal["uniform", "preferential", "naive"] = "uniform"
     seed: int = 888
-    is_fairness_algo = True
 
     def __post_init__(self) -> None:
         assert self.strategy in ["uniform", "preferential", "naive"]
@@ -164,7 +163,7 @@ def upsample(
 
             weight = all_data.loc[s_y_mask][y_col].count()
             selected.append(
-                all_data.loc[s_y_mask]  # type: ignore[call-overload]
+                all_data.loc[s_y_mask]
                 .sort_values(by=["preds"], ascending=ascending)
                 .iloc[: int(percentages[key] * weight)]
             )

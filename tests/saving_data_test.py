@@ -1,13 +1,14 @@
 """Test the saving data capability."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import ClassVar
 from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgorithmAsync, Prediction, TestTuple
+from ethicml import DataTuple, InAlgoArgs, InAlgorithmAsync, Prediction, TestTuple
 
 NPZ: Final[str] = "test.npz"
 
@@ -30,56 +31,49 @@ def test_simple_saving() -> None:
     class CheckEquality(InAlgorithmAsync):
         """Dummy algorithm class for testing whether writing and reading feather files works."""
 
+        is_fairness_algo: ClassVar[bool] = False
+
         def __init__(self) -> None:
             self.seed = -1
-            self.is_fairness_algo = False
             self.model_dir = Path(".")
 
         @property
         def name(self) -> str:
             return "Check equality"
 
-        def _run_script_command(self, train_path, test_path, pred_path):
+        def _script_command(self, in_algo_args: InAlgoArgs):
             """Check if the dataframes loaded from the files are the same as the original ones."""
-            del test_path
-            loaded = DataTuple.from_npz(train_path)
+            assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
+            loaded = DataTuple.from_npz(Path(in_algo_args["train"]))
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
             pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
             # write a file for the predictions
-            np.savez(pred_path, hard=np.load(train_path)["x"])
+            np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["x"])
             return ["-c", "pass"]
 
-        def _fit_script_command(self, train_path, model_path):
-            """Check if the dataframes loaded from the files are the same as the original ones."""
-
-        def _predict_script_command(self, model_path, test_path, pred_path):
-            """Check if the dataframes loaded from the files are the same as the original ones."""
-
     data_x = CheckEquality().run(data_tuple, data_tuple)
-    pd.testing.assert_series_equal(  # type: ignore[call-arg]
-        data_tuple.x["a1"], data_x.hard, check_names=False
-    )
+    pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
 
 
-def test_predictions_loaded(temp_dir) -> None:
+def test_predictions_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]))
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
 
 
-def test_predictions_info_loaded(temp_dir) -> None:
+def test_predictions_info_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
     preds.to_npz(temp_dir / NPZ)
     loaded = Prediction.from_npz(temp_dir / NPZ)
-    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)  # type: ignore[call-arg]
+    pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
     assert preds.info == loaded.info
 
 
-def test_predictions_info_loaded_bad(temp_dir) -> None:
+def test_predictions_info_loaded_bad(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})  # type: ignore
     with pytest.raises(AssertionError):

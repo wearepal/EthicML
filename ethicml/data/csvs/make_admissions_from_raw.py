@@ -44,7 +44,7 @@ import pandas as pd
 
 def run_generate_admissions() -> None:
     """Add a the header solumns, binarise label and shuffle."""
-    data = pd.read_csv("raw/ufrgs_entrance_exam_and_gpa.csv.zip", header=None)  # type: ignore[call-overload]
+    data = pd.read_csv("raw/ufrgs_entrance_exam_and_gpa.csv.zip", header=None)
 
     # Give data column names
     columns = [

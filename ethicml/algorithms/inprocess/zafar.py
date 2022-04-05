@@ -28,14 +28,13 @@ class FitParams(NamedTuple):
 
 
 class _ZafarAlgorithmBase(InstalledModel):
-    def __init__(self, name: str, sub_dir: Path, is_fairness_algo: bool):
+    def __init__(self, name: str, sub_dir: Path):
         super().__init__(
             name=name,
             dir_name="zafar",
             url="https://github.com/predictive-analytics-lab/fair-classification.git",
             top_dir="fair-classification",
             use_poetry=True,
-            is_fairness_algo=is_fairness_algo,
         )
         self._sub_dir = sub_dir
         self._fit_params: Optional[FitParams] = None
@@ -115,8 +114,10 @@ class _ZafarAlgorithmBase(InstalledModel):
 class ZafarBaseline(_ZafarAlgorithmBase):
     """Zafar without fairness."""
 
+    is_fairness_algo: ClassVar[bool] = False
+
     def __init__(self) -> None:
-        super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=False)
+        super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -127,9 +128,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, *, gamma: float = 0.5):
-        super().__init__(
-            name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
-        )
+        super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
         self._hyperparameters = {"gamma": gamma}
 
@@ -142,9 +141,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
     """Zafar with fairness."""
 
     def __init__(self, *, C: float = 0.001):
-        super().__init__(
-            name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT, is_fairness_algo=True
-        )
+        super().__init__(name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT)
         self._c = C
         self._hyperparameters = {"C": C}
 
@@ -161,7 +158,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
 
     def __init__(self, *, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
         name = f"{self._base_name}, τ={tau}, μ={mu}"
-        super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT, is_fairness_algo=True)
+        super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu
         self._eps = eps

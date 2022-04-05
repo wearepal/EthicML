@@ -5,15 +5,15 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Dict, List, TypeVar, Union
-from typing_extensions import Protocol, runtime_checkable
+from typing import ClassVar, Dict, List, TypeVar, Union
+from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_checkable
 
 from ranzen import implements
 
 from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-__all__ = ["InAlgorithm", "InAlgorithmAsync", "InAlgorithmDC"]
+__all__ = ["InAlgoArgs", "InAlgorithm", "InAlgorithmAsync", "InAlgorithmDC"]
 
 _I = TypeVar("_I", bound="InAlgorithm")
 
@@ -22,7 +22,7 @@ _I = TypeVar("_I", bound="InAlgorithm")
 class InAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
-    is_fairness_algo: bool
+    is_fairness_algo: ClassVar[bool]
     _hyperparameters: Dict[str, Union[str, int, float]] = {}
 
     @abstractmethod
@@ -67,7 +67,7 @@ class InAlgorithm(Algorithm, Protocol):
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run with reduced training set so that it finishes quicker."""
-        train_testing = train.get_subset()
+        train_testing = train.get_n_samples()
         return self.run(train_testing, test)
 
 
@@ -75,8 +75,38 @@ class InAlgorithm(Algorithm, Protocol):
 class InAlgorithmDC(InAlgorithm):
     """InAlgorithm dataclass base class."""
 
-    is_fairness_algo = True
+    is_fairness_algo: ClassVar[bool] = True
     seed: int = 888
+
+
+class InAlgoRunArgs(TypedDict):
+    """Base arguments for the ``run`` function of async in-process methods."""
+
+    mode: Literal["run"]
+    predictions: str  # path to where the predictions should be stored
+    # paths to the files with the data
+    train: str
+    test: str
+
+
+class InAlgoFitArgs(TypedDict):
+    """Base arguments for the ``fit`` function of async in-process methods."""
+
+    mode: Literal["fit"]
+    train: str
+    model: str  # path to where the model weights are stored
+
+
+class InAlgoPredArgs(TypedDict):
+    """Base arguments for the ``predict`` function of async in-process methods."""
+
+    mode: Literal["predict"]
+    predictions: str
+    test: str
+    model: str
+
+
+InAlgoArgs: TypeAlias = Union[InAlgoFitArgs, InAlgoPredArgs, InAlgoRunArgs]
 
 
 _IA = TypeVar("_IA", bound="InAlgorithmAsync")
@@ -102,8 +132,12 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.npz"
             train.to_npz(train_path)
-            cmd = self._fit_script_command(train_path, self._model_path)
-            self._call_script(cmd + ["--mode", "fit"])  # wait for script to run
+            args: InAlgoFitArgs = {
+                "mode": "fit",
+                "train": str(train_path),
+                "model": str(self._model_path),
+            }
+            self._call_script(self._script_command(args))
             return self
 
     @implements(InAlgorithm)
@@ -122,8 +156,13 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             test_path = tmp_path / "test.npz"
             pred_path = tmp_path / "predictions.npz"
             test.to_npz(test_path)
-            cmd = self._predict_script_command(self._model_path, test_path, pred_path)
-            self._call_script(cmd + ["--mode", "predict"])  # wait for scrip to run
+            args: InAlgoPredArgs = {
+                "mode": "predict",
+                "test": str(test_path),
+                "predictions": str(pred_path),
+                "model": str(self._model_path),
+            }
+            self._call_script(self._script_command(args))
             return Prediction.from_npz(pred_path)
 
     @implements(InAlgorithm)
@@ -144,8 +183,13 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             pred_path = tmp_path / "predictions.npz"
             train.to_npz(train_path)
             test.to_npz(test_path)
-            cmd = self._run_script_command(train_path, test_path, pred_path)
-            self._call_script(cmd + ["--mode", "run"])  # wait for scrip to run
+            args: InAlgoRunArgs = {
+                "mode": "run",
+                "train": str(train_path),
+                "test": str(test_path),
+                "predictions": str(pred_path),
+            }
+            self._call_script(self._script_command(args))
             return Prediction.from_npz(pred_path)
 
     @property
@@ -153,15 +197,5 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
         return self.model_dir / f"model_{self.name}.joblib"
 
     @abstractmethod
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
+    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
         """The command that will run the script."""
-
-    @abstractmethod
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        """The command that will make the script fit."""
-
-    @abstractmethod
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        """The command that will make the script predict."""

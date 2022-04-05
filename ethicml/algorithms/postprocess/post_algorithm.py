@@ -67,5 +67,4 @@ class PostAlgorithm(Algorithm, Protocol):
 class PostAlgorithmDC(PostAlgorithm):
     """PostAlgorithm dataclass base class."""
 
-    is_fairness_algo = True
     seed: int = 888

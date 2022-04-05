@@ -1,20 +1,33 @@
 """Implementation of Agarwal model."""
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Union
+from typing import ClassVar, List, Optional, Set, Union
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
 from ethicml.utility import ClassifierType, FairnessType
 
-from .in_algorithm import InAlgorithmAsync
+from .in_algorithm import InAlgoArgs, InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
+from .svm import KernelType
 
 __all__ = ["Agarwal"]
 
-from .svm import KernelType
 
 VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
 VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
+
+
+class AgarwalArgs(TypedDict):
+    """Args for the Agarwal implementation."""
+
+    classifier: ClassifierType
+    fairness: FairnessType
+    eps: float
+    iters: int
+    C: float
+    kernel: str
+    seed: int
 
 
 class Agarwal(InAlgorithmAsync):
@@ -22,6 +35,8 @@ class Agarwal(InAlgorithmAsync):
 
     A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
     """
+
+    is_fairness_algo: ClassVar[bool] = True
 
     def __init__(
         self,
@@ -52,10 +67,9 @@ class Agarwal(InAlgorithmAsync):
         if classifier not in VALID_MODELS:
             raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.seed = seed
-        self.is_fairness_algo = True
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
-        self.flags: Dict[str, Union[str, float, int]] = {
+        self.flags: AgarwalArgs = {
             "classifier": classifier,
             "fairness": fairness,
             "eps": eps,
@@ -74,22 +88,5 @@ class Agarwal(InAlgorithmAsync):
         return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"
 
     @implements(InAlgorithmAsync)
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        args = flag_interface(
-            train_path=train_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.agarwal"] + args
-
-    @implements(InAlgorithmAsync)
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        args = flag_interface(train_path=train_path, model_path=model_path, flags=self.flags)
-        return ["-m", "ethicml.implementations.agarwal"] + args
-
-    @implements(InAlgorithmAsync)
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.agarwal"] + args
+    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+        return ["-m", "ethicml.implementations.agarwal"] + flag_interface(in_algo_args, self.flags)

@@ -203,7 +203,7 @@ def evaluate_models(
                 test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
             if test_mode:
                 # take smaller subset of training data to speed up training
-                train = train.get_subset()
+                train = train.get_n_samples()
 
             to_operate_on: Dict[str, TrainTestPair] = {
                 "no_transform": TrainTestPair(train=train, test=test)
@@ -372,7 +372,7 @@ def evaluate_models_async(
                 test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
             if test_mode:
                 # take smaller subset of training data to speed up training
-                train = train.get_subset()
+                train = train.get_n_samples()
             train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
             split_info.update({"split_id": split_id})

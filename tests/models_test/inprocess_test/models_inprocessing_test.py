@@ -22,6 +22,7 @@ from ethicml import (
     CrossValidator,
     DataTuple,
     DPOracle,
+    InAlgoArgs,
     InAlgorithm,
     InAlgorithmAsync,
     Kamiran,
@@ -94,6 +95,22 @@ def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm,
     predictions: Prediction = model.run(train, test)
     assert np.count_nonzero(predictions.hard.values == 1) == num_pos
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - num_pos
+
+
+def test_kamiran_weights(toy_train_test: TrainTestPair):
+    """Test the weights of the Kamiran model are accessible."""
+    train, test = toy_train_test
+
+    model = Kamiran()
+
+    _ = model.run(train, test)
+    assert model.group_weights is not None
+    assert model.group_weights == {
+        0: {'weight': 0.8451576576576577, 'count': 111.0, 'sensitive-attr': 1.0, 'decision': 1.0},
+        1: {'weight': 0.7929216867469879, 'count': 83.0, 'sensitive-attr': 0.0, 'decision': 0.0},
+        2: {'weight': 1.2175632911392404, 'count': 79.0, 'sensitive-attr': 0.0, 'decision': 1.0},
+        3: {'weight': 1.365691489361702, 'count': 47.0, 'sensitive-attr': 1.0, 'decision': 0.0},
+    }
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
@@ -191,9 +208,10 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     train, test = toy_train_test
 
     class _LocalInstalledLR(InAlgorithmAsync):
+        is_fairness_algo: ClassVar[bool] = False
+
         def __init__(self):
             self.seed = 0
-            self.is_fairness_algo = False
             self.model_dir = Path(".")
 
         @property
@@ -201,21 +219,15 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
             return "local installed LR"
 
         @implements(InAlgorithmAsync)
-        def _run_script_command(
-            self, train_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
+        def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+            assert in_algo_args["mode"] == "run", "model doesn’t support the fit/predict split yet"
             script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [script, str(train_path), str(test_path), str(pred_path)]
-
-        @implements(InAlgorithmAsync)
-        def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
-
-        @implements(InAlgorithmAsync)
-        def _predict_script_command(
-            self, model_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
+            return [
+                script,
+                in_algo_args["train"],
+                in_algo_args["test"],
+                in_algo_args["predictions"],
+            ]
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None

@@ -21,7 +21,6 @@ from typing_extensions import Final, Literal, TypeAlias, TypeGuard
 
 import numpy as np
 import pandas as pd
-from pandas.testing import assert_index_equal
 
 __all__ = [
     "ActivationType",
@@ -171,13 +170,13 @@ class DataTuple(TestTuple):
         result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
 
         # assert that the columns haven't changed
-        assert_index_equal(result.x.columns, cols_x)
-        assert_index_equal(result.s.columns, cols_s)
-        assert_index_equal(result.y.columns, cols_y)
+        pd.testing.assert_index_equal(result.x.columns, cols_x)
+        pd.testing.assert_index_equal(result.s.columns, cols_s)
+        pd.testing.assert_index_equal(result.y.columns, cols_y)
 
         return result
 
-    def get_subset(self, num: int = 500) -> DataTuple:
+    def get_n_samples(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
 
         Args:
@@ -187,6 +186,14 @@ class DataTuple(TestTuple):
             subset of training data
         """
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
+
+    def get_s_subset(self, s: int) -> DataTuple:
+        """Returns a subset of the DataTuple where S=s."""
+        return DataTuple(
+            x=self.x[self.s.iloc[:, 0] == s],
+            s=self.s[self.s.iloc[:, 0] == s],
+            y=self.y[self.s.iloc[:, 0] == s],
+        )
 
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file."""
@@ -222,6 +229,10 @@ class Prediction:
     def __len__(self) -> int:
         """Length of the predictions object."""
         return len(self._hard)
+
+    def get_s_subset(self, s_data: pd.DataFrame, s: int) -> Prediction:
+        """Returns a subset of the DataTuple where S=s."""
+        return Prediction(hard=self.hard[s_data.iloc[:, 0] == s])
 
     @property
     def hard(self) -> pd.Series:
