@@ -7,8 +7,7 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import Admissions, Compas, Credit, Crime, DataTuple, German, LoadableDataset
-from ethicml.data.tabular_data.adult import Adult, AdultSplits
+from ethicml import Admissions, Adult, Compas, Credit, Crime, DataTuple, German, LoadableDataset
 from ethicml.data.util import flatten_dict
 
 
@@ -138,7 +137,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=AdultSplits.SEX),
+            dataset=em.adult(split=Adult.Splits.SEX),
             samples=45_222,
             x_features=101,
             discrete_features=96,
@@ -164,7 +163,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=AdultSplits.RACE),
+            dataset=em.adult(split=Adult.Splits.RACE),
             samples=45_222,
             x_features=98,
             discrete_features=93,

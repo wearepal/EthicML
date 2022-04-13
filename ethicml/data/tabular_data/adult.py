@@ -1,7 +1,8 @@
 """Class to describe features of the Adult dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import TYPE_CHECKING, Union
+from typing_extensions import TypeAlias
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
@@ -45,6 +46,11 @@ class Adult(LoadableDataset):
     split: AdultSplits = AdultSplits.SEX
     binarize_nationality: bool = False
     binarize_race: bool = False
+
+    if TYPE_CHECKING:
+        Splits: TypeAlias = AdultSplits
+    else:
+        Splits = AdultSplits
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

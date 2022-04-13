@@ -1,7 +1,8 @@
 """Class to describe features of the German dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import TYPE_CHECKING, Union
+from typing_extensions import TypeAlias
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
@@ -30,6 +31,11 @@ class German(LoadableDataset):
     """German credit dataset."""
 
     split: GermanSplits = GermanSplits.SEX
+
+    if TYPE_CHECKING:
+        Splits: TypeAlias = GermanSplits
+    else:
+        Splits = GermanSplits
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

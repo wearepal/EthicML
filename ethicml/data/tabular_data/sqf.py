@@ -1,7 +1,8 @@
 """Class to describe features of the SQF dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import TYPE_CHECKING, Union
+from typing_extensions import TypeAlias
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
@@ -35,6 +36,11 @@ class Sqf(LoadableDataset):
     """
 
     split: SqfSplits = SqfSplits.SEX
+
+    if TYPE_CHECKING:
+        Splits: TypeAlias = SqfSplits
+    else:
+        Splits = SqfSplits
 
     def __post_init__(self) -> None:
         disc_feature_groups = {
