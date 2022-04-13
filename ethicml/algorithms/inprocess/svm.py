@@ -1,6 +1,7 @@
 """Wrapper for SKLearn implementation of SVM."""
-from typing import ClassVar, Optional, Union
-from typing_extensions import Literal
+from dataclasses import dataclass, field
+from typing import ClassVar, Union
+from typing_extensions import Literal, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -13,31 +14,28 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
-KernelType = Literal["linear", "rbf", "poly", "sigmoid"]
+KernelType: TypeAlias = Literal["linear", "rbf", "poly", "sigmoid"]
 
 
+@dataclass
 class SVM(InAlgorithm):
     """A wraper around the SciKitLearn Support Vector Classifier (SVC) model.
 
     Documentation for the underlying classifier can be found `here <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_.
     """
 
+    C: float = field(default_factory=lambda: SVC().C)
+    kernel: KernelType = field(default_factory=lambda: SVC().kernel)
+    seed: int = 888
     is_fairness_algo: ClassVar[bool] = False
 
-    def __init__(
-        self, *, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
-    ):
-        kernel_name = f" ({kernel})" if kernel is not None else ""
-        self.__name = f"SVM{kernel_name}"
-        self.seed = seed
-        self.C = SVC().C if C is None else C
-        self.kernel = SVC().kernel if kernel is None else kernel
+    def __post_init__(self) -> None:
         self._hyperparameters = {"C": self.C, "kernel": self.kernel}
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        return self.__name
+        return f"SVM ({self.kernel})"
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:

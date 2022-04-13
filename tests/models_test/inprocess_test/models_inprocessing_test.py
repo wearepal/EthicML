@@ -78,7 +78,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
-    InprocessTest(name="SVM", model=SVM(), num_pos=45),
+    InprocessTest(name="SVM (rbf)", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
 ]
 
