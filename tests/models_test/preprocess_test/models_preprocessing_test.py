@@ -14,6 +14,7 @@ from ethicml import (
     Beutel,
     Calders,
     DataTuple,
+    FairnessType,
     InAlgorithm,
     PreAlgorithm,
     PreAlgorithmAsync,
@@ -21,6 +22,7 @@ from ethicml import (
     TestTuple,
     TrainTestPair,
     Upsampler,
+    UpsampleStrategy,
     Zemel,
 )
 
@@ -61,12 +63,20 @@ METHOD_LIST = [
     PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
     PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel DP", num_pos=49),
     PreprocessTest(
-        model=Beutel(dir='/tmp', epochs=5, fairness="EqOp"), name="Beutel EqOp", num_pos=56
+        model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.EqOp),
+        name="Beutel EqOp",
+        num_pos=56,
     ),
-    PreprocessTest(model=Upsampler(strategy="naive"), name="Upsample naive", num_pos=43),
-    PreprocessTest(model=Upsampler(strategy="uniform"), name="Upsample uniform", num_pos=44),
     PreprocessTest(
-        model=Upsampler(strategy="preferential"), name="Upsample preferential", num_pos=45
+        model=Upsampler(strategy=UpsampleStrategy.naive), name="Upsample naive", num_pos=43
+    ),
+    PreprocessTest(
+        model=Upsampler(strategy=UpsampleStrategy.uniform), name="Upsample uniform", num_pos=44
+    ),
+    PreprocessTest(
+        model=Upsampler(strategy=UpsampleStrategy.preferential),
+        name="Upsample preferential",
+        num_pos=45,
     ),
     PreprocessTest(
         model=Calders(preferable_class=1, disadvantaged_group=0), name="Calders", num_pos=43
@@ -155,7 +165,9 @@ def test_pre_sep_fit_transform(
         PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
         PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel DP", num_pos=49),
         PreprocessTest(
-            model=Beutel(dir='/tmp', epochs=5, fairness="EqOp"), name="Beutel EqOp", num_pos=56
+            model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.EqOp),
+            name="Beutel EqOp",
+            num_pos=56,
         ),
     ],
 )

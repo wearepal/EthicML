@@ -92,9 +92,7 @@ def arrange_in_parallel(
     futures: List[_RT] = []
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for algo in algos:
-        for data_item in data:
-            futures.append(_run.remote(algo, data_item, pbar.actor))
-
+        futures.extend(_run.remote(algo, data_item, pbar.actor) for data_item in data)
     pbar.print_until_done()
     # actually run everything
     results = ray.get(futures)

@@ -14,10 +14,10 @@ __all__ = ["MLP"]
 
 
 ACTIVATIONS: Dict[str, ActivationType] = {
-    "identity": "identity",
-    "logistic": "logistic",
-    "tanh": "tanh",
-    "relu": "relu",
+    "identity": ActivationType.identity,
+    "logistic": ActivationType.logistic,
+    "tanh": ActivationType.tanh,
+    "relu": ActivationType.relu,
 }
 
 
@@ -77,7 +77,7 @@ def select_mlp(
     hidden_layer_sizes: Tuple[int, ...], activation: ActivationType, seed: int
 ) -> MLPClassifier:
     """Create MLP model for the given parameters."""
-    assert activation in ACTIVATIONS
+    assert activation in ACTIVATIONS.values()
 
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(

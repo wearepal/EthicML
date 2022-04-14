@@ -13,10 +13,12 @@ from ethicml import (
     Accuracy,
     DataTuple,
     Kamiran,
+    KernelType,
     ProbPos,
     Results,
     TrainTestPair,
     Upsampler,
+    UpsampleStrategy,
     adult,
     evaluate_models,
     load_data,
@@ -76,8 +78,8 @@ def test_plot_evals():
     """Test plot evals."""
     results: Results = evaluate_models(
         datasets=[adult(), toy()],
-        preprocess_models=[Upsampler(strategy="preferential")],
-        inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],
+        preprocess_models=[Upsampler(strategy=UpsampleStrategy.preferential)],
+        inprocess_models=[LR(), SVM(kernel=KernelType.linear), Kamiran()],
         metrics=[Accuracy(), CV()],
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,

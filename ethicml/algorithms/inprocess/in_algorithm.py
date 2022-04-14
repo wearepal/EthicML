@@ -11,7 +11,14 @@ from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_c
 from ranzen import implements
 
 from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
-from ethicml.utility import DataTuple, Prediction, TestTuple
+from ethicml.utility import (
+    ActivationType,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    TestTuple,
+)
 
 __all__ = ["InAlgoArgs", "InAlgorithm", "InAlgorithmAsync", "InAlgorithmDC"]
 
@@ -23,7 +30,9 @@ class InAlgorithm(Algorithm, Protocol):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
     is_fairness_algo: ClassVar[bool]
-    _hyperparameters: Dict[str, Union[str, int, float]] = {}
+    _hyperparameters: Dict[
+        str, Union[str, int, float, KernelType, ActivationType, FairnessType]
+    ] = {}
 
     @abstractmethod
     def fit(self: _I, train: DataTuple) -> _I:
@@ -37,7 +46,9 @@ class InAlgorithm(Algorithm, Protocol):
         """
 
     @property
-    def hyperparameters(self) -> Dict[str, Union[str, int, float]]:
+    def hyperparameters(
+        self,
+    ) -> Dict[str, Union[str, int, float, KernelType, ActivationType, FairnessType]]:
         """Return list of hyperparameters."""
         return self._hyperparameters
 

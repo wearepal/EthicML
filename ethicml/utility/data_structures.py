@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from enum import Enum
+from enum import Enum, auto
 from pathlib import Path
 from typing import (
     Callable,
@@ -18,16 +18,18 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Final
+from typing_extensions import Final, Literal
 
 import numpy as np
 import pandas as pd
+from ranzen import enum_name_str
 
 __all__ = [
     "ActivationType",
     "ClassifierType",
     "DataTuple",
     "FairnessType",
+    "KernelType",
     "Prediction",
     "Results",
     "ResultsAggregator",
@@ -44,9 +46,7 @@ __all__ = [
 ]
 
 
-class AxisType(Enum):
-    COLUMNS = "columns"
-    INDEX = "index"
+AxisType: Literal["columns", "index"]
 
 
 class PandasIndex(Enum):
@@ -310,21 +310,19 @@ def write_as_npz(
 
 def concat_dt(
     datatup_list: Sequence[DataTuple],
-    axis: Union[str, AxisType] = AxisType.INDEX,
+    axis: AxisType = "index",
     ignore_index: bool = False,
 ) -> DataTuple:
     """Concatenate the data tuples in the given list."""
-    if isinstance(axis, str):
-        axis = AxisType(axis.lower())
     return DataTuple(
         x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
+            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
         s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
+            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
         y=pd.concat(
-            [dt.y for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
+            [dt.y for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
         name=datatup_list[0].name,
     )
@@ -332,45 +330,46 @@ def concat_dt(
 
 def concat_tt(
     datatup_list: List[TestTuple],
-    axis: Union[str, AxisType] = AxisType.INDEX,
+    axis: AxisType = "index",
     ignore_index: bool = False,
 ) -> TestTuple:
     """Concatenate the test tuples in the given list."""
-    if isinstance(axis, str):
-        axis = AxisType(axis.lower())
     return TestTuple(
         x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
+            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
         s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
+            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
         name=datatup_list[0].name,
     )
 
 
+@enum_name_str
 class FairnessType(Enum):
     """Fairness type."""
 
-    DP = "DP"
-    EQOPP = "EqOp"
-    EQODDS = "EqOd"
+    DP = auto()
+    EqOp = auto()
+    EqOd = auto()
 
 
+@enum_name_str
 class ClassifierType(Enum):
     """Classifier type."""
 
-    LR = "LR"
-    SVM = "SVM"
+    LR = auto()
+    SVM = auto()
 
 
+@enum_name_str
 class ActivationType(Enum):
     """Activation type for NN."""
 
-    RELU = "relu"
-    TANH = "tanh"
-    IDENTITY = "identity"
-    LOGISTIC = "logistic"
+    relu = auto()
+    tanh = auto()
+    identity = auto()
+    logistic = auto()
 
 
 class TrainTestPair(NamedTuple):
@@ -476,3 +475,14 @@ def aggregate_results(
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
+
+
+@enum_name_str
+class KernelType(Enum):
+    """Values for SVM Kernel."""
+
+    linear = auto()
+    poly = auto()
+    rbf = auto()
+    sigmoid = auto()
+    none = auto()

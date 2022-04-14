@@ -14,6 +14,7 @@ from ethicml import (
     Dataset,
     DataTuple,
     InAlgorithm,
+    KernelType,
     LRProb,
     Metric,
     Prediction,
@@ -89,7 +90,7 @@ PER_SENS = [
     ),
     PerSensMetricTest(
         dataset=adult("Nationality"),
-        classifier=SVM(kernel="linear"),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
             "native-country_1": 0.649,
@@ -135,7 +136,7 @@ PER_SENS = [
     ),
     PerSensMetricTest(
         dataset=adult("Race"),
-        classifier=SVM(kernel="linear"),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
             "race_0": 0.937,
@@ -147,13 +148,13 @@ PER_SENS = [
     ),
     PerSensMetricTest(
         dataset=toy(),
-        classifier=SVM(kernel="linear"),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Theil(),
         expected_values={"sensitive-attr_1": 0.024, "sensitive-attr_0": 0.045},
     ),
     PerSensMetricTest(
         dataset=nonbinary_toy(),
-        classifier=SVM(kernel="linear"),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={"sens_1": 1.0, "sens_0": 1.0},
     ),

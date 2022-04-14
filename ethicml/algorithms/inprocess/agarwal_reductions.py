@@ -3,19 +3,19 @@ from pathlib import Path
 from typing import ClassVar, List, Optional, Set, Union
 from typing_extensions import TypedDict
 
-from ranzen import implements
+from ranzen import implements, parsable
 
 from ethicml.utility import ClassifierType, FairnessType
 
 from .in_algorithm import InAlgoArgs, InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
-from .svm import KernelType
 
 __all__ = ["Agarwal"]
 
+from ...utility import KernelType
 
-VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
-VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
+VALID_FAIRNESS: Set[FairnessType] = {FairnessType.DP, FairnessType.EqOd}
+VALID_MODELS: Set[ClassifierType] = {ClassifierType.LR, ClassifierType.SVM}
 
 
 class AgarwalArgs(TypedDict):
@@ -26,7 +26,7 @@ class AgarwalArgs(TypedDict):
     eps: float
     iters: int
     C: float
-    kernel: str
+    kernel: KernelType
     seed: int
 
 
@@ -38,12 +38,13 @@ class Agarwal(InAlgorithmAsync):
 
     is_fairness_algo: ClassVar[bool] = True
 
+    @parsable
     def __init__(
         self,
         *,
         dir: Union[str, Path] = ".",
-        fairness: FairnessType = "DP",
-        classifier: ClassifierType = "LR",
+        fairness: FairnessType = FairnessType.DP,
+        classifier: ClassifierType = ClassifierType.LR,
         eps: float = 0.1,
         iters: int = 50,
         C: Optional[float] = None,
@@ -62,10 +63,6 @@ class Agarwal(InAlgorithmAsync):
             kernel: Kernel type for the SVM algorithm.
             seed: Random seed.
         """
-        if fairness not in VALID_FAIRNESS:
-            raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
-        if classifier not in VALID_MODELS:
-            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.seed = seed
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
@@ -79,7 +76,7 @@ class Agarwal(InAlgorithmAsync):
             "seed": seed,
         }
         self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
-        if classifier == "SVM":
+        if classifier == ClassifierType.SVM:
             self._hyperparameters["kernel"] = chosen_kernel
 
     @property

@@ -18,15 +18,18 @@ from ethicml import (
     Agarwal,
     BaseMetric,
     Blind,
+    ClassifierType,
     Corels,
     CrossValidator,
     DataTuple,
     DPOracle,
+    FairnessType,
     InAlgoArgs,
     InAlgorithm,
     InAlgorithmAsync,
     Kamiran,
     Kamishima,
+    KernelType,
     LRProb,
     Majority,
     Oracle,
@@ -50,21 +53,34 @@ class InprocessTest(NamedTuple):
 
 INPROCESS_TESTS = [
     InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
-    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
-    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
+    InprocessTest(
+        name="Agarwal, LR, EqOd",
+        model=Agarwal(dir='/tmp', fairness=FairnessType.EqOd),
+        num_pos=44,
+    ),
     InprocessTest(
         name="Agarwal, SVM, DP",
-        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM),
+        num_pos=45,
+    ),
+    InprocessTest(
+        name="Agarwal, SVM, DP",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM, kernel=KernelType.linear),
         num_pos=42,
     ),
     InprocessTest(
         name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM, fairness=FairnessType.EqOd),
         num_pos=45,
     ),
     InprocessTest(
         name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
+        model=Agarwal(
+            dir='/tmp',
+            classifier=ClassifierType.SVM,
+            fairness=FairnessType.EqOd,
+            kernel=KernelType.linear,
+        ),
         num_pos=42,
     ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
@@ -79,7 +95,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM", model=SVM(), num_pos=45),
-    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
+    InprocessTest(name="SVM (linear)", model=SVM(kernel=KernelType.linear), num_pos=41),
 ]
 
 
@@ -242,7 +258,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 @pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
+    models: List[InAlgorithmAsync] = [
+        Agarwal(dir='/tmp', classifier=ClassifierType.SVM, fairness=FairnessType.EqOd)
+    ]
 
     class AssertResult(BaseMetric):
         apply_per_sensitive: ClassVar[bool] = True

@@ -31,6 +31,7 @@ from ethicml.utility import (
 __all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
 
 from ..preprocessing.scaling import ScalerType
+from ..utility import ActivationType, FairnessType, KernelType
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -38,9 +39,7 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
     poss_values: List[str] = []
     for col in train.s.columns:
         uniques = train.s[col].unique()
-        for unique in uniques:
-            poss_values.append(f"{col}_{unique}")
-
+        poss_values.extend(f"{col}_{unique}" for unique in uniques)
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
@@ -128,8 +127,7 @@ def _delete_previous_results(
 ) -> None:
     for dataset in datasets:
         transform_list = ["no_transform"]
-        for preprocess_model in transforms:
-            transform_list.append(preprocess_model.name)
+        transform_list.extend(preprocess_model.name for preprocess_model in transforms)
         for transform_name in transform_list:
             path_to_file: Path = _result_path(outdir, dataset.name, transform_name, topic)
             if path_to_file.exists():
@@ -249,7 +247,9 @@ def evaluate_models(
                     logging["repeat"] = str(split_id)
                     pbar.set_postfix(ordered_dict=logging)
 
-                    temp_res: Dict[str, Union[str, float]] = {
+                    temp_res: Dict[
+                        str, Union[str, float, int, KernelType, ActivationType, FairnessType]
+                    ] = {
                         "dataset": dataset.name,
                         "scaler": "None" if scaler is None else scaler.__class__.__name__,
                         "transform": transform_name,

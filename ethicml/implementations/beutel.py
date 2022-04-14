@@ -141,11 +141,11 @@ def fit(train: DataTuple, flags: BeutelArgs):
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags["fairness"] == "EqOp":
+            if flags["fairness"] is FairnessType.EqOp:
                 mask = class_label.ge(0.5)
-            elif flags["fairness"] == "EqOd":
+            elif flags["fairness"] is FairnessType.EqOd:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags["fairness"] == "DP":
+            elif flags["fairness"] is FairnessType.DP:
                 mask = torch.ones(s_pred.shape, dtype=torch.uint8)
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
@@ -211,11 +211,11 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
 
 def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
-    if flags["fairness"] == "EqOp":
+    if flags["fairness"] is FairnessType.EqOp:
         mask = class_label.ge(0.5)
-    elif flags["fairness"] == "EqOd":
+    elif flags["fairness"] is FairnessType.EqOd:
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags["fairness"] == "DP":
+    elif flags["fairness"] is FairnessType.DP:
         mask = torch.ones(s_pred.shape, dtype=torch.uint8)
 
     return mask
@@ -335,13 +335,13 @@ class Adversary(nn.Module):
         """Forward pass."""
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness == "EqOp":
+        if self.fairness is FairnessType.EqOp:
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness == "EqOd":
+        elif self.fairness is FairnessType.EqOd:
             raise NotImplementedError("Not implemented equalized odds yet")
-        elif self.fairness == "DP":
+        elif self.fairness is FairnessType.DP:
             x = self.adversary(x)
         return x
 

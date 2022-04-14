@@ -238,13 +238,13 @@ class CrossValidator:
             CVResults
         """
         compute_scores_and_append = _ResultsAccumulator(measures)
-        for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
-            # run the models one by one and *immediately* report the scores on the measures
-            for experiment in self.experiments:
-                # instantiate model and run it
-                model = self.model(**experiment)
-                preds = model.run(train_fold, val)
-                scores = compute_scores_and_append(experiment, preds, val, i)
-                score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
-                print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
+        for (i, (train_fold, val)), experiment in product(
+            enumerate(fold_data(train, folds=self.folds)), self.experiments
+        ):
+            # instantiate model and run it
+            model = self.model(**experiment)
+            preds = model.run(train_fold, val)
+            scores = compute_scores_and_append(experiment, preds, val, i)
+            score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
+            print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
         return CVResults(compute_scores_and_append.results, self.model)

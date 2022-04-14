@@ -1,8 +1,8 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
 from dataclasses import dataclass
-from enum import Enum
-from typing import Dict, List, Optional, Tuple, Union
+from enum import Enum, auto
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 from ranzen import implements
@@ -18,9 +18,9 @@ __all__ = ["Upsampler", "UpsampleStrategy"]
 class UpsampleStrategy(Enum):
     """Strategy for upsampling."""
 
-    UNIFORM = "uniform"
-    PREFERENTIAL = "preferential"
-    NAIVE = "naive"
+    uniform = auto()
+    preferential = auto()
+    naive = auto()
 
 
 @dataclass
@@ -31,17 +31,13 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
-    strategy: Union[str, UpsampleStrategy] = "uniform"
+    strategy: UpsampleStrategy = UpsampleStrategy.uniform
     seed: int = 888
-
-    def __post_init__(self) -> None:
-        if isinstance(self.strategy, str):
-            self.strategy = UpsampleStrategy(self.strategy.lower())
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        return f"Upsample {self.strategy.value}"
+        return f"Upsample {self.strategy}"
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple["Upsampler", DataTuple]:
@@ -113,7 +109,7 @@ def upsample(
         vals.append(val.x.shape[0])
 
     for key, val in data.items():
-        if strategy == "naive":
+        if strategy is UpsampleStrategy.naive:
             percentages[key] = max(vals) / val.x.shape[0]
         else:
             s_val: int = key[0]
@@ -149,7 +145,7 @@ def upsample(
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
             upsampled_datatuple = upsampled_datatuple.replace(name=f"{name}: {dataset.name}")
 
-    if strategy == "preferential":
+    if strategy is UpsampleStrategy.preferential:
         ranker = LRProb()
         rank: SoftPrediction = ranker.run(dataset, dataset)
 

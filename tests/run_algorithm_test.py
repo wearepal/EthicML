@@ -9,6 +9,7 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
+from ethicml import ClassifierType, KernelType
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
@@ -65,7 +66,7 @@ def test_run_alg_suite_scaler():
     dataset = em.adult(split="Race-Binary")
     datasets: List[em.Dataset] = [dataset, em.toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     results_no_scaler = em.evaluate_models(
@@ -101,7 +102,7 @@ def test_run_alg_suite():
     dataset = em.adult(split="Race-Binary")
     datasets: List[em.Dataset] = [dataset, em.toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     parallel_results = em.evaluate_models_async(
@@ -154,7 +155,7 @@ def test_run_alg_suite_wrong_metrics():
     """Test run alg suite wrong metrics."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel="linear"), em.LR()]
+    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel=KernelType.linear), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
     with pytest.raises(em.MetricNotApplicable):
@@ -175,7 +176,7 @@ def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
+    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.LR), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
