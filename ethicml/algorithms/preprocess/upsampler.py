@@ -12,7 +12,7 @@ from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 from ..inprocess.logistic_regression import LRProb
 from .pre_algorithm import PreAlgorithm, T
 
-__all__ = ["Upsampler"]
+__all__ = ["Upsampler", "UpsampleStrategy"]
 
 
 class UpsampleStrategy(Enum):
