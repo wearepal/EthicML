@@ -18,7 +18,7 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Final, Literal
+from typing_extensions import Final, Literal, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 
-AxisType: Literal["columns", "index"]
+AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
 
 
 class PandasIndex(Enum):
@@ -349,17 +349,17 @@ def concat_tt(
 class FairnessType(Enum):
     """Fairness type."""
 
-    DP = auto()
-    EqOp = auto()
-    EqOd = auto()
+    dp = auto()
+    eqop = auto()
+    eqod = auto()
 
 
 @enum_name_str
 class ClassifierType(Enum):
     """Classifier type."""
 
-    LR = auto()
-    SVM = auto()
+    lr = auto()
+    svm = auto()
 
 
 @enum_name_str

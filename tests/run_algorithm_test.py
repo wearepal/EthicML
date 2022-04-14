@@ -176,7 +176,7 @@ def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[em.Dataset] = [em.toy(), em.adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.LR), em.LR()]
+    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.lr), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 

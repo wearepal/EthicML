@@ -14,19 +14,19 @@ __all__ = ["Agarwal"]
 
 from ...utility import KernelType
 
-VALID_FAIRNESS: Set[FairnessType] = {FairnessType.DP, FairnessType.EqOd}
-VALID_MODELS: Set[ClassifierType] = {ClassifierType.LR, ClassifierType.SVM}
+VALID_FAIRNESS: Set[FairnessType] = {FairnessType.dp, FairnessType.eqod}
+VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
 class AgarwalArgs(TypedDict):
     """Args for the Agarwal implementation."""
 
-    classifier: ClassifierType
-    fairness: FairnessType
+    classifier: str
+    fairness: str
     eps: float
     iters: int
     C: float
-    kernel: KernelType
+    kernel: str
     seed: int
 
 
@@ -43,8 +43,8 @@ class Agarwal(InAlgorithmAsync):
         self,
         *,
         dir: Union[str, Path] = ".",
-        fairness: FairnessType = FairnessType.DP,
-        classifier: ClassifierType = ClassifierType.LR,
+        fairness: FairnessType = FairnessType.dp,
+        classifier: ClassifierType = ClassifierType.lr,
         eps: float = 0.1,
         iters: int = 50,
         C: Optional[float] = None,
@@ -67,16 +67,16 @@ class Agarwal(InAlgorithmAsync):
         self.model_dir = dir if isinstance(dir, Path) else Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: AgarwalArgs = {
-            "classifier": classifier,
-            "fairness": fairness,
+            "classifier": str(classifier),
+            "fairness": str(fairness),
             "eps": eps,
             "iters": iters,
             "C": chosen_c,
-            "kernel": chosen_kernel,
+            "kernel": str(chosen_kernel),
             "seed": seed,
         }
         self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
-        if classifier == ClassifierType.SVM:
+        if classifier == ClassifierType.svm:
             self._hyperparameters["kernel"] = chosen_kernel
 
     @property

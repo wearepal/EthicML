@@ -34,7 +34,7 @@ class SVM(InAlgorithm):
         self.__name = f"SVM{kernel_name}"
         self.seed = seed
         self.C = SVC().C if C is None else C
-        self.kernel = SVC().kernel if kernel is None else str(kernel)
+        self.kernel = SVC().kernel if kernel is None else kernel
         self._hyperparameters = {"C": self.C, "kernel": self.kernel}
 
     @property
@@ -58,4 +58,4 @@ def select_svm(C: float, kernel: KernelType, seed: int) -> Union[LinearSVC, SVC]
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)
-    return SVC(C=C, kernel=kernel, gamma="auto", random_state=random_state)
+    return SVC(C=C, kernel=str(kernel), gamma="auto", random_state=random_state)

@@ -52,33 +52,33 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
+    InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir='/tmp'), num_pos=45),
     InprocessTest(
-        name="Agarwal, LR, EqOd",
-        model=Agarwal(dir='/tmp', fairness=FairnessType.EqOd),
+        name="Agarwal, lr, eqod",
+        model=Agarwal(dir='/tmp', fairness=FairnessType.eqod),
         num_pos=44,
     ),
     InprocessTest(
-        name="Agarwal, SVM, DP",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM),
+        name="Agarwal, svm, dp",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, SVM, DP",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM, kernel=KernelType.linear),
+        name="Agarwal, svm, dp",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, kernel=KernelType.linear),
         num_pos=42,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.SVM, fairness=FairnessType.EqOd),
+        name="Agarwal, svm, eqod",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eqod),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
+        name="Agarwal, svm, eqod",
         model=Agarwal(
             dir='/tmp',
-            classifier=ClassifierType.SVM,
-            fairness=FairnessType.EqOd,
+            classifier=ClassifierType.svm,
+            fairness=FairnessType.eqod,
             kernel=KernelType.linear,
         ),
         num_pos=42,
@@ -87,7 +87,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
-    InprocessTest(name="Kamiran & Calders LR C=1.0", model=Kamiran(), num_pos=44),
+    InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
@@ -259,7 +259,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [
-        Agarwal(dir='/tmp', classifier=ClassifierType.SVM, fairness=FairnessType.EqOd)
+        Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eqod)
     ]
 
     class AssertResult(BaseMetric):
