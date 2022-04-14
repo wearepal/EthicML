@@ -165,7 +165,7 @@ def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: 
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
-    assert svm_model.name == "SVM"
+    assert svm_model.name == "SVM (rbf)"
 
     assert model.name == name
     new_train_test = model.run(train, test)
