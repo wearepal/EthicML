@@ -11,7 +11,7 @@ from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm
 
-__all__ = ["SVM"]
+__all__ = ["KernelType", "SVM"]
 
 
 class KernelType(Enum):
