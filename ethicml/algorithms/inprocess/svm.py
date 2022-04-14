@@ -1,6 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
+from enum import Enum
 from typing import ClassVar, Optional, Union
-from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,12 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
-KernelType = Literal["linear", "rbf", "poly", "sigmoid"]
+
+class KernelType(Enum):
+    LINEAR = "linear"
+    POLY = "poly"
+    RBF = "rbf"
+    SIGMOID = "sigmoid"
 
 
 class SVM(InAlgorithm):
@@ -25,13 +30,19 @@ class SVM(InAlgorithm):
     is_fairness_algo: ClassVar[bool] = False
 
     def __init__(
-        self, *, C: Optional[float] = None, kernel: Optional[KernelType] = None, seed: int = 888
+        self,
+        *,
+        C: Optional[float] = None,
+        kernel: Optional[Union[str, KernelType]] = None,
+        seed: int = 888,
     ):
-        kernel_name = f" ({kernel})" if kernel is not None else ""
+        if isinstance(kernel, str):
+            kernel = KernelType(kernel)
+        kernel_name = f" ({kernel.value})" if kernel is not None else ""
         self.__name = f"SVM{kernel_name}"
         self.seed = seed
         self.C = SVC().C if C is None else C
-        self.kernel = SVC().kernel if kernel is None else kernel
+        self.kernel = SVC().kernel if kernel is None else kernel.value
         self._hyperparameters = {"C": self.C, "kernel": self.kernel}
 
     @property

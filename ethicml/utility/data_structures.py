@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from enum import Enum
 from pathlib import Path
 from typing import (
     Callable,
@@ -17,7 +18,7 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Final, Literal, TypeAlias, TypeGuard
+from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
@@ -42,7 +43,19 @@ __all__ = [
     "map_over_results_index",
 ]
 
-AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
+
+class AxisType(Enum):
+    COLUMNS = "columns"
+    INDEX = "index"
+
+
+class PandasIndex(Enum):
+    """Enum for indexing the results."""
+
+    DATASET = "dataset"
+    SCALER = "scaler"
+    TRANSFORM = "transform"
+    MODEL = "model"
 
 
 class TestTuple:
@@ -296,50 +309,68 @@ def write_as_npz(
 
 
 def concat_dt(
-    datatup_list: Sequence[DataTuple], axis: AxisType = "index", ignore_index: bool = False
+    datatup_list: Sequence[DataTuple],
+    axis: Union[str, AxisType] = AxisType.INDEX,
+    ignore_index: bool = False,
 ) -> DataTuple:
     """Concatenate the data tuples in the given list."""
+    if isinstance(axis, str):
+        axis = AxisType(axis.lower())
     return DataTuple(
         x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+            [dt.x for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
         ),
         s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+            [dt.s for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
         ),
         y=pd.concat(
-            [dt.y for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+            [dt.y for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
         ),
         name=datatup_list[0].name,
     )
 
 
 def concat_tt(
-    datatup_list: List[TestTuple], axis: AxisType = "index", ignore_index: bool = False
+    datatup_list: List[TestTuple],
+    axis: Union[str, AxisType] = AxisType.INDEX,
+    ignore_index: bool = False,
 ) -> TestTuple:
     """Concatenate the test tuples in the given list."""
+    if isinstance(axis, str):
+        axis = AxisType(axis.lower())
     return TestTuple(
         x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+            [dt.x for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
         ),
         s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
+            [dt.s for dt in datatup_list], axis=axis.value, sort=False, ignore_index=ignore_index
         ),
         name=datatup_list[0].name,
     )
 
 
-FairnessType: TypeAlias = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
+class FairnessType(Enum):
+    """Fairness type."""
+
+    DP = "DP"
+    EQOPP = "EqOp"
+    EQODDS = "EqOd"
 
 
-def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
-    """Check whether a string conforms to a fairness type."""
-    return fair_str in {"DP", "EqOd", "EqOp"}
+class ClassifierType(Enum):
+    """Classifier type."""
+
+    LR = "LR"
+    SVM = "SVM"
 
 
-ClassifierType: TypeAlias = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType: TypeAlias = Literal[
-    "identity", "logistic", "tanh", "relu"
-]  # pylint: disable=invalid-name
+class ActivationType(Enum):
+    """Activation type for NN."""
+
+    RELU = "relu"
+    TANH = "tanh"
+    IDENTITY = "identity"
+    LOGISTIC = "logistic"
 
 
 class TrainTestPair(NamedTuple):
@@ -424,10 +455,12 @@ def map_over_results_index(
 def filter_results(
     results: Results,
     values: Iterable,
-    index: Literal["dataset", "scaler", "transform", "model"] = "model",
+    index: Union[str, PandasIndex] = "model",
 ) -> Results:
     """Filter the entries based on the given values."""
-    return Results(results.loc[results.index.get_level_values(index).isin(list(values))])
+    if isinstance(index, str):
+        index = PandasIndex(index)
+    return Results(results.loc[results.index.get_level_values(index.value).isin(list(values))])
 
 
 def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:

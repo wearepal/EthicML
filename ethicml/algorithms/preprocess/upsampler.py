@@ -1,8 +1,8 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
-from typing_extensions import Literal
+from enum import Enum
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 from ranzen import implements
@@ -15,6 +15,14 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Upsampler"]
 
 
+class UpsampleStrategy(Enum):
+    """Strategy for upsampling."""
+
+    UNIFORM = "uniform"
+    PREFERENTIAL = "preferential"
+    NAIVE = "naive"
+
+
 @dataclass
 class Upsampler(PreAlgorithm):
     """Upsampler algorithm.
@@ -23,16 +31,17 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
-    strategy: Literal["uniform", "preferential", "naive"] = "uniform"
+    strategy: Union[str, UpsampleStrategy] = "uniform"
     seed: int = 888
 
     def __post_init__(self) -> None:
-        assert self.strategy in ["uniform", "preferential", "naive"]
+        if isinstance(self.strategy, str):
+            self.strategy = UpsampleStrategy(self.strategy.lower())
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        return f"Upsample {self.strategy}"
+        return f"Upsample {self.strategy.value}"
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple["Upsampler", DataTuple]:
@@ -74,7 +83,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
 def upsample(
     dataset: DataTuple,
     test: TestTuple,
-    strategy: Literal["uniform", "preferential", "naive"],
+    strategy: UpsampleStrategy,
     seed: int,
     name: str,
 ) -> Tuple[DataTuple, TestTuple]:
