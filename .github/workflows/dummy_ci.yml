@@ -10,9 +10,11 @@ on:
     - 'examples/**'
     - '**/*.md'
     - .github/dependabot.yml
+    - .github/labeler.yml
     - .github/workflows/docs.yml
     - .github/workflows/dummy_ci.yml
     - .github/workflows/dependabot_auto.yml
+    - .github/workflows/labeler.yml
     - .gitignore
     - CODEOWNERS
     - LICENSE

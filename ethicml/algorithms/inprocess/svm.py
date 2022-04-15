@@ -19,9 +19,10 @@ KernelType: TypeAlias = Literal["linear", "rbf", "poly", "sigmoid"]
 
 @dataclass
 class SVM(InAlgorithm):
-    """A wraper around the SciKitLearn Support Vector Classifier (SVC) model.
+    """A wrapper around the SciKitLearn Support Vector Classifier (SVC) model.
 
-    Documentation for the underlying classifier can be found `here <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_.
+    Documentation for the underlying classifier can be found
+    `here <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>`_.
     """
 
     C: float = field(default_factory=lambda: SVC().C)
