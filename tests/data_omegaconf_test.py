@@ -10,16 +10,16 @@ import ethicml as em
 @pytest.mark.parametrize(
     "data_class,value,should_pass",
     [
-        (em.Admissions, em.AdmissionsSplits.GENDER, True),
+        (em.Admissions, em.Admissions.Splits.GENDER, True),
         (em.Adult, "Race", False),
-        (em.Adult, em.AdultSplits.RACE, True),
-        (em.Compas, em.CompasSplits.RACE_SEX, True),
-        (em.Credit, em.CreditSplits.SEX, True),
-        (em.Crime, em.CrimeSplits.RACE_BINARY, True),
-        (em.German, em.GermanSplits.SEX, True),
-        (em.Health, em.HealthSplits.SEX, True),
-        (em.Law, em.LawSplits.SEX, True),
-        (em.Sqf, em.SqfSplits.RACE_SEX, True),
+        (em.Adult, em.Adult.Splits.RACE, True),
+        (em.Compas, em.Compas.Splits.RACE_SEX, True),
+        (em.Credit, em.Credit.Splits.SEX, True),
+        (em.Crime, em.Crime.Splits.RACE_BINARY, True),
+        (em.German, em.German.Splits.SEX, True),
+        (em.Health, em.Health.Splits.SEX, True),
+        (em.Law, em.Law.Splits.SEX, True),
+        (em.Sqf, em.Sqf.Splits.RACE_SEX, True),
     ],
 )
 def test_datasets_with_split(
