@@ -6,7 +6,7 @@
 
 
 EthicML is a library for performing and assessing __algorithmic fairness__.
-Unlike other libraries, EthicML isn't an education tool, but rather a __researcher__'s toolkit.
+Unlike other libraries, EthicML isn't an education tool, but rather a __researcher__’s toolkit.
 
 Other algorthimic fairness packages are useful, but given that we primarily do research,
 a lot of the work we do doesn't fit into some nice box.
