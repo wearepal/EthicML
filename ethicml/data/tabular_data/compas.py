@@ -1,8 +1,7 @@
 """Class to describe features of the Compas dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Union
-from typing_extensions import TypeAlias
+from typing import ClassVar, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
@@ -34,10 +33,8 @@ class Compas(LoadableDataset):
 
     split: CompasSplits = CompasSplits.SEX
 
-    if TYPE_CHECKING:
-        Splits: TypeAlias = CompasSplits
-    else:
-        Splits = CompasSplits
+    Splits: ClassVar[Type[CompasSplits]] = CompasSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

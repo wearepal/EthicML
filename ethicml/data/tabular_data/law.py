@@ -19,8 +19,7 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
 """
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Mapping, Union
-from typing_extensions import TypeAlias
+from typing import ClassVar, Mapping, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelGroup, flatten_dict, simple_spec
@@ -52,10 +51,8 @@ class Law(LoadableDataset):
 
     split: LawSplits = LawSplits.SEX
 
-    if TYPE_CHECKING:
-        Splits: TypeAlias = LawSplits
-    else:
-        Splits = LawSplits
+    Splits: ClassVar[Type[LawSplits]] = LawSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

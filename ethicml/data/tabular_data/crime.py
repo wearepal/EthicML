@@ -1,8 +1,7 @@
 """Class to describe features of the Communities and Crime dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import TYPE_CHECKING, Union
-from typing_extensions import TypeAlias
+from typing import ClassVar, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
@@ -32,10 +31,8 @@ class Crime(LoadableDataset):
 
     split: CrimeSplits = CrimeSplits.RACE_BINARY
 
-    if TYPE_CHECKING:
-        Splits: TypeAlias = CrimeSplits
-    else:
-        Splits = CrimeSplits
+    Splits: ClassVar[Type[CrimeSplits]] = CrimeSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {
