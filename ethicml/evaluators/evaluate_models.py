@@ -153,7 +153,7 @@ def evaluate_models(
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
-    num_cpus: int = 1,
+    num_cpus: Optional[int] = None,
     scaler: Optional[ScalerType] = None,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -171,7 +171,7 @@ def evaluate_models(
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
         fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
-        num_cpus: number of CPUs to use
+        num_cpus: number of CPUs to use; if None, use all
     """
     from .parallelism import run_in_parallel
 

@@ -95,8 +95,7 @@ def test_plot_evals():
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())
     # num(datasets) * num(preprocess) * num(accuracy combinations) * num(prop_pos combinations)
-    assert len(figs_and_plots) == 2 * 2 * 1 * 2 + 4  # TODO: this +4 should be FIXED,
-    # it matches the column name containing a hyphen as a DIFF metric.
+    assert len(figs_and_plots) == 2 * 2 * 1 * 2
 
     # plot with column names
     figs_and_plots = plot_results(results, "Accuracy", "prob_pos_sensitive-attr_0")
