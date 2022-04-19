@@ -86,7 +86,6 @@ def test_plot_evals():
         test_mode=True,
         delete_prev=True,
     )
-    results = results.sort_values("seed")
     assert results["seed"][0] == results["seed"][1] == results["seed"][2] == 0
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410
     assert results["seed"][6] == results["seed"][7] == results["seed"][8] == 4820

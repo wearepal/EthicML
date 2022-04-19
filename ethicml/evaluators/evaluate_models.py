@@ -1,4 +1,5 @@
 """Runs given metrics on given algorithms for given datasets."""
+from itertools import product
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 
@@ -193,29 +194,32 @@ def evaluate_models(
     # ======================================= prepare data ========================================
     data_splits: List[TrainTestPair] = []
     test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
-    for dataset in datasets:
-        for split_id in range(repeats):
-            train: DataTuple
-            test: DataTuple
-            train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
-            if scaler is not None:
-                train, scaler_post = scale_continuous(dataset, train, scaler)
-                test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
-            if test_mode:
-                # take smaller subset of training data to speed up training
-                train = train.get_n_samples()
-            train = train.replace(name=f"{train.name} ({split_id})")
-            data_splits.append(TrainTestPair(train, test))
-            split_info.update({"split_id": split_id})
-            test_data.append(
-                _DataInfo(
-                    test=test,
-                    dataset_name=dataset.name,
-                    transform_name=default_transform_name,
-                    split_info=split_info,
-                    scaler="None" if scaler is None else scaler.__class__.__name__,
-                )
+    for dataset, split_id in product(datasets, range(repeats)):
+        train: DataTuple
+        test: DataTuple
+        train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
+        if scaler is not None:
+            train, scaler_post = scale_continuous(dataset, train, scaler)
+            test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
+        if test_mode:
+            # take smaller subset of training data to speed up training
+            train = train.get_n_samples()
+        train = train.replace(name=f"{train.name} ({split_id})")
+        data_splits.append(TrainTestPair(train, test))
+        split_info.update({"split_id": split_id})
+        test_data.append(
+            _DataInfo(
+                test=test,
+                dataset_name=dataset.name,
+                transform_name=default_transform_name,
+                split_info=split_info,
+                scaler="None" if scaler is None else scaler.__class__.__name__,
             )
+        )
+
+        # load previous results
+        csv_file = _result_path(outdir, dataset.name, default_transform_name, topic)
+        all_results.append_from_csv(csv_file)
 
     # ============================= inprocess models on untransformed =============================
     all_predictions = run_in_parallel(inprocess_models, data_splits, num_cpus)
@@ -304,6 +308,6 @@ def _gather_metrics(
         # put old results before new results -> prepend=True
         aggregator.append_from_csv(csv_file, prepend=True)
         aggregator.save_as_csv(csv_file)
-        all_results.append_df(aggregator.results)
+        all_results.append_df(results_df)
 
     return all_results.results
