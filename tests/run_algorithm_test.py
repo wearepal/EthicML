@@ -105,16 +105,6 @@ def test_run_alg_suite():
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
-    parallel_results = em.evaluate_models_async(
-        datasets=datasets,
-        preprocess_models=preprocess_models,
-        inprocess_models=inprocess_models,
-        metrics=metrics,
-        per_sens_metrics=per_sens_metrics,
-        repeats=1,
-        test_mode=True,
-        topic="pytest",
-    )
     results = em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
@@ -126,7 +116,6 @@ def test_run_alg_suite():
         delete_prev=True,
         topic="pytest",
     )
-    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     files = os.listdir(Path(".") / "results")
     file_names = [
@@ -180,8 +169,8 @@ def test_run_alg_suite_no_pipeline():
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
-    parallel_results = em.evaluate_models_async(
-        datasets=datasets,
+    results = em.evaluate_models(
+        datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
         metrics=metrics,
@@ -190,20 +179,8 @@ def test_run_alg_suite_no_pipeline():
         test_mode=True,
         topic="pytest",
         fair_pipeline=False,
-    )
-    results = em.evaluate_models(
-        datasets,
-        preprocess_models,
-        inprocess_models,
-        metrics,
-        per_sens_metrics,
-        repeats=1,
-        test_mode=True,
-        topic="pytest",
-        fair_pipeline=False,
         delete_prev=True,
     )
-    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     num_datasets = 2
     num_preprocess = 1

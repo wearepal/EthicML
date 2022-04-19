@@ -57,7 +57,7 @@ def build_networks(
         enc_size=flags["enc_size"], init_size=int(train_data.xdim), activation=enc_activation
     )
     adv = Adversary(
-        fairness=flags["fairness"],
+        fairness=FairnessType[flags["fairness"]],
         adv_size=flags["adv_size"],
         init_size=flags["enc_size"][-1],
         s_size=int(train_data.sdim),
@@ -98,6 +98,7 @@ def make_dataset_and_loader(
 def fit(train: DataTuple, flags: BeutelArgs):
     """Train the fair autoencoder on the training data and then transform both training and test."""
     set_seed(flags["seed"])
+    fairness = FairnessType[flags["fairness"]]
 
     post_process = False
     if flags["y_loss"] == "BCELoss()":
@@ -141,11 +142,11 @@ def fit(train: DataTuple, flags: BeutelArgs):
 
             loss = y_loss_fn(y_pred, class_label)
 
-            if flags["fairness"] is FairnessType.eqop:
+            if fairness is FairnessType.eq_opp:
                 mask = class_label.ge(0.5)
-            elif flags["fairness"] is FairnessType.eqod:
+            elif fairness is FairnessType.eq_odds:
                 raise NotImplementedError("Not implemented Eq. Odds yet")
-            elif flags["fairness"] is FairnessType.dp:
+            elif fairness is FairnessType.dp:
                 mask = torch.ones(s_pred.shape, dtype=torch.uint8)
             loss += s_loss_fn(
                 s_pred, torch.masked_select(sens_label, mask).view(-1, int(train_data.sdim))
@@ -211,13 +212,13 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
 
 def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
     """Get a mask to enforce different fairness types."""
-    if flags["fairness"] is FairnessType.eqop:
+    fairness = FairnessType[flags["fairness"]]
+    if fairness is FairnessType.eq_opp:
         mask = class_label.ge(0.5)
-    elif flags["fairness"] is FairnessType.eqod:
+    elif fairness is FairnessType.eq_odds:
         raise NotImplementedError("Not implemented Eq. Odds yet")
-    elif flags["fairness"] is FairnessType.dp:
+    elif fairness is FairnessType.dp:
         mask = torch.ones(s_pred.shape, dtype=torch.uint8)
-
     return mask
 
 
@@ -335,11 +336,11 @@ class Adversary(nn.Module):
         """Forward pass."""
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
-        if self.fairness is FairnessType.eqop:
+        if self.fairness is FairnessType.eq_opp:
             mask = y.ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
-        elif self.fairness is FairnessType.eqod:
+        elif self.fairness is FairnessType.eq_odds:
             raise NotImplementedError("Not implemented equalized odds yet")
         elif self.fairness is FairnessType.dp:
             x = self.adversary(x)
@@ -361,16 +362,16 @@ class Predictor(nn.Module):
             self.predictor.add_module("single layer adversary activation", activation)
         else:
             self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
-            self.predictor.add_module("adversary activation 0", activation)
+            self.predictor.add_module("adversary activation 0", nn.ReLU())
             for k in range(len(pred_size) - 1):
                 self.predictor.add_module(
                     f"adversary layer {k + 1}", nn.Linear(pred_size[k], pred_size[k + 1])
                 )
-                self.predictor.add_module(f"adversary activation {k + 1}", activation)
+                self.predictor.add_module(f"adversary activation {k + 1}", nn.ReLU())
             self.predictor.add_module(
                 "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
             )
-            self.predictor.add_module("adversary last activation", activation)
+            self.predictor.add_module("adversary last activation", nn.Sigmoid())
 
     def forward(self, x: Tensor) -> Tensor:
         """Forward pass."""

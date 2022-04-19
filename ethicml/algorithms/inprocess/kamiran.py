@@ -47,16 +47,16 @@ class Kamiran(InAlgorithm):
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
         self._hyperparameters = {"C": self.C}
-        if self.classifier == ClassifierType.svm:
+        if self.classifier is ClassifierType.svm:
             self._hyperparameters["kernel"] = self.kernel
         self.group_weights: Optional[Dict[str, Any]] = None
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        lr_params = f" C={self.C}" if self.classifier == ClassifierType.lr else ""
+        lr_params = f" C={self.C}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
-            f" C={self.C}, kernel={self.kernel}" if self.classifier == ClassifierType.svm else ""
+            f" C={self.C}, kernel={self.kernel}" if self.classifier is ClassifierType.svm else ""
         )
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
@@ -81,7 +81,7 @@ class Kamiran(InAlgorithm):
     def _train(
         self, train: DataTuple, classifier: ClassifierType, C: float, kernel: KernelType, seed: int
     ) -> sklearn.linear_model._base.LinearModel:
-        if classifier == ClassifierType.svm:
+        if classifier is ClassifierType.svm:
             model = select_svm(C=C, kernel=kernel, seed=seed)
         else:
             random_state = np.random.RandomState(seed=seed)

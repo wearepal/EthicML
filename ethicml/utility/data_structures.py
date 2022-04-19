@@ -25,7 +25,6 @@ import pandas as pd
 from ranzen import enum_name_str
 
 __all__ = [
-    "ActivationType",
     "ClassifierType",
     "DataTuple",
     "FairnessType",
@@ -350,8 +349,8 @@ class FairnessType(Enum):
     """Fairness type."""
 
     dp = auto()
-    eqop = auto()
-    eqod = auto()
+    eq_opp = auto()
+    eq_odds = auto()
 
 
 @enum_name_str
@@ -360,16 +359,6 @@ class ClassifierType(Enum):
 
     lr = auto()
     svm = auto()
-
-
-@enum_name_str
-class ActivationType(Enum):
-    """Activation type for NN."""
-
-    relu = auto()
-    tanh = auto()
-    identity = auto()
-    logistic = auto()
 
 
 class TrainTestPair(NamedTuple):

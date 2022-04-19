@@ -42,7 +42,7 @@ METHOD_LIST = [
             dataset="Toy",
             supervised=True,
             epochs=10,
-            fairness="Eq. Opp",
+            fairness=FairnessType.eq_opp,
             batch_size=100,
         ),
         name="VFAE",
@@ -54,7 +54,7 @@ METHOD_LIST = [
             dataset="Toy",
             supervised=False,
             epochs=10,
-            fairness="Eq. Opp",
+            fairness=FairnessType.eq_opp,
             batch_size=100,
         ),
         name="VFAE",
@@ -63,8 +63,8 @@ METHOD_LIST = [
     PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
     PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel dp", num_pos=49),
     PreprocessTest(
-        model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eqod),
-        name="Beutel EqOp",
+        model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eq_opp),
+        name="Beutel eq_opp",
         num_pos=56,
     ),
     PreprocessTest(
@@ -100,8 +100,8 @@ def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_
 
     assert new_train.x.shape[1] == model.out_size
     assert new_test.x.shape[1] == model.out_size
-    assert new_test.name == f"{name}: " + str(test.name)
-    assert new_train.name == f"{name}: " + str(train.name)
+    assert new_test.name == f"{name}: {str(test.name)}"
+    assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
     assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
@@ -127,8 +127,8 @@ def test_pre_sep_fit_transform(
 
     assert new_train.x.shape[1] == model.out_size
     assert new_test.x.shape[1] == model.out_size
-    assert new_test.name == f"{name}: " + str(test.name)
-    assert new_train.name == f"{name}: " + str(train.name)
+    assert new_test.name == f"{name}: {str(test.name)}"
+    assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
     assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
@@ -144,7 +144,7 @@ def test_pre_sep_fit_transform(
                 dataset="Toy",
                 supervised=True,
                 epochs=10,
-                fairness="Eq. Opp",
+                fairness=FairnessType.eq_opp,
                 batch_size=100,
             ),
             name="VFAE",
@@ -156,7 +156,7 @@ def test_pre_sep_fit_transform(
                 dataset="Toy",
                 supervised=False,
                 epochs=10,
-                fairness="Eq. Opp",
+                fairness=FairnessType.eq_opp,
                 batch_size=100,
             ),
             name="VFAE",
@@ -165,8 +165,8 @@ def test_pre_sep_fit_transform(
         PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
         PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel dp", num_pos=49),
         PreprocessTest(
-            model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eqod),
-            name="Beutel EqOp",
+            model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eq_opp),
+            name="Beutel eq_opp",
             num_pos=56,
         ),
     ],
@@ -188,8 +188,8 @@ def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: 
 
     assert new_train.x.shape[0] == train.x.shape[0]
     assert new_test.x.shape[0] == test.x.shape[0]
-    assert new_test.name == f"{name}: " + str(test.name)
-    assert new_train.name == f"{name}: " + str(train.name)
+    assert new_test.name == f"{name}: {str(test.name)}"
+    assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
     assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos

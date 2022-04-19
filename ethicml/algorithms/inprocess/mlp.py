@@ -1,24 +1,16 @@
 """Wrapper for SKLearn implementation of MLP."""
-from typing import ClassVar, Dict, Optional, Tuple
+from typing import ClassVar, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
-from ethicml.utility import ActivationType, DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 from .in_algorithm import InAlgorithm
 
 __all__ = ["MLP"]
-
-
-ACTIVATIONS: Dict[str, ActivationType] = {
-    "identity": ActivationType.identity,
-    "logistic": ActivationType.logistic,
-    "tanh": ActivationType.tanh,
-    "relu": ActivationType.relu,
-}
 
 
 class MLP(InAlgorithm):
@@ -34,7 +26,6 @@ class MLP(InAlgorithm):
         self,
         *,
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
-        activation: Optional[ActivationType] = None,
         seed: int = 888,
     ):
         """Multi-Layer Perceptron.
@@ -49,13 +40,7 @@ class MLP(InAlgorithm):
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
         else:
             self.hidden_layer_sizes = hidden_layer_sizes
-        self.activation: ActivationType = (
-            MLPClassifier().activation if activation is None else activation
-        )
-        self._hyperparameters = {
-            "hidden_layer_sizes": f"{self.hidden_layer_sizes}",
-            "activation": self.activation,
-        }
+        self._hyperparameters = {"hidden_layer_sizes": f"{self.hidden_layer_sizes}"}
 
     @property
     def name(self) -> str:
@@ -64,7 +49,7 @@ class MLP(InAlgorithm):
 
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
-        self.clf = select_mlp(self.hidden_layer_sizes, self.activation, seed=self.seed)
+        self.clf = select_mlp(self.hidden_layer_sizes, seed=self.seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
@@ -73,13 +58,7 @@ class MLP(InAlgorithm):
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
 
-def select_mlp(
-    hidden_layer_sizes: Tuple[int, ...], activation: ActivationType, seed: int
-) -> MLPClassifier:
+def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
     """Create MLP model for the given parameters."""
-    assert activation in ACTIVATIONS.values()
-
     random_state = np.random.RandomState(seed=seed)
-    return MLPClassifier(
-        hidden_layer_sizes=hidden_layer_sizes, activation=activation, random_state=random_state
-    )
+    return MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, random_state=random_state)

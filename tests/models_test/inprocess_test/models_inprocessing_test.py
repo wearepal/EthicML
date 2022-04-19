@@ -36,7 +36,7 @@ from ethicml import (
     Prediction,
     TrainTestPair,
     compas,
-    evaluate_models_async,
+    evaluate_models,
     load_data,
     toy,
     train_test_split,
@@ -54,8 +54,8 @@ class InprocessTest(NamedTuple):
 INPROCESS_TESTS = [
     InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir='/tmp'), num_pos=45),
     InprocessTest(
-        name="Agarwal, lr, eqod",
-        model=Agarwal(dir='/tmp', fairness=FairnessType.eqod),
+        name="Agarwal, lr, eq_odds",
+        model=Agarwal(dir='/tmp', fairness=FairnessType.eq_odds),
         num_pos=44,
     ),
     InprocessTest(
@@ -69,16 +69,16 @@ INPROCESS_TESTS = [
         num_pos=42,
     ),
     InprocessTest(
-        name="Agarwal, svm, eqod",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eqod),
+        name="Agarwal, svm, eq_odds",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, svm, eqod",
+        name="Agarwal, svm, eq_odds",
         model=Agarwal(
             dir='/tmp',
             classifier=ClassifierType.svm,
-            fairness=FairnessType.eqod,
+            fairness=FairnessType.eq_odds,
             kernel=KernelType.linear,
         ),
         num_pos=42,
@@ -94,7 +94,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
-    InprocessTest(name="SVM", model=SVM(), num_pos=45),
+    InprocessTest(name="SVM (rbf)", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel=KernelType.linear), num_pos=41),
 ]
 
@@ -259,7 +259,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmAsync] = [
-        Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eqod)
+        Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
     ]
 
     class AssertResult(BaseMetric):
@@ -272,7 +272,7 @@ def test_threaded_agarwal():
                 and np.count_nonzero(prediction.hard.values == 0) == 35
             )
 
-    results = evaluate_models_async(
+    results = evaluate_models(
         datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
     assert results["assert_result"].iloc[0]

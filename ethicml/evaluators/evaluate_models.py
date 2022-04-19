@@ -1,10 +1,8 @@
 """Runs given metrics on given algorithms for given datasets."""
-from collections import OrderedDict
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 
 import pandas as pd
-from tqdm import tqdm
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
@@ -28,10 +26,9 @@ from ethicml.utility import (
     make_results,
 )
 
-__all__ = ["evaluate_models", "run_metrics", "load_results", "evaluate_models_async"]
+__all__ = ["evaluate_models", "run_metrics", "load_results"]
 
 from ..preprocessing.scaling import ScalerType
-from ..utility import ActivationType, FairnessType, KernelType
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -134,172 +131,6 @@ def _delete_previous_results(
                 path_to_file.unlink()
 
 
-def evaluate_models(
-    datasets: List[Dataset],
-    preprocess_models: Sequence[PreAlgorithm] = (),
-    inprocess_models: Sequence[InAlgorithm] = (),
-    metrics: Sequence[Metric] = (),
-    per_sens_metrics: Sequence[Metric] = (),
-    repeats: int = 1,
-    test_mode: bool = False,
-    delete_prev: bool = False,
-    splitter: Optional[DataSplitter] = None,
-    topic: Optional[str] = None,
-    fair_pipeline: bool = True,
-    scaler: Optional[ScalerType] = None,
-    dataset_based_results: bool = True,
-) -> Results:
-    """Evaluate all the given models for all the given datasets and compute all the given metrics.
-
-    Args:
-        datasets: list of dataset objects
-        scaler: scaler to use on the continuous features of the dataset.
-        preprocess_models: list of preprocess model objects
-        inprocess_models: list of inprocess model objects
-        metrics: list of metric objects
-        per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
-        repeats: number of repeats to perform for the experiments
-        test_mode: if True, only use a small subset of the data so that the models run faster
-        delete_prev:  False by default. If True, delete saved results in directory
-        splitter: (optional) custom train-test splitter
-        topic: (optional) a string that identifies the run; the string is prepended to the filename
-        fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
-        dataset_based_results: if True, use the name of the senisitive variable in the
-                                returned results. If False, refer to the sensitive varibale as `S`.
-    """
-    # pylint: disable=too-many-arguments
-    per_sens_metrics_check(per_sens_metrics)
-    train_test_split: DataSplitter
-    if splitter is None:
-        train_test_split = RandomSplit(train_percentage=0.8, start_seed=0)
-    else:
-        train_test_split = splitter
-
-    columns = ["dataset", "scaler", "transform", "model", "split_id"]
-
-    total_experiments = (
-        len(datasets)
-        * repeats
-        * (len(preprocess_models) + ((1 + len(preprocess_models)) * len(inprocess_models)))
-    )
-
-    outdir = Path(".") / "results"
-    outdir.mkdir(exist_ok=True)
-
-    if delete_prev:
-        _delete_previous_results(outdir, datasets, preprocess_models, topic)
-
-    pbar = tqdm(total=total_experiments, smoothing=0)
-    for dataset in datasets:
-        # ================================== begin: one repeat ====================================
-        for split_id in range(repeats):
-            train: DataTuple
-            test: DataTuple
-            train, test, split_info = train_test_split(load_data(dataset), split_id=split_id)
-            if scaler is not None:
-                train, scaler_post = scale_continuous(dataset, train, scaler)
-                test, _ = scale_continuous(dataset, test, scaler_post, fit=False)
-            if test_mode:
-                # take smaller subset of training data to speed up training
-                train = train.get_n_samples()
-
-            to_operate_on: Dict[str, TrainTestPair] = {
-                "no_transform": TrainTestPair(train=train, test=test)
-            }
-
-            # ========================== begin: run preprocessing models ==========================
-            for pre_process_method in preprocess_models:
-                logging: "OrderedDict[str, str]" = OrderedDict()
-                logging["model"] = pre_process_method.name
-                logging["dataset"] = dataset.name
-                logging["repeat"] = str(split_id)
-                pbar.set_postfix(ordered_dict=logging)
-
-                new_train, new_test = pre_process_method.run(train, test)
-                to_operate_on[pre_process_method.name] = TrainTestPair(
-                    train=new_train, test=new_test
-                )
-
-                pbar.update()
-            # =========================== end: run preprocessing models ===========================
-
-            # ========================= begin: loop over preprocessed data ========================
-            for transform_name, transform in to_operate_on.items():
-
-                transformed_train: DataTuple = transform.train
-                transformed_test: Union[DataTuple, TestTuple] = transform.test
-                results_df = pd.DataFrame(columns=columns)
-
-                # ========================== begin: run inprocess models ==========================
-                for model in inprocess_models:
-                    if (
-                        not fair_pipeline
-                        and transform_name != "no_transform"
-                        and model.is_fairness_algo
-                    ):
-                        pbar.update()
-                        continue
-
-                    logging = OrderedDict()
-                    logging["model"] = model.name
-                    logging["dataset"] = dataset.name
-                    logging["transform"] = transform_name
-                    logging["repeat"] = str(split_id)
-                    pbar.set_postfix(ordered_dict=logging)
-
-                    temp_res: Dict[
-                        str, Union[str, float, int, KernelType, ActivationType, FairnessType]
-                    ] = {
-                        "dataset": dataset.name,
-                        "scaler": "None" if scaler is None else scaler.__class__.__name__,
-                        "transform": transform_name,
-                        "model": model.name,
-                        "split_id": split_id,
-                        **split_info,
-                        **model.hyperparameters,
-                    }
-
-                    predictions: Prediction = model.run(transformed_train, transformed_test)
-
-                    temp_res.update(
-                        run_metrics(
-                            predictions=predictions,
-                            actual=test,
-                            metrics=metrics,
-                            per_sens_metrics=per_sens_metrics,
-                            use_sens_name=dataset_based_results,
-                        )
-                    )
-
-                    # TODO: add the below!
-                    # for _ in postprocess_models:
-                    #     Post-processing has yet to be defined
-                    #     - leaving blank until we have an implementation to work with
-                    #     pass
-
-                    results_df = results_df.append(temp_res, ignore_index=True, sort=False)
-                    pbar.update()
-                # =========================== end: run inprocess models ===========================
-
-                csv_file = _result_path(outdir, dataset.name, transform_name, topic)
-                aggregator = ResultsAggregator(results_df)
-                # put old results before new results -> prepend=True
-                aggregator.append_from_csv(csv_file, prepend=True)
-                aggregator.save_as_csv(csv_file)
-            # ========================== end: loop over preprocessed data =========================
-        # =================================== end: one repeat =====================================
-
-    pbar.close()  # very important! when we're not using "with", we have to close tqdm manually
-
-    preprocess_names = [model.name for model in preprocess_models]
-    aggregator = ResultsAggregator()  # create empty aggregator object
-    for dataset in datasets:
-        for transform_name in ["no_transform"] + preprocess_names:
-            csv_file = _result_path(outdir, dataset.name, transform_name, topic)
-            aggregator.append_from_csv(csv_file)
-    return aggregator.results
-
-
 class _DataInfo(NamedTuple):
     test: DataTuple
     dataset_name: str
@@ -308,9 +139,9 @@ class _DataInfo(NamedTuple):
     scaler: str
 
 
-def evaluate_models_async(
-    *,
+def evaluate_models(
     datasets: List[Dataset],
+    *,
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
     metrics: Sequence[Metric] = (),

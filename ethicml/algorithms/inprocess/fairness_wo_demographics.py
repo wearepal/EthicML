@@ -1,7 +1,7 @@
 """Fairness without Demographics."""
 
 from pathlib import Path
-from typing import ClassVar, List, Optional, Union
+from typing import ClassVar, List, Optional
 from typing_extensions import TypedDict
 
 from ranzen import implements
@@ -30,7 +30,7 @@ class DRO(InAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Union[str, Path] = ".",
+        dir: str = ".",
         eta: float = 0.5,
         epochs: int = 10,
         batch_size: int = 32,
@@ -50,7 +50,7 @@ class DRO(InAlgorithmAsync):
         self.seed = seed
         if network_size is None:
             network_size = [50]
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+        self.model_dir = Path(dir)
         self.flags: DroArgs = {
             "eta": eta,
             "batch_size": batch_size,

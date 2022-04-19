@@ -1,6 +1,6 @@
 """Implementation of Agarwal model."""
 from pathlib import Path
-from typing import ClassVar, List, Optional, Set, Union
+from typing import ClassVar, List, Optional, Set
 from typing_extensions import TypedDict
 
 from ranzen import implements, parsable
@@ -14,7 +14,6 @@ __all__ = ["Agarwal"]
 
 from ...utility import KernelType
 
-VALID_FAIRNESS: Set[FairnessType] = {FairnessType.dp, FairnessType.eqod}
 VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
@@ -42,7 +41,7 @@ class Agarwal(InAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Union[str, Path] = ".",
+        dir: str = ".",
         fairness: FairnessType = FairnessType.dp,
         classifier: ClassifierType = ClassifierType.lr,
         eps: float = 0.1,
@@ -64,7 +63,7 @@ class Agarwal(InAlgorithmAsync):
             seed: Random seed.
         """
         self.seed = seed
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+        self.model_dir = Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
         self.flags: AgarwalArgs = {
             "classifier": str(classifier),

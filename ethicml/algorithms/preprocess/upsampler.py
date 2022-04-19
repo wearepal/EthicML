@@ -5,7 +5,7 @@ from enum import Enum, auto
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
-from ranzen import implements
+from ranzen import enum_name_str, implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
@@ -15,6 +15,7 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Upsampler", "UpsampleStrategy"]
 
 
+@enum_name_str
 class UpsampleStrategy(Enum):
     """Strategy for upsampling."""
 
