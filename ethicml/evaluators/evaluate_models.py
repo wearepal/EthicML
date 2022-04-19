@@ -220,6 +220,10 @@ def evaluate_models(
         csv_file = _result_path(outdir, dataset.name, default_transform_name, topic)
         all_results.append_from_csv(csv_file)
 
+        # load previous results
+        csv_file = _result_path(outdir, dataset.name, default_transform_name, topic)
+        all_results.append_from_csv(csv_file)
+
     # ============================= inprocess models on untransformed =============================
     all_predictions = run_in_parallel(inprocess_models, data_splits, num_jobs)
     inprocess_untransformed = _gather_metrics(
