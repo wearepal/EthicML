@@ -10,7 +10,7 @@ from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
 
 __all__ = ["VFAE"]
 
-from ...utility import FairnessType
+from ethicml.utility import FairnessType
 
 
 class VfaeArgs(TypedDict):

@@ -14,9 +14,15 @@ import pandas as pd
 from joblib import dump, load
 from sklearn.linear_model import LogisticRegression
 
-from ethicml import ClassifierType, FairnessType, KernelType
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import DataTuple, Prediction, TestTuple
+from ethicml.utility import (
+    ClassifierType,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    TestTuple,
+)
 
 if TYPE_CHECKING:
     from fairlearn.reductions import ExponentiatedGradient

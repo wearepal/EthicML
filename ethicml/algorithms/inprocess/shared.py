@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, List, Mapping, Optional, Tuple
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-from ...utility import ClassifierType, KernelType
+from ethicml.utility import ClassifierType, KernelType
 
 if TYPE_CHECKING:
     from .in_algorithm import InAlgoArgs

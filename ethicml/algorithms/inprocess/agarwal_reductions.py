@@ -12,7 +12,7 @@ from .shared import flag_interface, settings_for_svm_lr
 
 __all__ = ["Agarwal"]
 
-from ...utility import KernelType
+from ethicml.utility import KernelType
 
 VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 

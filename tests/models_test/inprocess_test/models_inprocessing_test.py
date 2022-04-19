@@ -194,17 +194,17 @@ def kamishima_teardown() -> Generator[None, None, None]:
 
     This has to be done with a fixture because otherwise it will not happen when the test fails.
     """
-    yield
+    yield Kamishima()
     print("teardown Kamishima")
     Kamishima().remove()  # delete the downloaded code
 
 
 @pytest.mark.slow
-def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
+def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
 
-    model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
+    model = kamishima  # this will download the code from github and install pipenv
     assert model.name == "Kamishima"
 
     assert model is not None

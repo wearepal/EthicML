@@ -1,7 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
 from typing import ClassVar, Union
-from typing_extensions import Literal, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -14,7 +13,7 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
-from ...utility import KernelType
+from ethicml.utility import KernelType
 
 
 @dataclass
@@ -41,6 +40,7 @@ class SVM(InAlgorithm):
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
         self.clf = select_svm(self.C, self.kernel, self.seed)
+
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 

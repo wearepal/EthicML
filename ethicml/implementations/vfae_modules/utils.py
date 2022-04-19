@@ -13,7 +13,7 @@ from .vfae_network import LvInfo
 
 __all__ = ["kullback_leibler", "loss_function"]
 
-from ... import FairnessType
+from ethicml.utility import FairnessType
 
 
 def kullback_leibler(

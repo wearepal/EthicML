@@ -9,7 +9,7 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
-from ethicml import ClassifierType, KernelType
+from ethicml.utility import ClassifierType, KernelType
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
