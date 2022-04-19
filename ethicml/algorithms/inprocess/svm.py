@@ -1,6 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import ClassVar, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -40,7 +40,6 @@ class SVM(InAlgorithm):
     @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithm:
         self.clf = select_svm(self.C, self.kernel, self.seed)
-
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
@@ -49,7 +48,7 @@ class SVM(InAlgorithm):
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: KernelType, seed: int) -> Union[LinearSVC, SVC]:
+def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[LinearSVC, SVC]:
     """Select the appropriate SVM model for the given parameters."""
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:

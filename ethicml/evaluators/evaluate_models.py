@@ -302,7 +302,7 @@ def _gather_metrics(
         csv_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
         aggregator = ResultsAggregator(results_df)
         # put old results before new results -> prepend=True
-        aggregator.append_from_csv(csv_file, prepend=True)
+        # aggregator.append_from_csv(csv_file, prepend=True)
         aggregator.save_as_csv(csv_file)
         all_results.append_df(aggregator.results)
 

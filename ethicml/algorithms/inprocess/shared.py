@@ -29,7 +29,7 @@ def flag_interface(in_algo_args: InAlgoArgs, flags: Mapping[str, Any]) -> List[s
 
 def settings_for_svm_lr(
     classifier: ClassifierType, C: Optional[float], kernel: Optional[KernelType]
-) -> Tuple[float, KernelType]:
+) -> Tuple[float, Optional[KernelType]]:
     """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
     if C is None:
         if classifier == ClassifierType.lr:
@@ -40,5 +40,5 @@ def settings_for_svm_lr(
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
-        kernel = SVC().kernel if classifier == ClassifierType.svm else KernelType.none
+        kernel = KernelType[SVC().kernel] if classifier == ClassifierType.svm else None
     return C, kernel

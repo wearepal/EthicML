@@ -474,4 +474,3 @@ class KernelType(Enum):
     poly = auto()
     rbf = auto()
     sigmoid = auto()
-    none = auto()

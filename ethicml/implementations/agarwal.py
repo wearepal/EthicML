@@ -46,7 +46,7 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
     fairness_class: ConditionalSelectionRate
     fairness_type = FairnessType[args["fairness"]]
     classifier_type = ClassifierType[args["classifier"]]
-    kernel_type = KernelType[args["kernel"]]
+    kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:
         fairness_class = DemographicParity()

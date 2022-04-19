@@ -48,6 +48,7 @@ class Kamiran(InAlgorithm):
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
         self._hyperparameters = {"C": self.C}
         if self.classifier is ClassifierType.svm:
+            assert self.kernel is not None
             self._hyperparameters["kernel"] = self.kernel
         self.group_weights: Optional[Dict[str, Any]] = None
 

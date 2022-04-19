@@ -65,17 +65,19 @@ class Agarwal(InAlgorithmAsync):
         self.seed = seed
         self.model_dir = Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
+        assert fairness in (FairnessType.dp, FairnessType.eq_odds)
         self.flags: AgarwalArgs = {
             "classifier": str(classifier),
             "fairness": str(fairness),
             "eps": eps,
             "iters": iters,
             "C": chosen_c,
-            "kernel": str(chosen_kernel),
+            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
             "seed": seed,
         }
         self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
         if classifier is ClassifierType.svm:
+            assert chosen_kernel is not None
             self._hyperparameters["kernel"] = chosen_kernel
 
     @property
