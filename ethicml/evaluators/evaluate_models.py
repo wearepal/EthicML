@@ -386,6 +386,10 @@ def evaluate_models_async(
                 )
             )
 
+        # load previous results
+        csv_file = _result_path(outdir, dataset.name, default_transform_name, topic)
+        all_results.append_from_csv(csv_file)
+
     # ============================= inprocess models on untransformed =============================
     all_predictions = run_in_parallel(inprocess_models, data_splits, num_cpus)
     inprocess_untransformed = _gather_metrics(
@@ -473,6 +477,6 @@ def _gather_metrics(
         # put old results before new results -> prepend=True
         aggregator.append_from_csv(csv_file, prepend=True)
         aggregator.save_as_csv(csv_file)
-        all_results.append_df(aggregator.results)
+        all_results.append_df(results_df)
 
     return all_results.results
