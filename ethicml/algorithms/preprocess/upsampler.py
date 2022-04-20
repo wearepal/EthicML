@@ -1,18 +1,27 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 import itertools
 from dataclasses import dataclass
+from enum import Enum, auto
 from typing import Dict, List, Optional, Tuple
-from typing_extensions import Literal
 
 import pandas as pd
-from ranzen import implements
+from ranzen import enum_name_str, implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 from ..inprocess.logistic_regression import LRProb
 from .pre_algorithm import PreAlgorithm, T
 
-__all__ = ["Upsampler"]
+__all__ = ["Upsampler", "UpsampleStrategy"]
+
+
+@enum_name_str
+class UpsampleStrategy(Enum):
+    """Strategy for upsampling."""
+
+    uniform = auto()
+    preferential = auto()
+    naive = auto()
 
 
 @dataclass
@@ -23,11 +32,8 @@ class Upsampler(PreAlgorithm):
     of samples.
     """
 
-    strategy: Literal["uniform", "preferential", "naive"] = "uniform"
+    strategy: UpsampleStrategy = UpsampleStrategy.uniform
     seed: int = 888
-
-    def __post_init__(self) -> None:
-        assert self.strategy in ["uniform", "preferential", "naive"]
 
     @property
     def name(self) -> str:
@@ -74,7 +80,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
 def upsample(
     dataset: DataTuple,
     test: TestTuple,
-    strategy: Literal["uniform", "preferential", "naive"],
+    strategy: UpsampleStrategy,
     seed: int,
     name: str,
 ) -> Tuple[DataTuple, TestTuple]:
@@ -104,7 +110,7 @@ def upsample(
         vals.append(val.x.shape[0])
 
     for key, val in data.items():
-        if strategy == "naive":
+        if strategy is UpsampleStrategy.naive:
             percentages[key] = max(vals) / val.x.shape[0]
         else:
             s_val: int = key[0]
@@ -140,7 +146,7 @@ def upsample(
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
             upsampled_datatuple = upsampled_datatuple.replace(name=f"{name}: {dataset.name}")
 
-    if strategy == "preferential":
+    if strategy is UpsampleStrategy.preferential:
         ranker = LRProb()
         rank: SoftPrediction = ranker.run(dataset, dataset)
 

@@ -18,22 +18,25 @@ from ethicml import (
     Agarwal,
     BaseMetric,
     Blind,
+    ClassifierType,
     Corels,
     CrossValidator,
     DataTuple,
     DPOracle,
+    FairnessType,
     InAlgoArgs,
     InAlgorithm,
     InAlgorithmAsync,
     Kamiran,
     Kamishima,
+    KernelType,
     LRProb,
     Majority,
     Oracle,
     Prediction,
     TrainTestPair,
     compas,
-    evaluate_models_async,
+    evaluate_models,
     load_data,
     toy,
     train_test_split,
@@ -49,29 +52,42 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
-    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
-    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
+    InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir='/tmp'), num_pos=45),
     InprocessTest(
-        name="Agarwal, SVM, DP",
-        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
-        num_pos=42,
+        name="Agarwal, lr, eq_odds",
+        model=Agarwal(dir='/tmp', fairness=FairnessType.eq_odds),
+        num_pos=44,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
+        name="Agarwal, svm, dp",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
+        name="Agarwal, svm, dp",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, kernel=KernelType.linear),
+        num_pos=42,
+    ),
+    InprocessTest(
+        name="Agarwal, svm, eq_odds",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
+        num_pos=45,
+    ),
+    InprocessTest(
+        name="Agarwal, svm, eq_odds",
+        model=Agarwal(
+            dir='/tmp',
+            classifier=ClassifierType.svm,
+            fairness=FairnessType.eq_odds,
+            kernel=KernelType.linear,
+        ),
         num_pos=42,
     ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
-    InprocessTest(name="Kamiran & Calders LR C=1.0", model=Kamiran(), num_pos=44),
+    InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
@@ -79,7 +95,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="MLP", model=MLP(), num_pos=43),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM (rbf)", model=SVM(), num_pos=45),
-    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
+    InprocessTest(name="SVM (linear)", model=SVM(kernel=KernelType.linear), num_pos=41),
 ]
 
 
@@ -173,22 +189,22 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 @pytest.fixture(scope="session")
-def kamishima_teardown() -> Generator[None, None, None]:
+def kamishima_gen() -> Generator[Kamishima, None, None]:
     """This fixtures tears down Kamishima after all tests have finished.
 
     This has to be done with a fixture because otherwise it will not happen when the test fails.
     """
-    yield
+    yield Kamishima()
     print("teardown Kamishima")
     Kamishima().remove()  # delete the downloaded code
 
 
 @pytest.mark.slow
-def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
+def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
 
-    model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
+    model = kamishima_gen  # this will download the code from github and install pipenv
     assert model.name == "Kamishima"
 
     assert model is not None
@@ -242,7 +258,9 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 @pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
+    models: List[InAlgorithmAsync] = [
+        Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
+    ]
 
     class AssertResult(BaseMetric):
         apply_per_sensitive: ClassVar[bool] = True
@@ -254,7 +272,7 @@ def test_threaded_agarwal():
                 and np.count_nonzero(prediction.hard.values == 0) == 35
             )
 
-    results = evaluate_models_async(
+    results = evaluate_models(
         datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
     )
     assert results["assert_result"].iloc[0]

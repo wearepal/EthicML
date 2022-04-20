@@ -65,6 +65,7 @@ pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", rev = "b8fa0ce"}
 types-Pillow = "^9.0.9"
 omegaconf = "^2.1.1"
+pyright = "^1.1.238"
 
 
 [tool.black]

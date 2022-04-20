@@ -13,10 +13,12 @@ from ethicml import (
     Accuracy,
     DataTuple,
     Kamiran,
+    KernelType,
     ProbPos,
     Results,
     TrainTestPair,
     Upsampler,
+    UpsampleStrategy,
     adult,
     evaluate_models,
     load_data,
@@ -75,9 +77,9 @@ def test_label_plot():
 def test_plot_evals():
     """Test plot evals."""
     results: Results = evaluate_models(
-        datasets=[adult(), toy()],
-        preprocess_models=[Upsampler(strategy="preferential")],
-        inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],
+        datasets=[toy()],
+        preprocess_models=[Upsampler(strategy=UpsampleStrategy.preferential)],
+        inprocess_models=[LR(), SVM(kernel=KernelType.linear), Kamiran()],
         metrics=[Accuracy(), CV()],
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,
@@ -93,8 +95,7 @@ def test_plot_evals():
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())
     # num(datasets) * num(preprocess) * num(accuracy combinations) * num(prop_pos combinations)
-    assert len(figs_and_plots) == 2 * 2 * 1 * 2 + 4  # TODO: this +4 should be FIXED,
-    # it matches the column name containing a hyphen as a DIFF metric.
+    assert len(figs_and_plots) == 2 * 2 * 1 * 2
 
     # plot with column names
     figs_and_plots = plot_results(results, "Accuracy", "prob_pos_sensitive-attr_0")

@@ -1,7 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
-from typing_extensions import Literal, TypeAlias
+from typing import ClassVar, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -14,7 +13,7 @@ from .in_algorithm import InAlgorithm
 
 __all__ = ["SVM"]
 
-KernelType: TypeAlias = Literal["linear", "rbf", "poly", "sigmoid"]
+from ethicml.utility import KernelType
 
 
 @dataclass
@@ -49,9 +48,9 @@ class SVM(InAlgorithm):
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: str, seed: int) -> Union[LinearSVC, SVC]:
+def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[LinearSVC, SVC]:
     """Select the appropriate SVM model for the given parameters."""
     random_state = np.random.RandomState(seed=seed)
-    if kernel == "linear":
+    if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)
-    return SVC(C=C, kernel=kernel, gamma="auto", random_state=random_state)
+    return SVC(C=C, kernel=str(kernel), gamma="auto", random_state=random_state)

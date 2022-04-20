@@ -22,24 +22,24 @@ DataSeq = Sequence[TrainTestPair]
 
 
 @overload
-def run_in_parallel(algos: InSeq, data: DataSeq, num_cpus: int = 0) -> InResult:
+def run_in_parallel(algos: InSeq, data: DataSeq, num_cpus: Optional[int] = None) -> InResult:
     ...
 
 
 @overload
-def run_in_parallel(algos: PreSeq, data: DataSeq, num_cpus: int = 0) -> PreResult:
+def run_in_parallel(algos: PreSeq, data: DataSeq, num_cpus: Optional[int] = None) -> PreResult:
     ...
 
 
 def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: DataSeq, num_cpus: int = 0
+    algos: Union[InSeq, PreSeq], data: DataSeq, num_cpus: Optional[int] = None
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
     Args:
         algos: list of algorithms
         data: list of pairs of data tuples (train and test)
-        num_cpus: how many processes can run in parallel at most. if zero (or negative), then
+        num_cpus: how many processes can run in parallel at most. if None, then
             there is no maximum
 
     Returns:
@@ -92,9 +92,7 @@ def arrange_in_parallel(
     futures: List[_RT] = []
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     for algo in algos:
-        for data_item in data:
-            futures.append(_run.remote(algo, data_item, pbar.actor))
-
+        futures.extend(_run.remote(algo, data_item, pbar.actor) for data_item in data)
     pbar.print_until_done()
     # actually run everything
     results = ray.get(futures)

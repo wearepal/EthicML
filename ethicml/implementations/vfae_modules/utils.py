@@ -13,6 +13,8 @@ from .vfae_network import LvInfo
 
 __all__ = ["kullback_leibler", "loss_function"]
 
+from ethicml.utility import FairnessType
+
 
 def kullback_leibler(
     mu1: Tensor, logvar1: Tensor, mu2: Optional[Tensor] = None, logvar2: Optional[Tensor] = None
@@ -69,10 +71,11 @@ def loss_function(
 
     reconstruction_loss = F.mse_loss(x_dec, x, reduction="sum")
 
-    if flags["fairness"] == "DI":
+    fairness = FairnessType[flags["fairness"]]
+    if fairness is FairnessType.dp:
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
         z1_s1 = torch.masked_select(z1, s.ge(0.5)).view(-1, 50)
-    elif flags["fairness"] == "Eq. Opp":
+    elif fairness is FairnessType.eq_opp:
         z1_s0 = torch.masked_select(z1, s.le(0.5)).view(-1, 50)
         y_s0 = torch.masked_select(y, s.le(0.5)).view(-1, 1)
         z1_s0_y1 = torch.masked_select(z1_s0, y_s0.ge(0.5)).view(-1, 50)
@@ -83,7 +86,9 @@ def loss_function(
         z1_s0 = z1_s0_y1
         z1_s1 = z1_s1_y1
     else:
-        raise NotImplementedError("Only DI and Eq.Opp implementesd so far")
+        raise NotImplementedError(
+            f"Only {FairnessType.dp} and {FairnessType.eq_opp} implementesd so far"
+        )
 
     mmd_loss = quadratic_time_mmd(z1_s0, z1_s1, 2.5)
 

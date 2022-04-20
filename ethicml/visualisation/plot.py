@@ -288,7 +288,7 @@ def single_plot(
     if not entries:
         return False  # nothing to plot
 
-    title = f"{dataset}, {transform}" if transform is not None else str(dataset)
+    title = f"{dataset}, {transform}" if transform is not None else dataset
     plot_def = PlotDef(
         title=title, entries=entries, legend_pos=legend_pos, legend_yanchor=legend_yanchor
     )

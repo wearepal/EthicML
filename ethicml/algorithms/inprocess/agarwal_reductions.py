@@ -1,28 +1,27 @@
 """Implementation of Agarwal model."""
 from pathlib import Path
-from typing import ClassVar, List, Optional, Set, Union
+from typing import ClassVar, List, Optional, Set
 from typing_extensions import TypedDict
 
-from ranzen import implements
+from ranzen import implements, parsable
 
 from ethicml.utility import ClassifierType, FairnessType
 
 from .in_algorithm import InAlgoArgs, InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
-from .svm import KernelType
 
 __all__ = ["Agarwal"]
 
+from ethicml.utility import KernelType
 
-VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
-VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
+VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
 class AgarwalArgs(TypedDict):
     """Args for the Agarwal implementation."""
 
-    classifier: ClassifierType
-    fairness: FairnessType
+    classifier: str
+    fairness: str
     eps: float
     iters: int
     C: float
@@ -38,12 +37,13 @@ class Agarwal(InAlgorithmAsync):
 
     is_fairness_algo: ClassVar[bool] = True
 
+    @parsable
     def __init__(
         self,
         *,
-        dir: Union[str, Path] = ".",
-        fairness: FairnessType = "DP",
-        classifier: ClassifierType = "LR",
+        dir: str = ".",
+        fairness: FairnessType = FairnessType.dp,
+        classifier: ClassifierType = ClassifierType.lr,
         eps: float = 0.1,
         iters: int = 50,
         C: Optional[float] = None,
@@ -62,24 +62,22 @@ class Agarwal(InAlgorithmAsync):
             kernel: Kernel type for the SVM algorithm.
             seed: Random seed.
         """
-        if fairness not in VALID_FAIRNESS:
-            raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
-        if classifier not in VALID_MODELS:
-            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.seed = seed
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+        self.model_dir = Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
+        assert fairness in (FairnessType.dp, FairnessType.eq_odds)
         self.flags: AgarwalArgs = {
-            "classifier": classifier,
-            "fairness": fairness,
+            "classifier": str(classifier),
+            "fairness": str(fairness),
             "eps": eps,
             "iters": iters,
             "C": chosen_c,
-            "kernel": chosen_kernel,
+            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
             "seed": seed,
         }
         self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
-        if classifier == "SVM":
+        if classifier is ClassifierType.svm:
+            assert chosen_kernel is not None
             self._hyperparameters["kernel"] = chosen_kernel
 
     @property

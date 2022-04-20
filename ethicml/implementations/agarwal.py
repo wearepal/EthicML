@@ -15,7 +15,14 @@ from joblib import dump, load
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import DataTuple, Prediction, TestTuple
+from ethicml.utility import (
+    ClassifierType,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    TestTuple,
+)
 
 if TYPE_CHECKING:
     from fairlearn.reductions import ExponentiatedGradient
@@ -37,13 +44,17 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
         raise RuntimeError("In order to use Agarwal, install fairlearn==0.4.6.") from e
 
     fairness_class: ConditionalSelectionRate
-    if args["fairness"] == "DP":
+    fairness_type = FairnessType[args["fairness"]]
+    classifier_type = ClassifierType[args["classifier"]]
+    kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
+
+    if fairness_type is FairnessType.dp:
         fairness_class = DemographicParity()
     else:
         fairness_class = EqualizedOdds()
 
-    if args["classifier"] == "SVM":
-        model = select_svm(C=args["C"], kernel=args["kernel"], seed=args["seed"])
+    if classifier_type is ClassifierType.svm:
+        model = select_svm(C=args["C"], kernel=kernel_type, seed=args["seed"])
     else:
         random_state = np.random.RandomState(seed=args["seed"])
         model = LogisticRegression(

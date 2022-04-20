@@ -16,7 +16,7 @@ from .svm import KernelType, select_svm
 __all__ = ["Kamiran", "compute_instance_weights"]
 
 
-VALID_MODELS = {"LR", "SVM"}
+VALID_MODELS = {ClassifierType.lr, ClassifierType.svm}
 
 
 class Kamiran(InAlgorithm):
@@ -30,7 +30,7 @@ class Kamiran(InAlgorithm):
     def __init__(
         self,
         *,
-        classifier: ClassifierType = "LR",
+        classifier: ClassifierType = ClassifierType.lr,
         C: Optional[float] = None,
         kernel: Optional[KernelType] = None,
         seed: int = 888,
@@ -44,20 +44,21 @@ class Kamiran(InAlgorithm):
             seed: The random number generator seed to use for the classifier.
         """
         self.seed = seed
-        if classifier not in VALID_MODELS:
-            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
         self.classifier = classifier
         self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
         self._hyperparameters = {"C": self.C}
-        if self.classifier == "SVM":
+        if self.classifier is ClassifierType.svm:
+            assert self.kernel is not None
             self._hyperparameters["kernel"] = self.kernel
         self.group_weights: Optional[Dict[str, Any]] = None
 
     @property
     def name(self) -> str:
         """Name of the algorithm."""
-        lr_params = f" C={self.C}" if self.classifier == "LR" else ""
-        svm_params = f" C={self.C}, kernel={self.kernel}" if self.classifier == "SVM" else ""
+        lr_params = f" C={self.C}" if self.classifier is ClassifierType.lr else ""
+        svm_params = (
+            f" C={self.C}, kernel={self.kernel}" if self.classifier is ClassifierType.svm else ""
+        )
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @implements(InAlgorithm)
@@ -79,9 +80,9 @@ class Kamiran(InAlgorithm):
         return self._predict(model=clf, test=test)
 
     def _train(
-        self, train: DataTuple, classifier: ClassifierType, C: float, kernel: str, seed: int
+        self, train: DataTuple, classifier: ClassifierType, C: float, kernel: KernelType, seed: int
     ) -> sklearn.linear_model._base.LinearModel:
-        if classifier == "SVM":
+        if classifier is ClassifierType.svm:
             model = select_svm(C=C, kernel=kernel, seed=seed)
         else:
             random_state = np.random.RandomState(seed=seed)

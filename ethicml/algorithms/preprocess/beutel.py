@@ -1,6 +1,6 @@
 """Beutel's algorithm."""
 from pathlib import Path
-from typing import List, Sequence, Union
+from typing import List, Sequence
 from typing_extensions import TypedDict
 
 from ranzen import implements
@@ -16,7 +16,7 @@ __all__ = ["Beutel"]
 class BeutelArgs(TypedDict):
     """Args for the Beutel Implementation."""
 
-    fairness: FairnessType
+    fairness: str
     enc_size: List[int]
     adv_size: List[int]
     pred_size: List[int]
@@ -36,9 +36,9 @@ class Beutel(PreAlgorithmAsync):
 
     def __init__(
         self,
-        fairness: FairnessType = "DP",
+        fairness: FairnessType = FairnessType.dp,
         *,
-        dir: Union[str, Path] = ".",
+        dir: str = ".",
         enc_size: Sequence[int] = (40,),
         adv_size: Sequence[int] = (40,),
         pred_size: Sequence[int] = (40,),
@@ -54,9 +54,9 @@ class Beutel(PreAlgorithmAsync):
     ):
         self.seed = seed
         self._out_size = enc_size[-1]
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+        self.model_dir = Path(dir)
         self.flags: BeutelArgs = {
-            "fairness": fairness,
+            "fairness": str(fairness),
             "enc_size": list(enc_size),
             "adv_size": list(adv_size),
             "pred_size": list(pred_size),

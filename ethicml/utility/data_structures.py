@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from enum import Enum, auto
 from pathlib import Path
 from typing import (
     Callable,
@@ -17,16 +18,17 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import Final, Literal, TypeAlias, TypeGuard
+from typing_extensions import Final, Literal, TypeAlias
 
 import numpy as np
 import pandas as pd
+from ranzen import enum_name_str
 
 __all__ = [
-    "ActivationType",
     "ClassifierType",
     "DataTuple",
     "FairnessType",
+    "KernelType",
     "Prediction",
     "Results",
     "ResultsAggregator",
@@ -42,7 +44,17 @@ __all__ = [
     "map_over_results_index",
 ]
 
+
 AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
+
+
+class PandasIndex(Enum):
+    """Enum for indexing the results."""
+
+    DATASET = "dataset"
+    SCALER = "scaler"
+    TRANSFORM = "transform"
+    MODEL = "model"
 
 
 class TestTuple:
@@ -296,7 +308,9 @@ def write_as_npz(
 
 
 def concat_dt(
-    datatup_list: Sequence[DataTuple], axis: AxisType = "index", ignore_index: bool = False
+    datatup_list: Sequence[DataTuple],
+    axis: AxisType = "index",
+    ignore_index: bool = False,
 ) -> DataTuple:
     """Concatenate the data tuples in the given list."""
     return DataTuple(
@@ -314,7 +328,9 @@ def concat_dt(
 
 
 def concat_tt(
-    datatup_list: List[TestTuple], axis: AxisType = "index", ignore_index: bool = False
+    datatup_list: List[TestTuple],
+    axis: AxisType = "index",
+    ignore_index: bool = False,
 ) -> TestTuple:
     """Concatenate the test tuples in the given list."""
     return TestTuple(
@@ -328,18 +344,21 @@ def concat_tt(
     )
 
 
-FairnessType: TypeAlias = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
+@enum_name_str
+class FairnessType(Enum):
+    """Fairness type."""
+
+    dp = auto()
+    eq_opp = auto()
+    eq_odds = auto()
 
 
-def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
-    """Check whether a string conforms to a fairness type."""
-    return fair_str in {"DP", "EqOd", "EqOp"}
+@enum_name_str
+class ClassifierType(Enum):
+    """Classifier type."""
 
-
-ClassifierType: TypeAlias = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType: TypeAlias = Literal[
-    "identity", "logistic", "tanh", "relu"
-]  # pylint: disable=invalid-name
+    lr = auto()
+    svm = auto()
 
 
 class TrainTestPair(NamedTuple):
@@ -424,10 +443,12 @@ def map_over_results_index(
 def filter_results(
     results: Results,
     values: Iterable,
-    index: Literal["dataset", "scaler", "transform", "model"] = "model",
+    index: Union[str, PandasIndex] = "model",
 ) -> Results:
     """Filter the entries based on the given values."""
-    return Results(results.loc[results.index.get_level_values(index).isin(list(values))])
+    if isinstance(index, str):
+        index = PandasIndex(index)
+    return Results(results.loc[results.index.get_level_values(index.value).isin(list(values))])
 
 
 def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:
@@ -443,3 +464,13 @@ def aggregate_results(
 ) -> pd.DataFrame:
     """Aggregate results over the repeats."""
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
+
+
+@enum_name_str
+class KernelType(Enum):
+    """Values for SVM Kernel."""
+
+    linear = auto()
+    poly = auto()
+    rbf = auto()
+    sigmoid = auto()

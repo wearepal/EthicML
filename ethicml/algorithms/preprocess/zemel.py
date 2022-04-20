@@ -1,6 +1,6 @@
 """Zemel's Learned Fair Representations."""
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 from typing_extensions import TypedDict
 
 from ranzen import implements
@@ -33,7 +33,7 @@ class Zemel(PreAlgorithmAsync):
     def __init__(
         self,
         *,
-        dir: Union[str, Path] = ".",
+        dir: str = ".",
         threshold: float = 0.5,
         clusters: int = 2,
         Ax: float = 0.01,
@@ -46,7 +46,7 @@ class Zemel(PreAlgorithmAsync):
     ) -> None:
         self.seed = seed
         self._out_size: Optional[int] = None
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+        self.model_dir = Path(dir)
         self.flags: ZemelArgs = {
             "clusters": clusters,
             "Ax": Ax,
