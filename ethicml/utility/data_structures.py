@@ -92,7 +92,12 @@ class TestTuple:
         s: Optional[pd.DataFrame] = None,
         name: Optional[str] = None,
     ) -> TestTuple:
-        """Create a copy of the TestTuple but change the given values."""
+        """Create a copy of the TestTuple but change the given values.
+
+        :param x:  (Default value = None)
+        :param s:  (Default value = None)
+        :param name:  (Default value = None)
+        """
         return TestTuple(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
@@ -100,7 +105,10 @@ class TestTuple:
         )
 
     def to_npz(self, data_path: Path) -> None:
-        """Save TestTuple as an npz file."""
+        """Save TestTuple as an npz file.
+
+        :param data_path:
+        """
         write_as_npz(
             data_path,
             dict(x=self.x, s=self.s),
@@ -109,7 +117,10 @@ class TestTuple:
 
     @classmethod
     def from_npz(cls, data_path: Path) -> TestTuple:
-        """Load test tuple from npz file."""
+        """Load test tuple from npz file.
+
+        :param data_path:
+        """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
@@ -121,14 +132,7 @@ class TestTuple:
 
 
 class DataTuple(TestTuple):
-    """A tuple of dataframes for the features, the sensitive attribute and the class labels.
-
-    Args:
-        x: input features
-        s: sensitive attributes
-        y: class labels
-        name: optional name of the dataset
-    """
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
     def __init__(
         self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
@@ -164,7 +168,13 @@ class DataTuple(TestTuple):
         name: Optional[str] = None,
         y: Optional[pd.DataFrame] = None,
     ) -> DataTuple:
-        """Create a copy of the DataTuple but change the given values."""
+        """Create a copy of the DataTuple but change the given values.
+
+        :param x:  (Default value = None)
+        :param s:  (Default value = None)
+        :param name:  (Default value = None)
+        :param y:  (Default value = None)
+        """
         return DataTuple(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
@@ -173,7 +183,10 @@ class DataTuple(TestTuple):
         )
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
-        """Concatenate the dataframes in the DataTuple and then apply a function to it."""
+        """Concatenate the dataframes in the DataTuple and then apply a function to it.
+
+        :param mapper:
+        """
         self.x.columns = self.x.columns.astype(str)
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
@@ -191,16 +204,13 @@ class DataTuple(TestTuple):
     def get_n_samples(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
 
-        Args:
-            num: how many samples to take for subset
-
-        Returns:
-            subset of training data
+        :param num: how many samples to take for subset (Default value = 500)
+        :returns: subset of training data
         """
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
 
     def get_s_subset(self, s: int) -> DataTuple:
-        """Returns a subset of the DataTuple where S=s."""
+        """Return a subset of the DataTuple where S=s."""
         return DataTuple(
             x=self.x[self.s.iloc[:, 0] == s],
             s=self.s[self.s.iloc[:, 0] == s],
@@ -208,7 +218,10 @@ class DataTuple(TestTuple):
         )
 
     def to_npz(self, data_path: Path) -> None:
-        """Save DataTuple as an npz file."""
+        """Save DataTuple as an npz file.
+
+        :param data_path: path to the npz file.
+        """
         write_as_npz(
             data_path,
             dict(x=self.x, s=self.s, y=self.y),
@@ -217,7 +230,10 @@ class DataTuple(TestTuple):
 
     @classmethod
     def from_npz(cls, data_path: Path) -> DataTuple:
-        """Load data tuple from npz file."""
+        """Load data tuple from npz file.
+
+        :param data_path:
+        """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
@@ -243,7 +259,11 @@ class Prediction:
         return len(self._hard)
 
     def get_s_subset(self, s_data: pd.DataFrame, s: int) -> Prediction:
-        """Returns a subset of the DataTuple where S=s."""
+        """Return a subset of the DataTuple where S=s.
+
+        :param s_data:
+        :param s:
+        """
         return Prediction(hard=self.hard[s_data.iloc[:, 0] == s])
 
     @property
@@ -258,7 +278,10 @@ class Prediction:
 
     @staticmethod
     def from_npz(npz_path: Path) -> Prediction:
-        """Load prediction from npz file."""
+        """Load prediction from npz file.
+
+        :param npz_path:
+        """
         info = None
         if (npz_path.parent / "info.json").exists():
             with open(npz_path.parent / "info.json", encoding="utf-8") as json_file:
@@ -270,7 +293,10 @@ class Prediction:
             return Prediction(hard=pd.Series(np.squeeze(data["hard"])), info=info)
 
     def to_npz(self, npz_path: Path) -> None:
-        """Save prediction as npz file."""
+        """Save prediction as npz file.
+
+        :param npz_path:
+        """
         if self.info:
             for v in self.info.values():
                 assert isinstance(v, float), "Info must be Dict[str, float]"
@@ -298,7 +324,12 @@ class SoftPrediction(Prediction):
 def write_as_npz(
     data_path: Path, data: Dict[str, pd.DataFrame], extra: Optional[Dict[str, np.ndarray]] = None
 ) -> None:
-    """Write the given dataframes to an npz file."""
+    """Write the given dataframes to an npz file.
+
+    :param data_path:
+    :param data:
+    :param extra:  (Default value = None)
+    """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
     column_names = {
@@ -312,7 +343,12 @@ def concat_dt(
     axis: AxisType = "index",
     ignore_index: bool = False,
 ) -> DataTuple:
-    """Concatenate the data tuples in the given list."""
+    """Concatenate the data tuples in the given list.
+
+    :param datatup_list:
+    :param axis:  (Default value = "index")
+    :param ignore_index:  (Default value = False)
+    """
     return DataTuple(
         x=pd.concat(
             [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
@@ -385,6 +421,8 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
 
     You should always use this function instead of using the "constructor" directly, because this
     function checks whether the columns are correct.
+
+    :param data_frame: A dataframe to use for initialization. (Default value = None)
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
@@ -410,7 +448,11 @@ class ResultsAggregator:
         return self._results
 
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
-        """Append (or prepend) a DataFrame to this object."""
+        """Append (or prepend) a DataFrame to this object.
+
+        :param data_frame:
+        :param prepend:  (Default value = False)
+        """
         if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
@@ -418,14 +460,21 @@ class ResultsAggregator:
         self._results = Results(pd.concat(order, sort=False, axis="index"))
 
     def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
-        """Append results from a CSV file."""
+        """Append results from a CSV file.
+
+        :param csv_file:
+        :param prepend:  (Default value = False)
+        """
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
             return True
         return False
 
     def save_as_csv(self, file_path: Path) -> None:
-        """Save to csv."""
+        """Save to csv.
+
+        :param file_path:
+        """
         # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
         self.results.reset_index(drop=False).to_csv(file_path, index=False)
 
@@ -445,14 +494,23 @@ def filter_results(
     values: Iterable,
     index: Union[str, PandasIndex] = "model",
 ) -> Results:
-    """Filter the entries based on the given values."""
+    """Filter the entries based on the given values.
+
+    :param results:
+    :param values:
+    :param index:  (Default value = "model")
+    """
     if isinstance(index, str):
         index = PandasIndex(index)
     return Results(results.loc[results.index.get_level_values(index.value).isin(list(values))])
 
 
 def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:
-    """Filter entries and change the index with a mapping."""
+    """Filter entries and change the index with a mapping.
+
+    :param results:
+    :param mapping:
+    """
     return map_over_results_index(
         filter_results(results, mapping),
         lambda index: (index[0], index[1], index[2], mapping[index[3]], index[4]),
@@ -462,7 +520,12 @@ def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Resu
 def aggregate_results(
     results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
 ) -> pd.DataFrame:
-    """Aggregate results over the repeats."""
+    """Aggregate results over the repeats.
+
+    :param results:
+    :param metrics:
+    :param aggregator:  (Default value = ("mean", "std"))
+    """
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
 
 

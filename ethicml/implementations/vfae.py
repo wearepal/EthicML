@@ -27,7 +27,11 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, flags: VfaeArgs):
-    """Train the model."""
+    """Train the model.
+
+    :param train:
+    :param flags:
+    """
     dataset = get_dataset_obj_by_name(flags["dataset"])()
 
     # Set up the data
@@ -53,7 +57,12 @@ def fit(train: DataTuple, flags: VfaeArgs):
 
 
 def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
-    """Transform the dataset."""
+    """Transform the dataset.
+
+    :param model:
+    :param dataset:
+    :param flags:
+    """
     data: Union[CustomDataset, TestDataset]
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
@@ -87,13 +96,10 @@ def train_and_transform(
 ) -> Tuple[DataTuple, TestTuple]:
     """Train the model and transform the dataset.
 
-    Args:
-        train:
-        test:
-        flags:
-
-    Returns:
-        Tuple of Encoded Train Dataset and Test Dataset.
+    :param train:
+    :param test:
+    :param flags:
+    :returns: Tuple of Encoded Train Dataset and Test Dataset.
     """
     model = fit(train, flags)
 
@@ -106,15 +112,12 @@ def train_model(
 ) -> None:
     """Train the model.
 
-    Args:
-        epoch:
-        model:
-        train_loader:
-        optimizer:
-        flags:
-
-    Returns:
-        None
+    :param epoch:
+    :param model:
+    :param train_loader:
+    :param optimizer:
+    :param flags:
+    :returns: None
     """
     model.train()
     train_loss = 0.0

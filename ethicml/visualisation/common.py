@@ -20,14 +20,7 @@ class DataEntry(NamedTuple):
 
 
 class PlotDef(NamedTuple):
-    """All the things needed to make a plot.
-
-    Attributes:
-        title: the title of the plot
-        entries: a List of DataEntries
-        legend_pos: where to put the legend; allowed values: None, "inside", "outside"
-        legend_yanchor: float that specifies the vertical position of the legend
-    """
+    """All the things needed to make a plot."""
 
     title: str
     entries: List[DataEntry]
@@ -40,11 +33,10 @@ def common_plotting_settings(
 ) -> Optional[mpl.legend.Legend]:
     """Common settings for plots.
 
-    Args:
-        plot: a pyplot plot object
-        plot_def: a `PlotDef` that defines properties of the plot
-        xaxis_title: label for x-axis
-        yaxis_title: label for y-axis
+    :param plot: a pyplot plot object
+    :param plot_def: a `PlotDef` that defines properties of the plot
+    :param xaxis_title: label for x-axis
+    :param yaxis_title: label for y-axis
     """
     plot.set_xlabel(xaxis_title)
     plot.set_ylabel(yaxis_title)
@@ -78,15 +70,14 @@ def errorbox(
 ) -> Optional[mpl.legend.Legend]:
     """Generate a figure with errorboxes that reflect the std dev of an entry.
 
-    Args:
-        plot: a pyplot Axes object
-        plot_def: a `PlotDef` that defines properties of the plot
-        xaxis: a tuple of two strings
-        yaxis: a tuple of two strings
-        firstcolor: index of the color that should be used for the first entry
-        firstshape: index of the shape that should be used for the first entry
-        markersize: size of the markers
-        use_cross: if True, use cross instead of boxes
+    :param plot: a pyplot Axes object
+    :param plot_def: a `PlotDef` that defines properties of the plot
+    :param xaxis: a tuple of two strings
+    :param yaxis: a tuple of two strings
+    :param firstcolor: index of the color that should be used for the first entry (Default value = 0)
+    :param firstshape: index of the shape that should be used for the first entry (Default value = 0)
+    :param markersize: size of the markers (Default value = 6)
+    :param use_cross: if True, use cross instead of boxes (Default value = False)
     """
     # ================================ constants for plots ========================================
     colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
@@ -189,14 +180,13 @@ def scatter(
 ) -> Optional[mpl.legend.Legend]:
     """Generate a scatter plot.
 
-    Args:
-        plot: a pyplot plot object
-        plot_def: a `PlotDef` that defines properties of the plot
-        xaxis: a tuple of two strings
-        yaxis: a tuple of two strings
-        startindex: index of color and shape that should be used for the first entry
-        markersize: size of the markers
-        connect_dots: if True, connect the data points with a line
+    :param plot: a pyplot plot object
+    :param plot_def: a `PlotDef` that defines properties of the plot
+    :param xaxis: a tuple of two strings
+    :param yaxis: a tuple of two strings
+    :param startindex: index of color and shape that should be used for the first entry (Default value = 0)
+    :param markersize: size of the markers (Default value = 6)
+    :param connect_dots: if True, connect the data points with a line (Default value = False)
     """
     shapes = ["o", "X", "D", "s", "^", "v", "<", ">", "*", "p", "P"]
     colors10 = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]

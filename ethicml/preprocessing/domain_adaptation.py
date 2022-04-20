@@ -30,13 +30,11 @@ def domain_split(
 ) -> Tuple[DataTuple, DataTuple]:
     """Splits a datatuple based on a condition.
 
-    Args:
-        datatup: DataTuple
-        tr_cond: condition for the training set
-        te_cond: condition for the test set
-
-    Returns:
-        Tuple of DataTuple split into train and test. The test is all those that meet
+    :param datatup: DataTuple
+    :param tr_cond: condition for the training set
+    :param te_cond: condition for the test set
+    :param seed:  (Default value = 888)
+    :returns: Tuple of DataTuple split into train and test. The test is all those that meet
         the test condition plus the same percentage again of the train set.
     """
     dataset = datatup.x

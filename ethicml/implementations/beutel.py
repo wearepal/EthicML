@@ -36,7 +36,10 @@ STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
 
 
 def set_seed(seed: int) -> None:
-    """Set the seeds for numpy torch etc."""
+    """Set the seeds for numpy torch etc.
+
+    :param seed:
+    """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -52,6 +55,11 @@ def build_networks(
     """Build the networks we use.
 
     Pulled into a separate function to make the code a bit neater.
+
+    :param flags:
+    :param train_data:
+    :param enc_activation:
+    :param adv_activation:
     """
     enc = Encoder(
         enc_size=flags["enc_size"], init_size=int(train_data.xdim), activation=enc_activation
@@ -81,12 +89,9 @@ def make_dataset_and_loader(
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader.
 
-    Args:
-        data:
-        flags:
-
-    Returns:
-        Tuple of a pytorch dataset and dataloader.
+    :param data:
+    :param flags:
+    :returns: Tuple of a pytorch dataset and dataloader.
     """
     dataset = CustomDataset(data)
     dataloader = torch.utils.data.DataLoader(
@@ -96,7 +101,11 @@ def make_dataset_and_loader(
 
 
 def fit(train: DataTuple, flags: BeutelArgs):
-    """Train the fair autoencoder on the training data and then transform both training and test."""
+    """Train the fair autoencoder on the training data and then transform both training and test.
+
+    :param train:
+    :param flags:
+    """
     set_seed(flags["seed"])
     fairness = FairnessType[flags["fairness"]]
 
@@ -185,7 +194,12 @@ def fit(train: DataTuple, flags: BeutelArgs):
 
 
 def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestTuple:
-    """Transform the test data using the trained autoencoder."""
+    """Transform the test data using the trained autoencoder.
+
+    :param data:
+    :param enc:
+    :param flags:
+    """
     test_data = TestDataset(data)
     test_loader = torch.utils.data.DataLoader(
         dataset=test_data, batch_size=flags["batch_size"], shuffle=False
@@ -196,14 +210,25 @@ def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestT
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: BeutelArgs
 ) -> Tuple[DataTuple, TestTuple]:
-    """Train the fair autoencoder on the training data and then transform both training and test."""
+    """Train the fair autoencoder on the training data and then transform both training and test.
+
+    :param train:
+    :param test:
+    :param flags:
+    """
     transformed_train, enc = fit(train, flags)
     transformed_test = transform(test, enc, flags)
     return transformed_train, transformed_test
 
 
 def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR) -> None:
-    """Do one training step."""
+    """Do one training step.
+
+    :param iteration:
+    :param loss:
+    :param optimizer:
+    :param scheduler:
+    """
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
@@ -211,7 +236,12 @@ def step(iteration: int, loss: Tensor, optimizer: Adam, scheduler: ExponentialLR
 
 
 def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
-    """Get a mask to enforce different fairness types."""
+    """Get a mask to enforce different fairness types.
+
+    :param flags:
+    :param s_pred:
+    :param class_label:
+    """
     fairness = FairnessType[flags["fairness"]]
     if fairness is FairnessType.eq_opp:
         mask = class_label.ge(0.5)
@@ -225,7 +255,12 @@ def get_mask(flags: BeutelArgs, s_pred: Tensor, class_label: Tensor) -> Tensor:
 def encode_dataset(
     enc: nn.Module, dataloader: torch.utils.data.DataLoader, datatuple: DataTuple
 ) -> DataTuple:
-    """Encode a dataset."""
+    """Encode a dataset.
+
+    :param enc:
+    :param dataloader:
+    :param datatuple:
+    """
     data_to_return: List[Any] = []
 
     for embedding, _, _ in dataloader:
@@ -244,12 +279,10 @@ def encode_testset(
 ) -> TestTuple:
     """Encode a dataset.
 
-    Args:
-        enc:
-        dataloader:
-
-    Returns:
-        Encoded TestTuple.
+    :param enc:
+    :param dataloader:
+    :param testtuple:
+    :returns: Encoded TestTuple.
     """
     data_to_return: List[Any] = []
 
@@ -264,13 +297,22 @@ class GradReverse(Function):
 
     @staticmethod
     def forward(ctx: Any, x: Tensor, lambda_: float) -> Any:  # type: ignore[override]
-        """Forward pass."""
+        """Forward pass.
+
+        :param ctx:
+        :param x:
+        :param lambda_:
+        """
         ctx.lambda_ = lambda_
         return x.view_as(x)
 
     @staticmethod
     def backward(ctx: Any, grad_output: Tensor) -> Any:  # type: ignore[override]
-        """Backward pass with Gradient reversed / inverted."""
+        """Backward pass with Gradient reversed / inverted.
+
+        :param ctx:
+        :param grad_output:
+        """
         return grad_output.neg().mul(ctx.lambda_), None
 
 
@@ -297,7 +339,10 @@ class Encoder(nn.Module):
                 self.encoder.add_module(f"encoder activation {k + 1}", activation)
 
     def forward(self, x: Tensor) -> Tensor:
-        """Forward pass."""
+        """Forward pass.
+
+        :param x:
+        """
         return self.encoder(x)
 
 
@@ -333,7 +378,11 @@ class Adversary(nn.Module):
             self.adversary.add_module("adversary last activation", activation)
 
     def forward(self, x: Tensor, y: Tensor) -> Tensor:
-        """Forward pass."""
+        """Forward pass.
+
+        :param x:
+        :param y:
+        """
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
         if self.fairness is FairnessType.eq_opp:
@@ -376,7 +425,10 @@ class Predictor(nn.Module):
             self.predictor.add_module("adversary last activation", nn.Sigmoid())
 
     def forward(self, x: Tensor) -> Tensor:
-        """Forward pass."""
+        """Forward pass.
+
+        :param x:
+        """
         return self.predictor(x)
 
 
@@ -390,7 +442,11 @@ class Model(nn.Module):
         self.pred = pred
 
     def forward(self, x: Tensor, y: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
-        """Forward pass."""
+        """Forward pass.
+
+        :param x:
+        :param y:
+        """
         encoded = self.enc(x)
         s_hat = self.adv(encoded, y)
         y_hat = self.pred(encoded)

@@ -42,7 +42,16 @@ def acs_income(
     target_threshold: int = 50_000,
     discrete_only: bool = False,
 ) -> "AcsIncome":
-    """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
+    """Return the ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
+
+    :param root:
+    :param year:
+    :param horizon:
+    :param states:
+    :param split:  (Default value = "Sex")
+    :param target_threshold:  (Default value = 50_000)
+    :param discrete_only:  (Default value = False)
+    """
     return AcsIncome(
         root=root,
         year=year,
@@ -200,7 +209,7 @@ class AcsIncome(AcsBase):
 
     @staticmethod
     def cat_lookup(key: str) -> Iterable:
-        """Return the lookup for the given key."""
+        """Look up categories."""
         table = {
             "COW": range(1, 9),
             'MAR': range(1, 6),
@@ -321,7 +330,15 @@ def acs_employment(
     split: str = "Sex",
     discrete_only: bool = False,
 ) -> "AcsEmployment":
-    """The ACS Employment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
+    """Return the ACS Employment Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
+
+    :param root:
+    :param year:
+    :param horizon:
+    :param states:
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    """
     return AcsEmployment(
         root=root,
         year=year,
@@ -365,7 +382,7 @@ class AcsEmployment(AcsBase):
 
     @staticmethod
     def cat_lookup(key: str) -> Iterable:
-        """Return the lookup for the given key."""
+        """Look up categories."""
         table = {
             'SCHL': range(1, 25),
             'MAR': range(1, 6),

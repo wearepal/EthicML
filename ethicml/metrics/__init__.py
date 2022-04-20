@@ -1,4 +1,4 @@
-"""This module contains metrics which can be applied to prediction results.
+"""Module for metrics which can be applied to prediction results.
 
 Some example code
 

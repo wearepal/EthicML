@@ -21,7 +21,12 @@ def german(
     discrete_only: bool = False,
     invert_s: bool = False,
 ) -> "German":
-    """German credit dataset."""
+    """German credit dataset.
+
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return German(split=GermanSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 

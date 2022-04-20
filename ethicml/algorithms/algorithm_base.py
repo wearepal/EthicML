@@ -34,14 +34,13 @@ class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-meth
     def _call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
     ) -> None:
-        """This function calls a (Python) script as a separate process.
+        """Call a (Python) script as a separate process.
 
         An exception is thrown if the called script failed.
 
-        Args:
-            cmd_args: list of strings that are passed as commandline arguments to the executable
-            env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
-            cwd: if not None, change working directory to the given path before running command
+        :param cmd_args: list of strings that are passed as commandline arguments to the executable
+        :param env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
+        :param cwd: if not None, change working directory to the given path before running command
         """
         one_hour = 3600
         try:

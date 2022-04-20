@@ -9,7 +9,10 @@ __all__ = ["LabelBinarizer"]
 
 
 def assert_binary_labels(data_tuple: DataTuple) -> None:
-    """Assert that datasets only include binary labels."""
+    """Assert that datasets only include binary labels.
+
+    :param data_tuple:
+    """
     y_col = data_tuple.y.columns[0]
     assert data_tuple.y[y_col].nunique() == 2
     assert (np.unique(data_tuple.y[y_col].to_numpy()) == np.array([0, 1])).all()
@@ -23,7 +26,10 @@ class LabelBinarizer:
         self.max_val: int
 
     def adjust(self, dataset: DataTuple) -> DataTuple:
-        """Take a datatuple and make the labels [0,1]."""
+        """Take a datatuple and make the labels [0,1].
+
+        :param dataset:
+        """
         y_col = dataset.y.columns[0]
         assert dataset.y[y_col].nunique() == 2
 
@@ -41,7 +47,10 @@ class LabelBinarizer:
         return DataTuple(x=dataset.x, s=dataset.s, y=dataset.y, name=dataset.name)
 
     def post_only_labels(self, labels: pd.Series) -> pd.Series:
-        """Inverse of adjust but only for a DataFrame instead of a DataTuple."""
+        """Inverse of adjust but only for a DataFrame instead of a DataTuple.
+
+        :param labels:
+        """
         assert labels.nunique() == 2
 
         # make copy of the labels
@@ -52,7 +61,10 @@ class LabelBinarizer:
         return labels_copy
 
     def post(self, dataset: DataTuple) -> DataTuple:
-        """Inverse of adjust."""
+        """Inverse of adjust.
+
+        :param dataset:
+        """
         y_col = dataset.y.columns[0]
         transformed_y = self.post_only_labels(dataset.y[y_col])
         return dataset.replace(y=pd.DataFrame(transformed_y, columns=[y_col]))

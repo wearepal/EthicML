@@ -41,7 +41,12 @@ def law(
     discrete_only: bool = False,
     invert_s: bool = False,
 ) -> "Law":
-    """LSAC Law School dataset."""
+    """LSAC Law School dataset.
+
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return Law(split=LawSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 

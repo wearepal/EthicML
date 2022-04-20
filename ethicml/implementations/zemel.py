@@ -41,7 +41,20 @@ def LFR_optim_objective(
     print_interval: int,
     verbose: bool,
 ) -> np.number:
-    """LFR optim objective."""
+    """LFR optim objective.
+
+    :param parameters:
+    :param x_unprivileged:
+    :param x_privileged:
+    :param y_unprivileged:
+    :param y_privileged:
+    :param clusters:
+    :param A_x:
+    :param A_y:
+    :param A_z:
+    :param print_interval:
+    :param verbose:
+    """
     _, features_dim = x_unprivileged.shape
 
     w = parameters[:clusters]
@@ -80,7 +93,12 @@ def LFR_optim_objective(
 def get_xhat_y_hat(
     prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Get xhat y hat."""
+    """Get xhat y hat.
+
+    :param prototypes:
+    :param w:
+    :param x:
+    """
     M = softmax(-cdist(x, prototypes), axis=1)
     x_hat = np.matmul(M, prototypes)
     y_hat = np.clip(
@@ -92,7 +110,12 @@ def get_xhat_y_hat(
 def train_and_transform(
     train: DataTuple, test: TestTuple, flags: ZemelArgs
 ) -> (Tuple[DataTuple, TestTuple]):
-    """Train and transform."""
+    """Train and transform.
+
+    :param train:
+    :param test:
+    :param flags:
+    """
     prototypes, w = fit(train, flags)
     sens_col = train.s.columns[0]
 
@@ -112,7 +135,12 @@ def train_and_transform(
 
 
 def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
-    """Transform."""
+    """Transform.
+
+    :param data:
+    :param prototypes:
+    :param w:
+    """
     sens_col = data.s.columns[0]
     data_sens = data.x.loc[data.s[sens_col] == 0].to_numpy()
     data_nons = data.x.loc[data.s[sens_col] == 1].to_numpy()
@@ -124,7 +152,11 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
 
 
 def fit(train: DataTuple, flags: ZemelArgs) -> Model:
-    """Train the Zemel model and return the transformed features of the train and test sets."""
+    """Train the Zemel model and return the transformed features of the train and test sets.
+
+    :param train:
+    :param flags:
+    """
     np.random.seed(flags["seed"])
 
     sens_col = train.s.columns[0]
@@ -178,7 +210,14 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
 def trans(
     prototypes: np.ndarray, w: np.ndarray, nonsens: np.ndarray, sens: np.ndarray, dataset: TestTuple
 ) -> pd.DataFrame:
-    """Trans."""
+    """Trans.
+
+    :param prototypes:
+    :param w:
+    :param nonsens:
+    :param sens:
+    :param dataset:
+    """
     _, features_hat_nonsensitive, _ = get_xhat_y_hat(prototypes, w, nonsens)
 
     _, features_hat_sensitive, _ = get_xhat_y_hat(prototypes, w, sens)

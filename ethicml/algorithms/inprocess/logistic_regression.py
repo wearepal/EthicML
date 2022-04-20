@@ -22,9 +22,8 @@ class LR(InAlgorithm):
     This is a wrapper around Sci-Kit Learn's LogisticRegression.
     The documentation for which is available `here <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_.
 
-    Args:
-        C (float): The regularization parameter.
-        seed (int): The seed for the random number generator.
+    :param C: The regularization parameter.
+    :param seed: The seed for the random number generator.
     """
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
@@ -66,9 +65,8 @@ class LR(InAlgorithm):
 class LRProb(InAlgorithm):
     """Logistic regression with soft output.
 
-    Args:
-        C (float): The regularization parameter.
-        seed (int): The seed for the random number generator.
+    :param C: The regularization parameter.
+    :param seed: The seed for the random number generator.
     """
 
     C: float = field(default_factory=lambda: LogisticRegression().C)
@@ -107,9 +105,8 @@ class LRProb(InAlgorithm):
 class LRCV(InAlgorithm):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR.
 
-    Args:
-        n_splits (int): The number of splits for the cross-validation.
-        seed (int): The seed for the random number generator.
+    :param n_splits: The number of splits for the cross-validation.
+    :param seed: The seed for the random number generator.
     """
 
     n_splits: int = 3

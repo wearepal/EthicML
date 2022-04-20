@@ -33,11 +33,7 @@ def zafar_teardown() -> Generator[None, None, None]:
 
 @pytest.mark.slow
 def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
-    """
-
-    Args:
-        toy_train_test:
-    """
+    """Test zafar."""
     train, test = toy_train_test
 
     model: InAlgorithm = ZafarAccuracy()

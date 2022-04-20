@@ -17,12 +17,9 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
 
     This function only exists for backwards compatibility. Use dataset.load() instead.
 
-    Args:
-        dataset: dataset object
-        ordered: if True, return features such that discrete come first, then continuous
-
-    Returns:
-        DataTuple with dataframes of features, labels and sensitive attributes
+    :param dataset: dataset object
+    :param ordered: if True, return features such that discrete come first, then continuous (Default value = False)
+    :returns: DataTuple with dataframes of features, labels and sensitive attributes
     """
     return dataset.load(ordered=ordered)
 
@@ -32,14 +29,11 @@ def create_data_obj(
 ) -> "ConfigurableDataset":
     """Create a `ConfigurableDataset` from the given file.
 
-    Args:
-        filepath: path to a CSV file
-        s_column: column that represents sensitive attributes
-        y_column: column that contains lables
-        additional_to_drop: other columns that should be dropped
-
-    Returns:
-        Dataset object
+    :param filepath: path to a CSV file
+    :param s_column: column that represents sensitive attributes
+    :param y_column: column that contains lables
+    :param additional_to_drop: other columns that should be dropped (Default value = None)
+    :returns: Dataset object
     """
     return ConfigurableDataset(
         filepath_=filepath,

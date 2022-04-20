@@ -32,7 +32,17 @@ class AgarwalArgs(TypedDict):
 class Agarwal(InAlgorithmAsync):
     """Agarwal class.
 
-    A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+    A wrapper around the Exponentiated Gradient method documented
+    `on this website <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+
+    :param dir: Directory to store the model.
+    :param fairness: Type of fairness to enforce.
+    :param classifier: Type of classifier to use.
+    :param eps: Epsilon fo.
+    :param iters: Number of iterations for the DP algorithm.
+    :param C: C parameter for the SVM algorithm.
+    :param kernel: Kernel type for the SVM algorithm.
+    :param seed: Random seed.
     """
 
     is_fairness_algo: ClassVar[bool] = True
@@ -50,18 +60,6 @@ class Agarwal(InAlgorithmAsync):
         kernel: Optional[KernelType] = None,
         seed: int = 888,
     ):
-        """Initialize the Agarwal algorithm.
-
-        Args:
-            dir: Directory to store the model.
-            fairness: Type of fairness to enforce.
-            classifier: Type of classifier to use.
-            eps: Epsilon fo.
-            iters: Number of iterations for the DP algorithm.
-            C: C parameter for the SVM algorithm.
-            kernel: Kernel type for the SVM algorithm.
-            seed: Random seed.
-        """
         self.seed = seed
         self.model_dir = Path(dir)
         chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)

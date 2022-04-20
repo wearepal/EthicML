@@ -33,7 +33,11 @@ from ..preprocessing.scaling import ScalerType
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
-    """Get all possible combinations of sensitive attribute and metrics."""
+    """Get all possible combinations of sensitive attribute and metrics.
+
+    :param metrics:
+    :param train:
+    """
     poss_values: List[str] = []
     for col in train.s.columns:
         uniques = train.s[col].unique()
@@ -42,7 +46,10 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
 
 
 def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
-    """Check if the given metrics allow application per sensitive attribute."""
+    """Check if the given metrics allow application per sensitive attribute.
+
+    :param per_sens_metrics:
+    """
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable(
@@ -61,14 +68,13 @@ def run_metrics(
 ) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
-    Args:
-        predictions: DataFrame with predictions
-        actual: DataTuple with the labels
-        metrics: list of metrics
-        per_sens_metrics: list of metrics that are computed per sensitive attribute
-        diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute
-        use_sens_name: if True, use the name of the senisitive variable in the returned results.
-                        If False, refer to the sensitive varibale as `S`.
+    :param predictions: DataFrame with predictions
+    :param actual: DataTuple with the labels
+    :param metrics: list of metrics (Default value = ())
+    :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default value = ())
+    :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default value = True)
+    :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
+                        If False, refer to the sensitive varibale as `S`. (Default value = True)
     """
     result: Dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
@@ -98,14 +104,11 @@ def load_results(
 ) -> Optional[Results]:
     """Load results from a CSV file that was created by `evaluate_models`.
 
-    Args:
-        dataset_name: name of the dataset of the results
-        transform_name: name of the transformation that was used for the results
-        topic: (optional) topic string of the results
-        outdir: directory where the results are stored
-
-    Returns:
-        DataFrame if the file exists; None otherwise
+    :param dataset_name: name of the dataset of the results
+    :param transform_name: name of the transformation that was used for the results
+    :param topic: (optional) topic string of the results (Default value = None)
+    :param outdir: directory where the results are stored (Default value = Path(".") / "results")
+    :returns: DataFrame if the file exists; None otherwise
     """
     csv_file = _result_path(outdir, dataset_name, transform_name, topic)
     if csv_file.is_file():
@@ -158,20 +161,20 @@ def evaluate_models(
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
-    Args:
-        datasets: list of dataset objects
-        scaler: Sklearn-style scaler to be used on the continuous features.
-        preprocess_models: list of preprocess model objects
-        inprocess_models: list of inprocess model objects
-        metrics: list of metric objects
-        per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute
-        repeats: number of repeats to perform for the experiments
-        test_mode: if True, only use a small subset of the data so that the models run faster
-        delete_prev:  False by default. If True, delete saved results in directory
-        splitter: (optional) custom train-test splitter
-        topic: (optional) a string that identifies the run; the string is prepended to the filename
-        fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
-        num_jobs: number of parallel jobs; if None, the number of CPUs is used
+    :param datasets: list of dataset objects
+    :param *:
+    :param preprocess_models: list of preprocess model objects (Default value = ())
+    :param inprocess_models: list of inprocess model objects (Default value = ())
+    :param metrics: list of metric objects (Default value = ())
+    :param per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute (Default value = ())
+    :param repeats: number of repeats to perform for the experiments (Default value = 1)
+    :param test_mode: if True, only use a small subset of the data so that the models run faster (Default value = False)
+    :param delete_prev: False by default. If True, delete saved results in directory
+    :param splitter: (optional) custom train-test splitter (Default value = None)
+    :param topic: (optional) a string that identifies the run; the string is prepended to the filename (Default value = None)
+    :param fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing (Default value = True)
+    :param num_jobs: number of parallel jobs; if None, the number of CPUs is used (Default value = None)
+    :param scaler: Sklearn-style scaler to be used on the continuous features. (Default value = None)
     """
     from .parallelism import run_in_parallel
 
@@ -274,7 +277,16 @@ def _gather_metrics(
     outdir: Path,
     topic: Optional[str],
 ) -> Results:
-    """Take a list of lists of predictions and compute all metrics."""
+    """Take a list of lists of predictions and compute all metrics.
+
+    :param all_predictions:
+    :param test_data:
+    :param inprocess_models:
+    :param metrics:
+    :param per_sens_metrics:
+    :param outdir:
+    :param topic:
+    """
     columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
     # transpose `all_results` so that the order in the results dataframe is correct

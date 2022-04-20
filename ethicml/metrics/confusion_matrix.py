@@ -17,7 +17,13 @@ class LabelOutOfBounds(Exception):
 def confusion_matrix(
     prediction: Prediction, actual: DataTuple, pos_cls: int, labels: Optional[List[int]] = None
 ) -> Tuple[int, int, int, int]:
-    """Apply sci-kit learn's confusion matrix."""
+    """Apply sci-kit learn's confusion matrix.
+
+    :param prediction:
+    :param actual:
+    :param pos_cls:
+    :param labels:  (Default value = None)
+    """
     actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[arg-type]
     _labels: np.ndarray = np.unique(actual_y) if labels is None else np.array(labels)
     if _labels.size == 1:

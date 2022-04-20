@@ -21,14 +21,11 @@ def kullback_leibler(
 ) -> Tensor:
     """KL Divergence.
 
-    Args:
-        mu1:
-        logvar1:
-        mu2:
-        logvar2:
-
-    Returns:
-        Tensorof divergence in each dim.
+    :param mu1:
+    :param logvar1:
+    :param mu2:  (Default value = None)
+    :param logvar2:  (Default value = None)
+    :returns: Tensorof divergence in each dim.
     """
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
     logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
@@ -49,17 +46,14 @@ def loss_function(
 ) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
     """Loss function for VFAE.
 
-    Args:
-        flags:
-        z1_triplet:
-        z2_triplet:
-        z1_d_triplet:
-        data_triplet:
-        x_dec:
-        y_pred:
-
-    Returns:
-        Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
+    :param flags:
+    :param z1_triplet:
+    :param z2_triplet:
+    :param z1_d_triplet:
+    :param data_triplet:
+    :param x_dec:
+    :param y_pred:
+    :returns: Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
     """
     z1, z1_mu, z1_logvar = z1_triplet
     if flags["supervised"]:

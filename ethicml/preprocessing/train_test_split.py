@@ -31,13 +31,10 @@ class DataSplitter(ABC):
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Split the given data.
 
-        Args:
-            data: the data to split
-            split_id: ID that makes this split unique; this affects for example the random seed
-
-        Returns:
-            A tuple consisting of two datatuples that are the result of the split and a dictionary
-            that contains information about the split that is useful for logging.
+        :param data: the data to split
+        :param split_id: ID that makes this split unique; this affects for example the random seed
+        :returns: A tuple consisting of two datatuples that are the result of the split and a
+            dictionary that contains information about the split that is useful for logging.
         """
 
 
@@ -69,13 +66,10 @@ def train_test_split(
 ) -> Tuple[DataTuple, DataTuple]:
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
-    Args:
-        data: data tuple to split
-        train_percentage: percentage for train split
-        random_seed: seed to make splitting reproducible
-
-    Returns:
-        train split and test split
+    :param data: data tuple to split
+    :param train_percentage: percentage for train split (Default value = 0.8)
+    :param random_seed: seed to make splitting reproducible (Default value = 0)
+    :returns: train split and test split
     """
     # ======================== concatenate the datatuple to one dataframe =========================
     # save the column names for later
@@ -136,15 +130,13 @@ def train_test_split(
 
 
 class RandomSplit(DataSplitter):
-    """Standard train test split."""
+    """Standard train test split.
+
+    :param train_percentage: how much of the data to use for the train split
+    :param start_seed: random seed for the first split
+    """
 
     def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
-        """The constructor takes the following arguments.
-
-        Args:
-            train_percentage: how much of the data to use for the train split
-            start_seed: random seed for the first split
-        """
         super().__init__()
         self.start_seed = start_seed
         self.train_percentage = train_percentage
@@ -164,7 +156,12 @@ class RandomSplit(DataSplitter):
 def generate_proportional_split_indexes(
     data: DataTuple, train_percentage: float, random_seed: int = 42
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Generate the indexes of the train and test splits using a proportional sampling scheme."""
+    """Generate the indexes of the train and test splits using a proportional sampling scheme.
+
+    :param data:
+    :param train_percentage:
+    :param random_seed:  (Default value = 42)
+    """
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)
 
@@ -238,7 +235,12 @@ class ProportionalSplit(RandomSplit):
 
 
 class BalancedTestSplit(RandomSplit):
-    """Split data such that the test set is balanced and the training set is proportional."""
+    """Split data such that the test set is balanced and the training set is proportional.
+
+    :param balance_type: how to do the balancing
+    :param train_percentage: how much of the data to use for the train split
+    :param start_seed: random seed for the first split
+    """
 
     def __init__(
         self,
@@ -246,13 +248,6 @@ class BalancedTestSplit(RandomSplit):
         train_percentage: float = 0.8,
         start_seed: int = 0,
     ):
-        """The constructor takes the following arguments.
-
-        Args:
-            balance_type: how to do the balancing
-            train_percentage: how much of the data to use for the train split
-            start_seed: random seed for the first split
-        """
         super().__init__(start_seed=start_seed, train_percentage=train_percentage)
         self.balance_type = balance_type
 
@@ -337,7 +332,11 @@ class BalancedTestSplit(RandomSplit):
 
 
 def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
-    """So much love to sklearn for making their source code open."""
+    """So much love to sklearn for making their source code open.
+
+    :param data:
+    :param folds:
+    """
     indices: np.ndarray = np.arange(data.x.shape[0])
 
     fold_sizes: np.ndarray = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)

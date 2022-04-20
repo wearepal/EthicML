@@ -21,7 +21,20 @@ __all__ = ["InstalledModel"]
 
 
 class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
-    """The model that does the magic."""
+    """The model that does the magic.
+
+    Download code from given URL and create Pip environment with Pipfile found in the code.
+
+    :param name: name of the model
+    :param dir_name: where to download the code to (can be chosen freely)
+    :param top_dir: top directory of the repository where the Pipfile can be found (this is usually
+        simply the last part of the repository URL)
+    :param is_fairness_algo: if True, this object corresponds to an algorithm enforcing fairness
+    :param url: (optional) URL of the repository
+    :param executable: (optional) path to a Python executable
+    :param seed: Random seed to use for reproducibility
+    :param use_poetry: if True, will try to use poetry instead of pipenv
+    """
 
     is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
 
@@ -35,19 +48,6 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         seed: int = 888,
         use_poetry: bool = False,
     ):
-        """Download code from given URL and create Pip environment with Pipfile found in the code.
-
-        Args:
-            name: name of the model
-            dir_name: where to download the code to (can be chosen freely)
-            top_dir: top directory of the repository where the Pipfile can be found (this is usually
-                     simply the last part of the repository URL)
-            is_fairness_algo: if True, this object corresponds to an algorithm enforcing fairness
-            url: (optional) URL of the repository
-            executable: (optional) path to a Python executable
-            seed: Random seed to use for reproducibility
-            use_poetry: if True, will try to use poetry instead of pipenv
-        """
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
         self._store_dir: Path = Path(".") / dir_name  # directory where code and venv are stored
         self._top_dir: str = top_dir
@@ -82,13 +82,19 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         return self.__executable
 
     def _clone_directory(self, url: str) -> None:
-        """Clones the repo from `url` into `self._store_dir`."""
+        """Clones the repo from `url` into `self._store_dir`.
+
+        :param url:
+        """
         if not self._store_dir.exists():
             self._store_dir.mkdir()
             git.Git(self._store_dir).clone(url)
 
     def _create_venv(self, use_poetry: bool) -> None:
-        """Creates a venv based on the Pipfile in the repository."""
+        """Create a venv based on the Pipfile in the repository.
+
+        :param use_poetry: whether to use poetry instead of pipenv
+        """
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
             if use_poetry and shutil.which("poetry") is not None:  # use poetry instead of pipenv
@@ -109,7 +115,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
 
     def remove(self) -> None:
-        """Removes the directory that we created in _clone_directory()."""
+        """Remove the directory that we created in _clone_directory()."""
         try:
             shutil.rmtree(self._store_dir)
         except OSError as excep:

@@ -57,7 +57,11 @@ class Upsampler(PreAlgorithm):
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
-    """Given 2 datatuples, concatenate them and shuffle."""
+    """Given 2 datatuples, concatenate them and shuffle.
+
+    :param first_dt:
+    :param second_dt:
+    """
     assert (first_dt.x.columns == second_dt.x.columns).all()
     assert (first_dt.s.columns == second_dt.s.columns).all()
     assert (first_dt.y.columns == second_dt.y.columns).all()
@@ -84,7 +88,14 @@ def upsample(
     seed: int,
     name: str,
 ) -> Tuple[DataTuple, TestTuple]:
-    """Upsample a datatuple."""
+    """Upsample a datatuple.
+
+    :param dataset:
+    :param test:
+    :param strategy:
+    :param seed:
+    :param name:
+    """
     s_col = dataset.s.columns[0]
     y_col = dataset.y.columns[0]
 

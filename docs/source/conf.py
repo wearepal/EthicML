@@ -31,7 +31,7 @@ release = toml.load("../../pyproject.toml")["tool"]["poetry"]["version"]
 
 
 # -- General configuration ---------------------------------------------------
-autoclass_content = "both"  # include both class docstring and __init__
+autoclass_content = "class"  # ignore docstring of __init__
 autodoc_default_options = {
     # Make sure that any autodoc declarations show the right members
     "members": True,
@@ -51,12 +51,12 @@ autodoc_mock_imports = [
     "PIL",
     "folktables",
     "git",
+    "joblib",
     "kit",
     "matplotlib",
     "numpy",
     "pandas",
     "ranzen",
-    "ray",
     "scipy",
     "seaborn",
     "sklearn",
@@ -65,8 +65,6 @@ autodoc_mock_imports = [
     "tqdm",
     "wandb",
 ]
-napoleon_numpy_docstring = False  # Force consistency, leave only Google
-napoleon_use_rtype = False  # More legible
 add_module_names = False  # do not show classes and functions with full module name (ethicml.data..)
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -75,8 +73,6 @@ add_module_names = False  # do not show classes and functions with full module n
 extensions = [
     # Need the autodoc and autosummary packages to generate our docs.
     "sphinx.ext.autodoc",
-    # Napoleon is used for Google-style docstrings
-    "sphinx.ext.napoleon",
     "autodocsumm",
 ]
 
@@ -100,4 +96,4 @@ html_theme = "furo"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = []

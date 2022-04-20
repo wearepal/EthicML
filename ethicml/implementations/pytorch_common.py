@@ -70,13 +70,10 @@ class CustomDataset(Dataset):
 def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
     """Calculate MMD betweer 2 tensors of equal size.
 
-    Args:
-        x: Sample 1.
-        y: Sample 2.
-        sigma: Scale of the RBF kernel.
-
-    Returns:
-        Tensor of MMD in each dim.
+    :param x: Sample 1.
+    :param y: Sample 2.
+    :param sigma: Scale of the RBF kernel.
+    :returns: Tensor of MMD in each dim.
     """
     xx_gm = x @ x.t()
     xy_gm = x @ y.t()
@@ -112,11 +109,10 @@ def compute_projection_gradients(
 ) -> None:
     """Computes the adversarial gradient projection term.
 
-    Args:
-        model (nn.Module): Model whose parameters the gradients are to be computed w.r.t.
-        loss_p (Tensor): Prediction loss.
-        loss_a (Tensor): Adversarial loss.
-        alpha (float): Pre-factor for adversarial loss.
+    :param model: Model whose parameters the gradients are to be computed w.r.t.
+    :param loss_p: Prediction loss.
+    :param loss_a: Adversarial loss.
+    :param alpha: Pre-factor for adversarial loss.
     """
     grad_p = torch.autograd.grad(loss_p, model.parameters(), retain_graph=True)  # type: ignore[arg-type]
     grad_a = torch.autograd.grad(loss_a, model.parameters(), retain_graph=True)  # type: ignore[arg-type]

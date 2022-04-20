@@ -23,22 +23,18 @@ class PostAlgorithm(Algorithm, Protocol):
     def fit(self: _PA, train_predictions: Prediction, train: DataTuple) -> _PA:
         """Run Algorithm on the given data.
 
-        Args:
-            train: training data
-
-        Returns:
-            self, but trained.
+        :param train_predictions:
+        :param train: training data
+        :returns: self, but trained.
         """
 
     @abstractmethod
     def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data.
 
-        Args:
-            test: data to evaluate on
-
-        Returns:
-            predictions
+        :param test_predictions:
+        :param test: data to evaluate on
+        :returns: predictions
         """
 
     def run(
@@ -50,14 +46,11 @@ class PostAlgorithm(Algorithm, Protocol):
     ) -> Prediction:
         """Make predictions fair.
 
-        Args:
-            train_predictions: predictions on a training set
-            train: the training set with the correct labels and sensitive attributes
-            test_predictions: predictions on the test set
-            test: the test set with the sensitive attributes
-
-        Returns:
-            post-processed predictions on the test set
+        :param train_predictions: predictions on a training set
+        :param train: the training set with the correct labels and sensitive attributes
+        :param test_predictions: predictions on the test set
+        :param test: the test set with the sensitive attributes
+        :returns: post-processed predictions on the test set
         """
         self.fit(train_predictions, train)
         return self.predict(test_predictions, test)

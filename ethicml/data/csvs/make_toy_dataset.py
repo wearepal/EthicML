@@ -7,7 +7,11 @@ import pandas as pd
 
 
 def main(seed: int, samples: int) -> None:
-    """Make a toy dataset that can be used to check an algorithm runs."""
+    """Make a toy dataset that can be used to check an algorithm runs.
+
+    :param seed:
+    :param samples:
+    """
     np.random.seed(seed)
     random.seed(seed)
 

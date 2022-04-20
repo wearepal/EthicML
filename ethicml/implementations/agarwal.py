@@ -32,7 +32,11 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
-    """Fit a model."""
+    """Fit a model.
+
+    :param train:
+    :param args:
+    """
     try:
         from fairlearn.reductions import (
             ConditionalSelectionRate,
@@ -77,7 +81,11 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
 
 
 def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> pd.DataFrame:
-    """Compute predictions on the given test data."""
+    """Compute predictions on the given test data.
+
+    :param exponentiated_gradient:
+    :param test:
+    """
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
@@ -87,14 +95,22 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
-    """Train a logistic regression model and compute predictions on the given test data."""
+    """Train a logistic regression model and compute predictions on the given test data.
+
+    :param train:
+    :param test:
+    :param args:
+    """
     exponentiated_gradient = fit(train, args)
     return predict(exponentiated_gradient, test)
 
 
 @contextlib.contextmanager
 def working_dir(root: Path) -> Generator[None, None, None]:
-    """Change the working directory to the given path."""
+    """Change the working directory to the given path.
+
+    :param root:
+    """
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve().parent)
     try:
@@ -104,7 +120,7 @@ def working_dir(root: Path) -> Generator[None, None, None]:
 
 
 def main() -> None:
-    """This function runs the Agarwal model as a standalone program."""
+    """Run the Agarwal model as a standalone program."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: AgarwalArgs = json.loads(sys.argv[2])
     random.seed(flags["seed"])

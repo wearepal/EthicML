@@ -27,14 +27,11 @@ class Kamishima(InstalledModel):
 
     Based on Algo-Fairness
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
+
+    :param eta: Tolerance.
     """
 
     def __init__(self, *, eta: float = 1.0):
-        """Initialize Kamishima model.
-
-        Args:
-           eta: Tolerance.
-        """
         super().__init__(
             name="Kamishima",
             dir_name="kamishima",
@@ -96,7 +93,11 @@ class Kamishima(InstalledModel):
 
 
 def _create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: Path) -> None:
-    """Create a text file with the data."""
+    """Create a text file with the data.
+
+    :param data:
+    :param file_path:
+    """
     if isinstance(data, DataTuple):
         result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
     else:
