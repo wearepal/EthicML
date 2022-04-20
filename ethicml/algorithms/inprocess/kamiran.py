@@ -116,17 +116,14 @@ def compute_instance_weights(
 ) -> pd.DataFrame:
     """Compute weights for all samples.
 
-    Args:
-        train: The training data.
-        balance_groups: Whether to balance the groups. When False, the groups are balanced as in
-            `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
-            When True, the groups are numerically balanced.
-        upweight: If balance_groups is True, whether to upweight the groups, or to downweight them.
-            Downweighting is done by multiplying the weights by the inverse of the group size
-            and is more numerically stable for small group sizes.
-
-    Returns:
-        A dataframe with the instance weights for each sample in the training data.
+    :param train: The training data.
+    :param balance_groups: Whether to balance the groups. When False, the groups are balanced as in
+        `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
+        When True, the groups are numerically balanced. (Default value = False)
+    :param upweight: If balance_groups is True, whether to upweight the groups, or to downweight
+        them. Downweighting is done by multiplying the weights by the inverse of the group size and
+        is more numerically stable for small group sizes. (Default value = False)
+    :returns: A dataframe with the instance weights for each sample in the training data.
     """
     num_samples = len(train.x)
     s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)

@@ -59,7 +59,12 @@ def admissions(
     discrete_only: bool = False,
     invert_s: bool = False,
 ) -> "Admissions":
-    """UFRGS Admissions dataset."""
+    """UFRGS Admissions dataset.
+
+    :param split:  (Default value = "Gender")
+    :param discrete_only:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return Admissions(split=AdmissionsSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 

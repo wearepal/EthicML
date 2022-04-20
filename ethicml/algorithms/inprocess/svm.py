@@ -49,7 +49,12 @@ class SVM(InAlgorithm):
 
 
 def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[LinearSVC, SVC]:
-    """Select the appropriate SVM model for the given parameters."""
+    """Select the appropriate SVM model for the given parameters.
+
+    :param C:
+    :param kernel:
+    :param seed:
+    """
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)

@@ -33,10 +33,9 @@ class FeatureSplit(TypedDict):
 class Dataset:
     """Data structure that holds all the information needed to load a given dataset.
 
-    Args:
-        discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded, discard
-            those.
-        map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
+    :param discard_non_one_hot: If some entries in s or y are not correctly one-hot encoded, discard
+        those.
+    :param map_to_binary: If True, convert labels from {-1, 1} to {0, 1}.
     """
 
     def __init__(
@@ -163,13 +162,21 @@ class Dataset:
 
     @abstractmethod
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
-        """Load the dataset."""
+        """Load the dataset.
+
+        :param ordered:  (Default value = False)
+        :param labels_as_features:  (Default value = False)
+        """
         raise NotImplementedError("Dataset is abstract.")
 
     def _maybe_combine_labels(
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
     ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
-        """Construct a new label according to the LabelSpecs."""
+        """Construct a new label according to the LabelSpecs.
+
+        :param attributes:
+        :param label_type:
+        """
         mask = None  # the mask is needed when we have to discard samples
 
         label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
@@ -209,7 +216,11 @@ class Dataset:
         return out
 
     def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
-        """Expand a label in the form of an index into all the subfeatures."""
+        """Expand a label in the form of an index into all the subfeatures.
+
+        :param label:
+        :param label_type:
+        """
         label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
         assert not isinstance(label_mapping, str)
         label_mapping: LabelSpec  # redefine the variable for mypy's sake
@@ -246,12 +257,9 @@ class LoadableDataset(Dataset):
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load dataset from its CSV file.
 
-        Args:
-            ordered: if True, return features such that discrete come first, then continuous
-            labels_as_features: if True, the s and y labels are included in the x features
-
-        Returns:
-            DataTuple with dataframes of features, labels and sensitive attributes
+        :param ordered: if True, return features such that discrete come first, then continuous
+        :param labels_as_features: if True, the s and y labels are included in the x features
+        :returns: DataTuple with dataframes of features, labels and sensitive attributes
         """
         dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self._num_samples)
         assert isinstance(dataframe, pd.DataFrame)

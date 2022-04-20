@@ -18,7 +18,13 @@ __all__ = ["Hsic"]
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
 ) -> float:
-    """Calculate the HSIC value."""
+    """Calculate the HSIC value.
+
+    :param prediction:
+    :param label:
+    :param sigma_first:
+    :param sigma_second:
+    """
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 
@@ -64,6 +70,9 @@ class Hsic(BaseMetric):
         """We add the ability to take the average of hsic score.
 
         As for larger datasets it will kill your machine
+
+        :param prediction:
+        :param actual:
         """
         preds = prediction.hard.to_numpy()[:, np.newaxis]
         s_cols = actual.s.columns

@@ -47,6 +47,11 @@ def synthetic(
         - This models data where the target is biased.
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
+
+    :param scenario:  (Default value = 1)
+    :param target:  (Default value = 3)
+    :param fair:  (Default value = False)
+    :param num_samples:  (Default value = 1_000)
     """
     return Synthetic(
         scenario=SyntheticScenarios(scenario),
@@ -72,6 +77,7 @@ class Synthetic(LoadableDataset):
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
     """
+
     scenario: SyntheticScenarios = SyntheticScenarios.S1
     target: SyntheticTargets = SyntheticTargets.Y3
     fair: bool = False

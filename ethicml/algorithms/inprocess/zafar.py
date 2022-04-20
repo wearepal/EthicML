@@ -43,7 +43,12 @@ class _ZafarAlgorithmBase(InstalledModel):
     def _create_file_in_zafar_format(
         data: Union[DataTuple, TestTuple], file_path: Path, label_converter: LabelBinarizer
     ) -> None:
-        """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants."""
+        """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants.
+
+        :param data:
+        :param file_path:
+        :param label_converter:
+        """
         out: Dict[str, Any] = {'x': data.x.to_numpy().tolist()}
         sens_attr = data.s.columns[0]
         out["sensitive"] = {}

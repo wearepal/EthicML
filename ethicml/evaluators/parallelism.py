@@ -33,13 +33,10 @@ def run_in_parallel(
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
-    Args:
-        algos: list of algorithms
-        data: list of pairs of data tuples (train and test)
-        num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs
-
-    Returns:
-        list of the results
+    :param algos: list of algorithms
+    :param data: list of pairs of data tuples (train and test)
+    :param num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs (Default value = None)
+    :returns: list of the results
     """
     if not algos or not data:
         return cast(List[List[Prediction]], [[]])
@@ -57,7 +54,7 @@ _RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple], covariant=True)  #
 
 
 class Algorithm(Protocol[_RT]):
-    """This protocol is a clever way to make `arrange_in_parallel` generic."""
+    """Protocol for making `arrange_in_parallel` generic."""
 
     def run(self, train: DataTuple, test: TestTuple) -> _RT:
         ...
@@ -68,13 +65,11 @@ def arrange_in_parallel(
 ) -> List[List[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
-    Args:
-        algos: list of tuples consisting of a `run_async` function of an algorithm and a name
-        data: list of pairs of data tuples (train and test)
-        num_jobs: number of parallel jobs. `None` means as many as available CPUs.
-
-    Returns:
-        list of the results
+    :param algos: list of tuples consisting of a `run_async` function of an algorithm and a name
+    :param data: list of pairs of data tuples (train and test)
+    :param num_jobs: number of parallel jobs. `None` means as many as available CPUs.
+        (Default value = None)
+    :returns: list of the results
     """
     runner = Parallel(n_jobs=num_jobs, verbose=10, backend="loky")
     assert len(algos) >= 1

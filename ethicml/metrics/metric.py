@@ -20,12 +20,9 @@ class Metric(Protocol):
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         """Compute score.
 
-        Args:
-            prediction: predicted labels
-            actual: DataTuple with the actual labels and the sensitive attributes
-
-        Returns:
-            the score as a single number
+        :param prediction: predicted labels
+        :param actual: DataTuple with the actual labels and the sensitive attributes
+        :returns: the score as a single number
         """
 
     @property

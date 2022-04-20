@@ -23,7 +23,12 @@ def sqf(
     discrete_only: bool = False,
     invert_s: bool = False,
 ) -> "Sqf":
-    """Stop, question and frisk dataset."""
+    """Stop, question and frisk dataset.
+
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return Sqf(split=SqfSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 

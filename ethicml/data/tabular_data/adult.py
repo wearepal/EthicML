@@ -28,7 +28,14 @@ def adult(
     binarize_race: bool = False,
     invert_s: bool = False,
 ) -> "Adult":
-    """UCI Adult dataset."""
+    """UCI Adult dataset.
+
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    :param binarize_nationality:  (Default value = False)
+    :param binarize_race:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return Adult(
         split=AdultSplits(split),
         discrete_only=discrete_only,

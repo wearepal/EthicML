@@ -82,13 +82,19 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         return self.__executable
 
     def _clone_directory(self, url: str) -> None:
-        """Clones the repo from `url` into `self._store_dir`."""
+        """Clones the repo from `url` into `self._store_dir`.
+
+        :param url:
+        """
         if not self._store_dir.exists():
             self._store_dir.mkdir()
             git.Git(self._store_dir).clone(url)
 
     def _create_venv(self, use_poetry: bool) -> None:
-        """Creates a venv based on the Pipfile in the repository."""
+        """Create a venv based on the Pipfile in the repository.
+
+        :param use_poetry: whether to use poetry instead of pipenv
+        """
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
             if use_poetry and shutil.which("poetry") is not None:  # use poetry instead of pipenv
@@ -109,7 +115,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
 
     def remove(self) -> None:
-        """Removes the directory that we created in _clone_directory()."""
+        """Remove the directory that we created in _clone_directory()."""
         try:
             shutil.rmtree(self._store_dir)
         except OSError as excep:

@@ -20,6 +20,9 @@ def flag_interface(in_algo_args: InAlgoArgs, flags: Mapping[str, Any]) -> List[s
 
     The flag interface consists of two strings, both JSON strings: the general in-algo flags
     and then the more specific flags for the algorithm.
+
+    :param in_algo_args: General flags shared by all in-process methods.
+    :param flags: Algorithm-specific flags.
     """
     return [
         json.dumps(in_algo_args, separators=(',', ':')),

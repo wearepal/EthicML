@@ -18,6 +18,10 @@ class MLP(InAlgorithm):
 
     This is a wraper around the SKLearn implementation of the MLP.
     Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
+
+    :param hidden_layer_sizes: The number of neurons in each hidden layer.
+    :param activation: The activation function to use.
+    :param seed: The seed for the random number generator.
     """
 
     is_fairness_algo: ClassVar[bool] = False
@@ -28,13 +32,6 @@ class MLP(InAlgorithm):
         hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
         seed: int = 888,
     ):
-        """Multi-Layer Perceptron.
-
-        Args:
-            hidden_layer_sizes: The number of neurons in each hidden layer.
-            activation: The activation function to use.
-            seed: The seed for the random number generator.
-        """
         self.seed = seed
         if hidden_layer_sizes is None:
             self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
@@ -59,6 +56,10 @@ class MLP(InAlgorithm):
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
-    """Create MLP model for the given parameters."""
+    """Create MLP model for the given parameters.
+
+    :param hidden_layer_sizes:
+    :param seed:
+    """
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, random_state=random_state)

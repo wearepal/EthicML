@@ -29,45 +29,39 @@ class PreAlgorithm(Algorithm, Protocol):
     def fit(self: _PA, train: DataTuple) -> Tuple[_PA, DataTuple]:
         """Fit transformer on the given data.
 
-        Args:
-            train: training data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param train: training data
+        :returns: a tuple of the pre-processed training data and the test data
         """
 
     @abstractmethod
     def transform(self, data: T) -> T:
         """Generate fair features with the given data.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param data:
+        :returns: a tuple of the pre-processed training data and the test data
         """
 
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param train: training data
+        :param test: test data
+        :returns: a tuple of the pre-processed training data and the test data
         """
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Run with reduced training set so that it finishes quicker."""
+        """Run with reduced training set so that it finishes quicker.
+
+        :param train:
+        :param test:
+        """
         train_testing = train.get_n_samples()
         return self.run(train_testing, test)
 
     @property
     def out_size(self) -> int:
-        """The number of features to generate."""
+        """Return the number of features to generate."""
         assert self._out_size is not None
         return self._out_size
 
@@ -121,12 +115,8 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
         """Generate fair features with the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param train: training data
+        :returns: a tuple of the pre-processed training data and the test data
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -159,12 +149,8 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     def transform(self, data: T) -> T:
         """Generate fair features with the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param data:
+        :returns: a tuple of the pre-processed training data and the test data
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -197,12 +183,9 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            a tuple of the pre-processed training data and the test data
+        :param train: training data
+        :param test: test data
+        :returns: a tuple of the pre-processed training data and the test data
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -244,4 +227,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
     @abstractmethod
     def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
-        """The command that will run the script."""
+        """Return the command that will run the script.
+
+        :param pre_algo_args:
+        """

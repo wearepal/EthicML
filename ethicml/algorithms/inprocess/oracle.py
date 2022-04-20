@@ -1,4 +1,4 @@
-"""How would a perfect predictor perform?"""
+"""Perfect predictors."""
 from dataclasses import dataclass
 
 from ranzen import implements

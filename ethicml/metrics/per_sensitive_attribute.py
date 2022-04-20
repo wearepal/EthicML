@@ -23,7 +23,13 @@ class MetricNotApplicable(Exception):
 def metric_per_sensitive_attribute(
     prediction: Prediction, actual: DataTuple, metric: Metric, use_sens_name: bool = True
 ) -> Dict[str, float]:
-    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
+    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute.
+
+    :param prediction:
+    :param actual:
+    :param metric:
+    :param use_sens_name:  (Default value = True)
+    """
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
             f"Metric {metric.name} is not applicable per sensitive "
@@ -74,11 +80,8 @@ def metric_per_sensitive_attribute(
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """Compute the difference in the metrics per sensitive attribute.
 
-    Args:
-        per_sens_res: dictionary of the results
-
-    Returns:
-        dictionary of differences
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of differences
     """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()
@@ -97,11 +100,8 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
 def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """Compute the ratios in the metrics per sensitive attribute.
 
-    Args:
-        per_sens_res: dictionary of the results
-
-    Returns:
-        dictionary of ratios
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of ratios
     """
     sens_values = list(per_sens_res.keys())
     sens_values.sort()

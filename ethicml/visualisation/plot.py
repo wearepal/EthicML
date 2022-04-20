@@ -247,22 +247,22 @@ def single_plot(
     This function can also be used to create figures with multiple plots on them, because it does
     not generate a Figure object itself.
 
-    Args:
-        plot: Plot object
-        results: DataFrame with the data
-        xaxis: name of column that's plotted on the x-axis
-        yaxis: name of column that's plotted on the y-axis
-        dataset: string that identifies the dataset
-        transform: string that identifies the preprocessing method, or None
-        ptype: plot type
-        legend_pos: position of the legend (or None for no legend)
-        legend_yanchor: position in the vertical direction where the legend should begin
-        markersize: size of marker
-        alternating_style: if True, entries for scatter plots are done in alternating style
-        include_nan_entries: if True, entries with NaNs still appear in the legend
-
-    Returns:
-        the legend object if something was plotted; False otherwise
+    :param plot: Plot object
+    :param results: DataFrame with the data
+    :param xaxis: name of column that's plotted on the x-axis
+    :param yaxis: name of column that's plotted on the y-axis
+    :param dataset: string that identifies the dataset
+    :param transform: string that identifies the preprocessing method, or None
+    :param ptype: plot type (Default value = "box")
+    :param legend_pos: position of the legend (or None for no legend) (Default value = "outside")
+    :param legend_yanchor: position in the vertical direction where the legend should begin (Default
+        value = 1.0)
+    :param markersize: size of marker (Default value = 6)
+    :param alternating_style: if True, entries for scatter plots are done in alternating style
+        (Default value = True)
+    :param include_nan_entries: if True, entries with NaNs still appear in the legend (Default value
+        = False)
+    :returns: the legend object if something was plotted; False otherwise
     """
     mask_for_dataset = results.index.get_level_values("dataset") == dataset
     if transform is not None:
@@ -314,17 +314,14 @@ def plot_results(
 ) -> List[Tuple[figure.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
-    Args:
-        results: a DataFrame that already contains the values of the metrics
-        metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
-        metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
-        ptype: plot type
-        save: if True, save the plot as a PDF
-        dpi: DPI of the plots
-        transforms_separately: if True, each transform gets its own plot
-
-    Returns:
-        A list of all figures and plots
+    :param results: a DataFrame that already contains the values of the metrics
+    :param metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
+    :param metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
+    :param ptype: plot type (Default value = "box")
+    :param save: if True, save the plot as a PDF (Default value = True)
+    :param dpi: DPI of the plots (Default value = 300)
+    :param transforms_separately: if True, each transform gets its own plot (Default value = True)
+    :returns: A list of all figures and plots
     """
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)

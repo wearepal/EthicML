@@ -31,7 +31,10 @@ class Categorical(nn.Module):
         self.ohe = _OneHotEncoder(n_dims=dims)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Forward pass."""
+        """Forward pass.
+
+        :param x:
+        """
         out = self.layer(x)
         if not self.training:
             out = self.ohe(out)

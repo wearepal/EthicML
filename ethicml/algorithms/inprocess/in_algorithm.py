@@ -29,11 +29,8 @@ class InAlgorithm(Algorithm, Protocol):
     def fit(self: _I, train: DataTuple) -> _I:
         """Fit Algorithm on the given data.
 
-        Args:
-            train: training data
-
-        Returns:
-            self, but trained.
+        :param train: training data
+        :returns: self, but trained.
         """
 
     @property
@@ -47,28 +44,26 @@ class InAlgorithm(Algorithm, Protocol):
     def predict(self, test: TestTuple) -> Prediction:
         """Make predictions on the given data.
 
-        Args:
-            test: data to evaluate on
-
-        Returns:
-            Prediction
+        :param test: data to evaluate on
+        :returns: Prediction
         """
 
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: training data
+        :param test: test data
+        :returns: Prediction
         """
         self.fit(train)
         return self.predict(test)
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
-        """Run with reduced training set so that it finishes quicker."""
+        """Run with reduced training set so that it finishes quicker.
+
+        :param train:
+        :param test:
+        """
         train_testing = train.get_n_samples()
         return self.run(train_testing, test)
 
@@ -123,12 +118,9 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
     def fit(self: _IA, train: DataTuple) -> _IA:
         """Fit algorithm on the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: training data
+        :param test: test data
+        :returns: Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -146,12 +138,9 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
     def predict(self, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: training data
+        :param test: test data
+        :returns: Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -171,12 +160,9 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data asynchronously.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: training data
+        :param test: test data
+        :returns: Prediction
         """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -200,4 +186,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
 
     @abstractmethod
     def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
-        """The command that will run the script."""
+        """Return the command that will run the script.
+
+        :param in_algo_args:
+        """

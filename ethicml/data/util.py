@@ -19,9 +19,11 @@ _F = TypeVar("_F", bound=Callable[..., Any])
 
 
 def deprecated(func: _F) -> Any:
-    """This is a decorator which can be used to mark functions as deprecated.
+    """Decorator which can be used to mark functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
+
+    :param func:
     """
 
     @functools.wraps(func)
@@ -52,12 +54,9 @@ LabelSpec = Mapping[str, LabelGroup]
 def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:
     """Filter the features by prefixes.
 
-    Args:
-        features: list of features names
-        prefixes: list of prefixes
-
-    Returns:
-        filtered feature names
+    :param features: list of features names
+    :param prefixes: list of prefixes
+    :returns: filtered feature names
     """
     res: List[str] = []
     for name in features:
@@ -72,13 +71,10 @@ def get_discrete_features(
 ) -> List[str]:
     """Get a list of the discrete features in a dataset.
 
-    Args:
-        all_feats: List of all features in the dataset.
-        feats_to_remove: List of features that aren't used.
-        cont_feats: List of continuous features in the dataset.
-
-    Returns:
-        List of features not marked as continuous or to be removed.
+    :param all_feats: List of all features in the dataset.
+    :param feats_to_remove: List of features that aren't used.
+    :param cont_feats: List of continuous features in the dataset.
+    :returns: List of features not marked as continuous or to be removed.
     """
     return [
         item
@@ -91,6 +87,9 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     """Group discrete features names according to the first segment of their name.
 
     Returns a list of their corresponding slices (assumes order is maintained).
+
+    :param disc_feat_names:
+    :param prefix_sep:  (Default value = "_")
     """
 
     def _first_segment(feature_name: str) -> str:
@@ -110,7 +109,10 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
 
 
 def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
-    """Flatten a dictionary of lists by joining all lists to one big list."""
+    """Flatten a dictionary of lists by joining all lists to one big list.
+
+    :param dictionary:
+    """
     if dictionary is None:
         return []
     return [x for inner_list in dictionary.values() for x in inner_list]
@@ -122,7 +124,13 @@ def reduce_feature_group(
     to_keep: Sequence[str],
     remaining_feature_name: str,
 ) -> List[str]:
-    """Drop all features in the given feature group except the ones in to_keep."""
+    """Drop all features in the given feature group except the ones in to_keep.
+
+    :param disc_feature_groups:
+    :param feature_group:
+    :param to_keep:
+    :param remaining_feature_name:
+    """
     # first set the given feature group to just the value that we want to keep
     disc_feature_groups[feature_group] = list(to_keep)
     # then add a new dummy feature to the feature group. `load_data()` will create this for us
@@ -132,7 +140,10 @@ def reduce_feature_group(
 
 
 def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
-    """Extract all the feature column names from a dictionary of label specifications."""
+    """Extract all the feature column names from a dictionary of label specifications.
+
+    :param spec:
+    """
     feature_list: List[str] = []
     for group in spec.values():
         feature_list += group.columns
@@ -140,7 +151,10 @@ def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
 
 
 def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
-    """Create label specs for the most common case where columns contain 0s and 1s."""
+    """Create label specs for the most common case where columns contain 0s and 1s.
+
+    :param label_defs:
+    """
     multiplier = 1
     label_spec = {}
     for name, columns in label_defs.items():

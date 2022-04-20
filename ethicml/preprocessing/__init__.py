@@ -1,4 +1,4 @@
-"""This moodule contains algorithms that pre-process the data in some way."""
+"""Module for algorithms that pre-process the data in some way."""
 
 from .adjust_labels import *
 from .biased_split import *

@@ -23,7 +23,12 @@ def compas(
     discrete_only: bool = False,
     invert_s: bool = False,
 ) -> "Compas":
-    """Compas (or ProPublica) dataset."""
+    """Compas (or ProPublica) dataset.
+
+    :param split:  (Default value = "Sex")
+    :param discrete_only:  (Default value = False)
+    :param invert_s:  (Default value = False)
+    """
     return Compas(split=CompasSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
