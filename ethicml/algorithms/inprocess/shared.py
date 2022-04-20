@@ -32,13 +32,13 @@ def settings_for_svm_lr(
 ) -> Tuple[float, Optional[KernelType]]:
     """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
     if C is None:
-        if classifier == ClassifierType.lr:
+        if classifier is ClassifierType.lr:
             C = LogisticRegression().C
-        elif classifier == ClassifierType.svm:
+        elif classifier is ClassifierType.svm:
             C = SVC().C
         else:
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
-        kernel = KernelType[SVC().kernel] if classifier == ClassifierType.svm else None
+        kernel = KernelType[SVC().kernel] if classifier is ClassifierType.svm else None
     return C, kernel
