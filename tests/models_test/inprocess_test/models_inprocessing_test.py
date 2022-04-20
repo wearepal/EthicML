@@ -189,7 +189,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 @pytest.fixture(scope="session")
-def kamishima_teardown() -> Generator[None, None, None]:
+def kamishima_gen() -> Generator[Kamishima]:
     """This fixtures tears down Kamishima after all tests have finished.
 
     This has to be done with a fixture because otherwise it will not happen when the test fails.
@@ -200,11 +200,11 @@ def kamishima_teardown() -> Generator[None, None, None]:
 
 
 @pytest.mark.slow
-def test_kamishima(toy_train_test: TrainTestPair, kamishima: Kamishima) -> None:
+def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
 
-    model = kamishima  # this will download the code from github and install pipenv
+    model = kamishima_gen  # this will download the code from github and install pipenv
     assert model.name == "Kamishima"
 
     assert model is not None
