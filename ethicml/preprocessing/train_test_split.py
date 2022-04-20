@@ -31,13 +31,10 @@ class DataSplitter(ABC):
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         """Split the given data.
 
-        Args:
-            data: the data to split
-            split_id: ID that makes this split unique; this affects for example the random seed
-
-        Returns:
-            A tuple consisting of two datatuples that are the result of the split and a dictionary
-            that contains information about the split that is useful for logging.
+        :param data: the data to split
+        :param split_id: ID that makes this split unique; this affects for example the random seed
+        :returns: A tuple consisting of two datatuples that are the result of the split and a
+            dictionary that contains information about the split that is useful for logging.
         """
 
 

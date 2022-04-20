@@ -23,7 +23,15 @@ class DroArgs(TypedDict):
 
 
 class DRO(InAlgorithmAsync):
-    """Implementation of https://arxiv.org/abs/1806.08010 ."""
+    """Implementation of https://arxiv.org/abs/1806.08010 .
+
+    :param dir: Directory to store the model.
+    :param eta: Tolerance.
+    :param epochs: The number of epochs to train for.
+    :param batch_size: The batch size.
+    :param network_size: The size of the network.
+    :param seed: The seed for the random number generator.
+    """
 
     is_fairness_algo: ClassVar[bool] = True
 
@@ -37,16 +45,6 @@ class DRO(InAlgorithmAsync):
         network_size: Optional[List[int]] = None,
         seed: int = 888,
     ):
-        """Initialize the Distributionally Robust Optimization method.
-
-        Args:
-            dir: Directory to store the model.
-            eta: Tolerance.
-            epochs: The number of epochs to train for.
-            batch_size: The batch size.
-            network_size: The size of the network.
-            seed: The seed for the random number generator.
-        """
         self.seed = seed
         if network_size is None:
             network_size = [50]

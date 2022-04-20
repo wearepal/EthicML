@@ -27,14 +27,11 @@ class Kamishima(InstalledModel):
 
     Based on Algo-Fairness
     https://github.com/algofairness/fairness-comparison/blob/master/fairness/algorithms/kamishima/KamishimaAlgorithm.py
+
+    :param eta: Tolerance.
     """
 
     def __init__(self, *, eta: float = 1.0):
-        """Initialize Kamishima model.
-
-        Args:
-           eta: Tolerance.
-        """
         super().__init__(
             name="Kamishima",
             dir_name="kamishima",
