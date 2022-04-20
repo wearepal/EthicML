@@ -344,6 +344,8 @@ class Adversary(nn.Module):
             raise NotImplementedError("Not implemented equalized odds yet")
         elif self.fairness is FairnessType.dp:
             x = self.adversary(x)
+        else:
+            raise NotImplementedError("Shouldn't be hit.")
         return x
 
 
@@ -362,12 +364,12 @@ class Predictor(nn.Module):
             self.predictor.add_module("single layer adversary activation", activation)
         else:
             self.predictor.add_module("adversary layer 0", nn.Linear(init_size, pred_size[0]))
-            self.predictor.add_module("adversary activation 0", nn.ReLU())
+            self.predictor.add_module("adversary activation 0", nn.Sigmoid())
             for k in range(len(pred_size) - 1):
                 self.predictor.add_module(
                     f"adversary layer {k + 1}", nn.Linear(pred_size[k], pred_size[k + 1])
                 )
-                self.predictor.add_module(f"adversary activation {k + 1}", nn.ReLU())
+                self.predictor.add_module(f"adversary activation {k + 1}", nn.Sigmoid())
             self.predictor.add_module(
                 "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
             )
