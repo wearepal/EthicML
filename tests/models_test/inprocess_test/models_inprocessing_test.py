@@ -189,7 +189,7 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 @pytest.fixture(scope="session")
-def kamishima_gen() -> Generator[Kamishima]:
+def kamishima_gen() -> Generator[Kamishima, None, None]:
     """This fixtures tears down Kamishima after all tests have finished.
 
     This has to be done with a fixture because otherwise it will not happen when the test fails.
