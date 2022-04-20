@@ -153,7 +153,7 @@ def evaluate_models(
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
-    num_cpus: Optional[int] = None,
+    num_jobs: Optional[int] = None,
     scaler: Optional[ScalerType] = None,
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -171,7 +171,7 @@ def evaluate_models(
         splitter: (optional) custom train-test splitter
         topic: (optional) a string that identifies the run; the string is prepended to the filename
         fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing
-        num_cpus: number of CPUs to use; if None, use all
+        num_jobs: number of parallel jobs; if None, the number of CPUs is used
     """
     from .parallelism import run_in_parallel
 
@@ -222,7 +222,7 @@ def evaluate_models(
         all_results.append_from_csv(csv_file)
 
     # ============================= inprocess models on untransformed =============================
-    all_predictions = run_in_parallel(inprocess_models, data_splits, num_cpus)
+    all_predictions = run_in_parallel(inprocess_models, data_splits, num_jobs)
     inprocess_untransformed = _gather_metrics(
         all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
     )
@@ -230,7 +230,7 @@ def evaluate_models(
 
     # ===================================== preprocess models =====================================
     # run all preprocess models
-    all_transformed = run_in_parallel(preprocess_models, data_splits, num_cpus)
+    all_transformed = run_in_parallel(preprocess_models, data_splits, num_jobs)
 
     # append the transformed data to `transformed_data`
     transformed_data: List[TrainTestPair] = []
@@ -255,7 +255,7 @@ def evaluate_models(
         # if not fair pipeline, run only the non-fair models on the transformed data
         run_on_transformed = [model for model in inprocess_models if not model.is_fairness_algo]
 
-    transf_preds = run_in_parallel(run_on_transformed, transformed_data, num_cpus)
+    transf_preds = run_in_parallel(run_on_transformed, transformed_data, num_jobs)
     transf_results = _gather_metrics(
         transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
     )
