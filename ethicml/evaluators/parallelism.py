@@ -22,24 +22,24 @@ DataSeq = Sequence[TrainTestPair]
 
 
 @overload
-def run_in_parallel(algos: InSeq, data: DataSeq, num_cpus: int = 0) -> InResult:
+def run_in_parallel(algos: InSeq, data: DataSeq, num_cpus: Optional[int] = None) -> InResult:
     ...
 
 
 @overload
-def run_in_parallel(algos: PreSeq, data: DataSeq, num_cpus: int = 0) -> PreResult:
+def run_in_parallel(algos: PreSeq, data: DataSeq, num_cpus: Optional[int] = None) -> PreResult:
     ...
 
 
 def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: DataSeq, num_cpus: int = 0
+    algos: Union[InSeq, PreSeq], data: DataSeq, num_cpus: Optional[int] = None
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
     Args:
         algos: list of algorithms
         data: list of pairs of data tuples (train and test)
-        num_cpus: how many processes can run in parallel at most. if zero (or negative), then
+        num_cpus: how many processes can run in parallel at most. if None, then
             there is no maximum
 
     Returns:
