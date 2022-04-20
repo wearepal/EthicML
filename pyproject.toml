@@ -133,6 +133,7 @@ disallow_untyped_defs = true
 disallow_incomplete_defs = true
 show_error_codes = true
 warn_unused_ignores = true
+mypy_path = "typings"
 
 # ===== the following modules in EthicML aren't ready to be type checked so strictly =====
 [[tool.mypy.overrides]]
@@ -150,7 +151,6 @@ module = [
     "fairlearn.*",
     "folktables.*",
     "imageio",
-    "joblib",
     "pylint.*",
     "pytest.*",
     "ray.*",

@@ -28,7 +28,7 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
     result = parallelism.run_in_parallel(
         [em.LR(), em.SVM(), em.Majority()],
         [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
-        num_cpus=2,
+        num_jobs=2,
     )
     # LR
     assert np.count_nonzero(result[0][0].hard.values == 1) == 44
