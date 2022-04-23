@@ -23,9 +23,9 @@ def crime(
 ) -> "Crime":
     """UCI Communities and Crime dataset.
 
-    :param split:  (Default value = "Race-Binary")
-    :param discrete_only:  (Default value = False)
-    :param invert_s:  (Default value = False)
+    :param split:  (Default: "Race-Binary")
+    :param discrete_only:  (Default: False)
+    :param invert_s:  (Default: False)
     """
     return Crime(split=CrimeSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 

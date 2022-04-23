@@ -36,9 +36,9 @@ def scale_continuous(
     :param dataset: Dataset object. Used to find the continuous features.
     :param datatuple: DataTuple on which to sclae the continuous features.
     :param scaler: Scaler object to scale the features. Must fit the SKLearn scaler API.
-    :param inverse: Should the scaling be reversed? (Default value = False)
+    :param inverse: Should the scaling be reversed? (Default: False)
     :param fit: If not `inverse`, should the scaler be fit to the data? If `True`, do
-        `fit_transform` operation, else just `transform`. (Default value = True)
+        `fit_transform` operation, else just `transform`. (Default: True)
     :returns: Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).
 
     Examples:

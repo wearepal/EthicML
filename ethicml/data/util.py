@@ -89,7 +89,7 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     Returns a list of their corresponding slices (assumes order is maintained).
 
     :param disc_feat_names:
-    :param prefix_sep:  (Default value = "_")
+    :param prefix_sep:  (Default: "_")
     """
 
     def _first_segment(feature_name: str) -> str:

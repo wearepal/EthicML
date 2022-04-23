@@ -30,11 +30,11 @@ def adult(
 ) -> "Adult":
     """UCI Adult dataset.
 
-    :param split:  (Default value = "Sex")
-    :param discrete_only:  (Default value = False)
-    :param binarize_nationality:  (Default value = False)
-    :param binarize_race:  (Default value = False)
-    :param invert_s:  (Default value = False)
+    :param split:  (Default: "Sex")
+    :param discrete_only:  (Default: False)
+    :param binarize_nationality:  (Default: False)
+    :param binarize_race:  (Default: False)
+    :param invert_s:  (Default: False)
     """
     return Adult(
         split=AdultSplits(split),

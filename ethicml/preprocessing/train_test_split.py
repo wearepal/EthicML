@@ -67,8 +67,8 @@ def train_test_split(
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
     :param data: data tuple to split
-    :param train_percentage: percentage for train split (Default value = 0.8)
-    :param random_seed: seed to make splitting reproducible (Default value = 0)
+    :param train_percentage: percentage for train split (Default: 0.8)
+    :param random_seed: seed to make splitting reproducible (Default: 0)
     :returns: train split and test split
     """
     # ======================== concatenate the datatuple to one dataframe =========================
@@ -160,7 +160,7 @@ def generate_proportional_split_indexes(
 
     :param data:
     :param train_percentage:
-    :param random_seed:  (Default value = 42)
+    :param random_seed:  (Default: 42)
     """
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)

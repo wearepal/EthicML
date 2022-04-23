@@ -72,8 +72,8 @@ def get_biased_subset(
     :param mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
                        factor is 0, the biased subset is maximally biased.
     :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-    :param seed: random seed for the splitting (Default value = 42)
-    :param data_efficient: if True, try to keep as many data points as possible (Default value = True)
+    :param seed: random seed for the splitting (Default: 42)
+    :param data_efficient: if True, try to keep as many data points as possible (Default: True)
     :returns: biased and unbiased dataset
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
@@ -171,8 +171,8 @@ def get_biased_and_debiased_subsets(
     :param mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
                        factor is 0, the biased subset is maximally biased.
     :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-    :param seed: random seed for the splitting (Default value = 42)
-    :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor (Default value = True)
+    :param seed: random seed for the splitting (Default: 42)
+    :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor (Default: True)
     :returns: biased and unbiased dataset
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"

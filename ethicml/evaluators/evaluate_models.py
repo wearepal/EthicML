@@ -70,11 +70,11 @@ def run_metrics(
 
     :param predictions: DataFrame with predictions
     :param actual: DataTuple with the labels
-    :param metrics: list of metrics (Default value = ())
-    :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default value = ())
-    :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default value = True)
+    :param metrics: list of metrics (Default: ())
+    :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
+    :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)
     :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
-                        If False, refer to the sensitive varibale as `S`. (Default value = True)
+                        If False, refer to the sensitive varibale as `S`. (Default: True)
     """
     result: Dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
@@ -106,8 +106,8 @@ def load_results(
 
     :param dataset_name: name of the dataset of the results
     :param transform_name: name of the transformation that was used for the results
-    :param topic: (optional) topic string of the results (Default value = None)
-    :param outdir: directory where the results are stored (Default value = Path(".") / "results")
+    :param topic: (optional) topic string of the results (Default: None)
+    :param outdir: directory where the results are stored (Default: Path(".") / "results")
     :returns: DataFrame if the file exists; None otherwise
     """
     csv_file = _result_path(outdir, dataset_name, transform_name, topic)
@@ -163,18 +163,18 @@ def evaluate_models(
 
     :param datasets: list of dataset objects
     :param *:
-    :param preprocess_models: list of preprocess model objects (Default value = ())
-    :param inprocess_models: list of inprocess model objects (Default value = ())
-    :param metrics: list of metric objects (Default value = ())
-    :param per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute (Default value = ())
-    :param repeats: number of repeats to perform for the experiments (Default value = 1)
-    :param test_mode: if True, only use a small subset of the data so that the models run faster (Default value = False)
+    :param preprocess_models: list of preprocess model objects (Default: ())
+    :param inprocess_models: list of inprocess model objects (Default: ())
+    :param metrics: list of metric objects (Default: ())
+    :param per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute (Default: ())
+    :param repeats: number of repeats to perform for the experiments (Default: 1)
+    :param test_mode: if True, only use a small subset of the data so that the models run faster (Default: False)
     :param delete_prev: False by default. If True, delete saved results in directory
-    :param splitter: (optional) custom train-test splitter (Default value = None)
-    :param topic: (optional) a string that identifies the run; the string is prepended to the filename (Default value = None)
-    :param fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing (Default value = True)
-    :param num_jobs: number of parallel jobs; if None, the number of CPUs is used (Default value = None)
-    :param scaler: Sklearn-style scaler to be used on the continuous features. (Default value = None)
+    :param splitter: (optional) custom train-test splitter (Default: None)
+    :param topic: (optional) a string that identifies the run; the string is prepended to the filename (Default: None)
+    :param fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing (Default: True)
+    :param num_jobs: number of parallel jobs; if None, the number of CPUs is used (Default: None)
+    :param scaler: Sklearn-style scaler to be used on the continuous features. (Default: None)
     """
     from .parallelism import run_in_parallel
 

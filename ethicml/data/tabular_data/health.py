@@ -23,9 +23,9 @@ def health(
 ) -> "Health":
     """Heritage Health dataset.
 
-    :param split:  (Default value = "Sex")
-    :param discrete_only:  (Default value = False)
-    :param invert_s:  (Default value = False)
+    :param split:  (Default: "Sex")
+    :param discrete_only:  (Default: False)
+    :param invert_s:  (Default: False)
     """
     return Health(split=HealthSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 

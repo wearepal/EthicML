@@ -13,7 +13,7 @@ class Heaviside(Activation):
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
         """Apply the decision function to each element of an ndarray.
 
-        :param soft_output:
+        :param soft_output: Soft predictions.
         """
 
         def _heavi(x: float) -> int:

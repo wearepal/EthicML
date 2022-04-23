@@ -94,9 +94,9 @@ class TestTuple:
     ) -> TestTuple:
         """Create a copy of the TestTuple but change the given values.
 
-        :param x:  (Default value = None)
-        :param s:  (Default value = None)
-        :param name:  (Default value = None)
+        :param x:  (Default: None)
+        :param s:  (Default: None)
+        :param name:  (Default: None)
         """
         return TestTuple(
             x=x if x is not None else self.x,
@@ -170,10 +170,10 @@ class DataTuple(TestTuple):
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values.
 
-        :param x:  (Default value = None)
-        :param s:  (Default value = None)
-        :param name:  (Default value = None)
-        :param y:  (Default value = None)
+        :param x:  (Default: None)
+        :param s:  (Default: None)
+        :param name:  (Default: None)
+        :param y:  (Default: None)
         """
         return DataTuple(
             x=x if x is not None else self.x,
@@ -204,7 +204,7 @@ class DataTuple(TestTuple):
     def get_n_samples(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
 
-        :param num: how many samples to take for subset (Default value = 500)
+        :param num: how many samples to take for subset (Default: 500)
         :returns: subset of training data
         """
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
@@ -328,7 +328,7 @@ def write_as_npz(
 
     :param data_path:
     :param data:
-    :param extra:  (Default value = None)
+    :param extra:  (Default: None)
     """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
@@ -346,8 +346,8 @@ def concat_dt(
     """Concatenate the data tuples in the given list.
 
     :param datatup_list:
-    :param axis:  (Default value = "index")
-    :param ignore_index:  (Default value = False)
+    :param axis:  (Default: 'index')
+    :param ignore_index:  (Default: False)
     """
     return DataTuple(
         x=pd.concat(
@@ -422,7 +422,7 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     You should always use this function instead of using the "constructor" directly, because this
     function checks whether the columns are correct.
 
-    :param data_frame: A dataframe to use for initialization. (Default value = None)
+    :param data_frame: A dataframe to use for initialization. (Default: None)
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
@@ -451,7 +451,7 @@ class ResultsAggregator:
         """Append (or prepend) a DataFrame to this object.
 
         :param data_frame:
-        :param prepend:  (Default value = False)
+        :param prepend:  (Default: False)
         """
         if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
@@ -463,7 +463,7 @@ class ResultsAggregator:
         """Append results from a CSV file.
 
         :param csv_file:
-        :param prepend:  (Default value = False)
+        :param prepend:  (Default: False)
         """
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
@@ -498,7 +498,7 @@ def filter_results(
 
     :param results:
     :param values:
-    :param index:  (Default value = "model")
+    :param index:  (Default: "model")
     """
     if isinstance(index, str):
         index = PandasIndex(index)
@@ -524,7 +524,7 @@ def aggregate_results(
 
     :param results:
     :param metrics:
-    :param aggregator:  (Default value = ("mean", "std"))
+    :param aggregator:  (Default: ("mean", "std"))
     """
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
 

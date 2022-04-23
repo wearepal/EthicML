@@ -22,7 +22,7 @@ def confusion_matrix(
     :param prediction:
     :param actual:
     :param pos_cls:
-    :param labels:  (Default value = None)
+    :param labels:  (Default: None)
     """
     actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[arg-type]
     _labels: np.ndarray = np.unique(actual_y) if labels is None else np.array(labels)

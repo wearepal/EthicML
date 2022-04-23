@@ -23,9 +23,9 @@ def credit(
 ) -> "Credit":
     """UCI Credit Card dataset.
 
-    :param split:  (Default value = "Sex")
-    :param discrete_only:  (Default value = False)
-    :param invert_s:  (Default value = False)
+    :param split:  (Default: "Sex")
+    :param discrete_only:  (Default: False)
+    :param invert_s:  (Default: False)
     """
     return Credit(split=CreditSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 

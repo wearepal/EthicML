@@ -164,8 +164,8 @@ class Dataset:
     def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
         """Load the dataset.
 
-        :param ordered:  (Default value = False)
-        :param labels_as_features:  (Default value = False)
+        :param ordered:  (Default: False)
+        :param labels_as_features:  (Default: False)
         """
         raise NotImplementedError("Dataset is abstract.")
 

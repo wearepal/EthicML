@@ -253,13 +253,13 @@ def single_plot(
     :param yaxis: name of column that's plotted on the y-axis
     :param dataset: string that identifies the dataset
     :param transform: string that identifies the preprocessing method, or None
-    :param ptype: plot type (Default value = "box")
-    :param legend_pos: position of the legend (or None for no legend) (Default value = "outside")
+    :param ptype: plot type (Default: "box")
+    :param legend_pos: position of the legend (or None for no legend) (Default: "outside")
     :param legend_yanchor: position in the vertical direction where the legend should begin (Default
         value = 1.0)
-    :param markersize: size of marker (Default value = 6)
+    :param markersize: size of marker (Default: 6)
     :param alternating_style: if True, entries for scatter plots are done in alternating style
-        (Default value = True)
+        (Default: True)
     :param include_nan_entries: if True, entries with NaNs still appear in the legend (Default value
         = False)
     :returns: the legend object if something was plotted; False otherwise
@@ -317,10 +317,10 @@ def plot_results(
     :param results: a DataFrame that already contains the values of the metrics
     :param metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
     :param metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
-    :param ptype: plot type (Default value = "box")
-    :param save: if True, save the plot as a PDF (Default value = True)
-    :param dpi: DPI of the plots (Default value = 300)
-    :param transforms_separately: if True, each transform gets its own plot (Default value = True)
+    :param ptype: plot type (Default: "box")
+    :param save: if True, save the plot as a PDF (Default: True)
+    :param dpi: DPI of the plots (Default: 300)
+    :param transforms_separately: if True, each transform gets its own plot (Default: True)
     :returns: A list of all figures and plots
     """
     directory = Path(".") / "plots"

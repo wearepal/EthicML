@@ -28,7 +28,7 @@ def metric_per_sensitive_attribute(
     :param prediction:
     :param actual:
     :param metric:
-    :param use_sens_name:  (Default value = True)
+    :param use_sens_name:  (Default: True)
     """
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
