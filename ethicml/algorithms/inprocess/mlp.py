@@ -58,8 +58,8 @@ class MLP(InAlgorithm):
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
     """Create MLP model for the given parameters.
 
-    :param hidden_layer_sizes:
-    :param seed:
+    :param hidden_layer_sizes: The number of neurons in each hidden layer.
+    :param seed: The seed for the random number generator.
     """
     random_state = np.random.RandomState(seed=seed)
     return MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, random_state=random_state)

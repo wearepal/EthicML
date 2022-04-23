@@ -25,15 +25,15 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
 
     Download code from given URL and create Pip environment with Pipfile found in the code.
 
-    :param name: name of the model
-    :param dir_name: where to download the code to (can be chosen freely)
-    :param top_dir: top directory of the repository where the Pipfile can be found (this is usually
-        simply the last part of the repository URL)
-    :param is_fairness_algo: if True, this object corresponds to an algorithm enforcing fairness
-    :param url: (optional) URL of the repository
-    :param executable: (optional) path to a Python executable
-    :param seed: Random seed to use for reproducibility
-    :param use_poetry: if True, will try to use poetry instead of pipenv
+    :param name: Name of the model.
+    :param dir_name: Where to download the code to (can be chosen freely).
+    :param top_dir: Top directory of the repository where the Pipfile can be found (this is usually
+        simply the last part of the repository URL).
+    :param is_fairness_algo: If True, this object corresponds to an algorithm enforcing fairness.
+    :param url: URL of the repository. (Default: None)
+    :param executable: Path to a Python executable. (Default: None.
+    :param seed: Random seed to use for reproducibility. (Default: 888)
+    :param use_poetry: If True, will try to use poetry instead of pipenv. (Default: False)
     """
 
     is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
@@ -84,7 +84,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
     def _clone_directory(self, url: str) -> None:
         """Clones the repo from `url` into `self._store_dir`.
 
-        :param url:
+        :param url: URL of the repository.
         """
         if not self._store_dir.exists():
             self._store_dir.mkdir()
@@ -93,7 +93,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
     def _create_venv(self, use_poetry: bool) -> None:
         """Create a venv based on the Pipfile in the repository.
 
-        :param use_poetry: whether to use poetry instead of pipenv
+        :param use_poetry: Whether to use poetry instead of pipenv.
         """
         venv_directory = self._code_path / ".venv"
         if not venv_directory.exists():
@@ -115,7 +115,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
             subprocess.run([sys.executable, "-m", "pipenv", "install"], env=environ, check=True)
 
     def remove(self) -> None:
-        """Remove the directory that we created in _clone_directory()."""
+        """Remove the directory that we created in :meth:`_clone_directory()`."""
         try:
             shutil.rmtree(self._store_dir)
         except OSError as excep:

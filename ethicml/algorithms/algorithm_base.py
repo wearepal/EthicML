@@ -21,7 +21,7 @@ class Algorithm(Protocol):
 
 
 class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-methods
-    """Base class of async methods; meant to be used in conjuction with :class:`Algorithm`."""
+    """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property
     def _executable(self) -> str:
@@ -38,9 +38,9 @@ class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-meth
 
         An exception is thrown if the called script failed.
 
-        :param cmd_args: list of strings that are passed as commandline arguments to the executable
-        :param env: environment variables specified as a dictionary; e.g. {"PATH": "/usr/bin"}
-        :param cwd: if not None, change working directory to the given path before running command
+        :param cmd_args: List of strings that are passed as commandline arguments to the executable.
+        :param env: Environment variables specified as a dictionary; e.g. ``{"PATH": "/usr/bin"}``.
+        :param cwd: If not None, change working directory to the given path before running command.
         """
         one_hour = 3600
         try:

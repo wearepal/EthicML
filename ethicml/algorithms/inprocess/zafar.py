@@ -45,9 +45,9 @@ class _ZafarAlgorithmBase(InstalledModel):
     ) -> None:
         """Save a DataTuple as a JSON file, which is extremely inefficient but what Zafar wants.
 
-        :param data:
-        :param file_path:
-        :param label_converter:
+        :param data: DataTuple to save.
+        :param file_path: Path to save to.
+        :param label_converter: Instance of a LabelBinarizer to convert labels to Zafar's format.
         """
         out: Dict[str, Any] = {'x': data.x.to_numpy().tolist()}
         sens_attr = data.s.columns[0]

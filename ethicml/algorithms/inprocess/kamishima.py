@@ -95,8 +95,8 @@ class Kamishima(InstalledModel):
 def _create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: Path) -> None:
     """Create a text file with the data.
 
-    :param data:
-    :param file_path:
+    :param data: Data to write to the file.
+    :param file_path: Path to the file.
     """
     if isinstance(data, DataTuple):
         result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)

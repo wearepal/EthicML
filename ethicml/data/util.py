@@ -3,6 +3,7 @@ import functools
 import warnings
 from itertools import groupby
 from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Sequence, TypeVar
+from typing_extensions import ParamSpec
 
 __all__ = [
     "LabelGroup",
@@ -15,19 +16,18 @@ __all__ = [
     "simple_spec",
 ]
 
-_F = TypeVar("_F", bound=Callable[..., Any])
+_P = ParamSpec("_P")
+_T = TypeVar("_T")
 
 
-def deprecated(func: _F) -> Any:
+def deprecated(func: Callable[_P, _T]) -> Callable[_P, _T]:
     """Decorator which can be used to mark functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
-
-    :param func:
     """
 
     @functools.wraps(func)
-    def new_func(*args: Any, **kwargs: Any) -> Any:
+    def new_func(*args: _P.args, **kwargs: _P.kwargs) -> Any:
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
             f"The {func.__name__} class is deprecated. "

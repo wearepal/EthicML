@@ -29,32 +29,32 @@ class PreAlgorithm(Algorithm, Protocol):
     def fit(self: _PA, train: DataTuple) -> Tuple[_PA, DataTuple]:
         """Fit transformer on the given data.
 
-        :param train: training data
-        :returns: a tuple of the pre-processed training data and the test data
+        :param train: Data tuple of the training data.
+        :returns: A tuple of Self and the test data.
         """
 
     @abstractmethod
     def transform(self, data: T) -> T:
         """Generate fair features with the given data.
 
-        :param data:
-        :returns: a tuple of the pre-processed training data and the test data
+        :param data: Data to transform.
+        :returns: Transformed data.
         """
 
     @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data.
 
-        :param train: training data
-        :param test: test data
-        :returns: a tuple of the pre-processed training data and the test data
+        :param train: Data tuple of the training data.
+        :param test: Data tuple of the test data.
+        :returns: A tuple of the transforme training data and the test data.
         """
 
     def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker.
 
-        :param train:
-        :param test:
+        :param train: Data tuple of the training data.
+        :param test: Data tuple of the test data.
         """
         train_testing = train.get_n_samples()
         return self.run(train_testing, test)
@@ -107,17 +107,16 @@ PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
 
 
 class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
-    """Pre-Algorithm that can be run blocking and asynchronously."""
+    """Pre-Algorithm that runs the method in a subprocess.
+
+    This is the base class for all pre-processing algorithms that run in a subprocess. The
+    advantage of this is that it allows for parallelization.
+    """
 
     model_dir: Path
 
     @implements(PreAlgorithm)
     def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
-        """Generate fair features with the given data asynchronously.
-
-        :param train: training data
-        :returns: a tuple of the pre-processed training data and the test data
-        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -147,11 +146,6 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
     @implements(PreAlgorithm)
     def transform(self, data: T) -> T:
-        """Generate fair features with the given data asynchronously.
-
-        :param data:
-        :returns: a tuple of the pre-processed training data and the test data
-        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -181,12 +175,6 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        """Generate fair features with the given data asynchronously.
-
-        :param train: training data
-        :param test: test data
-        :returns: a tuple of the pre-processed training data and the test data
-        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -229,5 +217,6 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
         """Return the command that will run the script.
 
-        :param pre_algo_args:
+        :param pre_algo_args: The Arguments that are shared among all pre-processing algorithms.
+        :return: List of strings that can be passed to ``subprocess.run``.
         """

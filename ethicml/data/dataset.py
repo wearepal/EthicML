@@ -174,8 +174,8 @@ class Dataset:
     ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs.
 
-        :param attributes:
-        :param label_type:
+        :param attributes: DataFrame containing the attributes.
+        :param label_type: Type of label to construct.
         """
         mask = None  # the mask is needed when we have to discard samples
 
@@ -218,8 +218,8 @@ class Dataset:
     def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
         """Expand a label in the form of an index into all the subfeatures.
 
-        :param label:
-        :param label_type:
+        :param label: DataFrame containing the labels.
+        :param label_type: Type of label to expand.
         """
         label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
         assert not isinstance(label_mapping, str)
