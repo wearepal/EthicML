@@ -33,7 +33,7 @@ def _lookup_table() -> Dict[str, Callable[[], Dataset]]:
 def get_dataset_obj_by_name(name: str) -> Callable[[], Dataset]:
     """Given a dataset name, get the corresponding dataset object.
 
-    :param name:
+    :param name: Name of the dataset.
     """
     lookup = _lookup_table()
     lowercase_name = name.lower()

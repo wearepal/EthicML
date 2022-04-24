@@ -35,7 +35,7 @@ def run_in_parallel(
 
     :param algos: list of algorithms
     :param data: list of pairs of data tuples (train and test)
-    :param num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs (Default value = None)
+    :param num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs (Default: None)
     :returns: list of the results
     """
     if not algos or not data:
@@ -68,7 +68,7 @@ def arrange_in_parallel(
     :param algos: list of tuples consisting of a `run_async` function of an algorithm and a name
     :param data: list of pairs of data tuples (train and test)
     :param num_jobs: number of parallel jobs. `None` means as many as available CPUs.
-        (Default value = None)
+        (Default: None)
     :returns: list of the results
     """
     runner = Parallel(n_jobs=num_jobs, verbose=10, backend="loky")

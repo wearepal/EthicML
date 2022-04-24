@@ -117,10 +117,10 @@ def compute_instance_weights(
     :param train: The training data.
     :param balance_groups: Whether to balance the groups. When False, the groups are balanced as in
         `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
-        When True, the groups are numerically balanced. (Default value = False)
+        When True, the groups are numerically balanced. (Default: False)
     :param upweight: If balance_groups is True, whether to upweight the groups, or to downweight
         them. Downweighting is done by multiplying the weights by the inverse of the group size and
-        is more numerically stable for small group sizes. (Default value = False)
+        is more numerically stable for small group sizes. (Default: False)
     :returns: A dataframe with the instance weights for each sample in the training data.
     """
     num_samples = len(train.x)

@@ -44,13 +44,13 @@ def acs_income(
 ) -> "AcsIncome":
     """Return the ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
 
-    :param root:
+    :param root: Root directory of the dataset.
     :param year:
     :param horizon:
     :param states:
-    :param split:  (Default value = "Sex")
-    :param target_threshold:  (Default value = 50_000)
-    :param discrete_only:  (Default value = False)
+    :param split:  (Default: "Sex")
+    :param target_threshold:  (Default: 50_000)
+    :param discrete_only:  (Default: False)
     """
     return AcsIncome(
         root=root,
@@ -336,8 +336,8 @@ def acs_employment(
     :param year:
     :param horizon:
     :param states:
-    :param split:  (Default value = "Sex")
-    :param discrete_only:  (Default value = False)
+    :param split:  (Default: "Sex")
+    :param discrete_only:  (Default: False)
     """
     return AcsEmployment(
         root=root,

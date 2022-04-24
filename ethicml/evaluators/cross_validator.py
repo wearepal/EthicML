@@ -212,7 +212,7 @@ class CrossValidator:
         """Run the cross validation experiments asynchronously.
 
         :param train: the training data
-        :param measures:  (Default value = None)
+        :param measures:  (Default: None)
         :returns: CVResults
         """
         from .parallelism import run_in_parallel
@@ -237,7 +237,7 @@ class CrossValidator:
         """Run the cross validation experiments.
 
         :param train: the training data
-        :param measures:  (Default value = None)
+        :param measures:  (Default: None)
         :returns: CVResults
         """
         compute_scores_and_append = _ResultsAccumulator(measures)

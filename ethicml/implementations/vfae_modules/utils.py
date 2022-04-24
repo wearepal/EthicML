@@ -23,8 +23,8 @@ def kullback_leibler(
 
     :param mu1:
     :param logvar1:
-    :param mu2:  (Default value = None)
-    :param logvar2:  (Default value = None)
+    :param mu2:  (Default: None)
+    :param logvar2:  (Default: None)
     :returns: Tensorof divergence in each dim.
     """
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])

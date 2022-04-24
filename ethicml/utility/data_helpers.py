@@ -31,7 +31,7 @@ def undo_one_hot(
     """Undo one-hot encoding.
 
     :param df:
-    :param new_column_name:  (Default value = None)
+    :param new_column_name:  (Default: None)
     """
     # we have to overwrite the column names because `idxmax` uses the column names
     df.columns = pd.Index(range(df.shape[1]))

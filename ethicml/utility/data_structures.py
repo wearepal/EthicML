@@ -92,12 +92,7 @@ class TestTuple:
         s: Optional[pd.DataFrame] = None,
         name: Optional[str] = None,
     ) -> TestTuple:
-        """Create a copy of the TestTuple but change the given values.
-
-        :param x:  (Default value = None)
-        :param s:  (Default value = None)
-        :param name:  (Default value = None)
-        """
+        """Create a copy of the TestTuple but change the given values."""
         return TestTuple(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
@@ -107,7 +102,7 @@ class TestTuple:
     def to_npz(self, data_path: Path) -> None:
         """Save TestTuple as an npz file.
 
-        :param data_path:
+        :param data_path: Path to save the npz file.
         """
         write_as_npz(
             data_path,
@@ -119,7 +114,7 @@ class TestTuple:
     def from_npz(cls, data_path: Path) -> TestTuple:
         """Load test tuple from npz file.
 
-        :param data_path:
+        :param data_path: Path to load the npz file.
         """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -168,13 +163,7 @@ class DataTuple(TestTuple):
         name: Optional[str] = None,
         y: Optional[pd.DataFrame] = None,
     ) -> DataTuple:
-        """Create a copy of the DataTuple but change the given values.
-
-        :param x:  (Default value = None)
-        :param s:  (Default value = None)
-        :param name:  (Default value = None)
-        :param y:  (Default value = None)
-        """
+        """Create a copy of the DataTuple but change the given values."""
         return DataTuple(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
@@ -185,7 +174,7 @@ class DataTuple(TestTuple):
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
         """Concatenate the dataframes in the DataTuple and then apply a function to it.
 
-        :param mapper:
+        :param mapper: A function that takes a dataframe and returns a dataframe.
         """
         self.x.columns = self.x.columns.astype(str)
         cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
@@ -204,8 +193,8 @@ class DataTuple(TestTuple):
     def get_n_samples(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
 
-        :param num: how many samples to take for subset (Default value = 500)
-        :returns: subset of training data
+        :param num: How many samples to take for subset. (Default: 500)
+        :returns: Subset of training data.
         """
         return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
 
@@ -220,7 +209,7 @@ class DataTuple(TestTuple):
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file.
 
-        :param data_path: path to the npz file.
+        :param data_path: Path to the npz file.
         """
         write_as_npz(
             data_path,
@@ -232,7 +221,7 @@ class DataTuple(TestTuple):
     def from_npz(cls, data_path: Path) -> DataTuple:
         """Load data tuple from npz file.
 
-        :param data_path:
+        :param data_path: Path to the npz file.
         """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
@@ -261,8 +250,8 @@ class Prediction:
     def get_s_subset(self, s_data: pd.DataFrame, s: int) -> Prediction:
         """Return a subset of the DataTuple where S=s.
 
-        :param s_data:
-        :param s:
+        :param s_data: Dataframe with the s-values.
+        :param s: S-value to get the subset for.
         """
         return Prediction(hard=self.hard[s_data.iloc[:, 0] == s])
 
@@ -280,7 +269,7 @@ class Prediction:
     def from_npz(npz_path: Path) -> Prediction:
         """Load prediction from npz file.
 
-        :param npz_path:
+        :param npz_path: Path to the npz file.
         """
         info = None
         if (npz_path.parent / "info.json").exists():
@@ -295,7 +284,7 @@ class Prediction:
     def to_npz(self, npz_path: Path) -> None:
         """Save prediction as npz file.
 
-        :param npz_path:
+        :param npz_path: Path to the npz file.
         """
         if self.info:
             for v in self.info.values():
@@ -326,9 +315,9 @@ def write_as_npz(
 ) -> None:
     """Write the given dataframes to an npz file.
 
-    :param data_path:
-    :param data:
-    :param extra:  (Default value = None)
+    :param data_path: Path to the npz file.
+    :param data: Dataframes to save.
+    :param extra: Extra data to save. (Default: None)
     """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
@@ -345,9 +334,9 @@ def concat_dt(
 ) -> DataTuple:
     """Concatenate the data tuples in the given list.
 
-    :param datatup_list:
-    :param axis:  (Default value = "index")
-    :param ignore_index:  (Default value = False)
+    :param datatup_list: List of data tuples to concatenate.
+    :param axis: Axis to concatenate on. (Default: 'index')
+    :param ignore_index: Ignore the index of the dataframes. (Default: False)
     """
     return DataTuple(
         x=pd.concat(
@@ -422,7 +411,7 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     You should always use this function instead of using the "constructor" directly, because this
     function checks whether the columns are correct.
 
-    :param data_frame: A dataframe to use for initialization. (Default value = None)
+    :param data_frame: A dataframe to use for initialization. (Default: None)
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
@@ -450,8 +439,8 @@ class ResultsAggregator:
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
         """Append (or prepend) a DataFrame to this object.
 
-        :param data_frame:
-        :param prepend:  (Default value = False)
+        :param data_frame: DataFrame to append.
+        :param prepend: Whether to prepend or append the dataframe. (Default: False)
         """
         if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
@@ -462,8 +451,8 @@ class ResultsAggregator:
     def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
         """Append results from a CSV file.
 
-        :param csv_file:
-        :param prepend:  (Default value = False)
+        :param csv_file: Path to the CSV file.
+        :param prepend:  (Default: False)
         """
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
@@ -473,7 +462,7 @@ class ResultsAggregator:
     def save_as_csv(self, file_path: Path) -> None:
         """Save to csv.
 
-        :param file_path:
+        :param file_path: Path to the CSV file.
         """
         # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
         self.results.reset_index(drop=False).to_csv(file_path, index=False)
@@ -496,9 +485,9 @@ def filter_results(
 ) -> Results:
     """Filter the entries based on the given values.
 
-    :param results:
-    :param values:
-    :param index:  (Default value = "model")
+    :param results: Results object to filter.
+    :param values: Values to filter on.
+    :param index: Index to filter on. (Default: "model")
     """
     if isinstance(index, str):
         index = PandasIndex(index)
@@ -508,8 +497,8 @@ def filter_results(
 def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:
     """Filter entries and change the index with a mapping.
 
-    :param results:
-    :param mapping:
+    :param results: Results object to filter.
+    :param mapping: Mapping from old index to new index.
     """
     return map_over_results_index(
         filter_results(results, mapping),
@@ -522,9 +511,10 @@ def aggregate_results(
 ) -> pd.DataFrame:
     """Aggregate results over the repeats.
 
-    :param results:
-    :param metrics:
-    :param aggregator:  (Default value = ("mean", "std"))
+    :param results: Results object containing the results to aggregate.
+    :param metrics: Metrics used for aggregation.
+    :param aggregator: Aggregator to use. The aggreators are the ones used in pandas.
+        (Default: ("mean", "std"))
     """
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
 

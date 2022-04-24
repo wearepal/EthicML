@@ -74,10 +74,10 @@ def errorbox(
     :param plot_def: a `PlotDef` that defines properties of the plot
     :param xaxis: a tuple of two strings
     :param yaxis: a tuple of two strings
-    :param firstcolor: index of the color that should be used for the first entry (Default value = 0)
-    :param firstshape: index of the shape that should be used for the first entry (Default value = 0)
-    :param markersize: size of the markers (Default value = 6)
-    :param use_cross: if True, use cross instead of boxes (Default value = False)
+    :param firstcolor: index of the color that should be used for the first entry (Default: 0)
+    :param firstshape: index of the shape that should be used for the first entry (Default: 0)
+    :param markersize: size of the markers (Default: 6)
+    :param use_cross: if True, use cross instead of boxes (Default: False)
     """
     # ================================ constants for plots ========================================
     colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
@@ -184,9 +184,9 @@ def scatter(
     :param plot_def: a `PlotDef` that defines properties of the plot
     :param xaxis: a tuple of two strings
     :param yaxis: a tuple of two strings
-    :param startindex: index of color and shape that should be used for the first entry (Default value = 0)
-    :param markersize: size of the markers (Default value = 6)
-    :param connect_dots: if True, connect the data points with a line (Default value = False)
+    :param startindex: index of color and shape that should be used for the first entry (Default: 0)
+    :param markersize: size of the markers (Default: 6)
+    :param connect_dots: if True, connect the data points with a line (Default: False)
     """
     shapes = ["o", "X", "D", "s", "^", "v", "<", ">", "*", "p", "P"]
     colors10 = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
