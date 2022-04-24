@@ -44,7 +44,7 @@ def acs_income(
 ) -> "AcsIncome":
     """Return the ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
 
-    :param root:
+    :param root: Root directory of the dataset.
     :param year:
     :param horizon:
     :param states:

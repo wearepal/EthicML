@@ -88,8 +88,9 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
 
     Returns a list of their corresponding slices (assumes order is maintained).
 
-    :param disc_feat_names:
-    :param prefix_sep:  (Default: "_")
+    :param disc_feat_names: List of discrete feature names.
+    :param prefix_sep: Separator between the prefix and the rest of the name. (Default: "_")
+    :returns: List of slices.
     """
 
     def _first_segment(feature_name: str) -> str:
@@ -109,10 +110,7 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
 
 
 def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
-    """Flatten a dictionary of lists by joining all lists to one big list.
-
-    :param dictionary:
-    """
+    """Flatten a dictionary of lists by joining all lists to one big list."""
     if dictionary is None:
         return []
     return [x for inner_list in dictionary.values() for x in inner_list]
@@ -126,10 +124,12 @@ def reduce_feature_group(
 ) -> List[str]:
     """Drop all features in the given feature group except the ones in to_keep.
 
-    :param disc_feature_groups:
-    :param feature_group:
-    :param to_keep:
-    :param remaining_feature_name:
+    :param disc_feature_groups: Dictionary of feature groups.
+    :param feature_group: Name of the feature group that will be replaced by ``to_keep``.
+    :param to_keep: List of features that will be kept in the feature group.
+    :param remaining_feature_name: Name of the dummy feature that will be used to summarize the
+        removed features.
+    :returns: Flattened version of the modified dictionary of feature groups.
     """
     # first set the given feature group to just the value that we want to keep
     disc_feature_groups[feature_group] = list(to_keep)
@@ -142,7 +142,7 @@ def reduce_feature_group(
 def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
     """Extract all the feature column names from a dictionary of label specifications.
 
-    :param spec:
+    :param spec: Dictionary of label specifications.
     """
     feature_list: List[str] = []
     for group in spec.values():
@@ -153,7 +153,8 @@ def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
 def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
     """Create label specs for the most common case where columns contain 0s and 1s.
 
-    :param label_defs:
+    :param label_defs: Mapping of label names to column names.
+    :returns: Label specifications.
     """
     multiplier = 1
     label_spec = {}
