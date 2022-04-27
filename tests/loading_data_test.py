@@ -970,6 +970,7 @@ def test_simple_spec():
     }
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("data", [Adult(), Admissions(), Compas(), Credit(), Crime(), German()])
 def test_aif_conversion(data: LoadableDataset):
     """Load a dataset in AIF form.

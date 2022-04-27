@@ -43,13 +43,12 @@ smmap2 = "3.0.1"
 folktables = "^0.0.11"
 ranzen = "^1.1.1"
 joblib = "^1.1.0"
-aif360 = { version = "^0.4.0", optional = true }
+scipy = "^1.7.2"
 omegaconf = { version = "^2.1.1", optional = true }
 
 [tool.poetry.extras]
-ci = ["fairlearn","pytest","pytest-cov","torch","cloudpickle","aif360","omegaconf"]
-all = ["fairlearn","cloudpickle","aif360"]
-
+ci = ["fairlearn","pytest","pytest-cov","torch","cloudpickle","omegaconf"]
+all = ["fairlearn","cloudpickle"]
 
 [tool.poetry.dev-dependencies]
 black = "^22.0"
@@ -63,8 +62,6 @@ pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", rev = "b8fa0ce"}
 types-Pillow = "^9.0.9"
 omegaconf = "^2.1.1"
-pyright = "^1.1.238"
-
 
 [tool.black]
 line-length = 100
