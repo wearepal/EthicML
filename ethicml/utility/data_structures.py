@@ -240,7 +240,7 @@ class Prediction:
     def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
         """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
-        self._hard = hard
+        self._hard = hard.round().astype(int)
         self._info = info if info is not None else {}
 
     def __len__(self) -> int:
