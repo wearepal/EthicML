@@ -7,12 +7,12 @@ from ranzen import implements, parsable
 
 from ethicml.utility import ClassifierType, FairnessType
 
-from .in_algorithm import InAlgoArgs, InAlgorithmAsync
+from .in_algorithm import InAlgoArgs, InAlgorithm, InAlgorithmAsync
 from .shared import flag_interface, settings_for_svm_lr
 
 __all__ = ["Agarwal"]
 
-from ethicml.utility import KernelType
+from ethicml.utility import DataTuple, KernelType, Prediction, TestTuple
 
 VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
@@ -82,6 +82,10 @@ class Agarwal(InAlgorithmAsync):
     def name(self) -> str:
         """Name of the algorithm."""
         return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"
+
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+        return self._run(train, test)
 
     @implements(InAlgorithmAsync)
     def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:

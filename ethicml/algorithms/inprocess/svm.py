@@ -47,6 +47,10 @@ class SVM(InAlgorithm):
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+        return self._run(train, test)
+
 
 def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[LinearSVC, SVC]:
     """Select the appropriate SVM model for the given parameters.

@@ -48,6 +48,7 @@ class InAlgorithm(Algorithm, Protocol):
         :returns: Predictions on the test data.
         """
 
+    @abstractmethod
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         """Run Algorithm on the given data.
 
@@ -55,6 +56,8 @@ class InAlgorithm(Algorithm, Protocol):
         :param test: Data to evaluate on.
         :returns: Predictions on the test data.
         """
+
+    def _run(self, train: DataTuple, test: TestTuple) -> Prediction:
         self.fit(train)
         return self.predict(test)
 
@@ -145,7 +148,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             return Prediction.from_npz(pred_path)
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def _run(self, train: DataTuple, test: TestTuple) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.npz"

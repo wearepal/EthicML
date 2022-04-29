@@ -6,10 +6,12 @@ from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .in_algorithm import InAlgoArgs, InAlgorithmAsync
+from .in_algorithm import InAlgoArgs, InAlgorithm, InAlgorithmAsync
 from .shared import flag_interface
 
 __all__ = ["DRO"]
+
+from ethicml.utility import DataTuple, Prediction, TestTuple
 
 
 class DroArgs(TypedDict):
@@ -67,6 +69,10 @@ class DRO(InAlgorithmAsync):
     def name(self) -> str:
         """Name of the algorithm."""
         return "Dist Robust Optim"
+
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+        return self._run(train, test)
 
     @implements(InAlgorithmAsync)
     def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:

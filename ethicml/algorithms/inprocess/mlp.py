@@ -54,6 +54,10 @@ class MLP(InAlgorithm):
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+        return self._run(train, test)
+
 
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
     """Create MLP model for the given parameters.

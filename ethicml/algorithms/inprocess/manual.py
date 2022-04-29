@@ -7,7 +7,7 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .in_algorithm import InAlgorithmDC
+from .in_algorithm import InAlgorithm, InAlgorithmDC
 
 __all__ = ["Corels"]
 
@@ -26,11 +26,11 @@ class Corels(InAlgorithmDC):
         """Name of the algorithm."""
         return "CORELS"
 
-    @implements(InAlgorithmDC)
+    @implements(InAlgorithm)
     def fit(self, train: DataTuple) -> InAlgorithmDC:
         return self
 
-    @implements(InAlgorithmDC)
+    @implements(InAlgorithm)
     def predict(self, test: TestTuple) -> Prediction:
         if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
@@ -43,3 +43,7 @@ class Corels(InAlgorithmDC):
         condition3: np.ndarray = priors > 3
         pred = np.where(condition1 | condition2 | condition3, np.ones_like(age), np.zeros_like(age))
         return Prediction(hard=pd.Series(pred))
+
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+        return self._run(train, test)

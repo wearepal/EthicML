@@ -7,8 +7,9 @@ from typing_extensions import Final
 import numpy as np
 import pandas as pd
 import pytest
+from ranzen import implements
 
-from ethicml import DataTuple, InAlgoArgs, InAlgorithmAsync, Prediction, TestTuple
+from ethicml import DataTuple, InAlgoArgs, InAlgorithm, InAlgorithmAsync, Prediction, TestTuple
 
 NPZ: Final[str] = "test.npz"
 
@@ -40,6 +41,10 @@ def test_simple_saving() -> None:
         @property
         def name(self) -> str:
             return "Check equality"
+
+        @implements(InAlgorithm)
+        def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+            return self._run(train, test)
 
         def _script_command(self, in_algo_args: InAlgoArgs):
             """Check if the dataframes loaded from the files are the same as the original ones."""

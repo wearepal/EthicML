@@ -234,6 +234,10 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         def name(self) -> str:
             return "local installed LR"
 
+        @implements(InAlgorithm)
+        def run(self, train: DataTuple, test: DataTuple) -> Prediction:
+            return self._run(train, test)
+
         @implements(InAlgorithmAsync)
         def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
             assert in_algo_args["mode"] == "run", "model doesn’t support the fit/predict split yet"
