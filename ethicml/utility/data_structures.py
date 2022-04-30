@@ -327,9 +327,9 @@ def write_as_npz(
     column_names: Dict[str, np.ndarray] = {}
     for entry, values in data.items():
         if isinstance(values, pd.DataFrame):
-            column_names[f"{entry}_names"] = np.array(values.columns.tolist()) 
+            column_names[f"{entry}_names"] = np.array(values.columns.tolist())
         else:
-            column_names[f"{entry}_names"] = np.array([values.name]) 
+            column_names[f"{entry}_names"] = np.array([values.name])
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 

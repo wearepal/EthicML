@@ -58,7 +58,7 @@ class VFAENetwork(nn.Module):
         :param x:
         :param s:
         """
-        return self.z1_encoder(torch.cat((x, s), 1))
+        return self.z1_encoder(torch.cat((x, s.view(-1, 1)), 1))
 
     def encode_z2(self, z1: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
         """Encode Z2.
@@ -66,7 +66,7 @@ class VFAENetwork(nn.Module):
         :param z1:
         :param y:
         """
-        return self.z2_encoder(torch.cat((z1, y), 1))
+        return self.z2_encoder(torch.cat((z1, y.view(-1, 1)), 1))
 
     def decode_z1(self, z2: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
         """Decode Z1.
@@ -74,7 +74,7 @@ class VFAENetwork(nn.Module):
         :param z2:
         :param y:
         """
-        return self.z1_decoder(torch.cat((z2, y), 1))
+        return self.z1_decoder(torch.cat((z2, y.view(-1, 1)), 1))
 
     @staticmethod
     def reparameterize(mean: Tensor, logvar: Tensor) -> Tensor:

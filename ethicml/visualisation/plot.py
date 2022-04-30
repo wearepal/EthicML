@@ -155,12 +155,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     s_0_label = s_values.index.min()
     s_1_label = s_values.index.max()
 
-    y_s0 = (
-        data.y[data.s == 0].value_counts() / data.y[data.s == 0].count()
-    )
-    y_s1 = (
-        data.y[data.s == 1].value_counts() / data.y[data.s == 1].count()
-    )
+    y_s0 = data.y[data.s == 0].value_counts() / data.y[data.s == 0].count()
+    y_s1 = data.y[data.s == 1].value_counts() / data.y[data.s == 1].count()
 
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
@@ -172,7 +168,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,
+        height=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -180,7 +176,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,
+        height=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -188,18 +184,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,
+        height=y_s0[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,
+        bottom=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,
+        height=y_s1[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,
+        bottom=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C3",

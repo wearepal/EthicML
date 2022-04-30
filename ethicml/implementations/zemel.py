@@ -183,8 +183,8 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
         args=(
             training_nonsensitive,
             training_sensitive,
-            ytrain_nonsensitive[:, 0],
-            ytrain_sensitive[:, 0],
+            ytrain_nonsensitive,
+            ytrain_sensitive,
             flags["clusters"],
             flags["Ax"],
             flags["Ay"],

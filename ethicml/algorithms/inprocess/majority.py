@@ -1,5 +1,6 @@
 """Simply returns the majority label from the train set."""
 from dataclasses import dataclass
+
 import pandas as pd
 from ranzen import implements
 

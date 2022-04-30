@@ -348,16 +348,16 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
         train_y = data.y.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert train_x.shape == (len(train_inds), data.x.shape[1])
-        assert train_s.shape == (len(train_inds), )
-        assert train_y.shape == (len(train_inds), )
+        assert train_s.shape == (len(train_inds),)
+        assert train_y.shape == (len(train_inds),)
 
         val_x = data.x.iloc[val_inds].reset_index(drop=True)
         val_s = data.s.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
         val_y = data.y.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert val_x.shape == (len(val_inds), data.x.shape[1])
-        assert val_s.shape == (len(val_inds), )
-        assert val_y.shape == (len(val_inds), )
+        assert val_s.shape == (len(val_inds),)
+        assert val_y.shape == (len(val_inds),)
 
         yield DataTuple(
             x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"

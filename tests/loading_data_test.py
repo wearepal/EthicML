@@ -626,8 +626,8 @@ def test_synth_data_shape(
     dataset = em.synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
-    assert (samples, ) == data.s.shape
-    assert (samples, ) == data.y.shape
+    assert (samples,) == data.s.shape
+    assert (samples,) == data.y.shape
 
     assert len(dataset.ordered_features["x"]) == 4
     assert len(dataset.discrete_features) == 0

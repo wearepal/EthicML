@@ -26,7 +26,7 @@ class TestDataset(Dataset):
     def __init__(self, data: TestTuple):
         super().__init__()
         self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(data)
-        self.s_dim = 1
+        self.sdim = 1
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
         """Implement __getitem__ magic method."""
@@ -49,7 +49,7 @@ class CustomDataset(Dataset):
         super().__init__()
         test = data.remove_y()
         self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(test)
-        self.s_dim = 1
+        self.sdim = 1
         self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[type-var]
         self.ydim = 1
         self.y_names = str(data.y.name)

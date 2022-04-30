@@ -41,7 +41,7 @@ def train_model(
         data_y = data_y.to("cpu")
         optimizer.zero_grad()
         y_prob = model.forward(data_x)
-        loss = model.loss(y_prob, data_y)
+        loss = model.loss(y_prob.squeeze(-1), data_y)
         loss.backward()
         optimizer.step()
         train_loss += loss.item()
