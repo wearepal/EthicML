@@ -47,12 +47,12 @@ def train_model(
         train_loss += loss.item()
         if batch_idx % 100 == 0:
             print(
-                f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"  # type: ignore[arg-type]
+                f"train Epoch: {epoch} [{batch_idx * len(data_x)}/{len(train_loader.dataset)}"
                 f"\t({100. * batch_idx / len(train_loader):.0f}%)]"
                 f"\tLoss: {loss.item() / len(data_x):.6f}"
             )
 
-    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")  # type: ignore[arg-type]
+    print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
 
 
 def fit(train: DataTuple, args: DroArgs) -> DROClassifier:

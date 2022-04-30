@@ -17,14 +17,8 @@ def test_simple_saving() -> None:
     """Tests that a DataTuple can be saved."""
     data_tuple = DataTuple(
         x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0])}),
-        s=pd.DataFrame(
-            {
-                "b1": np.array([18, -3, int(1e10)]),
-                "b2": np.array([1, 1, -1]),
-                "b3": np.array([0, 1, 0]),
-            }
-        ),
-        y=pd.DataFrame({"c1": np.array([-2.0, -3.0, np.nan]), "c3": np.array([0.0, 1.0, 0.0])}),
+        s=pd.Series([18, -3, int(1e10)], name="b1"),
+        y=pd.Series([0, 1, 0], name="c3"),
         name="test data",
     )
 
@@ -46,14 +40,14 @@ def test_simple_saving() -> None:
             assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
             loaded = DataTuple.from_npz(Path(in_algo_args["train"]))
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
-            pd.testing.assert_frame_equal(data_tuple.s, loaded.s)
-            pd.testing.assert_frame_equal(data_tuple.y, loaded.y)
+            pd.testing.assert_series_equal(data_tuple.s, loaded.s)
+            pd.testing.assert_series_equal(data_tuple.y, loaded.y)
             # write a file for the predictions
-            np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["x"])
+            np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["y"])
             return ["-c", "pass"]
 
-    data_x = CheckEquality().run(data_tuple, data_tuple)
-    pd.testing.assert_series_equal(data_tuple.x["a1"], data_x.hard, check_names=False)
+    data_y = CheckEquality().run(data_tuple, data_tuple)
+    pd.testing.assert_series_equal(data_tuple.y, data_y.hard, check_names=False)
 
 
 def test_predictions_loaded(temp_dir: Path) -> None:
@@ -84,8 +78,8 @@ def test_dataset_name_none() -> None:
     """Tests that a DataTuple can be saved without the name property."""
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=["a1"]),
-        s=pd.DataFrame([4.0], columns=["b2"]),
-        y=pd.DataFrame([6.0], columns=["c3"]),
+        s=pd.Series([4.0], name="b2"),
+        y=pd.Series([6.0], name="c3"),
         name=None,
     )
     with TemporaryDirectory() as tmpdir:
@@ -96,15 +90,15 @@ def test_dataset_name_none() -> None:
         reloaded = DataTuple.from_npz(path)
     assert reloaded.name is None
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
-    pd.testing.assert_frame_equal(datatup.s, reloaded.s)
-    pd.testing.assert_frame_equal(datatup.y, reloaded.y)
+    pd.testing.assert_series_equal(datatup.s, reloaded.s)
+    pd.testing.assert_series_equal(datatup.y, reloaded.y)
 
 
 def test_dataset_name_with_spaces() -> None:
     """Tests that a dataset name can contain spaces and special chars."""
     name = "This is a very@#$%^&*((())) complicated name"
     datatup = TestTuple(
-        x=pd.DataFrame([3.0], columns=["a1"]), s=pd.DataFrame([4.0], columns=["b2"]), name=name
+        x=pd.DataFrame([3.0], columns=["a1"]), s=pd.Series([4.0], name="b2"), name=name
     )
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
@@ -114,15 +108,15 @@ def test_dataset_name_with_spaces() -> None:
         reloaded = TestTuple.from_npz(path)
     assert name == reloaded.name
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
-    pd.testing.assert_frame_equal(datatup.s, reloaded.s)
+    pd.testing.assert_series_equal(datatup.s, reloaded.s)
 
 
 def test_apply_to_joined_df() -> None:
     """Tests apply_to_joined_df_function."""
     datatup = DataTuple(
         x=pd.DataFrame([3.0], columns=["a1"]),
-        s=pd.DataFrame([4.0], columns=["b2"]),
-        y=pd.DataFrame([6.0], columns=["c3"]),
+        s=pd.Series([4.0], name="b2"),
+        y=pd.Series([6.0], name="c3"),
         name=None,
     )
 
@@ -131,16 +125,16 @@ def test_apply_to_joined_df() -> None:
 
     result = datatup.apply_to_joined_df(_identity)
     pd.testing.assert_frame_equal(datatup.x, result.x)
-    pd.testing.assert_frame_equal(datatup.s, result.s)
-    pd.testing.assert_frame_equal(datatup.y, result.y)
+    pd.testing.assert_series_equal(datatup.s, result.s)
+    pd.testing.assert_series_equal(datatup.y, result.y)
 
 
 def test_data_tuple_len() -> None:
     """Test DataTuple len property."""
     datatup_unequal_len = DataTuple(
         x=pd.DataFrame([3.0, 2.0], columns=["a1"]),
-        s=pd.DataFrame([4.0], columns=["b2"]),
-        y=pd.DataFrame([6.0], columns=["c3"]),
+        s=pd.Series([4.0], name="b2"),
+        y=pd.Series([6.0], name="c3"),
         name=None,
     )
     with pytest.raises(AssertionError):
@@ -148,8 +142,8 @@ def test_data_tuple_len() -> None:
 
     datatup_equal_len = DataTuple(
         x=pd.DataFrame([3.0, 2.0, 1.0], columns=["a1"]),
-        s=pd.DataFrame([4.0, 5.0, 9.0], columns=["b2"]),
-        y=pd.DataFrame([6.0, 4.2, 6.7], columns=["c3"]),
+        s=pd.Series([4.0, 5.0, 9.0], name="b2"),
+        y=pd.Series([6.0, 4.2, 6.7], name="c3"),
         name=None,
     )
     assert len(datatup_equal_len) == 3

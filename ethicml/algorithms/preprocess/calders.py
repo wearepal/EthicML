@@ -51,11 +51,8 @@ class Calders(PreAlgorithm):
 def _calders_algorithm(
     dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int
 ) -> Tuple[DataTuple, TestTuple]:
-    s_col = dataset.s.columns[0]
-    y_col = dataset.y.columns[0]
-
-    s_vals: List[int] = list(map(int, dataset.s[s_col].unique()))
-    y_vals: List[int] = list(map(int, dataset.y[y_col].unique()))
+    s_vals: List[int] = list(map(int, dataset.s.unique()))
+    y_vals: List[int] = list(map(int, dataset.y.unique()))
 
     assert len(s_vals) == 2
     assert len(y_vals) == 2
@@ -68,7 +65,7 @@ def _calders_algorithm(
     groups = ((s_0, y_0), (s_0, y_1), (s_1, y_0), (s_1, y_1))
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
-        s_y_mask = (dataset.s[s_col] == s) & (dataset.y[y_col] == y)
+        s_y_mask = (dataset.s == s) & (dataset.y == y)
         data[(s, y)] = DataTuple(
             x=dataset.x.loc[s_y_mask].reset_index(drop=True),
             s=dataset.s.loc[s_y_mask].reset_index(drop=True),
@@ -114,7 +111,7 @@ def _calders_algorithm(
     num_to_swap = round(
         (adv_group_len * all_disadvantaged - dis_group_good_len * all_advantaged) / len(dataset)
     )
-    data[dis_group].y.iloc[:num_to_swap] = good_class
-    data[adv_group].y.iloc[:num_to_swap] = bad_class
+    data[dis_group].y.iloc[:num_to_swap] = good_class  # type: ignore[call-overload]
+    data[adv_group].y.iloc[:num_to_swap] = bad_class  # type: ignore[call-overload]
 
     return concat_dt(list(data.values())), test

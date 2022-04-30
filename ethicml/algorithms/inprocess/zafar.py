@@ -50,13 +50,11 @@ class _ZafarAlgorithmBase(InstalledModel):
         :param label_converter: Instance of a LabelBinarizer to convert labels to Zafar's format.
         """
         out: Dict[str, Any] = {'x': data.x.to_numpy().tolist()}
-        sens_attr = data.s.columns[0]
         out["sensitive"] = {}
-        out["sensitive"][sens_attr] = data.s[sens_attr].to_numpy().tolist()
+        out["sensitive"][data.s.name] = data.s.to_numpy().tolist()
         if isinstance(data, DataTuple):
             data_converted = label_converter.adjust(data)
-            class_attr = data.y.columns[0]
-            out["class"] = (2 * data_converted.y[class_attr].to_numpy() - 1).tolist()
+            out["class"] = (2 * data_converted.y.to_numpy() - 1).tolist()
         else:
             out["class"] = [-1 for _ in range(data.x.shape[0])]
         with file_path.open("w") as out_file:

@@ -78,8 +78,9 @@ def get_biased_subset(
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
     assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
-    s_name = data.s.columns[0]
-    y_name = data.y.columns[0]
+    s_name = data.s.name
+    y_name = data.y.name
+    assert isinstance(s_name, str) and isinstance(y_name, str)
 
     normal_subset, for_biased_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
 
@@ -107,7 +108,7 @@ def get_biased_subset(
 
     if mix_fact == 0.0:
         # s and y should be very correlated in the biased subset
-        assert all(biased_subset.s[s_name] == biased_subset.y[y_name])
+        assert all(biased_subset.s == biased_subset.y)
 
     biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
     normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")
@@ -177,8 +178,9 @@ def get_biased_and_debiased_subsets(
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
     assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
-    s_name = data.s.columns[0]
-    y_name = data.y.columns[0]
+    s_name = data.s.name
+    y_name = data.y.name
+    assert isinstance(s_name, str) and isinstance(y_name, str)
     sy_equal, sy_opposite = _get_sy_equal_and_opp(data, s_name, y_name)
 
     # how much of sy_equal should be reserved for the biased subset:
@@ -220,7 +222,7 @@ def get_biased_and_debiased_subsets(
     min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
 
     def _get_equal_sized_subset(df: pd.DataFrame) -> pd.DataFrame:
-        return df.sample(n=min_size, random_state=seed)
+        return df.sample(n=min_size, random_state=seed)  # type: ignore[return-value]
 
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
@@ -229,11 +231,11 @@ def get_biased_and_debiased_subsets(
     )
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.5
+    assert abs(debiased_subset.s.corr(debiased_subset.y)) < 0.5
 
     if mixing_factor == 0.0:
         # s and y should be very correlated in the biased subset
-        assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
+        assert biased_subset.s.corr(biased_subset.y) > 0.99
 
     biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
     debiased_subset = debiased_subset.replace(name=f"{data.name} - Debiased (tm={mixing_factor})")

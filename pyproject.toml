@@ -53,13 +53,13 @@ all = ["fairlearn","cloudpickle"]
 [tool.poetry.dev-dependencies]
 black = "^22.0"
 isort = "5.10.1"
-mypy = ">=0.931"
+mypy = ">=0.950"
 pre-commit = "^2.18.1"
 pydocstyle = "^6.0.0"
 pylint = "^2.13.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
-python-type-stubs = {git = "https://github.com/predictive-analytics-lab/python-type-stubs.git", rev = "b8fa0ce"}
+python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "52ba69e"}
 types-Pillow = "^9.0.9"
 omegaconf = "^2.1.1"
 
@@ -149,6 +149,7 @@ module = [
     "pylint.*",
     "pytest.*",
     "setuptools.*",
+    "scipy.spatial.distance",
     "sklearn.*",
     "torch.*",
     "tqdm.*"

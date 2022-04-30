@@ -161,9 +161,8 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 428
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:

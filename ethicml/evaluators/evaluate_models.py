@@ -38,10 +38,8 @@ def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[
     :param metrics:
     :param train:
     """
-    poss_values: List[str] = []
-    for col in train.s.columns:
-        uniques = train.s[col].unique()
-        poss_values.extend(f"{col}_{unique}" for unique in uniques)
+    
+    poss_values = [f"{train.s.name}_{unique}" for unique in train.s.unique()]
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 

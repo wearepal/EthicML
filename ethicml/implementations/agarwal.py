@@ -58,6 +58,7 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
         fairness_class = EqualizedOdds()
 
     if classifier_type is ClassifierType.svm:
+        assert kernel_type is not None
         model = select_svm(C=args["C"], kernel=kernel_type, seed=args["seed"])
     else:
         random_state = np.random.RandomState(seed=args["seed"])
@@ -66,15 +67,15 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
         )
 
     data_x = train.x
-    data_y = train.y[train.y.columns[0]]
-    data_a = train.s[train.s.columns[0]]
+    data_y = train.y
+    data_a = train.s
 
     exponentiated_gradient = ExponentiatedGradient(
         model, constraints=fairness_class, eps=args["eps"], T=args["iters"]
     )
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
-    min_class_label = train.y[train.y.columns[0]].min()
+    min_class_label = train.y.min()
     exponentiated_gradient.min_class_label = min_class_label
 
     return exponentiated_gradient

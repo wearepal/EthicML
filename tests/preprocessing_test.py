@@ -210,8 +210,8 @@ def test_biased_split():
     """Test biased split."""
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
+        s=pd.Series([1] * 750 + [0] * 250, name="sens="),
+        y=pd.Series([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, name="label<"),
         name="TestData",
     )
 
@@ -219,8 +219,8 @@ def test_biased_split():
     biased1, subset = em.get_biased_subset(data, mixing_factor=0.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (313, 1)
-    assert biased1.y.shape == (313, 1)
+    assert biased1.s.shape == (313, )
+    assert biased1.y.shape == (313, )
     assert (biased1.s.to_numpy() == biased1.y.to_numpy()).all()
     assert biased1.name == "TestData - Biased (tm=0.0)"
 
@@ -239,12 +239,12 @@ def test_biased_split():
     )
     # expected behavior: in biased2, s=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    assert biased2.s.shape == (313, 1)
-    assert biased2.y.shape == (313, 1)
+    assert biased2.s.shape == (313, )
+    assert biased2.y.shape == (313, )
     assert (biased2.s.to_numpy() == biased2.y.to_numpy()).all()
 
-    assert debiased.s.shape == (374, 1)
-    assert debiased.y.shape == (374, 1)
+    assert debiased.s.shape == (374, )
+    assert debiased.y.shape == (374, )
     # for the debiased subset, s=y half of the time
     count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
@@ -277,8 +277,8 @@ def test_biased_split():
     biased2_mean = (biased2.s.to_numpy() == biased2.y.to_numpy()).mean()
     assert biased2_mean == approx(data_mean, abs=0.01)
 
-    assert debiased.s.shape == (374, 1)
-    assert debiased.y.shape == (374, 1)
+    assert debiased.s.shape == (374, )
+    assert debiased.y.shape == (374, )
     # for the debiased subset, s=y half of the time
     count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
@@ -287,8 +287,8 @@ def test_biased_split():
     biased1, subset = em.get_biased_subset(data, mixing_factor=1.0, unbiased_pcnt=0.5)
     # expected behavior: in biased1, s!=y everywhere; `subset` is just a subset of `data`
 
-    assert biased1.s.shape == (188, 1)
-    assert biased1.y.shape == (188, 1)
+    assert biased1.s.shape == (188, )
+    assert biased1.y.shape == (188, )
     assert (biased1.s.to_numpy() != biased1.y.to_numpy()).all()
 
     assert subset.s.shape[0] == approx(500, abs=4)
@@ -303,12 +303,12 @@ def test_biased_split():
     )
     # expected behavior: in biased2, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    assert biased2.s.shape == (188, 1)
-    assert biased2.y.shape == (188, 1)
+    assert biased2.s.shape == (188, )
+    assert biased2.y.shape == (188, )
     assert (biased2.s.to_numpy() != biased2.y.to_numpy()).all()
 
-    assert debiased.s.shape == (374, 1)
-    assert debiased.y.shape == (374, 1)
+    assert debiased.s.shape == (374, )
+    assert debiased.y.shape == (374, )
     # for the debiased subset, s=y half of the time
     count = np.count_nonzero(debiased.s.to_numpy() == debiased.y.to_numpy())
     assert count == 374 // 2
@@ -318,8 +318,8 @@ def test_biased_split_sizes():
     """Test biased split sizes."""
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["sens="]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, columns=["label<"]),
+        s=pd.Series([1] * 750 + [0] * 250, name="sens="),
+        y=pd.Series([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, name="label<"),
         name="TestData",
     )
 
@@ -343,8 +343,8 @@ def test_biased_split_nonbinary():
     # generate data that uses -1 and 1 instead of 0 and 1 for s and y
     data = DataTuple(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
-        s=pd.DataFrame([1] * 750 + [-1] * 250, columns=["sens="]),
-        y=pd.DataFrame([1] * 500 + [-1] * 250 + [1] * 125 + [-1] * 125, columns=["label<"]),
+        s=pd.Series([1] * 750 + [-1] * 250, name="sens="),
+        y=pd.Series([1] * 500 + [-1] * 250 + [1] * 125 + [-1] * 125, name="label<"),
         name="TestData",
     )
 

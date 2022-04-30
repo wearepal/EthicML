@@ -51,10 +51,10 @@ class Hardt(PostAlgorithm):
 
     def _fit(self, train_predictions: Prediction, train: DataTuple) -> OptimizeResult:
         # compute basic statistics
-        fraction_s0 = (train.s[train.s.columns[0]].to_numpy() == 0).mean()
+        fraction_s0 = (train.s.to_numpy() == 0).mean()
         fraction_s1 = 1 - fraction_s0
 
-        s_col = train.s.columns[0]
+        s_col = train.s.name
         tprs = metric_per_sensitive_attribute(train_predictions, train, TPR())
         tpr0 = tprs[f"{s_col}_0"]
         tpr1 = tprs[f"{s_col}_1"]
@@ -95,8 +95,8 @@ class Hardt(PostAlgorithm):
         b_ub: np.ndarray = np.array([1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0], dtype=np.float64)
 
         # Create boolean conditioning vectors for protected groups
-        mask_s1 = train.s[train.s.columns[0]].to_numpy() == 1
-        mask_s0 = train.s[train.s.columns[0]].to_numpy() == 0
+        mask_s1 = train.s.to_numpy() == 1
+        mask_s0 = train.s.to_numpy() == 0
 
         train_preds_numpy: np.ndarray = train_predictions.hard.to_numpy()
 
@@ -152,8 +152,8 @@ class Hardt(PostAlgorithm):
         sp2p, sn2p, op2p, on2p = model_params.x
 
         # Create boolean conditioning vectors for protected groups
-        mask_s1 = test.s[test.s.columns[0]].to_numpy() == 1
-        mask_s0 = test.s[test.s.columns[0]].to_numpy() == 0
+        mask_s1 = test.s.to_numpy() == 1
+        mask_s0 = test.s.to_numpy() == 0
 
         test_preds_numpy: np.ndarray = test_predictions.hard.to_numpy()
 

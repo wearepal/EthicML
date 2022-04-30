@@ -1,6 +1,5 @@
 """Simply returns the majority label from the train set."""
 from dataclasses import dataclass
-
 import pandas as pd
 from ranzen import implements
 
@@ -21,8 +20,8 @@ class Majority(InAlgorithmDC):
         return "Majority"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple) -> InAlgorithmDC:
-        self.maj = train.y.mode().iloc[0].to_numpy()  # type: ignore[attr-defined]
+    def fit(self, train: DataTuple) -> "Majority":
+        self.maj = train.y.mode(dropna=True).to_numpy()
         return self
 
     @implements(InAlgorithmDC)
@@ -31,5 +30,5 @@ class Majority(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        maj = train.y.mode().iloc[0].to_numpy()  # type: ignore[attr-defined]
+        maj = train.y.mode(dropna=True).to_numpy()
         return Prediction(hard=pd.Series(maj.repeat(len(test.x))))

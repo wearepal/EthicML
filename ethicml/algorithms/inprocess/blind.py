@@ -34,4 +34,4 @@ class Blind(InAlgorithmDC):
     def predict(self, test: TestTuple) -> Prediction:
         random = np.random.RandomState(self.seed)
 
-        return Prediction(hard=pd.Series(random.choice(self.vals.T.to_numpy()[0], test.x.shape[0])))
+        return Prediction(hard=pd.Series(random.choice(self.vals.to_numpy(), test.x.shape[0])))

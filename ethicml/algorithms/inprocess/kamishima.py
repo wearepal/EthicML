@@ -58,7 +58,7 @@ class Kamishima(InstalledModel):
     def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Optional[Path] = None) -> _FitInfo:
         train_path = tmp_path / "train.txt"
         _create_file_in_kamishima_format(train, train_path)
-        min_class_label: int = train.y[train.y.columns[0]].min()
+        min_class_label: int = train.y.min()
         model_path = (model_dir if model_dir is not None else tmp_path) / "model"
 
         script = self._code_path / "train_pr.py"

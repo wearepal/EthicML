@@ -32,11 +32,11 @@ class Corels(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        if test.name is None or "Compas" not in test.name or "sex" not in test.s.columns:
+        if test.name is None or "Compas" not in test.name or test.s.name != "sex":
             raise RuntimeError("The Corels algorithm only works on the COMPAS dataset")
         age = test.x["age-num"].to_numpy()
         priors = test.x["priors-count"].to_numpy()
-        sex = test.s["sex"].to_numpy()
+        sex = test.s.to_numpy()
         male = 1
         condition1 = (age >= 18) & (age <= 20) & (sex == male)
         condition2 = (age >= 21) & (age <= 23) & (priors >= 2) & (priors <= 3)

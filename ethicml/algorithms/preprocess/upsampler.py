@@ -2,7 +2,7 @@
 import itertools
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Hashable, List, Optional, Tuple
 
 import pandas as pd
 from ranzen import enum_name_str, implements
@@ -58,22 +58,23 @@ class Upsampler(PreAlgorithm):
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     """Given 2 datatuples, concatenate them and shuffle."""
-    assert (first_dt.x.columns == second_dt.x.columns).all()
-    assert (first_dt.s.columns == second_dt.s.columns).all()
-    assert (first_dt.y.columns == second_dt.y.columns).all()
+    assert (first_dt.x.columns == second_dt.x.columns).all()  # type: ignore[attr-defined]
+    assert first_dt.s.name == second_dt.s.name
+    assert first_dt.y.name == second_dt.y.name
 
     x_columns: pd.Index = first_dt.x.columns
-    s_columns: pd.Index = first_dt.s.columns
-    y_columns: pd.Index = first_dt.y.columns
+    s_column: Optional[Hashable] = first_dt.s.name
+    y_column: Optional[Hashable] = first_dt.y.name
+    assert isinstance(s_column, str) and isinstance(y_column, str)
 
     a_combined: pd.DataFrame = pd.concat([first_dt.x, first_dt.s, first_dt.y], axis="columns")
     b_combined: pd.DataFrame = pd.concat([second_dt.x, second_dt.s, second_dt.y], axis="columns")
 
-    combined: pd.DataFrame = pd.concat([a_combined, b_combined], axis="index")
-    combined = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)
+    combined = pd.concat([a_combined, b_combined], axis="index")
+    combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)  # type: ignore[assignment]
 
     return DataTuple(
-        x=combined[x_columns], s=combined[s_columns], y=combined[y_columns], name=first_dt.name
+        x=combined[x_columns], s=combined[s_column], y=combined[y_column], name=first_dt.name
     )
 
 
@@ -92,17 +93,14 @@ def upsample(
     :param seed: Seed for the upsampling.
     :param name: Name of the upsampling strategy.
     """
-    s_col = dataset.s.columns[0]
-    y_col = dataset.y.columns[0]
-
-    s_vals: List[int] = list(map(int, dataset.s[s_col].unique()))
-    y_vals: List[int] = list(map(int, dataset.y[y_col].unique()))
+    s_vals: List[int] = list(map(int, dataset.s.unique()))
+    y_vals: List[int] = list(map(int, dataset.y.unique()))
 
     groups = itertools.product(s_vals, y_vals)
 
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
-        s_y_mask = (dataset.s[s_col] == s) & (dataset.y[y_col] == y)
+        s_y_mask = (dataset.s == s) & (dataset.y == y)
         data[(s, y)] = DataTuple(
             x=dataset.x.loc[s_y_mask].reset_index(drop=True),
             s=dataset.s.loc[s_y_mask].reset_index(drop=True),
@@ -123,26 +121,28 @@ def upsample(
             s_val: int = key[0]
             y_val: int = key[1]
 
-            y_eq_y = dataset.y.loc[dataset.y[y_col] == y_val].count().to_numpy()[0]
-            s_eq_s = dataset.s.loc[dataset.s[s_col] == s_val].count().to_numpy()[0]
+            y_eq_y = dataset.y.loc[dataset.y == y_val].count()
+            s_eq_s = dataset.s.loc[dataset.s == s_val].count()
 
-            num_samples = dataset.y.count().to_numpy()[0]
-            num_batch = val.y.count().to_numpy()[0]
+            num_samples = dataset.y.count()
+            num_batch = val.y.count()
 
             percentages[key] = round((y_eq_y * s_eq_s / (num_batch * num_samples)), 8)
 
     x_columns: pd.Index = dataset.x.columns
-    s_columns: pd.Index = dataset.s.columns
-    y_columns: pd.Index = dataset.y.columns
+    s_column: Optional[Hashable] = dataset.s.name
+    y_column: Optional[Hashable] = dataset.y.name
+    assert isinstance(s_column, str) and isinstance(y_column, str)
 
     upsampled: Dict[Tuple[int, int], DataTuple] = {}
+    all_data: pd.DataFrame
     for key, val in data.items():
-        all_data: pd.DataFrame = pd.concat([val.x, val.s, val.y], axis="columns")
-        all_data = all_data.sample(
+        all_data = pd.concat([val.x, val.s, val.y], axis="columns")
+        all_data = all_data.sample(  # type: ignore[assignment]
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
         upsampled[key] = DataTuple(
-            x=all_data[x_columns], s=all_data[s_columns], y=all_data[y_columns], name=dataset.name
+            x=all_data[x_columns], s=all_data[s_column], y=all_data[y_column], name=dataset.name
         )
 
     upsampled_datatuple: Optional[DataTuple] = None
@@ -166,7 +166,7 @@ def upsample(
 
             s_val = key[0]
             y_val = key[1]
-            s_y_mask = (dataset.s[s_col] == s_val) & (dataset.y[y_col] == y_val)
+            s_y_mask = (dataset.s == s_val) & (dataset.y == y_val)
 
             ascending = s_val <= 0
 
@@ -174,7 +174,7 @@ def upsample(
                 selected.append(all_data.loc[s_y_mask])
                 percentages[key] -= 1.0
 
-            weight = all_data.loc[s_y_mask][y_col].count()
+            weight = all_data.loc[s_y_mask][y_column].count()
             selected.append(
                 all_data.loc[s_y_mask]
                 .sort_values(by=["preds"], ascending=ascending)
@@ -191,8 +191,8 @@ def upsample(
                 ).reset_index(drop=True)
         upsampled_datatuple = DataTuple(
             x=upsampled_dataframes[x_columns],
-            s=upsampled_dataframes[s_columns],
-            y=upsampled_dataframes[y_columns],
+            s=upsampled_dataframes[s_column],
+            y=upsampled_dataframes[y_column],
             name=f"{name}: {dataset.name}",
         )
 

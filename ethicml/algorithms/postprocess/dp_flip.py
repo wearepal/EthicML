@@ -70,7 +70,7 @@ class DPFlip(PostAlgorithmDC):
             num_to_flip = abs(num_to_flip)
 
         _y = preds.hard[preds.hard == pre_y_val]
-        _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
+        _s = preds.hard[dt.s == s_group]
         idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
@@ -82,8 +82,8 @@ class DPFlip(PostAlgorithmDC):
     def _fit(test: TestTuple, preds: Prediction) -> Tuple[int, int]:
         y_0 = preds.hard[preds.hard == 0]
         y_1 = preds.hard[preds.hard == 1]
-        s_0 = test.s[test.s[test.s.columns[0]] == 0]
-        s_1 = test.s[test.s[test.s.columns[0]] == 1]
+        s_0 = test.s[test.s == 0]
+        s_1 = test.s[test.s == 1]
         # Naming is nSY
         n00 = preds.hard[s_0.index.intersection(y_0.index)].count()
         n01 = preds.hard[s_0.index.intersection(y_1.index)].count()
