@@ -160,12 +160,12 @@ class AcsBase(Dataset):
             s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
+        s_data, s_mask = self._one_hot_encode_and_combine(s_data, label_type="s")
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
             y_data = y_data.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
+        y_data, y_mask = self._one_hot_encode_and_combine(y_data, label_type="y")
         if y_mask is not None:
             x_data = x_data.loc[y_mask].reset_index(drop=True)
             s_data = s_data.loc[y_mask].reset_index(drop=True)

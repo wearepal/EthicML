@@ -147,6 +147,8 @@ def fit(train: DataTuple, flags: BeutelArgs):
     for i in range(1, flags["epochs"] + 1):
         model.train()
         for embedding, sens_label, class_label in train_loader:
+            sens_label = sens_label.view(-1, 1)
+            class_label = class_label.view(-1, 1)
             _, s_pred, y_pred = model(embedding, class_label)
 
             loss = y_loss_fn(y_pred, class_label)
@@ -168,6 +170,8 @@ def fit(train: DataTuple, flags: BeutelArgs):
             val_y_loss = torch.zeros(1)
             val_s_loss = torch.zeros(1)
             for embedding, sens_label, class_label in validation_loader:
+                sens_label = sens_label.view(-1, 1)
+                class_label = class_label.view(-1, 1)
                 _, s_pred, y_pred = model(embedding, class_label)
 
                 val_y_loss += y_loss_fn(y_pred, class_label)
@@ -386,7 +390,7 @@ class Adversary(nn.Module):
         x = _grad_reverse(x, lambda_=self.adv_weight)
 
         if self.fairness is FairnessType.eq_opp:
-            mask = y.ge(0.5)
+            mask = y.view(-1, 1).ge(0.5)
             x = torch.masked_select(x, mask).view(-1, self.init_size)
             x = self.adversary(x)
         elif self.fairness is FairnessType.eq_odds:

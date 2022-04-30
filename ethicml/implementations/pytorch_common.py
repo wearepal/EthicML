@@ -10,15 +10,14 @@ from torch.utils.data import Dataset
 from ethicml.utility import DataTuple, TestTuple
 
 
-def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, int, pd.Index, pd.Index]:
-    features = data.x.to_numpy(dtype=np.float32)  # type: ignore[arg-type]
-    sens_labels = data.s.to_numpy(dtype=np.float32)  # type: ignore[arg-type]
+def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, pd.Index, str]:
+    features = data.x.to_numpy(dtype=np.float32)
+    sens_labels = data.s.to_numpy(dtype=np.float32)  # type: ignore[type-var]
     num = data.s.shape[0]
     xdim = data.x.shape[1]
-    sdim = data.s.shape[1]
     x_names = data.x.columns
-    s_names = data.s.columns
-    return features, sens_labels, num, xdim, sdim, x_names, s_names
+    s_name = str(data.s.name)
+    return features, sens_labels, num, xdim, x_names, s_name
 
 
 class TestDataset(Dataset):
@@ -26,7 +25,8 @@ class TestDataset(Dataset):
 
     def __init__(self, data: TestTuple):
         super().__init__()
-        self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(data)
+        self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(data)
+        self.sdim = 1
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
         """Implement __getitem__ magic method."""
@@ -48,10 +48,11 @@ class CustomDataset(Dataset):
     def __init__(self, data: DataTuple):
         super().__init__()
         test = data.remove_y()
-        self.x, self.s, self.num, self.xdim, self.sdim, self.x_names, self.s_names = _get_info(test)
-        self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[arg-type]
-        self.ydim = data.y.shape[1]
-        self.y_names = data.y.columns
+        self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(test)
+        self.sdim = 1
+        self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[type-var]
+        self.ydim = 1
+        self.y_names = str(data.y.name)
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Implement __getitem__ magic method."""

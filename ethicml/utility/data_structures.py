@@ -60,10 +60,10 @@ class PandasIndex(Enum):
 class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
-    def __init__(self, x: pd.DataFrame, s: pd.DataFrame, name: Optional[str] = None):
+    def __init__(self, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None):
         """Make a TestTuple."""
         self.__x: pd.DataFrame = x
-        self.__s: pd.DataFrame = s
+        self.__s: pd.Series[int] = s
         self.__name: Optional[str] = name
 
     @property
@@ -72,7 +72,7 @@ class TestTuple:
         return self.__x
 
     @property
-    def s(self) -> pd.DataFrame:
+    def s(self) -> pd.Series[int]:
         """Getter for property s."""
         return self.__s
 
@@ -81,7 +81,7 @@ class TestTuple:
         """Getter for name property."""
         return self.__name
 
-    def __iter__(self) -> Iterator[pd.DataFrame]:
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
 
@@ -89,7 +89,7 @@ class TestTuple:
         self,
         *,
         x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.DataFrame] = None,
+        s: Optional[pd.Series] = None,
         name: Optional[str] = None,
     ) -> TestTuple:
         """Create a copy of the TestTuple but change the given values."""
@@ -121,7 +121,7 @@ class TestTuple:
             name = data["name"].item()
             return cls(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
-                s=pd.DataFrame(data["s"], columns=data["s_names"]),
+                s=pd.Series(data["s"], name=data["s_names"][0]),
                 name=name or None,
             )
 
@@ -130,18 +130,18 @@ class DataTuple(TestTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
     def __init__(
-        self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
+        self, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
     ):
         """Make a DataTuple."""
         super().__init__(x=x, s=s, name=name)
-        self.__y: pd.DataFrame = y
+        self.__y: pd.Series[int] = y
 
     @property
-    def y(self) -> pd.DataFrame:
+    def y(self) -> pd.Series[int]:
         """Getter for property y."""
         return self.__y
 
-    def __iter__(self) -> Iterator[pd.DataFrame]:
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite __iter__ magic method."""
         return iter([self.x, self.s, self.y])
 
@@ -159,9 +159,9 @@ class DataTuple(TestTuple):
         self,
         *,
         x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.DataFrame] = None,
+        s: Optional[pd.Series] = None,
         name: Optional[str] = None,
-        y: Optional[pd.DataFrame] = None,
+        y: Optional[pd.Series] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
         return DataTuple(
@@ -177,7 +177,8 @@ class DataTuple(TestTuple):
         :param mapper: A function that takes a dataframe and returns a dataframe.
         """
         self.x.columns = self.x.columns.astype(str)
-        cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
+        cols_x, cols_s, cols_y = self.x.columns, self.s.name, self.y.name
+        assert isinstance(cols_s, str) and isinstance(cols_y, str)
         joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
         assert len(joined) == len(self), "something went wrong while concatenating"
         joined = mapper(joined)
@@ -185,8 +186,8 @@ class DataTuple(TestTuple):
 
         # assert that the columns haven't changed
         pd.testing.assert_index_equal(result.x.columns, cols_x)
-        pd.testing.assert_index_equal(result.s.columns, cols_s)
-        pd.testing.assert_index_equal(result.y.columns, cols_y)
+        assert result.s.name == cols_s
+        assert result.y.name == cols_y
 
         return result
 
@@ -196,14 +197,14 @@ class DataTuple(TestTuple):
         :param num: How many samples to take for subset. (Default: 500)
         :returns: Subset of training data.
         """
-        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
+        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
 
     def get_s_subset(self, s: int) -> DataTuple:
         """Return a subset of the DataTuple where S=s."""
         return DataTuple(
-            x=self.x[self.s.iloc[:, 0] == s],
-            s=self.s[self.s.iloc[:, 0] == s],
-            y=self.y[self.s.iloc[:, 0] == s],
+            x=self.x[self.s == s],
+            s=self.s[self.s == s],
+            y=self.y[self.s == s],
         )
 
     def to_npz(self, data_path: Path) -> None:
@@ -228,8 +229,8 @@ class DataTuple(TestTuple):
             name = data["name"].item()
             return cls(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
-                s=pd.DataFrame(data["s"], columns=data["s_names"]),
-                y=pd.DataFrame(data["y"], columns=data["y_names"]),
+                s=pd.Series(data["s"], name=data["s_names"][0]),
+                y=pd.Series(data["y"], name=data["y_names"][0]),
                 name=name or None,
             )
 
@@ -247,13 +248,13 @@ class Prediction:
         """Length of the predictions object."""
         return len(self._hard)
 
-    def get_s_subset(self, s_data: pd.DataFrame, s: int) -> Prediction:
+    def get_s_subset(self, s_data: pd.Series, s: int) -> Prediction:
         """Return a subset of the DataTuple where S=s.
 
         :param s_data: Dataframe with the s-values.
         :param s: S-value to get the subset for.
         """
-        return Prediction(hard=self.hard[s_data.iloc[:, 0] == s])
+        return Prediction(hard=self.hard[s_data == s])
 
     @property
     def hard(self) -> pd.Series:
@@ -311,7 +312,9 @@ class SoftPrediction(Prediction):
 
 
 def write_as_npz(
-    data_path: Path, data: Dict[str, pd.DataFrame], extra: Optional[Dict[str, np.ndarray]] = None
+    data_path: Path,
+    data: Dict[str, Union[pd.DataFrame, pd.Series]],
+    extra: Optional[Dict[str, np.ndarray]] = None,
 ) -> None:
     """Write the given dataframes to an npz file.
 
@@ -321,9 +324,12 @@ def write_as_npz(
     """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
-    column_names = {
-        f"{entry}_names": np.array(values.columns.tolist()) for entry, values in data.items()
-    }
+    column_names: Dict[str, np.ndarray] = {}
+    for entry, values in data.items():
+        if isinstance(values, pd.DataFrame):
+            column_names[f"{entry}_names"] = np.array(values.columns.tolist())
+        else:
+            column_names[f"{entry}_names"] = np.array([values.name])
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 

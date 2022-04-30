@@ -169,9 +169,9 @@ class Dataset:
         """
         raise NotImplementedError("Dataset is abstract.")
 
-    def _maybe_combine_labels(
+    def _one_hot_encode_and_combine(
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
-    ) -> Tuple[pd.DataFrame, Optional[pd.Series]]:
+    ) -> Tuple[pd.Series, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs.
 
         :param attributes: DataFrame containing the attributes.
@@ -181,10 +181,12 @@ class Dataset:
 
         label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
         if isinstance(label_mapping, str):
-            return attributes, mask
+            return attributes[label_mapping], mask
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(0, index=range(len(attributes)))  # type: ignore[arg-type]
+        combination: pd.Series = pd.Series(  # type: ignore[call-overload]
+            0, index=range(len(attributes)), name=",".join(label_mapping)
+        )
 
         for name, spec in label_mapping.items():
             if len(spec.columns) > 1:  # data is one-hot encoded
@@ -198,7 +200,7 @@ class Dataset:
             else:
                 values = attributes[spec.columns[0]]
             combination += spec.multiplier * values
-        return combination.to_frame(name=",".join(label_mapping)), mask
+        return combination, mask
 
     @staticmethod
     def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
@@ -215,7 +217,7 @@ class Dataset:
 
         return out
 
-    def expand_labels(self, label: pd.DataFrame, label_type: Literal["s", "y"]) -> pd.DataFrame:
+    def expand_labels(self, label: pd.Series, label_type: Literal["s", "y"]) -> pd.DataFrame:
         """Expand a label in the form of an index into all the subfeatures.
 
         :param label: DataFrame containing the labels.
@@ -228,15 +230,13 @@ class Dataset:
         # first order the multipliers; this is important for disentangling the values
         names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
 
-        labels = label[label.columns[0]]
-
         final_df = {}
         for i, name in enumerate(names_ordered):
             spec = label_mapping[name]
-            value = labels
+            value = label
             if i + 1 < len(names_ordered):
                 next_group = label_mapping[names_ordered[i + 1]]
-                value = labels % next_group.multiplier
+                value = label % next_group.multiplier
             value = value // spec.multiplier
             value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
             restored = pd.get_dummies(value)
@@ -300,24 +300,24 @@ class LoadableDataset(Dataset):
 
         # =========================================================================================
         x_data = dataframe[feature_split_x]
-        s_data = dataframe[feature_split["s"]]
-        y_data = dataframe[feature_split["y"]]
+        s_df = dataframe[feature_split["s"]]
+        y_df = dataframe[feature_split["y"]]
 
         if self._map_to_binary:
-            s_data = (s_data + 1) // 2  # map from {-1, 1} to {0, 1}
-            y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
+            s_df = (s_df + 1) // 2  # map from {-1, 1} to {0, 1}
+            y_df = (y_df + 1) // 2  # map from {-1, 1} to {0, 1}
 
         if self.invert_s:
-            assert s_data.nunique().values[0] == 2, "s must be binary"
-            s_data = 1 - s_data
+            assert s_df.nunique().values[0] == 2, "s must be binary"
+            s_df = 1 - s_df
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
+        s_data, s_mask = self._one_hot_encode_and_combine(s_df, label_type="s")
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
-            y_data = y_data.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
+            y_df = y_df.loc[s_mask].reset_index(drop=True)
+        y_data, y_mask = self._one_hot_encode_and_combine(y_df, label_type="y")
         if y_mask is not None:
             x_data = x_data.loc[y_mask].reset_index(drop=True)
             s_data = s_data.loc[y_mask].reset_index(drop=True)
@@ -333,6 +333,7 @@ class LoadableDataset(Dataset):
         Requires the aif360 library.
 
         Ignores the type check as the return type is not yet defined.
+
         """
         from aif360.datasets import StandardDataset
 
@@ -344,9 +345,9 @@ class LoadableDataset(Dataset):
 
         return StandardDataset(
             df=df,
-            label_name=data.y.columns[0],
+            label_name=data.y.name,
             favorable_classes=lambda x: x > 0,
-            protected_attribute_names=data.s.columns,
+            protected_attribute_names=[data.s.name],
             privileged_classes=[lambda x: x == 1],
             categorical_features=self.disc_feature_groups.keys()
             if self.disc_feature_groups is not None

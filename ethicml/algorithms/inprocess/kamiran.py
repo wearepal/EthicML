@@ -78,9 +78,15 @@ class Kamiran(InAlgorithm):
         return self._predict(model=clf, test=test)
 
     def _train(
-        self, train: DataTuple, classifier: ClassifierType, C: float, kernel: KernelType, seed: int
+        self,
+        train: DataTuple,
+        classifier: ClassifierType,
+        C: float,
+        kernel: Optional[KernelType],
+        seed: int,
     ) -> sklearn.linear_model._base.LinearModel:
         if classifier is ClassifierType.svm:
+            assert kernel is not None
             model = select_svm(C=C, kernel=kernel, seed=seed)
         else:
             random_state = np.random.RandomState(seed=seed)
@@ -96,7 +102,7 @@ class Kamiran(InAlgorithm):
         weights = weights.value_counts().rename_axis('weight').reset_index(name='count')
         groups = (
             pd.concat([train.s, train.y], axis=1)
-            .groupby([train.s.columns[0], train.y.columns[0]])
+            .groupby([train.s.name, train.y.name])
             .size()
             .reset_index(name="count")
         )

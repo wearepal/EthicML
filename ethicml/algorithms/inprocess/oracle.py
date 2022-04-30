@@ -32,12 +32,12 @@ class Oracle(InAlgorithmDC):
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
-        return Prediction(hard=test.y[test.y.columns[0]].copy())
+        return Prediction(hard=test.y.copy())
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
-        return Prediction(hard=test.y[test.y.columns[0]].copy())
+        return Prediction(hard=test.y.copy())
 
 
 class DPOracle(InAlgorithmDC):
@@ -61,12 +61,12 @@ class DPOracle(InAlgorithmDC):
     def predict(self, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         flipper = DPFlip(seed=self.seed)
-        test_preds = Prediction(test.y[test.y.columns[0]].copy())
+        test_preds = Prediction(test.y.copy())
         return flipper.run(test_preds, test, test_preds, test)
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple) -> Prediction:
         assert isinstance(test, DataTuple), "test must be a DataTuple."
         flipper = DPFlip(seed=self.seed)
-        test_preds = Prediction(test.y[test.y.columns[0]].copy())
+        test_preds = Prediction(test.y.copy())
         return flipper.run(test_preds, test, test_preds, test)

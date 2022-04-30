@@ -51,10 +51,10 @@ class SequentialSplit(DataSplitter):
         del split_id
         train_len = round(self.train_percentage * len(data))
 
-        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))  # type: ignore[call-overload]
+        train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
         train = train.replace(name=f"{data.name} - Train")
 
-        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))  # type: ignore[call-overload]
+        test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
         test = test.replace(name=f"{data.name} - Test")
 
         assert len(train) + len(test) == len(data)
@@ -74,8 +74,9 @@ def train_test_split(
     # ======================== concatenate the datatuple to one dataframe =========================
     # save the column names for later
     x_columns: pd.Index = data.x.columns
-    s_columns: pd.Index = data.s.columns
-    y_columns: pd.Index = data.y.columns
+    s_column = data.s.name
+    y_column = data.y.name
+    assert isinstance(s_column, str) and isinstance(y_column, str)
 
     all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis="columns")
 
@@ -87,8 +88,8 @@ def train_test_split(
 
     # split
     train_len = int(train_percentage * len(all_data))
-    all_data_train = all_data.iloc[:train_len]  # type: ignore[call-overload]
-    all_data_test = all_data.iloc[train_len:]  # type: ignore[call-overload]
+    all_data_train = all_data.iloc[:train_len]
+    all_data_test = all_data.iloc[train_len:]
 
     assert isinstance(all_data_train, pd.DataFrame)
     assert isinstance(all_data_test, pd.DataFrame)
@@ -99,15 +100,15 @@ def train_test_split(
     # ================================== assemble train and test ==================================
     train: DataTuple = DataTuple(
         x=all_data_train[x_columns],
-        s=all_data_train[s_columns],
-        y=all_data_train[y_columns],
+        s=all_data_train[s_column],
+        y=all_data_train[y_column],
         name=f"{data.name} - Train",
     )
 
     test: DataTuple = DataTuple(
         x=all_data_test[x_columns],
-        s=all_data_test[s_columns],
-        y=all_data_test[y_columns],
+        s=all_data_test[s_column],
+        y=all_data_test[y_column],
         name=f"{data.name} - Test",
     )
 
@@ -116,15 +117,15 @@ def train_test_split(
     pd.testing.assert_index_equal(train.x.columns, x_columns)
     pd.testing.assert_index_equal(test.x.columns, x_columns)
 
-    assert isinstance(train.s, pd.DataFrame)
-    assert isinstance(test.s, pd.DataFrame)
-    pd.testing.assert_index_equal(train.s.columns, s_columns)
-    pd.testing.assert_index_equal(test.s.columns, s_columns)
+    assert isinstance(train.s, pd.Series)
+    assert isinstance(test.s, pd.Series)
+    assert train.s.name == s_column
+    assert test.s.name == s_column
 
-    assert isinstance(train.y, pd.DataFrame)
-    assert isinstance(test.y, pd.DataFrame)
-    pd.testing.assert_index_equal(train.y.columns, y_columns)
-    pd.testing.assert_index_equal(test.y.columns, y_columns)
+    assert isinstance(train.y, pd.Series)
+    assert isinstance(test.y, pd.Series)
+    assert train.y.name == y_column
+    assert test.y.name == y_column
 
     return train, test
 
@@ -165,11 +166,8 @@ def generate_proportional_split_indexes(
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)
 
-    s_col = data.s.columns[0]
-    y_col = data.y.columns[0]
-
-    s_vals: List[int] = list(map(int, data.s[s_col].unique()))
-    y_vals: List[int] = list(map(int, data.y[y_col].unique()))
+    s_vals: List[int] = list(map(int, data.s.unique()))
+    y_vals: List[int] = list(map(int, data.y.unique()))
 
     train_indexes: List[np.ndarray] = []
     test_indexes: List[np.ndarray] = []
@@ -177,7 +175,7 @@ def generate_proportional_split_indexes(
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
         # find all indices for this group
-        idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+        idx = ((data.s == s) & (data.y == y)).to_numpy().nonzero()[0]
 
         # shuffle and take subsets
         random.shuffle(idx)
@@ -213,14 +211,14 @@ class ProportionalSplit(RandomSplit):
         )
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            x=data.x.iloc[train_indexes].reset_index(drop=True),
             s=data.s.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             y=data.y.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            x=data.x.iloc[test_indexes].reset_index(drop=True),
             s=data.s.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             y=data.y.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Test",
@@ -258,11 +256,8 @@ class BalancedTestSplit(RandomSplit):
         random_seed = self._get_seed(split_id)
         random = RandomState(seed=random_seed)
 
-        s_col = data.s.columns[0]
-        y_col = data.y.columns[0]
-
-        s_vals: List[int] = list(map(int, data.s[s_col].unique()))
-        y_vals: List[int] = list(map(int, data.y[y_col].unique()))
+        s_vals: List[int] = list(map(int, data.s.unique()))
+        y_vals: List[int] = list(map(int, data.y.unique()))
 
         train_indexes: List[np.ndarray] = []
         test_indexes: List[np.ndarray] = []
@@ -271,7 +266,7 @@ class BalancedTestSplit(RandomSplit):
         # find out how many samples are available for the test set
         for s, y in itertools.product(s_vals, y_vals):
             # find all indices for this group
-            idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+            idx = ((data.s == s) & (data.y == y)).to_numpy().nonzero()[0]
             # how many elements are in this "quadrant"
             quadrant_size = len(idx)
             # compute how many elements would be available for the test set
@@ -294,7 +289,7 @@ class BalancedTestSplit(RandomSplit):
         # iterate over all combinations of s and y
         for s, y in itertools.product(s_vals, y_vals):
             # find all indices for this group
-            idx = ((data.s[s_col] == s) & (data.y[y_col] == y)).to_numpy().nonzero()[0]
+            idx = ((data.s == s) & (data.y == y)).to_numpy().nonzero()[0]
 
             # shuffle and take subsets
             random.shuffle(idx)
@@ -348,21 +343,21 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
         val_inds: np.ndarray = indices[start:stop]
         train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 
-        train_x = data.x.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        train_x = data.x.iloc[train_inds].reset_index(drop=True)
         train_s = data.s.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
         train_y = data.y.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert train_x.shape == (len(train_inds), data.x.shape[1])
-        assert train_s.shape == (len(train_inds), data.s.shape[1])
-        assert train_y.shape == (len(train_inds), data.y.shape[1])
+        assert train_s.shape == (len(train_inds),)
+        assert train_y.shape == (len(train_inds),)
 
-        val_x = data.x.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        val_x = data.x.iloc[val_inds].reset_index(drop=True)
         val_s = data.s.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
         val_y = data.y.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
 
         assert val_x.shape == (len(val_inds), data.x.shape[1])
-        assert val_s.shape == (len(val_inds), data.s.shape[1])
-        assert val_y.shape == (len(val_inds), data.y.shape[1])
+        assert val_s.shape == (len(val_inds),)
+        assert val_y.shape == (len(val_inds),)
 
         yield DataTuple(
             x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"

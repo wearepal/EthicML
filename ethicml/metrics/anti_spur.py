@@ -24,7 +24,7 @@ class AS(BaseMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        preds = prediction.hard.to_numpy()[:, np.newaxis]
+        preds = prediction.hard.to_numpy()
         sens = actual.s.to_numpy()
         labels = actual.y.to_numpy()
         s_uneq_y = sens != labels

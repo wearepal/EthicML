@@ -1,6 +1,7 @@
 """Test the loading data capability."""
 from pathlib import Path
 from typing import NamedTuple
+from typing_extensions import Literal
 
 import pandas as pd
 import pytest
@@ -589,25 +590,25 @@ def test_data_shape(dt: DT):
     """Test loading data."""
     data: DataTuple = dt.dataset.load()
     assert (dt.samples, dt.x_features) == data.x.shape
-    assert (dt.samples, dt.s_features) == data.s.shape
-    assert (dt.samples, dt.y_features) == data.y.shape
+    assert (dt.samples,) == data.s.shape
+    assert (dt.samples,) == data.y.shape
 
     assert len(dt.dataset.ordered_features["x"]) == dt.x_features
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
-    assert data.s.nunique()[0] == dt.num_sens  # type: ignore[comparison-overlap]
-    assert data.y.nunique()[0] == dt.num_labels  # type: ignore[comparison-overlap]
+    assert data.s.nunique() == dt.num_sens
+    assert data.y.nunique() == dt.num_labels
 
-    assert data.s.sum().values[0] == dt.sum_s
-    assert data.y.sum().values[0] == dt.sum_y
+    assert data.s.sum() == dt.sum_s
+    assert data.y.sum() == dt.sum_y
 
     assert data.name == dt.name
 
     data: DataTuple = dt.dataset.load(ordered=True)
     assert (dt.samples, dt.x_features) == data.x.shape
-    assert (dt.samples, dt.s_features) == data.s.shape
-    assert (dt.samples, dt.y_features) == data.y.shape
+    assert (dt.samples,) == data.s.shape
+    assert (dt.samples,) == data.y.shape
 
     assert (
         len(flatten_dict(dt.dataset.disc_feature_groups)) + len(dt.dataset.continuous_features)
@@ -618,20 +619,22 @@ def test_data_shape(dt: DT):
 @pytest.mark.parametrize("target", [1, 2, 3])
 @pytest.mark.parametrize("scenario", [1, 2, 3, 4])
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
-def test_synth_data_shape(scenario, target, fair, samples):
+def test_synth_data_shape(
+    scenario: Literal[1, 2, 3, 4], target: Literal[1, 2, 3], fair: bool, samples: int
+):
     """Test loading data."""
     dataset = em.synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
-    assert (samples, 1) == data.s.shape
-    assert (samples, 1) == data.y.shape
+    assert (samples,) == data.s.shape
+    assert (samples,) == data.y.shape
 
     assert len(dataset.ordered_features["x"]) == 4
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
-    assert data.s.nunique()[0] == 2  # type: ignore[comparison-overlap]
-    assert data.y.nunique()[0] == 2  # type: ignore[comparison-overlap]
+    assert data.s.nunique() == 2
+    assert data.y.nunique() == 2
 
     if fair:
         assert data.name == f"Synthetic - Scenario {scenario}, target {target} fair"
@@ -640,8 +643,8 @@ def test_synth_data_shape(scenario, target, fair, samples):
 
     data: DataTuple = dataset.load(ordered=True)
     assert (samples, 4) == data.x.shape
-    assert (samples, 1) == data.s.shape
-    assert (samples, 1) == data.y.shape
+    assert (samples,) == data.s.shape
+    assert (samples,) == data.y.shape
 
 
 def test_load_data_as_a_function(data_root: Path):
@@ -676,8 +679,8 @@ def test_joining_2_load_functions(data_root: Path):
     )
     data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
-    assert (400, 1) == data.s.shape
-    assert (400, 1) == data.y.shape
+    assert (400,) == data.s.shape
+    assert (400,) == data.y.shape
 
 
 def test_load_compas_feature_length():
@@ -689,8 +692,8 @@ def test_load_compas_feature_length():
     disc_feature_groups = em.compas().disc_feature_groups
     assert disc_feature_groups is not None
     assert len(disc_feature_groups["c-charge-desc"]) == 389
-    assert data.s.shape == (6167, 1)
-    assert data.y.shape == (6167, 1)
+    assert data.s.shape == (6167,)
+    assert data.y.shape == (6167,)
 
 
 def test_load_adult_explicitly_sex():
@@ -698,8 +701,8 @@ def test_load_adult_explicitly_sex():
     adult_sex = em.adult("Sex")
     data: DataTuple = adult_sex.load()
     assert (45222, 101) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert adult_sex.disc_feature_groups is not None
     assert "sex" not in adult_sex.disc_feature_groups
     assert "salary" not in adult_sex.disc_feature_groups
@@ -710,9 +713,9 @@ def test_load_adult_race():
     adult_race = em.adult("Race")
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 5  # type: ignore[comparison-overlap]
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 5
+    assert (45222,) == data.y.shape
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
     assert "salary" not in adult_race.disc_feature_groups
@@ -723,9 +726,9 @@ def test_load_adult_race_sex():
     adult_race_sex = em.adult("Race-Sex")
     data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 2 * 5  # type: ignore[comparison-overlap]
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 2 * 5
+    assert (45222,) == data.y.shape
     assert adult_race_sex.disc_feature_groups is not None
     assert "race" not in adult_race_sex.disc_feature_groups
     assert "sex" not in adult_race_sex.disc_feature_groups
@@ -743,8 +746,8 @@ def test_race_feature_split():
     data: DataTuple = adult_data.load()
 
     assert (45222, 98) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
 
 
 def test_load_adult_drop_native():
@@ -757,8 +760,8 @@ def test_load_adult_drop_native():
     # with dummies
     data = adult_data.load(ordered=True)
     assert (45222, 62) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -769,8 +772,8 @@ def test_load_adult_drop_native():
     # with dummies, not ordered
     data = adult_data.load(ordered=False)
     assert (45222, 62) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -790,18 +793,18 @@ def test_load_adult_education():
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 86) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
     # not ordered
     data = adult_data.load()
     assert (45222, 86) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
 
 def test_load_adult_education_drop():
@@ -815,18 +818,18 @@ def test_load_adult_education_drop():
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 47) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
     # not ordered
     data = adult_data.load()
     assert (45222, 47) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
 
 def test_additional_columns_load(data_root: Path):
@@ -841,8 +844,8 @@ def test_additional_columns_load(data_root: Path):
     data: DataTuple = data_obj.load()
 
     assert (45222, 102) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
 
 
 def test_domain_adapt_adult():
@@ -854,24 +857,24 @@ def test_domain_adapt_adult():
         te_cond="education_Masters == 1. | education_Doctorate == 1.",
     )
     assert (39106, 101) == train.x.shape
-    assert (39106, 1) == train.s.shape
-    assert (39106, 1) == train.y.shape
+    assert (39106,) == train.s.shape
+    assert (39106,) == train.y.shape
 
     assert (6116, 101) == test.x.shape
-    assert (6116, 1) == test.s.shape
-    assert (6116, 1) == test.y.shape
+    assert (6116,) == test.s.shape
+    assert (6116,) == test.y.shape
 
     data = em.adult().load()
     train, test = em.domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
     assert (40194, 101) == train.x.shape
-    assert (40194, 1) == train.s.shape
-    assert (40194, 1) == train.y.shape
+    assert (40194,) == train.s.shape
+    assert (40194,) == train.y.shape
 
     assert (5028, 101) == test.x.shape
-    assert (5028, 1) == test.s.shape
-    assert (5028, 1) == test.y.shape
+    assert (5028,) == test.s.shape
+    assert (5028,) == test.y.shape
 
     data = em.adult().load()
     train, test = em.domain_split(
@@ -880,40 +883,40 @@ def test_domain_adapt_adult():
         te_cond="education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.",
     )
     assert (23966, 101) == train.x.shape
-    assert (23966, 1) == train.s.shape
-    assert (23966, 1) == train.y.shape
+    assert (23966,) == train.s.shape
+    assert (23966,) == train.y.shape
 
     assert (21256, 101) == test.x.shape
-    assert (21256, 1) == test.s.shape
-    assert (21256, 1) == test.y.shape
+    assert (21256,) == test.s.shape
+    assert (21256,) == test.y.shape
 
 
 def test_query():
     """Test query."""
     x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])
-    s: pd.DataFrame = pd.DataFrame(columns=["c="], data=[[6], [7], [8]])
-    y: pd.DataFrame = pd.DataFrame(columns=["d"], data=[[9], [10], [11]])
+    s: pd.Series = pd.Series(name="c=", data=[6, 7, 8])
+    y: pd.Series = pd.Series(name="d", data=[9, 10, 11])
     data = DataTuple(x=x, s=s, y=y, name="test_data")
     selected = em.query_dt(data, "`0a` == 0 & `c=` == 6 & d == 9")
     pd.testing.assert_frame_equal(selected.x, x.head(1))
-    pd.testing.assert_frame_equal(selected.s, s.head(1))
-    pd.testing.assert_frame_equal(selected.y, y.head(1))
+    pd.testing.assert_series_equal(selected.s, s.head(1))
+    pd.testing.assert_series_equal(selected.y, y.head(1))
 
 
 def test_concat():
     """Test concat."""
     x: pd.DataFrame = pd.DataFrame(columns=["a"], data=[[1]])
-    s: pd.DataFrame = pd.DataFrame(columns=["b"], data=[[2]])
-    y: pd.DataFrame = pd.DataFrame(columns=["c"], data=[[3]])
+    s: pd.Series = pd.Series(name="b", data=[2])
+    y: pd.Series = pd.Series(name="c", data=[3])
     data1 = DataTuple(x=x, s=s, y=y, name="test_data")
-    x = pd.DataFrame(columns=["a"], data=[[4]])
-    s = pd.DataFrame(columns=["b"], data=[[5]])
-    y = pd.DataFrame(columns=["c"], data=[[6]])
+    x = pd.DataFrame(columns=["a"], data=[4])
+    s = pd.Series(name="b", data=[5])
+    y = pd.Series(name="c", data=[6])
     data2 = DataTuple(x=x, s=s, y=y, name="test_tuple")
     data3 = em.concat_dt([data1, data2], axis="index", ignore_index=True)
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=["a"], data=[[1], [4]]))
-    pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=["b"], data=[[2], [5]]))
-    pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=["c"], data=[[3], [6]]))
+    pd.testing.assert_series_equal(data3.s, pd.Series(name="b", data=[2, 5]))
+    pd.testing.assert_series_equal(data3.y, pd.Series(name="c", data=[3, 6]))
 
 
 def test_group_prefixes():
@@ -943,7 +946,7 @@ def test_expand_s():
         discrete_only=False,
     )
 
-    compact_df = pd.DataFrame([0, 4, 3, 1, 3, 5, 2], columns=["Gender,Race"])
+    compact_df = pd.Series([0, 4, 3, 1, 3, 5, 2], name="Gender,Race")
     gender_expanded = pd.DataFrame(
         [[1, 0], [0, 1], [0, 1], [1, 0], [0, 1], [0, 1], [1, 0]], columns=["Female", "Male"]
     )
@@ -954,7 +957,7 @@ def test_expand_s():
     multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
-    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
+    pd.testing.assert_series_equal(data._one_hot_encode_and_combine(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
         data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )

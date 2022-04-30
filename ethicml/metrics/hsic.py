@@ -75,8 +75,7 @@ class Hsic(BaseMetric):
         :param actual:
         """
         preds = prediction.hard.to_numpy()[:, np.newaxis]
-        s_cols = actual.s.columns
-        sens_labels = np.array(actual.s[s_cols].to_numpy())
+        sens_labels = actual.s.to_numpy()[:, np.newaxis]
 
         batchs_size = 5000
 

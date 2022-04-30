@@ -117,13 +117,12 @@ def train_and_transform(
     :param flags:
     """
     prototypes, w = fit(train, flags)
-    sens_col = train.s.columns[0]
 
-    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
-    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+    training_sensitive = train.x.loc[train.s == 0].to_numpy()
+    training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
 
-    testing_sensitive = test.x.loc[test.s[sens_col] == 0].to_numpy()
-    testing_nonsensitive = test.x.loc[test.s[sens_col] == 1].to_numpy()
+    testing_sensitive = test.x.loc[test.s == 0].to_numpy()
+    testing_nonsensitive = test.x.loc[test.s == 1].to_numpy()
 
     train_transformed = trans(prototypes, w, training_nonsensitive, training_sensitive, train)
     test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
@@ -141,9 +140,8 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
     :param prototypes:
     :param w:
     """
-    sens_col = data.s.columns[0]
-    data_sens = data.x.loc[data.s[sens_col] == 0].to_numpy()
-    data_nons = data.x.loc[data.s[sens_col] == 1].to_numpy()
+    data_sens = data.x.loc[data.s == 0].to_numpy()
+    data_nons = data.x.loc[data.s == 1].to_numpy()
     transformed = trans(prototypes, w, data_nons, data_sens, data)
     if isinstance(data, DataTuple):
         return DataTuple(x=transformed, s=data.s, y=data.y, name=data.name)
@@ -159,11 +157,10 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
     """
     np.random.seed(flags["seed"])
 
-    sens_col = train.s.columns[0]
-    training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
-    training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
-    ytrain_sensitive = train.y.loc[train.s[sens_col] == 0].to_numpy()
-    ytrain_nonsensitive = train.y.loc[train.s[sens_col] == 1].to_numpy()
+    training_sensitive = train.x.loc[train.s == 0].to_numpy()
+    training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
+    ytrain_sensitive = train.y.loc[train.s == 0].to_numpy()
+    ytrain_nonsensitive = train.y.loc[train.s == 1].to_numpy()
 
     print_interval = 100
     verbose = False
@@ -186,8 +183,8 @@ def fit(train: DataTuple, flags: ZemelArgs) -> Model:
         args=(
             training_nonsensitive,
             training_sensitive,
-            ytrain_nonsensitive[:, 0],
-            ytrain_sensitive[:, 0],
+            ytrain_nonsensitive,
+            ytrain_sensitive,
             flags["clusters"],
             flags["Ax"],
             flags["Ay"],
@@ -222,10 +219,8 @@ def trans(
 
     _, features_hat_sensitive, _ = get_xhat_y_hat(prototypes, w, sens)
 
-    sens_col = dataset.s.columns[0]
-
-    sensitive_idx = dataset.x[dataset.s[sens_col] == 0].index
-    nonsensitive_idx = dataset.x[dataset.s[sens_col] == 1].index
+    sensitive_idx = dataset.x[dataset.s == 0].index
+    nonsensitive_idx = dataset.x[dataset.s == 1].index
 
     transformed_features = np.zeros_like(dataset.x.to_numpy())
     transformed_features[sensitive_idx] = features_hat_sensitive
@@ -257,9 +252,8 @@ def main() -> None:
     elif pre_algo_args["mode"] == "fit":
         train = DataTuple.from_npz(Path(pre_algo_args["train"]))
         model = fit(train, flags)
-        sens_col = train.s.columns[0]
-        training_sensitive = train.x.loc[train.s[sens_col] == 0].to_numpy()
-        training_nonsensitive = train.x.loc[train.s[sens_col] == 1].to_numpy()
+        training_sensitive = train.x.loc[train.s == 0].to_numpy()
+        training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
         train_transformed = trans(
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )

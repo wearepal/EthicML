@@ -25,7 +25,7 @@ class SVM(InAlgorithm):
     """
 
     C: float = field(default_factory=lambda: SVC().C)
-    kernel: KernelType = field(default_factory=lambda: SVC().kernel)
+    kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
     seed: int = 888
     is_fairness_algo: ClassVar[bool] = False
 
@@ -38,7 +38,7 @@ class SVM(InAlgorithm):
         return f"SVM ({self.kernel})"
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
+    def fit(self, train: DataTuple) -> "SVM":
         self.clf = select_svm(self.C, self.kernel, self.seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
@@ -48,7 +48,7 @@ class SVM(InAlgorithm):
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[LinearSVC, SVC]:
+def select_svm(C: float, kernel: KernelType, seed: int) -> Union[LinearSVC, SVC]:
     """Select the appropriate SVM model for the given parameters.
 
     :param C: The penalty parameter of the error term.
@@ -58,4 +58,4 @@ def select_svm(C: float, kernel: Optional[KernelType], seed: int) -> Union[Linea
     random_state = np.random.RandomState(seed=seed)
     if kernel is KernelType.linear:
         return LinearSVC(C=C, dual=False, tol=1e-12, random_state=random_state)
-    return SVC(C=C, kernel=str(kernel), gamma="auto", random_state=random_state)
+    return SVC(C=C, kernel=kernel.name, gamma="auto", random_state=random_state)

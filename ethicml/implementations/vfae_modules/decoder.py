@@ -57,7 +57,7 @@ class Decoder(nn.Module):
         :param s:
         """
         batch_size = x.size(0)
-        decoded = self.shared_net(torch.cat((x, s), 1))
+        decoded = self.shared_net(torch.cat((x, s.view(-1, 1)), 1))
         decoded = torch.cat(
             [layer(decoded).view(batch_size, -1) for layer in self.output_layers], dim=1
         )

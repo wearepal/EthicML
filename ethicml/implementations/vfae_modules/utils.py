@@ -62,6 +62,8 @@ def loss_function(
         _, z2_mu, z2_logvar = z2_triplet
         _, z1_dec_mu, z1_dec_logvar = z1_d_triplet
     x, s, y = data_triplet
+    s = s.view(-1, 1)
+    y = y.view(-1, 1)
 
     reconstruction_loss = F.mse_loss(x_dec, x, reduction="sum")
 
@@ -75,6 +77,7 @@ def loss_function(
         z1_s0_y1 = torch.masked_select(z1_s0, y_s0.ge(0.5)).view(-1, 50)
         z1_s1 = torch.masked_select(z1, s.ge(0.5)).view(-1, 50)
         y_s1 = torch.masked_select(y, s.ge(0.5)).view(-1, 1)
+        # assert False, f"{z1_s1.shape}, {y_s1.shape}"
         z1_s1_y1 = torch.masked_select(z1_s1, y_s1.ge(0.5)).view(-1, 50)
 
         z1_s0 = z1_s0_y1

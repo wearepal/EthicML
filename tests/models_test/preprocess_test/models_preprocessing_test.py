@@ -104,8 +104,8 @@ def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
@@ -131,8 +131,8 @@ def test_pre_sep_fit_transform(
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize(
@@ -192,16 +192,16 @@ def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: 
     assert new_train.name == f"{name}: {str(train.name)}"
 
     preds = svm_model.run_test(new_train, new_test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
 def test_calders():
     """Test calders."""
     data = DataTuple(
         x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
-        s=pd.DataFrame([1] * 75 + [0] * 25, columns=["s"]),
-        y=pd.DataFrame([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, columns=["y"]),
+        s=pd.Series([1] * 75 + [0] * 25, name="s"),
+        y=pd.Series([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, name="y"),
         name="TestData",
     )
     data, _ = em.train_test_split(data, train_percentage=1.0)
@@ -215,7 +215,7 @@ def test_calders():
     new_train, new_test = calders.run(data, data.remove_y())
 
     pd.testing.assert_frame_equal(new_test.x, data.x)
-    pd.testing.assert_frame_equal(new_test.s, data.s)
+    pd.testing.assert_series_equal(new_test.s, data.s)
 
     assert len(em.query_dt(new_train, "s == 0 & y == 0")) == 10
     assert len(em.query_dt(new_train, "s == 0 & y == 1")) == 15

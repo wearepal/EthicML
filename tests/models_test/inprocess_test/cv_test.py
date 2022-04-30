@@ -1,6 +1,7 @@
 """Tests for cross validation."""
 from typing import Dict, List, NamedTuple, Sequence, Type, Union
 
+import numpy as np
 import pytest
 
 import ethicml as em
@@ -42,8 +43,8 @@ def test_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
@@ -63,5 +64,5 @@ def test_parallel_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos

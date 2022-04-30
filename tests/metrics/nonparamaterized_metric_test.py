@@ -326,9 +326,9 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(simple_data)
 
-    fair_prediction = Prediction(hard=balanced.y["y"])  # predict the balanced label
-    unfair_prediction = Prediction(hard=unbalanced.y["y"])  # predict the normal label
-    extremely_unfair_prediction = Prediction(hard=unbalanced.s["s"])  # predict s
+    fair_prediction = Prediction(hard=balanced.y)  # predict the balanced label
+    unfair_prediction = Prediction(hard=unbalanced.y)  # predict the normal label
+    extremely_unfair_prediction = Prediction(hard=unbalanced.s)  # predict s
 
     # measure the dependence between s and the prediction in several ways
     assert _compute_di(fair_prediction, balanced) == approx(1, abs=1e-15)
@@ -357,9 +357,9 @@ def test_dependence_measures_adult() -> None:
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)
 
-    fair_prediction = Prediction(hard=balanced.y["salary_>50K"])  # predict the balanced label
-    unfair_prediction = Prediction(hard=unbalanced.y["salary_>50K"])  # predict the normal label
-    extremely_unfair_prediction = Prediction(hard=unbalanced.s["sex_Male"])  # predict s
+    fair_prediction = Prediction(hard=balanced.y)  # predict the balanced label
+    unfair_prediction = Prediction(hard=unbalanced.y)  # predict the normal label
+    extremely_unfair_prediction = Prediction(hard=unbalanced.s)  # predict s
 
     # measure the dependence between s and the prediction in several ways
     assert _compute_di(fair_prediction, balanced) == approx(1, abs=1e-15)

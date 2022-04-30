@@ -26,8 +26,7 @@ class Theil(BaseMetric):
     @implements(BaseMetric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         y_true_df = actual.y
-        act_col = y_true_df.columns[0]
-        y_pos_label = y_true_df[act_col].max()
+        y_pos_label = y_true_df.max()
 
         y_pred = prediction.hard.to_numpy().ravel()
         y_true = y_true_df.to_numpy().ravel()

@@ -54,10 +54,10 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     plot = sns.scatterplot(  # type: ignore[attr-defined]
         x=x1_name,
         y=x2_name,
-        hue=data.y.columns[0],
+        hue=data.y.name,
         palette="Set2",
         data=amalgamated,
-        style=data.s.columns[0],
+        style=data.s.name,
         legend="full",
     )
 
@@ -124,8 +124,8 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     multivariate_grid(
         col_x=x1_name,
         col_y=x2_name,
-        sens_col=data.s.columns[0],
-        outcome_col=data.y.columns[0],
+        sens_col=str(data.s.name),
+        outcome_col=str(data.y.name),
         df=amalgamated,
     )
 
@@ -147,8 +147,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     file_path = Path(filename)
 
     # Only consider 1 sens attr for now
-    s_col = data.s.columns[0]
-    s_values = data.s[s_col].value_counts() / data.s[s_col].count()
+    s_values = data.s.value_counts() / data.s.count()
 
     s_0_val = s_values[0]
     s_1_val = s_values[1]
@@ -156,13 +155,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     s_0_label = s_values.index.min()
     s_1_label = s_values.index.max()
 
-    y_col = data.y.columns[0]
-    y_s0 = (
-        data.y[y_col][data.s[s_col] == 0].value_counts() / data.y[y_col][data.s[s_col] == 0].count()
-    )
-    y_s1 = (
-        data.y[y_col][data.s[s_col] == 1].value_counts() / data.y[y_col][data.s[s_col] == 1].count()
-    )
+    y_s0 = data.y[data.s == 0].value_counts() / data.y[data.s == 0].count()
+    y_s1 = data.y[data.s == 1].value_counts() / data.y[data.s == 1].count()
 
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
@@ -174,7 +168,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,
+        height=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -182,7 +176,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,
+        height=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -190,18 +184,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,
+        height=y_s0[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,
+        bottom=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,
+        height=y_s1[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,
+        bottom=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C3",
@@ -209,8 +203,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     plot.set_ylim(0, 100)
     plot.set_xlim(0, 100)
-    plot.set_ylabel(f"Percent {y_col}=y")
-    plot.set_xlabel(f"Percent {s_col}=s")
+    plot.set_ylabel(f"Percent {data.y.name}=y")
+    plot.set_xlabel(f"Percent {data.s.name}=s")
     plot.set_title("Dataset Composition by class and sensitive attribute")
 
     plot.legend(
