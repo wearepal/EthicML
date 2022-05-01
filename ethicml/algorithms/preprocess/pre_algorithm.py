@@ -1,12 +1,12 @@
 """Abstract Base Class of all algorithms in the framework."""
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import List, Optional, Tuple, TypeVar, Union
-from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_checkable
+from typing_extensions import Literal, TypeAlias, TypedDict
 
 from ranzen import implements
 
@@ -19,17 +19,17 @@ T = TypeVar("T", DataTuple, TestTuple)
 _PA = TypeVar("_PA", bound="PreAlgorithm")
 
 
-@runtime_checkable
-class PreAlgorithm(Algorithm, Protocol):
+class PreAlgorithm(Algorithm, ABC):
     """Abstract Base Class for all algorithms that do pre-processing."""
 
     _out_size: Optional[int]
 
     @abstractmethod
-    def fit(self: _PA, train: DataTuple) -> Tuple[_PA, DataTuple]:
+    def fit(self: _PA, train: DataTuple, seed: int) -> Tuple[_PA, DataTuple]:
         """Fit transformer on the given data.
 
         :param train: Data tuple of the training data.
+        :param seed: Random seed for model initialization.
         :returns: A tuple of Self and the test data.
         """
 
@@ -42,22 +42,23 @@ class PreAlgorithm(Algorithm, Protocol):
         """
 
     @abstractmethod
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: TestTuple, seed: int) -> Tuple[DataTuple, TestTuple]:
         """Generate fair features with the given data.
 
         :param train: Data tuple of the training data.
         :param test: Data tuple of the test data.
+        :param seed: Random seed for model initialization.
         :returns: A tuple of the transforme training data and the test data.
         """
 
-    def run_test(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run_test(self, train: DataTuple, test: TestTuple, seed: int) -> Tuple[DataTuple, TestTuple]:
         """Run with reduced training set so that it finishes quicker.
 
         :param train: Data tuple of the training data.
         :param test: Data tuple of the test data.
         """
         train_testing = train.get_n_samples()
-        return self.run(train_testing, test)
+        return self.run(train_testing, test, seed)
 
     @property
     def out_size(self) -> int:
@@ -83,6 +84,7 @@ class PreAlgoRunArgs(TypedDict):
     # paths to where the processed inputs should be stored
     new_train: str
     new_test: str
+    seed: int
 
 
 class PreAlgoFitArgs(TypedDict):
@@ -92,6 +94,7 @@ class PreAlgoFitArgs(TypedDict):
     train: str
     new_train: str
     model: str  # path to where the model weights are stored
+    seed: int
 
 
 class PreAlgoTformArgs(TypedDict):
@@ -106,7 +109,7 @@ class PreAlgoTformArgs(TypedDict):
 PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
 
 
-class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
+class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
     """Pre-Algorithm that runs the method in a subprocess.
 
     This is the base class for all pre-processing algorithms that run in a subprocess. The
@@ -116,7 +119,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
     model_dir: Path
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple, seed: int) -> Tuple[PreAlgorithm, DataTuple]:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -130,6 +133,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
                 "model": str(self._model_path),
                 "train": str(train_path),
                 "new_train": str(transformed_train_path),
+                "seed": seed,
             }
 
             # ============================= run the generated command =============================
@@ -165,7 +169,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
             self._call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_test = TestTuple.from_npz(transformed_test_path)
+            transformed_test: T = TestTuple.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         transformed_test = transformed_test.replace(
@@ -174,7 +178,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
         return transformed_test
 
     @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: TestTuple, seed: int) -> Tuple[DataTuple, TestTuple]:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -191,6 +195,7 @@ class PreAlgorithmAsync(SubprocessAlgorithmMixin, PreAlgorithm, Protocol):
                 "test": str(test_path),
                 "new_train": str(transformed_train_path),
                 "new_test": str(transformed_test_path),
+                "seed": seed,
             }
 
             # ============================= run the generated command =============================

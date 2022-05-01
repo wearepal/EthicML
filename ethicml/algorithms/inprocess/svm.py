@@ -1,6 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -26,8 +26,6 @@ class SVM(InAlgorithm):
 
     C: float = field(default_factory=lambda: SVC().C)
     kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
-    seed: int = 888
-    is_fairness_algo: ClassVar[bool] = False
 
     def __post_init__(self) -> None:
         self._hyperparameters = {"C": self.C, "kernel": self.kernel}
@@ -38,8 +36,8 @@ class SVM(InAlgorithm):
         return f"SVM ({self.kernel})"
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> "SVM":
-        self.clf = select_svm(self.C, self.kernel, self.seed)
+    def fit(self, train: DataTuple, seed: int) -> "SVM":
+        self.clf = select_svm(self.C, self.kernel, seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 

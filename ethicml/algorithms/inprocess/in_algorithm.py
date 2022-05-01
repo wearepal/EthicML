@@ -1,14 +1,12 @@
 """Abstract Base Class of all algorithms in the framework."""
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, TypeVar, Union
-from typing_extensions import Literal, Protocol, TypeAlias, TypedDict, runtime_checkable
-
-from ranzen import implements
+from typing_extensions import Literal, TypeAlias, TypedDict, final
 
 from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
 from ethicml.utility import DataTuple, FairnessType, KernelType, Prediction, TestTuple
@@ -18,18 +16,18 @@ __all__ = ["InAlgoArgs", "InAlgorithm", "InAlgorithmAsync", "InAlgorithmDC"]
 _I = TypeVar("_I", bound="InAlgorithm")
 
 
-@runtime_checkable
-class InAlgorithm(Algorithm, Protocol):
+class InAlgorithm(Algorithm, ABC):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
-    is_fairness_algo: ClassVar[bool]
+    is_fairness_algo: ClassVar[bool] = False
     _hyperparameters: Dict[str, Union[str, int, float, KernelType, FairnessType]] = {}
 
     @abstractmethod
-    def fit(self: _I, train: DataTuple) -> _I:
+    def fit(self: _I, train: DataTuple, seed: int) -> _I:
         """Fit Algorithm on the given data.
 
         :param train: Data tuple of the training data.
+        :param seed: Random seed for model initialization.
         :returns: Self, but trained.
         """
 
@@ -48,24 +46,28 @@ class InAlgorithm(Algorithm, Protocol):
         :returns: Predictions on the test data.
         """
 
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple, seed: int) -> Prediction:
         """Run Algorithm on the given data.
 
         :param train: Data tuple of the training data.
         :param test: Data to evaluate on.
+        :param seed: Random seed for model initialization.
         :returns: Predictions on the test data.
         """
-        self.fit(train)
+        self.fit(train, seed)
         return self.predict(test)
 
-    def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
+    @final
+    def run_test(self, train: DataTuple, test: TestTuple, seed: int) -> Prediction:
         """Run with reduced training set so that it finishes quicker.
 
         :param train: Data tuple of the training data.
         :param test: Data to evaluate on.
+        :param seed: Random seed for model initialization.
+        :returns: Predictions on the test data.
         """
         train_testing = train.get_n_samples()
-        return self.run(train_testing, test)
+        return self.run(train_testing, test, seed)
 
 
 @dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
@@ -73,7 +75,6 @@ class InAlgorithmDC(InAlgorithm):
     """InAlgorithm dataclass base class."""
 
     is_fairness_algo: ClassVar[bool] = True
-    seed: int = 888
 
 
 class InAlgoRunArgs(TypedDict):
@@ -84,6 +85,7 @@ class InAlgoRunArgs(TypedDict):
     # paths to the files with the data
     train: str
     test: str
+    seed: int
 
 
 class InAlgoFitArgs(TypedDict):
@@ -92,6 +94,7 @@ class InAlgoFitArgs(TypedDict):
     mode: Literal["fit"]
     train: str
     model: str  # path to where the model weights are stored
+    seed: int
 
 
 class InAlgoPredArgs(TypedDict):
@@ -109,13 +112,18 @@ InAlgoArgs: TypeAlias = Union[InAlgoFitArgs, InAlgoPredArgs, InAlgoRunArgs]
 _IA = TypeVar("_IA", bound="InAlgorithmAsync")
 
 
-class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
+class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm):
     """In-Algorithm that uses a subprocess to run."""
 
     model_dir: Path
 
-    @implements(InAlgorithm)
-    def fit(self: _IA, train: DataTuple) -> _IA:
+    @final
+    def fit(self: _IA, train: DataTuple, seed: int) -> _IA:
+        """Fit Algorithm in a subprocess on the given data.
+
+        :param train: Data tuple of the training data.
+        :returns: Self, but trained.
+        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.npz"
@@ -124,12 +132,18 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
                 "mode": "fit",
                 "train": str(train_path),
                 "model": str(self._model_path),
+                "seed": seed,
             }
             self._call_script(self._script_command(args))
             return self
 
-    @implements(InAlgorithm)
+    @final
     def predict(self, test: TestTuple) -> Prediction:
+        """Make predictions in a subprocess on the given data.
+
+        :param test: Data to evaluate on.
+        :returns: Predictions on the test data.
+        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             test_path = tmp_path / "test.npz"
@@ -144,8 +158,14 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
             self._call_script(self._script_command(args))
             return Prediction.from_npz(pred_path)
 
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    @final
+    def run(self, train: DataTuple, test: TestTuple, seed: int) -> Prediction:
+        """Run Algorithm in a subprocess on the given data.
+
+        :param train: Data tuple of the training data.
+        :param test: Data to evaluate on.
+        :returns: Predictions on the test data.
+        """
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.npz"
@@ -158,6 +178,7 @@ class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
                 "train": str(train_path),
                 "test": str(test_path),
                 "predictions": str(pred_path),
+                "seed": seed,
             }
             self._call_script(self._script_command(args))
             return Prediction.from_npz(pred_path)

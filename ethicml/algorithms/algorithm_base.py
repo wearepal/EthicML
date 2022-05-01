@@ -1,18 +1,15 @@
 """Base class for Algorithms."""
 import subprocess
 import sys
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional
-from typing_extensions import Protocol
 
 __all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
 
 
-class Algorithm(Protocol):
+class Algorithm(ABC):
     """Base class for Algorithms."""
-
-    seed: int
 
     @property
     @abstractmethod
@@ -20,7 +17,7 @@ class Algorithm(Protocol):
         """Name of the algorithm."""
 
 
-class SubprocessAlgorithmMixin(Protocol):  # pylint: disable=too-few-public-methods
+class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
     """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property
