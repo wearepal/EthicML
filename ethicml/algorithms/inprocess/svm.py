@@ -1,6 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Union
 
 import numpy as np
 import pandas as pd
