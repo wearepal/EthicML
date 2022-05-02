@@ -1094,6 +1094,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 snowballstemmer = "*"
+toml = {version = "*", optional = true, markers = "extra == \"toml\""}
 
 [package.extras]
 toml = ["toml"]
@@ -1644,7 +1645,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "torch", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1,<3.11"
-content-hash = "2e1011457d1d8f5f52e71ddc3f679f5d7aab03a99a69ef855fc7d27dfc1ac41c"
+content-hash = "97c57d9158a2485a138794f6411eac9d458752d787529b8eb5568f3c3aa3e1cc"
 
 [metadata.files]
 antlr4-python3-runtime = [
