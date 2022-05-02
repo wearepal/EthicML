@@ -4,32 +4,30 @@ from dataclasses import dataclass
 import pandas as pd
 from ranzen import implements
 
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
-
-from .in_algorithm import InAlgorithmDC
 
 __all__ = ["Majority"]
 
 
 @dataclass
-class Majority(InAlgorithmDC):
+class Majority(InAlgorithmNoParams):
     """Simply returns the majority label from the train set."""
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmNoParams)
+    def get_name(self) -> str:
         return "Majority"
 
-    @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple) -> "Majority":
+    @implements(InAlgorithmNoParams)
+    def fit(self, train: DataTuple, seed: int = 888) -> "Majority":
         self.maj = train.y.mode(dropna=True).to_numpy()
         return self
 
-    @implements(InAlgorithmDC)
+    @implements(InAlgorithmNoParams)
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.maj.repeat(len(test.x))))
 
-    @implements(InAlgorithmDC)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    @implements(InAlgorithmNoParams)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         maj = train.y.mode(dropna=True).to_numpy()
         return Prediction(hard=pd.Series(maj.repeat(len(test.x))))

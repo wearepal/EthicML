@@ -28,7 +28,7 @@ from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
     from ethicml.algorithms.preprocess.beutel import BeutelArgs
-    from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs
+    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -51,7 +51,7 @@ def build_networks(
     train_data: CustomDataset,
     enc_activation: nn.Module,
     adv_activation: nn.Module,
-) -> Tuple[nn.Module, nn.Module]:
+) -> Tuple[Encoder, Model]:
     """Build the networks we use.
 
     Pulled into a separate function to make the code a bit neater.
@@ -100,13 +100,13 @@ def make_dataset_and_loader(
     return dataset, dataloader
 
 
-def fit(train: DataTuple, flags: BeutelArgs):
+def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple, Encoder]:
     """Train the fair autoencoder on the training data and then transform both training and test.
 
     :param train:
     :param flags:
     """
-    set_seed(flags["seed"])
+    set_seed(seed)
     fairness = FairnessType[flags["fairness"]]
 
     post_process = False
@@ -212,7 +212,7 @@ def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestT
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: BeutelArgs
+    train: DataTuple, test: TestTuple, flags: BeutelArgs, seed: int
 ) -> Tuple[DataTuple, TestTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test.
 
@@ -220,7 +220,7 @@ def train_and_transform(
     :param test:
     :param flags:
     """
-    transformed_train, enc = fit(train, flags)
+    transformed_train, enc = fit(train, flags, seed)
     transformed_test = transform(test, enc, flags)
     return transformed_train, transformed_test
 
@@ -463,10 +463,12 @@ def main() -> None:
     flags: BeutelArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
-        save_transformations(train_and_transform(train, test, flags), pre_algo_args)
+        save_transformations(
+            train_and_transform(train, test, flags, pre_algo_args["seed"]), pre_algo_args
+        )
     elif pre_algo_args["mode"] == "fit":
         train = DataTuple.from_npz(Path(pre_algo_args["train"]))
-        transformed_train, enc = fit(train, flags)
+        transformed_train, enc = fit(train, flags, seed=pre_algo_args["seed"])
         transformed_train.to_npz(Path(pre_algo_args["new_train"]))
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":

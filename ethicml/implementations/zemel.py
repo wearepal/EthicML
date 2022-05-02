@@ -17,7 +17,7 @@ from ethicml.implementations.utils import load_data_from_flags, save_transformat
 from ethicml.utility import DataTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs, T
+    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
     from ethicml.algorithms.preprocess.zemel import ZemelArgs
 
 
@@ -108,7 +108,7 @@ def get_xhat_y_hat(
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: ZemelArgs
+    train: DataTuple, test: TestTuple, flags: ZemelArgs, seed: int
 ) -> (Tuple[DataTuple, TestTuple]):
     """Train and transform.
 
@@ -116,7 +116,7 @@ def train_and_transform(
     :param test:
     :param flags:
     """
-    prototypes, w = fit(train, flags)
+    prototypes, w = fit(train, flags, seed=seed)
 
     training_sensitive = train.x.loc[train.s == 0].to_numpy()
     training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
@@ -149,13 +149,13 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
         return TestTuple(x=transformed, s=data.s, name=data.name)
 
 
-def fit(train: DataTuple, flags: ZemelArgs) -> Model:
+def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
     """Train the Zemel model and return the transformed features of the train and test sets.
 
     :param train:
     :param flags:
     """
-    np.random.seed(flags["seed"])
+    np.random.seed(seed)
 
     training_sensitive = train.x.loc[train.s == 0].to_numpy()
     training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
@@ -248,10 +248,12 @@ def main() -> None:
     flags: ZemelArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":
         train, test = load_data_from_flags(pre_algo_args)
-        save_transformations(train_and_transform(train, test, flags), pre_algo_args)
+        save_transformations(
+            train_and_transform(train, test, flags, seed=pre_algo_args["seed"]), pre_algo_args
+        )
     elif pre_algo_args["mode"] == "fit":
         train = DataTuple.from_npz(Path(pre_algo_args["train"]))
-        model = fit(train, flags)
+        model = fit(train, flags, seed=pre_algo_args["seed"])
         training_sensitive = train.x.loc[train.s == 0].to_numpy()
         training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
         train_transformed = trans(

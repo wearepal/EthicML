@@ -12,8 +12,13 @@ class Algorithm(ABC):
     """Base class for Algorithms."""
 
     @property
-    @abstractmethod
     def name(self) -> str:
+        """Name of the algorithm."""
+        return self.get_name()
+
+    # a method is nicer to implement than a property because you can use the @implements decorator
+    @abstractmethod
+    def get_name(self) -> str:
         """Name of the algorithm."""
 
 
@@ -21,14 +26,14 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
     """Mixin for running algorithms in a subprocess, to be used with :class:`Algorithm`."""
 
     @property
-    def _executable(self) -> str:
+    def executable(self) -> str:
         """Path to a (Python) executable.
 
         By default, the Python executable that called this script is used.
         """
         return sys.executable
 
-    def _call_script(
+    def call_script(
         self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
     ) -> None:
         """Call a (Python) script as a separate process.
@@ -42,7 +47,7 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
         one_hour = 3600
         try:
             process = subprocess.run(  # wait for process creation to finish
-                [self._executable] + cmd_args,
+                [self.executable] + cmd_args,
                 capture_output=True,
                 env=env,
                 cwd=cwd,
@@ -57,5 +62,5 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
             if stderr:
                 print(stderr.decode().strip())
             raise RuntimeError(
-                f"The script failed. Supplied arguments: {cmd_args} with exec: {self._executable}"
+                f"The script failed. Supplied arguments: {cmd_args} with exec: {self.executable}"
             )

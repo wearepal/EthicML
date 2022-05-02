@@ -1,5 +1,5 @@
 """Beutel's algorithm."""
-from pathlib import Path
+from dataclasses import dataclass, field
 from typing import List, Sequence
 from typing_extensions import TypedDict
 
@@ -7,8 +7,7 @@ from ranzen import implements
 
 from ethicml.utility import FairnessType
 
-from .interface import flag_interface
-from .pre_algorithm import PreAlgoArgs, PreAlgorithmAsync
+from .pre_subprocess import PreAlgorithmSubprocess
 
 __all__ = ["Beutel"]
 
@@ -28,54 +27,51 @@ class BeutelArgs(TypedDict):
     epochs: int
     adv_weight: float
     validation_pcnt: float
-    seed: int
 
 
-class Beutel(PreAlgorithmAsync):
+@dataclass
+class Beutel(PreAlgorithmSubprocess):
     """Beutel's adversarially learned fair representations."""
 
-    def __init__(
-        self,
-        fairness: FairnessType = FairnessType.dp,
-        *,
-        dir: str = ".",
-        enc_size: Sequence[int] = (40,),
-        adv_size: Sequence[int] = (40,),
-        pred_size: Sequence[int] = (40,),
-        enc_activation: str = "Sigmoid()",
-        adv_activation: str = "Sigmoid()",
-        batch_size: int = 64,
-        y_loss: str = "BCELoss()",
-        s_loss: str = "BCELoss()",
-        epochs: int = 50,
-        adv_weight: float = 1.0,
-        validation_pcnt: float = 0.1,
-        seed: int = 888,
-    ):
-        self.seed = seed
-        self._out_size = enc_size[-1]
-        self.model_dir = Path(dir)
-        self.flags: BeutelArgs = {
-            "fairness": str(fairness),
-            "enc_size": list(enc_size),
-            "adv_size": list(adv_size),
-            "pred_size": list(pred_size),
-            "enc_activation": enc_activation,
-            "adv_activation": adv_activation,
-            "batch_size": batch_size,
-            "y_loss": y_loss,
-            "s_loss": s_loss,
-            "epochs": epochs,
-            "adv_weight": adv_weight,
-            "validation_pcnt": validation_pcnt,
-            "seed": seed,
+    fairness: FairnessType = FairnessType.dp
+    enc_size: Sequence[int] = field(default_factory=lambda: [40])
+    adv_size: Sequence[int] = field(default_factory=lambda: [40])
+    pred_size: Sequence[int] = field(default_factory=lambda: [40])
+    enc_activation: str = "Sigmoid()"
+    adv_activation: str = "Sigmoid()"
+    batch_size: int = 64
+    y_loss: str = "BCELoss()"
+    s_loss: str = "BCELoss()"
+    epochs: int = 50
+    adv_weight: float = 1.0
+    validation_pcnt: float = 0.1
+
+    @implements(PreAlgorithmSubprocess)
+    def get_out_size(self) -> int:
+        return self.enc_size[-1]
+
+    @implements(PreAlgorithmSubprocess)
+    def _get_flags(self) -> BeutelArgs:
+        # TODO: replace this with dataclasses.asdict()
+        return {
+            "fairness": str(self.fairness),
+            "enc_size": list(self.enc_size),
+            "adv_size": list(self.adv_size),
+            "pred_size": list(self.pred_size),
+            "enc_activation": self.enc_activation,
+            "adv_activation": self.adv_activation,
+            "batch_size": self.batch_size,
+            "y_loss": self.y_loss,
+            "s_loss": self.s_loss,
+            "epochs": self.epochs,
+            "adv_weight": self.adv_weight,
+            "validation_pcnt": self.validation_pcnt,
         }
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
-        return f"Beutel {self.flags['fairness']}"
+    @implements(PreAlgorithmSubprocess)
+    def get_name(self) -> str:
+        return f"Beutel {self.fairness}"
 
-    @implements(PreAlgorithmAsync)
-    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
-        return ["-m", "ethicml.implementations.beutel"] + flag_interface(pre_algo_args, self.flags)
+    @implements(PreAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.beutel"]

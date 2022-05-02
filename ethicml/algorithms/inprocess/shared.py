@@ -1,33 +1,14 @@
 """Methods that are shared among the inprocess algorithms."""
 from __future__ import annotations
 
-import json
-from typing import TYPE_CHECKING, Any, List, Mapping, Optional, Tuple
+from typing import Optional, Tuple
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
 from ethicml.utility import ClassifierType, KernelType
 
-if TYPE_CHECKING:
-    from .in_algorithm import InAlgoArgs
-
-__all__ = ["flag_interface", "settings_for_svm_lr"]
-
-
-def flag_interface(in_algo_args: InAlgoArgs, flags: Mapping[str, Any]) -> List[str]:
-    """Generate the commandline arguments that are expected by the script about to be called.
-
-    The flag interface consists of two strings, both JSON strings: the general in-algo flags
-    and then the more specific flags for the algorithm.
-
-    :param in_algo_args: General flags shared by all in-process methods.
-    :param flags: Algorithm-specific flags.
-    """
-    return [
-        json.dumps(in_algo_args, separators=(',', ':')),
-        json.dumps(flags, separators=(',', ':')),
-    ]
+__all__ = ["settings_for_svm_lr"]
 
 
 def settings_for_svm_lr(

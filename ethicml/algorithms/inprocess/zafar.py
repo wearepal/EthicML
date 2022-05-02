@@ -12,7 +12,7 @@ from ranzen import implements
 from ethicml.preprocessing.adjust_labels import LabelBinarizer
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .in_algorithm import InAlgorithm
+from .in_algorithm import HyperParamType, InAlgorithm
 from .installed_model import InstalledModel
 
 __all__ = ["ZafarAccuracy", "ZafarBaseline", "ZafarEqOdds", "ZafarEqOpp", "ZafarFairness"]
@@ -61,16 +61,18 @@ class _ZafarAlgorithmBase(InstalledModel):
             json.dump(out, out_file)
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            fit_params = self._fit(train, tmp_path)
+            fit_params = self._fit(train, tmp_path, seed)
             return self._predict(test, tmp_path, fit_params)
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> "_ZafarAlgorithmBase":
+    def fit(self, train: DataTuple, seed: int = 888) -> "_ZafarAlgorithmBase":
         with TemporaryDirectory() as tmpdir:
-            self._fit_params = self._fit(train, tmp_path=Path(tmpdir), model_dir=self._code_path)
+            self._fit_params = self._fit(
+                train, tmp_path=Path(tmpdir), seed=seed, model_dir=self._code_path
+            )
         return self
 
     @implements(InAlgorithm)
@@ -79,7 +81,9 @@ class _ZafarAlgorithmBase(InstalledModel):
         with TemporaryDirectory() as tmpdir:
             return self._predict(test, tmp_path=Path(tmpdir), fit_params=self._fit_params)
 
-    def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Optional[Path] = None) -> FitParams:
+    def _fit(
+        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Optional[Path] = None
+    ) -> FitParams:
         model_path = (model_dir.resolve() if model_dir is not None else tmp_path) / "model.npy"
         label_converter = LabelBinarizer()
         train_path = tmp_path / "train.json"
@@ -87,7 +91,7 @@ class _ZafarAlgorithmBase(InstalledModel):
 
         cmd = self._get_fit_cmd(str(train_path), str(model_path))
         working_dir = self._code_path.resolve() / self._sub_dir
-        self._call_script(cmd, cwd=working_dir)
+        self.call_script(cmd, cwd=working_dir)
 
         return FitParams(model_path, label_converter)
 
@@ -99,7 +103,7 @@ class _ZafarAlgorithmBase(InstalledModel):
             str(test_path), str(fit_params.model_path), str(predictions_path)
         )
         working_dir = self._code_path.resolve() / self._sub_dir
-        self._call_script(cmd, cwd=working_dir)
+        self.call_script(cmd, cwd=working_dir)
         predictions = predictions_path.open().read()
         predictions = json.loads(predictions)
 
@@ -122,6 +126,9 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def __init__(self) -> None:
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
+    def get_hyperparameters(self) -> HyperParamType:
+        return {}
+
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
         return ["fit.py", train_name, model_path, "baseline", "0"]
@@ -133,7 +140,9 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
     def __init__(self, *, gamma: float = 0.5):
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
-        self._hyperparameters = {"gamma": gamma}
+
+    def get_hyperparameters(self) -> HyperParamType:
+        return {"gamma": self.gamma}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -146,7 +155,9 @@ class ZafarFairness(_ZafarAlgorithmBase):
     def __init__(self, *, C: float = 0.001):
         super().__init__(name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT)
         self._c = C
-        self._hyperparameters = {"C": C}
+
+    def get_hyperparameters(self) -> HyperParamType:
+        return {"C": self._c}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:
@@ -165,7 +176,10 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._tau = tau
         self._mu = mu
         self._eps = eps
-        self._hyperparameters = {"tau": tau, "mu": mu, "eps": eps}
+
+    @implements(InAlgorithm)
+    def get_hyperparameters(self) -> HyperParamType:
+        return {"tau": self._tau, "mu": self._mu, "eps": self._eps}
 
     @implements(_ZafarAlgorithmBase)
     def _get_fit_cmd(self, train_name: str, model_path: str) -> List[str]:

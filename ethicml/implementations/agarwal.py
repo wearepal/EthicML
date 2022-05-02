@@ -28,10 +28,10 @@ if TYPE_CHECKING:
     from fairlearn.reductions import ExponentiatedGradient
 
     from ethicml.algorithms.inprocess.agarwal_reductions import AgarwalArgs
-    from ethicml.algorithms.inprocess.in_algorithm import InAlgoArgs
+    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
 
 
-def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
+def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
     """Fit a model.
 
     :param train:
@@ -59,9 +59,9 @@ def fit(train: DataTuple, args: AgarwalArgs) -> ExponentiatedGradient:
 
     if classifier_type is ClassifierType.svm:
         assert kernel_type is not None
-        model = select_svm(C=args["C"], kernel=kernel_type, seed=args["seed"])
+        model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
     else:
-        random_state = np.random.RandomState(seed=args["seed"])
+        random_state = np.random.RandomState(seed=seed)
         model = LogisticRegression(
             solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
         )
@@ -95,14 +95,16 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
     return preds
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
+def train_and_predict(
+    train: DataTuple, test: TestTuple, args: AgarwalArgs, seed: int
+) -> pd.DataFrame:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:
     :param test:
     :param args:
     """
-    exponentiated_gradient = fit(train, args)
+    exponentiated_gradient = fit(train, args, seed)
     return predict(exponentiated_gradient, test)
 
 
@@ -124,8 +126,6 @@ def main() -> None:
     """Run the Agarwal model as a standalone program."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: AgarwalArgs = json.loads(sys.argv[2])
-    random.seed(flags["seed"])
-    np.random.seed(flags["seed"])
     try:
         import cloudpickle
 
@@ -134,15 +134,19 @@ def main() -> None:
         raise RuntimeError("In order to use Agarwal, install fairlearn and cloudpickle.") from e
 
     if in_algo_args["mode"] == "run":
+        random.seed(in_algo_args["seed"])
+        np.random.seed(in_algo_args["seed"])
         train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
             Path(in_algo_args["test"])
         )
-        Prediction(hard=train_and_predict(train, test, flags)["preds"]).to_npz(
-            Path(in_algo_args["predictions"])
-        )
+        Prediction(
+            hard=train_and_predict(train, test, flags, in_algo_args["seed"])["preds"]
+        ).to_npz(Path(in_algo_args["predictions"]))
     elif in_algo_args["mode"] == "fit":
+        random.seed(in_algo_args["seed"])
+        np.random.seed(in_algo_args["seed"])
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
-        model = fit(data, flags)
+        model = fit(data, flags, in_algo_args["seed"])
         with working_dir(Path(in_algo_args["model"])):
             model_file = cloudpickle.dumps(model)
         dump(model_file, Path(in_algo_args["model"]))

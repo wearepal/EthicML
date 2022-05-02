@@ -1,14 +1,16 @@
 """Test the saving data capability."""
+from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import ClassVar
-from typing_extensions import Final
+from typing import Any, ClassVar, List, Mapping
+from typing_extensions import Final, final
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgoArgs, InAlgorithmAsync, Prediction, TestTuple
+from ethicml import DataTuple, InAlgoArgs, InAlgorithmSubprocess, Prediction, TestTuple
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 NPZ: Final[str] = "test.npz"
 
@@ -22,20 +24,21 @@ def test_simple_saving() -> None:
         name="test data",
     )
 
-    class CheckEquality(InAlgorithmAsync):
+    @dataclass
+    class CheckEquality(InAlgorithmSubprocess):
         """Dummy algorithm class for testing whether writing and reading feather files works."""
 
         is_fairness_algo: ClassVar[bool] = False
 
-        def __init__(self) -> None:
-            self.seed = -1
-            self.model_dir = Path(".")
-
-        @property
-        def name(self) -> str:
+        @final
+        def get_name(self) -> str:
             return "Check equality"
 
-        def _script_command(self, in_algo_args: InAlgoArgs):
+        @final
+        def get_hyperparameters(self) -> HyperParamType:
+            return {}
+
+        def _script_command(self, in_algo_args: InAlgoArgs):  # type: ignore[misc]
             """Check if the dataframes loaded from the files are the same as the original ones."""
             assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
             loaded = DataTuple.from_npz(Path(in_algo_args["train"]))
@@ -46,7 +49,13 @@ def test_simple_saving() -> None:
             np.savez(in_algo_args["predictions"], hard=np.load(in_algo_args["train"])["y"])
             return ["-c", "pass"]
 
-    data_y = CheckEquality().run(data_tuple, data_tuple)
+        def _get_path_to_script(self) -> List[str]:
+            return []
+
+        def _get_flags(self) -> Mapping[str, Any]:
+            return {}
+
+    data_y = CheckEquality().run(data_tuple, data_tuple, -1)
     pd.testing.assert_series_equal(data_tuple.y, data_y.hard, check_names=False)
 
 

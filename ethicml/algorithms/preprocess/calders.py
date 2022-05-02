@@ -1,4 +1,5 @@
 """Kamiran&Calders 2012, massaging."""
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 from ranzen import implements
@@ -11,25 +12,30 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Calders"]
 
 
+@dataclass
 class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
-    def __init__(self, *, preferable_class: int, disadvantaged_group: int, seed: int = 888):
-        self.seed = seed
-        self._out_size: Optional[int] = None
-        self.preferable_class = preferable_class
-        self.disadvantaged_group = disadvantaged_group
+    preferable_class: int
+    disadvantaged_group: int
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    def __post_init__(self) -> None:
+        self._out_size: Optional[int] = None
+
+    @implements(PreAlgorithm)
+    def get_out_size(self) -> int:
+        assert self._out_size is not None
+        return self._out_size
+
+    @implements(PreAlgorithm)
+    def get_name(self) -> str:
         return "Calders"
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> Tuple[PreAlgorithm, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = _calders_algorithm(
-            train, train, self.preferable_class, self.disadvantaged_group
+            train, train, self.preferable_class, self.disadvantaged_group, seed
         )
         return self, new_train.replace(name=f"{self.name}: {train.name}")
 
@@ -38,10 +44,12 @@ class Calders(PreAlgorithm):
         return data.replace(name=f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(
+        self, train: DataTuple, test: TestTuple, seed: int = 888
+    ) -> Tuple[DataTuple, TestTuple]:
         self._out_size = train.x.shape[1]
         new_train, new_test = _calders_algorithm(
-            train, test, self.preferable_class, self.disadvantaged_group
+            train, test, self.preferable_class, self.disadvantaged_group, seed
         )
         return new_train.replace(name=f"{self.name}: {train.name}"), new_test.replace(
             name=f"{self.name}: {test.name}"
@@ -49,7 +57,7 @@ class Calders(PreAlgorithm):
 
 
 def _calders_algorithm(
-    dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int
+    dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int, seed: int
 ) -> Tuple[DataTuple, TestTuple]:
     s_vals: List[int] = list(map(int, dataset.s.unique()))
     y_vals: List[int] = list(map(int, dataset.y.unique()))
@@ -79,7 +87,7 @@ def _calders_algorithm(
     massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
 
     ranker = LRProb()
-    rank: SoftPrediction = ranker.run(dataset, massaging_candidates)
+    rank: SoftPrediction = ranker.run(dataset, massaging_candidates, seed)
 
     dis_group_len = len(data[dis_group])
     adv_group_len = len(data[adv_group])

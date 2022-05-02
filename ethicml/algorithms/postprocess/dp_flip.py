@@ -8,49 +8,45 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .post_algorithm import PostAlgorithmDC
+from .post_algorithm import PostAlgorithm
 
 __all__ = ["DPFlip"]
 
 
 @dataclass
-class DPFlip(PostAlgorithmDC):
+class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
     @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    def get_name(self) -> str:
         return "DemPar. Post Process"
 
-    @implements(PostAlgorithmDC)
+    @implements(PostAlgorithm)
     def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
         return self
 
-    @implements(PostAlgorithmDC)
-    def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
+    @implements(PostAlgorithm)
+    def predict(self, test_predictions: Prediction, test: TestTuple, seed: int = 888) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
-            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=seed
         )
-        return self._flip(
-            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
-        )
+        return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=seed)
 
-    @implements(PostAlgorithmDC)
+    @implements(PostAlgorithm)
     def run(
         self,
         train_predictions: Prediction,
         train: DataTuple,
         test_predictions: Prediction,
         test: TestTuple,
+        seed: int,
     ) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
-            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=seed
         )
-        return self._flip(
-            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
-        )
+        return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=seed)
 
     @staticmethod
     def _flip(

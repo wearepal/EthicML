@@ -1,13 +1,13 @@
 """Fairness without Demographics."""
 
-from pathlib import Path
-from typing import ClassVar, List, Optional
+from dataclasses import asdict, dataclass, field
+from typing import List
 from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .in_algorithm import InAlgoArgs, InAlgorithmAsync
-from .shared import flag_interface
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 
 __all__ = ["DRO"]
 
@@ -19,56 +19,43 @@ class DroArgs(TypedDict):
     epochs: int
     eta: float
     network_size: List[int]
-    seed: int
 
 
-class DRO(InAlgorithmAsync):
+@dataclass
+class DRO(InAlgorithmSubprocess):
     """Implementation of https://arxiv.org/abs/1806.08010 .
 
-    :param dir: Directory to store the model.
     :param eta: Tolerance.
     :param epochs: The number of epochs to train for.
     :param batch_size: The batch size.
     :param network_size: The size of the network.
-    :param seed: The seed for the random number generator.
     """
 
-    is_fairness_algo: ClassVar[bool] = True
+    eta: float = 0.5
+    epochs: int = 10
+    batch_size: int = 32
+    network_size: List[int] = field(default_factory=lambda: [50])
 
-    def __init__(
-        self,
-        *,
-        dir: str = ".",
-        eta: float = 0.5,
-        epochs: int = 10,
-        batch_size: int = 32,
-        network_size: Optional[List[int]] = None,
-        seed: int = 888,
-    ):
-        self.seed = seed
-        if network_size is None:
-            network_size = [50]
-        self.model_dir = Path(dir)
-        self.flags: DroArgs = {
-            "eta": eta,
-            "batch_size": batch_size,
-            "epochs": epochs,
-            "network_size": network_size,
-            "seed": seed,
-        }
-        self._hyperparameters = {
-            "eta": eta,
-            "epochs": epochs,
-            "batch_size": batch_size,
-            "network_size": f"{network_size}",
+    @implements(InAlgorithmSubprocess)
+    def _get_flags(self) -> DroArgs:
+        # TODO: replace this with dataclasses.asdict()
+        return {
+            "eta": self.eta,
+            "batch_size": self.batch_size,
+            "epochs": self.epochs,
+            "network_size": self.network_size,
         }
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmSubprocess)
+    def get_hyperparameters(self) -> HyperParamType:
+        _hyperparameters = asdict(self)
+        _hyperparameters.pop("dir")  # this is not really a hyperparameter
+        return _hyperparameters
+
+    @implements(InAlgorithmSubprocess)
+    def get_name(self) -> str:
         return "Dist Robust Optim"
 
-    @implements(InAlgorithmAsync)
-    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
-        args = flag_interface(in_algo_args, self.flags)
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
+    @implements(InAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.dro_tabular"]

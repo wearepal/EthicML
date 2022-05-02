@@ -4,6 +4,7 @@ from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
 from .algorithms.inprocess.fairness_wo_demographics import *
 from .algorithms.inprocess.in_algorithm import *
+from .algorithms.inprocess.in_subprocess import *
 from .algorithms.inprocess.installed_model import *
 from .algorithms.inprocess.kamiran import *
 from .algorithms.inprocess.kamishima import *
@@ -20,6 +21,7 @@ from .algorithms.postprocess.post_algorithm import *
 from .algorithms.preprocess.beutel import *
 from .algorithms.preprocess.calders import *
 from .algorithms.preprocess.pre_algorithm import *
+from .algorithms.preprocess.pre_subprocess import *
 from .algorithms.preprocess.upsampler import *
 from .algorithms.preprocess.vfae import *
 from .algorithms.preprocess.zemel import *

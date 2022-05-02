@@ -1,4 +1,5 @@
 """Kamiran and Calders 2012."""
+from dataclasses import dataclass
 from typing import Any, ClassVar, Dict, Optional
 
 import numpy as np
@@ -7,11 +8,10 @@ import sklearn.linear_model._base
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression
 
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm
+from ethicml.algorithms.inprocess.shared import settings_for_svm_lr
+from ethicml.algorithms.inprocess.svm import KernelType, select_svm
 from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
-
-from .in_algorithm import InAlgorithm
-from .shared import settings_for_svm_lr
-from .svm import KernelType, select_svm
 
 __all__ = ["Kamiran", "compute_instance_weights"]
 
@@ -19,6 +19,7 @@ __all__ = ["Kamiran", "compute_instance_weights"]
 VALID_MODELS = {ClassifierType.lr, ClassifierType.svm}
 
 
+@dataclass
 class Kamiran(InAlgorithm):
     """An implementation of the Reweighing method from `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
 
@@ -28,31 +29,29 @@ class Kamiran(InAlgorithm):
     :param classifier: The classifier to use.
     :param C: The C parameter for the classifier.
     :param kernel: The kernel to use for the classifier if SVM selected.
-    :param seed: The random number generator seed to use for the classifier.
     """
 
     is_fairness_algo: ClassVar[bool] = True
+    classifier: ClassifierType = ClassifierType.lr
+    C: Optional[float] = None
+    kernel: Optional[KernelType] = None
 
-    def __init__(
-        self,
-        *,
-        classifier: ClassifierType = ClassifierType.lr,
-        C: Optional[float] = None,
-        kernel: Optional[KernelType] = None,
-        seed: int = 888,
-    ):
-        self.seed = seed
-        self.classifier = classifier
-        self.C, self.kernel = settings_for_svm_lr(classifier, C, kernel)
-        self._hyperparameters = {"C": self.C}
-        if self.classifier is ClassifierType.svm:
-            assert self.kernel is not None
-            self._hyperparameters["kernel"] = self.kernel
+    def __post_init__(self) -> None:
+        self.chosen_c, self.chosen_kernel = settings_for_svm_lr(
+            self.classifier, self.C, self.kernel
+        )
         self.group_weights: Optional[Dict[str, Any]] = None
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithm)
+    def get_hyperparameters(self) -> HyperParamType:
+        _hyperparameters: Dict[str, Any] = {"C": self.C}
+        if self.classifier is ClassifierType.svm:
+            assert self.kernel is not None
+            _hyperparameters["kernel"] = self.kernel
+        return _hyperparameters
+
+    @implements(InAlgorithm)
+    def get_name(self) -> str:
         lr_params = f" C={self.C}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
             f" C={self.C}, kernel={self.kernel}" if self.classifier is ClassifierType.svm else ""
@@ -60,9 +59,9 @@ class Kamiran(InAlgorithm):
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
+    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithm:
         self.clf = self._train(
-            train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
+            train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )
         return self
 
@@ -71,9 +70,9 @@ class Kamiran(InAlgorithm):
         return self._predict(model=self.clf, test=test)
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = self._train(
-            train, classifier=self.classifier, C=self.C, kernel=self.kernel, seed=self.seed
+            train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )
         return self._predict(model=clf, test=test)
 
