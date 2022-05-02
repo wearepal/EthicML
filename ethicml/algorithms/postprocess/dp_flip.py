@@ -17,7 +17,7 @@ __all__ = ["DPFlip"]
 class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
-    @property
+    @implements(PostAlgorithm)
     def get_name(self) -> str:
         return "DemPar. Post Process"
 
@@ -40,7 +40,7 @@ class DPFlip(PostAlgorithm):
         train: DataTuple,
         test_predictions: Prediction,
         test: TestTuple,
-        seed: int,
+        seed: int = 888,
     ) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(

@@ -126,6 +126,7 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def __init__(self) -> None:
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
+    @implements(_ZafarAlgorithmBase)
     def get_hyperparameters(self) -> HyperParamType:
         return {}
 
@@ -141,6 +142,7 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
+    @implements(_ZafarAlgorithmBase)
     def get_hyperparameters(self) -> HyperParamType:
         return {"gamma": self.gamma}
 
@@ -156,6 +158,7 @@ class ZafarFairness(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT)
         self._c = C
 
+    @implements(_ZafarAlgorithmBase)
     def get_hyperparameters(self) -> HyperParamType:
         return {"C": self._c}
 

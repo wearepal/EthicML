@@ -76,6 +76,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
 
     @property
     def executable(self) -> str:
+        """The python executable from the virtualenv associated with the model."""
         return self.__executable
 
     def _clone_directory(self, url: str) -> None:
