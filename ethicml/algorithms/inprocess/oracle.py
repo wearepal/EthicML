@@ -39,6 +39,7 @@ class Oracle(InAlgorithmNoParams):
         return Prediction(hard=test.y.copy())
 
 
+@dataclass
 class DPOracle(InAlgorithmNoParams):
     """A perfect Demographic Parity Predictor.
 

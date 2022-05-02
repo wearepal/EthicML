@@ -52,9 +52,11 @@ class Kamiran(InAlgorithm):
 
     @implements(InAlgorithm)
     def get_name(self) -> str:
-        lr_params = f" C={self.C}" if self.classifier is ClassifierType.lr else ""
+        lr_params = f" C={self.chosen_c}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
-            f" C={self.C}, kernel={self.kernel}" if self.classifier is ClassifierType.svm else ""
+            f" C={self.C}, kernel={self.chosen_kernel}"
+            if self.classifier is ClassifierType.svm
+            else ""
         )
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 

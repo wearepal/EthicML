@@ -24,9 +24,8 @@ class Hardt(PostAlgorithm):
     unfavorable_label: int = 0
     favorable_label: int = 1
 
-    @property
+    @implements(PostAlgorithm)
     def get_name(self) -> str:
-        """Name of the algorithm."""
         return "Hardt"
 
     @implements(PostAlgorithm)
@@ -45,7 +44,7 @@ class Hardt(PostAlgorithm):
         train: DataTuple,
         test_predictions: Prediction,
         test: TestTuple,
-        seed: int,
+        seed: int = 888,
     ) -> Prediction:
         model_params = self._fit(train_predictions, train)
         return self._predict(model_params, test_predictions, test, seed)
