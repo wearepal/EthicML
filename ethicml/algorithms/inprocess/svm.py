@@ -1,6 +1,6 @@
 """Wrapper for SKLearn implementation of SVM."""
 from dataclasses import dataclass, field
-from typing import Union
+from typing import ClassVar, Union
 
 import numpy as np
 import pandas as pd
@@ -26,6 +26,7 @@ class SVM(InAlgorithmDC):
     :param kernel: The kernel to use.
     """
 
+    is_fairness_algo: ClassVar[bool] = False
     C: float = field(default_factory=lambda: SVC().C)
     kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
 

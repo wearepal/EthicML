@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import ClassVar
 
 import numpy as np
 import pandas as pd
@@ -20,6 +21,8 @@ class Blind(InAlgorithmNoParams):
     This is useful as a baseline method and operates a 'coin flip' to assign a label.
     Returns a random label.
     """
+
+    is_fairness_algo: ClassVar[bool] = False
 
     @implements(InAlgorithmNoParams)
     def get_name(self) -> str:

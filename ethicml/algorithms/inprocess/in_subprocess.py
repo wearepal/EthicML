@@ -56,7 +56,6 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
     :param dir: Directory to store the model.
     """
 
-    is_fairness_algo: ClassVar[bool] = True
     dir: str = "."
 
     @property

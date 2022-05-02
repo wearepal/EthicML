@@ -32,7 +32,6 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     :param dir_name: Where to download the code to (can be chosen freely).
     :param top_dir: Top directory of the repository where the Pipfile can be found (this is usually
         simply the last part of the repository URL).
-    :param is_fairness_algo: If True, this object corresponds to an algorithm enforcing fairness.
     :param url: URL of the repository. (Default: None)
     :param executable: Path to a Python executable. (Default: None.
     :param use_poetry: If True, will try to use poetry instead of pipenv. (Default: False)

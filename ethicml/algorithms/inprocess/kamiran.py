@@ -1,6 +1,6 @@
 """Kamiran and Calders 2012."""
 from dataclasses import dataclass
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -31,7 +31,6 @@ class Kamiran(InAlgorithm):
     :param kernel: The kernel to use for the classifier if SVM selected.
     """
 
-    is_fairness_algo: ClassVar[bool] = True
     classifier: ClassifierType = ClassifierType.lr
     C: Optional[float] = None
     kernel: Optional[KernelType] = None

@@ -148,14 +148,18 @@ def main() -> None:
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
         with working_dir(Path(in_algo_args["model"])):
+            model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
             model_file = cloudpickle.dumps(model)
         dump(model_file, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        data = TestTuple.from_npz(Path(in_algo_args["test"]))
+        testdata = TestTuple.from_npz(Path(in_algo_args["test"]))
         model_file = load(Path(in_algo_args["model"]))
         with working_dir(Path(in_algo_args["model"])):
             model = cloudpickle.loads(model_file)
-        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(in_algo_args["predictions"]))
+            seed = model.ethicml_random_seed
+        random.seed(seed)
+        np.random.seed(seed)
+        Prediction(hard=predict(model, testdata)["preds"]).to_npz(Path(in_algo_args["predictions"]))
     else:
         raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 

@@ -1,5 +1,6 @@
 """Perfect predictors."""
 from dataclasses import dataclass
+from typing import ClassVar
 
 from ranzen import implements
 
@@ -19,6 +20,8 @@ class Oracle(InAlgorithmNoParams):
     This model isn't intended for general use,
     but can be useful if you want to either do a sanity check, or report potential values.
     """
+
+    is_fairness_algo: ClassVar[bool] = False
 
     @implements(InAlgorithmNoParams)
     def get_name(self) -> str:

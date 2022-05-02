@@ -1,5 +1,6 @@
 """Simply returns the majority label from the train set."""
 from dataclasses import dataclass
+from typing import ClassVar
 
 import pandas as pd
 from ranzen import implements
@@ -13,6 +14,8 @@ __all__ = ["Majority"]
 @dataclass
 class Majority(InAlgorithmNoParams):
     """Simply returns the majority label from the train set."""
+
+    is_fairness_algo: ClassVar[bool] = False
 
     @implements(InAlgorithmNoParams)
     def get_name(self) -> str:

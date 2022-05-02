@@ -1,6 +1,6 @@
 """Implementation of Agarwal model."""
 from dataclasses import dataclass
-from typing import ClassVar, List, Optional, Set
+from typing import List, Optional, Set
 from typing_extensions import TypedDict
 
 from ranzen import implements
@@ -43,7 +43,6 @@ class Agarwal(InAlgorithmSubprocess):
     :param kernel: Kernel type for the SVM algorithm.
     """
 
-    is_fairness_algo: ClassVar[bool] = True
     fairness: FairnessType = FairnessType.dp
     classifier: ClassifierType = ClassifierType.lr
     eps: float = 0.1
