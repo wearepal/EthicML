@@ -7,40 +7,36 @@ import numpy as np
 import pandas as pd
 from ranzen import implements
 
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmNoParams
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
 __all__ = ["Blind"]
 
 
 @dataclass
-class Blind(InAlgorithm):
+class Blind(InAlgorithmNoParams):
     """A Random classifier.
 
     This is useful as a baseline method and operates a 'coin flip' to assign a label.
     Returns a random label.
     """
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmNoParams)
     def get_name(self) -> str:
         return "Blind"
 
-    @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
-        return {}
-
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithm:
+    @implements(InAlgorithmNoParams)
+    def fit(self, train: DataTuple, seed: int = 888) -> "Blind":
         self.vals = train.y.drop_duplicates()
         self.seed = seed
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmNoParams)
     def predict(self, test: TestTuple) -> Prediction:
         random = np.random.RandomState(self.seed)
         return Prediction(hard=pd.Series(random.choice(self.vals.to_numpy(), test.x.shape[0])))
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmNoParams)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         vals = train.y.drop_duplicates()
         random = np.random.RandomState(seed)
