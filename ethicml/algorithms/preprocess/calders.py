@@ -16,8 +16,8 @@ __all__ = ["Calders"]
 class Calders(PreAlgorithm):
     """Massaging algorithm from Kamiran&Calders 2012."""
 
-    preferable_class: int
-    disadvantaged_group: int
+    preferable_class: int = 1
+    disadvantaged_group: int = 0
 
     def __post_init__(self) -> None:
         self._out_size: Optional[int] = None
