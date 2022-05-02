@@ -1,4 +1,6 @@
 """Post-processing method by Hardt et al."""
+from dataclasses import dataclass
+
 import numpy as np
 import pandas as pd
 from numpy.random import RandomState
@@ -15,18 +17,15 @@ from .post_algorithm import PostAlgorithm
 __all__ = ["Hardt"]
 
 
+@dataclass
 class Hardt(PostAlgorithm):
     """Post-processing method by Hardt et al."""
 
-    def __init__(self, *, unfavorable_label: int = 0, favorable_label: int = 1, seed: int = 888):
-        self.seed = seed
-        self._unfavorable_label = unfavorable_label
-        self._favorable_label = favorable_label
-        self._random = RandomState(seed=self.seed)
+    unfavorable_label: int = 0
+    favorable_label: int = 1
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(PostAlgorithm)
+    def get_name(self) -> str:
         return "Hardt"
 
     @implements(PostAlgorithm)
@@ -35,8 +34,8 @@ class Hardt(PostAlgorithm):
         return self
 
     @implements(PostAlgorithm)
-    def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
-        return self._predict(self.model_params, test_predictions, test)
+    def predict(self, test_predictions: Prediction, test: TestTuple, seed: int = 888) -> Prediction:
+        return self._predict(self.model_params, test_predictions, test, seed)
 
     @implements(PostAlgorithm)
     def run(
@@ -45,9 +44,10 @@ class Hardt(PostAlgorithm):
         train: DataTuple,
         test_predictions: Prediction,
         test: TestTuple,
+        seed: int = 888,
     ) -> Prediction:
         model_params = self._fit(train_predictions, train)
-        return self._predict(model_params, test_predictions, test)
+        return self._predict(model_params, test_predictions, test, seed)
 
     def _fit(self, train_predictions: Prediction, train: DataTuple) -> OptimizeResult:
         # compute basic statistics
@@ -100,22 +100,22 @@ class Hardt(PostAlgorithm):
 
         train_preds_numpy: np.ndarray = train_predictions.hard.to_numpy()
 
-        sconst = np.ravel(train_preds_numpy[mask_s1] == self._favorable_label)
-        sflip = np.ravel(train_preds_numpy[mask_s1] == self._unfavorable_label)
-        oconst = np.ravel(train_preds_numpy[mask_s0] == self._favorable_label)
-        oflip = np.ravel(train_preds_numpy[mask_s0] == self._unfavorable_label)
+        sconst = np.ravel(train_preds_numpy[mask_s1] == self.favorable_label)
+        sflip = np.ravel(train_preds_numpy[mask_s1] == self.unfavorable_label)
+        oconst = np.ravel(train_preds_numpy[mask_s0] == self.favorable_label)
+        oflip = np.ravel(train_preds_numpy[mask_s0] == self.unfavorable_label)
 
         y_true = train.y.to_numpy().ravel()
 
-        sm_tn = np.logical_and(sflip, y_true[mask_s1] == self._unfavorable_label)
-        sm_fn = np.logical_and(sflip, y_true[mask_s1] == self._favorable_label)
-        sm_fp = np.logical_and(sconst, y_true[mask_s1] == self._unfavorable_label)
-        sm_tp = np.logical_and(sconst, y_true[mask_s1] == self._favorable_label)
+        sm_tn = np.logical_and(sflip, y_true[mask_s1] == self.unfavorable_label)
+        sm_fn = np.logical_and(sflip, y_true[mask_s1] == self.favorable_label)
+        sm_fp = np.logical_and(sconst, y_true[mask_s1] == self.unfavorable_label)
+        sm_tp = np.logical_and(sconst, y_true[mask_s1] == self.favorable_label)
 
-        om_tn = np.logical_and(oflip, y_true[mask_s0] == self._unfavorable_label)
-        om_fn = np.logical_and(oflip, y_true[mask_s0] == self._favorable_label)
-        om_fp = np.logical_and(oconst, y_true[mask_s0] == self._unfavorable_label)
-        om_tp = np.logical_and(oconst, y_true[mask_s0] == self._favorable_label)
+        om_tn = np.logical_and(oflip, y_true[mask_s0] == self.unfavorable_label)
+        om_fn = np.logical_and(oflip, y_true[mask_s0] == self.favorable_label)
+        om_fp = np.logical_and(oconst, y_true[mask_s0] == self.unfavorable_label)
+        om_tp = np.logical_and(oconst, y_true[mask_s0] == self.favorable_label)
 
         # A_eq - 2-D array which, when matrix-multiplied by x,
         # gives the values of the equality constraints at x.
@@ -147,8 +147,9 @@ class Hardt(PostAlgorithm):
         return linprog(coeffs, A_ub=inequalilty_constraint_matrix, b_ub=b_ub, A_eq=a_eq, b_eq=b_eq)
 
     def _predict(
-        self, model_params: OptimizeResult, test_predictions: Prediction, test: TestTuple
+        self, model_params: OptimizeResult, test_predictions: Prediction, test: TestTuple, seed: int
     ) -> Prediction:
+        random = RandomState(seed=seed)
         sp2p, sn2p, op2p, on2p = model_params.x
 
         # Create boolean conditioning vectors for protected groups
@@ -159,26 +160,26 @@ class Hardt(PostAlgorithm):
 
         # Randomly flip labels according to the probabilities in model_params
         self_fair_pred = test_preds_numpy[mask_s1].copy()
-        self_pp_indices = (test_preds_numpy[mask_s1] == self._favorable_label).nonzero()[0]
-        self_pn_indices = (test_preds_numpy[mask_s1] == self._unfavorable_label).nonzero()[0]
-        self._random.shuffle(self_pp_indices)
-        self._random.shuffle(self_pn_indices)
+        self_pp_indices = (test_preds_numpy[mask_s1] == self.favorable_label).nonzero()[0]
+        self_pn_indices = (test_preds_numpy[mask_s1] == self.unfavorable_label).nonzero()[0]
+        random.shuffle(self_pp_indices)
+        random.shuffle(self_pn_indices)
 
         n2p_indices = self_pn_indices[: int(len(self_pn_indices) * sn2p)]
-        self_fair_pred[n2p_indices] = self._favorable_label
+        self_fair_pred[n2p_indices] = self.favorable_label
         p2n_indices = self_pp_indices[: int(len(self_pp_indices) * (1 - sp2p))]
-        self_fair_pred[p2n_indices] = self._unfavorable_label
+        self_fair_pred[p2n_indices] = self.unfavorable_label
 
         othr_fair_pred = test_preds_numpy[mask_s0].copy()
-        othr_pp_indices = (test_preds_numpy[mask_s0] == self._favorable_label).nonzero()[0]
-        othr_pn_indices = (test_preds_numpy[mask_s0] == self._unfavorable_label).nonzero()[0]
-        self._random.shuffle(othr_pp_indices)
-        self._random.shuffle(othr_pn_indices)
+        othr_pp_indices = (test_preds_numpy[mask_s0] == self.favorable_label).nonzero()[0]
+        othr_pn_indices = (test_preds_numpy[mask_s0] == self.unfavorable_label).nonzero()[0]
+        random.shuffle(othr_pp_indices)
+        random.shuffle(othr_pn_indices)
 
         n2p_indices = othr_pn_indices[: int(len(othr_pn_indices) * on2p)]
-        othr_fair_pred[n2p_indices] = self._favorable_label
+        othr_fair_pred[n2p_indices] = self.favorable_label
         p2n_indices = othr_pp_indices[: int(len(othr_pp_indices) * (1 - op2p))]
-        othr_fair_pred[p2n_indices] = self._unfavorable_label
+        othr_fair_pred[p2n_indices] = self.unfavorable_label
 
         new_labels = np.zeros_like(test_preds_numpy, dtype=np.float64)
         new_labels[mask_s1] = self_fair_pred

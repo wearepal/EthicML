@@ -21,7 +21,7 @@ from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
-    from ethicml.algorithms.inprocess.in_algorithm import InAlgoArgs
+    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
 
 
 def train_model(
@@ -55,14 +55,14 @@ def train_model(
     print(f"====> Epoch: {epoch} Average loss: {train_loss / len(train_loader.dataset):.4f}")
 
 
-def fit(train: DataTuple, args: DroArgs) -> DROClassifier:
+def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
     """Train a network and return predictions.
 
     :param train:
     :param args:
     """
     # Set up the data
-    set_seed(args["seed"])
+    set_seed(seed)
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=args["batch_size"])
 
@@ -103,7 +103,9 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     return SoftPrediction(soft=pd.Series([j for i in post_test for j in i]))
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftPrediction:
+def train_and_predict(
+    train: DataTuple, test: TestTuple, args: DroArgs, seed: int
+) -> SoftPrediction:
     """Train a network and return predictions.
 
     :param train:
@@ -111,7 +113,7 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: DroArgs) -> SoftP
     :param args:
     """
     # Set up the data
-    set_seed(args["seed"])
+    set_seed(seed)
     train_data = CustomDataset(train)
     train_loader = DataLoader(train_data, batch_size=args["batch_size"])
 
@@ -149,10 +151,12 @@ def main() -> None:
     data: Union[DataTuple, TestTuple]
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)
-        train_and_predict(train, test, flags).to_npz(Path(in_algo_args["predictions"]))
+        train_and_predict(train, test, flags, seed=in_algo_args["seed"]).to_npz(
+            Path(in_algo_args["predictions"])
+        )
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
-        model = fit(data, flags)
+        model = fit(data, flags, seed=in_algo_args["seed"])
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
         data = TestTuple.from_npz(Path(in_algo_args["test"]))

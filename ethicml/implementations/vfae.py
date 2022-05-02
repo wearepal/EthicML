@@ -13,7 +13,6 @@ from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgoArgs, T
 from ethicml.data.lookup import get_dataset_obj_by_name
 from ethicml.implementations.beutel import set_seed
 from ethicml.utility import DataTuple, TestTuple
@@ -23,6 +22,7 @@ from .utils import load_data_from_flags, save_transformations
 from .vfae_modules import VFAENetwork, loss_function
 
 if TYPE_CHECKING:
+    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
     from ethicml.algorithms.preprocess.vfae import VfaeArgs
 
 
@@ -163,11 +163,12 @@ def main() -> None:
     """Main method to run model."""
     pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
     flags: VfaeArgs = json.loads(sys.argv[2])
-    set_seed(flags["seed"])
     if pre_algo_args["mode"] == "run":
+        set_seed(pre_algo_args["seed"])
         train, test = load_data_from_flags(pre_algo_args)
         save_transformations(train_and_transform(train, test, flags), pre_algo_args)
     elif pre_algo_args["mode"] == "fit":
+        set_seed(pre_algo_args["seed"])
         train = DataTuple.from_npz(Path(pre_algo_args["train"]))
         enc = fit(train, flags)
         transformed_train = transform(enc, train, flags)

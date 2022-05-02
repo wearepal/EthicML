@@ -1,6 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import ClassVar, Dict, Generator, List, NamedTuple
+from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
 
 import numpy as np
 import pytest
@@ -26,7 +26,7 @@ from ethicml import (
     FairnessType,
     InAlgoArgs,
     InAlgorithm,
-    InAlgorithmAsync,
+    InAlgorithmSubprocess,
     Kamiran,
     Kamishima,
     KernelType,
@@ -41,6 +41,7 @@ from ethicml import (
     toy,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 
 class InprocessTest(NamedTuple):
@@ -222,33 +223,26 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     """Test local installed lr."""
     train, test = toy_train_test
 
-    class _LocalInstalledLR(InAlgorithmAsync):
+    class _LocalInstalledLR(InAlgorithmSubprocess):
         is_fairness_algo: ClassVar[bool] = False
 
-        def __init__(self):
-            self.seed = 0
-            self.model_dir = Path(".")
-
-        @property
-        def name(self) -> str:
+        def get_name(self) -> str:
             return "local installed LR"
 
-        @implements(InAlgorithmAsync)
-        def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
-            assert in_algo_args["mode"] == "run", "model doesn’t support the fit/predict split yet"
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [
-                script,
-                in_algo_args["train"],
-                in_algo_args["test"],
-                in_algo_args["predictions"],
-            ]
+        def _get_path_to_script(self) -> List[str]:
+            return [str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())]
+
+        def _get_flags(self) -> Mapping[str, Any]:
+            return {}
+
+        def get_hyperparameters(self) -> HyperParamType:
+            return {}
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None
     assert model.name == "local installed LR"
 
-    predictions: Prediction = model.run(train, test)
+    predictions: Prediction = model.run(train, test, seed=0)
     expected_num_pos = 44
     assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
@@ -257,7 +251,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 @pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [
+    models: List[InAlgorithmSubprocess] = [
         Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
     ]
 

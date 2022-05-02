@@ -33,17 +33,23 @@ class Upsampler(PreAlgorithm):
     """
 
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
-    seed: int = 888
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    def __post_init__(self) -> None:
+        self._out_size: Optional[int] = None
+
+    @implements(PreAlgorithm)
+    def get_name(self) -> str:
         return f"Upsample {self.strategy}"
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple) -> Tuple["Upsampler", DataTuple]:
+    def get_out_size(self) -> int:
+        assert self._out_size is not None
+        return self._out_size
+
+    @implements(PreAlgorithm)
+    def fit(self, train: DataTuple, seed: int = 888) -> Tuple["Upsampler", DataTuple]:
         self._out_size = train.x.shape[1]
-        new_train, _ = upsample(train, train, self.strategy, self.seed, name=self.name)
+        new_train, _ = upsample(train, train, self.strategy, seed, name=self.name)
         return self, new_train
 
     @implements(PreAlgorithm)
@@ -51,9 +57,11 @@ class Upsampler(PreAlgorithm):
         return data.replace(name=f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
+    def run(
+        self, train: DataTuple, test: TestTuple, seed: int = 888
+    ) -> Tuple[DataTuple, TestTuple]:
         self._out_size = train.x.shape[1]
-        return upsample(train, test, self.strategy, self.seed, name=self.name)
+        return upsample(train, test, self.strategy, seed, name=self.name)
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:

@@ -7,10 +7,9 @@ import numpy as np
 import pandas as pd
 from ranzen import implements
 
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm
+from ethicml.algorithms.inprocess.installed_model import InstalledModel
 from ethicml.utility import DataTuple, Prediction, TestTuple
-
-from .in_algorithm import InAlgorithm
-from .installed_model import InstalledModel
 
 __all__ = ["Kamishima"]
 
@@ -40,22 +39,27 @@ class Kamishima(InstalledModel):
         )
         self.eta = eta
         self._fit_info: Optional[_FitInfo] = None
-        self._hyperparameters = {"eta": eta}
 
     @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    def get_hyperparameters(self) -> HyperParamType:
+        return {"eta": self.eta}
+
+    @implements(InAlgorithm)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
-            fit_info = self._fit(train, tmp_path)
+            fit_info = self._fit(train, tmp_path, seed)
             return self._predict(test, fit_info, tmp_path)
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> "Kamishima":
+    def fit(self, train: DataTuple, seed: int = 888) -> "Kamishima":
         with TemporaryDirectory() as tmpdir:
-            self._fit_info = self._fit(train, Path(tmpdir), model_dir=self._code_path)
+            self._fit_info = self._fit(train, Path(tmpdir), seed, model_dir=self._code_path)
         return self
 
-    def _fit(self, train: DataTuple, tmp_path: Path, model_dir: Optional[Path] = None) -> _FitInfo:
+    def _fit(
+        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Optional[Path] = None
+    ) -> _FitInfo:
         train_path = tmp_path / "train.txt"
         _create_file_in_kamishima_format(train, train_path)
         min_class_label: int = train.y.min()
@@ -63,7 +67,7 @@ class Kamishima(InstalledModel):
 
         script = self._code_path / "train_pr.py"
         cmd = [script, "-e", self.eta, "-i", train_path, "-o", model_path, "--quiet"]
-        self._call_script([str(e) for e in cmd])
+        self.call_script([str(e) for e in cmd])
         return _FitInfo(min_class_label=min_class_label, model_path=model_path)
 
     @implements(InAlgorithm)
@@ -78,7 +82,7 @@ class Kamishima(InstalledModel):
         output_path = str(tmp_path / "output.txt")
         script = self._code_path / "predict_lr.py"
         cmd = [script, "-i", test_path, "-m", fit_info.model_path, "-o", output_path, "--quiet"]
-        self._call_script([str(e) for e in cmd])
+        self.call_script([str(e) for e in cmd])
         output = np.loadtxt(output_path)
         predictions = output[:, 1].astype(np.float32)
         # except RuntimeError:

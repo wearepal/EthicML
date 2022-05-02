@@ -1,58 +1,52 @@
 """Wrapper for SKLearn implementation of MLP."""
-from typing import ClassVar, Optional, Tuple
+from dataclasses import dataclass, field
+from typing import ClassVar, Tuple
 
 import numpy as np
 import pandas as pd
 from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmDC
 from ethicml.utility import DataTuple, Prediction, TestTuple
-
-from .in_algorithm import InAlgorithm
 
 __all__ = ["MLP"]
 
 
-class MLP(InAlgorithm):
+@dataclass
+class MLP(InAlgorithmDC):
     """Multi-layer Perceptron.
 
     This is a wraper around the SKLearn implementation of the MLP.
     Documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html
 
     :param hidden_layer_sizes: The number of neurons in each hidden layer.
-    :param activation: The activation function to use.
-    :param seed: The seed for the random number generator.
     """
 
     is_fairness_algo: ClassVar[bool] = False
+    hidden_layer_sizes: Tuple[int, ...] = field(
+        default_factory=lambda: MLPClassifier().hidden_layer_sizes
+    )
 
-    def __init__(
-        self,
-        *,
-        hidden_layer_sizes: Optional[Tuple[int, ...]] = None,
-        seed: int = 888,
-    ):
-        self.seed = seed
-        if hidden_layer_sizes is None:
-            self.hidden_layer_sizes = MLPClassifier().hidden_layer_sizes
-        else:
-            self.hidden_layer_sizes = hidden_layer_sizes
-        self._hyperparameters = {"hidden_layer_sizes": f"{self.hidden_layer_sizes}"}
-
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmDC)
+    def get_name(self) -> str:
         return "MLP"
 
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
-        self.clf = select_mlp(self.hidden_layer_sizes, seed=self.seed)
+    @implements(InAlgorithmDC)
+    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+        self.clf = select_mlp(self.hidden_layer_sizes, seed=seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
+
+    @implements(InAlgorithmDC)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+        clf = select_mlp(self.hidden_layer_sizes, seed=seed)
+        clf.fit(train.x, train.y.to_numpy().ravel())
+        return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:

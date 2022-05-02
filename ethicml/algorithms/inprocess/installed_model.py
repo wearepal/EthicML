@@ -9,18 +9,21 @@ import os
 import shutil
 import subprocess
 import sys
+from abc import ABC
 from pathlib import Path
-from typing import ClassVar, Optional
+from typing import Optional
 
 import git
+from ranzen.decorators import implements
+
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 
 from ..algorithm_base import SubprocessAlgorithmMixin
-from .in_algorithm import InAlgorithm
 
 __all__ = ["InstalledModel"]
 
 
-class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
+class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     """The model that does the magic.
 
     Download code from given URL and create Pip environment with Pipfile found in the code.
@@ -29,14 +32,10 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
     :param dir_name: Where to download the code to (can be chosen freely).
     :param top_dir: Top directory of the repository where the Pipfile can be found (this is usually
         simply the last part of the repository URL).
-    :param is_fairness_algo: If True, this object corresponds to an algorithm enforcing fairness.
     :param url: URL of the repository. (Default: None)
     :param executable: Path to a Python executable. (Default: None.
-    :param seed: Random seed to use for reproducibility. (Default: 888)
     :param use_poetry: If True, will try to use poetry instead of pipenv. (Default: False)
     """
-
-    is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
 
     def __init__(
         self,
@@ -45,7 +44,6 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         top_dir: str,
         url: Optional[str] = None,
         executable: Optional[str] = None,
-        seed: int = 888,
         use_poetry: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
@@ -65,11 +63,9 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         else:
             self.__executable = executable
         self.__name = name
-        self.seed = seed
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithm)
+    def get_name(self) -> str:
         return self.__name
 
     @property
@@ -78,7 +74,8 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm):
         return self._store_dir / self._top_dir
 
     @property
-    def _executable(self) -> str:
+    def executable(self) -> str:
+        """The python executable from the virtualenv associated with the model."""
         return self.__executable
 
     def _clone_directory(self, url: str) -> None:

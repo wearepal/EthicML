@@ -22,7 +22,6 @@ from ethicml.utility import (
     Prediction,
     Results,
     ResultsAggregator,
-    TestTuple,
     TrainTestPair,
     make_results,
 )
@@ -299,13 +298,17 @@ def _gather_metrics(
         predictions: Prediction
         for predictions, model in zip(preds_for_dataset, inprocess_models):
             # construct a row of the results dataframe
+            hyperparameters: Dict[str, Union[str, float]] = {
+                k: str(v) if not isinstance(v, (float, int)) else v
+                for k, v in model.get_hyperparameters().items()
+            }
             df_row: Dict[str, Union[str, float]] = {
                 "dataset": data_info.dataset_name,
                 "scaler": data_info.scaler,
                 "transform": data_info.transform_name,
                 "model": model.name,
                 **data_info.split_info,
-                **model.hyperparameters,
+                **hyperparameters,
             }
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
 

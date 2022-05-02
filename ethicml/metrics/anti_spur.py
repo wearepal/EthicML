@@ -2,7 +2,6 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-import numpy as np
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction

@@ -8,52 +8,45 @@ from ranzen import implements
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold
 
+from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmDC
 from ethicml.utility import DataTuple, Prediction, SoftPrediction, TestTuple
-
-from .in_algorithm import InAlgorithm
 
 __all__ = ["LR", "LRCV", "LRProb"]
 
 
 @dataclass
-class LR(InAlgorithm):
+class LR(InAlgorithmDC):
     """Logistic regression with hard predictions.
 
     This is a wrapper around Sci-Kit Learn's LogisticRegression.
     The documentation for which is available `here <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html>`_.
 
     :param C: The regularization parameter.
-    :param seed: The seed for the random number generator.
     """
 
-    C: float = field(default_factory=lambda: LogisticRegression().C)
-    seed: int = 888
     is_fairness_algo: ClassVar[bool] = False
+    C: float = field(default_factory=lambda: LogisticRegression().C)
 
-    def __post_init__(self) -> None:
-        self._hyperparameters = {"C": self.C}
-
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmDC)
+    def get_name(self) -> str:
         return f"Logistic Regression (C={self.C})"
 
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+        random_state = np.random.RandomState(seed=seed)
         self.clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+        random_state = np.random.RandomState(seed=seed)
         clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
@@ -62,38 +55,35 @@ class LR(InAlgorithm):
 
 
 @dataclass
-class LRProb(InAlgorithm):
+class LRProb(InAlgorithmDC):
     """Logistic regression with soft output.
 
     :param C: The regularization parameter.
-    :param seed: The seed for the random number generator.
     """
 
-    C: float = field(default_factory=lambda: LogisticRegression().C)
-    seed: int = 888
     is_fairness_algo: ClassVar[bool] = False
+    C: float = field(default_factory=lambda: LogisticRegression().C)
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmDC)
+    def get_name(self) -> str:
         return f"Logistic Regression Prob (C={self.C})"
 
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+        random_state = np.random.RandomState(seed=seed)
         self.clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         return SoftPrediction(soft=pd.Series(self.clf.predict_proba(test.x)[:, 1]))
 
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> SoftPrediction:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> SoftPrediction:
+        random_state = np.random.RandomState(seed=seed)
         clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
@@ -102,25 +92,22 @@ class LRProb(InAlgorithm):
 
 
 @dataclass
-class LRCV(InAlgorithm):
+class LRCV(InAlgorithmDC):
     """Kind of a cheap hack for now, but gives a proper cross-valudeted LR.
 
     :param n_splits: The number of splits for the cross-validation.
-    :param seed: The seed for the random number generator.
     """
 
-    n_splits: int = 3
-    seed: int = 888
     is_fairness_algo: ClassVar[bool] = False
+    n_splits: int = 3
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmDC)
+    def get_name(self) -> str:
         return "LRCV"
 
-    @implements(InAlgorithm)
-    def fit(self, train: DataTuple) -> InAlgorithm:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+        random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
         self.clf = LogisticRegressionCV(
             cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
@@ -128,13 +115,13 @@ class LRCV(InAlgorithm):
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
-    @implements(InAlgorithm)
+    @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
         return Prediction(hard=pd.Series(self.clf.predict(test.x)), info=dict(C=self.clf.C_[0]))
 
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        random_state = np.random.RandomState(seed=self.seed)
+    @implements(InAlgorithmDC)
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+        random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
         clf = LogisticRegressionCV(
             cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
