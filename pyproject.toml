@@ -163,3 +163,9 @@ module = [
 ]
 follow_imports = "skip"
 follow_imports_for_stubs = true
+
+[tool.pydocstyle]
+convention = "pep257"
+add_ignore = ["D105", "D107", "D401"]
+ignore_decorators = "implements|overload"
+match = "(?!(test_|__init__)).*\\.py"
