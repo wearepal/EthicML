@@ -59,7 +59,7 @@ pydocstyle = {version = "^6.1.1", extras = ["toml"]}
 pylint = "^2.13.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
-python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "52ba69e"}
+python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "ed7a008"}
 types-Pillow = "^9.0.9"
 omegaconf = "^2.1.1"
 
