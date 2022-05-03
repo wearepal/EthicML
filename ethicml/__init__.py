@@ -1,4 +1,4 @@
-"""EthicML."""
+"""EthicML"""
 from .algorithms.algorithm_base import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
