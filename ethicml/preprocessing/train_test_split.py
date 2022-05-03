@@ -1,7 +1,7 @@
 """Split into train and test data."""
 import itertools
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List, Tuple
+from typing import Dict, Iterator, List, Optional, Tuple
 from typing_extensions import Literal
 
 import numpy as np
@@ -62,15 +62,24 @@ class SequentialSplit(DataSplitter):
 
 
 def train_test_split(
-    data: DataTuple, train_percentage: float = 0.8, random_seed: int = 0
+    data: DataTuple,
+    train_percentage: Optional[float] = 0.8,
+    random_seed: int = 0,
+    num_test_samples: Optional[int] = None,
 ) -> Tuple[DataTuple, DataTuple]:
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
     :param data: data tuple to split
-    :param train_percentage: percentage for train split (Default: 0.8)
+    :param train_percentage: percentage for train split. Must be `None` if `num_test_samples` given. (Default: 0.8)
     :param random_seed: seed to make splitting reproducible (Default: 0)
+    :param num_test_samples: Number of samples to make the test set. Must be `None` if `train_percentage` given. (Default: None)
     :returns: train split and test split
     """
+    if train_percentage is None:
+        assert num_test_samples is not None
+    if num_test_samples is None:
+        assert train_percentage is not None
+
     # ======================== concatenate the datatuple to one dataframe =========================
     # save the column names for later
     x_columns: pd.Index = data.x.columns
@@ -87,7 +96,10 @@ def train_test_split(
     all_data = shuffle_df(all_data, random_state=random_seed)
 
     # split
-    train_len = int(train_percentage * len(all_data))
+    if train_percentage is not None:
+        train_len = int(train_percentage * len(all_data))
+    else:
+        train_len = len(all_data) - num_test_samples
     all_data_train = all_data.iloc[:train_len]
     all_data_test = all_data.iloc[train_len:]
 
