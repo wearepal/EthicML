@@ -34,9 +34,9 @@ class Beutel(PreAlgorithmSubprocess):
     """Beutel's adversarially learned fair representations."""
 
     fairness: FairnessType = FairnessType.dp
-    enc_size: Sequence[int] = field(default_factory=lambda: [40])
-    adv_size: Sequence[int] = field(default_factory=lambda: [40])
-    pred_size: Sequence[int] = field(default_factory=lambda: [40])
+    enc_size: List[int] = field(default_factory=lambda: [40])
+    adv_size: List[int] = field(default_factory=lambda: [40])
+    pred_size: List[int] = field(default_factory=lambda: [40])
     enc_activation: str = "Sigmoid()"
     adv_activation: str = "Sigmoid()"
     batch_size: int = 64
