@@ -3,7 +3,7 @@ name: EthicML dummy CI
 on:
   pull_request:
     branches:
-    - main
+    - '0.x'
     paths:  # these are exactly the paths that are ignored in the real CI
     - 'docs/**'
     - 'examples/**'
