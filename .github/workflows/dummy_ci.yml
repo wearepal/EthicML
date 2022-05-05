@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
     - main
-    - next
     paths:  # these are exactly the paths that are ignored in the real CI
     - 'docs/**'
     - 'examples/**'
