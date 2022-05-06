@@ -155,7 +155,7 @@ def evaluate_models(
     fair_pipeline: bool = True,
     num_jobs: Optional[int] = None,
     scaler: Optional[ScalerType] = None,
-    repeat_on: Literal["data", "model", "both"] = "both"
+    repeat_on: Literal["data", "model", "both"] = "both",
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 

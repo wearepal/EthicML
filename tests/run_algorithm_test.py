@@ -84,7 +84,7 @@ def test_run_alg_repeats_error(repeats):
 
 
 @pytest.mark.parametrize("on", ["data", "model", "both"])
-@pytest.mark.parametrize("repeats", [3,5])
+@pytest.mark.parametrize("repeats", [3, 5])
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_repeats(repeats, on):
     dataset = em.adult(split="Race-Binary")
@@ -111,9 +111,9 @@ def test_run_repeats(repeats, on):
         assert results_no_scaler["seed"].sum() > 0
     elif on == "model":
         assert (results_no_scaler["seed"] == 0).all()
-        assert (results_no_scaler["model_seed"].sum() > 0)
+        assert results_no_scaler["model_seed"].sum() > 0
     else:
-        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"]*2410).all()
+        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"] * 2410).all()
 
 
 @pytest.mark.usefixtures("results_cleanup")

@@ -79,7 +79,9 @@ def arrange_in_parallel(
     assert isinstance(data[0][1], TestTuple)
     # ================================== create queue of tasks ====================================
     # for each algorithm, first loop over all available datasets and then go on to the next algo
-    results = runner(_run(algo, data_item, seed) for algo in algos for (data_item, seed) in zip(data, seeds))
+    results = runner(
+        _run(algo, data_item, seed) for algo in algos for (data_item, seed) in zip(data, seeds)
+    )
     # return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
     # we have to reconstruct the nested list from the flattened list
     return [[results[i * len(data) + j] for j in range(len(data))] for i in range(len(algos))]
