@@ -64,6 +64,7 @@ def test_empty_evaluate():
 @pytest.mark.parametrize("repeats", [1, 2, 3])
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_repeats_error(repeats):
+    """Add a test to check that the right number of reults are produced with repeats."""
     dataset = em.adult(split="Race-Binary")
     datasets: List[em.Dataset] = [dataset]
     preprocess_models: List[em.PreAlgorithm] = []
@@ -78,7 +79,7 @@ def test_run_alg_repeats_error(repeats):
         per_sens_metrics=per_sens_metrics,
         repeats=repeats,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         topic="pytest",
     )
     assert len(results_no_scaler) == repeats * len(inprocess_models)
@@ -88,6 +89,7 @@ def test_run_alg_repeats_error(repeats):
 @pytest.mark.parametrize("repeats", [2, 3, 5])
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_repeats(repeats, on):
+    """Check the repeat_on arg."""
     dataset = em.adult(split="Race-Binary")
     datasets: List[em.Dataset] = [dataset]
     preprocess_models: List[em.PreAlgorithm] = []
@@ -102,7 +104,7 @@ def test_run_repeats(repeats, on):
         per_sens_metrics=per_sens_metrics,
         repeats=repeats,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         repeat_on=on,
         topic="pytest",
     )

@@ -49,8 +49,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         :param file_path: Path to save to.
         :param label_converter: Instance of a LabelBinarizer to convert labels to Zafar's format.
         """
-        out: Dict[str, Any] = {'x': data.x.to_numpy().tolist()}
-        out["sensitive"] = {}
+        out: Dict[str, Any] = {'x': data.x.to_numpy().tolist(), "sensitive": {}}
         out["sensitive"][data.s.name] = data.s.to_numpy().tolist()
         if isinstance(data, DataTuple):
             data_converted = label_converter.adjust(data)
