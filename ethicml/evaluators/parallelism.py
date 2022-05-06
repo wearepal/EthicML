@@ -2,6 +2,8 @@
 from typing import List, Optional, Sequence, Tuple, TypeVar, Union, cast, overload
 from typing_extensions import Protocol
 
+import numpy as np
+import pandas as pd
 from joblib import Parallel, delayed
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
@@ -88,5 +90,8 @@ def arrange_in_parallel(
 def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair) -> _RT:
     train, test = train_test_pair
     # do the work
-    result: _RT = algo.run(train, test)
+    try:
+        result: _RT = algo.run(train, test)
+    except RuntimeError:
+        result = Prediction(hard=pd.Series([np.NaN] * len(test)))
     return result

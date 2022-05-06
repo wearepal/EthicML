@@ -1,5 +1,6 @@
 """Test that an algorithm can run against some data."""
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
@@ -9,6 +10,8 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
+from ethicml import DataTuple, Prediction, TestTuple
+from ethicml.algorithms.inprocess.in_algorithm import _I, InAlgorithmDC
 from ethicml.utility import ClassifierType, KernelType
 
 
@@ -157,6 +160,44 @@ def test_run_alg_suite_wrong_metrics():
             test_mode=True,
             delete_previous=False,
         )
+
+
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_err_handling():
+    """Test run alg suite handles when an err is thrown."""
+
+    @dataclass
+    class ThrowErr(InAlgorithmDC):
+        C: int = 4
+
+        def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
+            pass
+
+        def predict(self, test: TestTuple) -> Prediction:
+            pass
+
+        def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+            raise NotImplementedError("This won't run.")
+
+        def get_name(self) -> str:
+            return "Problem"
+
+    datasets: List[em.Dataset] = [em.toy()]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), ThrowErr()]
+    metrics: List[em.Metric] = [em.Accuracy()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy()]
+    results = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=2,
+        test_mode=True,
+        delete_previous=True,
+    )
+    assert len(results) == 4
 
 
 @pytest.mark.slow
