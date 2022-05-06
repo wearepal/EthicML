@@ -45,7 +45,7 @@ folktables = "^0.0.11"
 ranzen = "^1.1.1"
 joblib = "^1.1.0"
 scipy = "^1.7.2"
-omegaconf = { version = "^2.1.1", optional = true }
+omegaconf = { version = ">=2.2.0.dev3", optional = true }
 
 [tool.poetry.extras]
 ci = ["fairlearn","pytest","pytest-cov","torch","cloudpickle","omegaconf"]
@@ -62,7 +62,7 @@ pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "ed7a008"}
 types-Pillow = "^9.0.9"
-omegaconf = "^2.1.1"
+omegaconf = ">=2.2.0.dev3"
 
 [tool.black]
 line-length = 100
