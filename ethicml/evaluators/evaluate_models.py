@@ -148,7 +148,7 @@ def evaluate_models(
     per_sens_metrics: Sequence[Metric] = (),
     repeats: int = 1,
     test_mode: bool = False,
-    delete_prev: bool = False,
+    delete_previous: bool = True,
     splitter: Optional[DataSplitter] = None,
     topic: Optional[str] = None,
     fair_pipeline: bool = True,
@@ -157,19 +157,22 @@ def evaluate_models(
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
-    :param datasets: list of dataset objects
-    :param *:
-    :param preprocess_models: list of preprocess model objects (Default: ())
-    :param inprocess_models: list of inprocess model objects (Default: ())
-    :param metrics: list of metric objects (Default: ())
-    :param per_sens_metrics: list of metric objects that will be evaluated per sensitive attribute (Default: ())
-    :param repeats: number of repeats to perform for the experiments (Default: 1)
-    :param test_mode: if True, only use a small subset of the data so that the models run faster (Default: False)
-    :param delete_prev: False by default. If True, delete saved results in directory
-    :param splitter: (optional) custom train-test splitter (Default: None)
-    :param topic: (optional) a string that identifies the run; the string is prepended to the filename (Default: None)
-    :param fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing (Default: True)
-    :param num_jobs: number of parallel jobs; if None, the number of CPUs is used (Default: None)
+    :param datasets: List of dataset objects.
+    :param preprocess_models: List of preprocess model objects. (Default: ())
+    :param inprocess_models: List of inprocess model objects. (Default: ())
+    :param metrics: List of metric objects. (Default: ())
+    :param per_sens_metrics: List of metric objects that will be evaluated per sensitive attribute.
+        (Default: ())
+    :param repeats: Number of repeats to perform for the experiments. (Default: 1)
+    :param test_mode: If True, only use a small subset of the data so that the models run faster.
+        (Default: False)
+    :param delete_previous: True by default. If True, delete previous results in the directory.
+    :param splitter: Custom train-test splitter. (Default: None)
+    :param topic: A string that identifies the run; the string is prepended to the filename.
+        (Default: None)
+    :param fair_pipeline: if True, run fair inprocess algorithms on the output of preprocessing.
+        (Default: True)
+    :param num_jobs: Number of parallel jobs; if None, the number of CPUs is used. (Default: None)
     :param scaler: Sklearn-style scaler to be used on the continuous features. (Default: None)
     """
     from .parallelism import run_in_parallel
@@ -185,7 +188,7 @@ def evaluate_models(
     outdir = Path(".") / "results"  # OS-independent way of saying './results'
     outdir.mkdir(exist_ok=True)
 
-    if delete_prev:
+    if delete_previous:
         _delete_previous_results(outdir, datasets, preprocess_models, topic)
 
     all_results = ResultsAggregator()
