@@ -100,8 +100,8 @@ def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair, seed: int) -> _RT
     # do the work
     try:
         result: _RT = algo.run(train, test)
-        if isinstance(result, Prediction):
-            result.info["model_seed"] = seed
     except RuntimeError:
         result = Prediction(hard=pd.Series([np.NaN] * len(test)))
+    if isinstance(result, Prediction):
+        result.info["model_seed"] = seed
     return result
