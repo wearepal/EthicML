@@ -84,7 +84,6 @@ def test_plot_evals():
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,
         test_mode=True,
-        delete_prev=True,
     )
     assert results["seed"][0] == results["seed"][1] == results["seed"][2] == 0
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410

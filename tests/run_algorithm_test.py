@@ -50,7 +50,7 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """Test empty evaluate."""
-    empty_result = em.evaluate_models([em.toy()], repeats=3, delete_prev=True)
+    empty_result = em.evaluate_models([em.toy()], repeats=3)
     expected_result = pd.DataFrame(
         [], columns=["dataset", "scaler", "transform", "model", "split_id"]
     )
@@ -77,7 +77,7 @@ def test_run_alg_suite_scaler():
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         topic="pytest",
     )
     results_scaler = em.evaluate_models(
@@ -89,7 +89,7 @@ def test_run_alg_suite_scaler():
         scaler=StandardScaler(),
         repeats=1,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         topic="pytest",
     )
     with pytest.raises(AssertionError):
@@ -113,7 +113,6 @@ def test_run_alg_suite():
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
-        delete_prev=True,
         topic="pytest",
     )
 
@@ -156,6 +155,7 @@ def test_run_alg_suite_wrong_metrics():
             per_sens_metrics=per_sens_metrics,
             repeats=1,
             test_mode=True,
+            delete_previous=False,
         )
 
 
@@ -179,7 +179,6 @@ def test_run_alg_suite_no_pipeline():
         test_mode=True,
         topic="pytest",
         fair_pipeline=False,
-        delete_prev=True,
     )
 
     num_datasets = 2
