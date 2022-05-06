@@ -369,6 +369,7 @@ def plot_results(
                 legend = single_plot(
                     plot, results, xtuple, ytuple, dataset_, transform, ptype=ptype
                 )
+                plt.tight_layout()
 
                 if legend is False:  # use "is" here because otherwise any falsy value would match
                     plt.close(fig)
