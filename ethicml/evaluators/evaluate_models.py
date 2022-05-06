@@ -2,6 +2,7 @@
 from itertools import product
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
+from typing_extensions import Literal
 
 import pandas as pd
 
@@ -154,6 +155,7 @@ def evaluate_models(
     fair_pipeline: bool = True,
     num_jobs: Optional[int] = None,
     scaler: Optional[ScalerType] = None,
+    repeat_on: Literal["data", "model", "both"] = "both"
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
 
@@ -174,12 +176,16 @@ def evaluate_models(
         (Default: True)
     :param num_jobs: Number of parallel jobs; if None, the number of CPUs is used. (Default: None)
     :param scaler: Sklearn-style scaler to be used on the continuous features. (Default: None)
+    :param repeat_on: Should the `data` or `model` seed be varied for each run? Or should they `both` be the same? (Default: "both")
     """
     from .parallelism import run_in_parallel
 
     per_sens_metrics_check(per_sens_metrics)
     if splitter is None:
-        train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=0)
+        if repeat_on == "model":
+            train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=None)
+        else:
+            train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=0)
     else:
         train_test_split = splitter
 
@@ -196,6 +202,7 @@ def evaluate_models(
     # ======================================= prepare data ========================================
     data_splits: List[TrainTestPair] = []
     test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
+    model_seeds: List[int] = []
     for dataset in datasets:
         for split_id in range(repeats):
             train: DataTuple
@@ -209,6 +216,7 @@ def evaluate_models(
                 train = train.get_n_samples()
             train = train.replace(name=f"{train.name} ({split_id})")
             data_splits.append(TrainTestPair(train, test))
+            model_seeds.append(0 if repeat_on == "data" else split_id)
             split_info.update({"split_id": split_id})
             test_data.append(
                 _DataInfo(
@@ -225,7 +233,7 @@ def evaluate_models(
         all_results.append_from_csv(csv_file)
 
     # ============================= inprocess models on untransformed =============================
-    all_predictions = run_in_parallel(inprocess_models, data_splits, num_jobs)
+    all_predictions = run_in_parallel(inprocess_models, data_splits, model_seeds, num_jobs)
     inprocess_untransformed = _gather_metrics(
         all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
     )
@@ -311,6 +319,7 @@ def _gather_metrics(
                 "scaler": data_info.scaler,
                 "transform": data_info.transform_name,
                 "model": model.name,
+                "model_seed": predictions.info["model_seed"],
                 **data_info.split_info,
                 **hyperparameters,
             }

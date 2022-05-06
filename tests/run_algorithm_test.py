@@ -60,6 +60,62 @@ def test_empty_evaluate():
     pd.testing.assert_frame_equal(empty_result, expected_result)
 
 
+@pytest.mark.parametrize("repeats", [1, 2, 3])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_repeats_error(repeats):
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_prev=True,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+
+
+@pytest.mark.parametrize("on", ["data", "model", "both"])
+@pytest.mark.parametrize("repeats", [3,5])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_repeats(repeats, on):
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_prev=True,
+        repeat_on=on,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+    if on == "data":
+        assert (results_no_scaler["model_seed"] == 0).all()
+        assert results_no_scaler["seed"].sum() > 0
+    elif on == "model":
+        assert (results_no_scaler["seed"] == 0).all()
+        assert (results_no_scaler["model_seed"].sum() > 0)
+    else:
+        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"]*2410).all()
+
+
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_scaler():
     """Test run alg suite."""

@@ -29,7 +29,7 @@ def run_in_parallel(algos: PreSeq, data: DataSeq, num_jobs: Optional[int] = None
 
 
 def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: DataSeq, num_jobs: Optional[int] = None
+    algos: Union[InSeq, PreSeq], data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
@@ -44,10 +44,10 @@ def run_in_parallel(
     # but that's completely fine because this check is only here for mypy anyway.
     if isinstance(algos[0], InAlgorithm):
         in_algos = cast(Sequence[InAlgorithm], algos)
-        return arrange_in_parallel(algos=in_algos, data=data, num_jobs=num_jobs)
+        return arrange_in_parallel(algos=in_algos, data=data, seeds=seeds, num_jobs=num_jobs)
     else:
         pre_algos = cast(Sequence[PreAlgorithm], algos)
-        return arrange_in_parallel(algos=pre_algos, data=data, num_jobs=num_jobs)
+        return arrange_in_parallel(algos=pre_algos, data=data, seeds=seeds, num_jobs=num_jobs)
 
 
 _RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple], covariant=True)  # the return type
@@ -56,12 +56,12 @@ _RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple], covariant=True)  #
 class Algorithm(Protocol[_RT]):
     """Protocol for making `arrange_in_parallel` generic."""
 
-    def run(self, train: DataTuple, test: TestTuple) -> _RT:
+    def run(self, train: DataTuple, test: TestTuple, seed: int) -> _RT:
         ...
 
 
 def arrange_in_parallel(
-    algos: Sequence[Algorithm[_RT]], data: DataSeq, num_jobs: Optional[int] = None
+    algos: Sequence[Algorithm[_RT]], data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
 ) -> List[List[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
@@ -74,19 +74,21 @@ def arrange_in_parallel(
     runner = Parallel(n_jobs=num_jobs, verbose=10, backend="loky")
     assert len(algos) >= 1
     assert len(data) >= 1
+    assert len(seeds) == len(data)
     assert isinstance(data[0][0], DataTuple)
     assert isinstance(data[0][1], TestTuple)
     # ================================== create queue of tasks ====================================
     # for each algorithm, first loop over all available datasets and then go on to the next algo
-    results = runner(_run(algo, data_item) for algo in algos for data_item in data)
+    results = runner(_run(algo, data_item, seed) for algo in algos for (data_item, seed) in zip(data, seeds))
     # return [[result_dict[(i, j)] for j in range(len(data))] for i in range(len(algos))]
     # we have to reconstruct the nested list from the flattened list
     return [[results[i * len(data) + j] for j in range(len(data))] for i in range(len(algos))]
 
 
 @delayed
-def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair) -> _RT:
+def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair, seed: int) -> _RT:
     train, test = train_test_pair
     # do the work
-    result: _RT = algo.run(train, test)
+    result: _RT = algo.run(train=train, test=test, seed=seed)
+    result.info["model_seed"] = seed
     return result
