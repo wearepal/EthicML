@@ -29,8 +29,9 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
     data0 = toy_train_test
     data1 = toy_train_test
     result = parallelism.run_in_parallel(
-        [em.LR(), em.SVM(), em.Majority()],
-        [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        algos=[em.LR(), em.SVM(), em.Majority()],
+        data=[em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        seeds=[0, 0],
         num_jobs=2,
     )
     # LR
@@ -61,6 +62,64 @@ def test_empty_evaluate():
         ["dataset", "scaler", "transform", "model", "split_id"]
     )
     pd.testing.assert_frame_equal(empty_result, expected_result)
+
+
+@pytest.mark.parametrize("repeats", [1, 2, 3])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_repeats_error(repeats):
+    """Add a test to check that the right number of reults are produced with repeats."""
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_previous=True,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+
+
+@pytest.mark.parametrize("on", ["data", "model", "both"])
+@pytest.mark.parametrize("repeats", [2, 3, 5])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_repeats(repeats, on):
+    """Check the repeat_on arg."""
+    dataset = em.adult(split="Race-Binary")
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_previous=True,
+        repeat_on=on,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+    if on == "data":
+        assert (results_no_scaler["model_seed"] == 0).all()
+        assert results_no_scaler["seed"].sum() > 0
+    elif on == "model":
+        assert (results_no_scaler["seed"] == 0).all()
+        assert results_no_scaler["model_seed"].sum() > 0
+    else:
+        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"] * 2410).all()
 
 
 @pytest.mark.usefixtures("results_cleanup")
@@ -132,7 +191,7 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 18)
+        assert written_file.shape == (2, 19)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None

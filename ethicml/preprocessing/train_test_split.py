@@ -149,13 +149,13 @@ class RandomSplit(DataSplitter):
     :param start_seed: random seed for the first split
     """
 
-    def __init__(self, train_percentage: float = 0.8, start_seed: int = 0):
+    def __init__(self, train_percentage: float = 0.8, start_seed: Optional[int] = 0):
         super().__init__()
         self.start_seed = start_seed
         self.train_percentage = train_percentage
 
     def _get_seed(self, split_id: int) -> int:
-        return self.start_seed + 2410 * split_id
+        return self.start_seed + 2410 * split_id if self.start_seed is not None else 0
 
     @implements(DataSplitter)
     def __call__(

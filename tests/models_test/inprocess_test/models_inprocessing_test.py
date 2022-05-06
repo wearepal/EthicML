@@ -5,7 +5,6 @@ from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
 import numpy as np
 import pytest
 from pytest import approx
-from ranzen import implements
 
 from ethicml import (
     DRO,
@@ -266,6 +265,6 @@ def test_threaded_agarwal():
             )
 
     results = evaluate_models(
-        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
+        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_previous=True
     )
     assert results["assert_result"].iloc[0]
