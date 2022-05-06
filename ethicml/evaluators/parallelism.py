@@ -19,22 +19,27 @@ DataSeq = Sequence[TrainTestPair]
 
 
 @overload
-def run_in_parallel(algos: InSeq, data: DataSeq, num_jobs: Optional[int] = None) -> InResult:
+def run_in_parallel(
+    algos: InSeq, *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
+) -> InResult:
     ...
 
 
 @overload
-def run_in_parallel(algos: PreSeq, data: DataSeq, num_jobs: Optional[int] = None) -> PreResult:
+def run_in_parallel(
+    algos: PreSeq, *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
+) -> PreResult:
     ...
 
 
 def run_in_parallel(
-    algos: Union[InSeq, PreSeq], data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
+    algos: Union[InSeq, PreSeq], *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
 ) -> Union[InResult, PreResult]:
     """Run the given algorithms (embarrassingly) parallel.
 
     :param algos: list of algorithms
     :param data: list of pairs of data tuples (train and test)
+    :param seeds: list of seeds to use when running the model
     :param num_jobs: how many jobs can run in parallel at most. if None, use number of CPUs (Default: None)
     :returns: list of the results
     """
@@ -92,5 +97,6 @@ def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair, seed: int) -> _RT
     train, test = train_test_pair
     # do the work
     result: _RT = algo.run(train=train, test=test, seed=seed)
-    result.info["model_seed"] = seed
+    if isinstance(result, Prediction):
+        result.info["model_seed"] = seed
     return result

@@ -233,7 +233,9 @@ def evaluate_models(
         all_results.append_from_csv(csv_file)
 
     # ============================= inprocess models on untransformed =============================
-    all_predictions = run_in_parallel(inprocess_models, data_splits, model_seeds, num_jobs)
+    all_predictions = run_in_parallel(
+        algos=inprocess_models, data=data_splits, seeds=model_seeds, num_jobs=num_jobs
+    )
     inprocess_untransformed = _gather_metrics(
         all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
     )
@@ -241,7 +243,9 @@ def evaluate_models(
 
     # ===================================== preprocess models =====================================
     # run all preprocess models
-    all_transformed = run_in_parallel(preprocess_models, data_splits, num_jobs)
+    all_transformed = run_in_parallel(
+        algos=preprocess_models, data=data_splits, seeds=model_seeds, num_jobs=num_jobs
+    )
 
     # append the transformed data to `transformed_data`
     transformed_data: List[TrainTestPair] = []
@@ -266,7 +270,12 @@ def evaluate_models(
         # if not fair pipeline, run only the non-fair models on the transformed data
         run_on_transformed = [model for model in inprocess_models if not model.is_fairness_algo]
 
-    transf_preds = run_in_parallel(run_on_transformed, transformed_data, num_jobs)
+    transf_preds = run_in_parallel(
+        algos=run_on_transformed,
+        data=transformed_data,
+        seeds=[0] * len(transformed_data),
+        num_jobs=num_jobs,
+    )
     transf_results = _gather_metrics(
         transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
     )
@@ -311,9 +320,10 @@ def _gather_metrics(
         for predictions, model in zip(preds_for_dataset, inprocess_models):
             # construct a row of the results dataframe
             hyperparameters: Dict[str, Union[str, float]] = {
-                k: str(v) if not isinstance(v, (float, int)) else v
+                k: v if isinstance(v, (float, int)) else str(v)
                 for k, v in model.get_hyperparameters().items()
             }
+
             df_row: Dict[str, Union[str, float]] = {
                 "dataset": data_info.dataset_name,
                 "scaler": data_info.scaler,

@@ -26,8 +26,9 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
     data0 = toy_train_test
     data1 = toy_train_test
     result = parallelism.run_in_parallel(
-        [em.LR(), em.SVM(), em.Majority()],
-        [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        algos=[em.LR(), em.SVM(), em.Majority()],
+        data=[em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        seeds=[0, 0],
         num_jobs=2,
     )
     # LR
@@ -84,7 +85,7 @@ def test_run_alg_repeats_error(repeats):
 
 
 @pytest.mark.parametrize("on", ["data", "model", "both"])
-@pytest.mark.parametrize("repeats", [3, 5])
+@pytest.mark.parametrize("repeats", [2, 3, 5])
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_repeats(repeats, on):
     dataset = em.adult(split="Race-Binary")
@@ -185,7 +186,7 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 18)
+        assert written_file.shape == (2, 19)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
