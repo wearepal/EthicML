@@ -1557,7 +1557,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "types-pillow"
-version = "9.0.14"
+version = "9.0.15"
 description = "Typing stubs for Pillow"
 category = "dev"
 optional = false
@@ -1665,7 +1665,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "torch", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7.1,<3.11"
-content-hash = "e5b8395974298461f2d5540e4014bef16a13d0cb2945c97eab3eaac2c7534344"
+content-hash = "e9f1ff945ed529bb343801a0736c87b8c6ce9545e087d11c0bc271ed21d6596c"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -2837,8 +2837,8 @@ typed-ast = [
     {file = "typed_ast-1.5.3.tar.gz", hash = "sha256:27f25232e2dd0edfe1f019d6bfaaf11e86e657d9bdb7b0956db95f560cceb2b3"},
 ]
 types-pillow = [
-    {file = "types-Pillow-9.0.14.tar.gz", hash = "sha256:d551fb223d70b1adf7605bc09bdc5de4ffd88183b0dd7cd1536f5403781624d1"},
-    {file = "types_Pillow-9.0.14-py3-none-any.whl", hash = "sha256:14d38fccac67ce50bf291d1b83e7ddbaf752ce43940de421237af6782160c4c5"},
+    {file = "types-Pillow-9.0.15.tar.gz", hash = "sha256:d2e385fe5c192e75970f18accce69f5c2a9f186f3feb578a9b91cd6fdf64211d"},
+    {file = "types_Pillow-9.0.15-py3-none-any.whl", hash = "sha256:c9646595dfafdf8b63d4b1443292ead17ee0fc7b18a143e497b68e0ea2dc1eb6"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
