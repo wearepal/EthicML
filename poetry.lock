@@ -882,7 +882,7 @@ python-versions = ">=3.7,<3.11"
 
 [[package]]
 name = "omegaconf"
-version = "2.2.0.dev3"
+version = "2.2.0.dev4"
 description = "A flexible configuration library"
 category = "main"
 optional = false
@@ -2279,8 +2279,8 @@ numpy = [
     {file = "numpy-1.21.6.zip", hash = "sha256:ecb55251139706669fdec2ff073c98ef8e9a84473e51e716211b41aa0f18e656"},
 ]
 omegaconf = [
-    {file = "omegaconf-2.2.0.dev3-py3-none-any.whl", hash = "sha256:0648503edb8671874399db3c9f1f8962abaf620ab927826e5259bbb98fcfd2e9"},
-    {file = "omegaconf-2.2.0.dev3.tar.gz", hash = "sha256:d7d2137445d6c3904d2c93a44765ebf95f06de56a537c218fa8f1f1c5e8d3016"},
+    {file = "omegaconf-2.2.0.dev4-py3-none-any.whl", hash = "sha256:f84a0ec59efe6dddb7d8cbf38af61831e101a957b2cf3f8dc47ecde762b78a8d"},
+    {file = "omegaconf-2.2.0.dev4.tar.gz", hash = "sha256:4f40c29c3cce6db5b4611df72fe6a4a4da15cba880c6a02145500589e5e413be"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
