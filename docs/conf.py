@@ -17,7 +17,7 @@ from typing import List
 
 import toml
 
-sys.path.insert(0, os.path.abspath("../.."))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
@@ -27,7 +27,7 @@ copyright = "2022, O. Thomas, T. Kehrenberg, M. Bartlett"
 author = "O. Thomas, T. Kehrenberg, M. Bartlett"
 
 # The full version, including alpha/beta/rc tags
-release = toml.load("../../pyproject.toml")["tool"]["poetry"]["version"]
+release = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
 
 
 # -- General configuration ---------------------------------------------------
