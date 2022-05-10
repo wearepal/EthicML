@@ -13,7 +13,7 @@ Example
    import ethicml as em
 
    results = em.evaluate_models(
-       datasets=[em.adult()],
+       datasets=[em.Adult()],
        inprocess_models=[em.SVM(), em.Kamiran()],
        preprocess_models=[em.Upsampler()],
        metrics=[em.Accuracy()],
