@@ -20,7 +20,7 @@ from torch.optim import Adam
 from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
-from ethicml.preprocessing.train_test_split import train_test_split
+from ethicml.preprocessing.split import train_test_split
 from ethicml.utility import DataTuple, FairnessType, TestTuple
 
 from .pytorch_common import CustomDataset, TestDataset
