@@ -9,7 +9,7 @@ from typing import ClassVar
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.metrics.metric import BaseMetric
+from ethicml.metrics.metric import MetricStaticName
 from ethicml.utility import DataTuple, Prediction
 
 __all__ = ["Hsic"]
@@ -59,7 +59,7 @@ def hsic(
 
 
 @dataclass
-class Hsic(BaseMetric):
+class Hsic(MetricStaticName):
     """See module string."""
 
     seed: int = 888

@@ -1,43 +1,52 @@
 """Applies sci-kit learn's confusion matrix."""
 
+from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.metrics.metric import MetricStaticName
+from ethicml.utility.data_structures import DataTuple, Prediction
 
-__all__ = ["LabelOutOfBounds", "confusion_matrix"]
+__all__ = ["CfmMetric", "LabelOutOfBounds"]
+
+
+@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class CfmMetric(MetricStaticName):
+    """Confusion Matrix based metric."""
+
+    pos_class: int = 1
+    """The class to treat as being "positive"."""
+    labels: Optional[List[int]] = None
+    """List of possible target values. If `None`, then this is inferred from the data when run."""
+
+    def confusion_matrix(
+        self, prediction: Prediction, actual: DataTuple
+    ) -> Tuple[int, int, int, int]:
+        """Apply sci-kit learn's confusion matrix.
+
+        :param prediction: The predictions.
+        :param actual: The actual labels.
+        """
+        actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[type-var]
+        _labels: np.ndarray = np.unique(actual_y) if self.labels is None else np.array(self.labels)
+        if _labels.size == 1:
+            _labels = np.array([0, 1], dtype=np.int32)
+        conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=_labels)
+
+        if self.pos_class not in _labels:
+            raise LabelOutOfBounds("Positive class specified must exist in the test set")
+
+        tp_idx: np.int64 = (_labels == self.pos_class).nonzero()[0].item()
+        tp_idx = int(tp_idx)
+
+        true_pos = conf_matr[tp_idx, tp_idx]
+        false_pos = conf_matr[:, tp_idx].sum() - true_pos
+        false_neg = conf_matr[tp_idx, :].sum() - true_pos
+        true_neg = conf_matr.sum() - true_pos - false_pos - false_neg
+        return true_neg, false_pos, false_neg, true_pos
 
 
 class LabelOutOfBounds(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
-
-
-def confusion_matrix(
-    prediction: Prediction, actual: DataTuple, pos_cls: int, labels: Optional[List[int]] = None
-) -> Tuple[int, int, int, int]:
-    """Apply sci-kit learn's confusion matrix.
-
-    :param prediction:
-    :param actual:
-    :param pos_cls:
-    :param labels:  (Default: None)
-    """
-    actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[type-var]
-    _labels: np.ndarray = np.unique(actual_y) if labels is None else np.array(labels)
-    if _labels.size == 1:
-        _labels = np.array([0, 1], dtype=np.int32)
-    conf_matr: np.ndarray = conf_mtx(y_true=actual_y, y_pred=prediction.hard, labels=_labels)
-
-    if pos_cls not in _labels:
-        raise LabelOutOfBounds("Positive class specified must exist in the test set")
-
-    tp_idx: np.int64 = (_labels == pos_cls).nonzero()[0].item()
-    tp_idx = int(tp_idx)
-
-    true_pos = conf_matr[tp_idx, tp_idx]
-    false_pos = conf_matr[:, tp_idx].sum() - true_pos
-    false_neg = conf_matr[tp_idx, :].sum() - true_pos
-    true_neg = conf_matr.sum() - true_pos - false_pos - false_neg
-    return true_neg, false_pos, false_neg, true_pos

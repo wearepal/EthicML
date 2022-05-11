@@ -15,7 +15,6 @@ from ethicml import (
     AbsCV,
     Accuracy,
     Agarwal,
-    BaseMetric,
     Blind,
     ClassifierType,
     Compas,
@@ -32,6 +31,7 @@ from ethicml import (
     KernelType,
     LRProb,
     Majority,
+    MetricStaticName,
     Oracle,
     Prediction,
     Toy,
@@ -254,8 +254,7 @@ def test_threaded_agarwal():
         Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
     ]
 
-    class AssertResult(BaseMetric):
-        apply_per_sensitive: ClassVar[bool] = True
+    class AssertResult(MetricStaticName):
         _name: ClassVar[str] = "assert_result"
 
         def score(self, prediction, actual) -> float:

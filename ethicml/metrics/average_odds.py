@@ -6,8 +6,9 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
+from .confusion_matrix import CfmMetric
 from .fpr import FPR
-from .metric import CfmMetric, Metric
+from .metric import Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
 
