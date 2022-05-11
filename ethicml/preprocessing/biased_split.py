@@ -8,7 +8,7 @@ import teext as tx
 from ethicml.utility.data_structures import DataTuple, concat_dt
 
 from .domain_adaptation import query_dt
-from .train_test_split import DataSplitter, ProportionalSplit
+from .splits import DataSplitter, ProportionalSplit
 
 __all__ = [
     "BiasedDebiasedSubsets",

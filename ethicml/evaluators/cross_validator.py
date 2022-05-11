@@ -8,7 +8,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
 from ethicml.metrics.metric import Metric
-from ethicml.preprocessing.train_test_split import fold_data
+from ethicml.preprocessing.splits import fold_data
 from ethicml.utility import DataTuple, Prediction, TrainTestPair
 
 __all__ = ["CrossValidator", "CVResults"]
