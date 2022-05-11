@@ -60,7 +60,7 @@ pydocstyle = {version = "^6.1.1", extras = ["toml"]}
 pylint = "^2.13.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
-python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "ed7a008"}
+python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "316dad4"}
 types-Pillow = "^9.0.15"
 omegaconf = ">=2.2.0.dev3"
 
