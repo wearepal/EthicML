@@ -6,17 +6,16 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, SoftPrediction
 
-from .metric import BaseMetric, Metric
+from .metric import Metric, MetricStaticName
 
 __all__ = ["ProbOutcome"]
 
 
 @dataclass
-class ProbOutcome(BaseMetric):
+class ProbOutcome(MetricStaticName):
     """Mean of logits."""
 
     _name: ClassVar[str] = "prob_outcome"
-    apply_per_sensitive: ClassVar[bool] = True
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:

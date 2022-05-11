@@ -11,19 +11,18 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import BaseMetric
+from .metric import MetricStaticName
 
 __all__ = ["Theil"]
 
 
 @dataclass
-class Theil(BaseMetric):
+class Theil(MetricStaticName):
     """Theil Index."""
 
     _name: ClassVar[str] = "Theil_Index"
-    apply_per_sensitive: ClassVar[bool] = True
 
-    @implements(BaseMetric)
+    @implements(MetricStaticName)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
         y_true_df = actual.y
         y_pos_label = y_true_df.max()

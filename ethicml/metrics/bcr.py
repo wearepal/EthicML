@@ -6,7 +6,8 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .metric import CfmMetric, Metric
+from .confusion_matrix import CfmMetric
+from .metric import Metric
 from .tnr import TNR
 from .tpr import TPR
 

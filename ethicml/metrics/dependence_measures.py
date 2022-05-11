@@ -1,8 +1,8 @@
 """For assessing the Mutual Information between s and yhat."""
+from abc import ABC
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import ClassVar
-from typing_extensions import Protocol
 
 import numpy as np
 from ranzen import enum_name_str, implements
@@ -23,16 +23,15 @@ class DependencyTarget(Enum):
     y = auto()
 
 
-class _DependenceMeasure(Metric, Protocol):
+class _DependenceMeasure(Metric, ABC):
     """Base class for dependence measures, which tell you how dependent two variables are."""
 
     base: DependencyTarget
     _base_name: ClassVar[str]
     apply_per_sensitive: ClassVar[bool] = False
 
-    @property
-    def name(self) -> str:
-        """Name of the metric."""
+    @implements(Metric)
+    def get_name(self) -> str:
         return f"{self._base_name} preds and {self.base}"
 
 

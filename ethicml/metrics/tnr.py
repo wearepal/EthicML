@@ -7,8 +7,8 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction
 
-from .confusion_matrix import confusion_matrix
-from .metric import CfmMetric, Metric
+from .confusion_matrix import CfmMetric
+from .metric import Metric
 
 __all__ = ["TNR"]
 
@@ -21,8 +21,5 @@ class TNR(CfmMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        t_neg, f_pos, _, _ = confusion_matrix(
-            prediction=prediction, actual=actual, pos_cls=self.pos_class, labels=self.labels
-        )
-
+        t_neg, f_pos, _, _ = self.confusion_matrix(prediction=prediction, actual=actual)
         return t_neg / (t_neg + f_pos)
