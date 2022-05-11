@@ -99,7 +99,7 @@ def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair, seed: int) -> _RT
     train, test = train_test_pair
     # do the work
     try:
-        result: _RT = algo.run(train, test)
+        result: _RT = algo.run(train, test, seed)
     except RuntimeError:
         result = Prediction(hard=pd.Series([np.NaN] * len(test)))
     if isinstance(result, Prediction):
