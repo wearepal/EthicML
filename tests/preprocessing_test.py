@@ -13,7 +13,7 @@ from ethicml import DataTuple, ProportionalSplit
 
 def test_train_test_split():
     """Test train test split."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     train_test: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train, test = train_test
     assert train is not None
@@ -28,7 +28,7 @@ def test_train_test_split():
 @pytest.mark.parametrize("train_pct", range(0, 100, 10))
 def test_train_test_split_param(train_pct: float):
     """Test train test split."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     num_samples = len(data)
 
     len_ = math.floor((num_samples / 100) * train_pct)
@@ -43,7 +43,7 @@ def test_train_test_split_param(train_pct: float):
 @pytest.mark.parametrize("test_samples", range(10, 100, 10))
 def test_train_test_split_samples_param(test_samples: int):
     """Test train test split."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     num_train_samples = len(data) - test_samples
 
     train, test = em.train_test_split(data, train_percentage=None, num_test_samples=test_samples)
@@ -53,7 +53,7 @@ def test_train_test_split_samples_param(test_samples: int):
 
 def test_prop_train_test_split():
     """Test prop train test split."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     train: DataTuple
     test: DataTuple
     train, test, _ = ProportionalSplit(train_percentage=0.8)(data, split_id=0)
@@ -126,7 +126,7 @@ def test_prop_train_test_split():
 
 def test_random_seed():
     """Test random seed."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     train_test_0: Tuple[DataTuple, DataTuple] = em.train_test_split(data)
     train_0, test_0 = train_test_0
     assert train_0 is not None
@@ -174,7 +174,7 @@ def test_random_seed():
 
 def test_binning():
     """Test binning."""
-    data: DataTuple = em.load_data(em.adult())
+    data: DataTuple = em.load_data(em.Adult())
 
     binned: DataTuple = em.bin_cont_feats(data)
 
@@ -184,7 +184,7 @@ def test_binning():
 
 def test_sequential_split():
     """Test sequential split."""
-    data: DataTuple = em.load_data(em.toy())
+    data: DataTuple = em.load_data(em.Toy())
     train: DataTuple
     test: DataTuple
     train, test, _ = em.SequentialSplit(train_percentage=0.8)(data)

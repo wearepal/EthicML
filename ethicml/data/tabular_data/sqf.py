@@ -6,7 +6,7 @@ from typing import ClassVar, Type, Union
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["sqf", "Sqf", "SqfSplits"]
+__all__ = ["Sqf", "SqfSplits"]
 
 
 class SqfSplits(Enum):
@@ -16,20 +16,6 @@ class SqfSplits(Enum):
     RACE = "Race"
     RACE_SEX = "Race-Sex"
     CUSTOM = "Custom"
-
-
-def sqf(
-    split: Union[SqfSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Sqf":
-    """Stop, question and frisk dataset.
-
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return Sqf(split=SqfSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass

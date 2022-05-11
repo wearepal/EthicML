@@ -1,12 +1,12 @@
 """Class to describe features of the Communities and Crime dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["crime", "Crime", "CrimeSplits"]
+__all__ = ["Crime", "CrimeSplits"]
 
 
 class CrimeSplits(Enum):
@@ -14,20 +14,6 @@ class CrimeSplits(Enum):
 
     RACE_BINARY = "Race-Binary"
     CUSTOM = "Custom"
-
-
-def crime(
-    split: Union[CrimeSplits, str] = "Race-Binary",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Crime":
-    """UCI Communities and Crime dataset.
-
-    :param split:  (Default: "Race-Binary")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return Crime(split=CrimeSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass

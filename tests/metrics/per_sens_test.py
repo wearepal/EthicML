@@ -11,22 +11,22 @@ from ethicml import (
     SVM,
     TPR,
     Accuracy,
+    Adult,
     Dataset,
     DataTuple,
     InAlgorithm,
     KernelType,
     LRProb,
     Metric,
+    NonBinaryToy,
     Prediction,
     ProbNeg,
     ProbOutcome,
     ProbPos,
     Theil,
-    adult,
+    Toy,
     load_data,
     metric_per_sensitive_attribute,
-    nonbinary_toy,
-    toy,
     train_test_split,
 )
 from tests.conftest import get_id
@@ -59,37 +59,37 @@ def test_issue_431():
 
 PER_SENS = [
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=Accuracy(),
         expected_values={"sensitive-attr_0": 0.921, "sensitive-attr_1": 0.929},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=ProbPos(),
         expected_values={"sensitive-attr_0": 0.368, "sensitive-attr_1": 0.738},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=LRProb(),
         metric=ProbOutcome(),
         expected_values={"sensitive-attr_0": 0.375, "sensitive-attr_1": 0.693},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=ProbNeg(),
         expected_values={"sensitive-attr_0": 0.632, "sensitive-attr_1": 0.262},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=Accuracy(),
         expected_values={"sensitive-attr_0": 0.921, "sensitive-attr_1": 0.928},
     ),
     PerSensMetricTest(
-        dataset=adult("Nationality"),
+        dataset=Adult(split=Adult.Splits.NATIONALITY),
         classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
@@ -135,7 +135,7 @@ PER_SENS = [
         },
     ),
     PerSensMetricTest(
-        dataset=adult("Race"),
+        dataset=Adult(split=Adult.Splits.RACE),
         classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
@@ -147,19 +147,19 @@ PER_SENS = [
         },
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(kernel=KernelType.linear),
         metric=Theil(),
         expected_values={"sensitive-attr_1": 0.024, "sensitive-attr_0": 0.045},
     ),
     PerSensMetricTest(
-        dataset=nonbinary_toy(),
+        dataset=NonBinaryToy(),
         classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={"sens_1": 1.0, "sens_0": 1.0},
     ),
     PerSensMetricTest(
-        dataset=nonbinary_toy(),
+        dataset=NonBinaryToy(),
         classifier=LR(),
         metric=Accuracy(),
         expected_values={"sens_1": 0.667, "sens_0": 0.727},

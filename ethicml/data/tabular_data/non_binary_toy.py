@@ -3,12 +3,7 @@ from dataclasses import dataclass
 
 from ..dataset import LoadableDataset
 
-__all__ = ["nonbinary_toy", "NonBinaryToy"]
-
-
-def nonbinary_toy() -> "NonBinaryToy":
-    """Dataset with non-binary toy data for testing."""
-    return NonBinaryToy()
+__all__ = ["NonBinaryToy"]
 
 
 @dataclass

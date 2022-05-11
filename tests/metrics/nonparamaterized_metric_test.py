@@ -22,12 +22,12 @@ from ethicml import (
     DataTuple,
     InAlgorithm,
     LabelOutOfBounds,
+    NonBinaryToy,
     Prediction,
     ProbPos,
     RenyiCorrelation,
     Yanovich,
     load_data,
-    nonbinary_toy,
     train_test_split,
 )
 from ethicml.utility.data_structures import TrainValPair
@@ -128,7 +128,7 @@ def test_get_info(toy_train_val: TrainValPair):
 
 def test_tpr_diff_non_binary_race():
     """Test tpr diff non binary race."""
-    data: DataTuple = load_data(em.adult("Race"))
+    data: DataTuple = load_data(em.Adult(split=em.Adult.Splits.RACE))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -166,7 +166,7 @@ def test_tpr_diff_non_binary_race():
 
 def test_tpr_ratio_non_binary_race():
     """Test tpr ratio non binary race."""
-    data: DataTuple = load_data(em.adult("Race"))
+    data: DataTuple = load_data(em.Adult(split=em.Adult.Splits.RACE))
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -204,7 +204,7 @@ def test_tpr_ratio_non_binary_race():
 
 def test_nb_acc():
     """Test nb acc."""
-    data: DataTuple = load_data(nonbinary_toy())
+    data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -215,7 +215,7 @@ def test_nb_acc():
 
 def test_nb_tpr():
     """Test nb tpr."""
-    data: DataTuple = load_data(nonbinary_toy())
+    data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -262,7 +262,7 @@ def test_nb_tpr():
 
 def test_nb_tnr():
     """Test nb tnr."""
-    data: DataTuple = load_data(nonbinary_toy())
+    data: DataTuple = load_data(NonBinaryToy())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = SVM()
@@ -353,7 +353,7 @@ def test_dependence_measures(simple_data: DataTuple) -> None:
 
 def test_dependence_measures_adult() -> None:
     """Test dependence measures."""
-    data = load_data(em.adult(split="Sex"))
+    data = load_data(em.Adult(split=em.Adult.Splits.SEX))
     train_percentage = 0.75
     unbalanced, balanced, _ = BalancedTestSplit(train_percentage=train_percentage)(data)
 

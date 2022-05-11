@@ -3,26 +3,7 @@ from dataclasses import dataclass
 
 from ..dataset import LoadableDataset
 
-__all__ = ["lipton", "Lipton"]
-
-
-def lipton() -> "Lipton":
-    """Synthetic dataset from the Lipton et al. 2018.
-
-    Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`
-
-    ```bibtex
-    @article{lipton2018does,
-        title={Does mitigating ML's impact disparity require treatment disparity?},
-        author={Lipton, Zachary and McAuley, Julian and Chouldechova, Alexandra},
-        journal={Advances in neural information processing systems},
-        volume={31},
-        pages={8125--8135},
-        year={2018}
-    }
-    ```
-    """
-    return Lipton()
+__all__ = ["Lipton"]
 
 
 @dataclass
@@ -31,16 +12,16 @@ class Lipton(LoadableDataset):
 
     Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`
 
-    ```bibtex
-    @article{lipton2018does,
-        title={Does mitigating ML's impact disparity require treatment disparity?},
-        author={Lipton, Zachary and McAuley, Julian and Chouldechova, Alexandra},
-        journal={Advances in neural information processing systems},
-        volume={31},
-        pages={8125--8135},
-        year={2018}
-    }
-    ```
+    .. code-block:: bibtex
+
+        @article{lipton2018does,
+            title={Does mitigating ML's impact disparity require treatment disparity?},
+            author={Lipton, Zachary and McAuley, Julian and Chouldechova, Alexandra},
+            journal={Advances in neural information processing systems},
+            volume={31},
+            pages={8125--8135},
+            year={2018}
+        }
     """
 
     def __post_init__(self) -> None:
