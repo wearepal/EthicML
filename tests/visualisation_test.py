@@ -11,15 +11,16 @@ from ethicml import (
     SVM,
     TPR,
     Accuracy,
+    Adult,
     DataTuple,
     Kamiran,
     KernelType,
     ProbPos,
     Results,
+    Toy,
     TrainTestPair,
     Upsampler,
     UpsampleStrategy,
-    adult,
     evaluate_models,
     load_data,
     plot_results,
@@ -27,7 +28,6 @@ from ethicml import (
     save_jointplot,
     save_label_plot,
     save_multijointplot,
-    toy,
     train_test_split,
 )
 
@@ -66,7 +66,7 @@ def test_multijoint_plot(toy_train_test: TrainTestPair):
 @pytest.mark.usefixtures("plot_cleanup")
 def test_label_plot():
     """Test label plot."""
-    data: DataTuple = load_data(adult())
+    data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
 
@@ -77,7 +77,7 @@ def test_label_plot():
 def test_plot_evals():
     """Test plot evals."""
     results: Results = evaluate_models(
-        datasets=[toy()],
+        datasets=[Toy()],
         preprocess_models=[Upsampler(strategy=UpsampleStrategy.preferential)],
         inprocess_models=[LR(), SVM(kernel=KernelType.linear), Kamiran()],
         metrics=[Accuracy(), CV()],

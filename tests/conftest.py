@@ -17,7 +17,7 @@ from ethicml import DataTuple, TrainTestPair
 @pytest.fixture(scope="session")
 def toy_train_test() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = em.toy().load()
+    data: DataTuple = em.Toy().load()
     train: DataTuple
     test: DataTuple
     train, test = em.train_test_split(data, random_seed=0)
@@ -27,7 +27,7 @@ def toy_train_test() -> TrainTestPair:
 @pytest.fixture(scope="session")
 def toy_train_val() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = em.toy().load()
+    data: DataTuple = em.Toy().load()
     train: DataTuple
     test: DataTuple
     train, test = em.train_test_split(data)

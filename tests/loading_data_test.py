@@ -1,7 +1,6 @@
 """Test the loading data capability."""
 from pathlib import Path
-from typing import NamedTuple
-from typing_extensions import Literal
+from typing import Callable, NamedTuple
 
 import pandas as pd
 import pytest
@@ -46,7 +45,7 @@ def idfn(val: DT):
     "dt",
     [
         DT(
-            dataset=em.admissions(),
+            dataset=Admissions(),
             samples=43_303,
             x_features=9,
             discrete_features=0,
@@ -59,7 +58,7 @@ def idfn(val: DT):
             sum_y=20_263,
         ),
         DT(
-            dataset=em.admissions(split="Gender", invert_s=True),
+            dataset=Admissions(split=Admissions.Splits.GENDER, invert_s=True),
             samples=43_303,
             x_features=9,
             discrete_features=0,
@@ -72,7 +71,7 @@ def idfn(val: DT):
             sum_y=20_263,
         ),
         DT(
-            dataset=em.adult(),
+            dataset=Adult(),
             samples=45_222,
             x_features=101,
             discrete_features=96,
@@ -85,7 +84,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_nationality=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_nationality=True),
             samples=45_222,
             x_features=62,
             discrete_features=57,
@@ -98,7 +97,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_race=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_race=True),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -111,7 +110,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_nationality=True, binarize_race=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_nationality=True, binarize_race=True),
             samples=45_222,
             x_features=59,
             discrete_features=54,
@@ -124,7 +123,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Sex"),
+            dataset=Adult(split=Adult.Splits.SEX),
             samples=45_222,
             x_features=101,
             discrete_features=96,
@@ -137,20 +136,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=Adult.Splits.SEX),
-            samples=45_222,
-            x_features=101,
-            discrete_features=96,
-            s_features=1,
-            num_sens=2,
-            y_features=1,
-            num_labels=2,
-            name="Adult Sex",
-            sum_s=30_527,
-            sum_y=11_208,
-        ),
-        DT(
-            dataset=em.adult(split="Race"),
+            dataset=em.Adult(split=em.Adult.Splits.RACE),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -163,7 +149,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=Adult.Splits.RACE),
+            dataset=Adult(split=Adult.Splits.RACE),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -176,7 +162,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Race-Binary"),
+            dataset=em.Adult(split=Adult.Splits.RACE_BINARY),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -189,7 +175,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Nationality"),
+            dataset=em.Adult(split=Adult.Splits.NATIONALITY),
             samples=45_222,
             x_features=62,
             discrete_features=57,
@@ -202,7 +188,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Education"),
+            dataset=em.Adult(split=Adult.Splits.EDUCTAION),
             samples=45_222,
             x_features=86,
             discrete_features=82,
@@ -215,7 +201,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.compas(),
+            dataset=em.Compas(),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -228,7 +214,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Sex"),
+            dataset=Compas(split=Compas.Splits.SEX),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -241,7 +227,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Race"),
+            dataset=em.Compas(split=Compas.Splits.RACE),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -254,7 +240,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Race-Sex"),
+            dataset=em.Compas(split=Compas.Splits.RACE_SEX),
             samples=6_167,
             x_features=399,
             discrete_features=394,
@@ -267,7 +253,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.credit(),
+            dataset=Credit(),
             samples=30_000,
             x_features=29,
             discrete_features=9,
@@ -280,7 +266,7 @@ def idfn(val: DT):
             sum_y=6_636,
         ),
         DT(
-            dataset=em.credit(split="Sex"),
+            dataset=Credit(split=Credit.Splits.SEX),
             samples=30_000,
             x_features=29,
             discrete_features=9,
@@ -293,7 +279,7 @@ def idfn(val: DT):
             sum_y=6_636,
         ),
         DT(
-            dataset=em.crime(),
+            dataset=Crime(),
             samples=1_993,
             x_features=136,
             discrete_features=46,
@@ -306,7 +292,7 @@ def idfn(val: DT):
             sum_y=653,
         ),
         DT(
-            dataset=em.crime(split="Race-Binary"),
+            dataset=Crime(split=Crime.Splits.RACE_BINARY),
             samples=1_993,
             x_features=136,
             discrete_features=46,
@@ -319,7 +305,7 @@ def idfn(val: DT):
             sum_y=653,
         ),
         DT(
-            dataset=em.german(),
+            dataset=German(),
             samples=1_000,
             x_features=57,
             discrete_features=51,
@@ -332,7 +318,7 @@ def idfn(val: DT):
             sum_y=300,
         ),
         DT(
-            dataset=em.german(split="Sex"),
+            dataset=German(split=German.Splits.SEX),
             samples=1_000,
             x_features=57,
             discrete_features=51,
@@ -345,7 +331,7 @@ def idfn(val: DT):
             sum_y=300,
         ),
         DT(
-            dataset=em.health(),
+            dataset=em.Health(),
             samples=171_067,
             x_features=130,
             discrete_features=12,
@@ -358,7 +344,7 @@ def idfn(val: DT):
             sum_y=54_052,
         ),
         DT(
-            dataset=em.health(split="Sex"),
+            dataset=em.Health(split=em.Health.Splits.SEX),
             samples=171_067,
             x_features=130,
             discrete_features=12,
@@ -371,7 +357,7 @@ def idfn(val: DT):
             sum_y=54_052,
         ),
         DT(
-            dataset=em.law(split="Sex"),
+            dataset=em.Law(split=em.Law.Splits.SEX),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -384,7 +370,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.law(split="Race"),
+            dataset=em.Law(split=em.Law.Splits.RACE),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -397,7 +383,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.law(split="Sex-Race"),
+            dataset=em.Law(split=em.Law.Splits.SEX_RACE),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -410,7 +396,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.lipton(),
+            dataset=em.Lipton(),
             samples=2_000,
             x_features=2,
             discrete_features=0,
@@ -423,7 +409,7 @@ def idfn(val: DT):
             sum_y=-562,
         ),
         DT(
-            dataset=em.nonbinary_toy(),
+            dataset=em.NonBinaryToy(),
             samples=100,
             x_features=2,
             discrete_features=0,
@@ -436,7 +422,7 @@ def idfn(val: DT):
             sum_y=300,
         ),
         DT(
-            dataset=em.sqf(),
+            dataset=em.Sqf(),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -449,7 +435,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Sex"),
+            dataset=em.Sqf(split=em.Sqf.Splits.SEX),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -462,7 +448,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Race"),
+            dataset=em.Sqf(split=em.Sqf.Splits.RACE),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -475,7 +461,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Race-Sex"),
+            dataset=em.Sqf(split=em.Sqf.Splits.RACE_SEX),
             samples=12_347,
             x_features=144,
             discrete_features=138,
@@ -488,7 +474,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.toy(),
+            dataset=em.Toy(),
             samples=400,
             x_features=10,
             discrete_features=8,
@@ -501,7 +487,7 @@ def idfn(val: DT):
             sum_y=231,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
             samples=22_268,
             x_features=45,
             discrete_features=40,
@@ -514,7 +500,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
             samples=68_308,
             x_features=45,
             discrete_features=40,
@@ -527,7 +513,7 @@ def idfn(val: DT):
             sum_y=24_385,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
             samples=90_576,
             x_features=45,
             discrete_features=40,
@@ -540,7 +526,7 @@ def idfn(val: DT):
             sum_y=31_309,
         ),
         DT(
-            dataset=em.acs_income(
+            dataset=em.AcsIncome(
                 root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Race"
             ),
             samples=22_268,
@@ -555,7 +541,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_income(
+            dataset=em.AcsIncome(
                 root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Sex-Race"
             ),
             samples=22_268,
@@ -570,7 +556,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_employment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+            dataset=em.AcsEmployment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
             samples=47_777,
             x_features=90,
             discrete_features=89,
@@ -615,14 +601,24 @@ def test_data_shape(dt: DT):
 
 
 @pytest.mark.parametrize("fair", [False, True])
-@pytest.mark.parametrize("target", [1, 2, 3])
-@pytest.mark.parametrize("scenario", [1, 2, 3, 4])
+@pytest.mark.parametrize(
+    "target", [em.Synthetic.Targets.Y1, em.Synthetic.Targets.Y2, em.Synthetic.Targets.Y3]
+)
+@pytest.mark.parametrize(
+    "scenario",
+    [
+        em.Synthetic.Scenarios.S1,
+        em.Synthetic.Scenarios.S2,
+        em.Synthetic.Scenarios.S3,
+        em.Synthetic.Scenarios.S4,
+    ],
+)
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
-    scenario: Literal[1, 2, 3, 4], target: Literal[1, 2, 3], fair: bool, samples: int
+    scenario: em.SyntheticScenarios, target: em.SyntheticTargets, fair: bool, samples: int
 ):
     """Test loading data."""
-    dataset = em.synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
+    dataset = em.Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
     assert (samples,) == data.s.shape
@@ -636,9 +632,9 @@ def test_synth_data_shape(
     assert data.y.nunique() == 2
 
     if fair:
-        assert data.name == f"Synthetic - Scenario {scenario}, target {target} fair"
+        assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value} fair"
     else:
-        assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
+        assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value}"
 
     data: DataTuple = dataset.load(ordered=True)
     assert (samples, 4) == data.x.shape
@@ -684,11 +680,11 @@ def test_joining_2_load_functions(data_root: Path):
 
 def test_load_compas_feature_length():
     """Test load compas feature length."""
-    data: DataTuple = em.compas().load()
-    assert len(em.compas().ordered_features["x"]) == 400
-    assert len(em.compas().discrete_features) == 395
-    assert len(em.compas().continuous_features) == 5
-    disc_feature_groups = em.compas().disc_feature_groups
+    data: DataTuple = em.Compas().load()
+    assert len(em.Compas().ordered_features["x"]) == 400
+    assert len(em.Compas().discrete_features) == 395
+    assert len(em.Compas().continuous_features) == 5
+    disc_feature_groups = em.Compas().disc_feature_groups
     assert disc_feature_groups is not None
     assert len(disc_feature_groups["c-charge-desc"]) == 389
     assert data.s.shape == (6167,)
@@ -697,7 +693,7 @@ def test_load_compas_feature_length():
 
 def test_load_adult_explicitly_sex():
     """Test load adult explicitly sex."""
-    adult_sex = em.adult("Sex")
+    adult_sex = Adult(split=Adult.Splits.SEX)
     data: DataTuple = adult_sex.load()
     assert (45222, 101) == data.x.shape
     assert (45222,) == data.s.shape
@@ -709,7 +705,7 @@ def test_load_adult_explicitly_sex():
 
 def test_load_adult_race():
     """Test load adult race."""
-    adult_race = em.adult("Race")
+    adult_race = Adult(split=Adult.Splits.RACE)
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
     assert (45222,) == data.s.shape
@@ -722,7 +718,7 @@ def test_load_adult_race():
 
 def test_load_adult_race_sex():
     """Test load adult race sex."""
-    adult_race_sex = em.adult("Race-Sex")
+    adult_race_sex = Adult(split=Adult.Splits.RACE_SEX)
     data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
     assert (45222,) == data.s.shape
@@ -736,7 +732,7 @@ def test_load_adult_race_sex():
 
 def test_race_feature_split():
     """Test race feature split."""
-    adult_data: em.Dataset = em.adult(split="Custom")
+    adult_data: em.Dataset = Adult(split=Adult.Splits.CUSTOM)
     adult_data._sens_attr_spec = "race_White"
     adult_data._s_prefix = ["race"]
     adult_data._class_label_spec = "salary_>50K"
@@ -751,7 +747,7 @@ def test_race_feature_split():
 
 def test_load_adult_drop_native():
     """Test load adult drop native."""
-    adult_data = em.adult("Sex", binarize_nationality=True)
+    adult_data = Adult(split=Adult.Splits.SEX, binarize_nationality=True)
     assert adult_data.name == "Adult Sex, binary nationality"
     assert "native-country_United-States" in adult_data.discrete_features
     assert "native-country_Canada" not in adult_data.discrete_features
@@ -783,7 +779,7 @@ def test_load_adult_drop_native():
 
 def test_load_adult_education():
     """Test load adult education."""
-    adult_data = em.adult("Education")
+    adult_data = Adult(split=Adult.Splits.EDUCTAION)
     assert adult_data.name == "Adult Education"
     assert "education_HS-grad" in adult_data.sens_attrs
     assert "education_other" in adult_data.sens_attrs
@@ -808,7 +804,7 @@ def test_load_adult_education():
 
 def test_load_adult_education_drop():
     """Test load adult education."""
-    adult_data = em.adult("Education", binarize_nationality=True)
+    adult_data = em.Adult(split=Adult.Splits.EDUCTAION, binarize_nationality=True)
     assert adult_data.name == "Adult Education, binary nationality"
     assert "education_HS-grad" in adult_data.sens_attrs
     assert "education_other" in adult_data.sens_attrs
@@ -849,7 +845,7 @@ def test_additional_columns_load(data_root: Path):
 
 def test_domain_adapt_adult():
     """Test domain adapt adult."""
-    data: DataTuple = em.adult().load()
+    data: DataTuple = em.Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
@@ -863,7 +859,7 @@ def test_domain_adapt_adult():
     assert (6116,) == test.s.shape
     assert (6116,) == test.y.shape
 
-    data = em.adult().load()
+    data = em.Adult().load()
     train, test = em.domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
@@ -875,7 +871,7 @@ def test_domain_adapt_adult():
     assert (5028,) == test.s.shape
     assert (5028,) == test.y.shape
 
-    data = em.adult().load()
+    data = em.Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
@@ -973,11 +969,11 @@ def test_simple_spec():
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("data", [Adult(), Admissions(), Compas(), Credit(), Crime(), German()])
-def test_aif_conversion(data: LoadableDataset):
+@pytest.mark.parametrize("data", [Adult, Admissions, Compas, Credit, Crime, German])
+def test_aif_conversion(data: Callable[[], LoadableDataset]):
     """Load a dataset in AIF form.
 
     There might be a case where you want to load an EthicML dataset
     and use it with a model that exists in AIF360 that we don't have in EthicML.
     """
-    data.load_aif()
+    data().load_aif()

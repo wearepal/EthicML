@@ -18,6 +18,7 @@ from ethicml import (
     BaseMetric,
     Blind,
     ClassifierType,
+    Compas,
     Corels,
     CrossValidator,
     DataTuple,
@@ -33,11 +34,10 @@ from ethicml import (
     Majority,
     Oracle,
     Prediction,
+    Toy,
     TrainTestPair,
-    compas,
     evaluate_models,
     load_data,
-    toy,
     train_test_split,
 )
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
@@ -156,7 +156,7 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
     with pytest.raises(RuntimeError):
         model.run(train_toy, test_toy)
 
-    data: DataTuple = load_data(compas())
+    data: DataTuple = load_data(Compas())
     train, test = train_test_split(data)
 
     predictions: Prediction = model.run(train, test)
@@ -265,6 +265,6 @@ def test_threaded_agarwal():
             )
 
     results = evaluate_models(
-        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_previous=True
+        datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()], delete_previous=True
     )
     assert results["assert_result"].iloc[0]

@@ -1,12 +1,12 @@
 """Class to describe features of the German dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["german", "German", "GermanSplits"]
+__all__ = ["German", "GermanSplits"]
 
 
 class GermanSplits(Enum):
@@ -14,20 +14,6 @@ class GermanSplits(Enum):
 
     SEX = "Sex"
     CUSTOM = "Custom"
-
-
-def german(
-    split: Union[GermanSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "German":
-    """German credit dataset.
-
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return German(split=GermanSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass

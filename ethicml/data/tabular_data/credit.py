@@ -1,12 +1,12 @@
 """Class to describe features of the UCI Credit dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["credit", "Credit", "CreditSplits"]
+__all__ = ["Credit", "CreditSplits"]
 
 
 class CreditSplits(Enum):
@@ -14,20 +14,6 @@ class CreditSplits(Enum):
 
     SEX = "Sex"
     CUSTOM = "Custom"
-
-
-def credit(
-    split: Union[CreditSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Credit":
-    """UCI Credit Card dataset.
-
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return Credit(split=CreditSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass

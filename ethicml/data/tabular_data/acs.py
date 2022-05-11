@@ -20,7 +20,7 @@ from ethicml.utility import DataTuple
 from ..dataset import Dataset
 from ..util import flatten_dict, simple_spec
 
-__all__ = ["acs_income", "AcsIncome", "acs_employment", "AcsEmployment"]
+__all__ = ["AcsIncome", "AcsEmployment"]
 
 
 @contextlib.contextmanager
@@ -31,36 +31,6 @@ def download_dir(root: Path) -> Generator[None, None, None]:
         yield
     finally:
         os.chdir(curdir)
-
-
-def acs_income(
-    root: Path,
-    year: str,
-    horizon: int,
-    states: List[str],
-    split: str = "Sex",
-    target_threshold: int = 50_000,
-    discrete_only: bool = False,
-) -> "AcsIncome":
-    """Return the ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
-
-    :param root: Root directory of the dataset.
-    :param year:
-    :param horizon:
-    :param states:
-    :param split:  (Default: "Sex")
-    :param target_threshold:  (Default: 50_000)
-    :param discrete_only:  (Default: False)
-    """
-    return AcsIncome(
-        root=root,
-        year=year,
-        horizon=horizon,
-        states=states,
-        split=split,
-        target_threshold=target_threshold,
-        discrete_only=discrete_only,
-    )
 
 
 class AcsBase(Dataset):
@@ -320,33 +290,6 @@ class AcsIncome(AcsBase):
         dataframe = dataframe.reset_index(drop=True)
 
         return self._backend_load(dataframe, labels_as_features=labels_as_features, ordered=ordered)
-
-
-def acs_employment(
-    root: Path,
-    year: str,
-    horizon: int,
-    states: List[str],
-    split: str = "Sex",
-    discrete_only: bool = False,
-) -> "AcsEmployment":
-    """Return the ACS Employment Dataset from EAAMO21/NeurIPS21 - Retiring Adult.
-
-    :param root:
-    :param year:
-    :param horizon:
-    :param states:
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    """
-    return AcsEmployment(
-        root=root,
-        year=year,
-        horizon=horizon,
-        states=states,
-        split=split,
-        discrete_only=discrete_only,
-    )
 
 
 class AcsEmployment(AcsBase):

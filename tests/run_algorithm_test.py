@@ -3,6 +3,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
@@ -54,7 +55,7 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """Test empty evaluate."""
-    empty_result = em.evaluate_models([em.toy()], repeats=3)
+    empty_result = em.evaluate_models([em.Toy()], repeats=3)
     expected_result = pd.DataFrame(
         [], columns=["dataset", "scaler", "transform", "model", "split_id"]
     )
@@ -66,9 +67,9 @@ def test_empty_evaluate():
 
 @pytest.mark.parametrize("repeats", [1, 2, 3])
 @pytest.mark.usefixtures("results_cleanup")
-def test_run_alg_repeats_error(repeats):
+def test_run_alg_repeats_error(repeats: int):
     """Add a test to check that the right number of reults are produced with repeats."""
-    dataset = em.adult(split="Race-Binary")
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
     datasets: List[em.Dataset] = [dataset]
     preprocess_models: List[em.PreAlgorithm] = []
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
@@ -91,9 +92,9 @@ def test_run_alg_repeats_error(repeats):
 @pytest.mark.parametrize("on", ["data", "model", "both"])
 @pytest.mark.parametrize("repeats", [2, 3, 5])
 @pytest.mark.usefixtures("results_cleanup")
-def test_run_repeats(repeats, on):
+def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
     """Check the repeat_on arg."""
-    dataset = em.adult(split="Race-Binary")
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
     datasets: List[em.Dataset] = [dataset]
     preprocess_models: List[em.PreAlgorithm] = []
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
@@ -125,8 +126,8 @@ def test_run_repeats(repeats, on):
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_scaler():
     """Test run alg suite."""
-    dataset = em.adult(split="Race-Binary")
-    datasets: List[em.Dataset] = [dataset, em.toy()]
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset, em.Toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
@@ -161,13 +162,13 @@ def test_run_alg_suite_scaler():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
     """Test run alg suite."""
-    dataset = em.adult(split="Race-Binary")
-    datasets: List[em.Dataset] = [dataset, em.toy()]
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset, em.Toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
-    results = em.evaluate_models(
+    em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -203,7 +204,7 @@ def test_run_alg_suite():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_wrong_metrics():
     """Test run alg suite wrong metrics."""
-    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel=KernelType.linear), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
@@ -241,7 +242,7 @@ def test_run_alg_suite_err_handling():
         def get_name(self) -> str:
             return "Problem"
 
-    datasets: List[em.Dataset] = [em.toy()]
+    datasets: List[em.Dataset] = [em.Toy()]
     preprocess_models: List[em.PreAlgorithm] = []
     inprocess_models: List[em.InAlgorithm] = [em.LR(), ThrowErr()]
     metrics: List[em.Metric] = [em.Accuracy()]
@@ -263,7 +264,7 @@ def test_run_alg_suite_err_handling():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
-    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
     inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.lr), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]

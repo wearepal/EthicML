@@ -6,7 +6,7 @@ from typing import ClassVar, Type, Union
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["Compas", "CompasSplits", "compas"]
+__all__ = ["Compas", "CompasSplits"]
 
 
 class CompasSplits(Enum):
@@ -16,20 +16,6 @@ class CompasSplits(Enum):
     RACE = "Race"
     RACE_SEX = "Race-Sex"
     CUSTOM = "Custom"
-
-
-def compas(
-    split: Union[CompasSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Compas":
-    """Compas (or ProPublica) dataset.
-
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return Compas(split=CompasSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass

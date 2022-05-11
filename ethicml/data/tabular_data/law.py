@@ -24,7 +24,7 @@ from typing import ClassVar, Mapping, Type, Union
 from ..dataset import LoadableDataset
 from ..util import LabelGroup, flatten_dict, simple_spec
 
-__all__ = ["law", "Law", "LawSplits"]
+__all__ = ["Law", "LawSplits"]
 
 
 class LawSplits(Enum):
@@ -34,20 +34,6 @@ class LawSplits(Enum):
     RACE = "Race"
     SEX_RACE = "Sex-Race"
     CUSTOM = "Custom"
-
-
-def law(
-    split: Union[LawSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Law":
-    """LSAC Law School dataset.
-
-    :param split:  (Default: "Sex")
-    :param discrete_only:  (Default: False)
-    :param invert_s:  (Default: False)
-    """
-    return Law(split=LawSplits(split), discrete_only=discrete_only, invert_s=invert_s)
 
 
 @dataclass
