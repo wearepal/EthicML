@@ -39,23 +39,23 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     """
     try:
         from fairlearn.reductions import (
-            ConditionalSelectionRate,
             DemographicParity,
             EqualizedOdds,
             ExponentiatedGradient,
+            UtilityParity,
         )
     except ImportError as e:
-        raise RuntimeError("In order to use Agarwal, install fairlearn==0.4.6.") from e
+        raise RuntimeError("In order to use Agarwal, install fairlearn==0.7.0.") from e
 
-    fairness_class: ConditionalSelectionRate
+    fairness_class: UtilityParity
     fairness_type = FairnessType[args["fairness"]]
     classifier_type = ClassifierType[args["classifier"]]
     kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:
-        fairness_class = DemographicParity()
+        fairness_class = DemographicParity(difference_bound=args["eps"])
     else:
-        fairness_class = EqualizedOdds()
+        fairness_class = EqualizedOdds(difference_bound=args["eps"])
 
     if classifier_type is ClassifierType.svm:
         assert kernel_type is not None
@@ -71,7 +71,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     data_a = train.s
 
     exponentiated_gradient = ExponentiatedGradient(
-        model, constraints=fairness_class, eps=args["eps"], T=args["iters"]
+        model, constraints=fairness_class, eps=args["eps"], max_iter=args["iters"]
     )
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
