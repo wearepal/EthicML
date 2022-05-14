@@ -147,7 +147,7 @@ def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
 def compute_projection_gradients(
     model: nn.Module, loss_p: Tensor, loss_a: Tensor, alpha: float
 ) -> None:
-    """Computes the adversarial gradient projection term.
+    """Compute the adversarial gradient projection term.
 
     :param model: Model whose parameters the gradients are to be computed w.r.t.
     :param loss_p: Prediction loss.

@@ -150,14 +150,14 @@ class Dataset:
 
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
-        """Dictionary of feature groups."""
+        """Return Dictionary of feature groups."""
         if self._discrete_feature_groups is None:
             return None
         dfgs = self._discrete_feature_groups
         return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
 
     def __len__(self) -> int:
-        """Number of elements in the dataset."""
+        """Return number of elements in the dataset."""
         return self._num_samples
 
     @abstractmethod

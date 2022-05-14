@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def main() -> None:
-    """Main."""
+    """Make the Law Dataset."""
     data = pd.read_csv("raw/law_data.csv", index_col=0).reset_index(drop=True)
     data = data[["LSAT", "UGPA", "ZFYA", "race", "sex", "first_pf"]]
     data["first_pf"] = data["first_pf"].astype(int)
