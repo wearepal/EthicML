@@ -203,7 +203,9 @@ class Dataset:
         return combination, mask
 
     @staticmethod
-    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
+    def _from_dummies(
+        data: pd.DataFrame, categorical_cols: Dict[str, Sequence[str]]
+    ) -> pd.DataFrame:
         out = data.copy()
 
         for col_parent, filter_col in categorical_cols.items():
