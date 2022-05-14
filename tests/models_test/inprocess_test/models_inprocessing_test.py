@@ -23,6 +23,7 @@ from ethicml import (
     CrossValidator,
     DataTuple,
     DPOracle,
+    FairDummies,
     FairnessType,
     InAlgoArgs,
     InAlgorithm,
