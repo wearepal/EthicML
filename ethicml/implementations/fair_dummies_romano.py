@@ -10,7 +10,7 @@ import pandas as pd
 import torch
 from joblib import dump, load
 
-from ethicml import DataTuple, InAlgoArgs, SoftPrediction, TestTuple
+from ethicml import DataTuple, SoftPrediction, TestTuple
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
 
 if TYPE_CHECKING:
