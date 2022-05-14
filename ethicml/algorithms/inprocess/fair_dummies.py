@@ -8,8 +8,8 @@ from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from ethicml import InAlgorithmSubprocess
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 
 
 class FairDummiesArgs(TypedDict):
