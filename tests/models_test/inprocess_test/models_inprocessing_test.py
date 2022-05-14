@@ -41,6 +41,7 @@ from ethicml import (
     train_test_split,
 )
 from ethicml.algorithms.inprocess.hgr import Hgr
+from ethicml.algorithms.inprocess.fair_dummies import FairDummies
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 TMPDIR: Final = Path("/tmp")
@@ -92,6 +93,7 @@ INPROCESS_TESTS = [
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=20),
     InprocessTest(name="HGR", model=Hgr(dir=TMPDIR, model_type="linear_model"), num_pos=62),
     InprocessTest(name="HGR", model=Hgr(dir=TMPDIR, model_type="deep_model"), num_pos=66),
+    InprocessTest(name="Fair Dummies", model=FairDummies(), num_pos=57),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
