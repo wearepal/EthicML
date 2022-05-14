@@ -3,7 +3,7 @@ import json
 import random
 import sys
 from pathlib import Path
-from typing_extensions import TypedDict
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -13,20 +13,9 @@ from joblib import dump, load
 from ethicml import DataTuple, InAlgoArgs, SoftPrediction, TestTuple
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
 
-
-class FairDummiesArgs(TypedDict):
-    """Args for the Agarwal implementation."""
-
-    lr: float
-    pretrain_pred_epochs: int
-    pretrain_dis_epochs: int
-    epochs: int
-    loss_steps: int
-    dis_steps: int
-    batch_size: int
-    model_type: str
-    lambda_vec: float
-    second_moment_scaling: float
+if TYPE_CHECKING:
+    from ethicml.algorithms.inprocess.fair_dummies import FairDummiesArgs
+    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
 
 
 def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLearner:

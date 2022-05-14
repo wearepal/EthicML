@@ -4,12 +4,27 @@ https://github.com/yromano/fair_dummies
 """
 from dataclasses import dataclass
 from typing import List
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
 from ethicml import InAlgorithmSubprocess
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
-from ethicml.implementations.fair_dummies_romano import FairDummiesArgs
+
+
+class FairDummiesArgs(TypedDict):
+    """Args for the Agarwal implementation."""
+
+    lr: float
+    pretrain_pred_epochs: int
+    pretrain_dis_epochs: int
+    epochs: int
+    loss_steps: int
+    dis_steps: int
+    batch_size: int
+    model_type: str
+    lambda_vec: float
+    second_moment_scaling: float
 
 
 @dataclass
