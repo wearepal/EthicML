@@ -2,6 +2,8 @@
 
 https://github.com/yromano/fair_dummies
 """
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import List
 from typing_extensions import TypedDict
