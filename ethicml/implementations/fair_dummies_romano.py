@@ -45,10 +45,10 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
         lambda_vec=args["lambda_vec"],
         second_moment_scaling=args["second_moment_scaling"],
         num_classes=train.y.nunique(),
+        seed=seed,
     )
     input_data_train = pd.concat([train.s, train.x], axis="columns").to_numpy()
-    model.fit(input_data_train, train.y.to_numpy())
-    return model
+    return model.fit(input_data_train, train.y.to_numpy())
 
 
 def predict(model: EquiClassLearner, test: TestTuple) -> pd.DataFrame:
@@ -59,8 +59,7 @@ def predict(model: EquiClassLearner, test: TestTuple) -> pd.DataFrame:
     """
     input_data_test = pd.concat([test.s, test.x], axis="columns").to_numpy()
     randomized_predictions = model.predict(input_data_test)
-    preds = pd.DataFrame(randomized_predictions[:, 1], columns=["preds"])
-    return preds
+    return pd.DataFrame(randomized_predictions[:, 1], columns=["preds"])
 
 
 def train_and_predict(
@@ -94,11 +93,9 @@ def main() -> None:
         model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        testdata = TestTuple.from_npz(Path(in_algo_args["test"]))
+        test = TestTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
-        SoftPrediction(soft=predict(model, testdata)["preds"]).to_npz(
-            Path(in_algo_args["predictions"])
-        )
+        SoftPrediction(soft=predict(model, test)["preds"]).to_npz(Path(in_algo_args["predictions"]))
     else:
         raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 

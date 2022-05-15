@@ -1,6 +1,7 @@
 """FairDummies Models."""
-from typing import Callable, Tuple
-from typing_extensions import Literal
+import random
+from typing import Any, Callable, Tuple
+from typing_extensions import Literal, Self
 
 import numpy as np
 import pandas as pd
@@ -438,6 +439,13 @@ def train_regressor(
     return model, dis
 
 
+def seed_worker(worker_id):
+    """Seed the Dataloader worker."""
+    worker_seed = torch.initial_seed() % 2**32
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+
+
 class EquiClassLearner:
     """Classification model."""
 
@@ -456,8 +464,17 @@ class EquiClassLearner:
         lambda_vec: float,
         second_moment_scaling: float,
         num_classes: int,
+        seed: int,
     ):
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(seed)
 
+        torch.use_deterministic_algorithms(True)
+
+        self.seed = seed
         self.lr = lr
         self.batch_size = batch_size
         self.in_shape = in_shape
@@ -490,11 +507,12 @@ class EquiClassLearner:
         self.dis_steps = dis_steps
 
         self.scaler = StandardScaler()
-        self.scale_df = lambda df, scaler: pd.DataFrame(
-            scaler.transform(df), columns=df.columns, index=df.index
-        )
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> None:
+    def scale_df(self, df: pd.DataFrame, scaler: Any) -> pd.DataFrame:
+        """Scale DF."""
+        return pd.DataFrame(scaler.transform(df), columns=df.columns, index=df.index)
+
+    def fit(self, x: np.ndarray, y: np.ndarray) -> Self:
         """Fit."""
         # The features are X[:,1:]
         x_train = pd.DataFrame(data=x[:, 1:])
@@ -503,16 +521,26 @@ class EquiClassLearner:
         z_train = pd.DataFrame(data=orig_z)
         p_success, dummy = density_estimation(y=y, a=orig_z)
 
+        rng = np.random.default_rng(self.seed)
+
         self.scaler.fit(x_train)
         x_train = x_train.pipe(self.scale_df, self.scaler)
 
+        g = torch.Generator()
+        g.manual_seed(self.seed)
+
         for _ in range(self.pretrain_pred_epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=True,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
 
             self.model = pretrain_classifier(
@@ -523,12 +551,17 @@ class EquiClassLearner:
             )
 
         for _ in range(self.pretrain_dis_epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=True,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
 
             pretrain_adversary(
@@ -541,12 +574,17 @@ class EquiClassLearner:
             )
 
         for _ in range(1, self.epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=True,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
 
             self.model, self.dis = train_classifier(
@@ -563,6 +601,7 @@ class EquiClassLearner:
                 loss_steps=self.loss_steps,
                 num_classes=self.num_classes,
             )
+        return self
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """Predict."""
@@ -667,8 +706,10 @@ class EquiRegLearner:
         y = torch.from_numpy(y_train.values).float()
         a = torch.from_numpy(z_train.values).float()
 
+        rng = np.random.default_rng(self.seed)
+
         for _ in range(self.pretrain_pred_epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             if self.use_standardscaler:
@@ -676,7 +717,12 @@ class EquiRegLearner:
                 zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=False
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=False,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
             self.model = (
                 pretrain_regressor_fast_loader(
@@ -696,7 +742,7 @@ class EquiRegLearner:
             )
 
         for _ in range(self.pretrain_dis_epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             if self.use_standardscaler:
@@ -704,7 +750,12 @@ class EquiRegLearner:
                 zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=False
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=False,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
             if fast_loader:
                 pretrain_adversary_fast_loader(
@@ -729,7 +780,7 @@ class EquiRegLearner:
                 )
 
         for _ in range(1, self.epochs):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
             if self.use_standardscaler:
@@ -737,7 +788,12 @@ class EquiRegLearner:
                 zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
             train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
             train_loader = DataLoader(
-                train_data, batch_size=self.batch_size, shuffle=True, drop_last=False
+                train_data,
+                batch_size=self.batch_size,
+                shuffle=True,
+                drop_last=False,
+                worker_init_fn=seed_worker,
+                generator=g,
             )
             self.model, self.dis = (
                 train_regressor_fast_loader(

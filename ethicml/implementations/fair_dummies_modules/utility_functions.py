@@ -203,6 +203,8 @@ class GeneralLearner:
         # cost to minimize
         self.cost_func = cost_func
 
+        self.rng = np.random.default_rng(0)
+
         # define a predictive model
         self.model_type = model_type
         if self.model_type == "deep_proba":
@@ -222,7 +224,7 @@ class GeneralLearner:
         """Fit a model by sweeping over all data points."""
         # shuffle data
         shuffle_idx = np.arange(x_.shape[0])
-        np.random.shuffle(shuffle_idx)
+        self.rng.shuffle(shuffle_idx)
         X = x_.clone()[shuffle_idx]
         Y = y_.clone()[shuffle_idx]
 
@@ -315,6 +317,8 @@ def fair_dummies_test_regression(
     y_cal = y_cal[:, np.newaxis]
     y = y[:, np.newaxis]
 
+    rng = np.random.default_rng(0)
+
     test_i = []
     for _ in range(num_reps):
         # fit regressor
@@ -342,7 +346,7 @@ def fair_dummies_test_regression(
         # generate A and compare
         est_fake_err = np.zeros(num_p_val_rep)
         for inter_p_value in range(num_p_val_rep):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=a.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=a.shape)
             a_tilde = (random_array < p_success).astype(float)
 
             features_fake = np.concatenate((a_tilde[:, np.newaxis], y), 1)
@@ -387,6 +391,8 @@ def fair_dummies_test_classification(
     Yhat_cal, A_cal, Y_cal: are used to fit a model that formulates the test statistics
     Yhat, A, Y: variables in which we test whether Yhat is indpendent on A given Y
     """
+    rng = np.random.default_rng(0)
+
     p_success, dummy = density_estimation(
         y=np.concatenate((y_cal, y), 0), a=np.concatenate((a_cal, a), 0)
     )
@@ -448,7 +454,7 @@ def fair_dummies_test_classification(
         # generate A and compare
         est_fake_err = np.zeros(num_p_val_rep)
         for inter_p_value in range(num_p_val_rep):
-            random_array = np.random.uniform(low=0.0, high=1.0, size=a.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=a.shape)
             a_tilde = (random_array < p_success).astype(float)
 
             features_fake = np.concatenate((a_tilde[:, np.newaxis], y), 1)
