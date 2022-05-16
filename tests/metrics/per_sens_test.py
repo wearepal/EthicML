@@ -16,7 +16,6 @@ from ethicml import (
     DataTuple,
     InAlgorithm,
     KernelType,
-    LRProb,
     Metric,
     NonBinaryToy,
     Prediction,
@@ -72,7 +71,7 @@ PER_SENS = [
     ),
     PerSensMetricTest(
         dataset=Toy(),
-        classifier=LRProb(),
+        classifier=LR(),
         metric=ProbOutcome(),
         expected_values={"sensitive-attr_0": 0.375, "sensitive-attr_1": 0.693},
     ),

@@ -9,10 +9,11 @@ from ranzen import enum_name_str, implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
-from ..inprocess.logistic_regression import LRProb
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Upsampler", "UpsampleStrategy"]
+
+from ... import LR
 
 
 @enum_name_str
@@ -162,7 +163,7 @@ def upsample(
             upsampled_datatuple = upsampled_datatuple.replace(name=f"{name}: {dataset.name}")
 
     if strategy is UpsampleStrategy.preferential:
-        ranker = LRProb()
+        ranker = LR()
         rank: SoftPrediction = ranker.run(dataset, dataset)
 
         selected: List[pd.DataFrame] = []

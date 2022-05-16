@@ -1,3 +1,4 @@
+"""Test Hydra compatability."""
 from typing import Type
 
 import pytest
@@ -15,7 +16,6 @@ import ethicml as em
         em.DPOracle,
         em.LR,
         em.LRCV,
-        em.LRProb,
         em.Majority,
         em.Oracle,
         em.SVM,
@@ -25,6 +25,7 @@ import ethicml as em
     ],
 )
 def test_hydra_compatibility(algo_class: Type[em.InAlgorithm]) -> None:
+    """Test hydra compatibility."""
     # create config object from dataclass (usually taken care of by hydra)
     conf = OmegaConf.structured(algo_class)
     assert not hasattr(conf, "is_fairness_algo")  # this attribute should not be configurable

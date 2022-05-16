@@ -6,10 +6,11 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
-from ..inprocess.logistic_regression import LRProb
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Calders"]
+
+from ... import LR
 
 
 @dataclass
@@ -86,7 +87,7 @@ def _calders_algorithm(
 
     massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
 
-    ranker = LRProb()
+    ranker = LR()
     rank: SoftPrediction = ranker.run(dataset, massaging_candidates, seed)
 
     dis_group_len = len(data[dis_group])

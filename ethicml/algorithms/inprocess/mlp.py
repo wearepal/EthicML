@@ -8,7 +8,7 @@ from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmDC
-from ethicml.utility import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, Prediction, SoftPrediction, TestTuple
 
 __all__ = ["MLP"]
 
@@ -40,13 +40,13 @@ class MLP(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        return Prediction(hard=pd.Series(self.clf.predict(test.x)))
+        return SoftPrediction(soft=pd.Series(self.clf.predict_proba(test.x)[:, 1]))
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, seed=seed)
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return Prediction(hard=pd.Series(clf.predict(test.x)))
+        return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
