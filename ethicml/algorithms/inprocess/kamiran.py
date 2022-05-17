@@ -4,10 +4,10 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
+import sklearn
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression
 
-import ethicml.implementations.pytorch_common
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm
 from ethicml.algorithms.inprocess.shared import settings_for_svm_lr
 from ethicml.algorithms.inprocess.svm import KernelType, select_svm
@@ -84,7 +84,7 @@ class Kamiran(InAlgorithm):
         C: float,
         kernel: Optional[KernelType],
         seed: int,
-    ) -> ethicml.implementations.pytorch_common.LinearModel:
+    ) -> sklearn.linear_model._base.LinearModel:
         if classifier is ClassifierType.svm:
             assert kernel is not None
             model = select_svm(C=C, kernel=kernel, seed=seed)
@@ -110,7 +110,7 @@ class Kamiran(InAlgorithm):
         return model
 
     def _predict(
-        self, model: ethicml.implementations.pytorch_common.LinearModel, test: TestTuple
+        self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
     ) -> Prediction:
         return SoftPrediction((model.predict_proba(test.x)), info=self.get_hyperparameters())
 
