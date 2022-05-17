@@ -62,7 +62,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
     @final
     def model_path(self) -> Path:
         """Path to where the model with be stored."""
-        return Path(self.dir) / f"model_{self.name}.joblib"
+        return Path(self.dir).resolve(strict=True) / f"model_{self.name}.joblib"
 
     @final
     def fit(self: _IS, train: DataTuple, seed: int = 888) -> _IS:
