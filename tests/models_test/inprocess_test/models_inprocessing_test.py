@@ -41,6 +41,7 @@ from ethicml import (
     load_data,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
 from ethicml.algorithms.inprocess.hgr import Hgr
 from ethicml.algorithms.inprocess.fair_dummies import FairDummies
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
@@ -57,6 +58,7 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
+    InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir='/tmp'), num_pos=32),
     InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
         name="Agarwal, lr, eq_odds",

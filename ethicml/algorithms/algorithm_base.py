@@ -44,14 +44,14 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
         :param env: Environment variables specified as a dictionary; e.g. ``{"PATH": "/usr/bin"}``.
         :param cwd: If not None, change working directory to the given path before running command.
         """
-        one_hour = 3600
+        two_hours = 60 * 60 * 2  # 60secs * 60mins * 2 hours
         try:
             process = subprocess.run(  # wait for process creation to finish
                 [self.executable] + cmd_args,
                 capture_output=True,
                 env=env,
                 cwd=cwd,
-                timeout=one_hour,
+                timeout=two_hours,
             )
         except subprocess.TimeoutExpired as error:
             raise RuntimeError("The script timed out.") from error

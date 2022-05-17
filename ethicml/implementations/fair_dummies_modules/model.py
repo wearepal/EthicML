@@ -1,6 +1,8 @@
 """FairDummies Models."""
+from __future__ import annotations
+
 import random
-from typing import Any, Callable, Tuple, Union
+from typing import Any, Callable, Tuple
 from typing_extensions import Literal, Self
 
 import numpy as np
@@ -9,9 +11,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader
 
-from .utility_functions import DeepModel, DeepRegModel, LinearModel, density_estimation
+from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
+from .utility_functions import density_estimation
 
 
 def covariance_diff_biased(z: torch.Tensor, w: torch.Tensor, scale: float = 1.0) -> torch.Tensor:
@@ -24,19 +27,6 @@ def covariance_diff_biased(z: torch.Tensor, w: torch.Tensor, scale: float = 1.0)
     sww = torch.mm(torch.t(w), m_w) / m_w.shape[0]
 
     return (szz - sww).pow(2).sum() / scale  # Compute loss
-
-
-class PandasDataSet(TensorDataset):
-    """Pandas based dataset."""
-
-    def __init__(self, *dataframes: pd.DataFrame):
-        tensors = (self._df_to_tensor(df) for df in dataframes)
-        super().__init__(*tensors)
-
-    def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series]) -> torch.Tensor:
-        if isinstance(df, pd.Series):
-            df = df.to_frame('dummy')
-        return torch.from_numpy(df.values).float()
 
 
 # defining discriminator class (for regression)
