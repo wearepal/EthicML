@@ -15,7 +15,7 @@ from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 
 
 class FairDummiesArgs(TypedDict):
-    """Args for the Agarwal implementation."""
+    """Args for the Fair Dummies implementation."""
 
     lr: float
     pretrain_pred_epochs: int

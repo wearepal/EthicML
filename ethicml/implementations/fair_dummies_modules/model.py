@@ -1,6 +1,6 @@
 """FairDummies Models."""
 import random
-from typing import Any, Callable, Tuple
+from typing import Any, Callable, Tuple, Union
 from typing_extensions import Literal, Self
 
 import numpy as np
@@ -33,7 +33,7 @@ class PandasDataSet(TensorDataset):
         tensors = (self._df_to_tensor(df) for df in dataframes)
         super().__init__(*tensors)
 
-    def _df_to_tensor(self, df: pd.DataFrame) -> torch.Tensor:
+    def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series]) -> torch.Tensor:
         if isinstance(df, pd.Series):
             df = df.to_frame('dummy')
         return torch.from_numpy(df.values).float()

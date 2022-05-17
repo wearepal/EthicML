@@ -10,6 +10,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KernelDensity
 from sklearn.preprocessing import StandardScaler
 
+from ethicml.implementations.hgr_modules.utility_functions import compute_acc
+
 
 def density_estimation(
     y: np.ndarray, *, a: np.ndarray, y_test: Optional[np.ndarray] = None
@@ -143,14 +145,6 @@ def calc_accuracy(
     """Accuracy."""
     max_vals, max_indices = torch.max(outputs, 1)
     return (max_indices == y).sum().detach().cpu().numpy() / max_indices.size()[0]
-
-
-def compute_acc(yhat: torch.Tensor, y: torch.Tensor) -> float:
-    """Accuracy."""
-    _, predicted = torch.max(yhat, 1)
-    total = y.size(0)
-    correct = (predicted == y).sum().item()
-    return correct / total
 
 
 def compute_acc_numpy(yhat: np.ndarray, y: np.ndarray) -> float:
