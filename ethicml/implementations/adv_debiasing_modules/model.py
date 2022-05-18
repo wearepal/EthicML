@@ -278,7 +278,7 @@ class AdvDebiasingClassLearner:
             )
         return self
 
-    def predict(self, x: torch.Tensor) -> torch.Tensor:
+    def predict(self, x: torch.Tensor) -> np.ndarray:
         """Predict."""
         x = x[:, 1:]
 

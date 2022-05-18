@@ -51,15 +51,14 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
     return model.fit(input_data_train, train.y.to_numpy())
 
 
-def predict(model: EquiClassLearner, test: TestTuple) -> pd.DataFrame:
+def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
     """Compute predictions on the given test data.
 
     :param exponentiated_gradient:
     :param test:
     """
     input_data_test = pd.concat([test.s, test.x], axis="columns").to_numpy()
-    randomized_predictions = model.predict(input_data_test)
-    return pd.DataFrame(randomized_predictions[:, 1], columns=["preds"])
+    return model.predict(input_data_test)
 
 
 def train_and_predict(
@@ -84,9 +83,9 @@ def main() -> None:
         train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
             Path(in_algo_args["test"])
         )
-        SoftPrediction(
-            soft=train_and_predict(train, test, flags, in_algo_args["seed"])["preds"]
-        ).to_npz(Path(in_algo_args["predictions"]))
+        SoftPrediction(soft=train_and_predict(train, test, flags, in_algo_args["seed"])).to_npz(
+            Path(in_algo_args["predictions"])
+        )
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
@@ -95,7 +94,7 @@ def main() -> None:
     elif in_algo_args["mode"] == "predict":
         test = TestTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
-        SoftPrediction(soft=predict(model, test)["preds"]).to_npz(Path(in_algo_args["predictions"]))
+        SoftPrediction(soft=predict(model, test)).to_npz(Path(in_algo_args["predictions"]))
     else:
         raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 
