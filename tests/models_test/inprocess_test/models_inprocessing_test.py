@@ -61,6 +61,11 @@ INPROCESS_TESTS = [
     InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir='/tmp'), num_pos=32),
     InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
+        name="Agarwal, gbt, dp",
+        model=Agarwal(dir='/tmp', classifier=ClassifierType.gbt),
+        num_pos=44,
+    ),
+    InprocessTest(
         name="Agarwal, lr, eq_odds",
         model=Agarwal(dir=TMPDIR, fairness=FairnessType.eq_odds),
         num_pos=44,
