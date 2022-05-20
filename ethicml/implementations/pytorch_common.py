@@ -1,11 +1,20 @@
 """Functions that are common to PyTorch models."""
 from typing import Tuple
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
-import torch
-from torch import Tensor, nn
-from torch.utils.data import Dataset
+
+try:
+    import torch
+    from torch import Tensor, nn
+    from torch.utils.data import Dataset, TensorDataset
+except ImportError as e:
+    raise RuntimeError(
+        "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
+    ) from e
+
+from sklearn.preprocessing import StandardScaler
 
 from ethicml.utility import DataTuple, TestTuple
 
@@ -125,3 +134,229 @@ def compute_projection_gradients(
 
     for param, grad in zip(model.parameters(), grad_p):
         param.grad = grad
+
+
+class PandasDataSet(TensorDataset):
+    """Pandas Dataset."""
+
+    def __init__(self, *dataframes):
+        tensors = (self._df_to_tensor(df) for df in dataframes)
+        super(PandasDataSet, self).__init__(*tensors)
+
+    def _df_to_tensor(self, df):
+        if isinstance(df, pd.Series):
+            df = df.to_frame('dummy')
+        return torch.from_numpy(df.values).float()
+
+
+class LinearModel(torch.nn.Module):
+    """Define linear model."""
+
+    def __init__(self, in_shape: int = 1, out_shape: int = 2):
+        super().__init__()
+        self.in_shape = in_shape
+        self.out_shape = out_shape
+
+        self.build_model()
+
+    def build_model(self) -> None:
+        """Build Model."""
+        self.base_model = nn.Sequential(
+            nn.Linear(self.in_shape, self.out_shape, bias=True),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward."""
+        return torch.squeeze(self.base_model(x))
+
+
+class DeepModel(torch.nn.Module):
+    """Define deep neural net model for classification."""
+
+    def __init__(self, in_shape: int = 1, out_shape: int = 1):
+        super().__init__()
+        self.in_shape = in_shape
+        self.dim_h = 64
+        self.dropout = 0.5
+        self.out_shape = out_shape
+        self.build_model()
+
+    def build_model(self) -> None:
+        """Build Model."""
+        self.base_model = nn.Sequential(
+            nn.Linear(self.in_shape, self.dim_h, bias=True),
+            nn.ReLU(),
+            nn.Dropout(self.dropout),
+            nn.Linear(self.dim_h, self.out_shape, bias=True),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward."""
+        return torch.squeeze(self.base_model(x))
+
+
+class DeepRegModel(torch.nn.Module):
+    """Define deep model for regression."""
+
+    def __init__(self, in_shape: int = 1, out_shape: int = 1):
+        super().__init__()
+        self.in_shape = in_shape
+        self.dim_h = 64  # in_shape*10
+        self.out_shape = out_shape
+        self.build_model()
+
+    def build_model(self) -> None:
+        """Build model."""
+        self.base_model = nn.Sequential(
+            nn.Linear(self.in_shape, self.dim_h, bias=True),
+            nn.ReLU(),
+            nn.Linear(self.dim_h, self.out_shape, bias=True),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward."""
+        return torch.squeeze(self.base_model(x))
+
+
+class DeepProbaModel(torch.nn.Module):
+    """Define deep regression model, used by the fair dummies test."""
+
+    def __init__(self, in_shape: int = 1):
+        super().__init__()
+        self.in_shape = in_shape
+        self.dim_h = 64  # in_shape*10
+        self.dropout = 0.5
+        self.out_shape = 1
+        self.build_model()
+
+    def build_model(self) -> None:
+        """Build Model."""
+        self.base_model = nn.Sequential(
+            nn.Linear(self.in_shape, self.dim_h, bias=True),
+            nn.ReLU(),
+            nn.Dropout(self.dropout),
+            nn.Linear(self.dim_h, self.out_shape, bias=True),
+            nn.Sigmoid(),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward."""
+        return torch.squeeze(self.base_model(x))
+
+
+class GeneralLearner:
+    """General Learner."""
+
+    def __init__(
+        self,
+        lr: float,
+        epochs: int,
+        cost_func: nn.Module,
+        in_shape: int,
+        batch_size: int,
+        model_type: Literal["deep_proba", "deep_regression"],
+        out_shape: int = 1,
+    ):
+
+        # input dim
+        self.in_shape = in_shape
+
+        # output dim
+        self.out_shape = out_shape
+
+        # Data normalization
+        self.x_scaler = StandardScaler()
+
+        # learning rate
+        self.lr = lr
+
+        # number of epochs
+        self.epochs = epochs
+
+        # cost to minimize
+        self.cost_func = cost_func
+
+        self.rng = np.random.default_rng(0)
+
+        # define a predictive model
+        self.model_type = model_type
+        if self.model_type == "deep_proba":
+            self.model: nn.Module = DeepProbaModel(in_shape=in_shape)
+        elif self.model_type == "deep_regression":
+            self.model = DeepModel(in_shape=in_shape, out_shape=self.out_shape)
+        else:
+            raise NotImplementedError
+
+        # optimizer
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.lr, momentum=0.9)
+
+        # minibatch size
+        self.batch_size = batch_size
+
+    def internal_epoch(self, x_: torch.Tensor, y_: torch.Tensor) -> np.ndarray:
+        """Fit a model by sweeping over all data points."""
+        # shuffle data
+        shuffle_idx = np.arange(x_.shape[0])
+        self.rng.shuffle(shuffle_idx)
+        X = x_.clone()[shuffle_idx]
+        Y = y_.clone()[shuffle_idx]
+
+        # fit pred func
+        self.model.train()
+
+        batch_size = self.batch_size
+        epoch_losses = []
+
+        for idx in range(0, X.shape[0], batch_size):
+            self.optimizer.zero_grad()
+
+            batch_x = X[idx : min(idx + batch_size, X.shape[0]), :]
+            batch_y = Y[idx : min(idx + batch_size, Y.shape[0])]
+
+            # utility loss
+            batch_yhat = self.model(batch_x)
+            loss = self.cost_func(batch_yhat, batch_y)
+
+            loss.backward()
+            self.optimizer.step()
+
+            epoch_losses.append(loss.cpu().detach().numpy())
+
+        return np.mean(epoch_losses)
+
+    def run_epochs(self, x: torch.Tensor, y: torch.Tensor) -> None:
+        """Run epochs."""
+        for _ in range(self.epochs):
+            self.internal_epoch(x, y)
+
+    def fit(self, x: torch.Tensor, y: torch.Tensor) -> None:
+        """Fit a model on training data."""
+        self.x_scaler.fit(x)
+
+        xp = torch.from_numpy(self.x_scaler.transform(x)).float()
+        yp = torch.from_numpy(y).float()
+
+        # evaluate at init
+        self.model.eval()
+        yhat = self.model(xp)
+
+        print(f'Init Loss = {str(self.cost_func(yhat, yp).detach().numpy())}')
+
+        self.model.train()
+        self.run_epochs(xp, yp)
+
+        # evaluate
+        self.model.eval()
+        yhat = self.model(xp)
+
+        print(f'Final Loss = {str(self.cost_func(yhat, yp).detach().numpy())}')
+
+    def predict(self, x: torch.Tensor) -> torch.Tensor:
+        """Predict output."""
+        self.model.eval()
+
+        xp = torch.from_numpy(self.x_scaler.transform(x)).float()
+        yhat = self.model(xp)
+        yhat = yhat.detach().numpy()
+
+        return yhat

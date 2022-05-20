@@ -6,12 +6,23 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Union
 
-import numpy as np
-import torch
+import pandas as pd
 from joblib import dump, load
-from torch import optim
-from torch.optim.optimizer import Optimizer
-from torch.utils.data import DataLoader
+import numpy as np
+
+try:
+    import torch
+    from torch import optim
+    from torch.optim.optimizer import Optimizer
+    from torch.utils.data import DataLoader
+
+except ImportError as e:
+    raise RuntimeError(
+        "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
+    ) from e
+
+
+from joblib import dump, load
 
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
