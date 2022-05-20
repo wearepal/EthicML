@@ -1,5 +1,4 @@
 """Runs given metrics on given algorithms for given datasets."""
-from itertools import product
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 from typing_extensions import Literal
@@ -10,6 +9,7 @@ from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
+from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicable,
@@ -17,8 +17,9 @@ from ethicml.metrics.per_sensitive_attribute import (
     metric_per_sensitive_attribute,
     ratio_per_sensitive_attribute,
 )
-from ethicml.preprocessing import DataSplitter, RandomSplit, scale_continuous
-from ethicml.utility import (
+from ethicml.preprocessing.scaling import ScalerType, scale_continuous
+from ethicml.preprocessing.splits import DataSplitter, RandomSplit
+from ethicml.utility.data_structures import (
     DataTuple,
     Prediction,
     Results,
@@ -28,8 +29,6 @@ from ethicml.utility import (
 )
 
 __all__ = ["evaluate_models", "run_metrics", "load_results"]
-
-from ..preprocessing.scaling import ScalerType
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
@@ -178,7 +177,6 @@ def evaluate_models(
     :param scaler: Sklearn-style scaler to be used on the continuous features. (Default: None)
     :param repeat_on: Should the `data` or `model` seed be varied for each run? Or should they `both` be the same? (Default: "both")
     """
-    from .parallelism import run_in_parallel
 
     per_sens_metrics_check(per_sens_metrics)
     if splitter is None:
