@@ -89,8 +89,6 @@ def train_test_split(
 
     all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis="columns")
 
-    all_data = shuffle_df(all_data, random_state=1)
-
     # ============================== split the concatenated dataframe =============================
     # permute
     all_data = shuffle_df(all_data, random_state=random_seed)
