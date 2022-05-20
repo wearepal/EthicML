@@ -13,6 +13,7 @@ from sklearn.preprocessing import StandardScaler
 import ethicml as em
 from ethicml import DataTuple, Prediction, TestTuple
 from ethicml.algorithms.inprocess.in_algorithm import _I, InAlgorithmDC
+from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.utility import ClassifierType, KernelType
 
 
@@ -25,11 +26,10 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_test: em.TrainTestPair):
     """Test run parallel."""
-    from ethicml.evaluators import parallelism  # this import requires ray, so do it only on demand
 
     data0 = toy_train_test
     data1 = toy_train_test
-    result = parallelism.run_in_parallel(
+    result = run_in_parallel(
         algos=[em.LR(), em.SVM(), em.Majority()],
         data=[em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
         seeds=[0, 0],

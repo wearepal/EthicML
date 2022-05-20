@@ -1,5 +1,7 @@
 """Test preprocessing models."""
+from pathlib import Path
 from typing import NamedTuple
+from typing_extensions import Final
 
 import numpy as np
 import pandas as pd
@@ -22,6 +24,8 @@ from ethicml import (
     Zemel,
 )
 
+TMPDIR: Final = Path("/tmp")
+
 
 class PreprocessTest(NamedTuple):
     """Define a test for a preprocess model."""
@@ -34,7 +38,7 @@ class PreprocessTest(NamedTuple):
 METHOD_LIST = [
     PreprocessTest(
         model=VFAE(
-            dir='/tmp',
+            dir=TMPDIR,
             dataset="Toy",
             supervised=True,
             epochs=10,
@@ -46,7 +50,7 @@ METHOD_LIST = [
     ),
     PreprocessTest(
         model=VFAE(
-            dir='/tmp',
+            dir=TMPDIR,
             dataset="Toy",
             supervised=False,
             epochs=10,
@@ -56,10 +60,10 @@ METHOD_LIST = [
         name="VFAE",
         num_pos=47,
     ),
-    PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
-    PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel dp", num_pos=49),
+    PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
+    PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=49),
     PreprocessTest(
-        model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eq_opp),
+        model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
         name="Beutel eq_opp",
         num_pos=56,
     ),
@@ -136,7 +140,7 @@ def test_pre_sep_fit_transform(
     [
         PreprocessTest(
             model=VFAE(
-                dir='/tmp',
+                dir=TMPDIR,
                 dataset="Toy",
                 supervised=True,
                 epochs=10,
@@ -148,7 +152,7 @@ def test_pre_sep_fit_transform(
         ),
         PreprocessTest(
             model=VFAE(
-                dir='/tmp',
+                dir=TMPDIR,
                 dataset="Toy",
                 supervised=False,
                 epochs=10,
@@ -158,10 +162,10 @@ def test_pre_sep_fit_transform(
             name="VFAE",
             num_pos=47,
         ),
-        PreprocessTest(model=Zemel(dir='/tmp'), name="Zemel", num_pos=51),
-        PreprocessTest(model=Beutel(dir='/tmp'), name="Beutel dp", num_pos=49),
+        PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
+        PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=49),
         PreprocessTest(
-            model=Beutel(dir='/tmp', epochs=5, fairness=FairnessType.eq_opp),
+            model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
             name="Beutel eq_opp",
             num_pos=56,
         ),

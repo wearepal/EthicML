@@ -1,6 +1,7 @@
 """EthicML Tests."""
 from pathlib import Path
 from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
+from typing_extensions import Final
 
 import numpy as np
 import pytest
@@ -23,7 +24,6 @@ from ethicml import (
     DataTuple,
     DPOracle,
     FairnessType,
-    InAlgoArgs,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamiran,
@@ -42,6 +42,8 @@ from ethicml import (
 )
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
+TMPDIR: Final = Path("/tmp")
+
 
 class InprocessTest(NamedTuple):
     """Define a test for an inprocess model."""
@@ -52,31 +54,31 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir='/tmp'), num_pos=45),
+    InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
         name="Agarwal, lr, eq_odds",
-        model=Agarwal(dir='/tmp', fairness=FairnessType.eq_odds),
+        model=Agarwal(dir=TMPDIR, fairness=FairnessType.eq_odds),
         num_pos=44,
     ),
     InprocessTest(
         name="Agarwal, svm, dp",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm),
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm),
         num_pos=45,
     ),
     InprocessTest(
         name="Agarwal, svm, dp",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, kernel=KernelType.linear),
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, kernel=KernelType.linear),
         num_pos=42,
     ),
     InprocessTest(
         name="Agarwal, svm, eq_odds",
-        model=Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
         num_pos=45,
     ),
     InprocessTest(
         name="Agarwal, svm, eq_odds",
         model=Agarwal(
-            dir='/tmp',
+            dir=TMPDIR,
             classifier=ClassifierType.svm,
             fairness=FairnessType.eq_odds,
             kernel=KernelType.linear,
@@ -85,8 +87,8 @@ INPROCESS_TESTS = [
     ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir=TMPDIR), num_pos=45),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=59),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
@@ -251,7 +253,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmSubprocess] = [
-        Agarwal(dir='/tmp', classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
+        Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
     ]
 
     class AssertResult(MetricStaticName):

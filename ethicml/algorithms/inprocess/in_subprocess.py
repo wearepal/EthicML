@@ -4,7 +4,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, List, Mapping, TypeVar, Union
+from typing import Any, List, Mapping, TypeVar, Union
 from typing_extensions import Literal, TypeAlias, TypedDict, final
 
 from ethicml.algorithms.algorithm_base import SubprocessAlgorithmMixin
@@ -56,13 +56,13 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
     :param dir: Directory to store the model.
     """
 
-    dir: str = "."
+    dir: Path = Path(".")
 
     @property
     @final
     def model_path(self) -> Path:
         """Path to where the model with be stored."""
-        return Path(self.dir).resolve(strict=True) / f"model_{self.name}.joblib"
+        return self.dir.resolve(strict=True) / f"model_{self.name}.joblib"
 
     @final
     def fit(self: _IS, train: DataTuple, seed: int = 888) -> _IS:

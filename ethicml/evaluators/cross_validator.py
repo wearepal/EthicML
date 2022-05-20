@@ -5,6 +5,7 @@ from statistics import mean
 from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Sequence, Tuple, Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
 from ethicml.metrics.metric import Metric
@@ -215,8 +216,6 @@ class CrossValidator:
         :param measures:  (Default: None)
         :returns: CVResults
         """
-        from .parallelism import run_in_parallel
-
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
         models = [self.model(**experiment) for experiment in self.experiments]
