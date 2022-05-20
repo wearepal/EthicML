@@ -38,17 +38,16 @@ fairlearn = { version = "0.7.0", optional = true }
 cloudpickle = { version = "^2.0.0", optional= true }
 pytest = { version = ">=6.2.2,<8.0.0", optional = true }
 pytest-cov = { version = ">=2.6,<4.0", optional = true }
-torch = { version = "^1.8", optional = true }
 gitdb2 = "4.0.2"
 smmap2 = "3.0.1"
 folktables = "^0.0.11"
 ranzen = "^1.1.1"
 joblib = "^1.1.0"
 scipy = "^1.7.2"
-omegaconf = { version = ">=2.2.0.dev3", optional = true }
+omegaconf = { version = ">=2.2.1", optional = true }
 
 [tool.poetry.extras]
-ci = ["fairlearn","pytest","pytest-cov","torch","cloudpickle","omegaconf"]
+ci = ["fairlearn","pytest","pytest-cov","cloudpickle","omegaconf"]
 all = ["fairlearn","cloudpickle"]
 
 [tool.poetry.dev-dependencies]
@@ -62,7 +61,7 @@ pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "316dad4"}
 types-Pillow = "^9.0.15"
-omegaconf = ">=2.2.0.dev3"
+omegaconf = ">=2.2.1"
 
 [tool.black]
 line-length = 100
