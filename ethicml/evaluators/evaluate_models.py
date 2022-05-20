@@ -185,7 +185,7 @@ def evaluate_models(
         if repeat_on == "model":
             train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=None)
         else:
-            train_test_split: DataSplitter = RandomSplit(train_percentage=0.8, start_seed=0)
+            train_test_split = RandomSplit(train_percentage=0.8, start_seed=0)
     else:
         train_test_split = splitter
 

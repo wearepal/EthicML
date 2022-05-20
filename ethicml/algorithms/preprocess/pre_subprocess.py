@@ -59,13 +59,13 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
     advantage of this is that it allows for parallelization.
     """
 
-    dir: str = "."
+    dir: Path = Path(".")
 
     @property
     @final
-    def model_dir(self) -> Path:
-        """Directory to store the model parameters."""
-        return Path(self.dir)
+    def model_path(self) -> Path:
+        """Path to where the model with be stored."""
+        return self.dir.resolve(strict=True) / f"model_{self.name}.joblib"
 
     @final
     def fit(self: _P, train: DataTuple, seed: int = 888) -> Tuple[_P, DataTuple]:
@@ -86,7 +86,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_train_path = tmp_path / "transformed_train.npz"
             args: PreAlgoFitArgs = {
                 "mode": "fit",
-                "model": str(self._model_path),
+                "model": str(self.model_path),
                 "train": str(train_path),
                 "new_train": str(transformed_train_path),
                 "seed": seed,
@@ -121,7 +121,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_test_path = tmp_path / "transformed_test.npz"
             args: PreAlgoTformArgs = {
                 "mode": "transform",
-                "model": str(self._model_path),
+                "model": str(self.model_path),
                 "test": str(test_path),
                 "new_test": str(transformed_test_path),
             }
@@ -184,10 +184,6 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             name=None if test.name is None else f"{self.name}: {test.name}"
         )
         return transformed_train, transformed_test
-
-    @property
-    def _model_path(self) -> Path:
-        return self.model_dir / f"model_{self.name}.joblib"
 
     @final
     def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
