@@ -216,7 +216,6 @@ class CrossValidator:
         :param measures:  (Default: None)
         :returns: CVResults
         """
-
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
         models = [self.model(**experiment) for experiment in self.experiments]
