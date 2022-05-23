@@ -6,9 +6,8 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Union
 
-import pandas as pd
-from joblib import dump, load
 import numpy as np
+from joblib import dump, load
 
 try:
     import torch
