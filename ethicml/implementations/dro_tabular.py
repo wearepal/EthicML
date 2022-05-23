@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Union
 
-import pandas as pd
+import numpy as np
 import torch
 from joblib import dump, load
 from torch import optim
@@ -97,10 +97,9 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
-            out = model.forward(_x)
-            post_test += out.data.tolist()
+            post_test += model.forward(_x)
 
-    return SoftPrediction(soft=pd.Series([j for i in post_test for j in i]))
+    return SoftPrediction(soft=np.array([j.softmax(dim=-1).numpy() for j in post_test]))
 
 
 def train_and_predict(
@@ -134,14 +133,13 @@ def train_and_predict(
         train_model(epoch, model, train_loader, optimizer)
 
     # Transform output
-    post_test: List[List[float]] = []
+    post_test: List[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
-            out = model.forward(_x)
-            post_test += out.data.tolist()
+            post_test += model.forward(_x)
 
-    return SoftPrediction(soft=pd.Series([j for i in post_test for j in i]))
+    return SoftPrediction(soft=np.array([j.softmax(dim=-1).numpy() for j in post_test]))
 
 
 def main() -> None:

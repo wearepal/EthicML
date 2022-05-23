@@ -11,7 +11,7 @@ from sklearn.linear_model import LogisticRegression
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm
 from ethicml.algorithms.inprocess.shared import settings_for_svm_lr
 from ethicml.algorithms.inprocess.svm import KernelType, select_svm
-from ethicml.utility import ClassifierType, DataTuple, Prediction, TestTuple
+from ethicml.utility import ClassifierType, DataTuple, Prediction, SoftPrediction, TestTuple
 
 __all__ = ["Kamiran", "compute_instance_weights"]
 
@@ -112,7 +112,7 @@ class Kamiran(InAlgorithm):
     def _predict(
         self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
     ) -> Prediction:
-        return Prediction(hard=pd.Series(model.predict(test.x)))
+        return SoftPrediction((model.predict_proba(test.x)), info=self.get_hyperparameters())
 
 
 def compute_instance_weights(

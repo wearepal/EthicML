@@ -1,6 +1,6 @@
 """Beutel's algorithm."""
 from dataclasses import dataclass, field
-from typing import List, Sequence
+from typing import List
 from typing_extensions import TypedDict
 
 from ranzen import implements
@@ -40,7 +40,7 @@ class Beutel(PreAlgorithmSubprocess):
     enc_activation: str = "Sigmoid()"
     adv_activation: str = "Sigmoid()"
     batch_size: int = 64
-    y_loss: str = "BCELoss()"
+    y_loss: str = "CrossEntropyLoss()"
     s_loss: str = "BCELoss()"
     epochs: int = 50
     adv_weight: float = 1.0

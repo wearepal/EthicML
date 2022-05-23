@@ -210,7 +210,7 @@ def test_nb_acc():
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
     acc_score = Accuracy().score(predictions, test)
-    assert acc_score == 0.1
+    assert acc_score == 0.2625
 
 
 def test_nb_tpr():
@@ -220,44 +220,50 @@ def test_nb_tpr():
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
+    tpr_score = TPR(pos_class=0).score(predictions, test)
+    assert tpr_score == 0.0
     tpr_score = TPR(pos_class=1).score(predictions, test)
     assert tpr_score == 0.0
     tpr_score = TPR(pos_class=2).score(predictions, test)
-    assert tpr_score == 0.0
+    assert tpr_score == 0.95
     tpr_score = TPR(pos_class=3).score(predictions, test)
-    assert tpr_score == 1.0
+    assert tpr_score == 0.14285714285714285
     tpr_score = TPR(pos_class=4).score(predictions, test)
-    assert tpr_score == 0.0
-    tpr_score = TPR(pos_class=5).score(predictions, test)
     assert tpr_score == 0.0
 
     with pytest.raises(LabelOutOfBounds):
-        _ = TPR(pos_class=0).score(predictions, test)
+        _ = TPR(pos_class=5).score(predictions, test)
 
     accs = em.metric_per_sensitive_attribute(predictions, test, TPR())
-    assert accs == {"sens_0": approx(0.0, abs=0.1), "sens_1": approx(0.0, abs=0.1)}
+    assert accs == {
+        "sensitive-attr_1_0": approx(0.0, abs=0.1),
+        "sensitive-attr_1_1": approx(0.0, abs=0.1),
+    }
 
     model = LR()
     predictions = model.run_test(train, test)
 
     print([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z])
 
+    tpr_score = TPR(pos_class=0).score(predictions, test)
+    assert tpr_score == 0.0
     tpr_score = TPR(pos_class=1).score(predictions, test)
-    assert tpr_score == 1.0
+    assert tpr_score == 0.0
     tpr_score = TPR(pos_class=2).score(predictions, test)
-    assert tpr_score == 0.0
+    assert tpr_score == 0.45
     tpr_score = TPR(pos_class=3).score(predictions, test)
-    assert tpr_score == 0.0
+    assert tpr_score == 0.21428571428571427
     tpr_score = TPR(pos_class=4).score(predictions, test)
-    assert tpr_score == 1.0
-    tpr_score = TPR(pos_class=5).score(predictions, test)
-    assert tpr_score == 1.0
+    assert tpr_score == 0.0
 
     with pytest.raises(LabelOutOfBounds):
-        _ = TPR(pos_class=0).score(predictions, test)
+        _ = TPR(pos_class=5).score(predictions, test)
 
     tprs = em.metric_per_sensitive_attribute(predictions, test, TPR())
-    assert tprs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}
+    assert tprs == {
+        "sensitive-attr_1_0": approx(0.0, abs=0.1),
+        "sensitive-attr_1_1": approx(0.0, abs=0.1),
+    }
 
 
 def test_nb_tnr():
@@ -267,44 +273,50 @@ def test_nb_tnr():
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
+    tnr_score = TNR(pos_class=0).score(predictions, test)
+    assert tnr_score == 1.0
     tnr_score = TNR(pos_class=1).score(predictions, test)
     assert tnr_score == 1.0
     tnr_score = TNR(pos_class=2).score(predictions, test)
-    assert tnr_score == 1.0
+    assert tnr_score == approx(0.066, abs=0.01)
     tnr_score = TNR(pos_class=3).score(predictions, test)
-    assert tnr_score == 0.0
+    assert tnr_score == approx(0.954, abs=0.001)
     tnr_score = TNR(pos_class=4).score(predictions, test)
-    assert tnr_score == 1.0
-    tnr_score = TNR(pos_class=5).score(predictions, test)
     assert tnr_score == 1.0
 
     with pytest.raises(LabelOutOfBounds):
-        _ = TNR(pos_class=0).score(predictions, test)
+        _ = TNR(pos_class=5).score(predictions, test)
 
     accs = em.metric_per_sensitive_attribute(predictions, test, TNR())
-    assert accs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}
+    assert accs == {
+        "sensitive-attr_1_0": approx(1.0, abs=0.1),
+        "sensitive-attr_1_1": approx(1.0, abs=0.1),
+    }
 
     model = LR()
     predictions = model.run_test(train, test)
 
     print([(k, z) for k, z in zip(predictions.hard.values, test.y.values) if k != z])
 
+    tnr_score = TNR(pos_class=0).score(predictions, test)
+    assert tnr_score == approx(0.939, abs=0.01)
     tnr_score = TNR(pos_class=1).score(predictions, test)
-    assert tnr_score == 1.0
+    assert tnr_score == approx(0.9846, abs=0.01)
     tnr_score = TNR(pos_class=2).score(predictions, test)
-    assert tnr_score == 1.0
+    assert tnr_score == approx(0.3166, abs=0.01)
     tnr_score = TNR(pos_class=3).score(predictions, test)
-    assert tnr_score == approx(0.7, abs=0.1)
-    tnr_score = TNR(pos_class=4).score(predictions, test)
     assert tnr_score == approx(0.85, abs=0.1)
-    tnr_score = TNR(pos_class=5).score(predictions, test)
-    assert tnr_score == 1.0
+    tnr_score = TNR(pos_class=4).score(predictions, test)
+    assert tnr_score == approx(0.88, abs=0.01)
 
     with pytest.raises(LabelOutOfBounds):
-        _ = TNR(pos_class=0).score(predictions, test)
+        _ = TNR(pos_class=5).score(predictions, test)
 
     tnrs = em.metric_per_sensitive_attribute(predictions, test, TNR())
-    assert tnrs == {"sens_0": approx(1.0, abs=0.1), "sens_1": approx(1.0, abs=0.1)}
+    assert tnrs == {
+        "sensitive-attr_1_0": approx(1.0, abs=0.1),
+        "sensitive-attr_1_1": approx(1.0, abs=0.1),
+    }
 
 
 def _compute_di(preds: Prediction, actual: DataTuple) -> float:

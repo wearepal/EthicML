@@ -2,11 +2,12 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
-from ..inprocess.logistic_regression import LRProb
+from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Calders"]
@@ -86,14 +87,14 @@ def _calders_algorithm(
 
     massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
 
-    ranker = LRProb()
+    ranker = LR()
     rank: SoftPrediction = ranker.run(dataset, massaging_candidates, seed)
 
     dis_group_len = len(data[dis_group])
     adv_group_len = len(data[adv_group])
 
-    dis_group_rank = rank.soft.iloc[:dis_group_len]
-    adv_group_rank = rank.soft.iloc[dis_group_len:].reset_index(drop=True)
+    dis_group_rank = pd.Series(rank.soft[:dis_group_len][:, 1])
+    adv_group_rank = pd.Series(rank.soft[dis_group_len:][:, 1]).reset_index(drop=True)
     assert len(adv_group_rank) == adv_group_len
 
     # sort the ranking
