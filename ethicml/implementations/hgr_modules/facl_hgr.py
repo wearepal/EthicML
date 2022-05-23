@@ -22,7 +22,7 @@ def _joint_2(
 
     xx, yy = torch.meshgrid([x_centers, y_centers])
     grid = torch.cat([xx.unsqueeze(-1), yy.unsqueeze(-1)], -1)
-    h2d = joint_density.pdf(grid) + damping
+    h2d: torch.Tensor = joint_density.pdf(grid) + damping
     h2d /= h2d.sum()
     return h2d
 
@@ -80,7 +80,7 @@ def _joint_3(
     xx, yy, zz = torch.meshgrid([x_centers, y_centers, z_centers])
     grid = torch.cat([xx.unsqueeze(-1), yy.unsqueeze(-1), zz.unsqueeze(-1)], -1)
 
-    h3d = joint_density.pdf(grid) + damping
+    h3d: torch.Tensor = joint_density.pdf(grid) + damping
     h3d /= h3d.sum()
     return h3d
 

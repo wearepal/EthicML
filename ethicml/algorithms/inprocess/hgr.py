@@ -33,7 +33,7 @@ class Hgr(InAlgorithmSubprocess):
     lr: float = 1e-3
     epochs: int = 50
     mu: float = 0.98
-    batch_size: int = 32
+    batch_size: int = 128
     model_type: str = "deep_model"
 
     @implements(InAlgorithmSubprocess)

@@ -46,7 +46,7 @@ class TestDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[pd.Index, pd.Index]:
+    def names(self) -> Tuple[pd.Index, str]:
         """Get tuple of x names and s names."""
         return self.x_names, self.s_names
 
@@ -72,9 +72,25 @@ class CustomDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[pd.Index, pd.Index, pd.Index]:
+    def names(self) -> Tuple[pd.Index, str, str]:
         """Get tuple of x names, s names and y names."""
         return self.x_names, self.s_names, self.y_names
+
+
+def make_dataset_and_loader(
+    data: DataTuple, batch_size: int, shuffle: bool
+) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
+    """Given a datatuple, create a dataset and a corresponding dataloader.
+
+    :param data:
+    :param flags:
+    :returns: Tuple of a pytorch dataset and dataloader.
+    """
+    dataset = CustomDataset(data)
+    dataloader = torch.utils.data.DataLoader(
+        dataset=dataset, batch_size=batch_size, shuffle=shuffle
+    )
+    return dataset, dataloader
 
 
 def quadratic_time_mmd(x: Tensor, y: Tensor, sigma: float) -> Tensor:
@@ -141,7 +157,7 @@ class PandasDataSet(TensorDataset):
 
     def __init__(self, *dataframes):
         tensors = (self._df_to_tensor(df) for df in dataframes)
-        super(PandasDataSet, self).__init__(*tensors)
+        super().__init__(*tensors)
 
     def _df_to_tensor(self, df):
         if isinstance(df, pd.Series):
@@ -157,13 +173,12 @@ class LinearModel(torch.nn.Module):
         self.in_shape = in_shape
         self.out_shape = out_shape
 
-        self.build_model()
-
-    def build_model(self) -> None:
-        """Build Model."""
         self.base_model = nn.Sequential(
             nn.Linear(self.in_shape, self.out_shape, bias=True),
         )
+
+    def build_model(self) -> None:
+        """Build Model."""
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward."""

@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
-import pandas as pd
 from joblib import dump, load
 
 from ethicml import DataTuple, SoftPrediction, TestTuple
@@ -29,6 +28,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         import torch
 
         torch.manual_seed(seed)
+        torch.use_deterministic_algorithms(True)
     except ImportError as e:
         raise RuntimeError(
             "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
@@ -47,8 +47,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         batch_size=args["batch_size"],
         model_type=args["model_type"],
     )
-    input_data_train = pd.concat([train.s, train.x], axis="columns").to_numpy()
-    return model.fit(input_data_train, train.y.to_numpy())
+    return model.fit(train)
 
 
 def predict(model: HgrClassLearner, test: TestTuple) -> np.ndarray:
@@ -57,13 +56,10 @@ def predict(model: HgrClassLearner, test: TestTuple) -> np.ndarray:
     :param exponentiated_gradient:
     :param test:
     """
-    input_data_test = pd.concat([test.s, test.x], axis="columns").to_numpy()
-    return model.predict(input_data_test)
+    return model.predict(test.x)
 
 
-def train_and_predict(
-    train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
-) -> pd.DataFrame:
+def train_and_predict(train: DataTuple, test: TestTuple, args: HgrArgs, seed: int) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:
@@ -77,7 +73,7 @@ def train_and_predict(
 def main() -> None:
     """Run the Agarwal model as a standalone program."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
-    flags: FairDummiesArgs = json.loads(sys.argv[2])
+    flags: HgrArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
         train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
