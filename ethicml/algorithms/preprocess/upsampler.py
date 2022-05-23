@@ -9,11 +9,10 @@ from ranzen import enum_name_str, implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple
 
+from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Upsampler", "UpsampleStrategy"]
-
-from ..inprocess.logistic_regression import LR
 
 
 @enum_name_str

@@ -7,11 +7,10 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
 
+from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Calders"]
-
-from ..inprocess.logistic_regression import LR
 
 
 @dataclass
