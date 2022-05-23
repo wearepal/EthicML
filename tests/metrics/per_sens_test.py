@@ -155,13 +155,13 @@ PER_SENS = [
         dataset=NonBinaryToy(),
         classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
-        expected_values={"sens_1": 1.0, "sens_0": 1.0},
+        expected_values={"sensitive-attr_1_1": 0.167, "sensitive-attr_1_0": 0.158},
     ),
     PerSensMetricTest(
         dataset=NonBinaryToy(),
         classifier=LR(),
         metric=Accuracy(),
-        expected_values={"sens_1": 0.667, "sens_0": 0.727},
+        expected_values={"sensitive-attr_1_1": 0.143, "sensitive-attr_1_0": 0.158},
     ),
 ]
 
@@ -188,7 +188,7 @@ def test_metric_per_sens_attr(
     try:
         for key, value in expected_values.items():
             # Check that the sensitive attribute name is now just 'S'.
-            assert acc_per_sens[f"S_{''.join(key.split('_')[1:])}"] == approx(value, abs=0.001)
+            assert acc_per_sens[f"S_{''.join(key.split('_')[-1:])}"] == approx(value, abs=0.001)
     except AssertionError:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
         raise AssertionError

@@ -279,7 +279,7 @@ class Prediction:
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
             if "soft" in data:
-                return SoftPrediction(soft=pd.Series(np.squeeze(data["soft"])), info=info)
+                return SoftPrediction(soft=np.squeeze(data["soft"]), info=info)
             return Prediction(hard=pd.Series(np.squeeze(data["hard"])), info=info)
 
     def to_npz(self, npz_path: Path) -> None:
@@ -300,13 +300,13 @@ class Prediction:
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
-    def __init__(self, soft: pd.Series, info: Optional[Dict[str, float]] = None):
+    def __init__(self, soft: np.ndarray, info: Optional[Dict[str, float]] = None):
         """Make a soft prediction object."""
-        super().__init__(hard=soft.ge(0.5).astype(int), info=info)
+        super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
 
     @property
-    def soft(self) -> pd.Series:
+    def soft(self) -> np.ndarray:
         """Soft predictions (e.g. 0.2 and 0.8)."""
         return self._soft
 

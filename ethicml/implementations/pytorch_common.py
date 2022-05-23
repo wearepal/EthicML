@@ -51,7 +51,7 @@ class CustomDataset(Dataset):
         self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(test)
         self.sdim = 1
         self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[type-var]
-        self.ydim = 1
+        self.ydim = data.y.nunique()
         self.y_names = str(data.y.name)
 
     def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:

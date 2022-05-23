@@ -112,7 +112,7 @@ class Kamiran(InAlgorithm):
     def _predict(
         self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
     ) -> Prediction:
-        return SoftPrediction(soft=pd.Series(model.predict_proba(test.x)[:, 1]))
+        return SoftPrediction((model.predict_proba(test.x)), info=self.get_hyperparameters())
 
 
 def compute_instance_weights(

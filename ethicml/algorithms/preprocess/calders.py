@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
@@ -93,8 +94,8 @@ def _calders_algorithm(
     dis_group_len = len(data[dis_group])
     adv_group_len = len(data[adv_group])
 
-    dis_group_rank = rank.soft.iloc[:dis_group_len]
-    adv_group_rank = rank.soft.iloc[dis_group_len:].reset_index(drop=True)
+    dis_group_rank = pd.Series(rank.soft[:dis_group_len][:, 1])
+    adv_group_rank = pd.Series(rank.soft[dis_group_len:][:, 1]).reset_index(drop=True)
     assert len(adv_group_rank) == adv_group_len
 
     # sort the ranking

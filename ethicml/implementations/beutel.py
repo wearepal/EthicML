@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
-STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss()}
+STRING_TO_LOSS_MAP = {"BCELoss()": nn.BCELoss(), "CrossEntropyLoss()": nn.CrossEntropyLoss()}
 
 
 def set_seed(seed: int) -> None:
@@ -75,7 +75,7 @@ def build_networks(
     pred = Predictor(
         pred_size=flags["pred_size"],
         init_size=flags["enc_size"][-1],
-        class_label_size=int(train_data.ydim),
+        class_label_size=len(np.unique(train_data.y)),
         activation=adv_activation,
     )
 
@@ -151,7 +151,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
             class_label = class_label.view(-1, 1)
             _, s_pred, y_pred = model(embedding, class_label)
 
-            loss = y_loss_fn(y_pred, class_label)
+            loss = y_loss_fn(y_pred, class_label.squeeze(-1).long())
 
             if fairness is FairnessType.eq_opp:
                 mask = class_label.ge(0.5)
@@ -174,7 +174,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
                 class_label = class_label.view(-1, 1)
                 _, s_pred, y_pred = model(embedding, class_label)
 
-                val_y_loss += y_loss_fn(y_pred, class_label)
+                val_y_loss += y_loss_fn(y_pred, class_label.squeeze(-1).long())
 
                 mask = get_mask(flags, s_pred, class_label)
 
@@ -426,7 +426,7 @@ class Predictor(nn.Module):
             self.predictor.add_module(
                 "adversary last layer", nn.Linear(pred_size[-1], class_label_size)
             )
-            self.predictor.add_module("adversary last activation", nn.Sigmoid())
+            self.predictor.add_module("adversary last activation", nn.Softmax())
 
     def forward(self, x: Tensor) -> Tensor:
         """Forward pass.

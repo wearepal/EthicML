@@ -57,9 +57,7 @@ def metric_per_sensitive_attribute(
         )
         pred_y: Prediction
         if isinstance(prediction, SoftPrediction):
-            pred_y = SoftPrediction(
-                soft=prediction.soft.loc[mask].reset_index(drop=True), info=prediction.info
-            )
+            pred_y = SoftPrediction(soft=prediction.soft[mask], info=prediction.info)
         else:
             pred_y = Prediction(
                 hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
@@ -76,8 +74,7 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
     :param per_sens_res: dictionary of the results
     :returns: dictionary of differences
     """
-    sens_values = list(per_sens_res.keys())
-    sens_values.sort()
+    sens_values = sorted(per_sens_res.keys())
     diff_per_sens = {}
 
     for i, _ in enumerate(sens_values):
@@ -96,8 +93,7 @@ def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, f
     :param per_sens_res: dictionary of the results
     :returns: dictionary of ratios
     """
-    sens_values = list(per_sens_res.keys())
-    sens_values.sort()
+    sens_values = sorted(per_sens_res.keys())
     ratio_per_sens = {}
 
     for i, _ in enumerate(sens_values):

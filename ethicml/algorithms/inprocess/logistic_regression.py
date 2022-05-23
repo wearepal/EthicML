@@ -52,7 +52,7 @@ class LR(InAlgorithmDC):
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
+        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.get_hyperparameters())
 
 
 @dataclass
@@ -81,9 +81,9 @@ class LRCV(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        return SoftPrediction(
-            soft=pd.Series(self.clf.predict_proba(test.x)[:, 1]), info=dict(C=self.clf.C_[0])
-        )
+        params = self.get_hyperparameters()
+        params["C"] = self.clf.C_[0]
+        return SoftPrediction(soft=self.clf.predict_proba(test.x), info=params)
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
@@ -93,6 +93,6 @@ class LRCV(InAlgorithmDC):
             cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(
-            soft=pd.Series(clf.predict_proba(test.x)[:, 1]), info=dict(C=clf.C_[0])
-        )
+        params = self.get_hyperparameters()
+        params["C"] = clf.C_[0]
+        return SoftPrediction(soft=clf.predict_proba(test.x), info=params)

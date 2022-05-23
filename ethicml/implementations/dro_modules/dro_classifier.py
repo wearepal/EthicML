@@ -2,8 +2,8 @@
 from typing import List
 
 from ranzen import implements
+from ranzen.torch import CrossEntropyLoss
 from torch import Tensor, nn
-from torch.nn import BCELoss
 
 from .dro_loss import DROLoss
 
@@ -16,7 +16,7 @@ class DROClassifier(nn.Module):
     def __init__(self, in_size: int, out_size: int, network_size: List[int], eta: float) -> None:
         super().__init__()
 
-        self.loss = DROLoss(loss_module=BCELoss, eta=eta)
+        self.loss = DROLoss(loss_module=CrossEntropyLoss, eta=eta)
 
         self.seq = nn.Sequential()
         if not network_size:  # In the case that encoder size [] is specified
@@ -37,4 +37,4 @@ class DROClassifier(nn.Module):
 
     @implements(nn.Module)
     def forward(self, x: Tensor) -> Tensor:
-        return self.seq(x).sigmoid()
+        return self.seq(x)

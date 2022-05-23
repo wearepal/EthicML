@@ -3,7 +3,6 @@ from dataclasses import dataclass, field
 from typing import ClassVar, Tuple
 
 import numpy as np
-import pandas as pd
 from ranzen import implements
 from sklearn.neural_network import MLPClassifier
 
@@ -40,13 +39,13 @@ class MLP(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        return SoftPrediction(soft=pd.Series(self.clf.predict_proba(test.x)[:, 1]))
+        return SoftPrediction(soft=self.clf.predict_proba(test.x), info=self.get_hyperparameters())
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, seed=seed)
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(soft=pd.Series(clf.predict_proba(test.x)[:, 1]))
+        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.get_hyperparameters())
 
 
 def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:

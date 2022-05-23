@@ -61,11 +61,11 @@ METHOD_LIST = [
         num_pos=47,
     ),
     PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
-    PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=49),
+    PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=50),
     PreprocessTest(
         model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
         name="Beutel eq_opp",
-        num_pos=56,
+        num_pos=57,
     ),
     PreprocessTest(
         model=Upsampler(strategy=UpsampleStrategy.naive), name="Upsample naive", num_pos=43
@@ -163,11 +163,11 @@ def test_pre_sep_fit_transform(
             num_pos=47,
         ),
         PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
-        PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=49),
+        PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=50),
         PreprocessTest(
             model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
             name="Beutel eq_opp",
-            num_pos=56,
+            num_pos=57,
         ),
     ],
 )
