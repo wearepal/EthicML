@@ -13,7 +13,7 @@ from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Upsampler", "UpsampleStrategy"]
 
-from ... import LR
+from ..inprocess.logistic_regression import LR
 
 
 @enum_name_str

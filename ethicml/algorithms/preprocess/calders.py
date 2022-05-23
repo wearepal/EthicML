@@ -11,7 +11,7 @@ from .pre_algorithm import PreAlgorithm, T
 
 __all__ = ["Calders"]
 
-from ... import LR
+from ..inprocess.logistic_regression import LR
 
 
 @dataclass
