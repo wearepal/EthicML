@@ -136,6 +136,7 @@ class TestTuple:
 class DataTuple(TestTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
+    __slots__ = ("data", "s_column", "y_column", "name")
     y_column: str
 
     @classmethod

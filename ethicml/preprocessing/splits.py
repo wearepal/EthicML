@@ -110,17 +110,17 @@ def train_test_split(
     all_data_test = all_data_test.reset_index(drop=True)
 
     # ================================== assemble train and test ==================================
-    train: DataTuple.from_x_s_and_y = DataTuple(
-        x=all_data_train[x_columns],
-        s=all_data_train[s_column],
-        y=all_data_train[y_column],
+    train: DataTuple = DataTuple(
+        data=all_data_train,
+        s_column=s_column,
+        y_column=y_column,
         name=f"{data.name} - Train",
     )
 
-    test: DataTuple.from_x_s_and_y = DataTuple(
-        x=all_data_test[x_columns],
-        s=all_data_test[s_column],
-        y=all_data_test[y_column],
+    test: DataTuple = DataTuple(
+        data=all_data_test,
+        s_column=s_column,
+        y_column=y_column,
         name=f"{data.name} - Test",
     )
 
@@ -222,17 +222,17 @@ class ProportionalSplit(RandomSplit):
             data, train_percentage=self.train_percentage, random_seed=random_seed
         )
 
-        train: DataTuple.from_x_s_and_y = DataTuple(
-            x=data.x.iloc[train_indices].reset_index(drop=True),
-            s=data.s.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
+        train: DataTuple = DataTuple(
+            data=data.data.iloc[train_indices].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Train",
         )
 
-        test: DataTuple.from_x_s_and_y = DataTuple(
-            x=data.x.iloc[test_indices].reset_index(drop=True),
-            s=data.s.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
+        test: DataTuple = DataTuple(
+            data=data.data.iloc[test_indices].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Test",
         )
 
@@ -314,17 +314,17 @@ class BalancedTestSplit(RandomSplit):
         train_idx = np.concatenate(train_indices, axis=0)
         test_idx = np.concatenate(test_indices, axis=0)
 
-        train: DataTuple.from_x_s_and_y = DataTuple(
-            x=data.x.iloc[train_idx].reset_index(drop=True),
-            s=data.s.iloc[train_idx].reset_index(drop=True),
-            y=data.y.iloc[train_idx].reset_index(drop=True),
+        train: DataTuple = DataTuple(
+            data=data.data.iloc[train_idx].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Train",
         )
 
-        test: DataTuple.from_x_s_and_y = DataTuple(
-            x=data.x.iloc[test_idx].reset_index(drop=True),
-            s=data.s.iloc[test_idx].reset_index(drop=True),
-            y=data.y.iloc[test_idx].reset_index(drop=True),
+        test: DataTuple = DataTuple(
+            data=data.data.iloc[test_idx].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Test",
         )
 
