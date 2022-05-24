@@ -11,7 +11,7 @@ import pandas as pd
 import scipy.optimize as optim
 from joblib import dump, load
 from scipy.spatial.distance import cdist
-from scipy.special import softmax
+from scipy.special import softmax  # type: ignore[attr-defined]
 
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
 from ethicml.utility import DataTuple, TestTuple

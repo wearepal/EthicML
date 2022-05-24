@@ -44,6 +44,7 @@ __all__ = [
     "map_over_results_index",
 ]
 
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
 
@@ -300,7 +301,7 @@ class Prediction:
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
-    def __init__(self, soft: np.ndarray, info: Optional[Dict[str, float]] = None):
+    def __init__(self, soft: np.ndarray, info: Optional[HyperParamType] = None):
         """Make a soft prediction object."""
         super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft

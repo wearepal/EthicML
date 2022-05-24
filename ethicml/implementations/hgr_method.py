@@ -85,7 +85,7 @@ def main() -> None:
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
-        model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
+        setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
         test = TestTuple.from_npz(Path(in_algo_args["test"]))

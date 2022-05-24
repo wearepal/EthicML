@@ -103,7 +103,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Transform output
-    post_test: List[List[float]] = []
+    post_test: List[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:

@@ -49,7 +49,7 @@ class HgrRegLearner:
 
         self.out_shape = out_shape
         if self.model_type == "deep_model":
-            self.model = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
         elif self.model_type == "linear_model":
             self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
 
@@ -92,7 +92,7 @@ class HgrRegLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> Self:
+    def fit(self, train: DataTuple) -> None:
         """Fit."""
         train_data, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
         self.run_epochs(train_loader)
@@ -147,7 +147,7 @@ class HgrClassLearner:
 
         self.model_type = model_type
         if self.model_type == "deep_model":
-            self.model = DeepModel(in_shape=in_shape, out_shape=out_shape)
+            self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
         elif self.model_type == "linear_model":
             self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
@@ -184,7 +184,7 @@ class HgrClassLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> Self:
+    def fit(self, train: DataTuple) -> "Self":
         """Fit."""
         # The features are X[:,1:]
         self.input_a = train.s.to_numpy()

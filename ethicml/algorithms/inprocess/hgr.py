@@ -42,12 +42,15 @@ class Hgr(InAlgorithmSubprocess):
 
     @implements(InAlgorithmSubprocess)
     def _get_flags(self) -> HgrArgs:
+        model_type: Literal["deep_model", "linear_model"] = (
+            "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
+        )
         return {
             "lr": self.lr,
             "epochs": self.epochs,
             "mu": self.mu,
             "batch_size": self.batch_size,
-            "model_type": self.model_type,
+            "model_type": model_type,
         }
 
     @implements(InAlgorithmSubprocess)
