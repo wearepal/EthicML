@@ -68,6 +68,9 @@ class TestTuple:
     s_column: str
     name: str | None
 
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+
     @classmethod
     def from_x_and_s(
         cls, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
@@ -80,7 +83,7 @@ class TestTuple:
     @property
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
-        return self.data.drop(self.s_column, inplace=False)
+        return self.data.drop(self.s_column, inplace=False, axis="columns")
 
     @property
     def s(self) -> pd.Series[int]:
@@ -139,6 +142,10 @@ class DataTuple(TestTuple):
     __slots__ = ("data", "s_column", "y_column", "name")
     y_column: str
 
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+        assert self.y_column in self.data.columns, f"column {self.y_column} not present"
+
     @classmethod
     def from_x_s_and_y(
         cls, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
@@ -153,6 +160,11 @@ class DataTuple(TestTuple):
             y_column=y_column,
             name=name,
         )
+
+    @property
+    def x(self) -> pd.DataFrame:
+        """Getter for property x."""
+        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
     def y(self) -> pd.Series[int]:
@@ -171,7 +183,11 @@ class DataTuple(TestTuple):
 
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance."""
-        return TestTuple(data=self.data.drop(self.y_column), s_column=self.s_column, name=self.name)
+        return TestTuple(
+            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
+            s_column=self.s_column,
+            name=self.name,
+        )
 
     def replace(
         self,
