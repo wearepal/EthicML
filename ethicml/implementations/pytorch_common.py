@@ -78,7 +78,7 @@ class CustomDataset(Dataset):
 
 
 def make_dataset_and_loader(
-    data: DataTuple, batch_size: int, shuffle: bool, seed: int
+    data: DataTuple, *, batch_size: int, shuffle: bool, seed: int, drop_last: bool
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader.
 
@@ -101,6 +101,7 @@ def make_dataset_and_loader(
         dataset=dataset,
         batch_size=batch_size,
         shuffle=shuffle,
+        drop_last=drop_last,
         worker_init_fn=seed_worker,
         generator=g,
     )
@@ -164,19 +165,6 @@ def compute_projection_gradients(
 
     for param, grad in zip(model.parameters(), grad_p):
         param.grad = grad
-
-
-# class PandasDataSet(TensorDataset):
-#     """Pandas Dataset."""
-#
-#     def __init__(self, *dataframes):
-#         tensors = (self._df_to_tensor(df) for df in dataframes)
-#         super().__init__(*tensors)
-#
-#     def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series]) -> torch.Tensor:
-#         if isinstance(df, pd.Series):
-#             df = df.to_frame('dummy')
-#         return torch.from_numpy(df.values).float()
 
 
 class LinearModel(torch.nn.Module):
@@ -341,7 +329,9 @@ class GeneralLearner:
     def fit(self, train: DataTuple, seed: int) -> None:
         """Fit a model on training data."""
         self.model.train()
-        _, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True, seed=seed)
+        _, train_loader = make_dataset_and_loader(
+            train, batch_size=self.batch_size, shuffle=True, seed=seed
+        )
         self.run_epochs(train_loader)
 
     @torch.no_grad()

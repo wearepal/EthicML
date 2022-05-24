@@ -106,13 +106,13 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
     train_, validation = train_test_split(train, train_percentage=1 - flags["validation_pcnt"])
 
     train_data, train_loader = make_dataset_and_loader(
-        train_, flags["batch_size"], shuffle=True, seed=seed
+        train_, batch_size=flags["batch_size"], shuffle=True, seed=seed, drop_last=True
     )
     _, validation_loader = make_dataset_and_loader(
-        validation, flags["batch_size"], shuffle=False, seed=seed
+        validation, batch_size=flags["batch_size"], shuffle=False, seed=seed, drop_last=True
     )
     _, all_train_data_loader = make_dataset_and_loader(
-        train, flags["batch_size"], shuffle=False, seed=seed
+        train, batch_size=flags["batch_size"], shuffle=False, seed=seed, drop_last=True
     )
 
     # convert flags to Python objects

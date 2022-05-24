@@ -35,7 +35,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
     n_adv_epochs = 2
     n_epoch_combined = 40
     batch_size = 32
-    model_type = "deep_model"
+    model_type: Literal["deep_model", "linear_model"] = "deep_model"
     lambda_vec = 0.999999
 
     @implements(InAlgorithmSubprocess)

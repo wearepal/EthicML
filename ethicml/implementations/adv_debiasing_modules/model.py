@@ -13,14 +13,12 @@ import torch.nn as nn
 import torch.optim as optim
 from ranzen import implements
 from sklearn.preprocessing import StandardScaler
-from torch.utils.data import DataLoader
 
 from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (
     DeepModel,
     DeepRegModel,
     LinearModel,
-    PandasDataSet,
     make_dataset_and_loader,
 )
 
@@ -67,7 +65,7 @@ def pretrain_adversary(
     return adv
 
 
-def train(
+def train_loop(
     clf: nn.Module,
     adv: nn.Module,
     data_loader: torch.utils.data.DataLoader,
@@ -238,14 +236,8 @@ class AdvDebiasingClassLearner:
     def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         train_data, train_loader = make_dataset_and_loader(
-            train, self.batch_size, shuffle=True, seed=seed
+            train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
-
-        # train_data = PandasDataSet(x_train, y_train, z_train)
-
-        # train_loader = DataLoader(
-        #     train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
-        # )
 
         for _ in range(self.n_clf_epochs):
             self.clf = pretrain_classifier(
@@ -263,7 +255,7 @@ class AdvDebiasingClassLearner:
             )
 
         for _ in range(1, self.n_epoch_combined):
-            self.clf, self.adv = train(
+            self.clf, self.adv = train_loop(
                 self.clf,
                 self.adv,
                 train_loader,
@@ -275,18 +267,13 @@ class AdvDebiasingClassLearner:
             )
         return self
 
-    def predict(self, x: torch.Tensor) -> np.ndarray:
+    @torch.no_grad()
+    def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
-        x = x[:, 1:]
+        x = torch.from_numpy(x.to_numpy()).float()
 
-        x_test = pd.DataFrame(data=x)
-        x_test = x_test.pipe(self.scale_df, self.scaler)
-
-        test_data = PandasDataSet(x_test)
-
-        with torch.no_grad():
-            # TODO: set clf.eval
-            yhat = self.clf(test_data.tensors[0])
+        self.clf.eval()
+        yhat = self.clf(x)
 
         sm = nn.Softmax(dim=1)
         yhat = sm(yhat)
@@ -345,22 +332,12 @@ class AdvDebiasingRegLearner:
             scaler.transform(df), columns=df.columns, index=df.index
         )
 
-    def fit(self, x: torch.Tensor, y: torch.Tensor) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
 
-        x_train = pd.DataFrame(data=x[:, 1:])
-        y_train = pd.DataFrame(data=y)
-        z_train = pd.DataFrame(data=x[:, 0])
-
-        self.scaler.fit(x_train)
-
-        x_train = x_train.pipe(self.scale_df, self.scaler)
-
-        train_data = PandasDataSet(x_train, y_train, z_train)
-
-        train_loader = DataLoader(
-            train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+        _, train_loader = make_dataset_and_loader(
+            train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
 
         for _ in range(self.N_CLF_EPOCHS):
@@ -391,23 +368,16 @@ class AdvDebiasingRegLearner:
             )
         return self
 
-    def predict(self, x: torch.Tensor) -> torch.Tensor:
+    @torch.no_grad()
+    def predict(self, x: pd.DataFrame) -> torch.Tensor:
         """Predict."""
-        x = x[:, 1:]
+        x = torch.from_numpy(x.to_numpy()).float()
         self.clf.eval()
-
-        x_test = pd.DataFrame(data=x)
-        x_test = x_test.pipe(self.scale_df, self.scaler)
-        test_data = PandasDataSet(x_test)
-
-        with torch.no_grad():
-            yhat = self.clf(test_data.tensors[0]).squeeze().detach().numpy()
-
+        yhat = self.clf(x).squeeze().detach().numpy()
         if self.out_shape == 1:
             out = yhat
         else:
             out = 0 * yhat
             out[:, 0] = np.min(yhat, axis=1)
             out[:, 1] = np.max(yhat, axis=1)
-
         return out

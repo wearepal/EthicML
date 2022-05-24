@@ -13,7 +13,7 @@ import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader
 
-from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
+from ..pytorch_common import DeepModel, DeepRegModel, LinearModel
 from .utility_functions import density_estimation
 
 

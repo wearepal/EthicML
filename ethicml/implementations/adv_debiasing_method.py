@@ -17,7 +17,6 @@ from ethicml.algorithms.inprocess.adv_debiasing import AdvDebArgs
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.fair_dummies import FairDummiesArgs
     from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
 
 
@@ -44,8 +43,7 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
         num_classes=train.y.nunique(),
         lambda_vec=args["lambda_vec"],
     )
-    input_data_train = pd.concat([train.s, train.x], axis="columns").to_numpy()
-    return model.fit(input_data_train, train.y.to_numpy())
+    return model.fit(train, seed=seed)
 
 
 def predict(model: AdvDebiasingClassLearner, test: TestTuple) -> np.ndarray:
@@ -58,9 +56,7 @@ def predict(model: AdvDebiasingClassLearner, test: TestTuple) -> np.ndarray:
     return model.predict(input_data_test)
 
 
-def train_and_predict(
-    train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
-) -> np.ndarray:
+def train_and_predict(train: DataTuple, test: TestTuple, args: AdvDebArgs, seed: int) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:
@@ -86,7 +82,7 @@ def main() -> None:
     elif in_algo_args["mode"] == "fit":
         data = DataTuple.from_npz(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
-        model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
+        setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
         test = TestTuple.from_npz(Path(in_algo_args["test"]))
