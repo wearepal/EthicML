@@ -15,11 +15,13 @@ from ranzen import implements
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader
 
+from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (
     DeepModel,
     DeepRegModel,
     LinearModel,
     PandasDataSet,
+    make_dataset_and_loader,
 )
 
 
@@ -158,7 +160,7 @@ def pretrain_classifier(
     criterion: nn.Module,
 ) -> nn.Module:
     """Pretrain classification model."""
-    for x, y, _ in data_loader:
+    for x, _, y in data_loader:
         clf.zero_grad()
         p_y = clf(x)
         loss = criterion(p_y, y.squeeze().long())
@@ -233,22 +235,17 @@ class AdvDebiasingClassLearner:
             scaler.transform(df), columns=df.columns, index=df.index
         )
 
-    def fit(self, x: np.ndarray, y: np.ndarray) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
-        # The features are X[:,1:]
-        x_train = pd.DataFrame(data=x[:, 1:])
-        y_train = pd.DataFrame(data=y)
-        z_train = pd.DataFrame(data=x[:, 0])
-
-        self.scaler.fit(x_train)
-
-        x_train = x_train.pipe(self.scale_df, self.scaler)
-
-        train_data = PandasDataSet(x_train, y_train, z_train)
-
-        train_loader = DataLoader(
-            train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+        train_data, train_loader = make_dataset_and_loader(
+            train, self.batch_size, shuffle=True, seed=seed
         )
+
+        # train_data = PandasDataSet(x_train, y_train, z_train)
+
+        # train_loader = DataLoader(
+        #     train_data, batch_size=self.batch_size, shuffle=True, drop_last=True
+        # )
 
         for _ in range(self.n_clf_epochs):
             self.clf = pretrain_classifier(

@@ -1,6 +1,6 @@
 """Functions that are common to PyTorch models."""
 import random
-from typing import Tuple, Union
+from typing import Tuple
 from typing_extensions import Literal
 
 import numpy as np
@@ -9,7 +9,7 @@ import pandas as pd
 try:
     import torch
     from torch import Tensor, nn
-    from torch.utils.data import Dataset, TensorDataset
+    from torch.utils.data import Dataset
 except ImportError as e:
     raise RuntimeError(
         "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
@@ -166,17 +166,17 @@ def compute_projection_gradients(
         param.grad = grad
 
 
-class PandasDataSet(TensorDataset):
-    """Pandas Dataset."""
-
-    def __init__(self, *dataframes):
-        tensors = (self._df_to_tensor(df) for df in dataframes)
-        super().__init__(*tensors)
-
-    def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series]) -> torch.Tensor:
-        if isinstance(df, pd.Series):
-            df = df.to_frame('dummy')
-        return torch.from_numpy(df.values).float()
+# class PandasDataSet(TensorDataset):
+#     """Pandas Dataset."""
+#
+#     def __init__(self, *dataframes):
+#         tensors = (self._df_to_tensor(df) for df in dataframes)
+#         super().__init__(*tensors)
+#
+#     def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series]) -> torch.Tensor:
+#         if isinstance(df, pd.Series):
+#             df = df.to_frame('dummy')
+#         return torch.from_numpy(df.values).float()
 
 
 class LinearModel(torch.nn.Module):
