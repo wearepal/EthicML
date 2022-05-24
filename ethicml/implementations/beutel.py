@@ -264,7 +264,7 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return DataTuple(
+    return DataTuple.from_x_s_and_y(
         x=pd.DataFrame(data_to_return),
         s=datatuple.s,
         y=datatuple.y,
@@ -287,7 +287,9 @@ def encode_testset(
     for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return TestTuple(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
+    return TestTuple.from_x_and_s(
+        x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name
+    )
 
 
 class GradReverse(Function):

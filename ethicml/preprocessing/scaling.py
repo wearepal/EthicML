@@ -61,4 +61,4 @@ def scale_continuous(
         new_feats[dataset.continuous_features] = scaler.transform(
             new_feats[dataset.continuous_features]
         )
-    return DataTuple(x=new_feats, s=datatuple.s, y=datatuple.y), scaler
+    return DataTuple.from_x_s_and_y(x=new_feats, s=datatuple.s, y=datatuple.y), scaler

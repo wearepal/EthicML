@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
 from typing import (
@@ -58,29 +59,33 @@ class PandasIndex(Enum):
     MODEL = "model"
 
 
+@dataclass(frozen=True)
 class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
-    def __init__(self, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None):
+    __slots__ = ("data", "s_column", "name")
+    data: pd.DataFrame
+    s_column: str
+    name: str | None
+
+    @classmethod
+    def from_x_and_s(
+        cls, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
+    ) -> TestTuple:
         """Make a TestTuple."""
-        self.__x: pd.DataFrame = x
-        self.__s: pd.Series[int] = s
-        self.__name: Optional[str] = name
+        s_column = s.name
+        assert isinstance(s_column, str)
+        return cls(data=pd.concat([x, s], axis="columns", sort=False), s_column=s_column, name=name)
 
     @property
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
-        return self.__x
+        return self.data.drop(self.s_column, inplace=False)
 
     @property
     def s(self) -> pd.Series[int]:
         """Getter for property s."""
-        return self.__s
-
-    @property
-    def name(self) -> Optional[str]:
-        """Getter for name property."""
-        return self.__name
+        return self.data[self.s_column]
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
@@ -94,7 +99,7 @@ class TestTuple:
         name: Optional[str] = None,
     ) -> TestTuple:
         """Create a copy of the TestTuple but change the given values."""
-        return TestTuple(
+        return TestTuple.from_x_and_s(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             name=name if name is not None else self.name,
@@ -120,27 +125,38 @@ class TestTuple:
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls(
+            return cls.from_x_and_s(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.Series(data["s"], name=data["s_names"][0]),
                 name=name or None,
             )
 
 
+@dataclass(frozen=True)
 class DataTuple(TestTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
-    def __init__(
-        self, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
-    ):
+    y_column: str
+
+    @classmethod
+    def from_x_s_and_y(
+        cls, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+    ) -> DataTuple:
         """Make a DataTuple."""
-        super().__init__(x=x, s=s, name=name)
-        self.__y: pd.Series[int] = y
+        s_column = s.name
+        y_column = y.name
+        assert isinstance(s_column, str) and isinstance(y_column, str)
+        return cls(
+            data=pd.concat([x, s, y], axis="columns", sort=False),
+            s_column=s_column,
+            y_column=y_column,
+            name=name,
+        )
 
     @property
     def y(self) -> pd.Series[int]:
         """Getter for property y."""
-        return self.__y
+        return self.data[self.y_column]
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite __iter__ magic method."""
@@ -154,7 +170,7 @@ class DataTuple(TestTuple):
 
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance."""
-        return TestTuple(x=self.x, s=self.s, name=self.name)
+        return TestTuple(data=self.data.drop(self.y_column), s_column=self.s_column, name=self.name)
 
     def replace(
         self,
@@ -165,32 +181,23 @@ class DataTuple(TestTuple):
         y: Optional[pd.Series] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
-        return DataTuple(
+        return DataTuple.from_x_s_and_y(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             y=y if y is not None else self.y,
             name=name if name is not None else self.name,
         )
 
+    def replace_data(self, data: pd.DataFrame) -> DataTuple:
+        """Make a copy of the DataTuple but change the underlying data."""
+        return DataTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
         """Concatenate the dataframes in the DataTuple and then apply a function to it.
 
         :param mapper: A function that takes a dataframe and returns a dataframe.
         """
-        self.x.columns = self.x.columns.astype(str)
-        cols_x, cols_s, cols_y = self.x.columns, self.s.name, self.y.name
-        assert isinstance(cols_s, str) and isinstance(cols_y, str)
-        joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
-        assert len(joined) == len(self), "something went wrong while concatenating"
-        joined = mapper(joined)
-        result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
-
-        # assert that the columns haven't changed
-        pd.testing.assert_index_equal(result.x.columns, cols_x)
-        assert result.s.name == cols_s
-        assert result.y.name == cols_y
-
-        return result
+        return self.replace_data(data=mapper(self.data))
 
     def get_n_samples(self, num: int = 500) -> DataTuple:
         """Get the first elements of the dataset.
@@ -198,15 +205,11 @@ class DataTuple(TestTuple):
         :param num: How many samples to take for subset. (Default: 500)
         :returns: Subset of training data.
         """
-        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])
+        return self.replace_data(data=self.data.iloc[:num])
 
     def get_s_subset(self, s: int) -> DataTuple:
         """Return a subset of the DataTuple where S=s."""
-        return DataTuple(
-            x=self.x[self.s == s],
-            s=self.s[self.s == s],
-            y=self.y[self.s == s],
-        )
+        return self.replace_data(data=self.data[self.s == s])
 
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file.
@@ -228,7 +231,7 @@ class DataTuple(TestTuple):
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls(
+            return cls.from_x_s_and_y(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.Series(data["s"], name=data["s_names"][0]),
                 y=pd.Series(data["y"], name=data["y_names"][0]),
@@ -346,7 +349,7 @@ def concat_dt(
     :param axis: Axis to concatenate on. (Default: 'index')
     :param ignore_index: Ignore the index of the dataframes. (Default: False)
     """
-    return DataTuple(
+    return DataTuple.from_x_s_and_y(
         x=pd.concat(
             [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
@@ -366,7 +369,7 @@ def concat_tt(
     ignore_index: bool = False,
 ) -> TestTuple:
     """Concatenate the test tuples in the given list."""
-    return TestTuple(
+    return TestTuple.from_x_and_s(
         x=pd.concat(
             [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),

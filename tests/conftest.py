@@ -63,7 +63,7 @@ def simple_data() -> DataTuple:
     # visual representation of the data:
     # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
     # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
-    return DataTuple(
+    return DataTuple.from_x_s_and_y(
         x=pd.DataFrame([0] * 1000, columns=["x"]),
         s=pd.Series([1] * 750 + [0] * 250, name="s"),
         y=pd.Series([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, name="y"),
