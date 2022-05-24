@@ -203,6 +203,6 @@ def upsample(
         )
 
     assert upsampled_datatuple is not None
-    return upsampled_datatuple, TestTuple(
-        data=test.data, s_column=test.s_column, name=f"{name}: {test.name}"
+    return upsampled_datatuple, TestTuple.from_x_and_s(
+        x=test.x, s=test.s, name=f"{name}: {test.name}"
     )

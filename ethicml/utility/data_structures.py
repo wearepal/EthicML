@@ -59,7 +59,7 @@ class PandasIndex(Enum):
     MODEL = "model"
 
 
-@dataclass(frozen=True)
+@dataclass
 class TestTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
@@ -135,7 +135,7 @@ class TestTuple:
             )
 
 
-@dataclass(frozen=True)
+@dataclass
 class DataTuple(TestTuple):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
