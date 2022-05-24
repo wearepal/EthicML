@@ -173,7 +173,7 @@ class PandasDataSet(TensorDataset):
         tensors = (self._df_to_tensor(df) for df in dataframes)
         super().__init__(*tensors)
 
-    def _df_to_tensor(self, df):
+    def _df_to_tensor(self, df: Union[pd.DataFrame, pd.Series] -> torch.Tensor):
         if isinstance(df, pd.Series):
             df = df.to_frame('dummy')
         return torch.from_numpy(df.values).float()
