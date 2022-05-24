@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List
-from typing_extensions import TypedDict
+from typing_extensions import Literal, TypedDict
 
 from ranzen import implements
 
@@ -22,7 +22,7 @@ class AdvDebArgs(TypedDict):
     n_adv_epochs: int
     n_epoch_combined: int
     batch_size: int
-    model_type: str
+    model_type: Literal["deep_model", "linear_model"]
     lambda_vec: float
 
 
