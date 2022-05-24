@@ -53,7 +53,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         out["sensitive"][data.s.name] = data.s.to_numpy().tolist()
         if isinstance(data, DataTuple):
             data_converted = label_converter.adjust(data)
-            out["class"] = (2 * data_converted.y.to_numpy() - 1).tolist()
+            out["class"] = (2 * data_converted.y.to_numpy() - 1).tolist()  # type: ignore[attr-defined]
         else:
             out["class"] = [-1 for _ in range(data.x.shape[0])]
         with file_path.open("w") as out_file:

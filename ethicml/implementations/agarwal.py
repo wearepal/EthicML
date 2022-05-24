@@ -45,7 +45,10 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
             UtilityParity,
         )
     except ImportError as e:
-        raise RuntimeError("In order to use Agarwal, install fairlearn==0.7.0.") from e
+        raise RuntimeError(
+            f"In order to use Agarwal, install fairlearn==0.7.0. "
+            f"Consider installing EthicML with the extras 'all' specified."
+        ) from e
 
     fairness_class: UtilityParity
     fairness_type = FairnessType[args["fairness"]]

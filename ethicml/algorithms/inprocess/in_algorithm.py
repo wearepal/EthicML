@@ -1,13 +1,21 @@
 """Abstract Base Class of all algorithms in the framework."""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import asdict
-from typing import ClassVar, Dict, TypeVar, Union
-from typing_extensions import TypeAlias, final
+from typing import ClassVar, TypeVar
+from typing_extensions import final
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.utility import DataTuple, FairnessType, KernelType, Prediction, TestTuple
+from ethicml.utility import (
+    DataTuple,
+    FairnessType,
+    HyperParamType,
+    KernelType,
+    Prediction,
+    TestTuple,
+)
 
 __all__ = [
     "InAlgorithm",
@@ -16,7 +24,6 @@ __all__ = [
 ]
 
 _I = TypeVar("_I", bound="InAlgorithm")
-HyperParamType: TypeAlias = Dict[str, Union[bool, int, float, str, FairnessType, KernelType]]
 
 
 class InAlgorithm(Algorithm, ABC):

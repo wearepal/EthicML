@@ -6,8 +6,8 @@ from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
+from ethicml.utility import HyperParamType
 
 __all__ = ["DRO"]
 

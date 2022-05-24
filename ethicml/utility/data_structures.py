@@ -28,6 +28,8 @@ __all__ = [
     "ClassifierType",
     "DataTuple",
     "FairnessType",
+    "HyperParamType",
+    "HyperParamValue",
     "KernelType",
     "Prediction",
     "Results",
@@ -43,7 +45,6 @@ __all__ = [
     "make_results",
     "map_over_results_index",
 ]
-
 
 AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
 
@@ -238,7 +239,7 @@ class DataTuple(TestTuple):
 class Prediction:
     """Prediction of an algorithm."""
 
-    def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
+    def __init__(self, hard: pd.Series, info: Optional[HyperParamType] = None):
         """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
@@ -262,7 +263,7 @@ class Prediction:
         return self._hard
 
     @property
-    def info(self) -> Dict[str, float]:
+    def info(self) -> HyperParamType:
         """Additional info about the prediction."""
         return self._info
 
@@ -300,7 +301,7 @@ class Prediction:
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
-    def __init__(self, soft: np.ndarray, info: Optional[Dict[str, float]] = None):
+    def __init__(self, soft: np.ndarray, info: Optional[HyperParamType] = None):
         """Make a soft prediction object."""
         super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
@@ -534,3 +535,7 @@ class KernelType(Enum):
     poly = auto()
     rbf = auto()
     sigmoid = auto()
+
+
+HyperParamValue: TypeAlias = Union[bool, int, float, str, FairnessType, KernelType]
+HyperParamType: TypeAlias = Dict[str, HyperParamValue]

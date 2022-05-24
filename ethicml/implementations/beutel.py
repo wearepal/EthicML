@@ -23,7 +23,7 @@ from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_la
 from ethicml.preprocessing.splits import train_test_split
 from ethicml.utility import DataTuple, FairnessType, TestTuple
 
-from .pytorch_common import CustomDataset, TestDataset
+from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
@@ -84,22 +84,6 @@ def build_networks(
     return enc, model
 
 
-def make_dataset_and_loader(
-    data: DataTuple, flags: BeutelArgs
-) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
-    """Given a datatuple, create a dataset and a corresponding dataloader.
-
-    :param data:
-    :param flags:
-    :returns: Tuple of a pytorch dataset and dataloader.
-    """
-    dataset = CustomDataset(data)
-    dataloader = torch.utils.data.DataLoader(
-        dataset=dataset, batch_size=flags["batch_size"], shuffle=False
-    )
-    return dataset, dataloader
-
-
 def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple, Encoder]:
     """Train the fair autoencoder on the training data and then transform both training and test.
 
@@ -121,9 +105,15 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
     # By default we use 10% of the training data for validation
     train_, validation = train_test_split(train, train_percentage=1 - flags["validation_pcnt"])
 
-    train_data, train_loader = make_dataset_and_loader(train_, flags)
-    _, validation_loader = make_dataset_and_loader(validation, flags)
-    _, all_train_data_loader = make_dataset_and_loader(train, flags)
+    train_data, train_loader = make_dataset_and_loader(
+        train_, flags["batch_size"], shuffle=True, seed=seed
+    )
+    _, validation_loader = make_dataset_and_loader(
+        validation, flags["batch_size"], shuffle=False, seed=seed
+    )
+    _, all_train_data_loader = make_dataset_and_loader(
+        train, flags["batch_size"], shuffle=False, seed=seed
+    )
 
     # convert flags to Python objects
     enc_activation = STRING_TO_ACTIVATION_MAP[flags["enc_activation"]]

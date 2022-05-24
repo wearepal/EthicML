@@ -209,7 +209,7 @@ class Dataset:
         for col_parent, filter_col in categorical_cols.items():
             if len(filter_col) > 1:
                 undummified = (
-                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(col_parent + "_", 1)[1])
+                    out[filter_col].idxmax(axis=1).apply(lambda x: x.split(f"{col_parent}_", 1)[1])
                 )
 
                 out[col_parent] = undummified

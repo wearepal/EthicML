@@ -7,11 +7,21 @@ from pathlib import Path
 from typing import TYPE_CHECKING, List, Union
 
 import numpy as np
-import torch
 from joblib import dump, load
-from torch import optim
-from torch.optim.optimizer import Optimizer
-from torch.utils.data import DataLoader
+
+try:
+    import torch
+    from torch import optim
+    from torch.optim.optimizer import Optimizer
+    from torch.utils.data import DataLoader
+
+except ImportError as e:
+    raise RuntimeError(
+        "In order to use PyTorch, please install it following the instructions at https://pytorch.org/ . "
+    ) from e
+
+
+from joblib import dump, load
 
 from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
@@ -93,7 +103,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Transform output
-    post_test: List[List[float]] = []
+    post_test: List[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:

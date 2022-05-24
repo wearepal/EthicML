@@ -11,7 +11,7 @@ __all__ = [
     "deprecated",
     "filter_features_by_prefixes",
     "get_discrete_features",
-    "group_disc_feat_indexes",
+    "group_disc_feat_indices",
     "label_spec_to_feature_list",
     "simple_spec",
 ]
@@ -83,7 +83,7 @@ def get_discrete_features(
     ]
 
 
-def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
+def group_disc_feat_indices(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
     """Group discrete features names according to the first segment of their name.
 
     Returns a list of their corresponding slices (assumes order is maintained).
@@ -102,8 +102,8 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     start_idx = 0
     for _, group in group_iter:
         len_group = len(list(group))
-        indexes = slice(start_idx, start_idx + len_group)
-        feature_slices.append(indexes)
+        indices = slice(start_idx, start_idx + len_group)
+        feature_slices.append(indices)
         start_idx += len_group
 
     return feature_slices

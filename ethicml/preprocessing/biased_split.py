@@ -246,7 +246,7 @@ def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTu
     if len(data) == 0:
         return data, data
     splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
-    return splitter(data)[0:2]
+    return splitter(data)[:2]
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
