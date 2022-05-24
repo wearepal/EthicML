@@ -5,10 +5,9 @@ from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.algorithms.inprocess.shared import settings_for_svm_lr
-from ethicml.utility import ClassifierType, FairnessType
+from ethicml.utility import ClassifierType, FairnessType, HyperParamType
 
 __all__ = ["Agarwal"]
 

@@ -21,6 +21,8 @@ from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.utility.data_structures import (
     DataTuple,
+    HyperParamType,
+    HyperParamValue,
     Prediction,
     Results,
     ResultsAggregator,
@@ -61,7 +63,7 @@ def run_metrics(
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
     use_sens_name: bool = True,
-) -> Dict[str, float]:
+) -> Dict[str, HyperParamValue]:
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
@@ -72,7 +74,7 @@ def run_metrics(
     :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
                         If False, refer to the sensitive varibale as `S`. (Default: True)
     """
-    result: Dict[str, float] = {}
+    result: Dict[str, HyperParamValue] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
         return {"algorithm_failed": 1.0}
     for metric in metrics:
@@ -87,8 +89,8 @@ def run_metrics(
             per_sens.update(ratio_per_sens)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
-    for key, value in predictions.info.items():
-        result[key] = value
+    for key_, value_ in predictions.info.items():
+        result[key_] = value_
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
@@ -321,12 +323,14 @@ def _gather_metrics(
                 for k, v in model.get_hyperparameters().items()
             }
 
-            df_row: Dict[str, Union[str, float]] = {
+            seed = predictions.info["model_seed"]
+            assert isinstance(seed, int)
+            df_row: Dict[str, HyperParamValue] = {
                 "dataset": data_info.dataset_name,
                 "scaler": data_info.scaler,
                 "transform": data_info.transform_name,
                 "model": model.name,
-                "model_seed": predictions.info["model_seed"],
+                "model_seed": seed,
                 **data_info.split_info,
                 **hyperparameters,
             }

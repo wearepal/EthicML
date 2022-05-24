@@ -131,11 +131,6 @@ class HgrClassLearner:
         self.in_shape = in_shape
         self.num_classes = out_shape
 
-        # Data normalization
-        self.x_scaler = StandardScaler()
-        self.a_scaler = StandardScaler()
-        self.y_scaler = StandardScaler()
-
         # EO penalty
         self.mu = mu
 
@@ -184,23 +179,16 @@ class HgrClassLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> "Self":
+    def fit(self, train: DataTuple) -> Self:
         """Fit."""
         # The features are X[:,1:]
         self.input_a = train.s.to_numpy()
 
-        self.x_scaler.fit(train.x.to_numpy())
-
-        xp = torch.from_numpy(self.x_scaler.transform(train.x.to_numpy())).float()
+        xp = torch.from_numpy(train.x.to_numpy()).float()
         yc = torch.from_numpy(train.y.to_numpy()).long()
 
         # Given that this seems important, it's weird that it's not used anywhere.
         torch.zeros(len(yc), self.num_classes).scatter_(1, yc.unsqueeze(1), 1.0).long()
-
-        self.a_scaler.fit(self.input_a.reshape(-1, 1))
-        ap = torch.from_numpy(
-            self.a_scaler.transform(self.input_a.reshape(-1, 1)).squeeze()
-        ).float()
 
         # evaluate at init
         yhat = self.model(xp)
@@ -231,7 +219,7 @@ class HgrClassLearner:
 
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
-        xp = torch.from_numpy(self.x_scaler.transform(x.to_numpy())).float()
+        xp = torch.from_numpy(x.to_numpy()).float()
         self.model.eval()
         yhat = self.model(xp)
         sm = nn.Softmax(dim=1)
