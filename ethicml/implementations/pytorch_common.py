@@ -14,7 +14,6 @@ except ImportError as e:
         "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
     ) from e
 
-from sklearn.preprocessing import StandardScaler
 
 from ethicml.utility import DataTuple, TestTuple
 
@@ -279,9 +278,6 @@ class GeneralLearner:
         # output dim
         self.out_shape = out_shape
 
-        # Data normalization
-        self.x_scaler = StandardScaler()
-
         # learning rate
         self.lr = lr
 
@@ -308,29 +304,18 @@ class GeneralLearner:
         # minibatch size
         self.batch_size = batch_size
 
-    def internal_epoch(self, x_: torch.Tensor, y_: torch.Tensor) -> np.ndarray:
+    def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.ndarray:
         """Fit a model by sweeping over all data points."""
-        # shuffle data
-        shuffle_idx = np.arange(x_.shape[0])
-        self.rng.shuffle(shuffle_idx)
-        X = x_.clone()[shuffle_idx]
-        Y = y_.clone()[shuffle_idx]
-
         # fit pred func
         self.model.train()
 
-        batch_size = self.batch_size
         epoch_losses = []
 
-        for idx in range(0, X.shape[0], batch_size):
+        for x, s, y in dataloader:
             self.optimizer.zero_grad()
-
-            batch_x = X[idx : min(idx + batch_size, X.shape[0]), :]
-            batch_y = Y[idx : min(idx + batch_size, Y.shape[0])]
-
             # utility loss
-            batch_yhat = self.model(batch_x)
-            loss = self.cost_func(batch_yhat, batch_y)
+            batch_yhat = self.model(x)
+            loss = self.cost_func(batch_yhat, y.long())
 
             loss.backward()
             self.optimizer.step()
@@ -339,38 +324,21 @@ class GeneralLearner:
 
         return np.mean(epoch_losses)
 
-    def run_epochs(self, x: torch.Tensor, y: torch.Tensor) -> None:
+    def run_epochs(self, dataloader: torch.utils.data.DataLoader) -> None:
         """Run epochs."""
         for _ in range(self.epochs):
-            self.internal_epoch(x, y)
+            self.internal_epoch(dataloader)
 
-    def fit(self, x: torch.Tensor, y: torch.Tensor) -> None:
+    def fit(self, train: DataTuple) -> None:
         """Fit a model on training data."""
-        self.x_scaler.fit(x)
-
-        xp = torch.from_numpy(self.x_scaler.transform(x)).float()
-        yp = torch.from_numpy(y).float()
-
-        # evaluate at init
-        self.model.eval()
-        yhat = self.model(xp)
-
-        print(f'Init Loss = {str(self.cost_func(yhat, yp).detach().numpy())}')
-
-        self.model.train()
-        self.run_epochs(xp, yp)
-
-        # evaluate
-        self.model.eval()
-        yhat = self.model(xp)
-
-        print(f'Final Loss = {str(self.cost_func(yhat, yp).detach().numpy())}')
+        _, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
+        self.run_epochs(train_loader)
 
     def predict(self, x: torch.Tensor) -> torch.Tensor:
         """Predict output."""
         self.model.eval()
 
-        xp = torch.from_numpy(self.x_scaler.transform(x)).float()
+        xp = torch.from_numpy(x).float()
         yhat = self.model(xp)
         yhat = yhat.detach().numpy()
 

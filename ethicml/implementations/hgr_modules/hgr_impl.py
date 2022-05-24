@@ -17,7 +17,6 @@ from ... import DataTuple
 from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, make_dataset_and_loader
 from .density_estimation import Kde
 from .facl_hgr import chi_2_cond
-from .utility import compute_acc
 
 
 def chi_squared_l1_kde(x, y, z):
@@ -181,40 +180,9 @@ class HgrClassLearner:
 
     def fit(self, train: DataTuple) -> Self:
         """Fit."""
-        # The features are X[:,1:]
-        self.input_a = train.s.to_numpy()
-
-        xp = torch.from_numpy(train.x.to_numpy()).float()
-        yc = torch.from_numpy(train.y.to_numpy()).long()
-
-        # Given that this seems important, it's weird that it's not used anywhere.
-        torch.zeros(len(yc), self.num_classes).scatter_(1, yc.unsqueeze(1), 1.0).long()
-
-        # evaluate at init
-        yhat = self.model(xp)
-
-        print(
-            'Init : Loss = '
-            + str(self.cost_pred(yhat, yc).detach().numpy())
-            + ' ACC = '
-            + str(compute_acc(yhat, yc))
-        )
-
         # train
         train_data, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
         self.run_epochs(train_loader)
-
-        # evaluate
-        self.model.eval()
-        yhat = self.model(xp)
-        print(
-            'mu = '
-            + str(self.mu)
-            + ' Loss = '
-            + str(self.cost_pred(yhat, yc).detach().numpy())
-            + ' ACC = '
-            + str(compute_acc(yhat, yc))
-        )
         return self
 
     def predict(self, x: pd.DataFrame) -> np.ndarray:
@@ -224,6 +192,4 @@ class HgrClassLearner:
         yhat = self.model(xp)
         sm = nn.Softmax(dim=1)
         yhat = sm(yhat)
-        yhat = yhat.detach().numpy()
-
-        return yhat
+        return yhat.detach().numpy()
