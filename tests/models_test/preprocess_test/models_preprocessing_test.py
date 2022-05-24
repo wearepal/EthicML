@@ -167,7 +167,7 @@ def test_pre_sep_fit_transform(
         PreprocessTest(
             model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
             name="Beutel eq_opp",
-            num_pos=57,
+            num_pos=56,
         ),
     ],
 )
