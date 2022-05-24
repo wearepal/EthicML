@@ -130,10 +130,10 @@ def compute_instance_weights(
     :returns: A dataframe with the instance weights for each sample in the training data.
     """
     num_samples = len(train.x)
-    s_unique, inv_indexes_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
-    _, inv_indexes_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)
-    group_ids = (inv_indexes_y * len(s_unique) + inv_indexes_s).squeeze()
-    gi_unique, inv_indexes_gi, counts_joint = np.unique(
+    s_unique, inv_indices_s, counts_s = np.unique(train.s, return_inverse=True, return_counts=True)
+    _, inv_indices_y, counts_y = np.unique(train.y, return_inverse=True, return_counts=True)
+    group_ids = (inv_indices_y * len(s_unique) + inv_indices_s).squeeze()
+    gi_unique, inv_indices_gi, counts_joint = np.unique(
         group_ids, return_inverse=True, return_counts=True
     )
     if balance_groups:
@@ -149,4 +149,4 @@ def compute_instance_weights(
         counts_factorized = np.outer(counts_y, counts_s).flatten()
         group_weights = counts_factorized[gi_unique] / (num_samples * counts_joint)
 
-    return pd.DataFrame(group_weights[inv_indexes_gi], columns=["instance weights"])
+    return pd.DataFrame(group_weights[inv_indices_gi], columns=["instance weights"])

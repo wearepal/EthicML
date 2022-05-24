@@ -28,7 +28,6 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         import torch
 
         torch.manual_seed(seed)
-        torch.use_deterministic_algorithms(True)
     except ImportError as e:
         raise RuntimeError(
             "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
@@ -47,7 +46,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         batch_size=args["batch_size"],
         model_type=args["model_type"],
     )
-    return model.fit(train)
+    return model.fit(train, seed=seed)
 
 
 def predict(model: HgrClassLearner, test: TestTuple) -> np.ndarray:

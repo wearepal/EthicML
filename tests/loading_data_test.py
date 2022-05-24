@@ -917,12 +917,12 @@ def test_concat():
 def test_group_prefixes():
     """Test group prefixes."""
     names = ["a_asf", "a_fds", "good_lhdf", "good_dsdw", "sas"]
-    grouped_indexes = em.group_disc_feat_indexes(names, prefix_sep="_")
+    grouped_indices = em.group_disc_feat_indices(names, prefix_sep="_")
 
-    assert len(grouped_indexes) == 3
-    assert grouped_indexes[0] == slice(0, 2)
-    assert grouped_indexes[1] == slice(2, 4)
-    assert grouped_indexes[2] == slice(4, 5)
+    assert len(grouped_indices) == 3
+    assert grouped_indices[0] == slice(0, 2)
+    assert grouped_indices[1] == slice(2, 4)
+    assert grouped_indices[2] == slice(4, 5)
 
 
 def test_expand_s():

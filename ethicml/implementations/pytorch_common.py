@@ -1,4 +1,5 @@
 """Functions that are common to PyTorch models."""
+import random
 from typing import Tuple
 from typing_extensions import Literal
 
@@ -77,7 +78,7 @@ class CustomDataset(Dataset):
 
 
 def make_dataset_and_loader(
-    data: DataTuple, batch_size: int, shuffle: bool
+    data: DataTuple, batch_size: int, shuffle: bool, seed: int
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
     """Given a datatuple, create a dataset and a corresponding dataloader.
 
@@ -85,9 +86,23 @@ def make_dataset_and_loader(
     :param flags:
     :returns: Tuple of a pytorch dataset and dataloader.
     """
+
+    def seed_worker(worker_id):
+        worker_seed = torch.initial_seed() % 2**32
+        np.random.seed(worker_seed)
+        random.seed(worker_seed)
+
+    g = torch.Generator()
+    g.manual_seed(seed)
+
     dataset = CustomDataset(data)
+
     dataloader = torch.utils.data.DataLoader(
-        dataset=dataset, batch_size=batch_size, shuffle=shuffle
+        dataset=dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        worker_init_fn=seed_worker,
+        generator=g,
     )
     return dataset, dataloader
 
@@ -307,21 +322,15 @@ class GeneralLearner:
     def internal_epoch(self, dataloader: torch.utils.data.DataLoader) -> np.ndarray:
         """Fit a model by sweeping over all data points."""
         # fit pred func
-        self.model.train()
-
         epoch_losses = []
-
         for x, s, y in dataloader:
             self.optimizer.zero_grad()
             # utility loss
             batch_yhat = self.model(x)
             loss = self.cost_func(batch_yhat, y.long())
-
             loss.backward()
             self.optimizer.step()
-
             epoch_losses.append(loss.cpu().detach().numpy())
-
         return np.mean(epoch_losses)
 
     def run_epochs(self, dataloader: torch.utils.data.DataLoader) -> None:
@@ -329,17 +338,16 @@ class GeneralLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> None:
+    def fit(self, train: DataTuple, seed: int) -> None:
         """Fit a model on training data."""
-        _, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
+        self.model.train()
+        _, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True, seed=seed)
         self.run_epochs(train_loader)
 
+    @torch.no_grad()
     def predict(self, x: torch.Tensor) -> torch.Tensor:
         """Predict output."""
         self.model.eval()
-
         xp = torch.from_numpy(x).float()
         yhat = self.model(xp)
-        yhat = yhat.detach().numpy()
-
-        return yhat
+        return yhat.detach().numpy()

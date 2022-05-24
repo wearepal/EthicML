@@ -105,9 +105,15 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
     # By default we use 10% of the training data for validation
     train_, validation = train_test_split(train, train_percentage=1 - flags["validation_pcnt"])
 
-    train_data, train_loader = make_dataset_and_loader(train_, flags["batch_size"], shuffle=True)
-    _, validation_loader = make_dataset_and_loader(validation, flags["batch_size"], shuffle=False)
-    _, all_train_data_loader = make_dataset_and_loader(train, flags["batch_size"], shuffle=False)
+    train_data, train_loader = make_dataset_and_loader(
+        train_, flags["batch_size"], shuffle=True, seed=seed
+    )
+    _, validation_loader = make_dataset_and_loader(
+        validation, flags["batch_size"], shuffle=False, seed=seed
+    )
+    _, all_train_data_loader = make_dataset_and_loader(
+        train, flags["batch_size"], shuffle=False, seed=seed
+    )
 
     # convert flags to Python objects
     enc_activation = STRING_TO_ACTIVATION_MAP[flags["enc_activation"]]

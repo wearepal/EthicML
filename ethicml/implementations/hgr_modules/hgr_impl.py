@@ -3,8 +3,7 @@
 # https://github.com/criteo-research/continuous-fairness
 # The function for measuring HGR is in the facl package, can be downloaded from
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
-
-
+import random
 from typing_extensions import Literal, Self
 
 import numpy as np
@@ -91,11 +90,18 @@ class HgrRegLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> None:
+    def fit(self, train: DataTuple, seed: int) -> None:
         """Fit."""
-        train_data, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
+        torch.use_deterministic_algorithms(True)
+        torch.manual_seed(seed)
+        random.seed(seed)
+        np.random.seed(seed)
+        train_data, train_loader = make_dataset_and_loader(
+            train, self.batch_size, shuffle=True, seed=seed
+        )
         self.run_epochs(train_loader)
 
+    @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
         xp = torch.from_numpy(self.x_scaler.transform(x.to_numpy())).float()
@@ -178,13 +184,21 @@ class HgrClassLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
+        torch.manual_seed(seed)
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.use_deterministic_algorithms(True)
         # train
-        train_data, train_loader = make_dataset_and_loader(train, self.batch_size, shuffle=True)
+        train_data, train_loader = make_dataset_and_loader(
+            train, self.batch_size, shuffle=True, seed=seed
+        )
+        self.model.train()
         self.run_epochs(train_loader)
         return self
 
+    @torch.no_grad()
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
         xp = torch.from_numpy(x.to_numpy()).float()

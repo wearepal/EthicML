@@ -14,11 +14,11 @@ class _OneHotEncoder(nn.Module):
         self.index_dim = index_dim
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        indexes = x.argmax(dim=self.index_dim)
-        indexes = indexes.type(torch.int64).view(-1, 1)
-        n_dims = self.n_dims  # if self.n_dims is not None else int(torch.max(indexes)) + 1
-        one_hots = torch.zeros(indexes.size()[0], n_dims).scatter_(1, indexes, 1)
-        one_hots = one_hots.view(*indexes.shape, -1)
+        indices = x.argmax(dim=self.index_dim)
+        indices = indices.type(torch.int64).view(-1, 1)
+        n_dims = self.n_dims  # if self.n_dims is not None else int(torch.max(indices)) + 1
+        one_hots = torch.zeros(indices.size()[0], n_dims).scatter_(1, indices, 1)
+        one_hots = one_hots.view(*indices.shape, -1)
         return one_hots
 
 

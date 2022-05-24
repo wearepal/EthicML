@@ -166,10 +166,10 @@ class RandomSplit(DataSplitter):
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
-def generate_proportional_split_indexes(
+def generate_proportional_split_indices(
     data: DataTuple, train_percentage: float, random_seed: int = 42
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Generate the indexes of the train and test splits using a proportional sampling scheme.
+    """Generate the indices of the train and test splits using a proportional sampling scheme.
 
     :param data:
     :param train_percentage:
@@ -181,8 +181,8 @@ def generate_proportional_split_indexes(
     s_vals: List[int] = list(map(int, data.s.unique()))
     y_vals: List[int] = list(map(int, data.y.unique()))
 
-    train_indexes: List[np.ndarray] = []
-    test_indexes: List[np.ndarray] = []
+    train_indices: List[np.ndarray] = []
+    test_indices: List[np.ndarray] = []
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
@@ -191,23 +191,23 @@ def generate_proportional_split_indexes(
 
         # shuffle and take subsets
         random.shuffle(idx)
-        split_indexes: int = round(len(idx) * train_percentage)
+        split_indices: int = round(len(idx) * train_percentage)
         # append index subsets to the list of train indices
-        train_indexes.append(idx[:split_indexes])
-        test_indexes.append(idx[split_indexes:])
+        train_indices.append(idx[:split_indices])
+        test_indices.append(idx[split_indices:])
 
-    train_indexes_ = np.concatenate(train_indexes, axis=0)
-    test_indexes_ = np.concatenate(test_indexes, axis=0)
-    del train_indexes
-    del test_indexes
+    train_indices_ = np.concatenate(train_indices, axis=0)
+    test_indices_ = np.concatenate(test_indices, axis=0)
+    del train_indices
+    del test_indices
 
     num_groups = len(s_vals) * len(y_vals)
     expected_train_len = round(len(data) * train_percentage)
     # assert that we (at least approximately) achieved the specified `train_percentage`
     # the maximum error occurs when all the group splits favor train or all favor test
-    assert expected_train_len - num_groups <= len(train_indexes_) <= expected_train_len + num_groups
+    assert expected_train_len - num_groups <= len(train_indices_) <= expected_train_len + num_groups
 
-    return train_indexes_, test_indexes_
+    return train_indices_, test_indices_
 
 
 class ProportionalSplit(RandomSplit):
@@ -218,21 +218,21 @@ class ProportionalSplit(RandomSplit):
         self, data: DataTuple, split_id: int = 0
     ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
         random_seed = self._get_seed(split_id)
-        train_indexes, test_indexes = generate_proportional_split_indexes(
+        train_indices, test_indices = generate_proportional_split_indices(
             data, train_percentage=self.train_percentage, random_seed=random_seed
         )
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_indexes].reset_index(drop=True),
-            s=data.s.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[train_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            x=data.x.iloc[train_indices].reset_index(drop=True),
+            s=data.s.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
+            y=data.y.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_indexes].reset_index(drop=True),
-            s=data.s.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[test_indexes].reset_index(drop=True),  # type: ignore[call-overload]
+            x=data.x.iloc[test_indices].reset_index(drop=True),
+            s=data.s.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
+            y=data.y.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
             name=f"{data.name} - Test",
         )
 
@@ -271,8 +271,8 @@ class BalancedTestSplit(RandomSplit):
         s_vals: List[int] = list(map(int, data.s.unique()))
         y_vals: List[int] = list(map(int, data.y.unique()))
 
-        train_indexes: List[np.ndarray] = []
-        test_indexes: List[np.ndarray] = []
+        train_indices: List[np.ndarray] = []
+        test_indices: List[np.ndarray] = []
 
         num_test: Dict[Tuple[int, int], int] = {}
         # find out how many samples are available for the test set
@@ -305,14 +305,14 @@ class BalancedTestSplit(RandomSplit):
 
             # shuffle and take subsets
             random.shuffle(idx)
-            split_indexes: int = round(len(idx) * self.train_percentage)
+            split_indices: int = round(len(idx) * self.train_percentage)
             # append index subsets to the list of train indices
-            train_indexes.append(idx[:split_indexes])
-            test_indexes.append(idx[split_indexes : (split_indexes + num_test_balanced[(s, y)])])
+            train_indices.append(idx[:split_indices])
+            test_indices.append(idx[split_indices : (split_indices + num_test_balanced[(s, y)])])
             num_dropped += num_test[(s, y)] - num_test_balanced[(s, y)]
 
-        train_idx = np.concatenate(train_indexes, axis=0)
-        test_idx = np.concatenate(test_indexes, axis=0)
+        train_idx = np.concatenate(train_indices, axis=0)
+        test_idx = np.concatenate(test_indices, axis=0)
 
         train: DataTuple = DataTuple(
             x=data.x.iloc[train_idx].reset_index(drop=True),
