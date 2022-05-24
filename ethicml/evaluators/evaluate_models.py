@@ -88,8 +88,7 @@ def run_metrics(
             per_sens.update(diff_per_sens)
             per_sens.update(ratio_per_sens)
         result.update(per_sens)
-    for key_, value_ in predictions.info.items():
-        result[key_] = value_
+    result.update(predictions.info)
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
