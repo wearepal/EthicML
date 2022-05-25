@@ -171,9 +171,9 @@ def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
     parameters_initialization = np.random.uniform(
         size=flags["clusters"] + features_dim * flags["clusters"]
     )
-    bnd = [(0, 1)] * flags["clusters"] + [(None, None)] * features_dim * flags[
+    bnd = [(0, 1)] * flags["clusters"] + [(None, None)] * features_dim * flags[  # type: ignore[operator]
         "clusters"
-    ]  # type: ignore[operator]
+    ]
     LFR_optim_objective.steps = 0  # type: ignore[attr-defined]
 
     learned_model = optim.fmin_l_bfgs_b(  # type: ignore[attr-defined]

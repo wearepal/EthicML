@@ -50,6 +50,7 @@ class FairDummies(InAlgorithmSubprocess):
 
     @implements(InAlgorithmSubprocess)
     def _get_flags(self) -> FairDummiesArgs:
+        model_type = "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
         return {
             "lr": self.lr,
             "pretrain_pred_epochs": self.pretrain_pred_epochs,
@@ -58,7 +59,7 @@ class FairDummies(InAlgorithmSubprocess):
             "loss_steps": self.loss_steps,
             "dis_steps": self.dis_steps,
             "batch_size": self.batch_size,
-            "model_type": self.model_type,
+            "model_type": model_type,
             "lambda_vec": self.lambda_vec,
             "second_moment_scaling": self.second_moment_scaling,
         }

@@ -210,7 +210,7 @@ class AdvDebiasingClassLearner:
 
         self.model_type = model_type
         if self.model_type == "deep_model":
-            self.clf = DeepModel(in_shape=in_shape, out_shape=num_classes)
+            self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
         elif self.model_type == "linear_model":
             self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
         else:
@@ -223,7 +223,7 @@ class AdvDebiasingClassLearner:
 
         self.lambdas = torch.Tensor([lambda_vec])
 
-        self.adv = Adversary(n_sensitive=1, n_y=num_classes * 2)
+        self.adv: nn.Module = Adversary(n_sensitive=1, n_y=num_classes * 2)
         self.adv_criterion = nn.BCELoss(reduction='none')
         self.adv_optimizer = optim.Adam(self.adv.parameters(), lr=self.lr)
 
@@ -231,7 +231,7 @@ class AdvDebiasingClassLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
         """Fit."""
         train_data, train_loader = make_dataset_and_loader(
             train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
@@ -302,7 +302,7 @@ class AdvDebiasingRegLearner:
 
         self.model_type = model_type
         if self.model_type == "deep_model":
-            self.clf = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
+            self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
         elif self.model_type == "linear_model":
             self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
@@ -315,7 +315,7 @@ class AdvDebiasingRegLearner:
 
         self.lambdas = torch.Tensor([lambda_vec])
 
-        self.adv = Adversary(n_sensitive=1, n_y=out_shape + 1)
+        self.adv: nn.Module = Adversary(n_sensitive=1, n_y=out_shape + 1)
         self.adv_criterion = nn.BCELoss(reduce=False)
         self.adv_optimizer = optim.Adam(self.adv.parameters(), lr=self.lr)
 
@@ -323,7 +323,7 @@ class AdvDebiasingRegLearner:
 
         self.n_epoch_combined = n_epoch_combined
 
-    def fit(self, train: DataTuple, seed: int) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
         """Fit."""
         # The features are X[:,1:]
 

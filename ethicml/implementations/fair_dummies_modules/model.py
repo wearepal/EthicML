@@ -499,7 +499,7 @@ class EquiClassLearner:
 
         self.scaler = StandardScaler()
 
-    def fit(self, train: DataTuple, seed: int) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
         """Fit."""
         # The features are X[:,1:]
         p_success, dummy = density_estimation(y=train.y, a=train.s)
