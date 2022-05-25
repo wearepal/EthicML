@@ -128,8 +128,8 @@ def train_and_transform(
     test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
 
     return (
-        DataTuple.from_x_s_and_y(x=train_transformed, s=train.s, y=train.y, name=train.name),
-        TestTuple.from_x_and_s(x=test_transformed, s=test.s, name=test.name),
+        DataTuple.from_x_s_y(x=train_transformed, s=train.s, y=train.y, name=train.name),
+        TestTuple.from_x_s(x=test_transformed, s=test.s, name=test.name),
     )
 
 
@@ -144,9 +144,9 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
     data_nons = data.x.loc[data.s == 1].to_numpy()
     transformed = trans(prototypes, w, data_nons, data_sens, data)
     if isinstance(data, DataTuple):
-        return DataTuple.from_x_s_and_y(x=transformed, s=data.s, y=data.y, name=data.name)
+        return DataTuple.from_x_s_y(x=transformed, s=data.s, y=data.y, name=data.name)
     elif isinstance(data, TestTuple):
-        return TestTuple.from_x_and_s(x=transformed, s=data.s, name=data.name)
+        return TestTuple.from_x_s(x=transformed, s=data.s, name=data.name)
 
 
 def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
@@ -259,7 +259,7 @@ def main() -> None:
         train_transformed = trans(
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )
-        data = DataTuple.from_x_s_and_y(x=train_transformed, s=train.s, y=train.y, name=train.name)
+        data = DataTuple.from_x_s_y(x=train_transformed, s=train.s, y=train.y, name=train.name)
         data.to_npz(Path(pre_algo_args["new_train"]))
         dump(model, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":

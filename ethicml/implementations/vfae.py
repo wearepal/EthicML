@@ -84,11 +84,11 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
             post_train += z1_mu.data.tolist()
 
     if isinstance(dataset, DataTuple):
-        return DataTuple.from_x_s_and_y(
+        return DataTuple.from_x_s_y(
             x=pd.DataFrame(post_train), s=dataset.s, y=dataset.y, name=f"VFAE: {dataset.name}"
         )
     elif isinstance(dataset, TestTuple):
-        return TestTuple.from_x_and_s(
+        return TestTuple.from_x_s(
             x=pd.DataFrame(post_train), s=dataset.s, name=f"VFAE: {dataset.name}"
         )
 
