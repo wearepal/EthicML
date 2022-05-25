@@ -173,7 +173,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _base_name: ClassVar[str] = "ZafarEqOpp"
 
     def __init__(self, *, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
-        name = f"{self._base_name}, τ={tau}, μ={mu}"
+        name = f"{self._base_name}, τ={tau}, μ={mu} ε={eps}"
         super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu

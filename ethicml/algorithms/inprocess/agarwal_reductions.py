@@ -81,7 +81,7 @@ class Agarwal(InAlgorithmSubprocess):
 
     @implements(InAlgorithmSubprocess)
     def get_name(self) -> str:
-        return f"Agarwal, {self.classifier}, {self.fairness}"
+        return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"
 
     @implements(InAlgorithmSubprocess)
     def _get_path_to_script(self) -> List[str]:
