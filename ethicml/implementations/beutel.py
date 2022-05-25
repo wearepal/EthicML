@@ -28,7 +28,7 @@ from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
     from ethicml.algorithms.preprocess.beutel import BeutelArgs
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs
+    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -187,7 +187,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
     return transformed_train, enc
 
 
-def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestTuple:
+def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
     """Transform the test data using the trained autoencoder.
 
     :param data:
@@ -198,7 +198,11 @@ def transform(data: TestTuple, enc: torch.nn.Module, flags: BeutelArgs) -> TestT
     test_loader = torch.utils.data.DataLoader(
         dataset=test_data, batch_size=flags["batch_size"], shuffle=False
     )
-    return encode_testset(enc, test_loader, data)
+    test_transformed = encode_testset(enc, test_loader, data)
+    if isinstance(data, DataTuple):
+        return DataTuple(x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name)
+    else:
+        return test_transformed
 
 
 def train_and_transform(
