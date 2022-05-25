@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
-import sklearn.linear_model._base
+import sklearn
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression
 

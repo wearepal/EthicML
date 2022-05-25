@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Generator
 import numpy as np
 import pandas as pd
 from joblib import dump, load
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
@@ -63,11 +64,14 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
     if classifier_type is ClassifierType.svm:
         assert kernel_type is not None
         model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
-    else:
+    elif classifier_type is ClassifierType.lr:
         random_state = np.random.RandomState(seed=seed)
         model = LogisticRegression(
             solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
         )
+    elif classifier_type is ClassifierType.gbt:
+        random_state = np.random.RandomState(seed=seed)
+        model = GradientBoostingClassifier(random_state=random_state)
 
     data_x = train.x
     data_y = train.y

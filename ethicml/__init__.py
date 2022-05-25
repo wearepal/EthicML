@@ -2,6 +2,7 @@
 from .algorithms.algorithm_base import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
+from .algorithms.inprocess.fair_dummies import *
 from .algorithms.inprocess.fairness_wo_demographics import *
 from .algorithms.inprocess.in_algorithm import *
 from .algorithms.inprocess.in_subprocess import *
@@ -40,6 +41,7 @@ from .data.tabular_data.health import *
 from .data.tabular_data.law import *
 from .data.tabular_data.lipton import *
 from .data.tabular_data.non_binary_toy import *
+from .data.tabular_data.nursery import *
 from .data.tabular_data.sqf import *
 from .data.tabular_data.synthetic import *
 from .data.tabular_data.toy import *

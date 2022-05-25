@@ -150,14 +150,14 @@ class Dataset:
 
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
-        """Dictionary of feature groups."""
+        """Return Dictionary of feature groups."""
         if self._discrete_feature_groups is None:
             return None
         dfgs = self._discrete_feature_groups
         return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
 
     def __len__(self) -> int:
-        """Number of elements in the dataset."""
+        """Return number of elements in the dataset."""
         return self._num_samples
 
     @abstractmethod
@@ -203,7 +203,9 @@ class Dataset:
         return combination, mask
 
     @staticmethod
-    def _from_dummies(data: pd.DataFrame, categorical_cols: Dict[str, List[str]]) -> pd.DataFrame:
+    def _from_dummies(
+        data: pd.DataFrame, categorical_cols: Dict[str, Sequence[str]]
+    ) -> pd.DataFrame:
         out = data.copy()
 
         for col_parent, filter_col in categorical_cols.items():

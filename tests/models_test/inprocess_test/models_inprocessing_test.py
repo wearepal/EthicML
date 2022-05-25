@@ -23,6 +23,7 @@ from ethicml import (
     CrossValidator,
     DataTuple,
     DPOracle,
+    FairDummies,
     FairnessType,
     InAlgoArgs,
     InAlgorithm,
@@ -40,6 +41,8 @@ from ethicml import (
     load_data,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
+from ethicml.algorithms.inprocess.fair_dummies import FairDummies
 from ethicml.algorithms.inprocess.hgr import Hgr
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
@@ -55,29 +58,35 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, lr, dp", model=Agarwal(dir=TMPDIR), num_pos=45),
+    InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir=TMPDIR), num_pos=45),
+    InprocessTest(name="Agarwal, lr, dp, 0.1", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
-        name="Agarwal, lr, eq_odds",
+        name="Agarwal, gbt, dp, 0.1",
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.gbt),
+        num_pos=44,
+    ),
+    InprocessTest(
+        name="Agarwal, lr, eq_odds, 0.1",
         model=Agarwal(dir=TMPDIR, fairness=FairnessType.eq_odds),
         num_pos=44,
     ),
     InprocessTest(
-        name="Agarwal, svm, dp",
+        name="Agarwal, svm, dp, 0.1",
         model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, svm, dp",
+        name="Agarwal, svm, dp, 0.1",
         model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, kernel=KernelType.linear),
         num_pos=42,
     ),
     InprocessTest(
-        name="Agarwal, svm, eq_odds",
+        name="Agarwal, svm, eq_odds, 0.1",
         model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, svm, eq_odds",
+        name="Agarwal, svm, eq_odds, 0.1",
         model=Agarwal(
             dir=TMPDIR,
             classifier=ClassifierType.svm,
@@ -90,13 +99,18 @@ INPROCESS_TESTS = [
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir=TMPDIR), num_pos=43),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=20),
-    InprocessTest(name="HGR", model=Hgr(dir=TMPDIR, model_type="linear_model"), num_pos=62),
-    InprocessTest(name="HGR", model=Hgr(dir=TMPDIR, model_type="deep_model"), num_pos=66),
+    InprocessTest(
+        name="HGR linear_model", model=Hgr(dir=TMPDIR, model_type="linear_model"), num_pos=60
+    ),
+    InprocessTest(
+        name="HGR deep_model", model=Hgr(dir=TMPDIR, model_type="deep_model"), num_pos=69
+    ),
+    InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
-    InprocessTest(name="MLP", model=MLP(), num_pos=43),
+    InprocessTest(name="MLP", model=MLP(), num_pos=41),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
     InprocessTest(name="SVM (rbf)", model=SVM(), num_pos=45),
     InprocessTest(name="SVM (linear)", model=SVM(kernel=KernelType.linear), num_pos=41),

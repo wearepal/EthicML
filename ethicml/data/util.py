@@ -21,7 +21,7 @@ _T = TypeVar("_T")
 
 
 def deprecated(func: Callable[_P, _T]) -> Callable[_P, _T]:
-    """Decorator which can be used to mark functions as deprecated.
+    """Decorate functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
     """

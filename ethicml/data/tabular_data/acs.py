@@ -82,7 +82,7 @@ class AcsBase(Dataset):
 
         assert isinstance(dataframe, pd.DataFrame)
 
-        feature_split = self.feature_split if not ordered else self.ordered_features
+        feature_split = self.ordered_features if ordered else self.feature_split
         if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:

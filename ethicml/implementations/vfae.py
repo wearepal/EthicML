@@ -160,7 +160,7 @@ def train_model(
 
 
 def main() -> None:
-    """Main method to run model."""
+    """Run model."""
     pre_algo_args: PreAlgoArgs = json.loads(sys.argv[1])
     flags: VfaeArgs = json.loads(sys.argv[2])
     if pre_algo_args["mode"] == "run":

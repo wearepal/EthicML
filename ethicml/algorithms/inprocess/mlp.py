@@ -26,6 +26,8 @@ class MLP(InAlgorithmDC):
     hidden_layer_sizes: Tuple[int, ...] = field(
         default_factory=lambda: MLPClassifier().hidden_layer_sizes
     )
+    batch_size: int = 32
+    lr: float = 1e-3
 
     @implements(InAlgorithmDC)
     def get_name(self) -> str:
@@ -33,7 +35,9 @@ class MLP(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
-        self.clf = select_mlp(self.hidden_layer_sizes, seed=seed)
+        self.clf = select_mlp(
+            self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size
+        )
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
 
@@ -43,16 +47,24 @@ class MLP(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
-        clf = select_mlp(self.hidden_layer_sizes, seed=seed)
+        clf = select_mlp(self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size)
         clf.fit(train.x, train.y.to_numpy().ravel())
         return SoftPrediction(soft=clf.predict_proba(test.x), info=self.get_hyperparameters())
 
 
-def select_mlp(hidden_layer_sizes: Tuple[int, ...], seed: int) -> MLPClassifier:
+def select_mlp(
+    hidden_layer_sizes: Tuple[int, ...], seed: int, lr: float, batch_size: int
+) -> MLPClassifier:
     """Create MLP model for the given parameters.
 
     :param hidden_layer_sizes: The number of neurons in each hidden layer.
     :param seed: The seed for the random number generator.
     """
     random_state = np.random.RandomState(seed=seed)
-    return MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, random_state=random_state)
+    return MLPClassifier(
+        hidden_layer_sizes=hidden_layer_sizes,
+        solver='adam',
+        random_state=random_state,
+        learning_rate_init=lr,
+        batch_size=batch_size,
+    )

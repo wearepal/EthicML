@@ -28,7 +28,7 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
 def domain_split(
     datatup: DataTuple, tr_cond: str, te_cond: str, seed: int = 888
 ) -> Tuple[DataTuple, DataTuple]:
-    """Splits a datatuple based on a condition.
+    """Split a datatuple based on a condition.
 
     :param datatup: DataTuple
     :param tr_cond: condition for the training set

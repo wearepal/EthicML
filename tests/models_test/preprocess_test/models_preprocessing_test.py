@@ -61,12 +61,14 @@ METHOD_LIST = [
         num_pos=47,
     ),
     PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
-    PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=50),
+    PreprocessTest(model=Beutel(dir=TMPDIR, validation_pcnt=0.25), name="Beutel dp", num_pos=51),
     PreprocessTest(
-        model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
+        model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp, validation_pcnt=0.25),
         name="Beutel eq_opp",
-        num_pos=56,
+        num_pos=62,
     ),
+]
+METHOD_LIST_EXTENSION = [
     PreprocessTest(
         model=Upsampler(strategy=UpsampleStrategy.naive), name="Upsample naive", num_pos=43
     ),
@@ -84,7 +86,7 @@ METHOD_LIST = [
 ]
 
 
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST + METHOD_LIST_EXTENSION)
 def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test preprocessing."""
     train, test = toy_train_test
@@ -135,42 +137,7 @@ def test_pre_sep_fit_transform(
     assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
-@pytest.mark.parametrize(
-    "model,name,num_pos",
-    [
-        PreprocessTest(
-            model=VFAE(
-                dir=TMPDIR,
-                dataset="Toy",
-                supervised=True,
-                epochs=10,
-                fairness=FairnessType.eq_opp,
-                batch_size=100,
-            ),
-            name="VFAE",
-            num_pos=56,
-        ),
-        PreprocessTest(
-            model=VFAE(
-                dir=TMPDIR,
-                dataset="Toy",
-                supervised=False,
-                epochs=10,
-                fairness=FairnessType.eq_opp,
-                batch_size=100,
-            ),
-            name="VFAE",
-            num_pos=47,
-        ),
-        PreprocessTest(model=Zemel(dir=TMPDIR), name="Zemel", num_pos=51),
-        PreprocessTest(model=Beutel(dir=TMPDIR), name="Beutel dp", num_pos=50),
-        PreprocessTest(
-            model=Beutel(dir=TMPDIR, epochs=5, fairness=FairnessType.eq_opp),
-            name="Beutel eq_opp",
-            num_pos=56,
-        ),
-    ],
-)
+@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
 def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test vfae."""
     train, test = toy_train_test

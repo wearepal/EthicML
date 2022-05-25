@@ -392,6 +392,7 @@ class ClassifierType(Enum):
 
     lr = auto()
     svm = auto()
+    gbt = auto()
 
 
 class TrainTestPair(NamedTuple):

@@ -15,6 +15,8 @@ def settings_for_svm_lr(
     classifier: ClassifierType, C: Optional[float], kernel: Optional[KernelType]
 ) -> Tuple[float, Optional[KernelType]]:
     """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
+    if classifier is ClassifierType.gbt:
+        return 1.0, None
     if C is None:
         if classifier is ClassifierType.lr:
             C = LogisticRegression().C

@@ -53,7 +53,7 @@ class _ZafarAlgorithmBase(InstalledModel):
         out["sensitive"][data.s.name] = data.s.to_numpy().tolist()
         if isinstance(data, DataTuple):
             data_converted = label_converter.adjust(data)
-            out["class"] = (2 * data_converted.y.to_numpy() - 1).tolist()  # type: ignore[attr-defined]
+            out["class"] = (2 * data_converted.y.to_numpy() - 1).tolist()
         else:
             out["class"] = [-1 for _ in range(data.x.shape[0])]
         with file_path.open("w") as out_file:
@@ -173,7 +173,7 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
     _base_name: ClassVar[str] = "ZafarEqOpp"
 
     def __init__(self, *, tau: float = 5.0, mu: float = 1.2, eps: float = 0.0001):
-        name = f"{self._base_name}, τ={tau}, μ={mu}"
+        name = f"{self._base_name}, τ={tau}, μ={mu} ε={eps}"
         super().__init__(name=name, sub_dir=SUB_DIR_MISTREAT)
         self._tau = tau
         self._mu = mu

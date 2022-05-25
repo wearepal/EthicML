@@ -31,7 +31,7 @@ class PlotDef(NamedTuple):
 def common_plotting_settings(
     plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
 ) -> Optional[mpl.legend.Legend]:
-    """Common settings for plots.
+    """Commonly used settings for plots.
 
     :param plot: a pyplot plot object
     :param plot_def: a `PlotDef` that defines properties of the plot
