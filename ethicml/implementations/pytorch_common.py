@@ -9,7 +9,7 @@ import pandas as pd
 try:
     import torch
     from torch import Tensor, nn
-    from torch.utils.data import Dataset
+    from torch.utils.data import Dataset, TensorDataset
 except ImportError as e:
     raise RuntimeError(
         "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
@@ -165,6 +165,19 @@ def compute_projection_gradients(
 
     for param, grad in zip(model.parameters(), grad_p):
         param.grad = grad
+
+
+class PandasDataSet(TensorDataset):
+    """Pandas Dataset."""
+
+    def __init__(self, *dataframes):
+        tensors = (self._df_to_tensor(df) for df in dataframes)
+        super().__init__(*tensors)
+
+    def _df_to_tensor(self, df):
+        if isinstance(df, pd.Series):
+            df = df.to_frame('dummy')
+        return torch.from_numpy(df.values).float()
 
 
 class LinearModel(torch.nn.Module):
@@ -330,7 +343,7 @@ class GeneralLearner:
         """Fit a model on training data."""
         self.model.train()
         _, train_loader = make_dataset_and_loader(
-            train, batch_size=self.batch_size, shuffle=True, seed=seed
+            train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
         self.run_epochs(train_loader)
 

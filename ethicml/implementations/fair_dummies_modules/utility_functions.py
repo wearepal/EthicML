@@ -17,7 +17,7 @@ def density_estimation(
 ) -> Tuple[List[float], List[float]]:
     """Estimate the distribusion of P{A|Y}."""
     if y_test is None:
-        y_test = []
+        y_test = np.array([])
     assert y_test is not None
     bandwidth = np.sqrt(max(np.median(np.abs(y)), 0.01))
 

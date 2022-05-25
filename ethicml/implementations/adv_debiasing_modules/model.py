@@ -10,9 +10,9 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
 from ranzen import implements
-from sklearn.preprocessing import StandardScaler
 
 from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (
@@ -52,14 +52,15 @@ def pretrain_adversary(
     lambdas: torch.Tensor,
 ) -> nn.Module:
     """Pretrain adversary."""
-    for x, y, z in data_loader:
+    for x, z, y in data_loader:
         p_y = clf(x).detach()
         adv.zero_grad()
         if len(p_y.size()) == 1:
             p_y = p_y.unsqueeze(dim=1)
-        in_adv = torch.cat((p_y, y), 1)
+        y_ = F.one_hot(y.long())
+        in_adv = torch.cat((p_y, y_), 1)
         p_z = adv(in_adv)
-        loss = (criterion(p_z, z) * lambdas).mean()
+        loss = (criterion(p_z, z.unsqueeze(1)) * lambdas).mean()
         loss.backward()
         optimizer.step()
     return adv
@@ -77,29 +78,31 @@ def train_loop(
 ) -> Tuple[nn.Module, nn.Module]:
     """Train model."""
     # Train adversary
-    for x, y, z in data_loader:
+    for x, z, y in data_loader:
         p_y = clf(x)
         if len(p_y.size()) == 1:
             p_y = p_y.unsqueeze(dim=1)
         adv.zero_grad()
-        in_adv = torch.cat((p_y, y), 1)
+        y_ = F.one_hot(y.long())
+        in_adv = torch.cat((p_y, y_), 1)
         p_z = adv(in_adv)
-        loss_adv = (adv_criterion(p_z, z) * lambdas).mean()
+        loss_adv = (adv_criterion(p_z, z.unsqueeze(1)) * lambdas).mean()
         loss_adv.backward()
         adv_optimizer.step()
 
     # Train predictor on single batch
-    for x, y, z in data_loader:
+    for x, z, y in data_loader:
         p_y = clf(x)
         if len(p_y.size()) == 1:
             p_y = p_y.unsqueeze(dim=1)
-        in_adv = torch.cat((p_y, y), 1)
+        y_ = F.one_hot(y.long())
+        in_adv = torch.cat((p_y, y_), 1)
         p_z = adv(in_adv)  # TODO: This is unused?
         clf.zero_grad()
         p_z = adv(in_adv)
-        loss_adv = (adv_criterion(p_z, z) * lambdas).mean()  # TODO: This is unused?
+        loss_adv = (adv_criterion(p_z, z.unsqueeze(1)) * lambdas).mean()  # TODO: This is unused?
         clf_loss = (1.0 - lambdas) * clf_criterion(p_y, y.squeeze().long()) - (
-            adv_criterion(adv(in_adv), z) * lambdas
+            adv_criterion(adv(in_adv), z.unsqueeze(1)) * lambdas
         ).mean()
         clf_loss.backward()
         clf_optimizer.step()
@@ -120,7 +123,7 @@ def train_regressor(
 ) -> Tuple[nn.Module, nn.Module]:
     """Train regression model."""
     # Train adversary
-    for x, y, z in data_loader:
+    for x, z, y in data_loader:
         p_y = clf(x)
         if len(p_y.size()) == 1:
             p_y = p_y.unsqueeze(dim=1)
@@ -132,7 +135,7 @@ def train_regressor(
         adv_optimizer.step()
 
     # Train predictor on single batch
-    for x, y, z in data_loader:
+    for x, z, y in data_loader:
         p_y = clf(x)
         if len(p_y.size()) == 1:
             p_y = p_y.unsqueeze(dim=1)
@@ -174,7 +177,7 @@ def pretrain_regressor(
     criterion: nn.Module,
 ) -> nn.Module:
     """Pretrain regression model."""
-    for x, y, _ in data_loader:
+    for x, _, y in data_loader:
         clf.zero_grad()
         p_y = clf(x)
         loss = criterion(p_y.squeeze(), y.squeeze())
@@ -220,18 +223,13 @@ class AdvDebiasingClassLearner:
 
         self.lambdas = torch.Tensor([lambda_vec])
 
-        self.adv = Adversary(n_sensitive=1, n_y=num_classes + 1)
-        self.adv_criterion = nn.BCELoss(reduce=False)
+        self.adv = Adversary(n_sensitive=1, n_y=num_classes * 2)
+        self.adv_criterion = nn.BCELoss(reduction='none')
         self.adv_optimizer = optim.Adam(self.adv.parameters(), lr=self.lr)
 
         self.n_adv_epochs = n_adv_epochs
 
         self.n_epoch_combined = n_epoch_combined
-
-        self.scaler = StandardScaler()
-        self.scale_df = lambda df, scaler: pd.DataFrame(
-            scaler.transform(df), columns=df.columns, index=df.index
-        )
 
     def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
@@ -271,10 +269,8 @@ class AdvDebiasingClassLearner:
     def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
         x = torch.from_numpy(x.to_numpy()).float()
-
         self.clf.eval()
         yhat = self.clf(x)
-
         sm = nn.Softmax(dim=1)
         yhat = sm(yhat)
         yhat = yhat.detach().numpy()
@@ -326,11 +322,6 @@ class AdvDebiasingRegLearner:
         self.n_adv_epochs = n_adv_epochs
 
         self.n_epoch_combined = n_epoch_combined
-
-        self.scaler = StandardScaler()
-        self.scale_df = lambda df, scaler: pd.DataFrame(
-            scaler.transform(df), columns=df.columns, index=df.index
-        )
 
     def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""

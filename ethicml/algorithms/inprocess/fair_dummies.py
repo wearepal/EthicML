@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List
-from typing_extensions import TypedDict
+from typing_extensions import Literal, TypedDict
 
 from ranzen import implements
 
@@ -24,7 +24,7 @@ class FairDummiesArgs(TypedDict):
     loss_steps: int
     dis_steps: int
     batch_size: int
-    model_type: str
+    model_type: Literal["deep_model", "linear_model"]
     lambda_vec: float
     second_moment_scaling: float
 

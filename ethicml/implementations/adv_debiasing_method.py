@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
-import pandas as pd
 import torch
 from joblib import dump, load
 
@@ -52,8 +51,7 @@ def predict(model: AdvDebiasingClassLearner, test: TestTuple) -> np.ndarray:
     :param exponentiated_gradient:
     :param test:
     """
-    input_data_test = pd.concat([test.s, test.x], axis="columns").to_numpy()
-    return model.predict(input_data_test)
+    return model.predict(test.x)
 
 
 def train_and_predict(train: DataTuple, test: TestTuple, args: AdvDebArgs, seed: int) -> np.ndarray:

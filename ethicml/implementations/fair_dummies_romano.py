@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import numpy as np
-import pandas as pd
 import torch
 from joblib import dump, load
 
@@ -47,8 +46,7 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
         num_classes=train.y.nunique(),
         seed=seed,
     )
-    input_data_train = pd.concat([train.s, train.x], axis="columns").to_numpy()
-    return model.fit(input_data_train, train.y.to_numpy())
+    return model.fit(train, seed=seed)
 
 
 def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
@@ -57,13 +55,12 @@ def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
     :param exponentiated_gradient:
     :param test:
     """
-    input_data_test = pd.concat([test.s, test.x], axis="columns").to_numpy()
-    return model.predict(input_data_test)
+    return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
-) -> pd.DataFrame:
+) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:

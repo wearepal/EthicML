@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any, Callable, Tuple
+from typing import Callable, Tuple
 from typing_extensions import Literal, Self
 
 import numpy as np
@@ -13,7 +13,8 @@ import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader
 
-from ..pytorch_common import DeepModel, DeepRegModel, LinearModel
+from ... import DataTuple
+from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
 from .utility_functions import density_estimation
 
 
@@ -107,7 +108,7 @@ def pretrain_adversary(
     lambdas: torch.Tensor,
 ) -> nn.Module:
     """Pretrain adversary."""
-    for x, y, a, at in data_loader:
+    for x, a, y, at in data_loader:
         dis = pretrain_adversary_fast_loader(
             dis=dis,
             model=model,
@@ -130,7 +131,7 @@ def pretrain_classifier(
     criterion: nn.Module,
 ) -> nn.Module:
     """Pretrain classifier."""
-    for x, y, _, _ in data_loader:
+    for x, _, y, _ in data_loader:
         model.zero_grad()
         yhat = model(x)
         loss = criterion(yhat, y.squeeze().long())
@@ -147,7 +148,7 @@ def pretrain_regressor(
     criterion: nn.Module,
 ) -> nn.Module:
     """Pretrain regressor."""
-    for x, y, _, _ in data_loader:
+    for x, _, y, _ in data_loader:
         model.zero_grad()
         yhat = model(x)
         loss = criterion(yhat.squeeze(), y.squeeze())
@@ -191,7 +192,7 @@ def train_classifier(
     """Train classifier."""
     # Train adversary
     for _ in range(dis_steps):
-        for x, y, a, at in data_loader:
+        for x, a, y, at in data_loader:
             yhat = model(x)
             dis.zero_grad()
             if len(yhat.size()) == 1:
@@ -207,7 +208,7 @@ def train_classifier(
 
     # Train predictor
     for _ in range(loss_steps):
-        for x, y, a, at in data_loader:
+        for x, a, y, at in data_loader:
             yhat = model(x)
             if len(yhat.size()) == 1:
                 yhat = yhat.unsqueeze(dim=1)
@@ -388,7 +389,7 @@ def train_regressor(
     """Train the regressor."""
     # Train adversary
     for _ in range(dis_steps):
-        for x, y, a, at in data_loader:
+        for x, a, y, at in data_loader:
             dis = inner_train_adversary_regression(
                 model=model,
                 dis=dis,
@@ -408,7 +409,7 @@ def train_regressor(
 
     # Train predictor
     for _ in range(loss_steps):
-        for x, y, a, at in data_loader:
+        for x, a, y, at in data_loader:
             model = inner_train_model_regression(
                 model=model,
                 dis=dis,
@@ -498,32 +499,21 @@ class EquiClassLearner:
 
         self.scaler = StandardScaler()
 
-    def scale_df(self, df: pd.DataFrame, scaler: Any) -> pd.DataFrame:
-        """Scale DF."""
-        return pd.DataFrame(scaler.transform(df), columns=df.columns, index=df.index)
-
-    def fit(self, x: np.ndarray, y: np.ndarray) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:
         """Fit."""
         # The features are X[:,1:]
-        x_train = pd.DataFrame(data=x[:, 1:])
-        y_train = pd.DataFrame(data=y)
-        orig_z = x[:, 0]
-        z_train = pd.DataFrame(data=orig_z)
-        p_success, dummy = density_estimation(y=y, a=orig_z)
+        p_success, dummy = density_estimation(y=train.y, a=train.s)
 
-        rng = np.random.default_rng(self.seed)
-
-        self.scaler.fit(x_train)
-        x_train = x_train.pipe(self.scale_df, self.scaler)
+        rng = np.random.default_rng(seed)
 
         g = torch.Generator()
         g.manual_seed(self.seed)
 
         for _ in range(self.pretrain_pred_epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -541,10 +531,10 @@ class EquiClassLearner:
             )
 
         for _ in range(self.pretrain_dis_epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -564,10 +554,10 @@ class EquiClassLearner:
             )
 
         for _ in range(1, self.epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -593,13 +583,9 @@ class EquiClassLearner:
             )
         return self
 
-    def predict(self, x: np.ndarray) -> np.ndarray:
+    def predict(self, x: pd.DataFrame) -> np.ndarray:
         """Predict."""
-        x = x[:, 1:]
-        x_test = pd.DataFrame(data=x)
-        x_test = x_test.pipe(self.scale_df, self.scaler)
-
-        test_data = PandasDataSet(x_test)
+        test_data = PandasDataSet(x)
 
         with torch.no_grad():
             yhat = self.model(test_data.tensors[0])
@@ -662,50 +648,24 @@ class EquiRegLearner:
         self.loss_steps = loss_steps
         self.dis_steps = dis_steps
 
-        self.scaler_x = StandardScaler()
-        self.scaler_y = StandardScaler()
-        self.scaler_z = StandardScaler()
-        self.scaler_zt = StandardScaler()
-
-        self.scale_df = lambda df, scaler: pd.DataFrame(
-            scaler.transform(df), columns=df.columns, index=df.index
-        )
-
-    def fit(self, x: np.ndarray, y: np.ndarray) -> None:
+    def fit(self, train: DataTuple, seed: int) -> None:
         """Fit."""
-        fast_loader = self.batch_size >= x.shape[0]
-        # The features are X[:,1:]
-        x_train = pd.DataFrame(data=x[:, 1:])
-        y_train = pd.DataFrame(data=y)
-        orig_z = x[:, 0]
-        z_train = pd.DataFrame(data=orig_z)
-        p_success, dummy = density_estimation(y=y, a=orig_z)
+        fast_loader = self.batch_size >= train.x.shape[0]
+        p_success, dummy = density_estimation(y=train.y, a=train.s)
 
-        if self.use_standardscaler:
-            self.scaler_x.fit(x_train)
-            x_train = x_train.pipe(self.scale_df, self.scaler_x)
+        x = torch.from_numpy(train.x.values).float()
+        y = torch.from_numpy(train.y.values).float()
+        a = torch.from_numpy(train.s.values).float()
 
-            self.scaler_z.fit(z_train)
-            z_train = z_train.pipe(self.scale_df, self.scaler_z)
-
-            if self.out_shape == 1:
-                self.scaler_y.fit(y_train)
-                y_train = y_train.pipe(self.scale_df, self.scaler_y)
-
-        x = torch.from_numpy(x_train.values).float()
-        y = torch.from_numpy(y_train.values).float()
-        a = torch.from_numpy(z_train.values).float()
-
-        rng = np.random.default_rng(self.seed)
+        rng = np.random.default_rng(seed)
+        g = torch.Generator()
+        g.manual_seed(seed)
 
         for _ in range(self.pretrain_pred_epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            if self.use_standardscaler:
-                self.scaler_zt.fit(zt_train)
-                zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -732,13 +692,10 @@ class EquiRegLearner:
             )
 
         for _ in range(self.pretrain_dis_epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            if self.use_standardscaler:
-                self.scaler_zt.fit(zt_train)
-                zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -770,13 +727,10 @@ class EquiRegLearner:
                 )
 
         for _ in range(1, self.epochs):
-            random_array = rng.uniform(low=0.0, high=1.0, size=orig_z.shape)
+            random_array = rng.uniform(low=0.0, high=1.0, size=train.s.shape)
             z_tilde = (random_array < p_success).astype(float)
             zt_train = pd.DataFrame(data=z_tilde)
-            if self.use_standardscaler:
-                self.scaler_zt.fit(zt_train)
-                zt_train = zt_train.pipe(self.scale_df, self.scaler_zt)
-            train_data = PandasDataSet(x_train, y_train, z_train, zt_train)
+            train_data = PandasDataSet(train.x, train.s, train.y, zt_train)
             train_loader = DataLoader(
                 train_data,
                 batch_size=self.batch_size,
@@ -818,22 +772,14 @@ class EquiRegLearner:
                 )
             )
 
-    def predict(self, x: np.ndarray) -> float:
+    def predict(self, x: pd.DataFrame) -> float:
         """Predict."""
-        x = x[:, 1:]
-        x_test = pd.DataFrame(data=x)
-
-        if self.use_standardscaler:
-            x_test = x_test.pipe(self.scale_df, self.scaler_x)
-
-        test_data = PandasDataSet(x_test)
+        test_data = PandasDataSet(x)
 
         with torch.no_grad():
             yhat = self.model(test_data.tensors[0]).squeeze().detach().numpy()
 
-        if self.out_shape == 1 and self.use_standardscaler:
-            out = self.scaler_y.inverse_transform(yhat.reshape(-1, 1)).squeeze()
-        elif self.out_shape == 1:
+        if self.out_shape == 1:
             out = yhat.squeeze()
         else:
             out = 0 * yhat

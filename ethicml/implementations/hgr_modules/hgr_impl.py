@@ -97,7 +97,7 @@ class HgrRegLearner:
         random.seed(seed)
         np.random.seed(seed)
         train_data, train_loader = make_dataset_and_loader(
-            train, self.batch_size, shuffle=True, seed=seed
+            train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
         self.run_epochs(train_loader)
 
@@ -192,7 +192,7 @@ class HgrClassLearner:
         torch.use_deterministic_algorithms(True)
         # train
         train_data, train_loader = make_dataset_and_loader(
-            train, self.batch_size, shuffle=True, seed=seed
+            train, batch_size=self.batch_size, shuffle=True, seed=seed, drop_last=True
         )
         self.model.train()
         self.run_epochs(train_loader)
