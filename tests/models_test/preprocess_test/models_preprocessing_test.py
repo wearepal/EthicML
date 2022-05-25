@@ -120,10 +120,13 @@ def test_pre_sep_fit_transform(
     assert model.name == name
     model, new_train = model.fit(train)
     new_test = model.transform(test)
+    assert isinstance(test, DataTuple)
+    new_test_no_y = model.transform(test.remove_y())
 
     if not isinstance(model, Upsampler):
         assert new_train.x.shape[0] == train.x.shape[0]
         assert new_test.x.shape[0] == test.x.shape[0]
+        assert new_test_no_y.x.shape[0] == test.x.shape[0]
 
     assert new_train.x.shape[1] == model.get_out_size()
     assert new_test.x.shape[1] == model.get_out_size()
