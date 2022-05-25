@@ -587,6 +587,7 @@ class EquiClassLearner:
         """Predict."""
         test_data = PandasDataSet(x)
 
+        self.model.eval()
         with torch.no_grad():
             yhat = self.model(test_data.tensors[0])
 
@@ -776,6 +777,7 @@ class EquiRegLearner:
         """Predict."""
         test_data = PandasDataSet(x)
 
+        self.model.eval()
         with torch.no_grad():
             yhat = self.model(test_data.tensors[0]).squeeze().detach().numpy()
 
