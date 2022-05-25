@@ -71,7 +71,7 @@ class Nursery(LoadableDataset):
 
         super().__init__(
             name=name,
-            num_samples=45222,
+            num_samples=12960,
             features=discrete_features + continuous_features,
             cont_features=continuous_features,
             sens_attr_spec=sens_attr_spec,
