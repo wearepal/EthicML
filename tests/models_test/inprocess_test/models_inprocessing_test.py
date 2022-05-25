@@ -43,7 +43,7 @@ from ethicml import (
 )
 from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
 from ethicml.algorithms.inprocess.fair_dummies import FairDummies
-from ethicml.algorithms.inprocess.hgr import Hgr
+from ethicml.algorithms.inprocess.hgr import HGR
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 TMPDIR: Final = Path("/tmp")
@@ -100,10 +100,10 @@ INPROCESS_TESTS = [
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir=TMPDIR), num_pos=43),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=20),
     InprocessTest(
-        name="HGR linear_model", model=Hgr(dir=TMPDIR, model_type="linear_model"), num_pos=60
+        name="HGR linear_model", model=HGR(dir=TMPDIR, model_type="linear_model"), num_pos=60
     ),
     InprocessTest(
-        name="HGR deep_model", model=Hgr(dir=TMPDIR, model_type="deep_model"), num_pos=69
+        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type="deep_model"), num_pos=69
     ),
     InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),

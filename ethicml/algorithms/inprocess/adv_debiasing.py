@@ -13,6 +13,8 @@ from ranzen import implements
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 
+__all__ = ["AdvDebiasing", "AdvDebArgs"]
+
 
 class AdvDebArgs(TypedDict):
     """Args for the Agarwal implementation."""

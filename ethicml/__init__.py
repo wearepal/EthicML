@@ -1,9 +1,11 @@
 """EthicML."""
 from .algorithms.algorithm_base import *
+from .algorithms.inprocess.adv_debiasing import *
 from .algorithms.inprocess.agarwal_reductions import *
 from .algorithms.inprocess.blind import *
 from .algorithms.inprocess.fair_dummies import *
 from .algorithms.inprocess.fairness_wo_demographics import *
+from .algorithms.inprocess.hgr import *
 from .algorithms.inprocess.in_algorithm import *
 from .algorithms.inprocess.in_subprocess import *
 from .algorithms.inprocess.installed_model import *
