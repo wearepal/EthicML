@@ -130,7 +130,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             self.call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_test: T = TestTuple.from_npz(transformed_test_path)
+            transformed_test: T = data.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         transformed_test = transformed_test.replace(
