@@ -18,7 +18,7 @@ NPZ: Final[str] = "test.npz"
 def test_simple_saving() -> None:
     """Tests that a DataTuple can be saved."""
     data_tuple = DataTuple.from_x_s_and_y(
-        x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0])}),
+        x=pd.DataFrame({"a1": np.array([9.4, np.nan, 0.0])}),
         s=pd.Series([18, -3, int(1e10)], name="b1"),
         y=pd.Series([0, 1, 0], name="c3"),
         name="test data",
