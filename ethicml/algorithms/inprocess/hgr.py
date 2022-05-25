@@ -15,6 +15,8 @@ from ranzen import implements
 from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
 from ethicml.utility import HyperParamType
 
+__all__ = ["HGR", "HgrArgs"]
+
 
 class HgrArgs(TypedDict):
     """Args for the HGR implementation."""
@@ -27,7 +29,7 @@ class HgrArgs(TypedDict):
 
 
 @dataclass
-class Hgr(InAlgorithmSubprocess):
+class HGR(InAlgorithmSubprocess):
     """HGR Method."""
 
     lr: float = 1e-3
