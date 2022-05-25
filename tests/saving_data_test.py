@@ -140,14 +140,12 @@ def test_apply_to_joined_df() -> None:
 
 def test_data_tuple_len() -> None:
     """Test DataTuple len property."""
-    datatup_unequal_len = DataTuple.from_x_s_and_y(
-        x=pd.DataFrame([3.0, 2.0], columns=["a1"]),
-        s=pd.Series([4.0], name="b2"),
-        y=pd.Series([6.0], name="c3"),
-        name=None,
-    )
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    s = pd.Series([4.0], name="b2")
+    y = pd.Series([6.0], name="c3")
+    name = None
     with pytest.raises(AssertionError):
-        len(datatup_unequal_len)
+        DataTuple.from_x_s_and_y(x=x, s=s, y=y, name=name)
 
     datatup_equal_len = DataTuple.from_x_s_and_y(
         x=pd.DataFrame([3.0, 2.0, 1.0], columns=["a1"]),

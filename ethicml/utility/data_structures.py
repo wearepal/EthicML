@@ -78,6 +78,7 @@ class TestTuple:
         """Make a TestTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
+        assert len(x) == len(s), "data has to have the same length"
         return cls(data=pd.concat([x, s], axis="columns", sort=False), s_column=s_column, name=name)
 
     @property
@@ -154,6 +155,7 @@ class DataTuple(TestTuple):
         s_column = s.name
         y_column = y.name
         assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert len(x) == len(s) == len(y), "data has to have the same length"
         return cls(
             data=pd.concat([x, s, y], axis="columns", sort=False),
             s_column=s_column,
@@ -177,9 +179,7 @@ class DataTuple(TestTuple):
 
     def __len__(self) -> int:
         """Overwrite __len__ magic method."""
-        len_x = len(self.x)
-        assert len_x == len(self.s) and len_x == len(self.y)
-        return len_x
+        return len(self.data)
 
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance."""
