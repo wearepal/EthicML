@@ -184,7 +184,7 @@ class HgrClassLearner:
         for _ in range(self.epochs):
             self.internal_epoch(dataloader)
 
-    def fit(self, train: DataTuple, seed: int) -> Self:
+    def fit(self, train: DataTuple, seed: int) -> Self:  # type: ignore[valid-type]
         """Fit."""
         torch.manual_seed(seed)
         random.seed(seed)
