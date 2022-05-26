@@ -50,6 +50,7 @@ from .data.tabular_data.toy import *
 from .data.util import *
 from .evaluators.cross_validator import *
 from .evaluators.evaluate_models import *
+from .evaluators.parallelism import *
 from .metrics import *
 from .preprocessing.adjust_labels import *
 from .preprocessing.biased_split import *

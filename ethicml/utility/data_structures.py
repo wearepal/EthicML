@@ -24,6 +24,7 @@ from typing_extensions import Final, Literal, TypeAlias
 
 import numpy as np
 import pandas as pd
+from numpy import typing as npt
 from ranzen import enum_name_str
 
 __all__ = [
@@ -41,6 +42,7 @@ __all__ = [
     "SubgroupTuple",
     "TestTuple",
     "TrainTestPair",
+    "TrainValPair",
     "aggregate_results",
     "concat",
     "filter_and_map_results",
@@ -75,7 +77,7 @@ class SubgroupTuple:
 
     @classmethod
     def from_df(
-        cls, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
+        cls, *, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
     ) -> SubgroupTuple:
         """Make a SubgroupTuple."""
         s_column = s.name
@@ -117,6 +119,7 @@ class SubgroupTuple:
 
     def replace_data(self, data: pd.DataFrame) -> SubgroupTuple:
         """Make a copy of the DataTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
         return SubgroupTuple(data=data, s_column=self.s_column, name=self.name)
 
     def rename(self, name: str) -> SubgroupTuple:
@@ -166,7 +169,7 @@ class DataTuple:
 
     @classmethod
     def from_df(
-        cls, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
     ) -> DataTuple:
         """Make a DataTuple."""
         s_column = s.name
@@ -216,8 +219,8 @@ class DataTuple:
         *,
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.Series] = None,
-        name: Optional[str] = None,
         y: Optional[pd.Series] = None,
+        name: Optional[str] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
         return DataTuple.from_df(
@@ -233,6 +236,8 @@ class DataTuple:
 
     def replace_data(self, data: pd.DataFrame) -> DataTuple:
         """Make a copy of the DataTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
+        assert self.y_column in data.columns, f"column {self.y_column} not present"
         return DataTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
@@ -298,7 +303,7 @@ class LabelTuple:
 
     @classmethod
     def from_df(
-        cls, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+        cls, *, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
     ) -> LabelTuple:
         """Make a LabelTuple."""
         s_column = s.name
@@ -306,10 +311,23 @@ class LabelTuple:
         assert isinstance(s_column, str) and isinstance(y_column, str)
         assert len(s) == len(y), "data has to have the same length"
         return cls(
-            data=pd.concat([s, y], axis="columns", sort=False),
+            data=pd.concat([s, y], axis="columns", sort=False),  # type: ignore[arg-type]
             s_column=s_column,
             y_column=y_column,
             name=name,
+        )
+
+    @classmethod
+    def from_np(cls, *, s: npt.NDArray, y: npt.NDArray, s_name: str, y_name: str) -> LabelTuple:
+        """Create a LabelTuple from numpy arrays."""
+        s_pd = pd.Series(s, name=s_name)
+        y_pd = pd.Series(y, name=y_name)
+        assert len(s) == len(y), "data has to have the same length"
+        return cls(
+            data=pd.concat([s_pd, y_pd], axis="columns", sort=False),  # type: ignore[arg-type]
+            s_column=s_name,
+            y_column=y_name,
+            name=None,
         )
 
     @property
@@ -342,8 +360,8 @@ class LabelTuple:
         self,
         *,
         s: Optional[pd.Series] = None,
-        name: Optional[str] = None,
         y: Optional[pd.Series] = None,
+        name: Optional[str] = None,
     ) -> LabelTuple:
         """Create a copy of the LabelTuple but change the given values."""
         return LabelTuple.from_df(
@@ -358,6 +376,8 @@ class LabelTuple:
 
     def replace_data(self, data: pd.DataFrame) -> LabelTuple:
         """Make a copy of the LabelTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
+        assert self.y_column in data.columns, f"column {self.y_column} not present"
         return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> LabelTuple:
@@ -547,14 +567,14 @@ class TrainTestPair(NamedTuple):
     """2-Tuple of train and test data."""
 
     train: DataTuple
-    test: TestTuple
+    test: SubgroupTuple
 
 
 class TrainValPair(NamedTuple):
     """2-Tuple of train and test data."""
 
     train: DataTuple
-    validation: DataTuple
+    test: DataTuple
 
 
 Results = NewType("Results", pd.DataFrame)  # Container for results from `evaluate_models`

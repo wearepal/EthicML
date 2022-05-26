@@ -6,6 +6,8 @@ from typing_extensions import Literal
 import numpy as np
 import pandas as pd
 
+from ethicml.utility import DataTuple, TestTuple
+
 try:
     import torch
     from torch import Tensor, nn
@@ -14,9 +16,6 @@ except ImportError as e:
     raise RuntimeError(
         "In order to use PyTorch, please install it following the instructions as https://pytorch.org/ . "
     ) from e
-
-
-from ethicml.utility import DataTuple, TestTuple
 
 
 def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, pd.Index, str]:

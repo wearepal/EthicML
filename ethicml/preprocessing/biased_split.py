@@ -102,9 +102,7 @@ def get_biased_subset(
     sy_equal_for_biased_ss, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
     sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
-    biased_subset = concat(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
-    )
+    biased_subset = concat([sy_equal_for_biased_ss, sy_opp_for_biased_ss], ignore_index=True)
 
     if mix_fact == 0.0:
         # s and y should be very correlated in the biased subset
@@ -214,9 +212,7 @@ def get_biased_and_debiased_subsets(
             sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
         )
 
-    biased_subset = concat(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
-    )
+    biased_subset = concat([sy_equal_for_biased_ss, sy_opp_for_biased_ss], ignore_index=True)
 
     # the debiased set is constructed from two sets of the same size
     min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
@@ -226,9 +222,7 @@ def get_biased_and_debiased_subsets(
 
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
-    debiased_subset = concat(
-        [debiased_subset_part1, debiased_subset_part2], axis="index", ignore_index=True
-    )
+    debiased_subset = concat([debiased_subset_part1, debiased_subset_part2], ignore_index=True)
 
     # s and y should not be correlated in the debiased subset
     assert abs(debiased_subset.s.corr(debiased_subset.y)) < 0.5

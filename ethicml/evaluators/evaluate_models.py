@@ -26,7 +26,7 @@ from ethicml.utility.data_structures import (
     Prediction,
     Results,
     ResultsAggregator,
-    TrainTestPair,
+    TrainValPair,
     make_results,
 )
 
@@ -198,7 +198,7 @@ def evaluate_models(
     all_results = ResultsAggregator()
 
     # ======================================= prepare data ========================================
-    data_splits: List[TrainTestPair] = []
+    data_splits: List[TrainValPair] = []
     test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
     model_seeds: List[int] = []
     for dataset in datasets:
@@ -213,7 +213,7 @@ def evaluate_models(
                 # take smaller subset of training data to speed up training
                 train = train.get_n_samples()
             train = train.replace(name=f"{train.name} ({split_id})")
-            data_splits.append(TrainTestPair(train, test))
+            data_splits.append(TrainValPair(train, test))
             model_seeds.append(0 if repeat_on == "data" else split_id)
             split_info.update({"split_id": split_id})
             test_data.append(
@@ -246,11 +246,11 @@ def evaluate_models(
     )
 
     # append the transformed data to `transformed_data`
-    transformed_data: List[TrainTestPair] = []
+    transformed_data: List[TrainValPair] = []
     transformed_test: List[_DataInfo] = []
     for transformed, pre_model in zip(all_transformed, preprocess_models):
         for (transf_train, transf_test), data_info in zip(transformed, test_data):
-            transformed_data.append(TrainTestPair(transf_train, transf_test))
+            transformed_data.append(TrainValPair(transf_train, transf_test))
             transformed_test.append(
                 _DataInfo(
                     test=data_info.test,

@@ -27,7 +27,7 @@ from ethicml.implementations.beutel import set_seed
 from ethicml.implementations.dro_modules.dro_classifier import DROClassifier
 from ethicml.implementations.pytorch_common import CustomDataset, TestDataset
 from ethicml.implementations.utils import load_data_from_flags
-from ethicml.utility import DataTuple, SoftPrediction, TestTuple
+from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
@@ -167,7 +167,7 @@ def main() -> None:
         model = fit(data, flags, seed=in_algo_args["seed"])
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        data = TestTuple.from_npz(Path(in_algo_args["test"]))
+        data = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
         predict(model, data, flags).to_npz(Path(in_algo_args["predictions"]))
 

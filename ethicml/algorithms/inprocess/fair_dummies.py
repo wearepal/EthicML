@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List
-from typing_extensions import Literal, TypedDict
+from typing_extensions import Final, Literal, TypedDict
 
 from ranzen import implements
 
@@ -52,7 +52,9 @@ class FairDummies(InAlgorithmSubprocess):
 
     @implements(InAlgorithmSubprocess)
     def _get_flags(self) -> FairDummiesArgs:
-        model_type = "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
+        model_type: Literal["deep_model", "linear_model"] = (
+            "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
+        )
         return {
             "lr": self.lr,
             "pretrain_pred_epochs": self.pretrain_pred_epochs,

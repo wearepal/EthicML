@@ -11,7 +11,7 @@ import numpy as np
 import torch
 from joblib import dump, load
 
-from ethicml import DataTuple, SoftPrediction, TestTuple
+from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.algorithms.inprocess.adv_debiasing import AdvDebArgs
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
 
@@ -45,7 +45,7 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
     return model.fit(train, seed=seed)
 
 
-def predict(model: AdvDebiasingClassLearner, test: TestTuple) -> np.ndarray:
+def predict(model: AdvDebiasingClassLearner, test: SubgroupTuple) -> np.ndarray:
     """Compute predictions on the given test data.
 
     :param exponentiated_gradient:
@@ -54,7 +54,9 @@ def predict(model: AdvDebiasingClassLearner, test: TestTuple) -> np.ndarray:
     return model.predict(test.x)
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: AdvDebArgs, seed: int) -> np.ndarray:
+def train_and_predict(
+    train: DataTuple, test: SubgroupTuple, args: AdvDebArgs, seed: int
+) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:
@@ -66,12 +68,12 @@ def train_and_predict(train: DataTuple, test: TestTuple, args: AdvDebArgs, seed:
 
 
 def main() -> None:
-    """Run the Agarwal model as a standalone program."""
+    """Run the adversarial debiasing model as a standalone program."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: AdvDebArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
             Path(in_algo_args["test"])
         )
         SoftPrediction(soft=train_and_predict(train, test, flags, in_algo_args["seed"])).to_npz(
@@ -83,7 +85,7 @@ def main() -> None:
         setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        test = TestTuple.from_npz(Path(in_algo_args["test"]))
+        test = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
         SoftPrediction(soft=predict(model, test)).to_npz(Path(in_algo_args["predictions"]))
     else:

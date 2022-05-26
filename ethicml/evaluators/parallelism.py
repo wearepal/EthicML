@@ -1,6 +1,6 @@
 """Collection of functions that enable parallelism."""
 from typing import List, Optional, Sequence, Tuple, TypeVar, Union, cast, overload
-from typing_extensions import Protocol
+from typing_extensions import Protocol, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -8,16 +8,16 @@ from joblib import Parallel, delayed
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility import DataTuple, Prediction, TestTuple, TrainTestPair
+from ethicml.utility.data_structures import DataTuple, Prediction, SubgroupTuple, TrainValPair
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
 
-InSeq = Sequence[InAlgorithm]
-PreSeq = Sequence[PreAlgorithm]
-InResult = List[List[Prediction]]
-PreResult = List[List[Tuple[DataTuple, TestTuple]]]
-DataSeq = Sequence[TrainTestPair]
+InSeq: TypeAlias = Sequence[InAlgorithm]
+PreSeq: TypeAlias = Sequence[PreAlgorithm]
+InResult: TypeAlias = List[List[Prediction]]
+PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
+DataSeq: TypeAlias = Sequence[TrainValPair]
 
 
 @overload
@@ -54,16 +54,18 @@ def run_in_parallel(
         return arrange_in_parallel(algos=in_algos, data=data, seeds=seeds, num_jobs=num_jobs)
     else:
         pre_algos = cast(Sequence[PreAlgorithm], algos)
-        return arrange_in_parallel(algos=pre_algos, data=data, seeds=seeds, num_jobs=num_jobs)
+        # the following line is needed to help mypy along
+        generic_algos: Sequence[Algorithm[Tuple[DataTuple, DataTuple]]] = pre_algos
+        return arrange_in_parallel(algos=generic_algos, data=data, seeds=seeds, num_jobs=num_jobs)
 
 
-_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, TestTuple], covariant=True)  # the return type
+_RT = TypeVar("_RT", Prediction, Tuple[DataTuple, DataTuple], covariant=True)  # the return type
 
 
 class Algorithm(Protocol[_RT]):
     """Protocol for making `arrange_in_parallel` generic."""
 
-    def run(self, train: DataTuple, test: TestTuple, seed: int) -> _RT:
+    def run(self, train: DataTuple, test: DataTuple, seed: int) -> _RT:
         ...
 
 
@@ -83,7 +85,7 @@ def arrange_in_parallel(
     assert len(data) >= 1
     assert len(seeds) == len(data)
     assert isinstance(data[0][0], DataTuple)
-    assert isinstance(data[0][1], TestTuple)
+    assert isinstance(data[0][1], (DataTuple, SubgroupTuple))
     # ================================== create queue of tasks ====================================
     # for each algorithm, first loop over all available datasets and then go on to the next algo
     results = runner(
@@ -95,7 +97,7 @@ def arrange_in_parallel(
 
 
 @delayed
-def _run(algo: Algorithm[_RT], train_test_pair: TrainTestPair, seed: int) -> _RT:
+def _run(algo: Algorithm[_RT], train_test_pair: TrainValPair, seed: int) -> _RT:
     train, test = train_test_pair
     # do the work
     try:

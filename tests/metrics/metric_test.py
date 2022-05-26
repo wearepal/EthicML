@@ -1,6 +1,8 @@
 """Metric Tests."""
 from typing import NamedTuple
 
+import numpy as np
+import pandas as pd
 import pytest
 from pytest import approx
 
@@ -23,7 +25,7 @@ from ethicml import (
     RobustAccuracy,
     Theil,
 )
-from ethicml.utility.data_structures import TrainValPair
+from ethicml.utility.data_structures import LabelTuple, TrainValPair
 from tests.conftest import get_id
 
 
@@ -67,4 +69,33 @@ def test_get_score_of_predictions(
     predictions: Prediction = classifier.run(train, test)
     assert metric.name == name
     score = metric.score(predictions, test)
+    assert score == approx(expected, abs=0.001)
+
+
+class SimpleTest(NamedTuple):
+    """Define a test for a metric."""
+
+    metric: Metric
+    expected: float
+
+
+METRICS = [
+    SimpleTest(Accuracy(), 0.5),
+    SimpleTest(RobustAccuracy(), 0.33333),
+    SimpleTest(F1(), 0.5),
+    SimpleTest(BalancedAccuracy(), 0.5),
+    SimpleTest(CV(), 0.33333),
+    SimpleTest(Theil(), 0.346573),
+    SimpleTest(Hsic(), 0.06144),
+    SimpleTest(AS(), 0.0),
+]
+
+
+@pytest.mark.parametrize("metric,expected", METRICS)
+def test_on_label_tuple(metric: Metric, expected: float) -> None:
+    preds = Prediction(hard=pd.Series([0, 0, 1, 1]))
+    targets = LabelTuple.from_np(
+        s=np.array([0, 1, 1, 1]), y=np.array([0, 1, 0, 1]), s_name="s", y_name="y"
+    )
+    score = metric.score(preds, targets)
     assert score == approx(expected, abs=0.001)

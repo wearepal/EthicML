@@ -11,8 +11,8 @@ import numpy as np
 import torch
 from joblib import dump, load
 
-from ethicml import DataTuple, SoftPrediction, TestTuple
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
+from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.algorithms.inprocess.fair_dummies import FairDummiesArgs
@@ -77,7 +77,7 @@ def main() -> None:
     flags: FairDummiesArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
             Path(in_algo_args["test"])
         )
         SoftPrediction(soft=train_and_predict(train, test, flags, in_algo_args["seed"])).to_npz(
@@ -89,7 +89,7 @@ def main() -> None:
         setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        test = TestTuple.from_npz(Path(in_algo_args["test"]))
+        test = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
         SoftPrediction(soft=predict(model, test)).to_npz(Path(in_algo_args["predictions"]))
     else:

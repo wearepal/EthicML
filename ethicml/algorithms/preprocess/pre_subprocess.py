@@ -9,11 +9,11 @@ from typing_extensions import Literal, TypeAlias, TypedDict, final
 
 from ethicml.algorithms.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, SubgroupTuple
 
 __all__ = ["PreAlgoArgs", "PreAlgorithmSubprocess"]
 
-T = TypeVar("T", DataTuple, TestTuple)
+T = TypeVar("T", DataTuple, SubgroupTuple)
 
 
 class PreAlgoRunArgs(TypedDict):
@@ -139,9 +139,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return transformed_test
 
     @final
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         """Generate fair features in a subprocess with the given data.
 
         :param train: Data tuple of the training data.
@@ -174,7 +172,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)
-            transformed_test = TestTuple.from_npz(transformed_test_path)
+            transformed_test = test.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         transformed_train = transformed_train.replace(

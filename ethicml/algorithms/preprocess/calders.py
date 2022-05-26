@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 from ranzen import implements
 
-from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat
+from ethicml.utility import DataTuple, SoftPrediction, concat
 
 from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
@@ -45,21 +45,19 @@ class Calders(PreAlgorithm):
         return data.replace(name=f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         new_train, new_test = _calders_algorithm(
             train, test, self.preferable_class, self.disadvantaged_group, seed
         )
-        return new_train.replace(name=f"{self.name}: {train.name}"), new_test.replace(
+        return new_train.rename(name=f"{self.name}: {train.name}"), new_test.rename(
             name=f"{self.name}: {test.name}"
         )
 
 
 def _calders_algorithm(
-    dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int, seed: int
-) -> Tuple[DataTuple, TestTuple]:
+    dataset: DataTuple, test: T, good_class: int, disadvantaged_group: int, seed: int
+) -> Tuple[DataTuple, T]:
     s_vals: List[int] = list(map(int, dataset.s.unique()))
     y_vals: List[int] = list(map(int, dataset.y.unique()))
 

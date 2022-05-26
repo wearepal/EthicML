@@ -2,12 +2,12 @@
 import itertools
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Dict, Hashable, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 from ranzen import enum_name_str, implements
 
-from ethicml.utility import DataTuple, SoftPrediction, TestTuple
+from ethicml.utility import DataTuple, SoftPrediction
 
 from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
@@ -57,9 +57,7 @@ class Upsampler(PreAlgorithm):
         return data.replace(name=f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         return upsample(train, test, self.strategy, seed, name=self.name)
 
@@ -84,11 +82,11 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
 
 def upsample(
     dataset: DataTuple,
-    test: TestTuple,
+    test: T,
     strategy: UpsampleStrategy,
     seed: int,
     name: str,
-) -> Tuple[DataTuple, TestTuple]:
+) -> Tuple[DataTuple, T]:
     """Upsample a datatuple.
 
     :param dataset: Dataset that is used to determine the imbalance.
@@ -105,12 +103,7 @@ def upsample(
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
-        data[(s, y)] = DataTuple.from_df(
-            x=dataset.x.loc[s_y_mask].reset_index(drop=True),
-            s=dataset.s.loc[s_y_mask].reset_index(drop=True),
-            y=dataset.y.loc[s_y_mask].reset_index(drop=True),
-            name=dataset.name,
-        )
+        data[(s, y)] = dataset.replace_data(dataset.data.loc[s_y_mask].reset_index(drop=True))
 
     percentages: Dict[Tuple[int, int], float] = {}
 
@@ -133,21 +126,13 @@ def upsample(
 
             percentages[key] = round((y_eq_y * s_eq_s / (num_batch * num_samples)), 8)
 
-    x_columns: pd.Index = dataset.x.columns
-    s_column: Optional[Hashable] = dataset.s.name
-    y_column: Optional[Hashable] = dataset.y.name
-    assert isinstance(s_column, str) and isinstance(y_column, str)
-
     upsampled: Dict[Tuple[int, int], DataTuple] = {}
     all_data: pd.DataFrame
     for key, val in data.items():
-        all_data = pd.concat([val.x, val.s, val.y], axis="columns")
-        all_data = all_data.sample(  # type: ignore[assignment]
+        all_data = val.data.sample(  # type: ignore[assignment]
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
-        upsampled[key] = DataTuple.from_df(
-            x=all_data[x_columns], s=all_data[s_column], y=all_data[y_column], name=dataset.name
-        )
+        upsampled[key] = val.replace_data(all_data)
 
     upsampled_datatuple: Optional[DataTuple] = None
     for key, val in upsampled.items():
@@ -163,12 +148,12 @@ def upsample(
 
         selected: List[pd.DataFrame] = []
 
-        all_data = pd.concat([dataset.x, dataset.s, dataset.y], axis="columns")
+        all_data = dataset.data
         all_data = pd.concat(
             [all_data, pd.DataFrame(rank.soft[:, 1], columns=["preds"])], axis="columns"
         )
 
-        for key, val in data.items():
+        for key in data:
 
             s_val = key[0]
             y_val = key[1]
@@ -180,7 +165,7 @@ def upsample(
                 selected.append(all_data.loc[s_y_mask])
                 percentages[key] -= 1.0
 
-            weight = all_data.loc[s_y_mask][y_column].count()
+            weight = all_data.loc[s_y_mask][dataset.y_column].count()
             selected.append(
                 all_data.loc[s_y_mask]
                 .sort_values(by=["preds"], ascending=ascending)
@@ -197,10 +182,10 @@ def upsample(
                 ).reset_index(drop=True)
         upsampled_datatuple = DataTuple(
             data=upsampled_dataframes,
-            s_column=s_column,
-            y_column=y_column,
+            s_column=dataset.s_column,
+            y_column=dataset.y_column,
             name=f"{name}: {dataset.name}",
         )
 
     assert upsampled_datatuple is not None
-    return upsampled_datatuple, TestTuple.from_df(x=test.x, s=test.s, name=f"{name}: {test.name}")
+    return upsampled_datatuple, test.rename(name=f"{name}: {test.name}")
