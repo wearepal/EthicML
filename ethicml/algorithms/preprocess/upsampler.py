@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Dict, Hashable, List, Optional, Tuple
 
-import pandas as pd
+import polars as pd
 from ranzen import enum_name_str, implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple

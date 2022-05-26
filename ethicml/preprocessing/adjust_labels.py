@@ -1,7 +1,7 @@
 """Simple class to make class labels binary. Useful if a network uses BCELoss for example."""
 
 import numpy as np
-import pandas as pd
+import polars as pd
 
 from ethicml.utility import DataTuple
 
@@ -13,7 +13,7 @@ def assert_binary_labels(data_tuple: DataTuple) -> None:
 
     :param data_tuple:
     """
-    assert data_tuple.y.nunique() == 2
+    assert data_tuple.y.n_unique() == 2
     assert (np.unique(data_tuple.y.to_numpy()) == np.array([0, 1])).all()
 
 
@@ -29,7 +29,7 @@ class LabelBinarizer:
 
         :param dataset:
         """
-        assert dataset.y.nunique() == 2
+        assert dataset.y.n_unique() == 2
 
         # make copy of dataset
         new_y = dataset.y.copy()
@@ -46,7 +46,7 @@ class LabelBinarizer:
 
         :param labels:
         """
-        assert labels.nunique() == 2
+        assert labels.n_unique() == 2
 
         # make copy of the labels
         labels_copy = labels.copy()

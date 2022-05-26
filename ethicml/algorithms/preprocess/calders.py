@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt

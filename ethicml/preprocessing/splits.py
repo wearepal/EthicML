@@ -5,7 +5,7 @@ from typing import Dict, Iterator, List, Optional, Tuple
 from typing_extensions import Literal
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from numpy.random import RandomState
 from ranzen import implements
 

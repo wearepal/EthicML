@@ -2,7 +2,7 @@
 from typing import Dict, Sequence, Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import teext as tx
 
 from ethicml.utility.data_structures import DataTuple, concat_dt

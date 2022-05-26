@@ -1,7 +1,7 @@
 """Transparently show how the UCI Adult dataset was generated from the raw download."""
 
 import numpy as np
-import pandas as pd
+import polars as pd
 
 
 def run_generate_crime() -> None:
@@ -13,7 +13,7 @@ def run_generate_crime() -> None:
     # then, uncomment the following code.
     #
     # from scipy.io import arff
-    # import pandas as pd
+    # import polars as pd
     # data = arff.loadarff('./raw/communities.arff')
     # data = pd.DataFrame(data[0])
     # for col in data.columns:

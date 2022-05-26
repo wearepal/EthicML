@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Callable, NamedTuple
 
-import pandas as pd
+import polars as pd
 import pytest
 
 import ethicml as em
@@ -595,8 +595,8 @@ def test_data_shape(dt: DT):
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
-    assert data.s.nunique() == dt.num_sens
-    assert data.y.nunique() == dt.num_labels
+    assert data.s.n_unique() == dt.num_sens
+    assert data.y.n_unique() == dt.num_labels
 
     assert data.s.sum() == dt.sum_s
     assert data.y.sum() == dt.sum_y
@@ -641,8 +641,8 @@ def test_synth_data_shape(
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
-    assert data.s.nunique() == 2
-    assert data.y.nunique() == 2
+    assert data.s.n_unique() == 2
+    assert data.y.n_unique() == 2
 
     if fair:
         assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value} fair"
@@ -722,7 +722,7 @@ def test_load_adult_race():
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 5
+    assert data.s.n_unique() == 5
     assert (45222,) == data.y.shape
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
@@ -735,7 +735,7 @@ def test_load_adult_race_sex():
     data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 2 * 5
+    assert data.s.n_unique() == 2 * 5
     assert (45222,) == data.y.shape
     assert adult_race_sex.disc_feature_groups is not None
     assert "race" not in adult_race_sex.disc_feature_groups
@@ -802,7 +802,7 @@ def test_load_adult_education():
     data = adult_data.load(ordered=True)
     assert (45222, 86) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 3
+    assert data.s.n_unique() == 3
     assert (45222,) == data.y.shape
     assert "education" == data.s.name
 
@@ -810,7 +810,7 @@ def test_load_adult_education():
     data = adult_data.load()
     assert (45222, 86) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 3
+    assert data.s.n_unique() == 3
     assert (45222,) == data.y.shape
     assert "education" == data.s.name
 
@@ -827,7 +827,7 @@ def test_load_adult_education_drop():
     data = adult_data.load(ordered=True)
     assert (45222, 47) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 3
+    assert data.s.n_unique() == 3
     assert (45222,) == data.y.shape
     assert "education" == data.s.name
 
@@ -835,7 +835,7 @@ def test_load_adult_education_drop():
     data = adult_data.load()
     assert (45222, 47) == data.x.shape
     assert (45222,) == data.s.shape
-    assert data.s.nunique() == 3
+    assert data.s.n_unique() == 3
     assert (45222,) == data.y.shape
     assert "education" == data.s.name
 

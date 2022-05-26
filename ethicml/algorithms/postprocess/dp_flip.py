@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import ClassVar
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 from sklearn.model_selection import KFold

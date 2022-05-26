@@ -3,7 +3,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Callable, ClassVar, Tuple
 
-import pandas as pd
+import polars as pd
 from ranzen import implements
 from sklearn.metrics import accuracy_score, f1_score
 

@@ -21,7 +21,7 @@ from typing import (
 from typing_extensions import Final, Literal, TypeAlias
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from ranzen import enum_name_str
 
 __all__ = [

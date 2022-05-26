@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithmNoParams

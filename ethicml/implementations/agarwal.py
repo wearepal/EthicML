@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Generator
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from joblib import dump, load
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression

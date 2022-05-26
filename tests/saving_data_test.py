@@ -6,7 +6,7 @@ from typing import Any, ClassVar, List, Mapping
 from typing_extensions import Final, final
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import pytest
 
 from ethicml import DataTuple, InAlgoArgs, InAlgorithmSubprocess, Prediction, TestTuple

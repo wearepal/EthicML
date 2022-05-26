@@ -3,7 +3,7 @@ from typing import List, Optional, Sequence, Tuple, TypeVar, Union, cast, overlo
 from typing_extensions import Protocol
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from joblib import Parallel, delayed
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm

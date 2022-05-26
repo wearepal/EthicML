@@ -2,7 +2,7 @@
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
+import polars as pd
 
 SEED = 8
 SAMPLES = 2_000

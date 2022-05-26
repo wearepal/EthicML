@@ -7,7 +7,7 @@ import random
 from typing_extensions import Literal, Self
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import torch
 import torch.nn as nn
 from sklearn.preprocessing import StandardScaler

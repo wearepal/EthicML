@@ -1,7 +1,7 @@
 """Transparently show how the UCI Nursey dataset was modified from the raw download."""
 # The Heritage Health dataset. It needs some (mild) preprocessing before we can plug and play.
 
-import pandas as pd
+import polars as pd
 
 if __name__ == "__main__":
 

@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import torch
 from joblib import dump, load
 from torch import Tensor, nn

@@ -4,7 +4,7 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 from typing_extensions import Literal, TypeAlias
 
 import matplotlib as mpl
-import pandas as pd
+import polars as pd
 from matplotlib import pyplot as plt
 
 LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name

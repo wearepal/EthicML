@@ -6,7 +6,7 @@ from typing import Callable, Tuple
 from typing_extensions import Literal, Self
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import torch
 import torch.nn as nn
 import torch.optim as optim

@@ -1,7 +1,7 @@
 """Transparently show how the Hearitage Health dataset was modified from the raw download."""
 # The Heritage Health dataset. It needs some (mild) preprocessing before we can plug and play.
 
-import pandas as pd
+import polars as pd
 
 df = pd.read_csv("raw/health.csv")
 

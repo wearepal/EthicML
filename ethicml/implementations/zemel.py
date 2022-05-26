@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, NamedTuple, Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import scipy.optimize as optim
 from joblib import dump, load
 from scipy.spatial.distance import cdist

@@ -6,7 +6,7 @@ from typing import List
 from typing_extensions import Literal
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import pytest
 from sklearn.preprocessing import StandardScaler
 

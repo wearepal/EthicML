@@ -39,7 +39,7 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
         in_shape=len(train.x.columns),
         batch_size=args["batch_size"],
         model_type=args["model_type"],
-        num_classes=train.y.nunique(),
+        num_classes=train.y.n_unique(),
         lambda_vec=args["lambda_vec"],
     )
     return model.fit(train, seed=seed)

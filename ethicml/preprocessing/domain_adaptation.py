@@ -2,7 +2,7 @@
 
 from typing import Tuple
 
-import pandas as pd
+import polars as pd
 
 from ethicml.utility import DataTuple
 

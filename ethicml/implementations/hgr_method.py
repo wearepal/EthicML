@@ -42,7 +42,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         mu=args["mu"],
         cost_pred=torch.nn.CrossEntropyLoss(),
         in_shape=len(train.x.columns),
-        out_shape=train.y.nunique(),
+        out_shape=train.y.n_unique(),
         batch_size=args["batch_size"],
         model_type=args["model_type"],
     )

@@ -3,7 +3,7 @@ import math
 from typing import Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import pytest
 from pytest import approx
 

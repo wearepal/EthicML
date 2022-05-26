@@ -2,7 +2,7 @@
 from typing import Dict, NamedTuple, Tuple
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import pytest
 from pytest import approx
 
@@ -43,15 +43,15 @@ class PerSensMetricTest(NamedTuple):
 def test_issue_431():
     """This issue highlighted that error would be raised due to not all values existing in subsets of the data."""
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
-    s = pd.Series(np.random.randn(100), name="s")
-    y = pd.Series(np.random.randint(0, 5, 100), name="y")
+    s = pd.Series(values=np.random.randn(100), name="s")
+    y = pd.Series(values=np.random.randint(0, 5, 100), name="y")
     data = DataTuple(x=x, s=s, y=y)
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = LR()
     predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(
-        predictions, test, TPR(pos_class=1, labels=list(range(y.nunique())))
+        predictions, test, TPR(pos_class=1, labels=list(range(y.n_unique())))
     )
     print(acc_per_sens)
 

@@ -1,7 +1,7 @@
 """Helper functions for working with DataFrames (and Series)."""
 from typing import Optional, Union, overload
 
-import pandas as pd
+import polars as pd
 
 __all__ = ["undo_one_hot", "shuffle_df"]
 

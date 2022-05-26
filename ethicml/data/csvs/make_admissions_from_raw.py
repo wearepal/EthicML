@@ -39,7 +39,7 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 """
 
 
-import pandas as pd
+import polars as pd
 
 
 def run_generate_admissions() -> None:

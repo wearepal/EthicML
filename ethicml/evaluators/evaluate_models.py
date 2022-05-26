@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 from typing_extensions import Literal
 
-import pandas as pd
+import polars as pd
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm

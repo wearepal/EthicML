@@ -43,7 +43,7 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
         model_type=args["model_type"],
         lambda_vec=args["lambda_vec"],
         second_moment_scaling=args["second_moment_scaling"],
-        num_classes=train.y.nunique(),
+        num_classes=train.y.n_unique(),
         seed=seed,
     )
     return model.fit(train, seed=seed)

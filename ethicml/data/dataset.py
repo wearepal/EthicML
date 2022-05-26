@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal, TypedDict
 
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.common import ROOT_PATH
@@ -185,7 +185,7 @@ class Dataset:
 
         # create a Series of zeroes with the same length as the dataframe
         combination: pd.Series = pd.Series(  # type: ignore[call-overload]
-            0, index=range(len(attributes)), name=",".join(label_mapping)
+            values=0, name=",".join(label_mapping)
         )
 
         for name, spec in label_mapping.items():
@@ -310,7 +310,7 @@ class LoadableDataset(Dataset):
             y_df = (y_df + 1) // 2  # map from {-1, 1} to {0, 1}
 
         if self.invert_s:
-            assert s_df.nunique().values[0] == 2, "s must be binary"
+            assert s_df.n_unique().values[0] == 2, "s must be binary"
             s_df = 1 - s_df
 
         # the following operations remove rows if a label group is not properly one-hot encoded

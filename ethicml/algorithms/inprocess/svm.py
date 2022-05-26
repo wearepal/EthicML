@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import ClassVar, Union
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from ranzen import implements
 from sklearn.svm import SVC, LinearSVC
 

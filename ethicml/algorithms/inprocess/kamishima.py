@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 from typing import NamedTuple, Optional, Union
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType, InAlgorithm

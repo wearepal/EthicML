@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
 
-import pandas as pd
+import polars as pd
 
 from ethicml.utility import DataTuple
 

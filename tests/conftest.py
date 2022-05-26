@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 from typing import Generator
 
-import pandas as pd
+import polars as pd
 import pytest
 
 import ethicml as em

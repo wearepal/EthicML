@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 import numpy as np
-import pandas as pd
+import polars as pd
 import sklearn
 from ranzen import implements
 from sklearn.linear_model import LogisticRegression

@@ -6,7 +6,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 from typing_extensions import Final
 
-import pandas as pd
+import polars as pd
 from ranzen import implements
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer

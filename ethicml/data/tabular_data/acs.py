@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Generator, Iterable, List, Union
 
 import numpy as np
-import pandas as pd
+import polars as pd
 from folktables import ACSDataSource, adult_filter, folktables, state_list
 from ranzen import implements
 
@@ -126,13 +126,13 @@ class AcsBase(Dataset):
             y_data = (y_data + 1) // 2  # map from {-1, 1} to {0, 1}
 
         if self._invert_s:
-            assert s_data.nunique().values[0] == 2, "s must be binary"
+            assert s_data.n_unique().values[0] == 2, "s must be binary"
             s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
         s_data, s_mask = self._one_hot_encode_and_combine(s_data, label_type="s")
         if s_mask is not None:
-            x_data = x_data.loc[s_mask].reset_index(drop=True)
+            x_data = x_data.filter(s_mask).reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
             y_data = y_data.loc[s_mask].reset_index(drop=True)
         y_data, y_mask = self._one_hot_encode_and_combine(y_data, label_type="y")

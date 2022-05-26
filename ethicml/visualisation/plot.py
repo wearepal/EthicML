@@ -5,7 +5,7 @@ from typing import Any, Callable, List, Optional, Tuple, Union
 from typing_extensions import Literal
 
 import matplotlib.pyplot as plt
-import pandas as pd
+import polars as pd
 import seaborn as sns
 from matplotlib import figure, legend
 from sklearn.manifold import TSNE  # type: ignore[attr-defined]

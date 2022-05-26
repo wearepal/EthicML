@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Tuple, Union
 
-import pandas as pd
+import polars as pd
 import torch
 from joblib import dump, load
 from torch import optim
