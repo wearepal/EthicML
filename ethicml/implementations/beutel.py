@@ -200,7 +200,9 @@ def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
     )
     test_transformed = encode_testset(enc, test_loader, data)
     if isinstance(data, DataTuple):
-        return DataTuple(x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name)
+        return DataTuple.from_x_s_y(
+            x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name
+        )
     else:
         return test_transformed
 

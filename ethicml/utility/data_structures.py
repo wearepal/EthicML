@@ -93,6 +93,10 @@ class TestTuple:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
 
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self.data)
+
     def replace(
         self,
         *,
@@ -174,10 +178,6 @@ class DataTuple(TestTuple):
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite __iter__ magic method."""
         return iter([self.x, self.s, self.y])
-
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        return len(self.data)
 
     def remove_y(self) -> TestTuple:
         """Convert the DataTuple instance to a TestTuple instance."""
