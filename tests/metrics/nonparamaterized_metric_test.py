@@ -20,6 +20,7 @@ from ethicml import (
     Accuracy,
     BalancedTestSplit,
     DataTuple,
+    EvalTuple,
     InAlgorithm,
     LabelOutOfBounds,
     NonBinaryToy,
@@ -319,14 +320,14 @@ def test_nb_tnr():
     }
 
 
-def _compute_di(preds: Prediction, actual: DataTuple) -> float:
+def _compute_di(preds: Prediction, actual: EvalTuple) -> float:
     ratios = em.ratio_per_sensitive_attribute(
         em.metric_per_sensitive_attribute(preds, actual, ProbPos())
     )
     return next(iter(ratios.values()))
 
 
-def _compute_inv_cv(preds: Prediction, actual: DataTuple) -> float:
+def _compute_inv_cv(preds: Prediction, actual: EvalTuple) -> float:
     diffs = em.diff_per_sensitive_attribute(
         em.metric_per_sensitive_attribute(preds, actual, ProbPos())
     )

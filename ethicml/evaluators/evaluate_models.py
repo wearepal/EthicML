@@ -21,7 +21,7 @@ from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.utility.data_structures import (
     DataTuple,
-    HyperParamType,
+    EvalTuple,
     HyperParamValue,
     Prediction,
     Results,
@@ -58,7 +58,7 @@ def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
 
 def run_metrics(
     predictions: Prediction,
-    actual: DataTuple,
+    actual: EvalTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
@@ -67,7 +67,7 @@ def run_metrics(
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
-    :param actual: DataTuple with the labels
+    :param actual: EvalTuple with the labels
     :param metrics: list of metrics (Default: ())
     :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
     :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)

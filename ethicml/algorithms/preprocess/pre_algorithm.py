@@ -5,11 +5,11 @@ from abc import ABC, abstractmethod
 from typing import Tuple, TypeVar
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, SubgroupTuple
 
 __all__ = ["PreAlgorithm"]
 
-T = TypeVar("T", DataTuple, TestTuple)
+T = TypeVar("T", DataTuple, SubgroupTuple)
 _PA = TypeVar("_PA", bound="PreAlgorithm")
 
 
@@ -34,9 +34,7 @@ class PreAlgorithm(Algorithm, ABC):
         """
 
     @abstractmethod
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         """Generate fair features with the given data.
 
         :param train: Data tuple of the training data.
@@ -45,9 +43,7 @@ class PreAlgorithm(Algorithm, ABC):
         :returns: A tuple of the transforme training data and the test data.
         """
 
-    def run_test(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run_test(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         """Run with reduced training set so that it finishes quicker.
 
         :param train: Data tuple of the training data.

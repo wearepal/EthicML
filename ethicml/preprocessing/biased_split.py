@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import teext as tx
 
-from ethicml.utility.data_structures import DataTuple, concat_dt
+from ethicml.utility.data_structures import DataTuple, concat
 
 from .domain_adaptation import query_dt
 from .splits import DataSplitter, ProportionalSplit
@@ -102,7 +102,7 @@ def get_biased_subset(
     sy_equal_for_biased_ss, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
     sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
-    biased_subset = concat_dt(
+    biased_subset = concat(
         [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
     )
 
@@ -214,7 +214,7 @@ def get_biased_and_debiased_subsets(
             sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
         )
 
-    biased_subset = concat_dt(
+    biased_subset = concat(
         [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
     )
 
@@ -226,7 +226,7 @@ def get_biased_and_debiased_subsets(
 
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
-    debiased_subset = concat_dt(
+    debiased_subset = concat(
         [debiased_subset_part1, debiased_subset_part2], axis="index", ignore_index=True
     )
 

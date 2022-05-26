@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .metric import Metric, MetricStaticName
 
@@ -21,7 +21,7 @@ class AS(MetricStaticName):
     _name: ClassVar[str] = "anti_spurious"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         preds = prediction.hard.to_numpy()
         sens = actual.s.to_numpy()
         labels = actual.y.to_numpy()

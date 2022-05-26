@@ -17,6 +17,7 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TypeVar,
     Union,
 )
 from typing_extensions import Final, Literal, TypeAlias
@@ -28,6 +29,7 @@ from ranzen import enum_name_str
 __all__ = [
     "ClassifierType",
     "DataTuple",
+    "EvalTuple",
     "FairnessType",
     "HyperParamType",
     "HyperParamValue",
@@ -36,11 +38,11 @@ __all__ = [
     "Results",
     "ResultsAggregator",
     "SoftPrediction",
+    "SubgroupTuple",
     "TestTuple",
     "TrainTestPair",
     "aggregate_results",
-    "concat_dt",
-    "concat_tt",
+    "concat",
     "filter_and_map_results",
     "filter_results",
     "make_results",
@@ -60,7 +62,7 @@ class PandasIndex(Enum):
 
 
 @dataclass
-class TestTuple:
+class SubgroupTuple:
     """A tuple of dataframes for the features and the sensitive attribute."""
 
     __slots__ = ("data", "s_column", "name")
@@ -73,9 +75,9 @@ class TestTuple:
 
     @classmethod
     def from_df(
-        cls, x: pd.DataFrame, s: pd.Series[int], *, name: Optional[str] = None
-    ) -> TestTuple:
-        """Make a TestTuple."""
+        cls, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
+    ) -> SubgroupTuple:
+        """Make a SubgroupTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
         assert len(x) == len(s), "data has to have the same length"
@@ -105,16 +107,24 @@ class TestTuple:
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.Series] = None,
         name: Optional[str] = None,
-    ) -> TestTuple:
-        """Create a copy of the TestTuple but change the given values."""
-        return TestTuple.from_df(
+    ) -> SubgroupTuple:
+        """Create a copy of the SubgroupTuple but change the given values."""
+        return SubgroupTuple.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             name=name if name is not None else self.name,
         )
 
+    def replace_data(self, data: pd.DataFrame) -> SubgroupTuple:
+        """Make a copy of the DataTuple but change the underlying data."""
+        return SubgroupTuple(data=data, s_column=self.s_column, name=self.name)
+
+    def rename(self, name: str) -> SubgroupTuple:
+        """Change only the name."""
+        return SubgroupTuple(data=self.data, s_column=self.s_column, name=name)
+
     def to_npz(self, data_path: Path) -> None:
-        """Save TestTuple as an npz file.
+        """Save SubgroupTuple as an npz file.
 
         :param data_path: Path to save the npz file.
         """
@@ -125,7 +135,7 @@ class TestTuple:
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> TestTuple:
+    def from_npz(cls, data_path: Path) -> SubgroupTuple:
         """Load test tuple from npz file.
 
         :param data_path: Path to load the npz file.
@@ -141,11 +151,14 @@ class TestTuple:
 
 
 @dataclass
-class DataTuple(TestTuple):
+class DataTuple:
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
     __slots__ = ("data", "s_column", "y_column", "name")
+    data: pd.DataFrame
+    s_column: str
     y_column: str
+    name: str | None
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -153,7 +166,7 @@ class DataTuple(TestTuple):
 
     @classmethod
     def from_df(
-        cls, x: pd.DataFrame, s: pd.Series[int], *, y: pd.Series[int], name: Optional[str] = None
+        cls, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
     ) -> DataTuple:
         """Make a DataTuple."""
         s_column = s.name
@@ -173,17 +186,26 @@ class DataTuple(TestTuple):
         return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
+    def s(self) -> pd.Series[int]:
+        """Getter for property s."""
+        return self.data[self.s_column]
+
+    @property
     def y(self) -> pd.Series[int]:
         """Getter for property y."""
         return self.data[self.y_column]
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
-        """Overwrite __iter__ magic method."""
+        """Overwrite magic method __iter__."""
         return iter([self.x, self.s, self.y])
 
-    def remove_y(self) -> TestTuple:
-        """Convert the DataTuple instance to a TestTuple instance."""
-        return TestTuple(
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self.data)
+
+    def remove_y(self) -> SubgroupTuple:
+        """Convert the DataTuple instance to a SubgroupTuple instance."""
+        return SubgroupTuple(
             data=self.data.drop(self.y_column, inplace=False, axis="columns"),
             s_column=self.s_column,
             name=self.name,
@@ -204,6 +226,10 @@ class DataTuple(TestTuple):
             y=y if y is not None else self.y,
             name=name if name is not None else self.name,
         )
+
+    def rename(self, name: str) -> DataTuple:
+        """Change only the name."""
+        return DataTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
 
     def replace_data(self, data: pd.DataFrame) -> DataTuple:
         """Make a copy of the DataTuple but change the underlying data."""
@@ -254,6 +280,135 @@ class DataTuple(TestTuple):
                 y=pd.Series(data["y"], name=data["y_names"][0]),
                 name=name or None,
             )
+
+
+@dataclass
+class LabelTuple:
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
+
+    __slots__ = ("data", "s_column", "y_column", "name")
+    data: pd.DataFrame
+    s_column: str
+    y_column: str
+    name: str | None
+
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+        assert self.y_column in self.data.columns, f"column {self.y_column} not present"
+
+    @classmethod
+    def from_df(
+        cls, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+    ) -> LabelTuple:
+        """Make a LabelTuple."""
+        s_column = s.name
+        y_column = y.name
+        assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert len(s) == len(y), "data has to have the same length"
+        return cls(
+            data=pd.concat([s, y], axis="columns", sort=False),
+            s_column=s_column,
+            y_column=y_column,
+            name=name,
+        )
+
+    @property
+    def s(self) -> pd.Series[int]:
+        """Getter for property s."""
+        return self.data[self.s_column]
+
+    @property
+    def y(self) -> pd.Series[int]:
+        """Getter for property y."""
+        return self.data[self.y_column]
+
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+        """Overwrite magic method __iter__."""
+        return iter([self.s, self.y])
+
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self.data)
+
+    def remove_y(self) -> SubgroupTuple:
+        """Convert the LabelTuple instance to a SubgroupTuple instance."""
+        return SubgroupTuple(
+            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
+            s_column=self.s_column,
+            name=self.name,
+        )
+
+    def replace(
+        self,
+        *,
+        s: Optional[pd.Series] = None,
+        name: Optional[str] = None,
+        y: Optional[pd.Series] = None,
+    ) -> LabelTuple:
+        """Create a copy of the LabelTuple but change the given values."""
+        return LabelTuple.from_df(
+            s=s if s is not None else self.s,
+            y=y if y is not None else self.y,
+            name=name if name is not None else self.name,
+        )
+
+    def rename(self, name: str) -> LabelTuple:
+        """Change only the name."""
+        return LabelTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
+
+    def replace_data(self, data: pd.DataFrame) -> LabelTuple:
+        """Make a copy of the LabelTuple but change the underlying data."""
+        return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+
+    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> LabelTuple:
+        """Concatenate the dataframes in the LabelTuple and then apply a function to it.
+
+        :param mapper: A function that takes a dataframe and returns a dataframe.
+        """
+        return self.replace_data(data=mapper(self.data))
+
+    def get_n_samples(self, num: int = 500) -> LabelTuple:
+        """Get the first elements of the dataset.
+
+        :param num: How many samples to take for subset. (Default: 500)
+        :returns: Subset of training data.
+        """
+        return self.replace_data(data=self.data.iloc[:num])
+
+    def get_s_subset(self, s: int) -> LabelTuple:
+        """Return a subset of the LabelTuple where S=s."""
+        return self.replace_data(data=self.data[self.s == s])
+
+    def to_npz(self, data_path: Path) -> None:
+        """Save LabelTuple as an npz file.
+
+        :param data_path: Path to the npz file.
+        """
+        write_as_npz(
+            data_path,
+            dict(s=self.s, y=self.y),
+            dict(name=np.array(self.name if self.name is not None else "")),
+        )
+
+    @classmethod
+    def from_npz(cls, data_path: Path) -> LabelTuple:
+        """Load data tuple from npz file.
+
+        :param data_path: Path to the npz file.
+        """
+        with data_path.open("rb") as data_file:
+            data = np.load(data_file)
+            name = data["name"].item()
+            return cls.from_df(
+                s=pd.Series(data["s"], name=data["s_names"][0]),
+                y=pd.Series(data["y"], name=data["y_names"][0]),
+                name=name or None,
+            )
+
+
+TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
+EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
+T = TypeVar("T", SubgroupTuple, DataTuple)
 
 
 class Prediction:
@@ -355,46 +510,19 @@ def write_as_npz(
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 
-def concat_dt(
-    datatup_list: Sequence[DataTuple],
-    axis: AxisType = "index",
+def concat(
+    datatup_list: Sequence[T],
     ignore_index: bool = False,
-) -> DataTuple:
+) -> T:
     """Concatenate the data tuples in the given list.
 
     :param datatup_list: List of data tuples to concatenate.
-    :param axis: Axis to concatenate on. (Default: 'index')
     :param ignore_index: Ignore the index of the dataframes. (Default: False)
     """
-    return DataTuple.from_df(
-        x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        y=pd.concat(
-            [dt.y for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        name=datatup_list[0].name,
+    data: pd.DataFrame = pd.concat(
+        [dt.data for dt in datatup_list], axis="index", sort=False, ignore_index=ignore_index
     )
-
-
-def concat_tt(
-    datatup_list: List[TestTuple],
-    axis: AxisType = "index",
-    ignore_index: bool = False,
-) -> TestTuple:
-    """Concatenate the test tuples in the given list."""
-    return TestTuple.from_df(
-        x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        name=datatup_list[0].name,
-    )
+    return datatup_list[0].replace_data(data)
 
 
 @enum_name_str

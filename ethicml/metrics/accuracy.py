@@ -7,7 +7,7 @@ import pandas as pd
 from ranzen import implements
 from sklearn.metrics import accuracy_score, f1_score
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .metric import MetricStaticName
 
@@ -21,7 +21,7 @@ class SklearnMetric(MetricStaticName, ABC):
     sklearn_metric: ClassVar[Tuple[Callable[[pd.Series, pd.Series], float]]]
 
     @implements(MetricStaticName)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         return self.sklearn_metric[0](actual.y, prediction.hard)
 
 
@@ -50,7 +50,7 @@ class RobustAccuracy(SklearnMetric):
     _name: ClassVar[str] = "Robust Accuracy"
 
     @implements(SklearnMetric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         score_func = super().score
         return min(
             [

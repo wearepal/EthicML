@@ -30,7 +30,7 @@ def test_post(
 ) -> None:
     """Test the dem par flipping method."""
     train, test = toy_train_test
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None
@@ -68,7 +68,7 @@ def test_post_sep_fit_pred(
 ) -> None:
     """Test the dem par flipping method."""
     train, test = toy_train_test
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None
@@ -100,7 +100,7 @@ def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
     train, test = toy_train_test
     train = train.replace(s=1 - train.s)
     test = test.replace(s=1 - test.s)
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None

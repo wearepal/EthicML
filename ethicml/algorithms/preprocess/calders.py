@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 from ranzen import implements
 
-from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
+from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat
 
 from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
@@ -85,7 +85,7 @@ def _calders_algorithm(
     dis_group = (disadvantaged_group, bad_class)
     adv_group = (advantaged_group, good_class)
 
-    massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
+    massaging_candidates = concat([data[dis_group], data[adv_group]])
 
     ranker = LR()
     rank: SoftPrediction = ranker.run(dataset, massaging_candidates, seed)
@@ -123,4 +123,4 @@ def _calders_algorithm(
     data[dis_group].y.iloc[:num_to_swap] = good_class  # type: ignore[call-overload]
     data[adv_group].y.iloc[:num_to_swap] = bad_class  # type: ignore[call-overload]
 
-    return concat_dt(list(data.values())), test
+    return concat(list(data.values())), test

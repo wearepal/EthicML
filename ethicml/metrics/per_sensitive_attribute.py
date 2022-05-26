@@ -4,7 +4,7 @@ from typing import Dict
 
 import pandas as pd
 
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
+from ethicml.utility import DataTuple, EvalTuple, Prediction, SoftPrediction
 
 from .metric import Metric
 
@@ -21,7 +21,7 @@ class MetricNotApplicable(Exception):
 
 
 def metric_per_sensitive_attribute(
-    prediction: Prediction, actual: DataTuple, metric: Metric, use_sens_name: bool = True
+    prediction: Prediction, actual: EvalTuple, metric: Metric, use_sens_name: bool = True
 ) -> Dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute.
 
@@ -36,25 +36,16 @@ def metric_per_sensitive_attribute(
             f"attribute, apply to whole dataset instead"
         )
 
-    assert actual.s.shape[0] == actual.x.shape[0]
     assert actual.s.shape[0] == actual.y.shape[0]
     assert prediction.hard.shape[0] == actual.y.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
 
-    s_column: str = str(actual.s.name)
-    y_column: str = str(actual.y.name)
+    s_column: str = actual.s_column
 
     for unique_s in actual.s.unique():
         mask: pd.Series = actual.s == unique_s
-        subset = DataTuple.from_df(
-            x=pd.DataFrame(
-                actual.x.loc[mask][actual.x.columns], columns=actual.x.columns
-            ).reset_index(drop=True),
-            s=pd.Series(actual.s.loc[mask], name=s_column).reset_index(drop=True),
-            y=pd.Series(actual.y.loc[mask], name=y_column).reset_index(drop=True),
-            name=actual.name,
-        )
+        subset = actual.get_s_subset(unique_s)
         pred_y: Prediction
         if isinstance(prediction, SoftPrediction):
             pred_y = SoftPrediction(soft=prediction.soft[mask], info=prediction.info)
