@@ -18,6 +18,7 @@ from ethicml import (
     FairnessType,
     InAlgorithm,
     PreAlgorithm,
+    TrainTestPair,
     TrainValPair,
     Upsampler,
     UpsampleStrategy,
@@ -87,9 +88,9 @@ METHOD_LIST_EXTENSION = [
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST + METHOD_LIST_EXTENSION)
-def test_pre(toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int):
+def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test preprocessing."""
-    train, test = toy_train_val
+    train, test = toy_train_test
 
     svm_model: InAlgorithm = SVM()
 
@@ -138,9 +139,9 @@ def test_pre_sep_fit_transform(
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
-def test_threaded_pre(toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int):
+def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test vfae."""
-    train, test = toy_train_val
+    train, test = toy_train_test
 
     svm_model: InAlgorithm = SVM()
     assert svm_model is not None
