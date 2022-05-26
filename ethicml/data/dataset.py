@@ -323,7 +323,7 @@ class LoadableDataset(Dataset):
             s_data = s_data.loc[y_mask].reset_index(drop=True)
             y_data = y_data.loc[y_mask].reset_index(drop=True)
 
-        return DataTuple.from_x_s_y(x=x_data, s=s_data, y=y_data, name=self.name)
+        return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
     @typing.no_type_check
     def load_aif(self):  # Returns aif.360 Standard Dataset

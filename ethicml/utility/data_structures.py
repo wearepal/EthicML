@@ -72,7 +72,9 @@ class TestTuple:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
 
     @classmethod
-    def from_x_s(cls, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None) -> TestTuple:
+    def from_df(
+        cls, x: pd.DataFrame, s: pd.Series[int], *, name: Optional[str] = None
+    ) -> TestTuple:
         """Make a TestTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
@@ -105,7 +107,7 @@ class TestTuple:
         name: Optional[str] = None,
     ) -> TestTuple:
         """Create a copy of the TestTuple but change the given values."""
-        return TestTuple.from_x_s(
+        return TestTuple.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             name=name if name is not None else self.name,
@@ -131,7 +133,7 @@ class TestTuple:
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls.from_x_s(
+            return cls.from_df(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.Series(data["s"], name=data["s_names"][0]),
                 name=name or None,
@@ -150,8 +152,8 @@ class DataTuple(TestTuple):
         assert self.y_column in self.data.columns, f"column {self.y_column} not present"
 
     @classmethod
-    def from_x_s_y(
-        cls, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+    def from_df(
+        cls, x: pd.DataFrame, s: pd.Series[int], *, y: pd.Series[int], name: Optional[str] = None
     ) -> DataTuple:
         """Make a DataTuple."""
         s_column = s.name
@@ -196,7 +198,7 @@ class DataTuple(TestTuple):
         y: Optional[pd.Series] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
-        return DataTuple.from_x_s_y(
+        return DataTuple.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             y=y if y is not None else self.y,
@@ -246,7 +248,7 @@ class DataTuple(TestTuple):
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls.from_x_s_y(
+            return cls.from_df(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
                 s=pd.Series(data["s"], name=data["s_names"][0]),
                 y=pd.Series(data["y"], name=data["y_names"][0]),
@@ -364,7 +366,7 @@ def concat_dt(
     :param axis: Axis to concatenate on. (Default: 'index')
     :param ignore_index: Ignore the index of the dataframes. (Default: False)
     """
-    return DataTuple.from_x_s_y(
+    return DataTuple.from_df(
         x=pd.concat(
             [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),
@@ -384,7 +386,7 @@ def concat_tt(
     ignore_index: bool = False,
 ) -> TestTuple:
     """Concatenate the test tuples in the given list."""
-    return TestTuple.from_x_s(
+    return TestTuple.from_df(
         x=pd.concat(
             [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
         ),

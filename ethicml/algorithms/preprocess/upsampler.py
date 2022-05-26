@@ -105,7 +105,7 @@ def upsample(
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
-        data[(s, y)] = DataTuple.from_x_s_y(
+        data[(s, y)] = DataTuple.from_df(
             x=dataset.x.loc[s_y_mask].reset_index(drop=True),
             s=dataset.s.loc[s_y_mask].reset_index(drop=True),
             y=dataset.y.loc[s_y_mask].reset_index(drop=True),
@@ -145,7 +145,7 @@ def upsample(
         all_data = all_data.sample(  # type: ignore[assignment]
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
-        upsampled[key] = DataTuple.from_x_s_y(
+        upsampled[key] = DataTuple.from_df(
             x=all_data[x_columns], s=all_data[s_column], y=all_data[y_column], name=dataset.name
         )
 
@@ -203,4 +203,4 @@ def upsample(
         )
 
     assert upsampled_datatuple is not None
-    return upsampled_datatuple, TestTuple.from_x_s(x=test.x, s=test.s, name=f"{name}: {test.name}")
+    return upsampled_datatuple, TestTuple.from_df(x=test.x, s=test.s, name=f"{name}: {test.name}")

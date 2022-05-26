@@ -198,7 +198,7 @@ def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: 
 
 def test_calders():
     """Test calders."""
-    data = DataTuple.from_x_s_y(
+    data = DataTuple.from_df(
         x=pd.DataFrame(np.linspace(0, 1, 100), columns=["x"]),
         s=pd.Series([1] * 75 + [0] * 25, name="s"),
         y=pd.Series([1] * 50 + [0] * 25 + [1] * 10 + [0] * 15, name="y"),

@@ -75,7 +75,7 @@ def _calders_algorithm(
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
-        data[(s, y)] = DataTuple.from_x_s_y(
+        data[(s, y)] = DataTuple.from_df(
             x=dataset.x.loc[s_y_mask].reset_index(drop=True),
             s=dataset.s.loc[s_y_mask].reset_index(drop=True),
             y=dataset.y.loc[s_y_mask].reset_index(drop=True),
@@ -104,7 +104,7 @@ def _calders_algorithm(
     # use the rank to sort the data
     for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
-        data[group] = DataTuple.from_x_s_y(
+        data[group] = DataTuple.from_df(
             x=unsorted_data.x.reindex(index=ranking.index).reset_index(drop=True),
             s=unsorted_data.s.reindex(index=ranking.index).reset_index(drop=True),
             y=unsorted_data.y.reindex(index=ranking.index).reset_index(drop=True),

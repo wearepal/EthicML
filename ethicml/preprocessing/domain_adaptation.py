@@ -58,12 +58,12 @@ def domain_split(
     train_s = datatup.s.iloc[train_train.index].reset_index(drop=True)
     train_y = datatup.y.iloc[train_train.index].reset_index(drop=True)
 
-    train_datatup = DataTuple.from_x_s_y(x=train_x, s=train_s, y=train_y, name=datatup.name)
+    train_datatup = DataTuple.from_df(x=train_x, s=train_s, y=train_y, name=datatup.name)
 
     test_x = datatup.x.iloc[test.index].reset_index(drop=True)
     test_s = datatup.s.iloc[test.index].reset_index(drop=True)
     test_y = datatup.y.iloc[test.index].reset_index(drop=True)
 
-    test_datatup = DataTuple.from_x_s_y(x=test_x, s=test_s, y=test_y, name=datatup.name)
+    test_datatup = DataTuple.from_df(x=test_x, s=test_s, y=test_y, name=datatup.name)
 
     return train_datatup, test_datatup
