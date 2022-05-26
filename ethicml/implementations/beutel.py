@@ -200,7 +200,9 @@ def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
     )
     test_transformed = encode_testset(enc, test_loader, data)
     if isinstance(data, DataTuple):
-        return DataTuple(x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name)
+        return DataTuple.from_df(
+            x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name
+        )
     else:
         return test_transformed
 
@@ -264,7 +266,7 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return DataTuple(
+    return DataTuple.from_df(
         x=pd.DataFrame(data_to_return),
         s=datatuple.s,
         y=datatuple.y,
@@ -287,7 +289,7 @@ def encode_testset(
     for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return TestTuple(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
+    return TestTuple.from_df(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
 
 
 class GradReverse(Function):

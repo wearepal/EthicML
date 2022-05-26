@@ -111,16 +111,16 @@ def train_test_split(
 
     # ================================== assemble train and test ==================================
     train: DataTuple = DataTuple(
-        x=all_data_train[x_columns],
-        s=all_data_train[s_column],
-        y=all_data_train[y_column],
+        data=all_data_train,
+        s_column=s_column,
+        y_column=y_column,
         name=f"{data.name} - Train",
     )
 
     test: DataTuple = DataTuple(
-        x=all_data_test[x_columns],
-        s=all_data_test[s_column],
-        y=all_data_test[y_column],
+        data=all_data_test,
+        s_column=s_column,
+        y_column=y_column,
         name=f"{data.name} - Test",
     )
 
@@ -223,16 +223,16 @@ class ProportionalSplit(RandomSplit):
         )
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_indices].reset_index(drop=True),
-            s=data.s.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[train_indices].reset_index(drop=True),  # type: ignore[call-overload]
+            data=data.data.iloc[train_indices].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_indices].reset_index(drop=True),
-            s=data.s.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
-            y=data.y.iloc[test_indices].reset_index(drop=True),  # type: ignore[call-overload]
+            data=data.data.iloc[test_indices].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Test",
         )
 
@@ -315,16 +315,16 @@ class BalancedTestSplit(RandomSplit):
         test_idx = np.concatenate(test_indices, axis=0)
 
         train: DataTuple = DataTuple(
-            x=data.x.iloc[train_idx].reset_index(drop=True),
-            s=data.s.iloc[train_idx].reset_index(drop=True),
-            y=data.y.iloc[train_idx].reset_index(drop=True),
+            data=data.data.iloc[train_idx].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Train",
         )
 
         test: DataTuple = DataTuple(
-            x=data.x.iloc[test_idx].reset_index(drop=True),
-            s=data.s.iloc[test_idx].reset_index(drop=True),
-            y=data.y.iloc[test_idx].reset_index(drop=True),
+            data=data.data.iloc[test_idx].reset_index(drop=True),
+            s_column=data.s_column,
+            y_column=data.y_column,
             name=f"{data.name} - Test",
         )
 
@@ -371,8 +371,8 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
         assert val_s.shape == (len(val_inds),)
         assert val_y.shape == (len(val_inds),)
 
-        yield DataTuple(
+        yield DataTuple.from_df(
             x=train_x, s=train_s, y=train_y, name=f"{data.name} - train fold {i}"
-        ), DataTuple(x=val_x, s=val_s, y=val_y, name=f"{data.name} - test fold {i}")
+        ), DataTuple.from_df(x=val_x, s=val_s, y=val_y, name=f"{data.name} - test fold {i}")
 
         current = stop

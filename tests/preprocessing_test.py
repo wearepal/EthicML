@@ -196,7 +196,7 @@ def test_sequential_split():
 
 def test_biased_split():
     """Test biased split."""
-    data = DataTuple(
+    data = DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.Series([1] * 750 + [0] * 250, name="sens="),
         y=pd.Series([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, name="label<"),
@@ -304,7 +304,7 @@ def test_biased_split():
 
 def test_biased_split_sizes():
     """Test biased split sizes."""
-    data = DataTuple(
+    data = DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.Series([1] * 750 + [0] * 250, name="sens="),
         y=pd.Series([1] * 500 + [0] * 250 + [1] * 125 + [0] * 125, name="label<"),
@@ -329,7 +329,7 @@ def test_biased_split_sizes():
 def test_biased_split_nonbinary():
     """Test biased split nonbinary."""
     # generate data that uses -1 and 1 instead of 0 and 1 for s and y
-    data = DataTuple(
+    data = DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["feat1-"]),
         s=pd.Series([1] * 750 + [-1] * 250, name="sens="),
         y=pd.Series([1] * 500 + [-1] * 250 + [1] * 125 + [-1] * 125, name="label<"),

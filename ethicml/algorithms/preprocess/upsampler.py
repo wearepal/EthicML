@@ -67,23 +67,19 @@ class Upsampler(PreAlgorithm):
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     """Given 2 datatuples, concatenate them and shuffle."""
     assert (first_dt.x.columns == second_dt.x.columns).all()  # type: ignore[attr-defined]
-    assert first_dt.s.name == second_dt.s.name
-    assert first_dt.y.name == second_dt.y.name
+    assert first_dt.s_column == second_dt.s_column
+    assert first_dt.y_column == second_dt.y_column
 
-    x_columns: pd.Index = first_dt.x.columns
-    s_column: Optional[Hashable] = first_dt.s.name
-    y_column: Optional[Hashable] = first_dt.y.name
-    assert isinstance(s_column, str) and isinstance(y_column, str)
+    s_column = first_dt.s_column
+    y_column = first_dt.y_column
 
-    a_combined: pd.DataFrame = pd.concat([first_dt.x, first_dt.s, first_dt.y], axis="columns")
-    b_combined: pd.DataFrame = pd.concat([second_dt.x, second_dt.s, second_dt.y], axis="columns")
+    a_combined: pd.DataFrame = first_dt.data
+    b_combined: pd.DataFrame = second_dt.data
 
     combined = pd.concat([a_combined, b_combined], axis="index")
     combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)  # type: ignore[assignment]
 
-    return DataTuple(
-        x=combined[x_columns], s=combined[s_column], y=combined[y_column], name=first_dt.name
-    )
+    return DataTuple(data=combined, s_column=s_column, y_column=y_column, name=first_dt.name)
 
 
 def upsample(
@@ -109,7 +105,7 @@ def upsample(
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
-        data[(s, y)] = DataTuple(
+        data[(s, y)] = DataTuple.from_df(
             x=dataset.x.loc[s_y_mask].reset_index(drop=True),
             s=dataset.s.loc[s_y_mask].reset_index(drop=True),
             y=dataset.y.loc[s_y_mask].reset_index(drop=True),
@@ -149,7 +145,7 @@ def upsample(
         all_data = all_data.sample(  # type: ignore[assignment]
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
-        upsampled[key] = DataTuple(
+        upsampled[key] = DataTuple.from_df(
             x=all_data[x_columns], s=all_data[s_column], y=all_data[y_column], name=dataset.name
         )
 
@@ -200,11 +196,11 @@ def upsample(
                     [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
                 ).reset_index(drop=True)
         upsampled_datatuple = DataTuple(
-            x=upsampled_dataframes[x_columns],
-            s=upsampled_dataframes[s_column],
-            y=upsampled_dataframes[y_column],
+            data=upsampled_dataframes,
+            s_column=s_column,
+            y_column=y_column,
             name=f"{name}: {dataset.name}",
         )
 
     assert upsampled_datatuple is not None
-    return upsampled_datatuple, TestTuple(x=test.x, s=test.s, name=f"{name}: {test.name}")
+    return upsampled_datatuple, TestTuple.from_df(x=test.x, s=test.s, name=f"{name}: {test.name}")

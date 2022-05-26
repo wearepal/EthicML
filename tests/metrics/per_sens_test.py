@@ -45,7 +45,7 @@ def test_issue_431():
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
     s = pd.Series(np.random.randn(100), name="s")
     y = pd.Series(np.random.randint(0, 5, 100), name="y")
-    data = DataTuple(x=x, s=s, y=y)
+    data = DataTuple.from_df(x=x, s=s, y=y)
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = LR()

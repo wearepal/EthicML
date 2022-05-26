@@ -17,8 +17,8 @@ NPZ: Final[str] = "test.npz"
 
 def test_simple_saving() -> None:
     """Tests that a DataTuple can be saved."""
-    data_tuple = DataTuple(
-        x=pd.DataFrame({"a1": np.array([3.2, 9.4, np.nan, 0.0])}),
+    data_tuple = DataTuple.from_df(
+        x=pd.DataFrame({"a1": np.array([9.4, np.nan, 0.0])}),
         s=pd.Series([18, -3, int(1e10)], name="b1"),
         y=pd.Series([0, 1, 0], name="c3"),
         name="test data",
@@ -85,7 +85,7 @@ def test_predictions_info_loaded_bad(temp_dir: Path) -> None:
 
 def test_dataset_name_none() -> None:
     """Tests that a DataTuple can be saved without the name property."""
-    datatup = DataTuple(
+    datatup = DataTuple.from_df(
         x=pd.DataFrame([3.0], columns=["a1"]),
         s=pd.Series([4.0], name="b2"),
         y=pd.Series([6.0], name="c3"),
@@ -106,7 +106,7 @@ def test_dataset_name_none() -> None:
 def test_dataset_name_with_spaces() -> None:
     """Tests that a dataset name can contain spaces and special chars."""
     name = "This is a very@#$%^&*((())) complicated name"
-    datatup = TestTuple(
+    datatup = TestTuple.from_df(
         x=pd.DataFrame([3.0], columns=["a1"]), s=pd.Series([4.0], name="b2"), name=name
     )
     with TemporaryDirectory() as tmpdir:
@@ -122,7 +122,7 @@ def test_dataset_name_with_spaces() -> None:
 
 def test_apply_to_joined_df() -> None:
     """Tests apply_to_joined_df_function."""
-    datatup = DataTuple(
+    datatup = DataTuple.from_df(
         x=pd.DataFrame([3.0], columns=["a1"]),
         s=pd.Series([4.0], name="b2"),
         y=pd.Series([6.0], name="c3"),
@@ -140,16 +140,14 @@ def test_apply_to_joined_df() -> None:
 
 def test_data_tuple_len() -> None:
     """Test DataTuple len property."""
-    datatup_unequal_len = DataTuple(
-        x=pd.DataFrame([3.0, 2.0], columns=["a1"]),
-        s=pd.Series([4.0], name="b2"),
-        y=pd.Series([6.0], name="c3"),
-        name=None,
-    )
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    s = pd.Series([4.0], name="b2")
+    y = pd.Series([6.0], name="c3")
+    name = None
     with pytest.raises(AssertionError):
-        len(datatup_unequal_len)
+        DataTuple.from_df(x=x, s=s, y=y, name=name)
 
-    datatup_equal_len = DataTuple(
+    datatup_equal_len = DataTuple.from_df(
         x=pd.DataFrame([3.0, 2.0, 1.0], columns=["a1"]),
         s=pd.Series([4.0, 5.0, 9.0], name="b2"),
         y=pd.Series([6.0, 4.2, 6.7], name="c3"),
