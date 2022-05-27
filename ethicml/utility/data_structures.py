@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
@@ -20,7 +21,7 @@ from typing import (
     TypeVar,
     Union,
 )
-from typing_extensions import Final, Literal, TypeAlias
+from typing_extensions import Final, Literal, TypeAlias, final
 
 import numpy as np
 import pandas as pd
@@ -63,8 +64,48 @@ class PandasIndex(Enum):
     MODEL = "model"
 
 
+_S = TypeVar("_S", bound="SubsetMixin")
+
+
+class SubsetMixin(ABC):
+    """Mixin that provides methods for getting subsets."""
+
+    # the mixin assumes the presence of these attributes
+    data: pd.DataFrame
+    s_column: str
+
+    @abstractmethod
+    def replace_data(self: _S, data: pd.DataFrame) -> _S:
+        """Make a copy of the container but change the underlying data."""
+
+    @property
+    @final
+    def s(self) -> pd.Series[int]:
+        """Getter for property s."""
+        return self.data[self.s_column]
+
+    @final
+    def get_n_samples(self: _S, num: int = 500) -> _S:
+        """Get the first elements of the dataset.
+
+        :param num: How many samples to take for subset. (Default: 500)
+        :returns: Subset of training data.
+        """
+        return self.replace_data(data=self.data.iloc[:num])
+
+    @final
+    def get_s_subset(self: _S, s: int) -> _S:
+        """Return a subset of the DataTuple where S=s."""
+        return self.replace_data(data=self.data[self.s == s])
+
+    @final
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self.data)
+
+
 @dataclass
-class SubgroupTuple:
+class SubgroupTuple(SubsetMixin):
     """A tuple of dataframes for the features and the sensitive attribute."""
 
     __slots__ = ("data", "s_column", "name")
@@ -90,18 +131,9 @@ class SubgroupTuple:
         """Getter for property x."""
         return self.data.drop(self.s_column, inplace=False, axis="columns")
 
-    @property
-    def s(self) -> pd.Series[int]:
-        """Getter for property s."""
-        return self.data[self.s_column]
-
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
-
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        return len(self.data)
 
     def replace(
         self,
@@ -154,7 +186,7 @@ class SubgroupTuple:
 
 
 @dataclass
-class DataTuple:
+class DataTuple(SubsetMixin):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
     __slots__ = ("data", "s_column", "y_column", "name")
@@ -189,11 +221,6 @@ class DataTuple:
         return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
-    def s(self) -> pd.Series[int]:
-        """Getter for property s."""
-        return self.data[self.s_column]
-
-    @property
     def y(self) -> pd.Series[int]:
         """Getter for property y."""
         return self.data[self.y_column]
@@ -201,10 +228,6 @@ class DataTuple:
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s, self.y])
-
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        return len(self.data)
 
     def remove_y(self) -> SubgroupTuple:
         """Convert the DataTuple instance to a SubgroupTuple instance."""
@@ -247,18 +270,6 @@ class DataTuple:
         """
         return self.replace_data(data=mapper(self.data))
 
-    def get_n_samples(self, num: int = 500) -> DataTuple:
-        """Get the first elements of the dataset.
-
-        :param num: How many samples to take for subset. (Default: 500)
-        :returns: Subset of training data.
-        """
-        return self.replace_data(data=self.data.iloc[:num])
-
-    def get_s_subset(self, s: int) -> DataTuple:
-        """Return a subset of the DataTuple where S=s."""
-        return self.replace_data(data=self.data[self.s == s])
-
     def to_npz(self, data_path: Path) -> None:
         """Save DataTuple as an npz file.
 
@@ -288,7 +299,7 @@ class DataTuple:
 
 
 @dataclass
-class LabelTuple:
+class LabelTuple(SubsetMixin):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
     __slots__ = ("data", "s_column", "y_column", "name")
@@ -333,11 +344,6 @@ class LabelTuple:
         )
 
     @property
-    def s(self) -> pd.Series[int]:
-        """Getter for property s."""
-        return self.data[self.s_column]
-
-    @property
     def y(self) -> pd.Series[int]:
         """Getter for property y."""
         return self.data[self.y_column]
@@ -345,10 +351,6 @@ class LabelTuple:
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
         return iter([self.s, self.y])
-
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        return len(self.data)
 
     def replace(
         self,
@@ -373,18 +375,6 @@ class LabelTuple:
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         assert self.y_column in data.columns, f"column {self.y_column} not present"
         return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
-
-    def get_n_samples(self, num: int = 500) -> LabelTuple:
-        """Get the first elements of the dataset.
-
-        :param num: How many samples to take for subset. (Default: 500)
-        :returns: Subset of training data.
-        """
-        return self.replace_data(data=self.data.iloc[:num])
-
-    def get_s_subset(self, s: int) -> LabelTuple:
-        """Return a subset of the LabelTuple where S=s."""
-        return self.replace_data(data=self.data[self.s == s])
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
