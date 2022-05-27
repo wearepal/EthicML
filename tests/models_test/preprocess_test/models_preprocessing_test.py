@@ -19,6 +19,7 @@ from ethicml import (
     InAlgorithm,
     PreAlgorithm,
     TrainTestPair,
+    TrainValPair,
     Upsampler,
     UpsampleStrategy,
     Zemel,
@@ -112,10 +113,10 @@ def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
 def test_pre_sep_fit_transform(
-    toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int
+    toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int
 ):
     """Test preprocessing."""
-    train, test = toy_train_test
+    train, test = toy_train_val
 
     svm_model: InAlgorithm = SVM()
 

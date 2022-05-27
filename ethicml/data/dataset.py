@@ -343,13 +343,13 @@ class LoadableDataset(Dataset):
         if self.disc_feature_groups is not None:
             data_collapsed = self._from_dummies(data.x, self.disc_feature_groups)
             data = data.replace(x=data_collapsed)
-        df = pd.concat([data.x, data.s, data.y], axis="columns")
+        df = data.data
 
         return StandardDataset(
             df=df,
-            label_name=data.y.name,
+            label_name=data.y_column,
             favorable_classes=lambda x: x > 0,
-            protected_attribute_names=[data.s.name],
+            protected_attribute_names=[data.s_column],
             privileged_classes=[lambda x: x == 1],
             categorical_features=self.disc_feature_groups.keys()
             if self.disc_feature_groups is not None

@@ -52,10 +52,10 @@ class SequentialSplit(DataSplitter):
         train_len = round(self.train_percentage * len(data))
 
         train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
-        train = train.replace(name=f"{data.name} - Train")
+        train = train.rename(f"{data.name} - Train")
 
         test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
-        test = test.replace(name=f"{data.name} - Test")
+        test = test.rename(f"{data.name} - Test")
 
         assert len(train) + len(test) == len(data)
         return train, test, {}
@@ -87,7 +87,7 @@ def train_test_split(
     y_column = data.y.name
     assert isinstance(s_column, str) and isinstance(y_column, str)
 
-    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis="columns")
+    all_data: pd.DataFrame = data.data
 
     all_data = shuffle_df(all_data, random_state=1)
 

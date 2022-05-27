@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
 from .metric import Metric
@@ -19,6 +19,6 @@ class FPR(CfmMetric):
     _name: ClassVar[str] = "FPR"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         t_neg, f_pos, _, _ = self.confusion_matrix(prediction=prediction, actual=actual)
         return f_pos / (f_pos + t_neg)

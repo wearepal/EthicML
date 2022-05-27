@@ -9,11 +9,11 @@ from typing_extensions import Literal, TypeAlias, TypedDict, final
 
 from ethicml.algorithms.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, SubgroupTuple
 
 __all__ = ["PreAlgoArgs", "PreAlgorithmSubprocess"]
 
-T = TypeVar("T", DataTuple, TestTuple)
+T = TypeVar("T", DataTuple, SubgroupTuple)
 
 
 class PreAlgoRunArgs(TypedDict):
@@ -99,9 +99,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_train = DataTuple.from_npz(transformed_train_path)
 
         # prefix the name of the algorithm to the dataset name
-        transformed_train = transformed_train.replace(
-            name=None if train.name is None else f"{self.name}: {train.name}"
-        )
+        if train.name is not None:
+            transformed_train = transformed_train.rename(f"{self.name}: {train.name}")
         return self, transformed_train
 
     @final
@@ -133,15 +132,12 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             transformed_test: T = data.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
-        transformed_test = transformed_test.replace(
-            name=None if data.name is None else f"{self.name}: {data.name}"
-        )
+        if data.name is not None:
+            transformed_test = transformed_test.rename(f"{self.name}: {data.name}")
         return transformed_test
 
     @final
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         """Generate fair features in a subprocess with the given data.
 
         :param train: Data tuple of the training data.
@@ -174,15 +170,13 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_npz(transformed_train_path)
-            transformed_test = TestTuple.from_npz(transformed_test_path)
+            transformed_test = test.from_npz(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
-        transformed_train = transformed_train.replace(
-            name=None if train.name is None else f"{self.name}: {train.name}"
-        )
-        transformed_test = transformed_test.replace(
-            name=None if test.name is None else f"{self.name}: {test.name}"
-        )
+        if train.name is not None:
+            transformed_train = transformed_train.rename(f"{self.name}: {train.name}")
+        if test.name is not None:
+            transformed_test = transformed_test.rename(f"{self.name}: {test.name}")
         return transformed_train, transformed_test
 
     @final

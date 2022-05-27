@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
 
 from ethicml.metrics.metric import MetricStaticName
-from ethicml.utility.data_structures import DataTuple, Prediction
+from ethicml.utility.data_structures import EvalTuple, Prediction
 
 __all__ = ["CfmMetric", "LabelOutOfBounds"]
 
@@ -22,7 +22,7 @@ class CfmMetric(MetricStaticName):
     """List of possible target values. If `None`, then this is inferred from the data when run."""
 
     def confusion_matrix(
-        self, prediction: Prediction, actual: DataTuple
+        self, prediction: Prediction, actual: EvalTuple
     ) -> Tuple[int, int, int, int]:
         """Apply sci-kit learn's confusion matrix.
 

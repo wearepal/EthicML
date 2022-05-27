@@ -21,12 +21,12 @@ from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.utility.data_structures import (
     DataTuple,
-    HyperParamType,
+    EvalTuple,
     HyperParamValue,
     Prediction,
     Results,
     ResultsAggregator,
-    TrainTestPair,
+    TrainValPair,
     make_results,
 )
 
@@ -58,7 +58,7 @@ def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
 
 def run_metrics(
     predictions: Prediction,
-    actual: DataTuple,
+    actual: EvalTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
@@ -67,7 +67,7 @@ def run_metrics(
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
-    :param actual: DataTuple with the labels
+    :param actual: EvalTuple with the labels
     :param metrics: list of metrics (Default: ())
     :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
     :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)
@@ -198,7 +198,7 @@ def evaluate_models(
     all_results = ResultsAggregator()
 
     # ======================================= prepare data ========================================
-    data_splits: List[TrainTestPair] = []
+    data_splits: List[TrainValPair] = []
     test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
     model_seeds: List[int] = []
     for dataset in datasets:
@@ -212,8 +212,8 @@ def evaluate_models(
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_n_samples()
-            train = train.replace(name=f"{train.name} ({split_id})")
-            data_splits.append(TrainTestPair(train, test))
+            train = train.rename(f"{train.name} ({split_id})")
+            data_splits.append(TrainValPair(train, test))
             model_seeds.append(0 if repeat_on == "data" else split_id)
             split_info.update({"split_id": split_id})
             test_data.append(
@@ -246,11 +246,11 @@ def evaluate_models(
     )
 
     # append the transformed data to `transformed_data`
-    transformed_data: List[TrainTestPair] = []
+    transformed_data: List[TrainValPair] = []
     transformed_test: List[_DataInfo] = []
     for transformed, pre_model in zip(all_transformed, preprocess_models):
         for (transf_train, transf_test), data_info in zip(transformed, test_data):
-            transformed_data.append(TrainTestPair(transf_train, transf_test))
+            transformed_data.append(TrainValPair(transf_train, transf_test))
             transformed_test.append(
                 _DataInfo(
                     test=data_info.test,

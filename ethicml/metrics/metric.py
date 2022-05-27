@@ -6,7 +6,7 @@ from typing_extensions import final
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 __all__ = ["MetricStaticName", "Metric"]
 
@@ -18,11 +18,11 @@ class Metric(ABC):
     """Whether the metric can be applied per sensitive attribute."""
 
     @abstractmethod
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         """Compute score.
 
         :param prediction: predicted labels
-        :param actual: DataTuple with the actual labels and the sensitive attributes
+        :param actual: EvalTuple with the actual labels and the sensitive attributes
         :returns: the score as a single number
         """
 

@@ -44,7 +44,7 @@ def test_plot_tsne(toy_train_test: TrainTestPair):
 def test_plot_no_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
     train, _ = toy_train_test
-    train = DataTuple.from_df(x=train.x[train.x.columns[:2]], s=train.s, y=train.y)
+    train = train.replace(x=train.x[train.x.columns[:2]])
     save_2d_plot(train, "./plots/test.png")
 
 

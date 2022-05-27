@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 from ranzen import implements
 
-from ethicml.utility import DataTuple, SoftPrediction, TestTuple, concat_dt
+from ethicml.utility import DataTuple, SoftPrediction, concat
 
 from ..inprocess.logistic_regression import LR
 from .pre_algorithm import PreAlgorithm, T
@@ -38,28 +38,26 @@ class Calders(PreAlgorithm):
         new_train, _ = _calders_algorithm(
             train, train, self.preferable_class, self.disadvantaged_group, seed
         )
-        return self, new_train.replace(name=f"{self.name}: {train.name}")
+        return self, new_train.rename(f"{self.name}: {train.name}")
 
     @implements(PreAlgorithm)
     def transform(self, data: T) -> T:
-        return data.replace(name=f"{self.name}: {data.name}")
+        return data.rename(f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(
-        self, train: DataTuple, test: TestTuple, seed: int = 888
-    ) -> Tuple[DataTuple, TestTuple]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         new_train, new_test = _calders_algorithm(
             train, test, self.preferable_class, self.disadvantaged_group, seed
         )
-        return new_train.replace(name=f"{self.name}: {train.name}"), new_test.replace(
+        return new_train.rename(name=f"{self.name}: {train.name}"), new_test.rename(
             name=f"{self.name}: {test.name}"
         )
 
 
 def _calders_algorithm(
-    dataset: DataTuple, test: TestTuple, good_class: int, disadvantaged_group: int, seed: int
-) -> Tuple[DataTuple, TestTuple]:
+    dataset: DataTuple, test: T, good_class: int, disadvantaged_group: int, seed: int
+) -> Tuple[DataTuple, T]:
     s_vals: List[int] = list(map(int, dataset.s.unique()))
     y_vals: List[int] = list(map(int, dataset.y.unique()))
 
@@ -75,17 +73,12 @@ def _calders_algorithm(
     data: Dict[Tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
-        data[(s, y)] = DataTuple.from_df(
-            x=dataset.x.loc[s_y_mask].reset_index(drop=True),
-            s=dataset.s.loc[s_y_mask].reset_index(drop=True),
-            y=dataset.y.loc[s_y_mask].reset_index(drop=True),
-            name=dataset.name,
-        )
+        data[(s, y)] = dataset.replace_data(data=dataset.data.loc[s_y_mask].reset_index(drop=True))
 
     dis_group = (disadvantaged_group, bad_class)
     adv_group = (advantaged_group, good_class)
 
-    massaging_candidates = concat_dt([data[dis_group], data[adv_group]])
+    massaging_candidates = concat([data[dis_group], data[adv_group]])
 
     ranker = LR()
     rank: SoftPrediction = ranker.run(dataset, massaging_candidates, seed)
@@ -104,11 +97,8 @@ def _calders_algorithm(
     # use the rank to sort the data
     for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
-        data[group] = DataTuple.from_df(
-            x=unsorted_data.x.reindex(index=ranking.index).reset_index(drop=True),
-            s=unsorted_data.s.reindex(index=ranking.index).reset_index(drop=True),
-            y=unsorted_data.y.reindex(index=ranking.index).reset_index(drop=True),
-            name=unsorted_data.name,
+        data[group] = unsorted_data.replace_data(
+            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)
         )
 
     all_disadvantaged = len(data[(disadvantaged_group, good_class)]) + dis_group_len
@@ -123,4 +113,4 @@ def _calders_algorithm(
     data[dis_group].y.iloc[:num_to_swap] = good_class  # type: ignore[call-overload]
     data[adv_group].y.iloc[:num_to_swap] = bad_class  # type: ignore[call-overload]
 
-    return concat_dt(list(data.values())), test
+    return concat(list(data.values())), test

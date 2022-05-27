@@ -21,7 +21,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.splits import train_test_split
-from ethicml.utility import DataTuple, FairnessType, TestTuple
+from ethicml.utility import DataTuple, FairnessType
 
 from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
@@ -198,18 +198,12 @@ def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
     test_loader = torch.utils.data.DataLoader(
         dataset=test_data, batch_size=flags["batch_size"], shuffle=False
     )
-    test_transformed = encode_testset(enc, test_loader, data)
-    if isinstance(data, DataTuple):
-        return DataTuple.from_df(
-            x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name
-        )
-    else:
-        return test_transformed
+    return encode_testset(enc, test_loader, data)
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: BeutelArgs, seed: int
-) -> Tuple[DataTuple, TestTuple]:
+    train: DataTuple, test: T, flags: BeutelArgs, seed: int
+) -> Tuple[DataTuple, T]:
     """Train the fair autoencoder on the training data and then transform both training and test.
 
     :param train:
@@ -266,17 +260,10 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return DataTuple.from_df(
-        x=pd.DataFrame(data_to_return),
-        s=datatuple.s,
-        y=datatuple.y,
-        name=f"Beutel: {datatuple.name}",
-    )
+    return datatuple.replace(x=pd.DataFrame(data_to_return)).rename(f"Beutel: {datatuple.name}")
 
 
-def encode_testset(
-    enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: TestTuple
-) -> TestTuple:
+def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: T) -> T:
     """Encode a dataset.
 
     :param enc:
@@ -289,7 +276,7 @@ def encode_testset(
     for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return TestTuple.from_df(x=pd.DataFrame(data_to_return), s=testtuple.s, name=testtuple.name)
+    return testtuple.replace(x=pd.DataFrame(data_to_return))
 
 
 class GradReverse(Function):
@@ -468,9 +455,8 @@ def main() -> None:
         transformed_train.to_npz(Path(pre_algo_args["new_train"]))
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
-        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(test, model, flags)
+        transformed_test = transform(DataTuple.from_npz(Path(pre_algo_args["test"])), model, flags)
         transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 

@@ -39,7 +39,7 @@ def maybe_tsne(data: DataTuple) -> Tuple[pd.DataFrame, str, str]:
         x1_name = "tsne1"
         x2_name = "tsne2"
     else:
-        amalgamated = pd.concat([data.x, data.s, data.y], axis="columns")
+        amalgamated = data.data
         x1_name = f"{columns[0]}"
         x2_name = f"{columns[1]}"
     return amalgamated, x1_name, x2_name

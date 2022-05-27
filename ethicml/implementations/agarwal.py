@@ -22,6 +22,7 @@ from ethicml.utility import (
     FairnessType,
     KernelType,
     Prediction,
+    SubgroupTuple,
     TestTuple,
 )
 
@@ -143,7 +144,7 @@ def main() -> None:
     if in_algo_args["mode"] == "run":
         random.seed(in_algo_args["seed"])
         np.random.seed(in_algo_args["seed"])
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
             Path(in_algo_args["test"])
         )
         Prediction(
@@ -159,7 +160,7 @@ def main() -> None:
             model_file = cloudpickle.dumps(model)
         dump(model_file, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        testdata = TestTuple.from_npz(Path(in_algo_args["test"]))
+        testdata = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
         model_file = load(Path(in_algo_args["model"]))
         with working_dir(Path(in_algo_args["model"])):
             model = cloudpickle.loads(model_file)

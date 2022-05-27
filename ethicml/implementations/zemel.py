@@ -108,8 +108,8 @@ def get_xhat_y_hat(
 
 
 def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: ZemelArgs, seed: int
-) -> (Tuple[DataTuple, TestTuple]):
+    train: DataTuple, test: T, flags: ZemelArgs, seed: int
+) -> (Tuple[DataTuple, T]):
     """Train and transform.
 
     :param train:
@@ -127,10 +127,7 @@ def train_and_transform(
     train_transformed = trans(prototypes, w, training_nonsensitive, training_sensitive, train)
     test_transformed = trans(prototypes, w, testing_nonsensitive, testing_sensitive, test)
 
-    return (
-        DataTuple.from_df(x=train_transformed, s=train.s, y=train.y, name=train.name),
-        TestTuple.from_df(x=test_transformed, s=test.s, name=test.name),
-    )
+    return train.replace(x=train_transformed), test.replace(x=test_transformed)
 
 
 def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
@@ -143,10 +140,7 @@ def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
     data_sens = data.x.loc[data.s == 0].to_numpy()
     data_nons = data.x.loc[data.s == 1].to_numpy()
     transformed = trans(prototypes, w, data_nons, data_sens, data)
-    if isinstance(data, DataTuple):
-        return DataTuple.from_df(x=transformed, s=data.s, y=data.y, name=data.name)
-    elif isinstance(data, TestTuple):
-        return TestTuple.from_df(x=transformed, s=data.s, name=data.name)
+    return data.replace(x=transformed)
 
 
 def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
@@ -259,13 +253,14 @@ def main() -> None:
         train_transformed = trans(
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )
-        data = DataTuple.from_df(x=train_transformed, s=train.s, y=train.y, name=train.name)
+        data = train.replace(x=train_transformed)
         data.to_npz(Path(pre_algo_args["new_train"]))
         dump(model, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
-        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(test, model.prototypes, model.w)
+        transformed_test = transform(
+            DataTuple.from_npz(Path(pre_algo_args["test"])), model.prototypes, model.w
+        )
         transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 

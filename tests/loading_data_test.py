@@ -921,7 +921,7 @@ def test_concat():
     s = pd.Series(name="b", data=[5])
     y = pd.Series(name="c", data=[6])
     data2 = DataTuple.from_df(x=x, s=s, y=y, name="test_tuple")
-    data3 = em.concat_dt([data1, data2], axis="index", ignore_index=True)
+    data3 = em.concat([data1, data2], ignore_index=True)
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=["a"], data=[[1], [4]]))
     pd.testing.assert_series_equal(data3.s, pd.Series(name="b", data=[2, 5]))
     pd.testing.assert_series_equal(data3.y, pd.Series(name="c", data=[3, 6]))

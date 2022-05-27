@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgoArgs, InAlgorithmSubprocess, Prediction, TestTuple
+from ethicml import DataTuple, InAlgoArgs, InAlgorithmSubprocess, Prediction, SubgroupTuple
 from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
 
 NPZ: Final[str] = "test.npz"
@@ -106,7 +106,7 @@ def test_dataset_name_none() -> None:
 def test_dataset_name_with_spaces() -> None:
     """Tests that a dataset name can contain spaces and special chars."""
     name = "This is a very@#$%^&*((())) complicated name"
-    datatup = TestTuple.from_df(
+    datatup = SubgroupTuple.from_df(
         x=pd.DataFrame([3.0], columns=["a1"]), s=pd.Series([4.0], name="b2"), name=name
     )
     with TemporaryDirectory() as tmpdir:
@@ -114,7 +114,7 @@ def test_dataset_name_with_spaces() -> None:
         path = tmp_path / "pytest2.npz"
         datatup.to_npz(path)
         # reload from feather file
-        reloaded = TestTuple.from_npz(path)
+        reloaded = SubgroupTuple.from_npz(path)
     assert name == reloaded.name
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_series_equal(datatup.s, reloaded.s)

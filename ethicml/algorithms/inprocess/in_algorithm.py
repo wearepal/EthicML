@@ -8,14 +8,7 @@ from typing import ClassVar, TypeVar
 from typing_extensions import final
 
 from ethicml.algorithms.algorithm_base import Algorithm
-from ethicml.utility import (
-    DataTuple,
-    FairnessType,
-    HyperParamType,
-    KernelType,
-    Prediction,
-    TestTuple,
-)
+from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
 __all__ = [
     "InAlgorithm",

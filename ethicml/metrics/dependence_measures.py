@@ -8,7 +8,7 @@ import numpy as np
 from ranzen import enum_name_str, implements
 from sklearn.metrics import normalized_mutual_info_score
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .metric import Metric
 
@@ -46,7 +46,7 @@ class NMI(_DependenceMeasure):
     _base_name: ClassVar[str] = "NMI"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return normalized_mutual_info_score(
             base_values.to_numpy().ravel(),
@@ -66,7 +66,7 @@ class Yanovich(_DependenceMeasure):
     _base_name: ClassVar[str] = "Yanovich"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._dependence(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 
@@ -121,7 +121,7 @@ class RenyiCorrelation(_DependenceMeasure):
     _base_name: ClassVar[str] = "Renyi"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._corr(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 

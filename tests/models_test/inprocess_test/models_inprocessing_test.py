@@ -25,7 +25,6 @@ from ethicml import (
     DPOracle,
     FairDummies,
     FairnessType,
-    InAlgoArgs,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamiran,
@@ -37,6 +36,7 @@ from ethicml import (
     Prediction,
     Toy,
     TrainTestPair,
+    TrainValPair,
     evaluate_models,
     load_data,
     train_test_split,
@@ -118,9 +118,9 @@ INPROCESS_TESTS = [
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
-def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int):
+def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int):
     """Test an inprocess model."""
-    train, test = toy_train_test
+    train, test = toy_train_val
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
@@ -149,10 +149,10 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
 def test_inprocess_sep_train_pred(
-    toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int
+    toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
 ):
     """Test an inprocess model with distinct train and predict steps."""
-    train, test = toy_train_test
+    train, test = toy_train_val
 
     assert isinstance(model, InAlgorithm)
     assert model is not None

@@ -26,11 +26,11 @@ class PostprocessTest(NamedTuple):
     ],
 )
 def test_post(
-    toy_train_test: TrainValPair, post_model: PostAlgorithm, name: str, num_pos: int
+    toy_train_val: TrainValPair, post_model: PostAlgorithm, name: str, num_pos: int
 ) -> None:
     """Test the dem par flipping method."""
-    train, test = toy_train_test
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train, test = toy_train_val
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None
@@ -64,11 +64,11 @@ def test_post(
     ],
 )
 def test_post_sep_fit_pred(
-    toy_train_test: TrainValPair, post_model: PostAlgorithm, name: str, num_pos: int
+    toy_train_val: TrainValPair, post_model: PostAlgorithm, name: str, num_pos: int
 ) -> None:
     """Test the dem par flipping method."""
-    train, test = toy_train_test
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train, test = toy_train_val
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None
@@ -95,12 +95,12 @@ def test_post_sep_fit_pred(
             assert pytest.approx(diff, abs=1e-2) == 0
 
 
-def test_dp_flip_inverted_s(toy_train_test: TrainValPair) -> None:
+def test_dp_flip_inverted_s(toy_train_val: TrainValPair) -> None:
     """Test the dem par flipping method."""
-    train, test = toy_train_test
+    train, test = toy_train_val
     train = train.replace(s=1 - train.s)
     test = test.replace(s=1 - test.s)
-    train_test = em.concat_tt([train, test], ignore_index=True)
+    train_test = em.concat([train, test], ignore_index=True)
 
     in_model: InAlgorithm = LR()
     assert in_model is not None

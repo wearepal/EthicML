@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 from joblib import dump, load
 
-from ethicml import DataTuple, SoftPrediction, TestTuple
+from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.hgr_modules.hgr_impl import HgrClassLearner
 
 if TYPE_CHECKING:
@@ -49,7 +49,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
     return model.fit(train, seed=seed)
 
 
-def predict(model: HgrClassLearner, test: TestTuple) -> np.ndarray:
+def predict(model: HgrClassLearner, test: SubgroupTuple) -> np.ndarray:
     """Compute predictions on the given test data.
 
     :param exponentiated_gradient:
@@ -58,7 +58,9 @@ def predict(model: HgrClassLearner, test: TestTuple) -> np.ndarray:
     return model.predict(test.x)
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: HgrArgs, seed: int) -> np.ndarray:
+def train_and_predict(
+    train: DataTuple, test: SubgroupTuple, args: HgrArgs, seed: int
+) -> np.ndarray:
     """Train a logistic regression model and compute predictions on the given test data.
 
     :param train:
@@ -75,7 +77,7 @@ def main() -> None:
     flags: HgrArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), TestTuple.from_npz(
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
             Path(in_algo_args["test"])
         )
         SoftPrediction(soft=train_and_predict(train, test, flags, in_algo_args["seed"])).to_npz(
@@ -87,7 +89,7 @@ def main() -> None:
         setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        test = TestTuple.from_npz(Path(in_algo_args["test"]))
+        test = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
         SoftPrediction(soft=predict(model, test)).to_npz(Path(in_algo_args["predictions"]))
     else:

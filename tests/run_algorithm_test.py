@@ -24,14 +24,14 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
     assert test is not None
 
 
-def test_run_parallel(toy_train_test: em.TrainTestPair):
+def test_run_parallel(toy_train_val: em.TrainValPair):
     """Test run parallel."""
 
-    data0 = toy_train_test
-    data1 = toy_train_test
+    data0 = toy_train_val
+    data1 = toy_train_val
     result = run_in_parallel(
         algos=[em.LR(), em.SVM(), em.Majority()],
-        data=[em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
+        data=[em.TrainValPair(*data0), em.TrainValPair(*data1)],
         seeds=[0, 0],
         num_jobs=2,
     )

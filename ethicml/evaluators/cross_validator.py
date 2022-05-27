@@ -10,7 +10,7 @@ from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
 from ethicml.metrics.metric import Metric
 from ethicml.preprocessing.splits import fold_data
-from ethicml.utility import DataTuple, Prediction, TrainTestPair
+from ethicml.utility import DataTuple, Prediction, TrainValPair
 
 __all__ = ["CrossValidator", "CVResults"]
 
@@ -222,7 +222,7 @@ class CrossValidator:
         # create all folds
         data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
         # convert to right format
-        pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
+        pair_folds = [TrainValPair(train_fold, val) for (train_fold, val) in data_folds]
         # run everything in parallel
         all_results = run_in_parallel(
             algos=models,

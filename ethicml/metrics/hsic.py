@@ -10,7 +10,7 @@ import numpy as np
 from numpy.random import RandomState
 
 from ethicml.metrics.metric import MetricStaticName
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 __all__ = ["Hsic"]
 
@@ -66,7 +66,7 @@ class Hsic(MetricStaticName):
     _name: ClassVar[str] = "HSIC"
     apply_per_sensitive: ClassVar[bool] = False
 
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         """We add the ability to take the average of hsic score.
 
         As for larger datasets it will kill your machine

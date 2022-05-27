@@ -122,7 +122,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     # ==================== Zafar Equality of Opportunity ========================
     zafar_eq_opp: InAlgorithm = ZafarEqOpp()
-    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
+    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_opp.run(train, test)
     assert np.count_nonzero(predictions.hard.values == 1) == 40
@@ -132,7 +132,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
-    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
+    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_odds.run(train, test)
     assert np.count_nonzero(predictions.hard.values == 1) == 40

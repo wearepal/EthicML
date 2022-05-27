@@ -9,7 +9,7 @@ from typing import ClassVar
 import numpy as np
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .metric import MetricStaticName
 
@@ -23,7 +23,7 @@ class Theil(MetricStaticName):
     _name: ClassVar[str] = "Theil_Index"
 
     @implements(MetricStaticName)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         y_true_df = actual.y
         y_pos_label = y_true_df.max()
 

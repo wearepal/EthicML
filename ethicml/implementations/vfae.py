@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader
 
 from ethicml.data.lookup import get_dataset_obj_by_name
 from ethicml.implementations.beutel import set_seed
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, SubgroupTuple
 
 from .pytorch_common import CustomDataset, TestDataset
 from .utils import load_data_from_flags, save_transformations
@@ -67,7 +67,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
-    elif isinstance(dataset, TestTuple):
+    elif isinstance(dataset, SubgroupTuple):
         data = TestDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
 
@@ -77,25 +77,16 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
         for sample in loader:
             if isinstance(dataset, DataTuple):
                 _x, _s, _ = sample
-            elif isinstance(dataset, TestTuple):
+            elif isinstance(dataset, SubgroupTuple):
                 _x, _s = sample
             z1_mu, z1_logvar = model.encode_z1(_x, _s)
             # z1 = model.reparameterize(z1_mu, z1_logvar)
             post_train += z1_mu.data.tolist()
 
-    if isinstance(dataset, DataTuple):
-        return DataTuple.from_df(
-            x=pd.DataFrame(post_train), s=dataset.s, y=dataset.y, name=f"VFAE: {dataset.name}"
-        )
-    elif isinstance(dataset, TestTuple):
-        return TestTuple.from_df(
-            x=pd.DataFrame(post_train), s=dataset.s, name=f"VFAE: {dataset.name}"
-        )
+    return dataset.replace(x=pd.DataFrame(post_train)).rename(f"VFAE: {dataset.name}")
 
 
-def train_and_transform(
-    train: DataTuple, test: TestTuple, flags: VfaeArgs
-) -> Tuple[DataTuple, TestTuple]:
+def train_and_transform(train: DataTuple, test: T, flags: VfaeArgs) -> Tuple[DataTuple, T]:
     """Train the model and transform the dataset.
 
     :param train:
@@ -177,9 +168,8 @@ def main() -> None:
         transformed_train.to_npz(Path(pre_algo_args["new_train"]))
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
-        test = DataTuple.from_npz(Path(pre_algo_args["test"]))
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(model, test, flags)
+        transformed_test = transform(model, DataTuple.from_npz(Path(pre_algo_args["test"])), flags)
         transformed_test.to_npz(Path(pre_algo_args["new_test"]))
 
 
