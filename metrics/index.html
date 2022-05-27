@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Compare metrics between groups" href="per_sensitive_attribute.html" /><link rel="prev" title="Parallel evaluation" href="../evaluators/parallelism.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Metrics - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Metrics - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -213,7 +213,7 @@
         <article role="main">
           <section id="module-ethicml.metrics">
 <span id="metrics"></span><h1>Metrics<a class="headerlink" href="#module-ethicml.metrics" title="Permalink to this headline">#</a></h1>
-<p>This module contains metrics which can be applied to prediction results.</p>
+<p>Module for metrics which can be applied to prediction results.</p>
 <p>Some example code</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
 
@@ -221,7 +221,7 @@
 </pre></div>
 </div>
 <p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -248,23 +248,29 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.CV" title="ethicml.metrics.CV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CV</span></code></a></p></td>
 <td><p>Calder-Verwer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.DependencyTarget" title="ethicml.metrics.DependencyTarget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DependencyTarget</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.CfmMetric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CfmMetric</span></code></a></p></td>
+<td><p>Confusion Matrix based metric.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.DependencyTarget" title="ethicml.metrics.DependencyTarget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DependencyTarget</span></code></a></p></td>
 <td><p>The variable that is compared to the predictions in order to check how similar they are.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.F1" title="ethicml.metrics.F1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">F1</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.F1" title="ethicml.metrics.F1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">F1</span></code></a></p></td>
 <td><p>F1 score: harmonic mean of precision and recall.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.FNR" title="ethicml.metrics.FNR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FNR</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.FNR" title="ethicml.metrics.FNR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FNR</span></code></a></p></td>
 <td><p>False negative rate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.FPR" title="ethicml.metrics.FPR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FPR</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.FPR" title="ethicml.metrics.FPR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FPR</span></code></a></p></td>
 <td><p>False positive rate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic" title="ethicml.metrics.Hsic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hsic</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Hsic" title="ethicml.metrics.Hsic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hsic</span></code></a></p></td>
 <td><p>See module string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metric</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Metric</span></code></a></p></td>
 <td><p>Base class for all metrics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.MetricStaticName"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricStaticName</span></code></a></p></td>
+<td><p>Metric base class for metrics whose name does not depend on instance variables.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.NMI" title="ethicml.metrics.NMI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NMI</span></code></a></p></td>
 <td><p>Normalized Mutual Information.</p></td>
@@ -287,25 +293,28 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation" title="ethicml.metrics.RenyiCorrelation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RenyiCorrelation</span></code></a></p></td>
 <td><p>Renyi correlation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.SklearnMetric" title="ethicml.metrics.SklearnMetric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SklearnMetric</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.RobustAccuracy" title="ethicml.metrics.RobustAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RobustAccuracy</span></code></a></p></td>
+<td><p>Minimum Classification accuracy across S-groups.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.SklearnMetric" title="ethicml.metrics.SklearnMetric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SklearnMetric</span></code></a></p></td>
 <td><p>Wrapper around an sklearn metric.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.TNR" title="ethicml.metrics.TNR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TNR</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TNR" title="ethicml.metrics.TNR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TNR</span></code></a></p></td>
 <td><p>True negative rate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.TPR" title="ethicml.metrics.TPR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TPR</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.TPR" title="ethicml.metrics.TPR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TPR</span></code></a></p></td>
 <td><p>True positive rate.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Theil" title="ethicml.metrics.Theil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Theil</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Theil" title="ethicml.metrics.Theil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Theil</span></code></a></p></td>
 <td><p>Theil Index.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.Yanovich" title="ethicml.metrics.Yanovich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Yanovich</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.Yanovich" title="ethicml.metrics.Yanovich"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Yanovich</span></code></a></p></td>
 <td><p>Yanovich Metric.</p></td>
 </tr>
 </tbody>
 </table></div>
 <p><strong>Exceptions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -314,24 +323,33 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds" title="ethicml.metrics.LabelOutOfBounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LabelOutOfBounds</span></code></a></p></td>
 <td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable" title="ethicml.metrics.MetricNotApplicable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a></p></td>
+<td><p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p></td>
+</tr>
 </tbody>
 </table></div>
 <p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.confusion_matrix" title="ethicml.metrics.confusion_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confusion_matrix</span></code></a></p></td>
-<td><p>Apply sci-kit learn's confusion matrix.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.diff_per_sensitive_attribute" title="ethicml.metrics.diff_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sensitive_attribute</span></code></a></p></td>
+<td><p>Compute the difference in the metrics per sensitive attribute.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.metric_per_sensitive_attribute" title="ethicml.metrics.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a></p></td>
+<td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ratio_per_sensitive_attribute" title="ethicml.metrics.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a></p></td>
+<td><p>Compute the ratios in the metrics per sensitive attribute.</p></td>
 </tr>
 </tbody>
 </table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.AS">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AS</span></span><a class="headerlink" href="#ethicml.metrics.AS" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.BaseMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a></p>
 <p>Anti-spurious metric.</p>
 <p>Computes <span class="math notranslate nohighlight">\(P(\hat{y}=y|y\neq s)\)</span>.</p>
 <dl class="field-list simple">
@@ -339,6 +357,16 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.AS.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AS.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.AS.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.AS.name" title="Permalink to this definition">#</a></dt>
@@ -352,7 +380,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -381,6 +409,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.AbsCV.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AbsCV.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.AbsCV.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AbsCV.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.AbsCV.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.AbsCV.name" title="Permalink to this definition">#</a></dt>
@@ -394,7 +448,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -416,6 +470,16 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.Accuracy.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Accuracy.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.Accuracy.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Accuracy.name" title="Permalink to this definition">#</a></dt>
@@ -429,7 +493,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -444,7 +508,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.AverageOddsDiff">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AverageOddsDiff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AverageOddsDiff" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Average Odds Difference.</p>
 <p><span class="math notranslate nohighlight">\(\tfrac{1}{2}\left[(FPR_{s=0} - FPR_{s=1}) + (TPR_{s=0} - TPR_{s=1}))\right]\)</span>.</p>
 <p>A value of 0 indicates equality of odds.</p>
@@ -459,6 +523,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.AverageOddsDiff.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AverageOddsDiff.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.AverageOddsDiff.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.AverageOddsDiff.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.AverageOddsDiff.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.AverageOddsDiff.name" title="Permalink to this definition">#</a></dt>
@@ -472,7 +562,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -487,7 +577,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.BCR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BCR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BCR" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Balanced Classification Rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -500,6 +590,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.BCR.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BCR.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.BCR.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BCR.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.BCR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.BCR.name" title="Permalink to this definition">#</a></dt>
@@ -513,7 +629,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -528,7 +644,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.BalancedAccuracy">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BalancedAccuracy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Accuracy that is balanced with respect to the class labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -541,6 +657,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.BalancedAccuracy.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.BalancedAccuracy.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.BalancedAccuracy.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.BalancedAccuracy.name" title="Permalink to this definition">#</a></dt>
@@ -554,7 +696,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -569,7 +711,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.CV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CV" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Calder-Verwer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -582,6 +724,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.CV.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CV.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.CV.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CV.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.CV.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.CV.name" title="Permalink to this definition">#</a></dt>
@@ -595,7 +763,84 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CfmMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CfmMetric" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a></p>
+<p>Confusion Matrix based metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos_class</strong> (<em>int</em>) – </p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CfmMetric.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CfmMetric.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#ethicml.metrics.CfmMetric.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>List of possible target values. If <cite>None</cite>, then this is inferred from the data when run.</p>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.CfmMetric.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.pos_class">
+<span class="sig-name descname"><span class="pre">pos_class</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#ethicml.metrics.CfmMetric.pos_class" title="Permalink to this definition">#</a></dt>
+<dd><p>The class to treat as being “positive”.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.CfmMetric.score">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.CfmMetric.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -623,6 +868,16 @@
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.F1.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.F1.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.F1.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.F1.name" title="Permalink to this definition">#</a></dt>
@@ -636,7 +891,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -651,7 +906,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.FNR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FNR" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>False negative rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -664,6 +919,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.FNR.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FNR.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.FNR.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FNR.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.FNR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.FNR.name" title="Permalink to this definition">#</a></dt>
@@ -677,7 +958,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -692,7 +973,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.FPR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FPR" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>False positive rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -705,6 +986,32 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.FPR.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FPR.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.FPR.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.FPR.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.FPR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.FPR.name" title="Permalink to this definition">#</a></dt>
@@ -718,7 +1025,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -733,7 +1040,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.Hsic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hsic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Hsic" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.BaseMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a></p>
 <p>See module string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -743,6 +1050,16 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.Hsic.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Hsic.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.Hsic.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Hsic.name" title="Permalink to this definition">#</a></dt>
@@ -757,7 +1074,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -780,17 +1097,27 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.Metric">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Metric" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metric</span></span><a class="headerlink" href="#ethicml.metrics.Metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for all metrics.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.Metric.apply_per_sensitive">
-<span class="sig-name descname"><span class="pre">apply_per_sensitive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.metrics.Metric.apply_per_sensitive" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">apply_per_sensitive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#ethicml.metrics.Metric.apply_per_sensitive" title="Permalink to this definition">#</a></dt>
 <dd><p>Whether the metric can be applied per sensitive attribute.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.Metric.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Metric.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.Metric.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Metric.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Metric.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the metric.</p>
 </dd></dl>
 <dl class="py method">
@@ -801,7 +1128,59 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicable">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricNotApplicable</span></span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicable" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Metric Not Applicable per sensitive attribute, apply to whole dataset instead.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricNotApplicable.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.MetricNotApplicable.with_traceback" title="Permalink to this definition">#</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricStaticName">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetricStaticName</span></span><a class="headerlink" href="#ethicml.metrics.MetricStaticName" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.Metric</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Metric base class for metrics whose name does not depend on instance variables.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricStaticName.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.MetricStaticName.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricStaticName.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.MetricStaticName.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.MetricStaticName.score">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.MetricStaticName.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -827,6 +1206,16 @@ set self.__traceback__ to tb and return self.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.NMI.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NMI.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.NMI.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.NMI.name" title="Permalink to this definition">#</a></dt>
@@ -840,7 +1229,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -855,7 +1244,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.NPV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Negative predictive value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -868,6 +1257,32 @@ set self.__traceback__ to tb and return self.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.NPV.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.NPV.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.NPV.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.NPV.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.NPV.name" title="Permalink to this definition">#</a></dt>
@@ -881,7 +1296,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -896,7 +1311,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.PPV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PPV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Positive predictive value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -909,6 +1324,32 @@ set self.__traceback__ to tb and return self.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.PPV.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.PPV.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PPV.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.PPV.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.PPV.name" title="Permalink to this definition">#</a></dt>
@@ -922,7 +1363,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -937,7 +1378,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbNeg">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbNeg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Probability of negative prediction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -950,6 +1391,32 @@ set self.__traceback__ to tb and return self.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.ProbNeg.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.ProbNeg.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbNeg.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbNeg.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.ProbNeg.name" title="Permalink to this definition">#</a></dt>
@@ -963,7 +1430,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -977,14 +1444,27 @@ set self.__traceback__ to tb and return self.</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbOutcome">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbOutcome</span></span><a class="headerlink" href="#ethicml.metrics.ProbOutcome" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.BaseMetric</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbOutcome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbOutcome" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a></p>
 <p>Mean of logits.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pos_class</strong> (<em>int</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.ProbOutcome.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbOutcome.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbOutcome.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.ProbOutcome.name" title="Permalink to this definition">#</a></dt>
@@ -998,7 +1478,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1013,7 +1493,7 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbPos">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProbPos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>Probability of positive prediction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1026,6 +1506,32 @@ set self.__traceback__ to tb and return self.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.ProbPos.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.ProbPos.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ProbPos.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.ProbPos.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.ProbPos.name" title="Permalink to this definition">#</a></dt>
@@ -1039,7 +1545,7 @@ set self.__traceback__ to tb and return self.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1066,6 +1572,16 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.RenyiCorrelation.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.RenyiCorrelation.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.RenyiCorrelation.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.RenyiCorrelation.name" title="Permalink to this definition">#</a></dt>
@@ -1079,7 +1595,52 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the score as a single number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.metrics.RobustAccuracy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RobustAccuracy</span></span><a class="headerlink" href="#ethicml.metrics.RobustAccuracy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.SklearnMetric" title="ethicml.metrics.accuracy.SklearnMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.accuracy.SklearnMetric</span></code></a></p>
+<p>Minimum Classification accuracy across S-groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.RobustAccuracy.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.RobustAccuracy.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.metrics.RobustAccuracy.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.RobustAccuracy.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.RobustAccuracy.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.RobustAccuracy.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1093,13 +1654,18 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.SklearnMetric">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SklearnMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.SklearnMetric" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.BaseMetric</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SklearnMetric</span></span><a class="headerlink" href="#ethicml.metrics.SklearnMetric" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Wrapper around an sklearn metric.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.metrics.SklearnMetric.apply_per_sensitive">
-<span class="sig-name descname"><span class="pre">apply_per_sensitive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.metrics.SklearnMetric.apply_per_sensitive" title="Permalink to this definition">#</a></dt>
-<dd><p>Whether the metric can be applied per sensitive attribute.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.SklearnMetric.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.SklearnMetric.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.SklearnMetric.name">
@@ -1114,7 +1680,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1129,7 +1695,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.TNR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TNR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>True negative rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1142,6 +1708,32 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.TNR.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.TNR.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TNR.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.TNR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.TNR.name" title="Permalink to this definition">#</a></dt>
@@ -1155,7 +1747,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1170,7 +1762,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.TPR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TPR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.CfmMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.CfmMetric" title="ethicml.metrics.confusion_matrix.CfmMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.confusion_matrix.CfmMetric</span></code></a></p>
 <p>True positive rate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1183,6 +1775,32 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.TPR.confusion_matrix">
+<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR.confusion_matrix" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – The predictions.</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The actual labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.TPR.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.TPR.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.TPR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.TPR.name" title="Permalink to this definition">#</a></dt>
@@ -1196,7 +1814,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1211,13 +1829,23 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.Theil">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Theil</span></span><a class="headerlink" href="#ethicml.metrics.Theil" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.BaseMetric</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.metrics.MetricStaticName" title="ethicml.metrics.metric.MetricStaticName"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.metrics.metric.MetricStaticName</span></code></a></p>
 <p>Theil Index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.Theil.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Theil.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.Theil.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Theil.name" title="Permalink to this definition">#</a></dt>
@@ -1231,7 +1859,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1257,6 +1885,16 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.metrics.Yanovich.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.Yanovich.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.metrics.Yanovich.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.metrics.Yanovich.name" title="Permalink to this definition">#</a></dt>
@@ -1270,7 +1908,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predicted labels</p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple with the actual labels and the sensitive attributes</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the actual labels and the sensitive attributes</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1283,20 +1921,52 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 </dd></dl>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.confusion_matrix">
-<span class="sig-name descname"><span class="pre">confusion_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.confusion_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Apply sci-kit learn’s confusion matrix.</p>
+<dt class="sig sig-object py" id="ethicml.metrics.diff_per_sensitive_attribute">
+<span class="sig-name descname"><span class="pre">diff_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.diff_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the difference in the metrics per sensitive attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of differences</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.metrics.metric_per_sensitive_attribute">
+<span class="sig-name descname"><span class="pre">metric_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.metric_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prediction</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-<li><p><strong>actual</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>pos_cls</strong> (<em>int</em>) – </p></li>
-<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><em>ethicml.utility.data_structures.LabelTuple</em><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – </p></li>
+<li><p><strong>metric</strong> (<a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p></li>
+<li><p><strong>use_sens_name</strong> (<em>bool</em>) – (Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[int, int, int, int]</p>
+<dd class="field-even"><p><em>Dict</em>[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.metrics.ratio_per_sensitive_attribute">
+<span class="sig-name descname"><span class="pre">ratio_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ratio_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>per_sens_res</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – dictionary of the results</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of ratios</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
 </dd>
 </dl>
 </dd></dl>

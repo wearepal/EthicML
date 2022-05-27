@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Vision dataset" href="vision_data.html" /><link rel="prev" title="Tabular datasets" href="tabular_data.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Evaluation helpers" href="../evaluators/index.html" /><link rel="prev" title="Tabular datasets" href="tabular_data.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Utils - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Utils - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Datasets</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -226,7 +226,7 @@
 <li><p><strong>filepath</strong> (<em>pathlib.Path</em>) – path to a CSV file</p></li>
 <li><p><strong>s_column</strong> (<em>str</em>) – column that represents sensitive attributes</p></li>
 <li><p><strong>y_column</strong> (<em>str</em>) – column that contains lables</p></li>
-<li><p><strong>additional_to_drop</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – other columns that should be dropped</p></li>
+<li><p><strong>additional_to_drop</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – other columns that should be dropped (Default: None)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -246,7 +246,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataset</strong> (<a class="reference internal" href="index.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a>) – dataset object</p></li>
-<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous (Default: False)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -277,7 +277,7 @@
 <dd><p>Given a dataset name, get the corresponding dataset object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – </p>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the dataset.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><em>Callable</em>[[], <a class="reference internal" href="index.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset">ethicml.data.dataset.Dataset</a>]</p>
@@ -293,7 +293,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.LabelGroup" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
 <p>Definition of a group of columns that should be interpreted as a single label.</p>
-<p>Create new instance of LabelGroup(columns, multiplier)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -332,14 +331,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.data.util.deprecated">
 <span class="sig-name descname"><span class="pre">deprecated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.deprecated" title="Permalink to this definition">#</a></dt>
-<dd><p>This is a decorator which can be used to mark functions as deprecated.</p>
+<dd><p>Decorate functions as deprecated.</p>
 <p>It will result in a warning being emitted when the function is used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>func</strong> (<em>ethicml.data.util._F</em>) – </p>
+<dd class="field-odd"><p><strong>func</strong> (<em>Callable</em><em>[</em><em>[</em><em>~_P</em><em>]</em><em>, </em><em>ethicml.data.util._T</em><em>]</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Any</em></p>
+<dd class="field-even"><p><em>Callable</em>[[~_P], ethicml.data.util._T]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -383,19 +382,22 @@
 </dl>
 </dd></dl>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.data.util.group_disc_feat_indexes">
-<span class="sig-name descname"><span class="pre">group_disc_feat_indexes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disc_feat_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.group_disc_feat_indexes" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.data.util.group_disc_feat_indices">
+<span class="sig-name descname"><span class="pre">group_disc_feat_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disc_feat_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix_sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.util.group_disc_feat_indices" title="Permalink to this definition">#</a></dt>
 <dd><p>Group discrete features names according to the first segment of their name.</p>
 <p>Returns a list of their corresponding slices (assumes order is maintained).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>disc_feat_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
-<li><p><strong>prefix_sep</strong> (<em>str</em>) – </p></li>
+<li><p><strong>disc_feat_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of discrete feature names.</p></li>
+<li><p><strong>prefix_sep</strong> (<em>str</em>) – Separator between the prefix and the rest of the name. (Default: “_”)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>List</em>[slice]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of slices.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>List</em>[slice]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -405,7 +407,7 @@
 <dd><p>Extract all the feature column names from a dictionary of label specifications.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>spec</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>spec</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup"><em>ethicml.data.util.LabelGroup</em></a><em>]</em>) – Dictionary of label specifications.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><em>List</em>[str]</p>
@@ -418,10 +420,13 @@
 <dd><p>Create label specs for the most common case where columns contain 0s and 1s.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>label_defs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p>
+<dd class="field-odd"><p><strong>label_defs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Mapping of label names to column names.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Mapping</em>[str, <a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup">ethicml.data.util.LabelGroup</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Label specifications.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Mapping</em>[str, <a class="reference internal" href="#ethicml.data.util.LabelGroup" title="ethicml.data.util.LabelGroup">ethicml.data.util.LabelGroup</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -433,12 +438,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="vision_data.html">
+          <a class="next-page" href="../evaluators/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Vision dataset</div>
+                <div class="title">Evaluation helpers</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

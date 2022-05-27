@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Datasets" href="../data/index.html" /><link rel="prev" title="Postprocess algorithms" href="postprocess.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Preprocess algorithms - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Preprocess algorithms - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -219,70 +219,91 @@
 <p>Abstract Base Class of all algorithms in the framework.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithm</span></span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract Base Class for all algorithms that do pre-processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.fit" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.fit" title="Permalink to this definition">#</a></dt>
 <dd><p>Fit transformer on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 <li><p><strong>self</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm._PA</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><em>Tuple</em>[ethicml.algorithms.preprocess.pre_algorithm._PA, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name" title="Permalink to this definition">#</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.get_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.get_out_size">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -292,202 +313,10 @@
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithmAsync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>Pre-Algorithm that can be run blocking and asynchronously.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the algorithm.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.run_test" title="Permalink to this definition">#</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync.transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithmDC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
-<p>PreAlgorithm dataclass base class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seed</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Fit transformer on the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>self</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm._PA</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[ethicml.algorithms.preprocess.pre_algorithm._PA, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the algorithm.</p>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.run">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.run_test" title="Permalink to this definition">#</a></dt>
-<dd><p>Run with reduced training set so that it finishes quicker.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.transform">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmDC.transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
@@ -501,17 +330,17 @@
 <p>Beutel’s algorithm.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beutel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DP'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(40,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_pcnt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beutel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness=ranzen.enum_name_str.dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_activation='Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_activation='Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_loss='CrossEntropyLoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_loss='BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_weight=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_pcnt=0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>Beutel’s adversarially learned fair representations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fairness</strong> (<em>Literal</em><em>[</em><em>'DP'</em><em>, </em><em>'EqOp'</em><em>, </em><em>'EqOd'</em><em>]</em>) – </p></li>
-<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
-<li><p><strong>enc_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>adv_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-<li><p><strong>pred_size</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>pathlib.Path</em>) – </p></li>
+<li><p><strong>fairness</strong> (<em>ranzen.enum_name_str</em>) – </p></li>
+<li><p><strong>enc_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>adv_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>pred_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 <li><p><strong>enc_activation</strong> (<em>str</em>) – </p></li>
 <li><p><strong>adv_activation</strong> (<em>str</em>) – </p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – </p></li>
@@ -520,91 +349,139 @@
 <li><p><strong>epochs</strong> (<em>int</em>) – </p></li>
 <li><p><strong>adv_weight</strong> (<em>float</em>) – </p></li>
 <li><p><strong>validation_pcnt</strong> (<em>float</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.call_script">
+<span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.call_script" title="Permalink to this definition">#</a></dt>
+<dd><p>Call a (Python) script as a separate process.</p>
+<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.executable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.executable" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to a (Python) executable.</p>
+<p>By default, the Python executable that called this script is used.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Fit transformer in a subprocess on the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess._P</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[ethicml.algorithms.preprocess.pre_subprocess._P, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.get_out_size">
+<span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.model_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.model_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to where the model with be stored.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_subprocess.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.beutel.Beutel.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.beutel.Beutel.transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
+<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_subprocess.T</p>
 </dd>
 </dl>
 </dd></dl>
@@ -615,7 +492,7 @@
 <p>Kamiran&amp;Calders 2012, massaging.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Calders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preferable_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disadvantaged_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Calders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preferable_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disadvantaged_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
 <p>Massaging algorithm from Kamiran&amp;Calders 2012.</p>
 <dl class="field-list simple">
@@ -623,23 +500,48 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>preferable_class</strong> (<em>int</em>) – </p></li>
 <li><p><strong>disadvantaged_group</strong> (<em>int</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.fit" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.fit" title="Permalink to this definition">#</a></dt>
 <dd><p>Fit transformer on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.get_out_size">
+<span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -648,43 +550,43 @@
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.run" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.calders.Calders.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.calders.Calders.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -694,14 +596,10 @@
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
@@ -714,18 +612,21 @@
 <span id="upsampling"></span><h2>Upsampling<a class="headerlink" href="#module-ethicml.algorithms.preprocess.upsampler" title="Permalink to this headline">#</a></h2>
 <p>Simple upsampler that makes subgroups the same size as the majority group.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.UpsampleStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UpsampleStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.UpsampleStrategy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Strategy for upsampling.</p>
+</dd></dl>
+<dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Upsampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Upsampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.uniform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></code></a></p>
 <p>Upsampler algorithm.</p>
 <p>Given a datatuple, create a larger datatuple such that the subgroups have a balanced number
 of samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>strategy</strong> (<em>Literal</em><em>[</em><em>'uniform'</em><em>, </em><em>'preferential'</em><em>, </em><em>'naive'</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>strategy</strong> (<em>ranzen.enum_name_str</em>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>None</p>
@@ -733,17 +634,40 @@ of samples.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.fit" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.fit" title="Permalink to this definition">#</a></dt>
 <dd><p>Fit transformer on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.upsampler.Upsampler" title="ethicml.algorithms.preprocess.upsampler.Upsampler">ethicml.algorithms.preprocess.upsampler.Upsampler</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.get_out_size">
+<span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -752,43 +676,43 @@ of samples.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.run" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.upsampler.Upsampler.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.upsampler.Upsampler.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -798,14 +722,10 @@ of samples.</p>
 <dd><p>Generate fair features with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
@@ -819,107 +739,155 @@ of samples.</p>
 <p>Variational Fair Auto-Encoder by Louizos et al.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VFAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supervised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'DI'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2_enc_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_dec_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VFAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset='toy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supervised=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness=ranzen.enum_name_str.dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dims=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2_enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_dec_size=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>VFAE Object - see implementation file for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>dir</strong> (<em>pathlib.Path</em>) – </p></li>
 <li><p><strong>dataset</strong> (<em>str</em>) – </p></li>
-<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
 <li><p><strong>supervised</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>epochs</strong> (<em>int</em>) – </p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – </p></li>
-<li><p><strong>fairness</strong> (<em>str</em>) – </p></li>
+<li><p><strong>fairness</strong> (<em>ranzen.enum_name_str</em>) – </p></li>
 <li><p><strong>latent_dims</strong> (<em>int</em>) – </p></li>
-<li><p><strong>z1_enc_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>z2_enc_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>z1_dec_size</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>int</em><em>]</em><em>]</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>z1_enc_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>z2_enc_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>z1_dec_size</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.call_script">
+<span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.call_script" title="Permalink to this definition">#</a></dt>
+<dd><p>Call a (Python) script as a separate process.</p>
+<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
+<li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.executable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.executable" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to a (Python) executable.</p>
+<p>By default, the Python executable that called this script is used.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Fit transformer in a subprocess on the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess._P</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[ethicml.algorithms.preprocess.pre_subprocess._P, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.get_out_size">
+<span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.model_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.model_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to where the model with be stored.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_subprocess.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.vfae.VFAE.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.vfae.VFAE.transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
+<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_subprocess.T</p>
 </dd>
 </dl>
 </dd></dl>
@@ -930,13 +898,13 @@ of samples.</p>
 <p>Zemel’s Learned Fair Representations.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zemel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithmAsync</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zemel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>AIF360 implementation of Zemel’s LFR.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>dir</strong> (<em>pathlib.Path</em>) – </p></li>
 <li><p><strong>threshold</strong> (<em>float</em>) – </p></li>
 <li><p><strong>clusters</strong> (<em>int</em>) – </p></li>
 <li><p><strong>Ax</strong> (<em>float</em>) – </p></li>
@@ -945,7 +913,6 @@ of samples.</p>
 <li><p><strong>max_iter</strong> (<em>int</em>) – </p></li>
 <li><p><strong>maxfun</strong> (<em>int</em>) – </p></li>
 <li><p><strong>epsilon</strong> (<em>float</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -953,83 +920,132 @@ of samples.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Fit transformer on the given data.</p>
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.call_script">
+<span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.call_script" title="Permalink to this definition">#</a></dt>
+<dd><p>Call a (Python) script as a separate process.</p>
+<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</a>, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.executable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.executable" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to a (Python) executable.</p>
+<p>By default, the Python executable that called this script is used.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Fit transformer in a subprocess on the given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
+<li><p><strong>self</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess._P</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of Self and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[ethicml.algorithms.preprocess.pre_subprocess._P, <a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.get_out_size">
+<span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.get_out_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the number of features to generate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.model_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.model_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to where the model with be stored.</p>
 </dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.out_size">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">out_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.out_size" title="Permalink to this definition">#</a></dt>
-<dd><p>The number of features to generate.</p>
-</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data.</p>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – test data</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_subprocess.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run_test" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – </p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – </p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – Data tuple of the training data.</p></li>
+<li><p><strong>test</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – Data tuple of the test data.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – Random seed for model initialization.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple">ethicml.utility.data_structures.TestTuple</a>]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the transforme training data and the test data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.algorithms.preprocess.pre_algorithm.T]</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.preprocess.zemel.Zemel.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.preprocess.zemel.Zemel.transform" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate fair features with the given data asynchronously.</p>
+<dd><p>Generate fair features in a subprocess with the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> – training data</p></li>
-<li><p><strong>test</strong> – test data</p></li>
-<li><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_algorithm.T</em>) – </p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>ethicml.algorithms.preprocess.pre_subprocess.T</em>) – Data to transform.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a tuple of the pre-processed training data and the test data</p>
+<dd class="field-even"><p>Transformed data.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_algorithm.T</p>
+<dd class="field-odd"><p>ethicml.algorithms.preprocess.pre_subprocess.T</p>
 </dd>
 </dl>
 </dd></dl>

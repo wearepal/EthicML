@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Metrics" href="../metrics/index.html" /><link rel="prev" title="Model evaluation" href="evaluate_models.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Parallel evaluation - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Parallel evaluation - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Evaluation helpers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -215,7 +215,7 @@
 <span id="parallel-evaluation"></span><h1>Parallel evaluation<a class="headerlink" href="#module-ethicml.evaluators.parallelism" title="Permalink to this headline">#</a></h1>
 <p>Collection of functions that enable parallelism.</p>
 <p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -231,14 +231,16 @@
 </table></div>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.evaluators.parallelism.arrange_in_parallel">
-<span class="sig-name descname"><span class="pre">arrange_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.parallelism.arrange_in_parallel" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">arrange_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.parallelism.arrange_in_parallel" title="Permalink to this definition">#</a></dt>
 <dd><p>Arrange the given algorithms to run (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>algos</strong> (<em>Sequence</em><em>[</em><em>ethicml.evaluators.parallelism.Algorithm</em><em>[</em><em>ethicml.evaluators.parallelism._RT</em><em>]</em><em>]</em>) – list of tuples consisting of a <cite>run_async</cite> function of an algorithm and a name</p></li>
-<li><p><strong>data</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><em>ethicml.utility.data_structures.TrainTestPair</em></a><em>]</em>) – list of pairs of data tuples (train and test)</p></li>
-<li><p><strong>num_cpus</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – number of CPUs to use. <cite>None</cite> means all.</p></li>
+<li><p><strong>data</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.TrainValPair" title="ethicml.utility.data_structures.TrainValPair"><em>ethicml.utility.data_structures.TrainValPair</em></a><em>]</em>) – list of pairs of data tuples (train and test)</p></li>
+<li><p><strong>num_jobs</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – number of parallel jobs. <cite>None</cite> means as many as available CPUs.
+(Default: None)</p></li>
+<li><p><strong>seeds</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -251,17 +253,17 @@
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.evaluators.parallelism.run_in_parallel">
-<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/inprocess.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><span class="pre">ethicml.utility.data_structures.TrainTestPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><span class="pre">ethicml.utility.data_structures.Prediction</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethicml.evaluators.parallelism.run_in_parallel" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/inprocess.html#ethicml.algorithms.inprocess.in_algorithm.InAlgorithm" title="ethicml.algorithms.inprocess.in_algorithm.InAlgorithm"><span class="pre">ethicml.algorithms.inprocess.in_algorithm.InAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainValPair" title="ethicml.utility.data_structures.TrainValPair"><span class="pre">ethicml.utility.data_structures.TrainValPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><span class="pre">ethicml.utility.data_structures.Prediction</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ethicml.evaluators.parallelism.run_in_parallel" title="Permalink to this definition">#</a></dt>
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/preprocess.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainTestPair" title="ethicml.utility.data_structures.TrainTestPair"><span class="pre">ethicml.utility.data_structures.TrainTestPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_cpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><span class="pre">ethicml.utility.data_structures.DataTuple</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><span class="pre">ethicml.utility.data_structures.TestTuple</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span></dt>
+<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../algorithms/preprocess.html#ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm"><span class="pre">ethicml.algorithms.preprocess.pre_algorithm.PreAlgorithm</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.TrainValPair" title="ethicml.utility.data_structures.TrainValPair"><span class="pre">ethicml.utility.data_structures.TrainValPair</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'None'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><span class="pre">ethicml.utility.data_structures.DataTuple</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><span class="pre">ethicml.utility.data_structures.DataTuple</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span></dt>
 <dd><p>Run the given algorithms (embarrassingly) parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>algos</strong> – list of algorithms</p></li>
 <li><p><strong>data</strong> – list of pairs of data tuples (train and test)</p></li>
-<li><p><strong>num_cpus</strong> – how many processes can run in parallel at most. if zero (or negative), then
-there is no maximum</p></li>
+<li><p><strong>seeds</strong> – list of seeds to use when running the model</p></li>
+<li><p><strong>num_jobs</strong> – how many jobs can run in parallel at most. if None, use number of CPUs (Default: None)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Vision data helpers" href="vision.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Utils" href="utility.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Visualisation helpers - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Visualisation helpers - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Visualisation helpers</a></li>
 </ul>
 
@@ -213,9 +213,9 @@
         <article role="main">
           <section id="module-ethicml.visualisation">
 <span id="visualisation-helpers"></span><h1>Visualisation helpers<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this headline">#</a></h1>
-<p>This module contains tools for plotting results.</p>
+<p>Module for tools for plotting results.</p>
 <p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -251,10 +251,10 @@
 <li><p><strong>results</strong> (<em>ethicml.utility.data_structures.Results</em>) – a DataFrame that already contains the values of the metrics</p></li>
 <li><p><strong>metric_y</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
 <li><p><strong>metric_x</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="metrics/index.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
-<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type</p></li>
-<li><p><strong>save</strong> (<em>bool</em>) – if True, save the plot as a PDF</p></li>
-<li><p><strong>dpi</strong> (<em>int</em>) – DPI of the plots</p></li>
-<li><p><strong>transforms_separately</strong> (<em>bool</em>) – if True, each transform gets its own plot</p></li>
+<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type (Default: “box”)</p></li>
+<li><p><strong>save</strong> (<em>bool</em>) – if True, save the plot as a PDF (Default: True)</p></li>
+<li><p><strong>dpi</strong> (<em>int</em>) – DPI of the plots (Default: 300)</p></li>
+<li><p><strong>transforms_separately</strong> (<em>bool</em>) – if True, each transform gets its own plot (Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -345,12 +345,15 @@ not generate a Figure object itself.</p>
 <li><p><strong>yaxis</strong> (<em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the y-axis</p></li>
 <li><p><strong>dataset</strong> (<em>str</em>) – string that identifies the dataset</p></li>
 <li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – string that identifies the preprocessing method, or None</p></li>
-<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type</p></li>
-<li><p><strong>legend_pos</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'inside'</em><em>, </em><em>'outside'</em><em>]</em><em>]</em>) – position of the legend (or None for no legend)</p></li>
-<li><p><strong>legend_yanchor</strong> (<em>float</em>) – position in the vertical direction where the legend should begin</p></li>
-<li><p><strong>markersize</strong> (<em>int</em>) – size of marker</p></li>
-<li><p><strong>alternating_style</strong> (<em>bool</em>) – if True, entries for scatter plots are done in alternating style</p></li>
-<li><p><strong>include_nan_entries</strong> (<em>bool</em>) – if True, entries with NaNs still appear in the legend</p></li>
+<li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type (Default: “box”)</p></li>
+<li><p><strong>legend_pos</strong> (<em>Optional</em><em>[</em><em>Literal</em><em>[</em><em>'inside'</em><em>, </em><em>'outside'</em><em>]</em><em>]</em>) – position of the legend (or None for no legend) (Default: “outside”)</p></li>
+<li><p><strong>legend_yanchor</strong> (<em>float</em>) – position in the vertical direction where the legend should begin (Default
+value = 1.0)</p></li>
+<li><p><strong>markersize</strong> (<em>int</em>) – size of marker (Default: 6)</p></li>
+<li><p><strong>alternating_style</strong> (<em>bool</em>) – if True, entries for scatter plots are done in alternating style
+(Default: True)</p></li>
+<li><p><strong>include_nan_entries</strong> (<em>bool</em>) – if True, entries with NaNs still appear in the legend (Default value
+= False)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -369,14 +372,14 @@ not generate a Figure object itself.</p>
         
         <div class="related-pages">
           
-          <a class="prev-page" href="vision.html">
+          <a class="prev-page" href="utility.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Vision data helpers</div>
+                <div class="title">Utils</div>
                 
               </div>
             </a>

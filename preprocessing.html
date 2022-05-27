@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utils" href="utility.html" /><link rel="prev" title="Compare metrics between groups" href="metrics/per_sensitive_attribute.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Data preprocessing - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Data preprocessing - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -213,9 +213,9 @@
         <article role="main">
           <section id="module-ethicml.preprocessing">
 <span id="data-preprocessing"></span><h1>Data preprocessing<a class="headerlink" href="#module-ethicml.preprocessing" title="Permalink to this headline">#</a></h1>
-<p>This moodule contains algorithms that pre-process the data in some way.</p>
+<p>Module for algorithms that pre-process the data in some way.</p>
 <p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -248,7 +248,7 @@
 </tbody>
 </table></div>
 <p><strong>Functions:</strong></p>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%"/>
 <col style="width: 90%"/>
@@ -261,7 +261,7 @@
 <td><p>Return the dataframe that meets some condition.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.preprocessing.domain_split" title="ethicml.preprocessing.domain_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">domain_split</span></code></a></p></td>
-<td><p>Splits a datatuple based on a condition.</p></td>
+<td><p>Split a datatuple based on a condition.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.preprocessing.get_biased_and_debiased_subsets" title="ethicml.preprocessing.get_biased_and_debiased_subsets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_biased_and_debiased_subsets</span></code></a></p></td>
 <td><p>Split the given data into a biased subset and a debiased subset.</p></td>
@@ -283,9 +283,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.BalancedTestSplit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BalancedTestSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">balance_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'P(s|y)=0.5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.BalancedTestSplit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.RandomSplit" title="ethicml.preprocessing.train_test_split.RandomSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.RandomSplit</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.RandomSplit" title="ethicml.preprocessing.splits.RandomSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.RandomSplit</span></code></a></p>
 <p>Split data such that the test set is balanced and the training set is proportional.</p>
-<p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -299,9 +298,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.BiasedDebiasedSubsets">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BiasedDebiasedSubsets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unbiased_pcnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixing_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_unbiased</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.BiasedDebiasedSubsets" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.train_test_split.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.DataSplitter</span></code></a></p>
 <p>Split the given data into a biased subset and a debiased subset.</p>
-<p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -316,9 +314,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.BiasedSubset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BiasedSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unbiased_pcnt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixing_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_efficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.BiasedSubset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.train_test_split.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.DataSplitter</span></code></a></p>
 <p>Split the given data into a biased subset and a normal subset.</p>
-<p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -389,14 +386,13 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.ProportionalSplit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProportionalSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.ProportionalSplit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.RandomSplit" title="ethicml.preprocessing.train_test_split.RandomSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.RandomSplit</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.RandomSplit" title="ethicml.preprocessing.splits.RandomSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.RandomSplit</span></code></a></p>
 <p>Split into train and test while preserving the proportion of s and y.</p>
-<p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train_percentage</strong> (<em>float</em>) – how much of the data to use for the train split</p></li>
-<li><p><strong>start_seed</strong> (<em>int</em>) – random seed for the first split</p></li>
+<li><p><strong>train_percentage</strong> (<em>float</em>) – </p></li>
+<li><p><strong>start_seed</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -404,14 +400,13 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.RandomSplit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RandomSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.RandomSplit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.train_test_split.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.DataSplitter</span></code></a></p>
 <p>Standard train test split.</p>
-<p>The constructor takes the following arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>train_percentage</strong> (<em>float</em>) – how much of the data to use for the train split</p></li>
-<li><p><strong>start_seed</strong> (<em>int</em>) – random seed for the first split</p></li>
+<li><p><strong>start_seed</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – random seed for the first split</p></li>
 </ul>
 </dd>
 </dl>
@@ -419,7 +414,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.preprocessing.SequentialSplit">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SequentialSplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.SequentialSplit" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.train_test_split.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.train_test_split.DataSplitter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.preprocessing.splits.DataSplitter</span></code></a></p>
 <p>Take the first N samples for train set and the rest for test set; no shuffle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -461,14 +456,14 @@ and return as afresh new DataTuple.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.preprocessing.domain_split">
 <span class="sig-name descname"><span class="pre">domain_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datatup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_cond</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">te_cond</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.domain_split" title="Permalink to this definition">#</a></dt>
-<dd><p>Splits a datatuple based on a condition.</p>
+<dd><p>Split a datatuple based on a condition.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datatup</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple</p></li>
 <li><p><strong>tr_cond</strong> (<em>str</em>) – condition for the training set</p></li>
 <li><p><strong>te_cond</strong> (<em>str</em>) – condition for the test set</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – (Default: 888)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -500,8 +495,8 @@ unbiased.</p>
 <li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
 factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting</p></li>
-<li><p><strong>fixed_unbiased</strong> (<em>bool</em>) – if True, then the unbiased dataset is independent from the mixing factor</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting (Default: 42)</p></li>
+<li><p><strong>fixed_unbiased</strong> (<em>bool</em>) – if True, then the unbiased dataset is independent from the mixing factor (Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -530,8 +525,8 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>mixing_factor</strong> (<em>float</em>) – How much of the debiased data should be mixed into the biased subset? If this
 factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>unbiased_pcnt</strong> (<em>float</em>) – how much of the data should be reserved for the unbiased subset</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting</p></li>
-<li><p><strong>data_efficient</strong> (<em>bool</em>) – if True, try to keep as many data points as possible</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – random seed for the splitting (Default: 42)</p></li>
+<li><p><strong>data_efficient</strong> (<em>bool</em>) – if True, try to keep as many data points as possible (Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -568,9 +563,9 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <li><p><strong>dataset</strong> (<a class="reference internal" href="data/index.html#ethicml.data.dataset.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a>) – Dataset object. Used to find the continuous features.</p></li>
 <li><p><strong>datatuple</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – DataTuple on which to sclae the continuous features.</p></li>
 <li><p><strong>scaler</strong> (<em>ethicml.preprocessing.scaling.ScalerType</em>) – Scaler object to scale the features. Must fit the SKLearn scaler API.</p></li>
-<li><p><strong>inverse</strong> (<em>bool</em>) – Should the scaling be reversed?</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em>) – Should the scaling be reversed? (Default: False)</p></li>
 <li><p><strong>fit</strong> (<em>bool</em>) – If not <cite>inverse</cite>, should the scaler be fit to the data? If <cite>True</cite>, do
-<cite>fit_transform</cite> operation, else just <cite>transform</cite>.</p></li>
+<cite>fit_transform</cite> operation, else just <cite>transform</cite>. (Default: True)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -580,25 +575,28 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-odd"><p><em>Tuple</em>[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, ethicml.preprocessing.scaling.ScalerType]</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">adult</span><span class="p">()</span>
+<dl>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">adult</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datatuple</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">datatuple</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">train</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">scale_continuous</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">scaler</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">test</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">scale_continuous</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">fit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.preprocessing.train_test_split">
-<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.train_test_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_test_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.preprocessing.train_test_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Split a data tuple into two datatuple along the rows of the DataFrames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – data tuple to split</p></li>
-<li><p><strong>train_percentage</strong> (<em>float</em>) – percentage for train split</p></li>
-<li><p><strong>random_seed</strong> (<em>int</em>) – seed to make splitting reproducible</p></li>
+<li><p><strong>train_percentage</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – percentage for train split. Must be <cite>None</cite> if <cite>num_test_samples</cite> given. (Default: 0.8)</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em>) – seed to make splitting reproducible (Default: 0)</p></li>
+<li><p><strong>num_test_samples</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of samples to make the test set. Must be <cite>None</cite> if <cite>train_percentage</cite> given. (Default: None)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

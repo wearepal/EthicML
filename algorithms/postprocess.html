@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Preprocess algorithms" href="preprocess.html" /><link rel="prev" title="Inprocess algorithms" href="inprocess.html" />
 
-    <meta name="generator" content="sphinx-4.4.0, furo 2022.03.04"/>
-        <title>Postprocess algorithms - EthicML 0.7.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>Postprocess algorithms - EthicML 1.0.0-alpha.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -36,10 +36,12 @@
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
@@ -121,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 0.7.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 0.7.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -162,7 +164,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data/index.html">Datasets</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data/tabular_data.html">Tabular datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data/util.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data/vision_data.html">Vision dataset</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -177,7 +178,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
 </ul>
 
@@ -219,8 +219,8 @@
 <p>Abstract Base Class of all post-processing algorithms in the framework.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostAlgorithm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostAlgorithm</span></span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.algorithms.algorithm_base.Algorithm" title="ethicml.algorithms.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract Base Class for all algorithms that do post-processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.fit">
@@ -229,37 +229,48 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 <li><p><strong>self</strong> (<em>ethicml.algorithms.postprocess.post_algorithm._PA</em>) – </p></li>
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>self, but trained.</p>
+<dd class="field-even"><p>Self.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>ethicml.algorithms.postprocess.post_algorithm._PA</p>
 </dd>
 </dl>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.predict">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.predict" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.predict" title="Permalink to this definition">#</a></dt>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -268,98 +279,20 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on a training set</p></li>
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training set with the correct labels and sensitive attributes</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on the test set</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – the test set with the sensitive attributes</p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on the test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>post-processed predictions on the test set</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostAlgorithmDC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
-<p>PostAlgorithm dataclass base class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seed</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.fit">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.fit" title="Permalink to this definition">#</a></dt>
-<dd><p>Run Algorithm on the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>self</strong> (<em>ethicml.algorithms.postprocess.post_algorithm._PA</em>) – </p></li>
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>self, but trained.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>ethicml.algorithms.postprocess.post_algorithm._PA</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the algorithm.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.predict">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.predict" title="Permalink to this definition">#</a></dt>
-<dd><p>Run Algorithm on the given data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC.run" title="Permalink to this definition">#</a></dt>
-<dd><p>Make predictions fair.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on a training set</p></li>
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training set with the correct labels and sensitive attributes</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on the test set</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – the test set with the sensitive attributes</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>post-processed predictions on the test set</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -373,15 +306,12 @@
 <p>Demographic Parity Label flipping approach.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DPFlip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithmDC</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DPFlip</span></span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
 <p>Randomly flip a number of decisions such that perfect demographic parity is achieved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seed</strong> (<em>int</em>) – </p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -391,15 +321,25 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>self, but trained.</p>
+<dd class="field-even"><p>Self.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip" title="ethicml.algorithms.postprocess.dp_flip.DPFlip">ethicml.algorithms.postprocess.dp_flip.DPFlip</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,17 +350,18 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.predict" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.predict" title="Permalink to this definition">#</a></dt>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -429,19 +370,20 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.dp_flip.DPFlip.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.run" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.dp_flip.DPFlip.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on a training set</p></li>
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training set with the correct labels and sensitive attributes</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on the test set</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – the test set with the sensitive attributes</p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on the test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>post-processed predictions on the test set</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -455,7 +397,7 @@
 <p>Post-processing method by Hardt et al.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hardt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unfavorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Hardt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unfavorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">favorable_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</span></code></a></p>
 <p>Post-processing method by Hardt et al.</p>
 <dl class="field-list simple">
@@ -463,8 +405,10 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>unfavorable_label</strong> (<em>int</em>) – </p></li>
 <li><p><strong>favorable_label</strong> (<em>int</em>) – </p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -474,15 +418,25 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – training data</p></li>
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>self, but trained.</p>
+<dd class="field-even"><p>Self.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm" title="ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm">ethicml.algorithms.postprocess.post_algorithm.PostAlgorithm</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -493,17 +447,18 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.predict" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.predict" title="Permalink to this definition">#</a></dt>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – data to evaluate on</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – </p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>predictions</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
@@ -512,19 +467,20 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.algorithms.postprocess.hardt.Hardt.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.run" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.algorithms.postprocess.hardt.Hardt.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Make predictions fair.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on a training set</p></li>
-<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training set with the correct labels and sensitive attributes</p></li>
-<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – predictions on the test set</p></li>
-<li><p><strong>test</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.TestTuple" title="ethicml.utility.data_structures.TestTuple"><em>ethicml.utility.data_structures.TestTuple</em></a>) – the test set with the sensitive attributes</p></li>
+<li><p><strong>train_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on a training set.</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
+<li><p><strong>test_predictions</strong> (<a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – Predictions on the test set.</p></li>
+<li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>ethicml.utility.data_structures.SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>post-processed predictions on the test set</p>
+<dd class="field-even"><p>Post-processed predictions on the test set.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction">ethicml.utility.data_structures.Prediction</a></p>
