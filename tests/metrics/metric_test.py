@@ -93,9 +93,7 @@ METRICS = [
 
 @pytest.mark.parametrize("metric,expected", METRICS)
 def test_on_label_tuple(metric: Metric, expected: float) -> None:
-    preds = Prediction(hard=pd.Series([0, 0, 1, 1]))
-    targets = LabelTuple.from_np(
-        s=np.array([0, 1, 1, 1]), y=np.array([0, 1, 0, 1]), s_name="s", y_name="y"
-    )
+    preds = Prediction.from_np(np.array([0, 0, 1, 1]))
+    targets = LabelTuple.from_np(s=np.array([0, 1, 1, 1]), y=np.array([0, 1, 0, 1]))
     score = metric.score(preds, targets)
     assert score == approx(expected, abs=0.001)

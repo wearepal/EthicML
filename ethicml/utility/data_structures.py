@@ -318,13 +318,15 @@ class LabelTuple:
         )
 
     @classmethod
-    def from_np(cls, *, s: npt.NDArray, y: npt.NDArray, s_name: str, y_name: str) -> LabelTuple:
+    def from_np(
+        cls, *, s: npt.NDArray, y: npt.NDArray, s_name: str = "s", y_name: str = "y"
+    ) -> LabelTuple:
         """Create a LabelTuple from numpy arrays."""
         s_pd = pd.Series(s, name=s_name)
         y_pd = pd.Series(y, name=y_name)
-        assert len(s) == len(y), "data has to have the same length"
+        assert len(s_pd) == len(y_pd), "data has to have the same length"
         return cls(
-            data=pd.concat([s_pd, y_pd], axis="columns", sort=False),  # type: ignore[arg-type]
+            data=pd.concat([s_pd, y_pd], axis="columns", sort=False),
             s_column=s_name,
             y_column=y_name,
             name=None,
@@ -347,14 +349,6 @@ class LabelTuple:
     def __len__(self) -> int:
         """Overwrite __len__ magic method."""
         return len(self.data)
-
-    def remove_y(self) -> SubgroupTuple:
-        """Convert the LabelTuple instance to a SubgroupTuple instance."""
-        return SubgroupTuple(
-            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
-            s_column=self.s_column,
-            name=self.name,
-        )
 
     def replace(
         self,
@@ -380,13 +374,6 @@ class LabelTuple:
         assert self.y_column in data.columns, f"column {self.y_column} not present"
         return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
 
-    def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> LabelTuple:
-        """Concatenate the dataframes in the LabelTuple and then apply a function to it.
-
-        :param mapper: A function that takes a dataframe and returns a dataframe.
-        """
-        return self.replace_data(data=mapper(self.data))
-
     def get_n_samples(self, num: int = 500) -> LabelTuple:
         """Get the first elements of the dataset.
 
@@ -398,32 +385,6 @@ class LabelTuple:
     def get_s_subset(self, s: int) -> LabelTuple:
         """Return a subset of the LabelTuple where S=s."""
         return self.replace_data(data=self.data[self.s == s])
-
-    def to_npz(self, data_path: Path) -> None:
-        """Save LabelTuple as an npz file.
-
-        :param data_path: Path to the npz file.
-        """
-        write_as_npz(
-            data_path,
-            dict(s=self.s, y=self.y),
-            dict(name=np.array(self.name if self.name is not None else "")),
-        )
-
-    @classmethod
-    def from_npz(cls, data_path: Path) -> LabelTuple:
-        """Load data tuple from npz file.
-
-        :param data_path: Path to the npz file.
-        """
-        with data_path.open("rb") as data_file:
-            data = np.load(data_file)
-            name = data["name"].item()
-            return cls.from_df(
-                s=pd.Series(data["s"], name=data["s_names"][0]),
-                y=pd.Series(data["y"], name=data["y_names"][0]),
-                name=name or None,
-            )
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
@@ -439,6 +400,11 @@ class Prediction:
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
+
+    @classmethod
+    def from_np(cls, preds: npt.NDArray) -> Prediction:
+        """Construct a prediction object from a numpy array."""
+        return cls(hard=pd.Series(preds))
 
     def __len__(self) -> int:
         """Length of the predictions object."""

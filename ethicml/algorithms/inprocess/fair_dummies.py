@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List
-from typing_extensions import Final, Literal, TypedDict
+from typing_extensions import Literal, TypedDict
 
 from ranzen import implements
 
