@@ -68,16 +68,13 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     assert first_dt.s_column == second_dt.s_column
     assert first_dt.y_column == second_dt.y_column
 
-    s_column = first_dt.s_column
-    y_column = first_dt.y_column
-
     a_combined: pd.DataFrame = first_dt.data
     b_combined: pd.DataFrame = second_dt.data
 
     combined = pd.concat([a_combined, b_combined], axis="index")
     combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)  # type: ignore[assignment]
 
-    return DataTuple(data=combined, s_column=s_column, y_column=y_column, name=first_dt.name)
+    return first_dt.replace_data(combined)
 
 
 def upsample(
@@ -180,11 +177,8 @@ def upsample(
                 upsampled_dataframes = pd.concat(
                     [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
                 ).reset_index(drop=True)
-        upsampled_datatuple = DataTuple(
-            data=upsampled_dataframes,
-            s_column=dataset.s_column,
-            y_column=dataset.y_column,
-            name=f"{name}: {dataset.name}",
+        upsampled_datatuple = dataset.replace_data(upsampled_dataframes).rename(
+            f"{name}: {dataset.name}"
         )
 
     assert upsampled_datatuple is not None

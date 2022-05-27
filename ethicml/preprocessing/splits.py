@@ -83,9 +83,6 @@ def train_test_split(
     # ======================== concatenate the datatuple to one dataframe =========================
     # save the column names for later
     x_columns: pd.Index = data.x.columns
-    s_column = data.s.name
-    y_column = data.y.name
-    assert isinstance(s_column, str) and isinstance(y_column, str)
 
     all_data: pd.DataFrame = data.data
 
@@ -110,19 +107,8 @@ def train_test_split(
     all_data_test = all_data_test.reset_index(drop=True)
 
     # ================================== assemble train and test ==================================
-    train: DataTuple = DataTuple(
-        data=all_data_train,
-        s_column=s_column,
-        y_column=y_column,
-        name=f"{data.name} - Train",
-    )
-
-    test: DataTuple = DataTuple(
-        data=all_data_test,
-        s_column=s_column,
-        y_column=y_column,
-        name=f"{data.name} - Test",
-    )
+    train: DataTuple = data.replace_data(data=all_data_train).rename(f"{data.name} - Train")
+    test: DataTuple = data.replace_data(data=all_data_test).rename(f"{data.name} - Test")
 
     assert isinstance(train.x, pd.DataFrame)
     assert isinstance(test.x, pd.DataFrame)
@@ -131,13 +117,13 @@ def train_test_split(
 
     assert isinstance(train.s, pd.Series)
     assert isinstance(test.s, pd.Series)
-    assert train.s.name == s_column
-    assert test.s.name == s_column
+    assert train.s.name == data.s_column
+    assert test.s.name == data.s_column
 
     assert isinstance(train.y, pd.Series)
     assert isinstance(test.y, pd.Series)
-    assert train.y.name == y_column
-    assert test.y.name == y_column
+    assert train.y.name == data.y_column
+    assert test.y.name == data.y_column
 
     return train, test
 
@@ -222,18 +208,12 @@ class ProportionalSplit(RandomSplit):
             data, train_percentage=self.train_percentage, random_seed=random_seed
         )
 
-        train: DataTuple = DataTuple(
-            data=data.data.iloc[train_indices].reset_index(drop=True),
-            s_column=data.s_column,
-            y_column=data.y_column,
-            name=f"{data.name} - Train",
+        train = data.replace_data(data.data.iloc[train_indices].reset_index(drop=True)).rename(
+            f"{data.name} - Train"
         )
 
-        test: DataTuple = DataTuple(
-            data=data.data.iloc[test_indices].reset_index(drop=True),
-            s_column=data.s_column,
-            y_column=data.y_column,
-            name=f"{data.name} - Test",
+        test = data.replace_data(data.data.iloc[test_indices].reset_index(drop=True)).rename(
+            f"{data.name} - Test"
         )
 
         # assert that no data points got lost anywhere
@@ -314,18 +294,12 @@ class BalancedTestSplit(RandomSplit):
         train_idx = np.concatenate(train_indices, axis=0)
         test_idx = np.concatenate(test_indices, axis=0)
 
-        train: DataTuple = DataTuple(
-            data=data.data.iloc[train_idx].reset_index(drop=True),
-            s_column=data.s_column,
-            y_column=data.y_column,
-            name=f"{data.name} - Train",
+        train = data.replace_data(data.data.iloc[train_idx].reset_index(drop=True)).rename(
+            f"{data.name} - Train"
         )
 
-        test: DataTuple = DataTuple(
-            data=data.data.iloc[test_idx].reset_index(drop=True),
-            s_column=data.s_column,
-            y_column=data.y_column,
-            name=f"{data.name} - Test",
+        test = data.replace_data(data.data.iloc[test_idx].reset_index(drop=True)).rename(
+            f"{data.name} - Test"
         )
 
         unbalanced_test_len = round(len(data) * (1 - self.train_percentage))

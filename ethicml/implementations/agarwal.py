@@ -53,8 +53,8 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
         ) from e
 
     fairness_class: UtilityParity
-    fairness_type = FairnessType[args["fairness"]]
-    classifier_type = ClassifierType[args["classifier"]]
+    fairness_type = FairnessType(args["fairness"])
+    classifier_type = ClassifierType(args["classifier"])
     kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:

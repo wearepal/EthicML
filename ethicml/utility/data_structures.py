@@ -36,6 +36,7 @@ __all__ = [
     "HyperParamType",
     "HyperParamValue",
     "KernelType",
+    "LabelTuple",
     "Prediction",
     "Results",
     "ResultsAggregator",
@@ -96,7 +97,7 @@ class SubsetMixin(ABC):
     @final
     def get_s_subset(self: _S, s: int) -> _S:
         """Return a subset of the DataTuple where S=s."""
-        return self.replace_data(data=self.data[self.s == s])
+        return self.replace_data(data=self.data.loc[self.s == s])
 
     @final
     def __len__(self) -> int:
