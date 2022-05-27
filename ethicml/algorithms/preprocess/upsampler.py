@@ -177,8 +177,8 @@ def upsample(
                 upsampled_dataframes = pd.concat(
                     [upsampled_dataframes, df.drop(["preds"], axis="columns")], axis="index"
                 ).reset_index(drop=True)
-        upsampled_datatuple = dataset.replace_data(upsampled_dataframes).rename(
-            f"{name}: {dataset.name}"
+        upsampled_datatuple = dataset.replace_data(
+            upsampled_dataframes, name=f"{name}: {dataset.name}"
         )
 
     assert upsampled_datatuple is not None

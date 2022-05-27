@@ -260,7 +260,7 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return datatuple.replace(x=pd.DataFrame(data_to_return)).rename(f"Beutel: {datatuple.name}")
+    return datatuple.replace(x=pd.DataFrame(data_to_return), name=f"Beutel: {datatuple.name}")
 
 
 def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: T) -> T:

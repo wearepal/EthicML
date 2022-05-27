@@ -107,8 +107,8 @@ def train_test_split(
     all_data_test = all_data_test.reset_index(drop=True)
 
     # ================================== assemble train and test ==================================
-    train: DataTuple = data.replace_data(data=all_data_train).rename(f"{data.name} - Train")
-    test: DataTuple = data.replace_data(data=all_data_test).rename(f"{data.name} - Test")
+    train: DataTuple = data.replace_data(data=all_data_train, name=f"{data.name} - Train")
+    test: DataTuple = data.replace_data(data=all_data_test, name=f"{data.name} - Test")
 
     assert isinstance(train.x, pd.DataFrame)
     assert isinstance(test.x, pd.DataFrame)
@@ -208,12 +208,12 @@ class ProportionalSplit(RandomSplit):
             data, train_percentage=self.train_percentage, random_seed=random_seed
         )
 
-        train = data.replace_data(data.data.iloc[train_indices].reset_index(drop=True)).rename(
-            f"{data.name} - Train"
+        train = data.replace_data(
+            data.data.iloc[train_indices].reset_index(drop=True), name=f"{data.name} - Train"
         )
 
-        test = data.replace_data(data.data.iloc[test_indices].reset_index(drop=True)).rename(
-            f"{data.name} - Test"
+        test = data.replace_data(
+            data.data.iloc[test_indices].reset_index(drop=True), name=f"{data.name} - Test"
         )
 
         # assert that no data points got lost anywhere
@@ -294,12 +294,12 @@ class BalancedTestSplit(RandomSplit):
         train_idx = np.concatenate(train_indices, axis=0)
         test_idx = np.concatenate(test_indices, axis=0)
 
-        train = data.replace_data(data.data.iloc[train_idx].reset_index(drop=True)).rename(
-            f"{data.name} - Train"
+        train = data.replace_data(
+            data.data.iloc[train_idx].reset_index(drop=True), name=f"{data.name} - Train"
         )
 
-        test = data.replace_data(data.data.iloc[test_idx].reset_index(drop=True)).rename(
-            f"{data.name} - Test"
+        test = data.replace_data(
+            data.data.iloc[test_idx].reset_index(drop=True), name=f"{data.name} - Test"
         )
 
         unbalanced_test_len = round(len(data) * (1 - self.train_percentage))
