@@ -36,6 +36,7 @@ __all__ = [
     "HyperParamType",
     "HyperParamValue",
     "KernelType",
+    "LabelTuple",
     "Prediction",
     "Results",
     "ResultsAggregator",
