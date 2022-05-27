@@ -76,7 +76,7 @@ class SubsetMixin(ABC):
     s_column: str
 
     @abstractmethod
-    def replace_data(self: _S, data: pd.DataFrame) -> _S:
+    def replace_data(self: _S, data: pd.DataFrame, name: str | None = None) -> _S:
         """Make a copy of the container but change the underlying data."""
 
     @property
@@ -144,10 +144,12 @@ class SubgroupTuple(SubsetMixin):
             x=x if x is not None else self.x, s=s if s is not None else self.s, name=self.name
         )
 
-    def replace_data(self, data: pd.DataFrame) -> SubgroupTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> SubgroupTuple:
         """Make a copy of the DataTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
-        return SubgroupTuple(data=data, s_column=self.s_column, name=self.name)
+        return SubgroupTuple(
+            data=data, s_column=self.s_column, name=self.name if name is None else name
+        )
 
     def rename(self, name: str) -> SubgroupTuple:
         """Change only the name."""
@@ -251,11 +253,16 @@ class DataTuple(SubsetMixin):
         """Change only the name."""
         return DataTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
 
-    def replace_data(self, data: pd.DataFrame) -> DataTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> DataTuple:
         """Make a copy of the DataTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         assert self.y_column in data.columns, f"column {self.y_column} not present"
-        return DataTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+        return DataTuple(
+            data=data,
+            s_column=self.s_column,
+            y_column=self.y_column,
+            name=self.name if name is None else name,
+        )
 
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
         """Concatenate the dataframes in the DataTuple and then apply a function to it.
@@ -358,11 +365,16 @@ class LabelTuple(SubsetMixin):
         """Change only the name."""
         return LabelTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
 
-    def replace_data(self, data: pd.DataFrame) -> LabelTuple:
+    def replace_data(self, data: pd.DataFrame, name: str | None = None) -> LabelTuple:
         """Make a copy of the LabelTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         assert self.y_column in data.columns, f"column {self.y_column} not present"
-        return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+        return LabelTuple(
+            data=data,
+            s_column=self.s_column,
+            y_column=self.y_column,
+            name=self.name if name is None else name,
+        )
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
