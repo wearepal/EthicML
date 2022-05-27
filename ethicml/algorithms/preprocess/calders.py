@@ -38,11 +38,11 @@ class Calders(PreAlgorithm):
         new_train, _ = _calders_algorithm(
             train, train, self.preferable_class, self.disadvantaged_group, seed
         )
-        return self, new_train.replace(name=f"{self.name}: {train.name}")
+        return self, new_train.rename(f"{self.name}: {train.name}")
 
     @implements(PreAlgorithm)
     def transform(self, data: T) -> T:
-        return data.replace(name=f"{self.name}: {data.name}")
+        return data.rename(f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:

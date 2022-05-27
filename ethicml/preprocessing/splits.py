@@ -52,10 +52,10 @@ class SequentialSplit(DataSplitter):
         train_len = round(self.train_percentage * len(data))
 
         train = data.apply_to_joined_df(lambda df: df.iloc[:train_len].reset_index(drop=True))
-        train = train.replace(name=f"{data.name} - Train")
+        train = train.rename(f"{data.name} - Train")
 
         test = data.apply_to_joined_df(lambda df: df.iloc[train_len:].reset_index(drop=True))
-        test = test.replace(name=f"{data.name} - Test")
+        test = test.rename(f"{data.name} - Test")
 
         assert len(train) + len(test) == len(data)
         return train, test, {}

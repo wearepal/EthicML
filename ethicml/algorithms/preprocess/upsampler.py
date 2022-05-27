@@ -54,7 +54,7 @@ class Upsampler(PreAlgorithm):
 
     @implements(PreAlgorithm)
     def transform(self, data: T) -> T:
-        return data.replace(name=f"{self.name}: {data.name}")
+        return data.rename(f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
     def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
@@ -140,7 +140,7 @@ def upsample(
             upsampled_datatuple = val
         else:
             upsampled_datatuple = concat_datatuples(upsampled_datatuple, val)
-            upsampled_datatuple = upsampled_datatuple.replace(name=f"{name}: {dataset.name}")
+            upsampled_datatuple = upsampled_datatuple.rename(f"{name}: {dataset.name}")
 
     if strategy is UpsampleStrategy.preferential:
         ranker = LR()

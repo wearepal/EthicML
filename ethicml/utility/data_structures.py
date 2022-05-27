@@ -136,17 +136,11 @@ class SubgroupTuple(SubsetMixin):
         return iter([self.x, self.s])
 
     def replace(
-        self,
-        *,
-        x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.Series] = None,
-        name: Optional[str] = None,
+        self, *, x: Optional[pd.DataFrame] = None, s: Optional[pd.Series] = None
     ) -> SubgroupTuple:
         """Create a copy of the SubgroupTuple but change the given values."""
         return SubgroupTuple.from_df(
-            x=x if x is not None else self.x,
-            s=s if s is not None else self.s,
-            name=name if name is not None else self.name,
+            x=x if x is not None else self.x, s=s if s is not None else self.s, name=self.name
         )
 
     def replace_data(self, data: pd.DataFrame) -> SubgroupTuple:
@@ -243,14 +237,13 @@ class DataTuple(SubsetMixin):
         x: Optional[pd.DataFrame] = None,
         s: Optional[pd.Series] = None,
         y: Optional[pd.Series] = None,
-        name: Optional[str] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
         return DataTuple.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             y=y if y is not None else self.y,
-            name=name if name is not None else self.name,
+            name=self.name,
         )
 
     def rename(self, name: str) -> DataTuple:
@@ -353,17 +346,11 @@ class LabelTuple(SubsetMixin):
         return iter([self.s, self.y])
 
     def replace(
-        self,
-        *,
-        s: Optional[pd.Series] = None,
-        y: Optional[pd.Series] = None,
-        name: Optional[str] = None,
+        self, *, s: Optional[pd.Series] = None, y: Optional[pd.Series] = None
     ) -> LabelTuple:
         """Create a copy of the LabelTuple but change the given values."""
         return LabelTuple.from_df(
-            s=s if s is not None else self.s,
-            y=y if y is not None else self.y,
-            name=name if name is not None else self.name,
+            s=s if s is not None else self.s, y=y if y is not None else self.y, name=self.name
         )
 
     def rename(self, name: str) -> LabelTuple:

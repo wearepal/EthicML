@@ -212,7 +212,7 @@ def evaluate_models(
             if test_mode:
                 # take smaller subset of training data to speed up training
                 train = train.get_n_samples()
-            train = train.replace(name=f"{train.name} ({split_id})")
+            train = train.rename(f"{train.name} ({split_id})")
             data_splits.append(TrainValPair(train, test))
             model_seeds.append(0 if repeat_on == "data" else split_id)
             split_info.update({"split_id": split_id})
