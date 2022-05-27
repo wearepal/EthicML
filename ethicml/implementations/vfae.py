@@ -83,7 +83,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
             # z1 = model.reparameterize(z1_mu, z1_logvar)
             post_train += z1_mu.data.tolist()
 
-    return dataset.replace(x=pd.DataFrame(post_train), name=f"VFAE: {dataset.name}")
+    return dataset.replace(x=pd.DataFrame(post_train))
 
 
 def train_and_transform(train: DataTuple, test: T, flags: VfaeArgs) -> Tuple[DataTuple, T]:
