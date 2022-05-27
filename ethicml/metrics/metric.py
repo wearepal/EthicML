@@ -1,57 +1,47 @@
 """Abstract Base Class of all metrics in the framework."""
 
-from abc import abstractmethod
-from dataclasses import dataclass
-from typing import ClassVar, List, Optional
-from typing_extensions import Protocol
+from abc import ABC, abstractmethod
+from typing import ClassVar
+from typing_extensions import final
 
-from ethicml.utility import DataTuple, Prediction
+from ranzen import implements
 
-__all__ = ["CfmMetric", "BaseMetric", "Metric"]
+from ethicml.utility import EvalTuple, Prediction
+
+__all__ = ["MetricStaticName", "Metric"]
 
 
-class Metric(Protocol):
+class Metric(ABC):
     """Base class for all metrics."""
 
-    apply_per_sensitive: ClassVar[bool]
+    apply_per_sensitive: ClassVar[bool] = True
     """Whether the metric can be applied per sensitive attribute."""
 
     @abstractmethod
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         """Compute score.
 
-        Args:
-            prediction: predicted labels
-            actual: DataTuple with the actual labels and the sensitive attributes
-
-        Returns:
-            the score as a single number
+        :param prediction: predicted labels
+        :param actual: EvalTuple with the actual labels and the sensitive attributes
+        :returns: the score as a single number
         """
 
-    @property
     @abstractmethod
-    def name(self) -> str:
+    def get_name(self) -> str:
         """Name of the metric."""
 
+    @property
+    @final
+    def name(self) -> str:
+        """Name of the metric."""
+        return self.get_name()
 
-class BaseMetric(Metric, Protocol):
+
+class MetricStaticName(Metric, ABC):
     """Metric base class for metrics whose name does not depend on instance variables."""
 
-    _name: ClassVar[str]
-
-    @property
-    def name(self) -> str:
-        """Name of the metric."""
-        return self._name
-
-
-@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class CfmMetric(BaseMetric):
-    """Confusion Matrix based metric."""
-
-    pos_class: int = 1
-    """The class to treat as being "positive"."""
-    labels: Optional[List[int]] = None
-    """List of possible target values. If `None`, then this is inferred from the data when run."""
-    apply_per_sensitive: ClassVar[bool] = True
     _name: ClassVar[str] = "<please overwrite me>"
+
+    @implements(Metric)
+    def get_name(self) -> str:
+        return self._name

@@ -5,11 +5,12 @@ from statistics import mean
 from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Sequence, Tuple, Type
 
 from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
+from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
 from ethicml.metrics.metric import Metric
-from ethicml.preprocessing.train_test_split import fold_data
-from ethicml.utility import DataTuple, Prediction, TrainTestPair
+from ethicml.preprocessing.splits import fold_data
+from ethicml.utility import DataTuple, Prediction, TrainValPair
 
 __all__ = ["CrossValidator", "CVResults"]
 
@@ -91,11 +92,17 @@ class CVResults:
         return mean_vals
 
     def get_best_result(self, measure: Metric) -> ResultTuple:
-        """Get the hyperparameter combination for the best performance of a measure."""
+        """Get the hyperparameter combination for the best performance of a measure.
+
+        :param measure:
+        """
         mean_vals = self.mean_storage
 
         def _get_score(item: Tuple[str, ResultTuple]) -> float:
-            """Take an entry from `mean_storage` and return the desired score `measure`."""
+            """Take an entry from `mean_storage` and return the desired score `measure`.
+
+            :param item:
+            """
             _, result = item
             return result.scores[measure.name]
 
@@ -105,11 +112,17 @@ class CVResults:
         return mean_vals[best_hyp_string]
 
     def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
-        """Get hyper-parameters that return the 'best' result for the metric of interest."""
+        """Get hyper-parameters that return the 'best' result for the metric of interest.
+
+        :param measure:
+        """
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
-        """Returns a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric."""
+        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric.
+
+        :param measure:
+        """
         return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
@@ -118,10 +131,9 @@ class CVResults:
         First sort the results according to the primary metric, then take the best according to the
         secondary metric from the top K.
 
-        Args:
-            primary: Metric to first sort by.
-            secondary: Metric to sort the top-K models by for a second time, the top will be selected.
-            top_k: Number of entries to consider.
+        :param primary: Metric to first sort by.
+        :param secondary: Metric to sort the top-K models by for a second time, the top will be selected.
+        :param top_k: Number of entries to consider.
         """
         mean_vals = self.mean_storage
 
@@ -174,6 +186,12 @@ class CrossValidator:
         fair_measure = em.AbsCV()
         cv_results = lr_cv.run(train, measures=[primary, fair_measure])
 
+    :param model: the class (not an instance) of the model for cross validation
+    :param hyperparams: a dictionary where the keys are the names of hyperparameters and the values
+        are lists of possible values for the hyperparameters
+    :param folds: the number of folds
+    :param max_parallel: the maximum number of parallel processes; if set to 0, use the default
+        which is the number of available CPUs
     """
 
     def __init__(
@@ -183,16 +201,6 @@ class CrossValidator:
         folds: int = 3,
         max_parallel: int = 0,
     ):
-        """The constructor takes the following arguments.
-
-        Args:
-            model: the class (not an instance) of the model for cross validation
-            hyperparams: a dictionary where the keys are the names of hyperparameters and the values
-                are lists of possible values for the hyperparameters
-            folds: the number of folds
-            max_parallel: the maximum number of parallel processes; if set to 0, use the default
-                which is the number of available CPUs
-        """
         self.model = model
         self.hyperparams = hyperparams
         self.folds = folds
@@ -204,23 +212,24 @@ class CrossValidator:
     def run_async(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
         """Run the cross validation experiments asynchronously.
 
-        Args:
-            train: the training data
-            measures: an optional list of metrics to compute
-        Returns:
-            CVResults
+        :param train: the training data
+        :param measures:  (Default: None)
+        :returns: CVResults
         """
-        from .parallelism import run_in_parallel
-
         compute_scores_and_append = _ResultsAccumulator(measures)
         # instantiate all models
         models = [self.model(**experiment) for experiment in self.experiments]
         # create all folds
         data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
         # convert to right format
-        pair_folds = [TrainTestPair(train_fold, val) for (train_fold, val) in data_folds]
+        pair_folds = [TrainValPair(train_fold, val) for (train_fold, val) in data_folds]
         # run everything in parallel
-        all_results = run_in_parallel(models, pair_folds, self.max_parallel)
+        all_results = run_in_parallel(
+            algos=models,
+            data=pair_folds,
+            seeds=[0] * len(pair_folds),
+            num_jobs=self.max_parallel,
+        )
 
         # finally, iterate over all results, compute scores and store them
         for preds_for_dataset, experiment in zip(all_results, self.experiments):
@@ -231,20 +240,18 @@ class CrossValidator:
     def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
         """Run the cross validation experiments.
 
-        Args:
-            train: the training data
-            measures: an optional list of metrics to compute
-        Returns:
-            CVResults
+        :param train: the training data
+        :param measures:  (Default: None)
+        :returns: CVResults
         """
         compute_scores_and_append = _ResultsAccumulator(measures)
-        for i, (train_fold, val) in enumerate(fold_data(train, folds=self.folds)):
-            # run the models one by one and *immediately* report the scores on the measures
-            for experiment in self.experiments:
-                # instantiate model and run it
-                model = self.model(**experiment)
-                preds = model.run(train_fold, val)
-                scores = compute_scores_and_append(experiment, preds, val, i)
-                score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
-                print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
+        for (i, (train_fold, val)), experiment in product(
+            enumerate(fold_data(train, folds=self.folds)), self.experiments
+        ):
+            # instantiate model and run it
+            model = self.model(**experiment)
+            preds = model.run(train_fold, val)
+            scores = compute_scores_and_append(experiment, preds, val, i)
+            score_string = ", ".join(f"{k}={v:.4g}" for k, v in scores.items())
+            print(f"fold: {i}, model: '{model.name}', {score_string}, completed!")
         return CVResults(compute_scores_and_append.results, self.model)

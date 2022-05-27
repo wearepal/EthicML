@@ -1,7 +1,9 @@
 """Test that an algorithm can run against some data."""
 import os
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
@@ -9,6 +11,10 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
+from ethicml import DataTuple, Prediction, TestTuple
+from ethicml.algorithms.inprocess.in_algorithm import _I, InAlgorithmDC
+from ethicml.evaluators.parallelism import run_in_parallel
+from ethicml.utility import ClassifierType, KernelType
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
@@ -18,16 +24,16 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
     assert test is not None
 
 
-def test_run_parallel(toy_train_test: em.TrainTestPair):
+def test_run_parallel(toy_train_val: em.TrainValPair):
     """Test run parallel."""
-    from ethicml.evaluators import parallelism  # this import requires ray, so do it only on demand
 
-    data0 = toy_train_test
-    data1 = toy_train_test
-    result = parallelism.run_in_parallel(
-        [em.LR(), em.SVM(), em.Majority()],
-        [em.TrainTestPair(*data0), em.TrainTestPair(*data1)],
-        num_cpus=2,
+    data0 = toy_train_val
+    data1 = toy_train_val
+    result = run_in_parallel(
+        algos=[em.LR(), em.SVM(), em.Majority()],
+        data=[em.TrainValPair(*data0), em.TrainValPair(*data1)],
+        seeds=[0, 0],
+        num_jobs=2,
     )
     # LR
     assert np.count_nonzero(result[0][0].hard.values == 1) == 44
@@ -49,7 +55,7 @@ def test_run_parallel(toy_train_test: em.TrainTestPair):
 @pytest.mark.usefixtures("results_cleanup")
 def test_empty_evaluate():
     """Test empty evaluate."""
-    empty_result = em.evaluate_models([em.toy()], repeats=3, delete_prev=True)
+    empty_result = em.evaluate_models([em.Toy()], repeats=3)
     expected_result = pd.DataFrame(
         [], columns=["dataset", "scaler", "transform", "model", "split_id"]
     )
@@ -59,13 +65,71 @@ def test_empty_evaluate():
     pd.testing.assert_frame_equal(empty_result, expected_result)
 
 
+@pytest.mark.parametrize("repeats", [1, 2, 3])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_repeats_error(repeats: int):
+    """Add a test to check that the right number of reults are produced with repeats."""
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_previous=True,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+
+
+@pytest.mark.parametrize("on", ["data", "model", "both"])
+@pytest.mark.parametrize("repeats", [2, 3, 5])
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
+    """Check the repeat_on arg."""
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
+    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    results_no_scaler = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=repeats,
+        test_mode=True,
+        delete_previous=True,
+        repeat_on=on,
+        topic="pytest",
+    )
+    assert len(results_no_scaler) == repeats * len(inprocess_models)
+    if on == "data":
+        assert (results_no_scaler["model_seed"] == 0).all()
+        assert results_no_scaler["seed"].sum() > 0
+    elif on == "model":
+        assert (results_no_scaler["seed"] == 0).all()
+        assert results_no_scaler["model_seed"].sum() > 0
+    else:
+        assert (results_no_scaler["seed"] == results_no_scaler["model_seed"] * 2410).all()
+
+
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_scaler():
     """Test run alg suite."""
-    dataset = em.adult(split="Race-Binary")
-    datasets: List[em.Dataset] = [dataset, em.toy()]
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset, em.Toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
     results_no_scaler = em.evaluate_models(
@@ -76,7 +140,7 @@ def test_run_alg_suite_scaler():
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         topic="pytest",
     )
     results_scaler = em.evaluate_models(
@@ -88,7 +152,7 @@ def test_run_alg_suite_scaler():
         scaler=StandardScaler(),
         repeats=1,
         test_mode=True,
-        delete_prev=True,
+        delete_previous=True,
         topic="pytest",
     )
     with pytest.raises(AssertionError):
@@ -98,13 +162,13 @@ def test_run_alg_suite_scaler():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite():
     """Test run alg suite."""
-    dataset = em.adult(split="Race-Binary")
-    datasets: List[em.Dataset] = [dataset, em.toy()]
+    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
+    datasets: List[em.Dataset] = [dataset, em.Toy()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel="linear")]
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
-    parallel_results = em.evaluate_models_async(
+    em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -114,18 +178,6 @@ def test_run_alg_suite():
         test_mode=True,
         topic="pytest",
     )
-    results = em.evaluate_models(
-        datasets=datasets,
-        preprocess_models=preprocess_models,
-        inprocess_models=inprocess_models,
-        metrics=metrics,
-        per_sens_metrics=per_sens_metrics,
-        repeats=1,
-        test_mode=True,
-        delete_prev=True,
-        topic="pytest",
-    )
-    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     files = os.listdir(Path(".") / "results")
     file_names = [
@@ -140,7 +192,7 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 18)
+        assert written_file.shape == (2, 19)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
@@ -152,9 +204,9 @@ def test_run_alg_suite():
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_wrong_metrics():
     """Test run alg suite wrong metrics."""
-    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel="linear"), em.LR()]
+    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel=KernelType.linear), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
     with pytest.raises(em.MetricNotApplicable):
@@ -166,21 +218,60 @@ def test_run_alg_suite_wrong_metrics():
             per_sens_metrics=per_sens_metrics,
             repeats=1,
             test_mode=True,
+            delete_previous=False,
         )
+
+
+@pytest.mark.usefixtures("results_cleanup")
+def test_run_alg_suite_err_handling():
+    """Test run alg suite handles when an err is thrown."""
+
+    @dataclass
+    class ThrowErr(InAlgorithmDC):
+        C: int = 4
+
+        def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
+            pass
+
+        def predict(self, test: TestTuple) -> Prediction:
+            pass
+
+        def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+            raise NotImplementedError("This won't run.")
+
+        def get_name(self) -> str:
+            return "Problem"
+
+    datasets: List[em.Dataset] = [em.Toy()]
+    preprocess_models: List[em.PreAlgorithm] = []
+    inprocess_models: List[em.InAlgorithm] = [em.LR(), ThrowErr()]
+    metrics: List[em.Metric] = [em.Accuracy()]
+    per_sens_metrics: List[em.Metric] = [em.Accuracy()]
+    results = em.evaluate_models(
+        datasets=datasets,
+        preprocess_models=preprocess_models,
+        inprocess_models=inprocess_models,
+        metrics=metrics,
+        per_sens_metrics=per_sens_metrics,
+        repeats=2,
+        test_mode=True,
+        delete_previous=True,
+    )
+    assert len(results) == 4
 
 
 @pytest.mark.slow
 @pytest.mark.usefixtures("results_cleanup")
 def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
-    datasets: List[em.Dataset] = [em.toy(), em.adult()]
+    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
     preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier="LR"), em.LR()]
+    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.lr), em.LR()]
     metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
     per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
 
-    parallel_results = em.evaluate_models_async(
-        datasets=datasets,
+    results = em.evaluate_models(
+        datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
         metrics=metrics,
@@ -190,19 +281,6 @@ def test_run_alg_suite_no_pipeline():
         topic="pytest",
         fair_pipeline=False,
     )
-    results = em.evaluate_models(
-        datasets,
-        preprocess_models,
-        inprocess_models,
-        metrics,
-        per_sens_metrics,
-        repeats=1,
-        test_mode=True,
-        topic="pytest",
-        fair_pipeline=False,
-        delete_prev=True,
-    )
-    pd.testing.assert_frame_equal(parallel_results, results, check_like=True)
 
     num_datasets = 2
     num_preprocess = 1
@@ -211,7 +289,7 @@ def test_run_alg_suite_no_pipeline():
     expected_num = num_datasets * (num_fair_inprocess + (num_preprocess + 1) * num_unfair_inprocess)
     assert len(results) == expected_num
 
-    kc_name = "Kamiran & Calders LR"
+    kc_name = "Kamiran & Calders lr C=1.0"
 
     assert len(em.filter_results(results, [kc_name])) == 2  # result for Toy and Adult
     assert (

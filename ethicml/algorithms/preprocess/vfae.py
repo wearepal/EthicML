@@ -1,95 +1,68 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+from dataclasses import dataclass, field
+from typing import List
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .interface import flag_interface
-from .pre_algorithm import PreAlgorithmAsync
+from ethicml.algorithms.preprocess.pre_subprocess import PreAlgorithmSubprocess
 
 __all__ = ["VFAE"]
 
+from ethicml.utility import FairnessType
 
-class VFAE(PreAlgorithmAsync):
+
+class VfaeArgs(TypedDict):
+    """Args object of VFAE."""
+
+    dataset: str
+    supervised: bool
+    epochs: int
+    batch_size: int
+    fairness: str
+    latent_dims: int
+    z1_enc_size: List[int]
+    z2_enc_size: List[int]
+    z1_dec_size: List[int]
+
+
+@dataclass
+class VFAE(PreAlgorithmSubprocess):
     """VFAE Object - see implementation file for details."""
 
-    def __init__(
-        self,
-        dataset: str,
-        *,
-        dir: Union[str, Path] = ".",
-        supervised: bool = True,
-        epochs: int = 10,
-        batch_size: int = 32,
-        fairness: str = "DI",
-        latent_dims: int = 50,
-        z1_enc_size: Optional[List[int]] = None,
-        z2_enc_size: Optional[List[int]] = None,
-        z1_dec_size: Optional[List[int]] = None,
-        seed: int = 888,
-    ):
-        self.seed = seed
-        self._out_size = latent_dims
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
+    dataset: str = "toy"
+    supervised: bool = True
+    epochs: int = 10
+    batch_size: int = 32
+    fairness: FairnessType = FairnessType.dp
+    latent_dims: int = 50
+    z1_enc_size: List[int] = field(default_factory=lambda: [100])
+    z2_enc_size: List[int] = field(default_factory=lambda: [100])
+    z1_dec_size: List[int] = field(default_factory=lambda: [100])
 
-        if z1_enc_size is None:
-            z1_enc_size = [100]
-        if z2_enc_size is None:
-            z2_enc_size = [100]
-        if z1_dec_size is None:
-            z1_dec_size = [100]
-
-        self.flags: Dict[str, Union[int, str, List[int]]] = {
-            "supervised": supervised,
-            "fairness": fairness,
-            "batch_size": batch_size,
-            "epochs": epochs,
-            "dataset": dataset,
-            "latent_dims": latent_dims,
-            "z1_enc_size": z1_enc_size,
-            "z2_enc_size": z2_enc_size,
-            "z1_dec_size": z1_dec_size,
-            "seed": seed,
+    @implements(PreAlgorithmSubprocess)
+    def _get_flags(self) -> VfaeArgs:
+        # TODO: replace this with dataclasses.asdict()
+        return {
+            "supervised": self.supervised,
+            "fairness": str(self.fairness),
+            "batch_size": self.batch_size,
+            "epochs": self.epochs,
+            "dataset": self.dataset,
+            "latent_dims": self.latent_dims,
+            "z1_enc_size": self.z1_enc_size,
+            "z2_enc_size": self.z2_enc_size,
+            "z1_dec_size": self.z1_dec_size,
         }
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(PreAlgorithmSubprocess)
+    def get_out_size(self) -> int:
+        return self.latent_dims
+
+    @implements(PreAlgorithmSubprocess)
+    def get_name(self) -> str:
         return "VFAE"
 
-    @implements(PreAlgorithmAsync)
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            test_path=test_path,
-            new_train_path=new_train_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            new_train_path=new_train_path,
-            model_path=model_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path,
-            test_path=test_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.vfae"] + args
+    @implements(PreAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.vfae"]

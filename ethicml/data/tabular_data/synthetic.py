@@ -1,14 +1,13 @@
 """Class to describe features of the Synthetic dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
-from typing_extensions import Literal
+from typing import ClassVar, Type
 
 import teext as tx
 
 from ..dataset import LoadableDataset
 
-__all__ = ["Synthetic", "SyntheticScenarios", "SyntheticTargets", "synthetic"]
+__all__ = ["SyntheticScenarios", "SyntheticTargets", "Synthetic"]
 
 
 class SyntheticScenarios(Enum):
@@ -28,34 +27,6 @@ class SyntheticTargets(Enum):
     Y3 = 3
 
 
-def synthetic(
-    scenario: Union[SyntheticScenarios, Literal[1, 2, 3, 4]] = 1,
-    target: Union[SyntheticTargets, Literal[1, 2, 3]] = 3,
-    fair: bool = False,
-    num_samples: int = 1_000,
-) -> "Synthetic":
-    r"""Dataset with synthetic data.
-
-    ⊥ = is independent of
-    ~ = is an ancestor of in the causal model used to generate the data
-
-    Scenario 1 = X⊥S & Y⊥S.
-        - This models completely fair data.
-    Scenario 2 = X_2⊥S & Y_2⊥S; X_1~S, Y_1~S & Y_3~S
-        - This models data where the inputs are biased. This is propogated through to the target.
-    Scenario 3 = X⊥S, Y_1⊥S, Y_2⊥S; Y_3~S
-        - This models data where the target is biased.
-    Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
-        - This models data where both the input and target are directly biased.
-    """
-    return Synthetic(
-        scenario=SyntheticScenarios(scenario),
-        target=SyntheticTargets(target),
-        fair=fair,
-        num_samples=num_samples,
-    )
-
-
 @dataclass
 class Synthetic(LoadableDataset):
     r"""Dataset with synthetic data.
@@ -72,6 +43,10 @@ class Synthetic(LoadableDataset):
     Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S
         - This models data where both the input and target are directly biased.
     """
+
+    Scenarios: ClassVar[Type[SyntheticScenarios]] = SyntheticScenarios
+    Targets: ClassVar[Type[SyntheticTargets]] = SyntheticTargets
+
     scenario: SyntheticScenarios = SyntheticScenarios.S1
     target: SyntheticTargets = SyntheticTargets.Y3
     fair: bool = False

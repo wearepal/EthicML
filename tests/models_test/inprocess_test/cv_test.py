@@ -1,22 +1,27 @@
 """Tests for cross validation."""
 from typing import Dict, List, NamedTuple, Sequence, Type, Union
 
+import numpy as np
 import pytest
 
 import ethicml as em
-from ethicml import LR, SVM, Accuracy, InAlgorithm, Prediction, TrainTestPair
+from ethicml import LR, SVM, Accuracy, InAlgorithm, KernelType, Prediction, TrainTestPair
 
 
 class CvParam(NamedTuple):
     """Specification of a unit test for cross validation."""
 
     model: Type[InAlgorithm]
-    hyperparams: Dict[str, Union[Sequence[float], List[str]]]
+    hyperparams: Dict[str, Union[Sequence[float], List[str], Sequence[KernelType]]]
     num_pos: int
 
 
 CV_PARAMS = [
-    CvParam(model=SVM, hyperparams={"C": [1, 10, 100], "kernel": ["rbf", "linear"]}, num_pos=43),
+    CvParam(
+        model=SVM,
+        hyperparams={"C": [1, 10, 100], "kernel": [KernelType.rbf, KernelType.linear]},
+        num_pos=43,
+    ),
     CvParam(model=LR, hyperparams={"C": [0.01, 0.1, 1.0]}, num_pos=44),
 ]
 
@@ -28,7 +33,7 @@ def test_cv(
     hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ):
-    """test cv svm"""
+    """Test cv svm."""
     train, test = toy_train_test
     cross_validator = em.CrossValidator(model, hyperparams)
     assert cross_validator is not None
@@ -38,8 +43,8 @@ def test_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
 
 
 @pytest.mark.parametrize("model,hyperparams,num_pos", CV_PARAMS)
@@ -49,7 +54,7 @@ def test_parallel_cv(
     hyperparams: Dict[str, Union[Sequence[float], List[str]]],
     num_pos: int,
 ) -> None:
-    """test parallel cv."""
+    """Test parallel cv."""
     train, test = toy_train_test
     measure = Accuracy()
 
@@ -59,5 +64,5 @@ def test_parallel_cv(
     assert isinstance(best_model, InAlgorithm)
 
     preds: Prediction = best_model.run(train, test)
-    assert preds.hard.values[preds.hard.values == 1].shape[0] == num_pos
-    assert preds.hard.values[preds.hard.values == 0].shape[0] == len(preds) - num_pos
+    assert np.count_nonzero(preds.hard.values == 1) == num_pos
+    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos

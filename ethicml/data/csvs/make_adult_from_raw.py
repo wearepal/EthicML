@@ -7,8 +7,8 @@ import pandas as pd
 def run_generate_adult() -> None:
     """Generate the UCI Adult dataset from scratch."""
     # Load the data
-    train = pd.read_csv("raw/adult.data", header=None)  # type: ignore[call-overload]
-    test = pd.read_csv("raw/adult.test", skiprows=[0], header=None)  # type: ignore[call-overload]
+    train = pd.read_csv("raw/adult.data", header=None)
+    test = pd.read_csv("raw/adult.test", skiprows=[0], header=None)
 
     # Give data column names
     columns = [

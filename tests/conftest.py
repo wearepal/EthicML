@@ -11,27 +11,27 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import DataTuple, TrainTestPair
+from ethicml import DataTuple, TrainTestPair, TrainValPair
 
 
 @pytest.fixture(scope="session")
 def toy_train_test() -> TrainTestPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = em.toy().load()
+    data: DataTuple = em.Toy().load()
     train: DataTuple
     test: DataTuple
     train, test = em.train_test_split(data, random_seed=0)
-    return TrainTestPair(train, test)
+    return TrainTestPair(train, test.remove_y())
 
 
 @pytest.fixture(scope="session")
-def toy_train_val() -> TrainTestPair:
+def toy_train_val() -> TrainValPair:
     """By making this a fixture, pytest can cache the result."""
-    data: DataTuple = em.toy().load()
+    data: DataTuple = em.Toy().load()
     train: DataTuple
     test: DataTuple
     train, test = em.train_test_split(data)
-    return TrainTestPair(train, test)
+    return TrainValPair(train, test)
 
 
 @pytest.fixture(scope="module")
@@ -63,10 +63,10 @@ def simple_data() -> DataTuple:
     # visual representation of the data:
     # s: ...111111111111111111111111111111111111111111111111111111111111110000000000000000000000000
     # y: ...111111111111111111111111111111111111110000000000000000000000001111111111000000000000000
-    return DataTuple(
+    return DataTuple.from_df(
         x=pd.DataFrame([0] * 1000, columns=["x"]),
-        s=pd.DataFrame([1] * 750 + [0] * 250, columns=["s"]),
-        y=pd.DataFrame([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, columns=["y"]),
+        s=pd.Series([1] * 750 + [0] * 250, name="s"),
+        y=pd.Series([1] * 500 + [0] * 250 + [1] * 100 + [0] * 150, name="y"),
         name="TestData",
     )
 
@@ -94,15 +94,12 @@ def simulate_no_torch() -> Generator[None, None, None]:
     """Make it appear that Torch is not avaiable."""
     # ======= set up ========
     torch_available = em.common.TORCH_AVAILABLE
-    torchvision_available = em.common.TORCHVISION_AVAILABLE
     em.common.TORCH_AVAILABLE = False
-    em.common.TORCHVISION_AVAILABLE = False
 
     yield  # run test
 
     # ====== tear down =======
     em.common.TORCH_AVAILABLE = torch_available
-    em.common.TORCHVISION_AVAILABLE = torchvision_available
 
 
 def pytest_addoption(parser):

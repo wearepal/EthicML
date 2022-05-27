@@ -1,97 +1,66 @@
 """Zemel's Learned Fair Representations."""
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from dataclasses import dataclass
+from typing import List, Optional
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .interface import flag_interface
-from .pre_algorithm import PreAlgorithm, PreAlgorithmAsync
+from .pre_subprocess import PreAlgorithmSubprocess
 
 __all__ = ["Zemel"]
 
-from ethicml.utility import DataTuple, TestTuple
+
+class ZemelArgs(TypedDict):
+    """Arguments for the Zemel algorithm."""
+
+    clusters: int
+    Ax: float
+    Ay: float
+    Az: float
+    max_iter: int
+    maxfun: int
+    epsilon: float
+    threshold: float
 
 
-class Zemel(PreAlgorithmAsync):
+@dataclass
+class Zemel(PreAlgorithmSubprocess):
     """AIF360 implementation of Zemel's LFR."""
 
-    def __init__(
-        self,
-        *,
-        dir: Union[str, Path] = ".",
-        threshold: float = 0.5,
-        clusters: int = 2,
-        Ax: float = 0.01,
-        Ay: float = 0.1,
-        Az: float = 0.5,
-        max_iter: int = 5_000,
-        maxfun: int = 5_000,
-        epsilon: float = 1e-5,
-        seed: int = 888,
-    ) -> None:
-        self.seed = seed
-        self._out_size: Optional[int] = None
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: Dict[str, Union[int, float]] = {
-            "clusters": clusters,
-            "Ax": Ax,
-            "Ay": Ay,
-            "Az": Az,
-            "max_iter": max_iter,
-            "maxfun": maxfun,
-            "epsilon": epsilon,
-            "threshold": threshold,
-            "seed": seed,
+    threshold: float = 0.5
+    clusters: int = 2
+    Ax: float = 0.01
+    Ay: float = 0.1
+    Az: float = 0.5
+    max_iter: int = 5_000
+    maxfun: int = 5_000
+    epsilon: float = 1e-5
+
+    def __post_init__(self) -> None:
+        self._in_size: Optional[int] = None  # the super class will set this for us
+
+    @implements(PreAlgorithmSubprocess)
+    def _get_flags(self) -> ZemelArgs:
+        return {
+            "clusters": self.clusters,
+            "Ax": self.Ax,
+            "Ay": self.Ay,
+            "Az": self.Az,
+            "max_iter": self.max_iter,
+            "maxfun": self.maxfun,
+            "epsilon": self.epsilon,
+            "threshold": self.threshold,
         }
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(PreAlgorithmSubprocess)
+    def get_name(self) -> str:
         return "Zemel"
 
-    @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Tuple[DataTuple, TestTuple]:
-        self._out_size = train.x.shape[1]
-        return super().run(train, test)
+    @implements(PreAlgorithmSubprocess)
+    def get_out_size(self) -> int:
+        assert self._in_size is not None
+        return self._in_size
 
-    @implements(PreAlgorithm)
-    def fit(self, train: DataTuple) -> Tuple[PreAlgorithm, DataTuple]:
-        self._out_size = train.x.shape[1]
-        return super().fit(train)
-
-    @implements(PreAlgorithmAsync)
-    def _run_script_command(
-        self, train_path: Path, test_path: Path, new_train_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            test_path=test_path,
-            new_train_path=new_train_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _fit_script_command(
-        self, train_path: Path, new_train_path: Path, model_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            train_path=train_path,
-            new_train_path=new_train_path,
-            model_path=model_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
-
-    @implements(PreAlgorithmAsync)
-    def _transform_script_command(
-        self, model_path: Path, test_path: Path, new_test_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path,
-            test_path=test_path,
-            new_test_path=new_test_path,
-            flags=self.flags,
-        )
-        return ["-m", "ethicml.implementations.zemel"] + args
+    @implements(PreAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.zemel"]

@@ -4,12 +4,11 @@ from pathlib import Path
 from typing import Any, Callable, List, Optional, Tuple, Union
 from typing_extensions import Literal
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from matplotlib import figure, legend
-from sklearn.manifold import TSNE
+from sklearn.manifold import TSNE  # type: ignore[attr-defined]
 
 from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
@@ -40,7 +39,7 @@ def maybe_tsne(data: DataTuple) -> Tuple[pd.DataFrame, str, str]:
         x1_name = "tsne1"
         x2_name = "tsne2"
     else:
-        amalgamated = pd.concat([data.x, data.s, data.y], axis="columns")
+        amalgamated = data.data
         x1_name = f"{columns[0]}"
         x2_name = f"{columns[1]}"
     return amalgamated, x1_name, x2_name
@@ -52,13 +51,13 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
 
     amalgamated, x1_name, x2_name = maybe_tsne(data)
 
-    plot = sns.scatterplot(
+    plot = sns.scatterplot(  # type: ignore[attr-defined]
         x=x1_name,
         y=x2_name,
-        hue=data.y.columns[0],
+        hue=data.y.name,
         palette="Set2",
         data=amalgamated,
-        style=data.s.columns[0],
+        style=data.s.name,
         legend="full",
     )
 
@@ -74,7 +73,7 @@ def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1
 
     amalgamated = pd.concat([data.x, data.y], axis="columns")
 
-    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")
+    plot = sns.jointplot(x=columns[dims[0]], y=columns[dims[1]], data=amalgamated, kind="kde")  # type: ignore[attr-defined]
 
     file_path.parent.mkdir(exist_ok=True)
     plot.savefig(file_path)
@@ -99,16 +98,16 @@ def multivariate_grid(
 
         return scatter
 
-    sns.set_palette("husl")
+    sns.set_palette("husl")  # type: ignore[attr-defined]
 
-    g = sns.JointGrid(x=col_x, y=col_y, data=df)
+    g = sns.JointGrid(x=col_x, y=col_y, data=df)  # type: ignore[attr-defined]
     color = None
     legends = []
     for name, df_group in df.groupby([sens_col, outcome_col]):
         legends.append(f"S={name[0]}, Y={name[1]}")
         g.plot_joint(colored_scatter(df_group[col_x], df_group[col_y], color))
-        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)
-        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)
+        sns.distplot(df_group[col_x].values, ax=g.ax_marg_x, color=color)  # type: ignore[attr-defined]
+        sns.distplot(df_group[col_y].values, ax=g.ax_marg_y, vertical=True)  # type: ignore[attr-defined]
     # Do also global Hist:
     # sns.distplot(df[col_x].values, ax=g.ax_marg_x, color='grey')
     # sns.distplot(df[col_y].values.ravel(), ax=g.ax_marg_y, color='grey', vertical=True)
@@ -125,8 +124,8 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     multivariate_grid(
         col_x=x1_name,
         col_y=x2_name,
-        sens_col=data.s.columns[0],
-        outcome_col=data.y.columns[0],
+        sens_col=str(data.s.name),
+        outcome_col=str(data.y.name),
         df=amalgamated,
     )
 
@@ -148,8 +147,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     file_path = Path(filename)
 
     # Only consider 1 sens attr for now
-    s_col = data.s.columns[0]
-    s_values = data.s[s_col].value_counts() / data.s[s_col].count()
+    s_values = data.s.value_counts() / data.s.count()
 
     s_0_val = s_values[0]
     s_1_val = s_values[1]
@@ -157,25 +155,20 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     s_0_label = s_values.index.min()
     s_1_label = s_values.index.max()
 
-    y_col = data.y.columns[0]
-    y_s0 = (
-        data.y[y_col][data.s[s_col] == 0].value_counts() / data.y[y_col][data.s[s_col] == 0].count()
-    )
-    y_s1 = (
-        data.y[y_col][data.s[s_col] == 1].value_counts() / data.y[y_col][data.s[s_col] == 1].count()
-    )
+    y_s0 = data.y[data.s == 0].value_counts() / data.y[data.s == 0].count()
+    y_s1 = data.y[data.s == 1].value_counts() / data.y[data.s == 1].count()
 
     y_0_label = y_s0.index[0]
     y_1_label = y_s0.index[1]
 
-    mpl.style.use("seaborn-pastel")
+    plt.style.use("seaborn-pastel")
     # plt.xkcd()
 
     fig, plot = plt.subplots()
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,
+        height=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -183,7 +176,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,
+        height=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -191,18 +184,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,
+        height=y_s0[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,
+        bottom=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,
+        height=y_s1[y_1_label] * 100,  # type: ignore[call-overload]
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,
+        bottom=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
         align="edge",
         edgecolor="black",
         color="C3",
@@ -210,8 +203,8 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     plot.set_ylim(0, 100)
     plot.set_xlim(0, 100)
-    plot.set_ylabel(f"Percent {y_col}=y")
-    plot.set_xlabel(f"Percent {s_col}=s")
+    plot.set_ylabel(f"Percent {data.y.name}=y")
+    plot.set_xlabel(f"Percent {data.s.name}=s")
     plot.set_title("Dataset Composition by class and sensitive attribute")
 
     plot.legend(
@@ -248,22 +241,22 @@ def single_plot(
     This function can also be used to create figures with multiple plots on them, because it does
     not generate a Figure object itself.
 
-    Args:
-        plot: Plot object
-        results: DataFrame with the data
-        xaxis: name of column that's plotted on the x-axis
-        yaxis: name of column that's plotted on the y-axis
-        dataset: string that identifies the dataset
-        transform: string that identifies the preprocessing method, or None
-        ptype: plot type
-        legend_pos: position of the legend (or None for no legend)
-        legend_yanchor: position in the vertical direction where the legend should begin
-        markersize: size of marker
-        alternating_style: if True, entries for scatter plots are done in alternating style
-        include_nan_entries: if True, entries with NaNs still appear in the legend
-
-    Returns:
-        the legend object if something was plotted; False otherwise
+    :param plot: Plot object
+    :param results: DataFrame with the data
+    :param xaxis: name of column that's plotted on the x-axis
+    :param yaxis: name of column that's plotted on the y-axis
+    :param dataset: string that identifies the dataset
+    :param transform: string that identifies the preprocessing method, or None
+    :param ptype: plot type (Default: "box")
+    :param legend_pos: position of the legend (or None for no legend) (Default: "outside")
+    :param legend_yanchor: position in the vertical direction where the legend should begin (Default
+        value = 1.0)
+    :param markersize: size of marker (Default: 6)
+    :param alternating_style: if True, entries for scatter plots are done in alternating style
+        (Default: True)
+    :param include_nan_entries: if True, entries with NaNs still appear in the legend (Default value
+        = False)
+    :returns: the legend object if something was plotted; False otherwise
     """
     mask_for_dataset = results.index.get_level_values("dataset") == dataset
     if transform is not None:
@@ -289,7 +282,7 @@ def single_plot(
     if not entries:
         return False  # nothing to plot
 
-    title = f"{dataset}, {transform}" if transform is not None else str(dataset)
+    title = f"{dataset}, {transform}" if transform is not None else dataset
     plot_def = PlotDef(
         title=title, entries=entries, legend_pos=legend_pos, legend_yanchor=legend_yanchor
     )
@@ -315,17 +308,14 @@ def plot_results(
 ) -> List[Tuple[figure.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
-    Args:
-        results: a DataFrame that already contains the values of the metrics
-        metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
-        metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
-        ptype: plot type
-        save: if True, save the plot as a PDF
-        dpi: DPI of the plots
-        transforms_separately: if True, each transform gets its own plot
-
-    Returns:
-        A list of all figures and plots
+    :param results: a DataFrame that already contains the values of the metrics
+    :param metric_y: a Metric object or a column name that defines which metric to plot on the y-axis
+    :param metric_x: a Metric object or a column name that defines which metric to plot on the x-axis
+    :param ptype: plot type (Default: "box")
+    :param save: if True, save the plot as a PDF (Default: True)
+    :param dpi: DPI of the plots (Default: 300)
+    :param transforms_separately: if True, each transform gets its own plot (Default: True)
+    :returns: A list of all figures and plots
     """
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)
@@ -379,6 +369,7 @@ def plot_results(
                 legend = single_plot(
                     plot, results, xtuple, ytuple, dataset_, transform, ptype=ptype
                 )
+                plt.tight_layout()
 
                 if legend is False:  # use "is" here because otherwise any falsy value would match
                     plt.close(fig)

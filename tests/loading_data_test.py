@@ -1,14 +1,12 @@
 """Test the loading data capability."""
 from pathlib import Path
-from typing import NamedTuple
+from typing import Callable, NamedTuple
 
-import numpy as np
 import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import Admissions, Compas, Credit, Crime, DataTuple, German, LoadableDataset
-from ethicml.data.tabular_data.adult import Adult, AdultSplits
+from ethicml import Admissions, Adult, Compas, Credit, Crime, DataTuple, German, LoadableDataset
 from ethicml.data.util import flatten_dict
 
 
@@ -47,7 +45,7 @@ def idfn(val: DT):
     "dt",
     [
         DT(
-            dataset=em.admissions(),
+            dataset=Admissions(),
             samples=43_303,
             x_features=9,
             discrete_features=0,
@@ -60,7 +58,7 @@ def idfn(val: DT):
             sum_y=20_263,
         ),
         DT(
-            dataset=em.admissions(split="Gender", invert_s=True),
+            dataset=Admissions(split=Admissions.Splits.GENDER, invert_s=True),
             samples=43_303,
             x_features=9,
             discrete_features=0,
@@ -73,7 +71,7 @@ def idfn(val: DT):
             sum_y=20_263,
         ),
         DT(
-            dataset=em.adult(),
+            dataset=Adult(),
             samples=45_222,
             x_features=101,
             discrete_features=96,
@@ -86,7 +84,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_nationality=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_nationality=True),
             samples=45_222,
             x_features=62,
             discrete_features=57,
@@ -99,7 +97,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_race=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_race=True),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -112,7 +110,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult("Sex", binarize_nationality=True, binarize_race=True),
+            dataset=Adult(split=Adult.Splits.SEX, binarize_nationality=True, binarize_race=True),
             samples=45_222,
             x_features=59,
             discrete_features=54,
@@ -125,7 +123,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Sex"),
+            dataset=Adult(split=Adult.Splits.SEX),
             samples=45_222,
             x_features=101,
             discrete_features=96,
@@ -138,20 +136,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=AdultSplits.SEX),
-            samples=45_222,
-            x_features=101,
-            discrete_features=96,
-            s_features=1,
-            num_sens=2,
-            y_features=1,
-            num_labels=2,
-            name="Adult Sex",
-            sum_s=30_527,
-            sum_y=11_208,
-        ),
-        DT(
-            dataset=em.adult(split="Race"),
+            dataset=em.Adult(split=em.Adult.Splits.RACE),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -164,7 +149,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split=AdultSplits.RACE),
+            dataset=Adult(split=Adult.Splits.RACE),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -177,7 +162,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Race-Binary"),
+            dataset=em.Adult(split=Adult.Splits.RACE_BINARY),
             samples=45_222,
             x_features=98,
             discrete_features=93,
@@ -190,7 +175,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Nationality"),
+            dataset=em.Adult(split=Adult.Splits.NATIONALITY),
             samples=45_222,
             x_features=62,
             discrete_features=57,
@@ -203,7 +188,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.adult(split="Education"),
+            dataset=em.Adult(split=Adult.Splits.EDUCTAION),
             samples=45_222,
             x_features=86,
             discrete_features=82,
@@ -216,7 +201,7 @@ def idfn(val: DT):
             sum_y=11_208,
         ),
         DT(
-            dataset=em.compas(),
+            dataset=em.Compas(),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -229,7 +214,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Sex"),
+            dataset=Compas(split=Compas.Splits.SEX),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -242,7 +227,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Race"),
+            dataset=em.Compas(split=Compas.Splits.RACE),
             samples=6_167,
             x_features=400,
             discrete_features=395,
@@ -255,7 +240,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.compas(split="Race-Sex"),
+            dataset=em.Compas(split=Compas.Splits.RACE_SEX),
             samples=6_167,
             x_features=399,
             discrete_features=394,
@@ -268,7 +253,7 @@ def idfn(val: DT):
             sum_y=2_809,
         ),
         DT(
-            dataset=em.credit(),
+            dataset=Credit(),
             samples=30_000,
             x_features=29,
             discrete_features=9,
@@ -281,7 +266,7 @@ def idfn(val: DT):
             sum_y=6_636,
         ),
         DT(
-            dataset=em.credit(split="Sex"),
+            dataset=Credit(split=Credit.Splits.SEX),
             samples=30_000,
             x_features=29,
             discrete_features=9,
@@ -294,7 +279,7 @@ def idfn(val: DT):
             sum_y=6_636,
         ),
         DT(
-            dataset=em.crime(),
+            dataset=Crime(),
             samples=1_993,
             x_features=136,
             discrete_features=46,
@@ -307,7 +292,7 @@ def idfn(val: DT):
             sum_y=653,
         ),
         DT(
-            dataset=em.crime(split="Race-Binary"),
+            dataset=Crime(split=Crime.Splits.RACE_BINARY),
             samples=1_993,
             x_features=136,
             discrete_features=46,
@@ -320,7 +305,7 @@ def idfn(val: DT):
             sum_y=653,
         ),
         DT(
-            dataset=em.german(),
+            dataset=German(),
             samples=1_000,
             x_features=57,
             discrete_features=51,
@@ -333,7 +318,7 @@ def idfn(val: DT):
             sum_y=300,
         ),
         DT(
-            dataset=em.german(split="Sex"),
+            dataset=German(split=German.Splits.SEX),
             samples=1_000,
             x_features=57,
             discrete_features=51,
@@ -346,7 +331,7 @@ def idfn(val: DT):
             sum_y=300,
         ),
         DT(
-            dataset=em.health(),
+            dataset=em.Health(),
             samples=171_067,
             x_features=130,
             discrete_features=12,
@@ -359,7 +344,7 @@ def idfn(val: DT):
             sum_y=54_052,
         ),
         DT(
-            dataset=em.health(split="Sex"),
+            dataset=em.Health(split=em.Health.Splits.SEX),
             samples=171_067,
             x_features=130,
             discrete_features=12,
@@ -372,7 +357,7 @@ def idfn(val: DT):
             sum_y=54_052,
         ),
         DT(
-            dataset=em.law(split="Sex"),
+            dataset=em.Law(split=em.Law.Splits.SEX),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -385,7 +370,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.law(split="Race"),
+            dataset=em.Law(split=em.Law.Splits.RACE),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -398,7 +383,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.law(split="Sex-Race"),
+            dataset=em.Law(split=em.Law.Splits.SEX_RACE),
             samples=21_791,
             x_features=3,
             discrete_features=0,
@@ -411,7 +396,7 @@ def idfn(val: DT):
             sum_y=19_360,
         ),
         DT(
-            dataset=em.lipton(),
+            dataset=em.Lipton(),
             samples=2_000,
             x_features=2,
             discrete_features=0,
@@ -424,20 +409,33 @@ def idfn(val: DT):
             sum_y=-562,
         ),
         DT(
-            dataset=em.nonbinary_toy(),
-            samples=100,
-            x_features=2,
-            discrete_features=0,
+            dataset=em.NonBinaryToy(),
+            samples=400,
+            x_features=10,
+            discrete_features=8,
             s_features=1,
             num_sens=2,
             y_features=1,
             num_labels=5,
             name="NonBinaryToy",
-            sum_s=48,
-            sum_y=300,
+            sum_s=200,
+            sum_y=826,
         ),
         DT(
-            dataset=em.sqf(),
+            dataset=em.Nursery(),
+            samples=12960,
+            x_features=22,
+            discrete_features=21,
+            s_features=1,
+            num_sens=2,
+            y_features=1,
+            num_labels=2,
+            name="Nursery Finance",
+            sum_s=6480,
+            sum_y=4320,
+        ),
+        DT(
+            dataset=em.Sqf(),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -450,7 +448,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Sex"),
+            dataset=em.Sqf(split=em.Sqf.Splits.SEX),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -463,7 +461,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Race"),
+            dataset=em.Sqf(split=em.Sqf.Splits.RACE),
             samples=12_347,
             x_features=145,
             discrete_features=139,
@@ -476,7 +474,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.sqf(split="Race-Sex"),
+            dataset=em.Sqf(split=em.Sqf.Splits.RACE_SEX),
             samples=12_347,
             x_features=144,
             discrete_features=138,
@@ -489,7 +487,7 @@ def idfn(val: DT):
             sum_y=1_289,
         ),
         DT(
-            dataset=em.toy(),
+            dataset=em.Toy(),
             samples=400,
             x_features=10,
             discrete_features=8,
@@ -502,7 +500,7 @@ def idfn(val: DT):
             sum_y=231,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
             samples=22_268,
             x_features=45,
             discrete_features=40,
@@ -515,7 +513,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
             samples=68_308,
             x_features=45,
             discrete_features=40,
@@ -528,7 +526,7 @@ def idfn(val: DT):
             sum_y=24_385,
         ),
         DT(
-            dataset=em.acs_income(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
+            dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
             samples=90_576,
             x_features=45,
             discrete_features=40,
@@ -541,7 +539,7 @@ def idfn(val: DT):
             sum_y=31_309,
         ),
         DT(
-            dataset=em.acs_income(
+            dataset=em.AcsIncome(
                 root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Race"
             ),
             samples=22_268,
@@ -556,7 +554,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_income(
+            dataset=em.AcsIncome(
                 root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Sex-Race"
             ),
             samples=22_268,
@@ -571,7 +569,7 @@ def idfn(val: DT):
             sum_y=6_924,
         ),
         DT(
-            dataset=em.acs_employment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+            dataset=em.AcsEmployment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
             samples=47_777,
             x_features=90,
             discrete_features=89,
@@ -590,25 +588,25 @@ def test_data_shape(dt: DT):
     """Test loading data."""
     data: DataTuple = dt.dataset.load()
     assert (dt.samples, dt.x_features) == data.x.shape
-    assert (dt.samples, dt.s_features) == data.s.shape
-    assert (dt.samples, dt.y_features) == data.y.shape
+    assert (dt.samples,) == data.s.shape
+    assert (dt.samples,) == data.y.shape
 
     assert len(dt.dataset.ordered_features["x"]) == dt.x_features
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
-    assert data.s.nunique()[0] == dt.num_sens
-    assert data.y.nunique()[0] == dt.num_labels
+    assert data.s.nunique() == dt.num_sens
+    assert data.y.nunique() == dt.num_labels
 
-    assert data.s.sum().values[0] == dt.sum_s
-    assert data.y.sum().values[0] == dt.sum_y
+    assert data.s.sum() == dt.sum_s
+    assert data.y.sum() == dt.sum_y
 
     assert data.name == dt.name
 
     data: DataTuple = dt.dataset.load(ordered=True)
     assert (dt.samples, dt.x_features) == data.x.shape
-    assert (dt.samples, dt.s_features) == data.s.shape
-    assert (dt.samples, dt.y_features) == data.y.shape
+    assert (dt.samples,) == data.s.shape
+    assert (dt.samples,) == data.y.shape
 
     assert (
         len(flatten_dict(dt.dataset.disc_feature_groups)) + len(dt.dataset.continuous_features)
@@ -616,33 +614,45 @@ def test_data_shape(dt: DT):
 
 
 @pytest.mark.parametrize("fair", [False, True])
-@pytest.mark.parametrize("target", [1, 2, 3])
-@pytest.mark.parametrize("scenario", [1, 2, 3, 4])
+@pytest.mark.parametrize(
+    "target", [em.Synthetic.Targets.Y1, em.Synthetic.Targets.Y2, em.Synthetic.Targets.Y3]
+)
+@pytest.mark.parametrize(
+    "scenario",
+    [
+        em.Synthetic.Scenarios.S1,
+        em.Synthetic.Scenarios.S2,
+        em.Synthetic.Scenarios.S3,
+        em.Synthetic.Scenarios.S4,
+    ],
+)
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
-def test_synth_data_shape(scenario, target, fair, samples):
+def test_synth_data_shape(
+    scenario: em.SyntheticScenarios, target: em.SyntheticTargets, fair: bool, samples: int
+):
     """Test loading data."""
-    dataset = em.synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
+    dataset = em.Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
-    assert (samples, 1) == data.s.shape
-    assert (samples, 1) == data.y.shape
+    assert (samples,) == data.s.shape
+    assert (samples,) == data.y.shape
 
     assert len(dataset.ordered_features["x"]) == 4
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
-    assert data.s.nunique()[0] == 2
-    assert data.y.nunique()[0] == 2
+    assert data.s.nunique() == 2
+    assert data.y.nunique() == 2
 
     if fair:
-        assert data.name == f"Synthetic - Scenario {scenario}, target {target} fair"
+        assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value} fair"
     else:
-        assert data.name == f"Synthetic - Scenario {scenario}, target {target}"
+        assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value}"
 
     data: DataTuple = dataset.load(ordered=True)
     assert (samples, 4) == data.x.shape
-    assert (samples, 1) == data.s.shape
-    assert (samples, 1) == data.y.shape
+    assert (samples,) == data.s.shape
+    assert (samples,) == data.y.shape
 
 
 def test_load_data_as_a_function(data_root: Path):
@@ -677,30 +687,30 @@ def test_joining_2_load_functions(data_root: Path):
     )
     data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
-    assert (400, 1) == data.s.shape
-    assert (400, 1) == data.y.shape
+    assert (400,) == data.s.shape
+    assert (400,) == data.y.shape
 
 
 def test_load_compas_feature_length():
     """Test load compas feature length."""
-    data: DataTuple = em.compas().load()
-    assert len(em.compas().ordered_features["x"]) == 400
-    assert len(em.compas().discrete_features) == 395
-    assert len(em.compas().continuous_features) == 5
-    disc_feature_groups = em.compas().disc_feature_groups
+    data: DataTuple = em.Compas().load()
+    assert len(em.Compas().ordered_features["x"]) == 400
+    assert len(em.Compas().discrete_features) == 395
+    assert len(em.Compas().continuous_features) == 5
+    disc_feature_groups = em.Compas().disc_feature_groups
     assert disc_feature_groups is not None
     assert len(disc_feature_groups["c-charge-desc"]) == 389
-    assert data.s.shape == (6167, 1)
-    assert data.y.shape == (6167, 1)
+    assert data.s.shape == (6167,)
+    assert data.y.shape == (6167,)
 
 
 def test_load_adult_explicitly_sex():
     """Test load adult explicitly sex."""
-    adult_sex = em.adult("Sex")
+    adult_sex = Adult(split=Adult.Splits.SEX)
     data: DataTuple = adult_sex.load()
     assert (45222, 101) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert adult_sex.disc_feature_groups is not None
     assert "sex" not in adult_sex.disc_feature_groups
     assert "salary" not in adult_sex.disc_feature_groups
@@ -708,12 +718,12 @@ def test_load_adult_explicitly_sex():
 
 def test_load_adult_race():
     """Test load adult race."""
-    adult_race = em.adult("Race")
+    adult_race = Adult(split=Adult.Splits.RACE)
     data: DataTuple = adult_race.load()
     assert (45222, 98) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 5
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 5
+    assert (45222,) == data.y.shape
     assert adult_race.disc_feature_groups is not None
     assert "race" not in adult_race.disc_feature_groups
     assert "salary" not in adult_race.disc_feature_groups
@@ -721,12 +731,12 @@ def test_load_adult_race():
 
 def test_load_adult_race_sex():
     """Test load adult race sex."""
-    adult_race_sex = em.adult("Race-Sex")
+    adult_race_sex = Adult(split=Adult.Splits.RACE_SEX)
     data: DataTuple = adult_race_sex.load()
     assert (45222, 96) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 2 * 5
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 2 * 5
+    assert (45222,) == data.y.shape
     assert adult_race_sex.disc_feature_groups is not None
     assert "race" not in adult_race_sex.disc_feature_groups
     assert "sex" not in adult_race_sex.disc_feature_groups
@@ -735,7 +745,7 @@ def test_load_adult_race_sex():
 
 def test_race_feature_split():
     """Test race feature split."""
-    adult_data: em.Dataset = em.adult(split="Custom")
+    adult_data: em.Dataset = Adult(split=Adult.Splits.CUSTOM)
     adult_data._sens_attr_spec = "race_White"
     adult_data._s_prefix = ["race"]
     adult_data._class_label_spec = "salary_>50K"
@@ -744,13 +754,13 @@ def test_race_feature_split():
     data: DataTuple = adult_data.load()
 
     assert (45222, 98) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
 
 
 def test_load_adult_drop_native():
     """Test load adult drop native."""
-    adult_data = em.adult("Sex", binarize_nationality=True)
+    adult_data = Adult(split=Adult.Splits.SEX, binarize_nationality=True)
     assert adult_data.name == "Adult Sex, binary nationality"
     assert "native-country_United-States" in adult_data.discrete_features
     assert "native-country_Canada" not in adult_data.discrete_features
@@ -758,8 +768,8 @@ def test_load_adult_drop_native():
     # with dummies
     data = adult_data.load(ordered=True)
     assert (45222, 62) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -770,8 +780,8 @@ def test_load_adult_drop_native():
     # with dummies, not ordered
     data = adult_data.load(ordered=False)
     assert (45222, 62) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
     assert "native-country_United-States" in data.x.columns
     # the dummy feature *is* in the actual dataframe:
     assert "native-country_not_United-States" in data.x.columns
@@ -782,7 +792,7 @@ def test_load_adult_drop_native():
 
 def test_load_adult_education():
     """Test load adult education."""
-    adult_data = em.adult("Education")
+    adult_data = Adult(split=Adult.Splits.EDUCTAION)
     assert adult_data.name == "Adult Education"
     assert "education_HS-grad" in adult_data.sens_attrs
     assert "education_other" in adult_data.sens_attrs
@@ -791,23 +801,23 @@ def test_load_adult_education():
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 86) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
     # not ordered
     data = adult_data.load()
     assert (45222, 86) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
 
 def test_load_adult_education_drop():
     """Test load adult education."""
-    adult_data = em.adult("Education", binarize_nationality=True)
+    adult_data = em.Adult(split=Adult.Splits.EDUCTAION, binarize_nationality=True)
     assert adult_data.name == "Adult Education, binary nationality"
     assert "education_HS-grad" in adult_data.sens_attrs
     assert "education_other" in adult_data.sens_attrs
@@ -816,18 +826,18 @@ def test_load_adult_education_drop():
     # ordered
     data = adult_data.load(ordered=True)
     assert (45222, 47) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
     # not ordered
     data = adult_data.load()
     assert (45222, 47) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert data.s.nunique()[0] == 3
-    assert (45222, 1) == data.y.shape
-    assert "education" in data.s.columns
+    assert (45222,) == data.s.shape
+    assert data.s.nunique() == 3
+    assert (45222,) == data.y.shape
+    assert "education" == data.s.name
 
 
 def test_additional_columns_load(data_root: Path):
@@ -842,193 +852,90 @@ def test_additional_columns_load(data_root: Path):
     data: DataTuple = data_obj.load()
 
     assert (45222, 102) == data.x.shape
-    assert (45222, 1) == data.s.shape
-    assert (45222, 1) == data.y.shape
+    assert (45222,) == data.s.shape
+    assert (45222,) == data.y.shape
 
 
 def test_domain_adapt_adult():
     """Test domain adapt adult."""
-    data: DataTuple = em.adult().load()
+    data: DataTuple = em.Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
         te_cond="education_Masters == 1. | education_Doctorate == 1.",
     )
     assert (39106, 101) == train.x.shape
-    assert (39106, 1) == train.s.shape
-    assert (39106, 1) == train.y.shape
+    assert (39106,) == train.s.shape
+    assert (39106,) == train.y.shape
 
     assert (6116, 101) == test.x.shape
-    assert (6116, 1) == test.s.shape
-    assert (6116, 1) == test.y.shape
+    assert (6116,) == test.s.shape
+    assert (6116,) == test.y.shape
 
-    data = em.adult().load()
+    data = em.Adult().load()
     train, test = em.domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
     assert (40194, 101) == train.x.shape
-    assert (40194, 1) == train.s.shape
-    assert (40194, 1) == train.y.shape
+    assert (40194,) == train.s.shape
+    assert (40194,) == train.y.shape
 
     assert (5028, 101) == test.x.shape
-    assert (5028, 1) == test.s.shape
-    assert (5028, 1) == test.y.shape
+    assert (5028,) == test.s.shape
+    assert (5028,) == test.y.shape
 
-    data = em.adult().load()
+    data = em.Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
         te_cond="education_Masters == 1. | education_Doctorate == 1. | education_Bachelors == 1.",
     )
     assert (23966, 101) == train.x.shape
-    assert (23966, 1) == train.s.shape
-    assert (23966, 1) == train.y.shape
+    assert (23966,) == train.s.shape
+    assert (23966,) == train.y.shape
 
     assert (21256, 101) == test.x.shape
-    assert (21256, 1) == test.s.shape
-    assert (21256, 1) == test.y.shape
+    assert (21256,) == test.s.shape
+    assert (21256,) == test.y.shape
 
 
 def test_query():
     """Test query."""
     x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])
-    s: pd.DataFrame = pd.DataFrame(columns=["c="], data=[[6], [7], [8]])
-    y: pd.DataFrame = pd.DataFrame(columns=["d"], data=[[9], [10], [11]])
-    data = DataTuple(x=x, s=s, y=y, name="test_data")
+    s: pd.Series = pd.Series(name="c=", data=[6, 7, 8])
+    y: pd.Series = pd.Series(name="d", data=[9, 10, 11])
+    data = DataTuple.from_df(x=x, s=s, y=y, name="test_data")
     selected = em.query_dt(data, "`0a` == 0 & `c=` == 6 & d == 9")
     pd.testing.assert_frame_equal(selected.x, x.head(1))
-    pd.testing.assert_frame_equal(selected.s, s.head(1))
-    pd.testing.assert_frame_equal(selected.y, y.head(1))
+    pd.testing.assert_series_equal(selected.s, s.head(1))
+    pd.testing.assert_series_equal(selected.y, y.head(1))
 
 
 def test_concat():
     """Test concat."""
     x: pd.DataFrame = pd.DataFrame(columns=["a"], data=[[1]])
-    s: pd.DataFrame = pd.DataFrame(columns=["b"], data=[[2]])
-    y: pd.DataFrame = pd.DataFrame(columns=["c"], data=[[3]])
-    data1 = DataTuple(x=x, s=s, y=y, name="test_data")
-    x = pd.DataFrame(columns=["a"], data=[[4]])
-    s = pd.DataFrame(columns=["b"], data=[[5]])
-    y = pd.DataFrame(columns=["c"], data=[[6]])
-    data2 = DataTuple(x=x, s=s, y=y, name="test_tuple")
-    data3 = em.concat_dt([data1, data2], axis="index", ignore_index=True)
+    s: pd.Series = pd.Series(name="b", data=[2])
+    y: pd.Series = pd.Series(name="c", data=[3])
+    data1 = DataTuple.from_df(x=x, s=s, y=y, name="test_data")
+    x = pd.DataFrame(columns=["a"], data=[4])
+    s = pd.Series(name="b", data=[5])
+    y = pd.Series(name="c", data=[6])
+    data2 = DataTuple.from_df(x=x, s=s, y=y, name="test_tuple")
+    data3 = em.concat([data1, data2], ignore_index=True)
     pd.testing.assert_frame_equal(data3.x, pd.DataFrame(columns=["a"], data=[[1], [4]]))
-    pd.testing.assert_frame_equal(data3.s, pd.DataFrame(columns=["b"], data=[[2], [5]]))
-    pd.testing.assert_frame_equal(data3.y, pd.DataFrame(columns=["c"], data=[[3], [6]]))
+    pd.testing.assert_series_equal(data3.s, pd.Series(name="b", data=[2, 5]))
+    pd.testing.assert_series_equal(data3.y, pd.Series(name="c", data=[3, 6]))
 
 
 def test_group_prefixes():
     """Test group prefixes."""
     names = ["a_asf", "a_fds", "good_lhdf", "good_dsdw", "sas"]
-    grouped_indexes = em.group_disc_feat_indexes(names, prefix_sep="_")
+    grouped_indices = em.group_disc_feat_indices(names, prefix_sep="_")
 
-    assert len(grouped_indexes) == 3
-    assert grouped_indexes[0] == slice(0, 2)
-    assert grouped_indexes[1] == slice(2, 4)
-    assert grouped_indexes[2] == slice(4, 5)
-
-
-def test_celeba():
-    """Test celeba."""
-    celeba_data, _ = em.celeba(download_dir="non-existent")
-    assert celeba_data is None  # data should not be there
-    celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
-    assert celeba_data is not None
-    data = celeba_data.load()
-
-    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
-
-    assert (202599, 39) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert len(data) == len(celeba_data)
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-def test_celeba_all_attributes():
-    """Test celeba with all attributes loaded into `data.x`."""
-    celeba_data, _ = em.celeba(download_dir="non-existent", check_integrity=False)
-    assert celeba_data is not None
-    data = celeba_data.load(labels_as_features=True)
-
-    assert celeba_data.name == "CelebA, s=Male, y=Smiling"
-
-    assert (202599, 41) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert "Male" in data.x.columns
-    assert "Smiling" in data.x.columns
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-def test_celeba_multi_s():
-    """Test celeba w/ multi S."""
-    sens_spec = dict(em.simple_spec({"Age": ["Young"], "Gender": ["Male"]}))
-    celeba_data, _ = em.celeba(
-        sens_attr=sens_spec, download_dir="non-existent", check_integrity=False
-    )
-    assert celeba_data is not None
-    data = celeba_data.load()
-
-    assert celeba_data.name == "CelebA, s=[Age, Gender], y=Smiling"
-
-    assert np.unique(data.s.to_numpy()).tolist() == [0, 1, 2, 3]
-    assert data.s.columns[0] == "Age,Gender"
-    assert (202599, 38) == data.x.shape
-    assert (202599, 1) == data.s.shape
-    assert (202599, 1) == data.y.shape
-    assert len(data) == len(celeba_data)
-
-    assert data.x["filename"].iloc[0] == "000001.jpg"
-
-
-@pytest.mark.usefixtures("simulate_no_torch")
-def test_celeba_no_torch():
-    """Test celeba."""
-    with pytest.raises(RuntimeError, match="Need torchvision to download data."):
-        em.celeba(download_dir="some_dir", download=True)
-
-
-def test_genfaces():
-    """Test genfaces."""
-    gen_faces, _ = em.genfaces(download_dir="non-existent")
-    assert gen_faces is None  # data should not be there
-    gen_faces, _ = em.genfaces(download_dir="non-existent", check_integrity=False)
-    assert gen_faces is not None
-    data = gen_faces.load()
-
-    assert gen_faces.name == "GenFaces, s=gender, y=emotion"
-
-    assert (148285, 18) == data.x.shape
-    assert (148285, 1) == data.s.shape
-    assert (148285, 1) == data.y.shape
-    assert len(data) == len(gen_faces)
-
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"
-
-
-def test_genfaces_multi_s():
-    """Test genfaces."""
-    gen_faces, _ = em.genfaces(
-        label="hair_color",
-        sens_attr="eye_color",
-        download_dir="non-existent",
-        check_integrity=False,
-    )
-    assert gen_faces is not None
-    data = gen_faces.load()
-
-    assert gen_faces.name == "GenFaces, s=eye_color, y=hair_color"
-
-    incomplete_entries = 11_003  # entries that are missing either s or y
-    assert (148_285 - incomplete_entries, 11) == data.x.shape
-    assert (148_285 - incomplete_entries, 1) == data.s.shape
-    assert (148_285 - incomplete_entries, 1) == data.y.shape
-    assert len(data) == len(gen_faces) - incomplete_entries
-
-    assert data.x["filename"].iloc[0] == "5e011b2e7b1b30000702aa59.jpg"  # type: ignore[comparison-overlap]
+    assert len(grouped_indices) == 3
+    assert grouped_indices[0] == slice(0, 2)
+    assert grouped_indices[1] == slice(2, 4)
+    assert grouped_indices[2] == slice(4, 5)
 
 
 def test_expand_s():
@@ -1047,7 +954,7 @@ def test_expand_s():
         discrete_only=False,
     )
 
-    compact_df = pd.DataFrame([0, 4, 3, 1, 3, 5, 2], columns=["Gender,Race"])
+    compact_df = pd.Series([0, 4, 3, 1, 3, 5, 2], name="Gender,Race")
     gender_expanded = pd.DataFrame(
         [[1, 0], [0, 1], [0, 1], [1, 0], [0, 1], [0, 1], [1, 0]], columns=["Female", "Male"]
     )
@@ -1055,12 +962,12 @@ def test_expand_s():
         [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
         columns=["Blue", "Green", "Pink"],
     )
-    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")  # type: ignore[arg-type]
+    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
-    pd.testing.assert_frame_equal(data._maybe_combine_labels(raw_df, "s")[0], compact_df)
+    pd.testing.assert_series_equal(data._one_hot_encode_and_combine(raw_df, "s")[0], compact_df)
     pd.testing.assert_frame_equal(
-        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df  # type: ignore[arg-type]
+        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )
 
 
@@ -1074,11 +981,12 @@ def test_simple_spec():
     }
 
 
-@pytest.mark.parametrize("data", [Adult(), Admissions(), Compas(), Credit(), Crime(), German()])
-def test_aif_conversion(data: LoadableDataset):
+@pytest.mark.slow
+@pytest.mark.parametrize("data", [Adult, Admissions, Compas, Credit, Crime, German])
+def test_aif_conversion(data: Callable[[], LoadableDataset]):
     """Load a dataset in AIF form.
 
     There might be a case where you want to load an EthicML dataset
     and use it with a model that exists in AIF360 that we don't have in EthicML.
     """
-    data.load_aif()
+    data().load_aif()

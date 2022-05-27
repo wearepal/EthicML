@@ -53,20 +53,36 @@ class VFAENetwork(nn.Module):
         self.ypred = nn.Linear(latent_dims, 1)
 
     def encode_z1(self, x: Tensor, s: Tensor) -> Tuple[Tensor, Tensor]:
-        """Encode Z1."""
-        return self.z1_encoder(torch.cat((x, s), 1))
+        """Encode Z1.
+
+        :param x:
+        :param s:
+        """
+        return self.z1_encoder(torch.cat((x, s.view(-1, 1)), 1))
 
     def encode_z2(self, z1: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
-        """Encode Z2."""
-        return self.z2_encoder(torch.cat((z1, y), 1))
+        """Encode Z2.
+
+        :param z1:
+        :param y:
+        """
+        return self.z2_encoder(torch.cat((z1, y.view(-1, 1)), 1))
 
     def decode_z1(self, z2: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
-        """Decode Z1."""
-        return self.z1_decoder(torch.cat((z2, y), 1))
+        """Decode Z1.
+
+        :param z2:
+        :param y:
+        """
+        return self.z1_decoder(torch.cat((z2, y.view(-1, 1)), 1))
 
     @staticmethod
     def reparameterize(mean: Tensor, logvar: Tensor) -> Tensor:
-        """Reparametrization trick - Leaving as a method to try and control reproducability."""
+        """Reparametrization trick - Leaving as a method to try and control reproducability.
+
+        :param mean:
+        :param logvar:
+        """
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps.mul(std).add_(mean)
@@ -74,7 +90,12 @@ class VFAENetwork(nn.Module):
     def forward(
         self, x: Tensor, s: Tensor, y: Tensor
     ) -> Tuple[LvInfo, Optional[LvInfo], Optional[LvInfo], Tensor, Optional[Tensor],]:
-        """Forward pass for network."""
+        """Forward pass for network.
+
+        :param x:
+        :param s:
+        :param y:
+        """
         z1_mu, z1_logvar = self.encode_z1(x, s)
         z1 = self.reparameterize(z1_mu, z1_logvar)
 

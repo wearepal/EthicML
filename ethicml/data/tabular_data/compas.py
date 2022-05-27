@@ -1,12 +1,12 @@
 """Class to describe features of the Compas dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import ClassVar, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["Compas", "CompasSplits", "compas"]
+__all__ = ["Compas", "CompasSplits"]
 
 
 class CompasSplits(Enum):
@@ -18,20 +18,14 @@ class CompasSplits(Enum):
     CUSTOM = "Custom"
 
 
-def compas(
-    split: Union[CompasSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Compas":
-    """Compas (or ProPublica) dataset."""
-    return Compas(split=CompasSplits(split), discrete_only=discrete_only, invert_s=invert_s)
-
-
 @dataclass
 class Compas(LoadableDataset):
     """Compas (or ProPublica) dataset."""
 
     split: CompasSplits = CompasSplits.SEX
+
+    Splits: ClassVar[Type[CompasSplits]] = CompasSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

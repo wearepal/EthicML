@@ -4,12 +4,15 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
+from .confusion_matrix import CfmMetric
 from .fpr import FPR
-from .metric import CfmMetric, Metric
+from .metric import Metric
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .tpr import TPR
+
+__all__ = ["AverageOddsDiff"]
 
 
 @dataclass
@@ -25,7 +28,7 @@ class AverageOddsDiff(CfmMetric):
     apply_per_sensitive: ClassVar[bool] = False
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         tpr = TPR(pos_class=self.pos_class, labels=self.labels)
         tpr_per_sens = metric_per_sensitive_attribute(prediction, actual, tpr)
         fpr = FPR(pos_class=self.pos_class, labels=self.labels)

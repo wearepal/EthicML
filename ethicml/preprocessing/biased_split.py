@@ -5,10 +5,10 @@ import numpy as np
 import pandas as pd
 import teext as tx
 
-from ethicml.utility.data_structures import DataTuple, concat_dt
+from ethicml.utility.data_structures import DataTuple, concat
 
 from .domain_adaptation import query_dt
-from .train_test_split import DataSplitter, ProportionalSplit
+from .splits import DataSplitter, ProportionalSplit
 
 __all__ = [
     "BiasedDebiasedSubsets",
@@ -19,7 +19,13 @@ __all__ = [
 
 
 class BiasedSubset(DataSplitter):
-    """Split the given data into a biased subset and a normal subset."""
+    """Split the given data into a biased subset and a normal subset.
+
+    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
+    :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param seed: random seed for the splitting
+    :param data_efficient: if True, try to keep as many data points as possible
+    """
 
     def __init__(
         self,
@@ -28,14 +34,6 @@ class BiasedSubset(DataSplitter):
         seed: int = 42,
         data_efficient: bool = True,
     ):
-        """The constructor takes the following arguments.
-
-        Args:
-            mixing_factors: List of mixing factors; they are chosen based on the split ID
-            unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-            seed: random seed for the splitting
-            data_efficient: if True, try to keep as many data points as possible
-        """
         super().__init__()
         self.unbiased_pcnt = unbiased_pcnt
         self.mixing_factors = mixing_factors
@@ -70,21 +68,19 @@ def get_biased_subset(
     * mixing_factor=0.5: biased and unbiased are both just subsets of `data`
     * mixing_factor=1.0: in biased, s!=y everywhere; unbiased is just a subset of `data`
 
-    Args:
-        data: data in form of a DataTuple
-        mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
+    :param data: data in form of a DataTuple
+    :param mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
                        factor is 0, the biased subset is maximally biased.
-        unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-        seed: random seed for the splitting
-        data_efficient: if True, try to keep as many data points as possible
-
-    Returns:
-        biased and unbiased dataset
+    :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param seed: random seed for the splitting (Default: 42)
+    :param data_efficient: if True, try to keep as many data points as possible (Default: True)
+    :returns: biased and unbiased dataset
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
     assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
-    s_name = data.s.columns[0]
-    y_name = data.y.columns[0]
+    s_name = data.s.name
+    y_name = data.y.name
+    assert isinstance(s_name, str) and isinstance(y_name, str)
 
     normal_subset, for_biased_subset = _random_split(data, first_pcnt=unbiased_pcnt, seed=seed)
 
@@ -106,21 +102,25 @@ def get_biased_subset(
     sy_equal_for_biased_ss, _ = _random_split(sy_equal, first_pcnt=sy_equal_fraction, seed=seed)
     sy_opp_for_biased_ss, _ = _random_split(sy_opposite, first_pcnt=sy_opp_fraction, seed=seed)
 
-    biased_subset = concat_dt(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
-    )
+    biased_subset = concat([sy_equal_for_biased_ss, sy_opp_for_biased_ss], ignore_index=True)
 
     if mix_fact == 0.0:
         # s and y should be very correlated in the biased subset
-        assert all(biased_subset.s[s_name] == biased_subset.y[y_name])
+        assert all(biased_subset.s == biased_subset.y)
 
-    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
-    normal_subset = normal_subset.replace(name=f"{data.name} - Subset (tm={mixing_factor})")
+    biased_subset = biased_subset.rename(f"{data.name} - Biased (tm={mixing_factor})")
+    normal_subset = normal_subset.rename(f"{data.name} - Subset (tm={mixing_factor})")
     return biased_subset, normal_subset
 
 
 class BiasedDebiasedSubsets(DataSplitter):
-    """Split the given data into a biased subset and a debiased subset."""
+    """Split the given data into a biased subset and a debiased subset.
+
+    :param mixing_factors: List of mixing factors; they are chosen based on the split ID
+    :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param seed: random seed for the splitting
+    :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
+    """
 
     def __init__(
         self,
@@ -129,14 +129,6 @@ class BiasedDebiasedSubsets(DataSplitter):
         seed: int = 42,
         fixed_unbiased: bool = True,
     ):
-        """The constructor takes the following arguments.
-
-        Args:
-            mixing_factors: List of mixing factors; they are chosen based on the split ID
-            unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-            seed: random seed for the splitting
-            fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
-        """
         super().__init__()
         self.unbiased_pcnt = unbiased_pcnt
         self.mixing_factors = mixing_factors
@@ -174,21 +166,19 @@ def get_biased_and_debiased_subsets(
     * mixing_factor=0.5: biased is just a subset of `data`; in debiased, 50% s=y and 50% s!=y
     * mixing_factor=1.0: in biased, s!=y everywhere; in debiased, 50% s=y and 50% s!=y
 
-    Args:
-        data: data in form of a DataTuple
-        mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
+    :param data: data in form of a DataTuple
+    :param mixing_factor: How much of the debiased data should be mixed into the biased subset? If this
                        factor is 0, the biased subset is maximally biased.
-        unbiased_pcnt: how much of the data should be reserved for the unbiased subset
-        seed: random seed for the splitting
-        fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor
-
-    Returns:
-        biased and unbiased dataset
+    :param unbiased_pcnt: how much of the data should be reserved for the unbiased subset
+    :param seed: random seed for the splitting (Default: 42)
+    :param fixed_unbiased: if True, then the unbiased dataset is independent from the mixing factor (Default: True)
+    :returns: biased and unbiased dataset
     """
     assert tx.is_percentage(mixing_factor), f"mixing_factor: {mixing_factor}"
     assert tx.is_percentage(unbiased_pcnt), f"unbiased_pcnt: {unbiased_pcnt}"
-    s_name = data.s.columns[0]
-    y_name = data.y.columns[0]
+    s_name = data.s.name
+    y_name = data.y.name
+    assert isinstance(s_name, str) and isinstance(y_name, str)
     sy_equal, sy_opposite = _get_sy_equal_and_opp(data, s_name, y_name)
 
     # how much of sy_equal should be reserved for the biased subset:
@@ -222,31 +212,27 @@ def get_biased_and_debiased_subsets(
             sy_opposite, first_pcnt=biased_pcnt * mixing_factor, seed=seed
         )
 
-    biased_subset = concat_dt(
-        [sy_equal_for_biased_ss, sy_opp_for_biased_ss], axis="index", ignore_index=True
-    )
+    biased_subset = concat([sy_equal_for_biased_ss, sy_opp_for_biased_ss], ignore_index=True)
 
     # the debiased set is constructed from two sets of the same size
     min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
 
     def _get_equal_sized_subset(df: pd.DataFrame) -> pd.DataFrame:
-        return df.sample(n=min_size, random_state=seed)
+        return df.sample(n=min_size, random_state=seed)  # type: ignore[return-value]
 
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
-    debiased_subset = concat_dt(
-        [debiased_subset_part1, debiased_subset_part2], axis="index", ignore_index=True
-    )
+    debiased_subset = concat([debiased_subset_part1, debiased_subset_part2], ignore_index=True)
 
     # s and y should not be correlated in the debiased subset
-    assert abs(debiased_subset.s[s_name].corr(debiased_subset.y[y_name])) < 0.5
+    assert abs(debiased_subset.s.corr(debiased_subset.y)) < 0.5
 
     if mixing_factor == 0.0:
         # s and y should be very correlated in the biased subset
-        assert biased_subset.s[s_name].corr(biased_subset.y[y_name]) > 0.99
+        assert biased_subset.s.corr(biased_subset.y) > 0.99
 
-    biased_subset = biased_subset.replace(name=f"{data.name} - Biased (tm={mixing_factor})")
-    debiased_subset = debiased_subset.replace(name=f"{data.name} - Debiased (tm={mixing_factor})")
+    biased_subset = biased_subset.rename(f"{data.name} - Biased (tm={mixing_factor})")
+    debiased_subset = debiased_subset.rename(f"{data.name} - Debiased (tm={mixing_factor})")
     return biased_subset, debiased_subset
 
 
@@ -254,11 +240,16 @@ def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTu
     if len(data) == 0:
         return data, data
     splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
-    return splitter(data)[0:2]
+    return splitter(data)[:2]
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
-    """Get the subset where s and y are equal and the subset where they are opposite."""
+    """Get the subset where s and y are equal and the subset where they are opposite.
+
+    :param data:
+    :param s_name:
+    :param y_name:
+    """
     s_values = np.unique(data.s.to_numpy())
     y_values = np.unique(data.y.to_numpy())
     assert len(s_values) == 2, "function only works with binary sensitive attribute"

@@ -19,12 +19,12 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
 """
 from dataclasses import dataclass
 from enum import Enum
-from typing import Mapping, Union
+from typing import ClassVar, Mapping, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelGroup, flatten_dict, simple_spec
 
-__all__ = ["law", "Law", "LawSplits"]
+__all__ = ["Law", "LawSplits"]
 
 
 class LawSplits(Enum):
@@ -36,20 +36,14 @@ class LawSplits(Enum):
     CUSTOM = "Custom"
 
 
-def law(
-    split: Union[LawSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Law":
-    """LSAC Law School dataset."""
-    return Law(split=LawSplits(split), discrete_only=discrete_only, invert_s=invert_s)
-
-
 @dataclass
 class Law(LoadableDataset):
     """LSAC Law School dataset."""
 
     split: LawSplits = LawSplits.SEX
+
+    Splits: ClassVar[Type[LawSplits]] = LawSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

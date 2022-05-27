@@ -11,7 +11,10 @@ class Heaviside(Activation):
     """Decision function that accepts predictions with score of 50% or above."""
 
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
-        """Apply the decision function to each element of an ndarray."""
+        """Apply the decision function to each element of an ndarray.
+
+        :param soft_output: Soft predictions.
+        """
 
         def _heavi(x: float) -> int:
             return 1 if x >= 0.5 else 0

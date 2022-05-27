@@ -8,49 +8,45 @@ from ranzen import implements
 
 from ethicml.utility import DataTuple, Prediction, TestTuple
 
-from .post_algorithm import PostAlgorithmDC
+from .post_algorithm import PostAlgorithm
 
 __all__ = ["DPFlip"]
 
 
 @dataclass
-class DPFlip(PostAlgorithmDC):
+class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(PostAlgorithm)
+    def get_name(self) -> str:
         return "DemPar. Post Process"
 
-    @implements(PostAlgorithmDC)
+    @implements(PostAlgorithm)
     def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
         return self
 
-    @implements(PostAlgorithmDC)
-    def predict(self, test_predictions: Prediction, test: TestTuple) -> Prediction:
+    @implements(PostAlgorithm)
+    def predict(self, test_predictions: Prediction, test: TestTuple, seed: int = 888) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
-            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=seed
         )
-        return self._flip(
-            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
-        )
+        return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=seed)
 
-    @implements(PostAlgorithmDC)
+    @implements(PostAlgorithm)
     def run(
         self,
         train_predictions: Prediction,
         train: DataTuple,
         test_predictions: Prediction,
         test: TestTuple,
+        seed: int = 888,
     ) -> Prediction:
         x, y = self._fit(test, test_predictions)
         _test_preds = self._flip(
-            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=self.seed
+            test_predictions, test, flip_0_to_1=True, num_to_flip=x, s_group=0, seed=seed
         )
-        return self._flip(
-            _test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=self.seed
-        )
+        return self._flip(_test_preds, test, flip_0_to_1=False, num_to_flip=y, s_group=1, seed=seed)
 
     @staticmethod
     def _flip(
@@ -70,7 +66,7 @@ class DPFlip(PostAlgorithmDC):
             num_to_flip = abs(num_to_flip)
 
         _y = preds.hard[preds.hard == pre_y_val]
-        _s = preds.hard[dt.s[dt.s.columns[0]] == s_group]
+        _s = preds.hard[dt.s == s_group]
         idx_s_y = _y.index.intersection(_s.index)
         rng = np.random.RandomState(seed)
         idxs = list(rng.permutation(idx_s_y))
@@ -82,8 +78,8 @@ class DPFlip(PostAlgorithmDC):
     def _fit(test: TestTuple, preds: Prediction) -> Tuple[int, int]:
         y_0 = preds.hard[preds.hard == 0]
         y_1 = preds.hard[preds.hard == 1]
-        s_0 = test.s[test.s[test.s.columns[0]] == 0]
-        s_1 = test.s[test.s[test.s.columns[0]] == 1]
+        s_0 = test.s[test.s == 0]
+        s_1 = test.s[test.s == 1]
         # Naming is nSY
         n00 = preds.hard[s_0.index.intersection(y_0.index)].count()
         n01 = preds.hard[s_0.index.intersection(y_1.index)].count()

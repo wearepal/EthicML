@@ -90,6 +90,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Pyre type checker
+.pyre/
+
+# IDEs
+.idea/
+.vscode/
+
 # project-specific
 results/*
 !/ethicml/data/csvs/adult.csv.zip

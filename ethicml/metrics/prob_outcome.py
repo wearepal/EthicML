@@ -4,20 +4,24 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
+from ethicml.utility import EvalTuple, Prediction, SoftPrediction
 
-from .metric import BaseMetric, Metric
+from .metric import Metric, MetricStaticName
+
+__all__ = ["ProbOutcome"]
 
 
 @dataclass
-class ProbOutcome(BaseMetric):
+class ProbOutcome(MetricStaticName):
     """Mean of logits."""
 
     _name: ClassVar[str] = "prob_outcome"
-    apply_per_sensitive: ClassVar[bool] = True
+    pos_class: int = 1
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        if not isinstance(prediction, SoftPrediction):
-            return float("nan")  # this metric only makes sense with probs
-        return (prediction.soft.to_numpy().sum() / prediction.hard.size).item()
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
+        return (
+            (prediction.soft.sum(axis=0)[self.pos_class] / prediction.hard.size).item()
+            if isinstance(prediction, SoftPrediction)
+            else float("nan")
+        )

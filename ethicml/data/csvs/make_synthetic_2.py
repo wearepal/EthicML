@@ -43,8 +43,6 @@ def main() -> None:
     Y_2 ~ B(sigmoid(X_2))
     Y_3 ~ B(sigmoid((X_1 + X_2)/2))
 
-
-
     """
     seed = 0
     samples = 100_000

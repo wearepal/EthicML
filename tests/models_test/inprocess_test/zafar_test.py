@@ -33,11 +33,7 @@ def zafar_teardown() -> Generator[None, None, None]:
 
 @pytest.mark.slow
 def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
-    """
-
-    Args:
-        toy_train_test:
-    """
+    """Test zafar."""
     train, test = toy_train_test
 
     model: InAlgorithm = ZafarAccuracy()
@@ -93,7 +89,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
     model = ZafarFairness()
-    assert model.name == "ZafarFairness, c=0.001"
+    assert model.name == "ZafarFairness, C=0.001"
 
     assert model is not None
 
@@ -107,7 +103,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
     assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
-    hyperparams = {"c": [1, 1e-1, 1e-2]}
+    hyperparams = {"C": [1, 1e-1, 1e-2]}
 
     model_class = ZafarFairness
     zafar_cv = CrossValidator(model_class, hyperparams, folds=3)
@@ -120,13 +116,13 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
-    assert best_result.params["c"] == 0.01
+    assert best_result.params["C"] == 0.01
     assert best_result.scores["Accuracy"] == approx(0.703, abs=1e-3)
     assert best_result.scores["CV absolute"] == approx(0.855, rel=1e-3)
 
     # ==================== Zafar Equality of Opportunity ========================
     zafar_eq_opp: InAlgorithm = ZafarEqOpp()
-    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2"
+    assert zafar_eq_opp.name == "ZafarEqOpp, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_opp.run(train, test)
     assert np.count_nonzero(predictions.hard.values == 1) == 40
@@ -136,7 +132,7 @@ def test_zafar(toy_train_test: TrainTestPair, zafar_teardown: None) -> None:
 
     # ==================== Zafar Equalised Odds ========================
     zafar_eq_odds: InAlgorithm = ZafarEqOdds()
-    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2"
+    assert zafar_eq_odds.name == "ZafarEqOdds, τ=5.0, μ=1.2 ε=0.0001"
 
     predictions = zafar_eq_odds.run(train, test)
     assert np.count_nonzero(predictions.hard.values == 1) == 40

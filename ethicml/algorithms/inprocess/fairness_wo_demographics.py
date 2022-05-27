@@ -1,81 +1,61 @@
 """Fairness without Demographics."""
 
-from pathlib import Path
-from typing import ClassVar, Dict, List, Optional, Union
+from dataclasses import asdict, dataclass, field
+from typing import List
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from .in_algorithm import InAlgorithmAsync
-from .shared import flag_interface
+from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
+from ethicml.utility import HyperParamType
 
 __all__ = ["DRO"]
 
 
-class DRO(InAlgorithmAsync):
-    """Implementation of https://arxiv.org/abs/1806.08010 ."""
+class DroArgs(TypedDict):
+    """Args used in this module."""
 
-    is_fairness_algo: ClassVar[bool] = True
+    batch_size: int
+    epochs: int
+    eta: float
+    network_size: List[int]
 
-    def __init__(
-        self,
-        *,
-        dir: Union[str, Path] = ".",
-        eta: float = 0.5,
-        epochs: int = 10,
-        batch_size: int = 32,
-        network_size: Optional[List[int]] = None,
-        seed: int = 888,
-    ):
-        """Initialize the Distributionally Robust Optimization method.
 
-        Args:
-            dir: Directory to store the model.
-            eta: Tolerance.
-            epochs: The number of epochs to train for.
-            batch_size: The batch size.
-            network_size: The size of the network.
-            seed: The seed for the random number generator.
-        """
-        self.seed = seed
-        if network_size is None:
-            network_size = [50]
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        self.flags: Dict[str, Union[float, int, str, List[int]]] = {
-            "eta": eta,
-            "batch_size": batch_size,
-            "epochs": epochs,
-            "network_size": network_size,
-            "seed": seed,
-        }
-        self._hyperparameters = {
-            "eta": eta,
-            "epochs": epochs,
-            "batch_size": batch_size,
-            "network_size": f"{network_size}",
+@dataclass
+class DRO(InAlgorithmSubprocess):
+    """Implementation of https://arxiv.org/abs/1806.08010 .
+
+    :param eta: Tolerance.
+    :param epochs: The number of epochs to train for.
+    :param batch_size: The batch size.
+    :param network_size: The size of the network.
+    """
+
+    eta: float = 0.5
+    epochs: int = 10
+    batch_size: int = 32
+    network_size: List[int] = field(default_factory=lambda: [50])
+
+    @implements(InAlgorithmSubprocess)
+    def _get_flags(self) -> DroArgs:
+        # TODO: replace this with dataclasses.asdict()
+        return {
+            "eta": self.eta,
+            "batch_size": self.batch_size,
+            "epochs": self.epochs,
+            "network_size": self.network_size,
         }
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
+    @implements(InAlgorithmSubprocess)
+    def get_hyperparameters(self) -> HyperParamType:
+        _hyperparameters = asdict(self)
+        _hyperparameters.pop("dir")  # this is not really a hyperparameter
+        return _hyperparameters
+
+    @implements(InAlgorithmSubprocess)
+    def get_name(self) -> str:
         return "Dist Robust Optim"
 
-    @implements(InAlgorithmAsync)
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        args = flag_interface(
-            train_path=train_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
-
-    @implements(InAlgorithmAsync)
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        args = flag_interface(train_path=train_path, model_path=model_path, flags=self.flags)
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
-
-    @implements(InAlgorithmAsync)
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.dro_tabular"] + args
+    @implements(InAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.dro_tabular"]

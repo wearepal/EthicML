@@ -4,11 +4,14 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
-from .metric import BaseMetric, CfmMetric
+from .confusion_matrix import CfmMetric
+from .metric import MetricStaticName
 from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
 from .prob_pos import ProbPos
+
+__all__ = ["AbsCV", "CV"]
 
 
 @dataclass
@@ -18,8 +21,8 @@ class CV(CfmMetric):
     _name: ClassVar[str] = "CV"
     apply_per_sensitive: ClassVar[bool] = False
 
-    @implements(BaseMetric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    @implements(MetricStaticName)
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         prob_pos = ProbPos(pos_class=self.pos_class, labels=self.labels)
         per_sens = metric_per_sensitive_attribute(prediction, actual, metric=prob_pos)
         diffs = diff_per_sensitive_attribute(per_sens)
@@ -36,8 +39,8 @@ class AbsCV(CV):
 
     _name: ClassVar[str] = "CV absolute"
 
-    @implements(BaseMetric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    @implements(MetricStaticName)
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         cv_score = super().score(prediction, actual)
         # the following is equivalent to 1 - abs(diff)
         if cv_score > 1:

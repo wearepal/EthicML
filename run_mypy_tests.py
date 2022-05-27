@@ -1,5 +1,6 @@
 """Run mypy and report how many errors there are."""
 
+
 import sys
 
 from mypy import api as mypy
@@ -11,7 +12,7 @@ RESULTS = mypy.run(["./tests/"])
 print(RESULTS[0], end="")
 print(RESULTS[1], end="")
 NUM_ERRORS = len([line for line in RESULTS[0].split("\n") if ": error: " in line])
-print("There are {} errors. {} are allowed.".format(NUM_ERRORS, MAX_ALLOWED_ERRORS))
+print(f"There are {NUM_ERRORS} errors. {MAX_ALLOWED_ERRORS} are allowed.")
 
 if NUM_ERRORS <= MAX_ALLOWED_ERRORS:
     sys.exit(0)

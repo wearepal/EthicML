@@ -1,10 +1,10 @@
 """Evaluator for a metric per sensitive attribute class."""
 
-from typing import Dict, List
+from typing import Dict
 
 import pandas as pd
 
-from ethicml.utility import DataTuple, Prediction, SoftPrediction
+from ethicml.utility import DataTuple, EvalTuple, Prediction, SoftPrediction
 
 from .metric import Metric
 
@@ -21,52 +21,40 @@ class MetricNotApplicable(Exception):
 
 
 def metric_per_sensitive_attribute(
-    prediction: Prediction, actual: DataTuple, metric: Metric, use_sens_name: bool = True
+    prediction: Prediction, actual: EvalTuple, metric: Metric, use_sens_name: bool = True
 ) -> Dict[str, float]:
-    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
+    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute.
+
+    :param prediction:
+    :param actual:
+    :param metric:
+    :param use_sens_name:  (Default: True)
+    """
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
             f"Metric {metric.name} is not applicable per sensitive "
             f"attribute, apply to whole dataset instead"
         )
 
-    assert actual.s.shape[0] == actual.x.shape[0]
     assert actual.s.shape[0] == actual.y.shape[0]
     assert prediction.hard.shape[0] == actual.y.shape[0]
 
     per_sensitive_attr: Dict[str, float] = {}
 
-    s_columns: List[str] = list(actual.s.columns)
-    y_columns: List[str] = list(actual.y.columns)
-    assert len(y_columns) == 1
+    s_column: str = actual.s_column
 
-    for y_col in y_columns:
-        for s_col in s_columns:
-            for unique_s in actual.s[s_col].unique():
-                mask: pd.Series = actual.s[s_col] == unique_s
-                subset = DataTuple(
-                    x=pd.DataFrame(
-                        actual.x.loc[mask][actual.x.columns], columns=actual.x.columns
-                    ).reset_index(drop=True),
-                    s=pd.DataFrame(actual.s.loc[mask][s_col], columns=[s_col]).reset_index(
-                        drop=True
-                    ),
-                    y=pd.DataFrame(actual.y.loc[mask][y_col], columns=[y_col]).reset_index(
-                        drop=True
-                    ),
-                    name=actual.name,
-                )
-                pred_y: Prediction
-                if isinstance(prediction, SoftPrediction):
-                    pred_y = SoftPrediction(
-                        soft=prediction.soft.loc[mask].reset_index(drop=True), info=prediction.info
-                    )
-                else:
-                    pred_y = Prediction(
-                        hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
-                    )
-                key = (s_col if use_sens_name else "S") + "_" + str(unique_s)
-                per_sensitive_attr[key] = metric.score(pred_y, subset)
+    for unique_s in actual.s.unique():
+        mask: pd.Series = actual.s == unique_s
+        subset = actual.get_s_subset(unique_s)
+        pred_y: Prediction
+        if isinstance(prediction, SoftPrediction):
+            pred_y = SoftPrediction(soft=prediction.soft[mask], info=prediction.info)
+        else:
+            pred_y = Prediction(
+                hard=prediction.hard.loc[mask].reset_index(drop=True), info=prediction.info
+            )
+        key = (s_column if use_sens_name else "S") + "_" + str(unique_s)
+        per_sensitive_attr[key] = metric.score(pred_y, subset)
 
     return per_sensitive_attr
 
@@ -74,14 +62,10 @@ def metric_per_sensitive_attribute(
 def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """Compute the difference in the metrics per sensitive attribute.
 
-    Args:
-        per_sens_res: dictionary of the results
-
-    Returns:
-        dictionary of differences
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of differences
     """
-    sens_values = list(per_sens_res.keys())
-    sens_values.sort()
+    sens_values = sorted(per_sens_res.keys())
     diff_per_sens = {}
 
     for i, _ in enumerate(sens_values):
@@ -97,14 +81,10 @@ def diff_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, fl
 def ratio_per_sensitive_attribute(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     """Compute the ratios in the metrics per sensitive attribute.
 
-    Args:
-        per_sens_res: dictionary of the results
-
-    Returns:
-        dictionary of ratios
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of ratios
     """
-    sens_values = list(per_sens_res.keys())
-    sens_values.sort()
+    sens_values = sorted(per_sens_res.keys())
     ratio_per_sens = {}
 
     for i, _ in enumerate(sens_values):

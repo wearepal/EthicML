@@ -1,167 +1,87 @@
 """Abstract Base Class of all algorithms in the framework."""
+
 from __future__ import annotations
 
-from abc import abstractmethod
-from dataclasses import dataclass
-from pathlib import Path
-from tempfile import TemporaryDirectory
-from typing import ClassVar, Dict, List, TypeVar, Union
-from typing_extensions import Protocol, runtime_checkable
+from abc import ABC, abstractmethod
+from dataclasses import asdict
+from typing import ClassVar, TypeVar
+from typing_extensions import final
 
-from ranzen import implements
+from ethicml.algorithms.algorithm_base import Algorithm
+from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
-from ethicml.algorithms.algorithm_base import Algorithm, SubprocessAlgorithmMixin
-from ethicml.utility import DataTuple, Prediction, TestTuple
-
-__all__ = ["InAlgorithm", "InAlgorithmAsync", "InAlgorithmDC"]
+__all__ = [
+    "InAlgorithm",
+    "InAlgorithmDC",
+    "InAlgorithmNoParams",
+]
 
 _I = TypeVar("_I", bound="InAlgorithm")
 
 
-@runtime_checkable
-class InAlgorithm(Algorithm, Protocol):
+class InAlgorithm(Algorithm, ABC):
     """Abstract Base Class for algorithms that run in the middle of the pipeline."""
 
-    is_fairness_algo: ClassVar[bool]
-    _hyperparameters: Dict[str, Union[str, int, float]] = {}
+    is_fairness_algo: ClassVar[bool] = True  # should be overwritten by subclasses
 
     @abstractmethod
-    def fit(self: _I, train: DataTuple) -> _I:
+    def fit(self: _I, train: DataTuple, seed: int = 888) -> _I:
         """Fit Algorithm on the given data.
 
-        Args:
-            train: training data
-
-        Returns:
-            self, but trained.
+        :param train: Data tuple of the training data.
+        :param seed: Random seed for model initialization.
+        :returns: Self, but trained.
         """
-
-    @property
-    def hyperparameters(self) -> Dict[str, Union[str, int, float]]:
-        """Return list of hyperparameters."""
-        return self._hyperparameters
 
     @abstractmethod
     def predict(self, test: TestTuple) -> Prediction:
         """Make predictions on the given data.
 
-        Args:
-            test: data to evaluate on
-
-        Returns:
-            Prediction
+        :param test: Data to evaluate on.
+        :returns: Predictions on the test data.
         """
 
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
+    @abstractmethod
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         """Run Algorithm on the given data.
 
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: Data tuple of the training data.
+        :param test: Data to evaluate on.
+        :param seed: Random seed for model initialization.
+        :returns: Predictions on the test data.
         """
-        self.fit(train)
-        return self.predict(test)
 
-    def run_test(self, train: DataTuple, test: TestTuple) -> Prediction:
-        """Run with reduced training set so that it finishes quicker."""
-        train_testing = train.get_subset()
-        return self.run(train_testing, test)
+    @final
+    def run_test(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+        """Run with reduced training set so that it finishes quicker.
 
-
-@dataclass  # type: ignore  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class InAlgorithmDC(InAlgorithm):
-    """InAlgorithm dataclass base class."""
-
-    is_fairness_algo: ClassVar[bool] = True
-    seed: int = 888
-
-
-_IA = TypeVar("_IA", bound="InAlgorithmAsync")
-
-
-class InAlgorithmAsync(SubprocessAlgorithmMixin, InAlgorithm, Protocol):
-    """In-Algorithm that uses a subprocess to run."""
-
-    model_dir: Path
-
-    @implements(InAlgorithm)
-    def fit(self: _IA, train: DataTuple) -> _IA:
-        """Fit algorithm on the given data asynchronously.
-
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
+        :param train: Data tuple of the training data.
+        :param test: Data to evaluate on.
+        :param seed: Random seed for model initialization.
+        :returns: Predictions on the test data.
         """
-        with TemporaryDirectory() as tmpdir:
-            tmp_path = Path(tmpdir)
-            train_path = tmp_path / "train.npz"
-            train.to_npz(train_path)
-            cmd = self._fit_script_command(train_path, self._model_path)
-            self._call_script(cmd + ["--mode", "fit"])  # wait for script to run
-            return self
-
-    @implements(InAlgorithm)
-    def predict(self, test: TestTuple) -> Prediction:
-        """Run Algorithm on the given data asynchronously.
-
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
-        """
-        with TemporaryDirectory() as tmpdir:
-            tmp_path = Path(tmpdir)
-            test_path = tmp_path / "test.npz"
-            pred_path = tmp_path / "predictions.npz"
-            test.to_npz(test_path)
-            cmd = self._predict_script_command(self._model_path, test_path, pred_path)
-            self._call_script(cmd + ["--mode", "predict"])  # wait for scrip to run
-            return Prediction.from_npz(pred_path)
-
-    @implements(InAlgorithm)
-    def run(self, train: DataTuple, test: TestTuple) -> Prediction:
-        """Run Algorithm on the given data asynchronously.
-
-        Args:
-            train: training data
-            test: test data
-
-        Returns:
-            Prediction
-        """
-        with TemporaryDirectory() as tmpdir:
-            tmp_path = Path(tmpdir)
-            train_path = tmp_path / "train.npz"
-            test_path = tmp_path / "test.npz"
-            pred_path = tmp_path / "predictions.npz"
-            train.to_npz(train_path)
-            test.to_npz(test_path)
-            cmd = self._run_script_command(train_path, test_path, pred_path)
-            self._call_script(cmd + ["--mode", "run"])  # wait for scrip to run
-            return Prediction.from_npz(pred_path)
-
-    @property
-    def _model_path(self) -> Path:
-        return self.model_dir / f"model_{self.name}.joblib"
+        train_testing = train.get_n_samples()
+        return self.run(train_testing, test, seed)
 
     @abstractmethod
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        """The command that will run the script."""
+    def get_hyperparameters(self) -> HyperParamType:
+        """Return list of hyperparameters."""
 
-    @abstractmethod
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        """The command that will make the script fit."""
 
-    @abstractmethod
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        """The command that will make the script predict."""
+# ======== base classes with different default implementations of ``hyperparameters`` =========
+class InAlgorithmNoParams(InAlgorithm, ABC):
+    """Base class for algorithms without parameters."""
+
+    @final
+    def get_hyperparameters(self) -> HyperParamType:
+        """Return list of hyperparameters."""
+        return {}
+
+
+class InAlgorithmDC(InAlgorithm, ABC):
+    """Base class for algorithms that are dataclasses."""
+
+    @final
+    def get_hyperparameters(self) -> HyperParamType:
+        """Return list of hyperparameters."""
+        return asdict(self)

@@ -9,23 +9,23 @@ from typing import ClassVar
 import numpy as np
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
-from .metric import BaseMetric
+from .metric import MetricStaticName
+
+__all__ = ["Theil"]
 
 
 @dataclass
-class Theil(BaseMetric):
+class Theil(MetricStaticName):
     """Theil Index."""
 
     _name: ClassVar[str] = "Theil_Index"
-    apply_per_sensitive: ClassVar[bool] = True
 
-    @implements(BaseMetric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    @implements(MetricStaticName)
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         y_true_df = actual.y
-        act_col = y_true_df.columns[0]
-        y_pos_label = y_true_df[act_col].max()
+        y_pos_label = y_true_df.max()
 
         y_pred = prediction.hard.to_numpy().ravel()
         y_true = y_true_df.to_numpy().ravel()

@@ -9,14 +9,22 @@ from typing import ClassVar
 import numpy as np
 from numpy.random import RandomState
 
-from ethicml.metrics.metric import BaseMetric
-from ethicml.utility import DataTuple, Prediction
+from ethicml.metrics.metric import MetricStaticName
+from ethicml.utility import EvalTuple, Prediction
+
+__all__ = ["Hsic"]
 
 
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
 ) -> float:
-    """Calculate the HSIC value."""
+    """Calculate the HSIC value.
+
+    :param prediction:
+    :param label:
+    :param sigma_first:
+    :param sigma_second:
+    """
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 
@@ -51,21 +59,23 @@ def hsic(
 
 
 @dataclass
-class Hsic(BaseMetric):
+class Hsic(MetricStaticName):
     """See module string."""
 
     seed: int = 888
     _name: ClassVar[str] = "HSIC"
     apply_per_sensitive: ClassVar[bool] = False
 
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         """We add the ability to take the average of hsic score.
 
         As for larger datasets it will kill your machine
+
+        :param prediction:
+        :param actual:
         """
         preds = prediction.hard.to_numpy()[:, np.newaxis]
-        s_cols = actual.s.columns
-        sens_labels = np.array(actual.s[s_cols].to_numpy())
+        sens_labels = actual.s.to_numpy()[:, np.newaxis]
 
         batchs_size = 5000
 

@@ -1,12 +1,12 @@
 """Class to describe features of the Heritage Health dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import ClassVar, Type
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["health", "Health", "HealthSplits"]
+__all__ = ["Health", "HealthSplits"]
 
 
 class HealthSplits(Enum):
@@ -16,20 +16,14 @@ class HealthSplits(Enum):
     CUSTOM = "Custom"
 
 
-def health(
-    split: Union[HealthSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Health":
-    """Heritage Health dataset."""
-    return Health(split=HealthSplits(split), discrete_only=discrete_only, invert_s=invert_s)
-
-
 @dataclass
 class Health(LoadableDataset):
     """Heritage Health dataset."""
 
     split: HealthSplits = HealthSplits.SEX
+
+    Splits: ClassVar[Type[HealthSplits]] = HealthSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

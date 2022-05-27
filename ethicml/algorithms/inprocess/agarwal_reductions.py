@@ -1,96 +1,88 @@
 """Implementation of Agarwal model."""
-from pathlib import Path
-from typing import ClassVar, Dict, List, Optional, Set, Union
+from dataclasses import dataclass
+from typing import List, Optional, Set
+from typing_extensions import TypedDict
 
 from ranzen import implements
 
-from ethicml.utility import ClassifierType, FairnessType
-
-from .in_algorithm import InAlgorithmAsync
-from .shared import flag_interface, settings_for_svm_lr
+from ethicml.algorithms.inprocess.in_subprocess import InAlgorithmSubprocess
+from ethicml.algorithms.inprocess.shared import settings_for_svm_lr
+from ethicml.utility import ClassifierType, FairnessType, HyperParamType
 
 __all__ = ["Agarwal"]
 
-from .svm import KernelType
+from ethicml.utility import KernelType
 
-VALID_FAIRNESS: Set[FairnessType] = {"DP", "EqOd"}
-VALID_MODELS: Set[ClassifierType] = {"LR", "SVM"}
+VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
-class Agarwal(InAlgorithmAsync):
+class AgarwalArgs(TypedDict):
+    """Args for the Agarwal implementation."""
+
+    classifier: str
+    fairness: str
+    eps: float
+    iters: int
+    C: float
+    kernel: str
+
+
+@dataclass
+class Agarwal(InAlgorithmSubprocess):
     """Agarwal class.
 
-    A wrapper around the Exponentiated Gradient method documented `here <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+    A wrapper around the Exponentiated Gradient method documented
+    `on this website <https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient>`_.
+
+    :param fairness: Type of fairness to enforce.
+    :param classifier: Type of classifier to use.
+    :param eps: Epsilon fo.
+    :param iters: Number of iterations for the DP algorithm.
+    :param C: C parameter for the SVM algorithm.
+    :param kernel: Kernel type for the SVM algorithm.
     """
 
-    is_fairness_algo: ClassVar[bool] = True
+    fairness: FairnessType = FairnessType.dp
+    classifier: ClassifierType = ClassifierType.lr
+    eps: float = 0.1
+    iters: int = 50
+    C: Optional[float] = None
+    kernel: Optional[KernelType] = None
 
-    def __init__(
-        self,
-        *,
-        dir: Union[str, Path] = ".",
-        fairness: FairnessType = "DP",
-        classifier: ClassifierType = "LR",
-        eps: float = 0.1,
-        iters: int = 50,
-        C: Optional[float] = None,
-        kernel: Optional[KernelType] = None,
-        seed: int = 888,
-    ):
-        """Initialize the Agarwal algorithm.
+    def __post_init__(self) -> None:
+        assert self.fairness in (FairnessType.dp, FairnessType.eq_odds)
 
-        Args:
-            dir: Directory to store the model.
-            fairness: Type of fairness to enforce.
-            classifier: Type of classifier to use.
-            eps: Epsilon fo.
-            iters: Number of iterations for the DP algorithm.
-            C: C parameter for the SVM algorithm.
-            kernel: Kernel type for the SVM algorithm.
-            seed: Random seed.
-        """
-        if fairness not in VALID_FAIRNESS:
-            raise ValueError(f"results: fairness must be one of {VALID_FAIRNESS!r}.")
-        if classifier not in VALID_MODELS:
-            raise ValueError(f"results: classifier must be one of {VALID_MODELS!r}.")
-        self.seed = seed
-        self.model_dir = dir if isinstance(dir, Path) else Path(dir)
-        chosen_c, chosen_kernel = settings_for_svm_lr(classifier, C, kernel)
-        self.flags: Dict[str, Union[str, float, int]] = {
-            "classifier": classifier,
-            "fairness": fairness,
-            "eps": eps,
-            "iters": iters,
+    @implements(InAlgorithmSubprocess)
+    def _get_flags(self) -> AgarwalArgs:
+        chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
+        # TODO: replace this with dataclasses.asdict()
+        return {
+            "classifier": str(self.classifier),
+            "fairness": str(self.fairness),
+            "eps": self.eps,
+            "iters": self.iters,
             "C": chosen_c,
-            "kernel": chosen_kernel,
-            "seed": seed,
+            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
         }
-        self._hyperparameters = {"C": chosen_c, "iters": iters, "eps": eps, "fairness": fairness}
-        if classifier == "SVM":
-            self._hyperparameters["kernel"] = chosen_kernel
 
-    @property
-    def name(self) -> str:
-        """Name of the algorithm."""
-        return f"Agarwal, {self.flags['classifier']}, {self.flags['fairness']}"
+    @implements(InAlgorithmSubprocess)
+    def get_hyperparameters(self) -> HyperParamType:
+        chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
+        _hyperparameters: HyperParamType = {
+            "C": chosen_c,
+            "iters": self.iters,
+            "eps": self.eps,
+            "fairness": self.fairness,
+        }
+        if self.classifier is ClassifierType.svm:
+            assert chosen_kernel is not None
+            _hyperparameters["kernel"] = chosen_kernel
+        return _hyperparameters
 
-    @implements(InAlgorithmAsync)
-    def _run_script_command(self, train_path: Path, test_path: Path, pred_path: Path) -> List[str]:
-        args = flag_interface(
-            train_path=train_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.agarwal"] + args
+    @implements(InAlgorithmSubprocess)
+    def get_name(self) -> str:
+        return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"
 
-    @implements(InAlgorithmAsync)
-    def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-        args = flag_interface(train_path=train_path, model_path=model_path, flags=self.flags)
-        return ["-m", "ethicml.implementations.agarwal"] + args
-
-    @implements(InAlgorithmAsync)
-    def _predict_script_command(
-        self, model_path: Path, test_path: Path, pred_path: Path
-    ) -> List[str]:
-        args = flag_interface(
-            model_path=model_path, test_path=test_path, pred_path=pred_path, flags=self.flags
-        )
-        return ["-m", "ethicml.implementations.agarwal"] + args
+    @implements(InAlgorithmSubprocess)
+    def _get_path_to_script(self) -> List[str]:
+        return ["-m", "ethicml.implementations.agarwal"]

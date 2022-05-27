@@ -1,75 +1,100 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
+from __future__ import annotations
+
 import contextlib
+import json
 import os
 import random
+import sys
 from pathlib import Path
+from typing import TYPE_CHECKING, Generator
 
 import numpy as np
 import pandas as pd
 from joblib import dump, load
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.algorithms.inprocess.svm import select_svm
-from ethicml.utility import ClassifierType, DataTuple, FairnessType, Prediction, TestTuple
+from ethicml.utility import (
+    ClassifierType,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    SubgroupTuple,
+    TestTuple,
+)
 
-from .utils import InAlgoArgs
+if TYPE_CHECKING:
+    from fairlearn.reductions import ExponentiatedGradient
+
+    from ethicml.algorithms.inprocess.agarwal_reductions import AgarwalArgs
+    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
 
 
-class AgarwalArgs(InAlgoArgs):
-    """Args for the Agarwal implementation."""
+def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
+    """Fit a model.
 
-    classifier: ClassifierType
-    fairness: FairnessType
-    eps: float
-    iters: int
-    C: float
-    kernel: str
-    seed: int
-
-
-def fit(train: DataTuple, args):
-    """Fit a model."""
+    :param train:
+    :param args:
+    """
     try:
         from fairlearn.reductions import (
-            ConditionalSelectionRate,
             DemographicParity,
             EqualizedOdds,
             ExponentiatedGradient,
+            UtilityParity,
         )
     except ImportError as e:
-        raise RuntimeError("In order to use Agarwal, install fairlearn==0.4.6.") from e
+        raise RuntimeError(
+            f"In order to use Agarwal, install fairlearn==0.7.0. "
+            f"Consider installing EthicML with the extras 'all' specified."
+        ) from e
 
-    fairness_class: ConditionalSelectionRate
-    if args.fairness == "DP":
-        fairness_class = DemographicParity()
-    else:
-        fairness_class = EqualizedOdds()
+    fairness_class: UtilityParity
+    fairness_type = FairnessType[args["fairness"]]
+    classifier_type = ClassifierType[args["classifier"]]
+    kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
 
-    if args.classifier == "SVM":
-        model = select_svm(C=args.C, kernel=args.kernel, seed=args.seed)
+    if fairness_type is FairnessType.dp:
+        fairness_class = DemographicParity(difference_bound=args["eps"])
     else:
-        random_state = np.random.RandomState(seed=args.seed)
+        fairness_class = EqualizedOdds(difference_bound=args["eps"])
+
+    if classifier_type is ClassifierType.svm:
+        assert kernel_type is not None
+        model = select_svm(C=args["C"], kernel=kernel_type, seed=seed)
+    elif classifier_type is ClassifierType.lr:
+        random_state = np.random.RandomState(seed=seed)
         model = LogisticRegression(
-            solver="liblinear", random_state=random_state, max_iter=5000, C=args.C
+            solver="liblinear", random_state=random_state, max_iter=5000, C=args["C"]
         )
+    elif classifier_type is ClassifierType.gbt:
+        random_state = np.random.RandomState(seed=seed)
+        model = GradientBoostingClassifier(random_state=random_state)
 
     data_x = train.x
-    data_y = train.y[train.y.columns[0]]
-    data_a = train.s[train.s.columns[0]]
+    data_y = train.y
+    data_a = train.s
 
     exponentiated_gradient = ExponentiatedGradient(
-        model, constraints=fairness_class, eps=args.eps, T=args.iters
+        model, constraints=fairness_class, eps=args["eps"], max_iter=args["iters"]
     )
     exponentiated_gradient.fit(data_x, data_y, sensitive_features=data_a)
 
-    min_class_label = train.y[train.y.columns[0]].min()
+    min_class_label = train.y.min()
     exponentiated_gradient.min_class_label = min_class_label
 
     return exponentiated_gradient
 
 
-def predict(exponentiated_gradient, test: TestTuple) -> pd.DataFrame:
-    """Compute predictions on the given test data."""
+def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> pd.DataFrame:
+    """Compute predictions on the given test data.
+
+    :param exponentiated_gradient:
+    :param test:
+    """
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
@@ -78,15 +103,25 @@ def predict(exponentiated_gradient, test: TestTuple) -> pd.DataFrame:
     return preds
 
 
-def train_and_predict(train: DataTuple, test: TestTuple, args: AgarwalArgs) -> pd.DataFrame:
-    """Train a logistic regression model and compute predictions on the given test data."""
-    exponentiated_gradient = fit(train, args)
+def train_and_predict(
+    train: DataTuple, test: TestTuple, args: AgarwalArgs, seed: int
+) -> pd.DataFrame:
+    """Train a logistic regression model and compute predictions on the given test data.
+
+    :param train:
+    :param test:
+    :param args:
+    """
+    exponentiated_gradient = fit(train, args, seed)
     return predict(exponentiated_gradient, test)
 
 
 @contextlib.contextmanager
-def working_dir(root: Path) -> None:
-    """Change the working directory to the given path."""
+def working_dir(root: Path) -> Generator[None, None, None]:
+    """Change the working directory to the given path.
+
+    :param root:
+    """
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve().parent)
     try:
@@ -96,10 +131,9 @@ def working_dir(root: Path) -> None:
 
 
 def main() -> None:
-    """This function runs the Agarwal model as a standalone program."""
-    args: AgarwalArgs = AgarwalArgs().parse_args()
-    random.seed(args.seed)
-    np.random.seed(args.seed)
+    """Run the Agarwal model as a standalone program."""
+    in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
+    flags: AgarwalArgs = json.loads(sys.argv[2])
     try:
         import cloudpickle
 
@@ -107,33 +141,35 @@ def main() -> None:
     except ImportError as e:
         raise RuntimeError("In order to use Agarwal, install fairlearn and cloudpickle.") from e
 
-    if args.mode == "run":
-        assert args.train is not None
-        assert args.test is not None
-        assert args.predictions is not None
-        train, test = DataTuple.from_npz(Path(args.train)), TestTuple.from_npz(Path(args.test))
-        Prediction(hard=train_and_predict(train, test, args)["preds"]).to_npz(
-            Path(args.predictions)
+    if in_algo_args["mode"] == "run":
+        random.seed(in_algo_args["seed"])
+        np.random.seed(in_algo_args["seed"])
+        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
+            Path(in_algo_args["test"])
         )
-    elif args.mode == "fit":
-        assert args.train is not None
-        assert args.model is not None
-        data = DataTuple.from_npz(Path(args.train))
-        model = fit(data, args)
-        with working_dir(Path(args.model)):
+        Prediction(
+            hard=train_and_predict(train, test, flags, in_algo_args["seed"])["preds"]
+        ).to_npz(Path(in_algo_args["predictions"]))
+    elif in_algo_args["mode"] == "fit":
+        random.seed(in_algo_args["seed"])
+        np.random.seed(in_algo_args["seed"])
+        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        model = fit(data, flags, in_algo_args["seed"])
+        with working_dir(Path(in_algo_args["model"])):
+            model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
             model_file = cloudpickle.dumps(model)
-        dump(model_file, Path(args.model))
-    elif args.mode == "predict":
-        assert args.model is not None
-        assert args.predictions is not None
-        assert args.test is not None
-        data = TestTuple.from_npz(Path(args.test))
-        model_file = load(Path(args.model))
-        with working_dir(Path(args.model)):
+        dump(model_file, Path(in_algo_args["model"]))
+    elif in_algo_args["mode"] == "predict":
+        testdata = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
+        model_file = load(Path(in_algo_args["model"]))
+        with working_dir(Path(in_algo_args["model"])):
             model = cloudpickle.loads(model_file)
-        Prediction(hard=predict(model, data)["preds"]).to_npz(Path(args.predictions))
+            seed = model.ethicml_random_seed
+        random.seed(seed)
+        np.random.seed(seed)
+        Prediction(hard=predict(model, testdata)["preds"]).to_npz(Path(in_algo_args["predictions"]))
     else:
-        raise RuntimeError(f"Unknown mode: {args.mode}")
+        raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 
 
 if __name__ == "__main__":

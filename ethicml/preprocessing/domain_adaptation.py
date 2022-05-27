@@ -28,15 +28,13 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
 def domain_split(
     datatup: DataTuple, tr_cond: str, te_cond: str, seed: int = 888
 ) -> Tuple[DataTuple, DataTuple]:
-    """Splits a datatuple based on a condition.
+    """Split a datatuple based on a condition.
 
-    Args:
-        datatup: DataTuple
-        tr_cond: condition for the training set
-        te_cond: condition for the test set
-
-    Returns:
-        Tuple of DataTuple split into train and test. The test is all those that meet
+    :param datatup: DataTuple
+    :param tr_cond: condition for the training set
+    :param te_cond: condition for the test set
+    :param seed:  (Default: 888)
+    :returns: Tuple of DataTuple split into train and test. The test is all those that meet
         the test condition plus the same percentage again of the train set.
     """
     dataset = datatup.x
@@ -52,20 +50,20 @@ def domain_split(
     train_train_pcnt = (1 - (test_pct * 2)) / train_pct
 
     train_train = train_dataset.sample(frac=train_train_pcnt, random_state=seed)
-    test_train = train_dataset.drop(train_train.index, axis="index")  # type: ignore[arg-type]
+    test_train = train_dataset.drop(train_train.index, axis="index")
 
     test = pd.concat([test_train, test_dataset], axis="index")
 
-    train_x = datatup.x.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
-    train_s = datatup.s.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
-    train_y = datatup.y.iloc[train_train.index].reset_index(drop=True)  # type: ignore[call-overload]
+    train_x = datatup.x.iloc[train_train.index].reset_index(drop=True)
+    train_s = datatup.s.iloc[train_train.index].reset_index(drop=True)
+    train_y = datatup.y.iloc[train_train.index].reset_index(drop=True)
 
-    train_datatup = DataTuple(x=train_x, s=train_s, y=train_y, name=datatup.name)
+    train_datatup = DataTuple.from_df(x=train_x, s=train_s, y=train_y, name=datatup.name)
 
-    test_x = datatup.x.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
-    test_s = datatup.s.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
-    test_y = datatup.y.iloc[test.index].reset_index(drop=True)  # type: ignore[call-overload]
+    test_x = datatup.x.iloc[test.index].reset_index(drop=True)
+    test_s = datatup.s.iloc[test.index].reset_index(drop=True)
+    test_y = datatup.y.iloc[test.index].reset_index(drop=True)
 
-    test_datatup = DataTuple(x=test_x, s=test_s, y=test_y, name=datatup.name)
+    test_datatup = DataTuple.from_df(x=test_x, s=test_s, y=test_y, name=datatup.name)
 
     return train_datatup, test_datatup

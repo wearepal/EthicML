@@ -8,6 +8,12 @@ on:
     - 'docs/**'
     - 'examples/**'
     - '**/*.md'
+    - .github/dependabot.yml
+    - .github/labeler.yml
+    - .github/workflows/docs.yml
+    - .github/workflows/dummy_ci.yml
+    - .github/workflows/dependabot_auto.yml
+    - .github/workflows/labeler.yml
     - .gitignore
     - CODEOWNERS
     - LICENSE
@@ -15,15 +21,6 @@ on:
     - CITATION.cff
 
 jobs:
-  test_with_pytest:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Test with pytest
-      run: |
-        echo "pass!"
-
   lint_with_pylint:
 
     runs-on: ubuntu-latest
@@ -42,20 +39,20 @@ jobs:
       run: |
         echo "pass!"
 
-  type_check_with_mypy:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Type check with mypy
-      run: |
-        echo "pass!"
-
   check_docstrings:
 
     runs-on: ubuntu-latest
 
     steps:
     - name: Check docstrings with pydocstyle
+      run: |
+        echo "pass!"
+        
+  test_with_pytest:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Test with pytest
       run: |
         echo "pass!"

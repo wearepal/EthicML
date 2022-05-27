@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import json
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 from typing import (
     Callable,
@@ -15,28 +18,34 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
+    TypeVar,
     Union,
 )
-from typing_extensions import Final, Literal, TypeAlias, TypeGuard
+from typing_extensions import Final, Literal, TypeAlias, final
 
 import numpy as np
 import pandas as pd
-from pandas.testing import assert_index_equal
+from numpy import typing as npt
+from ranzen import enum_name_str
 
 __all__ = [
-    "ActivationType",
     "ClassifierType",
     "DataTuple",
+    "EvalTuple",
     "FairnessType",
+    "HyperParamType",
+    "HyperParamValue",
+    "KernelType",
     "Prediction",
     "Results",
     "ResultsAggregator",
     "SoftPrediction",
+    "SubgroupTuple",
     "TestTuple",
     "TrainTestPair",
+    "TrainValPair",
     "aggregate_results",
-    "concat_dt",
-    "concat_tt",
+    "concat",
     "filter_and_map_results",
     "filter_results",
     "make_results",
@@ -46,50 +55,108 @@ __all__ = [
 AxisType: TypeAlias = Literal["columns", "index"]  # pylint: disable=invalid-name
 
 
-class TestTuple:
+class PandasIndex(Enum):
+    """Enum for indexing the results."""
+
+    DATASET = "dataset"
+    SCALER = "scaler"
+    TRANSFORM = "transform"
+    MODEL = "model"
+
+
+_S = TypeVar("_S", bound="SubsetMixin")
+
+
+class SubsetMixin(ABC):
+    """Mixin that provides methods for getting subsets."""
+
+    # the mixin assumes the presence of these attributes
+    data: pd.DataFrame
+    s_column: str
+
+    @abstractmethod
+    def replace_data(self: _S, data: pd.DataFrame) -> _S:
+        """Make a copy of the container but change the underlying data."""
+
+    @property
+    @final
+    def s(self) -> pd.Series[int]:
+        """Getter for property s."""
+        return self.data[self.s_column]
+
+    @final
+    def get_n_samples(self: _S, num: int = 500) -> _S:
+        """Get the first elements of the dataset.
+
+        :param num: How many samples to take for subset. (Default: 500)
+        :returns: Subset of training data.
+        """
+        return self.replace_data(data=self.data.iloc[:num])
+
+    @final
+    def get_s_subset(self: _S, s: int) -> _S:
+        """Return a subset of the DataTuple where S=s."""
+        return self.replace_data(data=self.data[self.s == s])
+
+    @final
+    def __len__(self) -> int:
+        """Overwrite __len__ magic method."""
+        return len(self.data)
+
+
+@dataclass
+class SubgroupTuple(SubsetMixin):
     """A tuple of dataframes for the features and the sensitive attribute."""
 
-    def __init__(self, x: pd.DataFrame, s: pd.DataFrame, name: Optional[str] = None):
-        """Make a TestTuple."""
-        self.__x: pd.DataFrame = x
-        self.__s: pd.DataFrame = s
-        self.__name: Optional[str] = name
+    __slots__ = ("data", "s_column", "name")
+    data: pd.DataFrame
+    s_column: str
+    name: str | None
+
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+
+    @classmethod
+    def from_df(
+        cls, *, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
+    ) -> SubgroupTuple:
+        """Make a SubgroupTuple."""
+        s_column = s.name
+        assert isinstance(s_column, str)
+        assert len(x) == len(s), "data has to have the same length"
+        return cls(data=pd.concat([x, s], axis="columns", sort=False), s_column=s_column, name=name)
 
     @property
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
-        return self.__x
+        return self.data.drop(self.s_column, inplace=False, axis="columns")
 
-    @property
-    def s(self) -> pd.DataFrame:
-        """Getter for property s."""
-        return self.__s
-
-    @property
-    def name(self) -> Optional[str]:
-        """Getter for name property."""
-        return self.__name
-
-    def __iter__(self) -> Iterator[pd.DataFrame]:
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
 
     def replace(
-        self,
-        *,
-        x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.DataFrame] = None,
-        name: Optional[str] = None,
-    ) -> TestTuple:
-        """Create a copy of the TestTuple but change the given values."""
-        return TestTuple(
-            x=x if x is not None else self.x,
-            s=s if s is not None else self.s,
-            name=name if name is not None else self.name,
+        self, *, x: Optional[pd.DataFrame] = None, s: Optional[pd.Series] = None
+    ) -> SubgroupTuple:
+        """Create a copy of the SubgroupTuple but change the given values."""
+        return SubgroupTuple.from_df(
+            x=x if x is not None else self.x, s=s if s is not None else self.s, name=self.name
         )
 
+    def replace_data(self, data: pd.DataFrame) -> SubgroupTuple:
+        """Make a copy of the DataTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
+        return SubgroupTuple(data=data, s_column=self.s_column, name=self.name)
+
+    def rename(self, name: str) -> SubgroupTuple:
+        """Change only the name."""
+        return SubgroupTuple(data=self.data, s_column=self.s_column, name=name)
+
     def to_npz(self, data_path: Path) -> None:
-        """Save TestTuple as an npz file."""
+        """Save SubgroupTuple as an npz file.
+
+        :param data_path: Path to save the npz file.
+        """
         write_as_npz(
             data_path,
             dict(x=self.x, s=self.s),
@@ -97,99 +164,110 @@ class TestTuple:
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> TestTuple:
-        """Load test tuple from npz file."""
+    def from_npz(cls, data_path: Path) -> SubgroupTuple:
+        """Load test tuple from npz file.
+
+        :param data_path: Path to load the npz file.
+        """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls(
+            return cls.from_df(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
-                s=pd.DataFrame(data["s"], columns=data["s_names"]),
+                s=pd.Series(data["s"], name=data["s_names"][0]),
                 name=name or None,
             )
 
 
-class DataTuple(TestTuple):
-    """A tuple of dataframes for the features, the sensitive attribute and the class labels.
+@dataclass
+class DataTuple(SubsetMixin):
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
-    Args:
-        x: input features
-        s: sensitive attributes
-        y: class labels
-        name: optional name of the dataset
-    """
+    __slots__ = ("data", "s_column", "y_column", "name")
+    data: pd.DataFrame
+    s_column: str
+    y_column: str
+    name: str | None
 
-    def __init__(
-        self, x: pd.DataFrame, s: pd.DataFrame, y: pd.DataFrame, name: Optional[str] = None
-    ):
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+        assert self.y_column in self.data.columns, f"column {self.y_column} not present"
+
+    @classmethod
+    def from_df(
+        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+    ) -> DataTuple:
         """Make a DataTuple."""
-        super().__init__(x=x, s=s, name=name)
-        self.__y: pd.DataFrame = y
+        s_column = s.name
+        y_column = y.name
+        assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert len(x) == len(s) == len(y), "data has to have the same length"
+        return cls(
+            data=pd.concat([x, s, y], axis="columns", sort=False),
+            s_column=s_column,
+            y_column=y_column,
+            name=name,
+        )
 
     @property
-    def y(self) -> pd.DataFrame:
-        """Getter for property y."""
-        return self.__y
+    def x(self) -> pd.DataFrame:
+        """Getter for property x."""
+        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
-    def __iter__(self) -> Iterator[pd.DataFrame]:
-        """Overwrite __iter__ magic method."""
+    @property
+    def y(self) -> pd.Series[int]:
+        """Getter for property y."""
+        return self.data[self.y_column]
+
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+        """Overwrite magic method __iter__."""
         return iter([self.x, self.s, self.y])
 
-    def __len__(self) -> int:
-        """Overwrite __len__ magic method."""
-        len_x = len(self.x)
-        assert len_x == len(self.s) and len_x == len(self.y)
-        return len_x
-
-    def remove_y(self) -> TestTuple:
-        """Convert the DataTuple instance to a TestTuple instance."""
-        return TestTuple(x=self.x, s=self.s, name=self.name)
+    def remove_y(self) -> SubgroupTuple:
+        """Convert the DataTuple instance to a SubgroupTuple instance."""
+        return SubgroupTuple(
+            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
+            s_column=self.s_column,
+            name=self.name,
+        )
 
     def replace(
         self,
         *,
         x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.DataFrame] = None,
-        name: Optional[str] = None,
-        y: Optional[pd.DataFrame] = None,
+        s: Optional[pd.Series] = None,
+        y: Optional[pd.Series] = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
-        return DataTuple(
+        return DataTuple.from_df(
             x=x if x is not None else self.x,
             s=s if s is not None else self.s,
             y=y if y is not None else self.y,
-            name=name if name is not None else self.name,
+            name=self.name,
         )
 
+    def rename(self, name: str) -> DataTuple:
+        """Change only the name."""
+        return DataTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
+
+    def replace_data(self, data: pd.DataFrame) -> DataTuple:
+        """Make a copy of the DataTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
+        assert self.y_column in data.columns, f"column {self.y_column} not present"
+        return DataTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+
     def apply_to_joined_df(self, mapper: Callable[[pd.DataFrame], pd.DataFrame]) -> DataTuple:
-        """Concatenate the dataframes in the DataTuple and then apply a function to it."""
-        self.x.columns = self.x.columns.astype(str)
-        cols_x, cols_s, cols_y = self.x.columns, self.s.columns, self.y.columns
-        joined = pd.concat([self.x, self.s, self.y], axis="columns", sort=False)
-        assert len(joined) == len(self), "something went wrong while concatenating"
-        joined = mapper(joined)
-        result = self.replace(x=joined[cols_x], s=joined[cols_s], y=joined[cols_y])
+        """Concatenate the dataframes in the DataTuple and then apply a function to it.
 
-        # assert that the columns haven't changed
-        assert_index_equal(result.x.columns, cols_x)
-        assert_index_equal(result.s.columns, cols_s)
-        assert_index_equal(result.y.columns, cols_y)
-
-        return result
-
-    def get_subset(self, num: int = 500) -> DataTuple:
-        """Get the first elements of the dataset.
-
-        Args:
-            num: how many samples to take for subset
-
-        Returns:
-            subset of training data
+        :param mapper: A function that takes a dataframe and returns a dataframe.
         """
-        return self.replace(x=self.x.iloc[:num], s=self.s.iloc[:num], y=self.y.iloc[:num])  # type: ignore[call-overload]
+        return self.replace_data(data=mapper(self.data))
 
     def to_npz(self, data_path: Path) -> None:
-        """Save DataTuple as an npz file."""
+        """Save DataTuple as an npz file.
+
+        :param data_path: Path to the npz file.
+        """
         write_as_npz(
             data_path,
             dict(x=self.x, s=self.s, y=self.y),
@@ -198,30 +276,124 @@ class DataTuple(TestTuple):
 
     @classmethod
     def from_npz(cls, data_path: Path) -> DataTuple:
-        """Load data tuple from npz file."""
+        """Load data tuple from npz file.
+
+        :param data_path: Path to the npz file.
+        """
         with data_path.open("rb") as data_file:
             data = np.load(data_file)
             name = data["name"].item()
-            return cls(
+            return cls.from_df(
                 x=pd.DataFrame(data["x"], columns=data["x_names"]),
-                s=pd.DataFrame(data["s"], columns=data["s_names"]),
-                y=pd.DataFrame(data["y"], columns=data["y_names"]),
+                s=pd.Series(data["s"], name=data["s_names"][0]),
+                y=pd.Series(data["y"], name=data["y_names"][0]),
                 name=name or None,
             )
+
+
+@dataclass
+class LabelTuple(SubsetMixin):
+    """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
+
+    __slots__ = ("data", "s_column", "y_column", "name")
+    data: pd.DataFrame
+    s_column: str
+    y_column: str
+    name: str | None
+
+    def __post_init__(self) -> None:
+        assert self.s_column in self.data.columns, f"column {self.s_column} not present"
+        assert self.y_column in self.data.columns, f"column {self.y_column} not present"
+
+    @classmethod
+    def from_df(
+        cls, *, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+    ) -> LabelTuple:
+        """Make a LabelTuple."""
+        s_column = s.name
+        y_column = y.name
+        assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert len(s) == len(y), "data has to have the same length"
+        return cls(
+            data=pd.concat([s, y], axis="columns", sort=False),  # type: ignore[arg-type]
+            s_column=s_column,
+            y_column=y_column,
+            name=name,
+        )
+
+    @classmethod
+    def from_np(
+        cls, *, s: npt.NDArray, y: npt.NDArray, s_name: str = "s", y_name: str = "y"
+    ) -> LabelTuple:
+        """Create a LabelTuple from numpy arrays."""
+        s_pd = pd.Series(s, name=s_name)
+        y_pd = pd.Series(y, name=y_name)
+        assert len(s_pd) == len(y_pd), "data has to have the same length"
+        return cls(
+            data=pd.concat([s_pd, y_pd], axis="columns", sort=False),
+            s_column=s_name,
+            y_column=y_name,
+            name=None,
+        )
+
+    @property
+    def y(self) -> pd.Series[int]:
+        """Getter for property y."""
+        return self.data[self.y_column]
+
+    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+        """Overwrite magic method __iter__."""
+        return iter([self.s, self.y])
+
+    def replace(
+        self, *, s: Optional[pd.Series] = None, y: Optional[pd.Series] = None
+    ) -> LabelTuple:
+        """Create a copy of the LabelTuple but change the given values."""
+        return LabelTuple.from_df(
+            s=s if s is not None else self.s, y=y if y is not None else self.y, name=self.name
+        )
+
+    def rename(self, name: str) -> LabelTuple:
+        """Change only the name."""
+        return LabelTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
+
+    def replace_data(self, data: pd.DataFrame) -> LabelTuple:
+        """Make a copy of the LabelTuple but change the underlying data."""
+        assert self.s_column in data.columns, f"column {self.s_column} not present"
+        assert self.y_column in data.columns, f"column {self.y_column} not present"
+        return LabelTuple(data=data, s_column=self.s_column, y_column=self.y_column, name=self.name)
+
+
+TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
+EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
+T = TypeVar("T", SubgroupTuple, DataTuple)
 
 
 class Prediction:
     """Prediction of an algorithm."""
 
-    def __init__(self, hard: pd.Series, info: Optional[Dict[str, float]] = None):
+    def __init__(self, hard: pd.Series, info: Optional[HyperParamType] = None):
         """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
         self._info = info if info is not None else {}
 
+    @classmethod
+    def from_np(cls, preds: npt.NDArray) -> Prediction:
+        """Construct a prediction object from a numpy array."""
+        return cls(hard=pd.Series(preds))
+
     def __len__(self) -> int:
         """Length of the predictions object."""
         return len(self._hard)
+
+    def get_s_subset(self, s_data: pd.Series, s: int) -> Prediction:
+        """Return a subset of the DataTuple where S=s.
+
+        :param s_data: Dataframe with the s-values.
+        :param s: S-value to get the subset for.
+        """
+        return Prediction(hard=self.hard[s_data == s])
 
     @property
     def hard(self) -> pd.Series:
@@ -229,13 +401,16 @@ class Prediction:
         return self._hard
 
     @property
-    def info(self) -> Dict[str, float]:
+    def info(self) -> HyperParamType:
         """Additional info about the prediction."""
         return self._info
 
     @staticmethod
     def from_npz(npz_path: Path) -> Prediction:
-        """Load prediction from npz file."""
+        """Load prediction from npz file.
+
+        :param npz_path: Path to the npz file.
+        """
         info = None
         if (npz_path.parent / "info.json").exists():
             with open(npz_path.parent / "info.json", encoding="utf-8") as json_file:
@@ -243,11 +418,14 @@ class Prediction:
         with npz_path.open("rb") as npz_file:
             data = np.load(npz_file)
             if "soft" in data:
-                return SoftPrediction(soft=pd.Series(np.squeeze(data["soft"])), info=info)
+                return SoftPrediction(soft=np.squeeze(data["soft"]), info=info)
             return Prediction(hard=pd.Series(np.squeeze(data["hard"])), info=info)
 
     def to_npz(self, npz_path: Path) -> None:
-        """Save prediction as npz file."""
+        """Save prediction as npz file.
+
+        :param npz_path: Path to the npz file.
+        """
         if self.info:
             for v in self.info.values():
                 assert isinstance(v, float), "Info must be Dict[str, float]"
@@ -261,88 +439,85 @@ class Prediction:
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
-    def __init__(self, soft: pd.Series, info: Optional[Dict[str, float]] = None):
+    def __init__(self, soft: np.ndarray, info: Optional[HyperParamType] = None):
         """Make a soft prediction object."""
-        super().__init__(hard=soft.ge(0.5).astype(int), info=info)
+        super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
 
     @property
-    def soft(self) -> pd.Series:
+    def soft(self) -> np.ndarray:
         """Soft predictions (e.g. 0.2 and 0.8)."""
         return self._soft
 
 
 def write_as_npz(
-    data_path: Path, data: Dict[str, pd.DataFrame], extra: Optional[Dict[str, np.ndarray]] = None
+    data_path: Path,
+    data: Dict[str, Union[pd.DataFrame, pd.Series]],
+    extra: Optional[Dict[str, np.ndarray]] = None,
 ) -> None:
-    """Write the given dataframes to an npz file."""
+    """Write the given dataframes to an npz file.
+
+    :param data_path: Path to the npz file.
+    :param data: Dataframes to save.
+    :param extra: Extra data to save. (Default: None)
+    """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
-    column_names = {
-        f"{entry}_names": np.array(values.columns.tolist()) for entry, values in data.items()
+    column_names: Dict[str, np.ndarray] = {
+        f"{entry}_names": np.array(values.columns.tolist())
+        if isinstance(values, pd.DataFrame)
+        else np.array([values.name])
+        for entry, values in data.items()
     }
+
     np.savez(data_path, **as_numpy, **column_names, **extra)
 
 
-def concat_dt(
-    datatup_list: Sequence[DataTuple], axis: AxisType = "index", ignore_index: bool = False
-) -> DataTuple:
-    """Concatenate the data tuples in the given list."""
-    return DataTuple(
-        x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        y=pd.concat(
-            [dt.y for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        name=datatup_list[0].name,
+def concat(
+    datatup_list: Sequence[T],
+    ignore_index: bool = False,
+) -> T:
+    """Concatenate the data tuples in the given list.
+
+    :param datatup_list: List of data tuples to concatenate.
+    :param ignore_index: Ignore the index of the dataframes. (Default: False)
+    """
+    data: pd.DataFrame = pd.concat(
+        [dt.data for dt in datatup_list], axis="index", sort=False, ignore_index=ignore_index
     )
+    return datatup_list[0].replace_data(data)
 
 
-def concat_tt(
-    datatup_list: List[TestTuple], axis: AxisType = "index", ignore_index: bool = False
-) -> TestTuple:
-    """Concatenate the test tuples in the given list."""
-    return TestTuple(
-        x=pd.concat(
-            [dt.x for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        s=pd.concat(
-            [dt.s for dt in datatup_list], axis=axis, sort=False, ignore_index=ignore_index
-        ),
-        name=datatup_list[0].name,
-    )
+@enum_name_str
+class FairnessType(Enum):
+    """Fairness type."""
+
+    dp = auto()
+    eq_opp = auto()
+    eq_odds = auto()
 
 
-FairnessType: TypeAlias = Literal["DP", "EqOp", "EqOd"]  # pylint: disable=invalid-name
+@enum_name_str
+class ClassifierType(Enum):
+    """Classifier type."""
 
-
-def is_fair_type(fair_str: str) -> TypeGuard[FairnessType]:
-    """Check whether a string conforms to a fairness type."""
-    return fair_str in {"DP", "EqOd", "EqOp"}
-
-
-ClassifierType: TypeAlias = Literal["LR", "SVM"]  # pylint: disable=invalid-name
-ActivationType: TypeAlias = Literal[
-    "identity", "logistic", "tanh", "relu"
-]  # pylint: disable=invalid-name
+    lr = auto()
+    svm = auto()
+    gbt = auto()
 
 
 class TrainTestPair(NamedTuple):
     """2-Tuple of train and test data."""
 
     train: DataTuple
-    test: TestTuple
+    test: SubgroupTuple
 
 
 class TrainValPair(NamedTuple):
     """2-Tuple of train and test data."""
 
     train: DataTuple
-    validation: DataTuple
+    test: DataTuple
 
 
 Results = NewType("Results", pd.DataFrame)  # Container for results from `evaluate_models`
@@ -355,6 +530,8 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
 
     You should always use this function instead of using the "constructor" directly, because this
     function checks whether the columns are correct.
+
+    :param data_frame: A dataframe to use for initialization. (Default: None)
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
@@ -380,7 +557,11 @@ class ResultsAggregator:
         return self._results
 
     def append_df(self, data_frame: pd.DataFrame, prepend: bool = False) -> None:
-        """Append (or prepend) a DataFrame to this object."""
+        """Append (or prepend) a DataFrame to this object.
+
+        :param data_frame: DataFrame to append.
+        :param prepend: Whether to prepend or append the dataframe. (Default: False)
+        """
         if data_frame.index.names != RESULTS_COLUMNS:
             data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
@@ -388,14 +569,21 @@ class ResultsAggregator:
         self._results = Results(pd.concat(order, sort=False, axis="index"))
 
     def append_from_csv(self, csv_file: Path, prepend: bool = False) -> bool:
-        """Append results from a CSV file."""
+        """Append results from a CSV file.
+
+        :param csv_file: Path to the CSV file.
+        :param prepend:  (Default: False)
+        """
         if csv_file.is_file():  # if file exists
             self.append_df(pd.read_csv(csv_file), prepend=prepend)
             return True
         return False
 
     def save_as_csv(self, file_path: Path) -> None:
-        """Save to csv."""
+        """Save to csv.
+
+        :param file_path: Path to the CSV file.
+        """
         # `results` has the multi index based on [dataset, transform, ...] so we have to reset that
         self.results.reset_index(drop=False).to_csv(file_path, index=False)
 
@@ -413,14 +601,25 @@ def map_over_results_index(
 def filter_results(
     results: Results,
     values: Iterable,
-    index: Literal["dataset", "scaler", "transform", "model"] = "model",
+    index: Union[str, PandasIndex] = "model",
 ) -> Results:
-    """Filter the entries based on the given values."""
-    return Results(results.loc[results.index.get_level_values(index).isin(list(values))])
+    """Filter the entries based on the given values.
+
+    :param results: Results object to filter.
+    :param values: Values to filter on.
+    :param index: Index to filter on. (Default: "model")
+    """
+    if isinstance(index, str):
+        index = PandasIndex(index)
+    return Results(results.loc[results.index.get_level_values(index.value).isin(list(values))])
 
 
 def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Results:
-    """Filter entries and change the index with a mapping."""
+    """Filter entries and change the index with a mapping.
+
+    :param results: Results object to filter.
+    :param mapping: Mapping from old index to new index.
+    """
     return map_over_results_index(
         filter_results(results, mapping),
         lambda index: (index[0], index[1], index[2], mapping[index[3]], index[4]),
@@ -430,5 +629,25 @@ def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Resu
 def aggregate_results(
     results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
 ) -> pd.DataFrame:
-    """Aggregate results over the repeats."""
+    """Aggregate results over the repeats.
+
+    :param results: Results object containing the results to aggregate.
+    :param metrics: Metrics used for aggregation.
+    :param aggregator: Aggregator to use. The aggreators are the ones used in pandas.
+        (Default: ("mean", "std"))
+    """
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
+
+
+@enum_name_str
+class KernelType(Enum):
+    """Values for SVM Kernel."""
+
+    linear = auto()
+    poly = auto()
+    rbf = auto()
+    sigmoid = auto()
+
+
+HyperParamValue: TypeAlias = Union[bool, int, float, str, FairnessType, KernelType]
+HyperParamType: TypeAlias = Dict[str, HyperParamValue]

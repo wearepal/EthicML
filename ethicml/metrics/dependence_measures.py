@@ -1,14 +1,14 @@
 """For assessing the Mutual Information between s and yhat."""
+from abc import ABC
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import ClassVar
-from typing_extensions import Protocol
 
 import numpy as np
 from ranzen import enum_name_str, implements
 from sklearn.metrics import normalized_mutual_info_score
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
 from .metric import Metric
 
@@ -23,16 +23,15 @@ class DependencyTarget(Enum):
     y = auto()
 
 
-class _DependenceMeasure(Metric, Protocol):
+class _DependenceMeasure(Metric, ABC):
     """Base class for dependence measures, which tell you how dependent two variables are."""
 
     base: DependencyTarget
     _base_name: ClassVar[str]
     apply_per_sensitive: ClassVar[bool] = False
 
-    @property
-    def name(self) -> str:
-        """Name of the metric."""
+    @implements(Metric)
+    def get_name(self) -> str:
         return f"{self._base_name} preds and {self.base}"
 
 
@@ -47,7 +46,7 @@ class NMI(_DependenceMeasure):
     _base_name: ClassVar[str] = "NMI"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return normalized_mutual_info_score(
             base_values.to_numpy().ravel(),
@@ -67,7 +66,7 @@ class Yanovich(_DependenceMeasure):
     _base_name: ClassVar[str] = "Yanovich"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._dependence(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 
@@ -122,7 +121,7 @@ class RenyiCorrelation(_DependenceMeasure):
     _base_name: ClassVar[str] = "Renyi"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         base_values = actual.y if self.base is DependencyTarget.y else actual.s
         return self._corr(base_values.to_numpy().ravel(), prediction.hard.to_numpy().ravel())
 

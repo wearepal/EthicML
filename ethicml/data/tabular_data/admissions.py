@@ -39,12 +39,12 @@ We replace the mean GPA with a binary label Y representing whether the studentâ€
 """
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import ClassVar, Type
 
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["Admissions", "AdmissionsSplits", "admissions"]
+__all__ = ["AdmissionsSplits", "Admissions"]
 
 
 class AdmissionsSplits(Enum):
@@ -54,20 +54,14 @@ class AdmissionsSplits(Enum):
     CUSTOM = "Custom"
 
 
-def admissions(
-    split: Union[AdmissionsSplits, str] = "Gender",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Admissions":
-    """UFRGS Admissions dataset."""
-    return Admissions(split=AdmissionsSplits(split), discrete_only=discrete_only, invert_s=invert_s)
-
-
 @dataclass
 class Admissions(LoadableDataset):
     """UFRGS Admissions dataset."""
 
     split: AdmissionsSplits = AdmissionsSplits.GENDER
+
+    Splits: ClassVar[Type[AdmissionsSplits]] = AdmissionsSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {"gender": ["gender"], "gpa": ["gpa"]}

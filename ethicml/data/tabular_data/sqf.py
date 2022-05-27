@@ -1,12 +1,12 @@
 """Class to describe features of the SQF dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import ClassVar, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
-__all__ = ["sqf", "Sqf", "SqfSplits"]
+__all__ = ["Sqf", "SqfSplits"]
 
 
 class SqfSplits(Enum):
@@ -18,20 +18,17 @@ class SqfSplits(Enum):
     CUSTOM = "Custom"
 
 
-def sqf(
-    split: Union[SqfSplits, str] = "Sex",
-    discrete_only: bool = False,
-    invert_s: bool = False,
-) -> "Sqf":
-    """Stop, question and frisk dataset."""
-    return Sqf(split=SqfSplits(split), discrete_only=discrete_only, invert_s=invert_s)
-
-
 @dataclass
 class Sqf(LoadableDataset):
-    """Stop, question and frisk dataset."""
+    """Stop, question and frisk dataset.
+
+    This data is from the 2016, source: http://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
+    """
 
     split: SqfSplits = SqfSplits.SEX
+
+    Splits: ClassVar[Type[SqfSplits]] = SqfSplits
+    """Shorthand for the Enum that defines the splits associated with this class."""
 
     def __post_init__(self) -> None:
         disc_feature_groups = {

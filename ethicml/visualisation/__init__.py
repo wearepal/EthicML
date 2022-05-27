@@ -1,3 +1,3 @@
-"""This module contains tools for plotting results."""
+"""Module for tools for plotting results."""
 
 from .plot import *

@@ -1,4 +1,5 @@
 """Run all checks."""
+
 import subprocess
 
 import black
@@ -41,7 +42,7 @@ print("###############  mypy  #################")
 MYPY_RESULTS = mypy.run(["./ethicml/", "--warn-redundant-casts", "--show-error-context"])
 print(MYPY_RESULTS[0], end="")
 print(MYPY_RESULTS[1], end="")
-print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
+print(f"Exit code of mypy: {MYPY_RESULTS[2]}")
 
 # mypy
 print("############  mypy tests  ##############")
@@ -50,7 +51,7 @@ MYPY_RESULTS = mypy.run(
 )
 print(MYPY_RESULTS[0], end="")
 print(MYPY_RESULTS[1], end="")
-print("Exit code of mypy: {}".format(MYPY_RESULTS[2]))
+print(f"Exit code of mypy: {MYPY_RESULTS[2]}")
 
 # black
 print("############  black ##############")

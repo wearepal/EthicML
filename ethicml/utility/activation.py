@@ -14,11 +14,8 @@ class Activation(ABC):
     def apply(self, soft_output: numpy.ndarray) -> numpy.ndarray:
         """Apply the decision function to a soft prediction.
 
-        Args:
-            soft_output: soft prediction (i.e. a probability or logits)
-
-        Returns:
-            decision
+        :param soft_output: soft prediction (i.e. a probability or logits)
+        :returns: decision
         """
 
     @abstractmethod

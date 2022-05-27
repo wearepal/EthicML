@@ -1,57 +1,30 @@
 """Methods that are shared among the inprocess algorithms."""
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from __future__ import annotations
+
+from typing import Optional, Tuple
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-__all__ = ["flag_interface", "settings_for_svm_lr"]
+from ethicml.utility import ClassifierType, KernelType
 
-
-def flag_interface(
-    flags: Dict[str, Any],
-    *,
-    train_path: Optional[Path] = None,
-    test_path: Optional[Path] = None,
-    model_path: Optional[Path] = None,
-    pred_path: Optional[Path] = None,
-) -> List[str]:
-    """Generate the commandline arguments that are expected by the script about to be called."""
-    # paths to training and test data
-    data_flags: Dict[str, Any] = {}
-    if train_path is not None:
-        data_flags["train"] = train_path
-    if test_path is not None:
-        data_flags["test"] = test_path
-    if model_path is not None:
-        data_flags["model"] = model_path
-    if pred_path is not None:
-        data_flags["predictions"] = pred_path
-    data_flags.update(flags)
-
-    flags_list: List[str] = []
-    # model parameters
-    for key, values in data_flags.items():
-        flags_list.append(f"--{key}")
-        if isinstance(values, (list, tuple)):
-            flags_list += [str(value) for value in values]
-        else:
-            flags_list.append(str(values))
-    return flags_list
+__all__ = ["settings_for_svm_lr"]
 
 
 def settings_for_svm_lr(
-    classifier: str, C: Optional[float], kernel: Optional[str]
-) -> Tuple[float, str]:
+    classifier: ClassifierType, C: Optional[float], kernel: Optional[KernelType]
+) -> Tuple[float, Optional[KernelType]]:
     """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
+    if classifier is ClassifierType.gbt:
+        return 1.0, None
     if C is None:
-        if classifier == "LR":
+        if classifier is ClassifierType.lr:
             C = LogisticRegression().C
-        elif classifier == "SVM":
+        elif classifier is ClassifierType.svm:
             C = SVC().C
         else:
             raise NotImplementedError(f'Unsupported classifier "{classifier}".')
 
     if kernel is None:
-        kernel = SVC().kernel if classifier == "SVM" else ""
+        kernel = KernelType[SVC().kernel] if classifier is ClassifierType.svm else None
     return C, kernel

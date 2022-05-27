@@ -11,21 +11,21 @@ from ethicml import (
     SVM,
     TPR,
     Accuracy,
+    Adult,
     Dataset,
     DataTuple,
     InAlgorithm,
-    LRProb,
+    KernelType,
     Metric,
+    NonBinaryToy,
     Prediction,
     ProbNeg,
     ProbOutcome,
     ProbPos,
     Theil,
-    adult,
+    Toy,
     load_data,
     metric_per_sensitive_attribute,
-    nonbinary_toy,
-    toy,
     train_test_split,
 )
 from tests.conftest import get_id
@@ -43,53 +43,53 @@ class PerSensMetricTest(NamedTuple):
 def test_issue_431():
     """This issue highlighted that error would be raised due to not all values existing in subsets of the data."""
     x = pd.DataFrame(np.random.randn(100), columns=["x"])
-    s = pd.DataFrame(np.random.randn(100), columns=["s"])
-    y = pd.DataFrame(np.random.randint(0, 5, 100), columns=["y"])
-    data = DataTuple(x=x, s=s, y=y)
+    s = pd.Series(np.random.randn(100), name="s")
+    y = pd.Series(np.random.randint(0, 5, 100), name="y")
+    data = DataTuple.from_df(x=x, s=s, y=y)
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, test = train_test
     model: InAlgorithm = LR()
     predictions: Prediction = model.run(train, test)
     acc_per_sens = metric_per_sensitive_attribute(
-        predictions, test, TPR(pos_class=1, labels=list(range(y.nunique()[0])))
+        predictions, test, TPR(pos_class=1, labels=list(range(y.nunique())))
     )
     print(acc_per_sens)
 
 
 PER_SENS = [
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=Accuracy(),
         expected_values={"sensitive-attr_0": 0.921, "sensitive-attr_1": 0.929},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=ProbPos(),
         expected_values={"sensitive-attr_0": 0.368, "sensitive-attr_1": 0.738},
     ),
     PerSensMetricTest(
-        dataset=toy(),
-        classifier=LRProb(),
+        dataset=Toy(),
+        classifier=LR(),
         metric=ProbOutcome(),
         expected_values={"sensitive-attr_0": 0.375, "sensitive-attr_1": 0.693},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=ProbNeg(),
         expected_values={"sensitive-attr_0": 0.632, "sensitive-attr_1": 0.262},
     ),
     PerSensMetricTest(
-        dataset=toy(),
+        dataset=Toy(),
         classifier=SVM(),
         metric=Accuracy(),
         expected_values={"sensitive-attr_0": 0.921, "sensitive-attr_1": 0.928},
     ),
     PerSensMetricTest(
-        dataset=adult("Nationality"),
-        classifier=SVM(kernel="linear"),
+        dataset=Adult(split=Adult.Splits.NATIONALITY),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
             "native-country_1": 0.649,
@@ -134,8 +134,8 @@ PER_SENS = [
         },
     ),
     PerSensMetricTest(
-        dataset=adult("Race"),
-        classifier=SVM(kernel="linear"),
+        dataset=Adult(split=Adult.Splits.RACE),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
         expected_values={
             "race_0": 0.937,
@@ -146,22 +146,22 @@ PER_SENS = [
         },
     ),
     PerSensMetricTest(
-        dataset=toy(),
-        classifier=SVM(kernel="linear"),
+        dataset=Toy(),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Theil(),
         expected_values={"sensitive-attr_1": 0.024, "sensitive-attr_0": 0.045},
     ),
     PerSensMetricTest(
-        dataset=nonbinary_toy(),
-        classifier=SVM(kernel="linear"),
+        dataset=NonBinaryToy(),
+        classifier=SVM(kernel=KernelType.linear),
         metric=Accuracy(),
-        expected_values={"sens_1": 1.0, "sens_0": 1.0},
+        expected_values={"sensitive-attr_1_1": 0.167, "sensitive-attr_1_0": 0.158},
     ),
     PerSensMetricTest(
-        dataset=nonbinary_toy(),
+        dataset=NonBinaryToy(),
         classifier=LR(),
         metric=Accuracy(),
-        expected_values={"sens_1": 0.667, "sens_0": 0.727},
+        expected_values={"sensitive-attr_1_1": 0.143, "sensitive-attr_1_0": 0.158},
     ),
 ]
 
@@ -188,7 +188,7 @@ def test_metric_per_sens_attr(
     try:
         for key, value in expected_values.items():
             # Check that the sensitive attribute name is now just 'S'.
-            assert acc_per_sens[f"S_{''.join(key.split('_')[1:])}"] == approx(value, abs=0.001)
+            assert acc_per_sens[f"S_{''.join(key.split('_')[-1:])}"] == approx(value, abs=0.001)
     except AssertionError:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
         raise AssertionError

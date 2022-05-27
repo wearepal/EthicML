@@ -1,5 +1,0 @@
-Missing Page
-------------
-
-Oh no! This page doesn't exist, or may have moved. 
-You can get back to the documentation for EthicML `here <https://wearepal.ai/EthicML/>`_.

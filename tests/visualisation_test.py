@@ -11,13 +11,16 @@ from ethicml import (
     SVM,
     TPR,
     Accuracy,
+    Adult,
     DataTuple,
     Kamiran,
+    KernelType,
     ProbPos,
     Results,
+    Toy,
     TrainTestPair,
     Upsampler,
-    adult,
+    UpsampleStrategy,
     evaluate_models,
     load_data,
     plot_results,
@@ -25,7 +28,6 @@ from ethicml import (
     save_jointplot,
     save_label_plot,
     save_multijointplot,
-    toy,
     train_test_split,
 )
 
@@ -42,7 +44,7 @@ def test_plot_tsne(toy_train_test: TrainTestPair):
 def test_plot_no_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
     train, _ = toy_train_test
-    train = DataTuple(x=train.x[train.x.columns[:2]], s=train.s, y=train.y)  # type: ignore[arg-type]
+    train = train.replace(x=train.x[train.x.columns[:2]])
     save_2d_plot(train, "./plots/test.png")
 
 
@@ -64,7 +66,7 @@ def test_multijoint_plot(toy_train_test: TrainTestPair):
 @pytest.mark.usefixtures("plot_cleanup")
 def test_label_plot():
     """Test label plot."""
-    data: DataTuple = load_data(adult())
+    data: DataTuple = load_data(Adult())
     train_test: Tuple[DataTuple, DataTuple] = train_test_split(data)
     train, _ = train_test
 
@@ -75,14 +77,13 @@ def test_label_plot():
 def test_plot_evals():
     """Test plot evals."""
     results: Results = evaluate_models(
-        datasets=[adult(), toy()],
-        preprocess_models=[Upsampler(strategy="preferential")],
-        inprocess_models=[LR(), SVM(kernel="linear"), Kamiran()],
+        datasets=[Toy()],
+        preprocess_models=[Upsampler(strategy=UpsampleStrategy.preferential)],
+        inprocess_models=[LR(), SVM(kernel=KernelType.linear), Kamiran()],
         metrics=[Accuracy(), CV()],
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,
         test_mode=True,
-        delete_prev=True,
     )
     assert results["seed"][0] == results["seed"][1] == results["seed"][2] == 0
     assert results["seed"][3] == results["seed"][4] == results["seed"][5] == 2410
@@ -93,8 +94,7 @@ def test_plot_evals():
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())
     # num(datasets) * num(preprocess) * num(accuracy combinations) * num(prop_pos combinations)
-    assert len(figs_and_plots) == 2 * 2 * 1 * 2 + 4  # TODO: this +4 should be FIXED,
-    # it matches the column name containing a hyphen as a DIFF metric.
+    assert len(figs_and_plots) == 2 * 2 * 1 * 2
 
     # plot with column names
     figs_and_plots = plot_results(results, "Accuracy", "prob_pos_sensitive-attr_0")

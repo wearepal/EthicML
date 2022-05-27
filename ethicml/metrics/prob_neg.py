@@ -4,10 +4,12 @@ from typing import ClassVar
 
 from ranzen import implements
 
-from ethicml.utility import DataTuple, Prediction
+from ethicml.utility import EvalTuple, Prediction
 
-from .confusion_matrix import confusion_matrix
-from .metric import CfmMetric, Metric
+from .confusion_matrix import CfmMetric
+from .metric import Metric
+
+__all__ = ["ProbNeg"]
 
 
 @dataclass
@@ -17,9 +19,6 @@ class ProbNeg(CfmMetric):
     _name: ClassVar[str] = "prob_neg"
 
     @implements(Metric)
-    def score(self, prediction: Prediction, actual: DataTuple) -> float:
-        t_neg, _, f_neg, _ = confusion_matrix(
-            prediction=prediction, actual=actual, pos_cls=self.pos_class, labels=self.labels
-        )
-
+    def score(self, prediction: Prediction, actual: EvalTuple) -> float:
+        t_neg, _, f_neg, _ = self.confusion_matrix(prediction=prediction, actual=actual)
         return (t_neg + f_neg) / prediction.hard.size

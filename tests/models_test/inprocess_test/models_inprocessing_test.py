@@ -1,11 +1,11 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import ClassVar, Dict, Generator, List, NamedTuple
+from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
+from typing_extensions import Final
 
 import numpy as np
 import pytest
 from pytest import approx
-from ranzen import implements
 
 from ethicml import (
     DRO,
@@ -16,27 +16,37 @@ from ethicml import (
     AbsCV,
     Accuracy,
     Agarwal,
-    BaseMetric,
     Blind,
+    ClassifierType,
+    Compas,
     Corels,
     CrossValidator,
     DataTuple,
     DPOracle,
+    FairDummies,
+    FairnessType,
     InAlgorithm,
-    InAlgorithmAsync,
+    InAlgorithmSubprocess,
     Kamiran,
     Kamishima,
-    LRProb,
+    KernelType,
     Majority,
+    MetricStaticName,
     Oracle,
     Prediction,
+    Toy,
     TrainTestPair,
-    compas,
-    evaluate_models_async,
+    TrainValPair,
+    evaluate_models,
     load_data,
-    toy,
     train_test_split,
 )
+from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
+from ethicml.algorithms.inprocess.fair_dummies import FairDummies
+from ethicml.algorithms.inprocess.hgr import HGR
+from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+
+TMPDIR: Final = Path("/tmp")
 
 
 class InprocessTest(NamedTuple):
@@ -48,44 +58,69 @@ class InprocessTest(NamedTuple):
 
 
 INPROCESS_TESTS = [
-    InprocessTest(name="Agarwal, LR, DP", model=Agarwal(dir='/tmp'), num_pos=45),
-    InprocessTest(name="Agarwal, LR, EqOd", model=Agarwal(dir='/tmp', fairness="EqOd"), num_pos=44),
-    InprocessTest(name="Agarwal, SVM, DP", model=Agarwal(dir='/tmp', classifier="SVM"), num_pos=45),
+    InprocessTest(name="Adversarial Debiasing", model=AdvDebiasing(dir=TMPDIR), num_pos=45),
+    InprocessTest(name="Agarwal, lr, dp, 0.1", model=Agarwal(dir=TMPDIR), num_pos=45),
     InprocessTest(
-        name="Agarwal, SVM, DP",
-        model=Agarwal(dir='/tmp', classifier="SVM", kernel="linear"),
-        num_pos=42,
+        name="Agarwal, gbt, dp, 0.1",
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.gbt),
+        num_pos=44,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd"),
+        name="Agarwal, lr, eq_odds, 0.1",
+        model=Agarwal(dir=TMPDIR, fairness=FairnessType.eq_odds),
+        num_pos=44,
+    ),
+    InprocessTest(
+        name="Agarwal, svm, dp, 0.1",
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm),
         num_pos=45,
     ),
     InprocessTest(
-        name="Agarwal, SVM, EqOd",
-        model=Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd", kernel="linear"),
+        name="Agarwal, svm, dp, 0.1",
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, kernel=KernelType.linear),
+        num_pos=42,
+    ),
+    InprocessTest(
+        name="Agarwal, svm, eq_odds, 0.1",
+        model=Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds),
+        num_pos=45,
+    ),
+    InprocessTest(
+        name="Agarwal, svm, eq_odds, 0.1",
+        model=Agarwal(
+            dir=TMPDIR,
+            classifier=ClassifierType.svm,
+            fairness=FairnessType.eq_odds,
+            kernel=KernelType.linear,
+        ),
         num_pos=42,
     ),
     InprocessTest(name="Blind", model=Blind(), num_pos=48),
     InprocessTest(name="DemPar. Oracle", model=DPOracle(), num_pos=53),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir="/tmp"), num_pos=45),
-    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir="/tmp"), num_pos=59),
-    InprocessTest(name="Kamiran & Calders LR C=1.0", model=Kamiran(), num_pos=44),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir=TMPDIR), num_pos=43),
+    InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=20),
+    InprocessTest(
+        name="HGR linear_model", model=HGR(dir=TMPDIR, model_type="linear_model"), num_pos=60
+    ),
+    InprocessTest(
+        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type="deep_model"), num_pos=69
+    ),
+    InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
+    InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
-    InprocessTest(name="Logistic Regression Prob (C=1.0)", model=LRProb(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
-    InprocessTest(name="MLP", model=MLP(), num_pos=43),
+    InprocessTest(name="MLP", model=MLP(), num_pos=41),
     InprocessTest(name="Oracle", model=Oracle(), num_pos=41),
-    InprocessTest(name="SVM", model=SVM(), num_pos=45),
-    InprocessTest(name="SVM (linear)", model=SVM(kernel="linear"), num_pos=41),
+    InprocessTest(name="SVM (rbf)", model=SVM(), num_pos=45),
+    InprocessTest(name="SVM (linear)", model=SVM(kernel=KernelType.linear), num_pos=41),
 ]
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
-def test_inprocess(toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int):
+def test_inprocess(toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int):
     """Test an inprocess model."""
-    train, test = toy_train_test
+    train, test = toy_train_val
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
@@ -114,10 +149,10 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
 def test_inprocess_sep_train_pred(
-    toy_train_test: TrainTestPair, name: str, model: InAlgorithm, num_pos: int
+    toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
 ):
     """Test an inprocess model with distinct train and predict steps."""
-    train, test = toy_train_test
+    train, test = toy_train_val
 
     assert isinstance(model, InAlgorithm)
     assert model is not None
@@ -139,14 +174,13 @@ def test_corels(toy_train_test: TrainTestPair) -> None:
     with pytest.raises(RuntimeError):
         model.run(train_toy, test_toy)
 
-    data: DataTuple = load_data(compas())
+    data: DataTuple = load_data(Compas())
     train, test = train_test_split(data)
 
     predictions: Prediction = model.run(train, test)
     expected_num_pos = 428
-    assert predictions.hard.values[predictions.hard.values == 1].shape[0] == expected_num_pos
-    num_neg = predictions.hard.values[predictions.hard.values == 0].shape[0]
-    assert num_neg == len(predictions) - expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
+    assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
 
 
 def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
@@ -172,22 +206,22 @@ def test_fair_cv_lr(toy_train_test: TrainTestPair) -> None:
 
 
 @pytest.fixture(scope="session")
-def kamishima_teardown() -> Generator[None, None, None]:
+def kamishima_gen() -> Generator[Kamishima, None, None]:
     """This fixtures tears down Kamishima after all tests have finished.
 
     This has to be done with a fixture because otherwise it will not happen when the test fails.
     """
-    yield
+    yield Kamishima()
     print("teardown Kamishima")
     Kamishima().remove()  # delete the downloaded code
 
 
 @pytest.mark.slow
-def test_kamishima(toy_train_test: TrainTestPair, kamishima_teardown: None) -> None:
+def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
 
-    model: InAlgorithm = Kamishima()  # this will download the code from github and install pipenv
+    model = kamishima_gen  # this will download the code from github and install pipenv
     assert model.name == "Kamishima"
 
     assert model is not None
@@ -206,39 +240,26 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     """Test local installed lr."""
     train, test = toy_train_test
 
-    class _LocalInstalledLR(InAlgorithmAsync):
+    class _LocalInstalledLR(InAlgorithmSubprocess):
         is_fairness_algo: ClassVar[bool] = False
 
-        def __init__(self):
-            self.seed = 0
-            self.model_dir = Path(".")
-
-        @property
-        def name(self) -> str:
+        def get_name(self) -> str:
             return "local installed LR"
 
-        @implements(InAlgorithmAsync)
-        def _run_script_command(
-            self, train_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
-            script = str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())
-            return [script, str(train_path), str(test_path), str(pred_path)]
+        def _get_path_to_script(self) -> List[str]:
+            return [str((Path(__file__).parent.parent.parent / "local_installed_lr.py").resolve())]
 
-        @implements(InAlgorithmAsync)
-        def _fit_script_command(self, train_path: Path, model_path: Path) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
+        def _get_flags(self) -> Mapping[str, Any]:
+            return {}
 
-        @implements(InAlgorithmAsync)
-        def _predict_script_command(
-            self, model_path: Path, test_path: Path, pred_path: Path
-        ) -> List[str]:
-            raise NotImplementedError("this model doesn't support the fit/predict split yet")
+        def get_hyperparameters(self) -> HyperParamType:
+            return {}
 
     model: InAlgorithm = _LocalInstalledLR()
     assert model is not None
     assert model.name == "local installed LR"
 
-    predictions: Prediction = model.run(train, test)
+    predictions: Prediction = model.run(train, test, seed=0)
     expected_num_pos = 44
     assert np.count_nonzero(predictions.hard.values == 1) == expected_num_pos
     assert np.count_nonzero(predictions.hard.values == 0) == len(predictions) - expected_num_pos
@@ -247,10 +268,11 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 @pytest.mark.slow
 def test_threaded_agarwal():
     """Test threaded agarwal."""
-    models: List[InAlgorithmAsync] = [Agarwal(dir='/tmp', classifier="SVM", fairness="EqOd")]
+    models: List[InAlgorithmSubprocess] = [
+        Agarwal(dir=TMPDIR, classifier=ClassifierType.svm, fairness=FairnessType.eq_odds)
+    ]
 
-    class AssertResult(BaseMetric):
-        apply_per_sensitive: ClassVar[bool] = True
+    class AssertResult(MetricStaticName):
         _name: ClassVar[str] = "assert_result"
 
         def score(self, prediction, actual) -> float:
@@ -259,7 +281,7 @@ def test_threaded_agarwal():
                 and np.count_nonzero(prediction.hard.values == 0) == 35
             )
 
-    results = evaluate_models_async(
-        datasets=[toy()], inprocess_models=models, metrics=[AssertResult()], delete_prev=True
+    results = evaluate_models(
+        datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()], delete_previous=True
     )
     assert results["assert_result"].iloc[0]

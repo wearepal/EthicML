@@ -1,12 +1,12 @@
 """Class to describe features of the Adult dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import ClassVar, Type, Union
 
 from ..dataset import LoadableDataset
 from ..util import LabelSpec, flatten_dict, reduce_feature_group, simple_spec
 
-__all__ = ["Adult", "AdultSplits", "adult"]
+__all__ = ["Adult", "AdultSplits"]
 
 
 class AdultSplits(Enum):
@@ -21,28 +21,20 @@ class AdultSplits(Enum):
     CUSTOM = "Custom"
 
 
-def adult(
-    split: Union[AdultSplits, str] = "Sex",
-    discrete_only: bool = False,
-    binarize_nationality: bool = False,
-    binarize_race: bool = False,
-    invert_s: bool = False,
-) -> "Adult":
-    """UCI Adult dataset."""
-    return Adult(
-        split=AdultSplits(split),
-        discrete_only=discrete_only,
-        binarize_nationality=binarize_nationality,
-        binarize_race=binarize_race,
-        invert_s=invert_s,
-    )
-
-
 @dataclass
 class Adult(LoadableDataset):
-    """UCI Adult dataset."""
+    """UCI Adult dataset.
 
-    split: AdultSplits = AdultSplits.SEX
+    :param discrete_only: If True, continuous features are dropped. (Default: False)
+    :param invert_s: If True, the (binary) ``s`` values are inverted. (Default: False)
+    :param split: What to use as ``s``. (Default: "Sex")
+    :param binarize_nationality: If True, nationality will be USA vs rest. (Default: False)
+    :param binarize_race: If True, race will be white vs rest. (Default: False)
+    """
+
+    Splits: ClassVar[Type[AdultSplits]] = AdultSplits
+
+    split: AdultSplits = Splits.SEX
     binarize_nationality: bool = False
     binarize_race: bool = False
 

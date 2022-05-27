@@ -1,6 +1,6 @@
 """File For feature binning."""
 from itertools import groupby
-from typing import List
+from typing import List, Sequence
 
 import pandas as pd
 
@@ -14,8 +14,10 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
 
     Given a datatuple, bin the columns that have ordinal features
     and return as afresh new DataTuple.
+
+    :param data:
     """
-    groups: List[List[str]] = [
+    groups: Sequence[List[str]] = [
         list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])
     ]
 

@@ -20,7 +20,7 @@ from ethicml.utility import DataTuple
 from ..dataset import Dataset
 from ..util import flatten_dict, simple_spec
 
-__all__ = ["acs_income", "AcsIncome", "acs_employment", "AcsEmployment"]
+__all__ = ["AcsIncome", "AcsEmployment"]
 
 
 @contextlib.contextmanager
@@ -31,27 +31,6 @@ def download_dir(root: Path) -> Generator[None, None, None]:
         yield
     finally:
         os.chdir(curdir)
-
-
-def acs_income(
-    root: Path,
-    year: str,
-    horizon: int,
-    states: List[str],
-    split: str = "Sex",
-    target_threshold: int = 50_000,
-    discrete_only: bool = False,
-) -> "AcsIncome":
-    """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
-    return AcsIncome(
-        root=root,
-        year=year,
-        horizon=horizon,
-        states=states,
-        split=split,
-        target_threshold=target_threshold,
-        discrete_only=discrete_only,
-    )
 
 
 class AcsBase(Dataset):
@@ -103,7 +82,7 @@ class AcsBase(Dataset):
 
         assert isinstance(dataframe, pd.DataFrame)
 
-        feature_split = self.feature_split if not ordered else self.ordered_features
+        feature_split = self.ordered_features if ordered else self.feature_split
         if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:
@@ -151,18 +130,18 @@ class AcsBase(Dataset):
             s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._maybe_combine_labels(s_data, label_type="s")
+        s_data, s_mask = self._one_hot_encode_and_combine(s_data, label_type="s")
         if s_mask is not None:
             x_data = x_data.loc[s_mask].reset_index(drop=True)
             s_data = s_data.loc[s_mask].reset_index(drop=True)
             y_data = y_data.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._maybe_combine_labels(y_data, label_type="y")
+        y_data, y_mask = self._one_hot_encode_and_combine(y_data, label_type="y")
         if y_mask is not None:
             x_data = x_data.loc[y_mask].reset_index(drop=True)
             s_data = s_data.loc[y_mask].reset_index(drop=True)
             y_data = y_data.loc[y_mask].reset_index(drop=True)
 
-        return DataTuple(x=x_data, s=s_data, y=y_data, name=self.name)
+        return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
 
 class AcsIncome(AcsBase):
@@ -200,7 +179,7 @@ class AcsIncome(AcsBase):
 
     @staticmethod
     def cat_lookup(key: str) -> Iterable:
-        """Return the lookup for the given key."""
+        """Look up categories."""
         table = {
             "COW": range(1, 9),
             'MAR': range(1, 6),
@@ -313,25 +292,6 @@ class AcsIncome(AcsBase):
         return self._backend_load(dataframe, labels_as_features=labels_as_features, ordered=ordered)
 
 
-def acs_employment(
-    root: Path,
-    year: str,
-    horizon: int,
-    states: List[str],
-    split: str = "Sex",
-    discrete_only: bool = False,
-) -> "AcsEmployment":
-    """The ACS Employment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
-    return AcsEmployment(
-        root=root,
-        year=year,
-        horizon=horizon,
-        states=states,
-        split=split,
-        discrete_only=discrete_only,
-    )
-
-
 class AcsEmployment(AcsBase):
     """The ACS Employmment Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
 
@@ -365,7 +325,7 @@ class AcsEmployment(AcsBase):
 
     @staticmethod
     def cat_lookup(key: str) -> Iterable:
-        """Return the lookup for the given key."""
+        """Look up categories."""
         table = {
             'SCHL': range(1, 25),
             'MAR': range(1, 6),

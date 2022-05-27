@@ -3,6 +3,7 @@ import functools
 import warnings
 from itertools import groupby
 from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Sequence, TypeVar
+from typing_extensions import ParamSpec
 
 __all__ = [
     "LabelGroup",
@@ -10,22 +11,23 @@ __all__ = [
     "deprecated",
     "filter_features_by_prefixes",
     "get_discrete_features",
-    "group_disc_feat_indexes",
+    "group_disc_feat_indices",
     "label_spec_to_feature_list",
     "simple_spec",
 ]
 
-_F = TypeVar("_F", bound=Callable[..., Any])
+_P = ParamSpec("_P")
+_T = TypeVar("_T")
 
 
-def deprecated(func: _F) -> Any:
-    """This is a decorator which can be used to mark functions as deprecated.
+def deprecated(func: Callable[_P, _T]) -> Callable[_P, _T]:
+    """Decorate functions as deprecated.
 
     It will result in a warning being emitted when the function is used.
     """
 
     @functools.wraps(func)
-    def new_func(*args: Any, **kwargs: Any) -> Any:
+    def new_func(*args: _P.args, **kwargs: _P.kwargs) -> Any:
         warnings.simplefilter('always', DeprecationWarning)  # turn off filter
         warnings.warn(
             f"The {func.__name__} class is deprecated. "
@@ -52,12 +54,9 @@ LabelSpec = Mapping[str, LabelGroup]
 def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:
     """Filter the features by prefixes.
 
-    Args:
-        features: list of features names
-        prefixes: list of prefixes
-
-    Returns:
-        filtered feature names
+    :param features: list of features names
+    :param prefixes: list of prefixes
+    :returns: filtered feature names
     """
     res: List[str] = []
     for name in features:
@@ -72,13 +71,10 @@ def get_discrete_features(
 ) -> List[str]:
     """Get a list of the discrete features in a dataset.
 
-    Args:
-        all_feats: List of all features in the dataset.
-        feats_to_remove: List of features that aren't used.
-        cont_feats: List of continuous features in the dataset.
-
-    Returns:
-        List of features not marked as continuous or to be removed.
+    :param all_feats: List of all features in the dataset.
+    :param feats_to_remove: List of features that aren't used.
+    :param cont_feats: List of continuous features in the dataset.
+    :returns: List of features not marked as continuous or to be removed.
     """
     return [
         item
@@ -87,10 +83,14 @@ def get_discrete_features(
     ]
 
 
-def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
+def group_disc_feat_indices(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
     """Group discrete features names according to the first segment of their name.
 
     Returns a list of their corresponding slices (assumes order is maintained).
+
+    :param disc_feat_names: List of discrete feature names.
+    :param prefix_sep: Separator between the prefix and the rest of the name. (Default: "_")
+    :returns: List of slices.
     """
 
     def _first_segment(feature_name: str) -> str:
@@ -102,8 +102,8 @@ def group_disc_feat_indexes(disc_feat_names: List[str], prefix_sep: str = "_") -
     start_idx = 0
     for _, group in group_iter:
         len_group = len(list(group))
-        indexes = slice(start_idx, start_idx + len_group)
-        feature_slices.append(indexes)
+        indices = slice(start_idx, start_idx + len_group)
+        feature_slices.append(indices)
         start_idx += len_group
 
     return feature_slices
@@ -122,7 +122,15 @@ def reduce_feature_group(
     to_keep: Sequence[str],
     remaining_feature_name: str,
 ) -> List[str]:
-    """Drop all features in the given feature group except the ones in to_keep."""
+    """Drop all features in the given feature group except the ones in to_keep.
+
+    :param disc_feature_groups: Dictionary of feature groups.
+    :param feature_group: Name of the feature group that will be replaced by ``to_keep``.
+    :param to_keep: List of features that will be kept in the feature group.
+    :param remaining_feature_name: Name of the dummy feature that will be used to summarize the
+        removed features.
+    :returns: Flattened version of the modified dictionary of feature groups.
+    """
     # first set the given feature group to just the value that we want to keep
     disc_feature_groups[feature_group] = list(to_keep)
     # then add a new dummy feature to the feature group. `load_data()` will create this for us
@@ -132,7 +140,10 @@ def reduce_feature_group(
 
 
 def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
-    """Extract all the feature column names from a dictionary of label specifications."""
+    """Extract all the feature column names from a dictionary of label specifications.
+
+    :param spec: Dictionary of label specifications.
+    """
     feature_list: List[str] = []
     for group in spec.values():
         feature_list += group.columns
@@ -140,7 +151,11 @@ def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
 
 
 def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
-    """Create label specs for the most common case where columns contain 0s and 1s."""
+    """Create label specs for the most common case where columns contain 0s and 1s.
+
+    :param label_defs: Mapping of label names to column names.
+    :returns: Label specifications.
+    """
     multiplier = 1
     label_spec = {}
     for name, columns in label_defs.items():

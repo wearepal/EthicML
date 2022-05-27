@@ -5,12 +5,7 @@ from dataclasses import dataclass
 from ..dataset import LoadableDataset
 from ..util import flatten_dict
 
-__all__ = ["Toy", "toy"]
-
-
-def toy() -> "Toy":
-    """Dataset with toy data for testing."""
-    return Toy()
+__all__ = ["Toy"]
 
 
 @dataclass
