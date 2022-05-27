@@ -103,7 +103,7 @@ def _create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_pat
     :param file_path: Path to the file.
     """
     if isinstance(data, DataTuple):
-        result = pd.concat([data.x, data.s, data.y], axis="columns").to_numpy().astype(np.float64)
+        result = data.data.to_numpy().astype(np.float64)
     else:
         zeros = pd.DataFrame([0 for _ in range(data.x.shape[0])], columns=["y"])
         result = pd.concat([data.x, data.s, zeros], axis="columns").to_numpy().astype(np.float64)

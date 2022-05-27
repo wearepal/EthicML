@@ -87,7 +87,7 @@ def train_test_split(
     y_column = data.y.name
     assert isinstance(s_column, str) and isinstance(y_column, str)
 
-    all_data: pd.DataFrame = pd.concat([data.x, data.s, data.y], axis="columns")
+    all_data: pd.DataFrame = data.data
 
     all_data = shuffle_df(all_data, random_state=1)
 

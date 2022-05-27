@@ -198,13 +198,7 @@ def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
     test_loader = torch.utils.data.DataLoader(
         dataset=test_data, batch_size=flags["batch_size"], shuffle=False
     )
-    test_transformed = encode_testset(enc, test_loader, data)
-    if isinstance(data, DataTuple):
-        return DataTuple.from_df(
-            x=test_transformed.x, s=data.s, y=data.y, name=test_transformed.name
-        )
-    else:
-        return test_transformed
+    return encode_testset(enc, test_loader, data)
 
 
 def train_and_transform(
@@ -266,12 +260,7 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return DataTuple.from_df(
-        x=pd.DataFrame(data_to_return),
-        s=datatuple.s,
-        y=datatuple.y,
-        name=f"Beutel: {datatuple.name}",
-    )
+    return datatuple.replace(x=pd.DataFrame(data_to_return), name=f"Beutel: {datatuple.name}")
 
 
 def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: T) -> T:
