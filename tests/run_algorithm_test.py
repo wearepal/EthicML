@@ -11,10 +11,9 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
-from ethicml import DataTuple, Prediction, TestTuple
+import ethicml.data as emda
+from ethicml import ClassifierType, DataTuple, KernelType, Prediction, TestTuple, metrics, models
 from ethicml.models.inprocess.in_algorithm import _I, InAlgorithmDC
-from ethicml.evaluators.parallelism import run_in_parallel
-from ethicml.utility import ClassifierType, KernelType
 
 
 def test_can_load_test_data(toy_train_test: em.TrainTestPair):
@@ -29,8 +28,8 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 
     data0 = toy_train_val
     data1 = toy_train_val
-    result = run_in_parallel(
-        algos=[em.LR(), em.SVM(), em.Majority()],
+    result = em.run_in_parallel(
+        algos=[models.LR(), models.SVM(), models.Majority()],
         data=[em.TrainValPair(*data0), em.TrainValPair(*data1)],
         seeds=[0, 0],
         num_jobs=2,
@@ -56,7 +55,7 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 @pytest.mark.xdist_group("results_files")
 def test_empty_evaluate():
     """Test empty evaluate."""
-    empty_result = em.evaluate_models([em.Toy()], repeats=3)
+    empty_result = em.evaluate_models([emda.Toy()], repeats=3)
     expected_result = pd.DataFrame(
         [], columns=["dataset", "scaler", "transform", "model", "split_id"]
     )
@@ -71,17 +70,17 @@ def test_empty_evaluate():
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_repeats_error(repeats: int):
     """Add a test to check that the right number of reults are produced with repeats."""
-    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
-    datasets: List[em.Dataset] = [dataset]
-    preprocess_models: List[em.PreAlgorithm] = []
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
+    datasets: List[emda.Dataset] = [dataset]
+    preprocess_models: List[models.PreAlgorithm] = []
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Kamiran()]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=repeats,
         test_mode=True,
@@ -97,17 +96,17 @@ def test_run_alg_repeats_error(repeats: int):
 @pytest.mark.xdist_group("results_files")
 def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
     """Check the repeat_on arg."""
-    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
-    datasets: List[em.Dataset] = [dataset]
-    preprocess_models: List[em.PreAlgorithm] = []
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.Kamiran()]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
+    datasets: List[emda.Dataset] = [dataset]
+    preprocess_models: List[models.PreAlgorithm] = []
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Kamiran()]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=repeats,
         test_mode=True,
@@ -130,17 +129,17 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_scaler():
     """Test run alg suite."""
-    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
-    datasets: List[em.Dataset] = [dataset, em.Toy()]
-    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
+    datasets: List[emda.Dataset] = [dataset, emda.Toy()]
+    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
@@ -151,7 +150,7 @@ def test_run_alg_suite_scaler():
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         scaler=StandardScaler(),
         repeats=1,
@@ -167,17 +166,17 @@ def test_run_alg_suite_scaler():
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite():
     """Test run alg suite."""
-    dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
-    datasets: List[em.Dataset] = [dataset, em.Toy()]
-    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), em.SVM(kernel=KernelType.linear)]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
+    datasets: List[emda.Dataset] = [dataset, emda.Toy()]
+    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,
@@ -210,17 +209,17 @@ def test_run_alg_suite():
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_wrong_metrics():
     """Test run alg suite wrong metrics."""
-    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
-    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.SVM(kernel=KernelType.linear), em.LR()]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR(), em.CV()]
-    with pytest.raises(em.MetricNotApplicable):
+    datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
+    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: List[models.InAlgorithm] = [models.SVM(kernel=KernelType.linear), models.LR()]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
+    with pytest.raises(metrics.MetricNotApplicable):
         em.evaluate_models(
             datasets=datasets,
             preprocess_models=preprocess_models,
             inprocess_models=inprocess_models,
-            metrics=metrics,
+            metrics=metrics_,
             per_sens_metrics=per_sens_metrics,
             repeats=1,
             test_mode=True,
@@ -249,16 +248,16 @@ def test_run_alg_suite_err_handling():
         def get_name(self) -> str:
             return "Problem"
 
-    datasets: List[em.Dataset] = [em.Toy()]
-    preprocess_models: List[em.PreAlgorithm] = []
-    inprocess_models: List[em.InAlgorithm] = [em.LR(), ThrowErr()]
-    metrics: List[em.Metric] = [em.Accuracy()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy()]
+    datasets: List[emda.Dataset] = [emda.Toy()]
+    preprocess_models: List[models.PreAlgorithm] = []
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), ThrowErr()]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy()]
     results = em.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=2,
         test_mode=True,
@@ -272,17 +271,20 @@ def test_run_alg_suite_err_handling():
 @pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
-    datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
-    preprocess_models: List[em.PreAlgorithm] = [em.Upsampler()]
-    inprocess_models: List[em.InAlgorithm] = [em.Kamiran(classifier=ClassifierType.lr), em.LR()]
-    metrics: List[em.Metric] = [em.Accuracy(), em.CV()]
-    per_sens_metrics: List[em.Metric] = [em.Accuracy(), em.TPR()]
+    datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
+    preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
+    inprocess_models: List[models.InAlgorithm] = [
+        models.Kamiran(classifier=ClassifierType.lr),
+        models.LR(),
+    ]
+    metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
+    per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
 
     results = em.evaluate_models(
         datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
-        metrics=metrics,
+        metrics=metrics_,
         per_sens_metrics=per_sens_metrics,
         repeats=1,
         test_mode=True,

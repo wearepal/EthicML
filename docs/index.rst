@@ -12,15 +12,15 @@ Example
 
    import ethicml as em
    import ethicml.data as emda
-   import ethicml.metrics as emme
    import ethicml.models as emmo
+   from ethicml import metrics
 
    results = em.evaluate_models(
        datasets=[emda.Adult()],
        inprocess_models=[emmo.SVM(), emmo.Kamiran()],
        preprocess_models=[emmo.Upsampler()],
-       metrics=[emme.Accuracy()],
-       per_sens_metrics=[emme.ProbPos(), emme.TPR()],
+       metrics=[metrics.Accuracy()],
+       per_sens_metrics=[metrics.ProbPos(), metrics.TPR()],
        repeats=5,
    )
    em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")

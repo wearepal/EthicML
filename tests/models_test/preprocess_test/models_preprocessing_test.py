@@ -9,17 +9,14 @@ import pytest
 from pytest import approx
 
 import ethicml as em
-from ethicml import (
+from ethicml import DataTuple, FairnessType, TrainTestPair, TrainValPair
+from ethicml.models import (
     SVM,
     VFAE,
     Beutel,
     Calders,
-    DataTuple,
-    FairnessType,
     InAlgorithm,
     PreAlgorithm,
-    TrainTestPair,
-    TrainValPair,
     Upsampler,
     UpsampleStrategy,
     Zemel,

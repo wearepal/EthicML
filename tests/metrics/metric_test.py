@@ -2,30 +2,25 @@
 from typing import NamedTuple
 
 import numpy as np
-import pandas as pd
 import pytest
 from pytest import approx
 
-from ethicml import (
+from ethicml import LabelTuple, Prediction, TrainValPair
+from ethicml.metrics import (
     AS,
     CV,
     F1,
-    LR,
     NMI,
-    SVM,
     Accuracy,
     AverageOddsDiff,
     BalancedAccuracy,
     DependencyTarget,
     Hsic,
-    InAlgorithm,
-    Kamiran,
     Metric,
-    Prediction,
     RobustAccuracy,
     Theil,
 )
-from ethicml.utility.data_structures import LabelTuple, TrainValPair
+from ethicml.models import LR, SVM, InAlgorithm, Kamiran
 from tests.conftest import get_id
 
 

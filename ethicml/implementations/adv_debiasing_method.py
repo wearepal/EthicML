@@ -12,8 +12,8 @@ import torch
 from joblib import dump, load
 
 from ethicml import DataTuple, SoftPrediction, SubgroupTuple
-from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
+from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
 
 if TYPE_CHECKING:
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs

@@ -10,6 +10,7 @@ __all__ = [
     "LabelSpec",
     "deprecated",
     "filter_features_by_prefixes",
+    "flatten_dict",
     "get_discrete_features",
     "group_disc_feat_indices",
     "label_spec_to_feature_list",
