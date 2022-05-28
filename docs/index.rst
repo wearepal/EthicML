@@ -12,13 +12,12 @@ Example
 
    import ethicml as em
    import ethicml.data as emda
-   import ethicml.models as emmo
-   from ethicml import metrics
+   from ethicml import metrics, models
 
    results = em.evaluate_models(
        datasets=[emda.Adult()],
-       inprocess_models=[emmo.SVM(), emmo.Kamiran()],
-       preprocess_models=[emmo.Upsampler()],
+       inprocess_models=[models.SVM(), models.Kamiran()],
+       preprocess_models=[models.Upsampler()],
        metrics=[metrics.Accuracy()],
        per_sens_metrics=[metrics.ProbPos(), metrics.TPR()],
        repeats=5,
@@ -34,7 +33,7 @@ API
 
    ethicml/index
    ethicml.data
-   models/index
+   ethicml.models/index
    ethicml.metrics
 
 
