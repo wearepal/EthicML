@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
+from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.utility.data_structures import DataTuple, Prediction, SubgroupTuple, TrainValPair
 
 __all__ = ["arrange_in_parallel", "run_in_parallel"]

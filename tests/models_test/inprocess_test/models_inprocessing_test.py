@@ -8,43 +8,41 @@ import pytest
 from pytest import approx
 
 from ethicml import (
+    ClassifierType,
+    CrossValidator,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    TrainTestPair,
+    TrainValPair,
+    evaluate_models,
+    train_test_split,
+)
+from ethicml.data import Compas, Toy, load_data
+from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
+from ethicml.models import (
     DRO,
     LR,
     LRCV,
     MLP,
     SVM,
-    AbsCV,
-    Accuracy,
     Agarwal,
     Blind,
-    ClassifierType,
-    Compas,
     Corels,
-    CrossValidator,
-    DataTuple,
     DPOracle,
     FairDummies,
-    FairnessType,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamiran,
     Kamishima,
-    KernelType,
     Majority,
-    MetricStaticName,
     Oracle,
-    Prediction,
-    Toy,
-    TrainTestPair,
-    TrainValPair,
-    evaluate_models,
-    load_data,
-    train_test_split,
 )
-from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
-from ethicml.algorithms.inprocess.fair_dummies import FairDummies
-from ethicml.algorithms.inprocess.hgr import HGR
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
+from ethicml.models.inprocess.fair_dummies import FairDummies
+from ethicml.models.inprocess.hgr import HGR
+from ethicml.models.inprocess.in_algorithm import HyperParamType
 
 TMPDIR: Final = Path("/tmp")
 
@@ -148,6 +146,7 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+@pytest.mark.xdist_group("in_model_files")
 def test_inprocess_sep_train_pred(
     toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
 ):
@@ -217,6 +216,7 @@ def kamishima_gen() -> Generator[Kamishima, None, None]:
 
 
 @pytest.mark.slow
+@pytest.mark.xdist_group("in_model_files")
 def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
@@ -266,6 +266,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.slow
+@pytest.mark.xdist_group("results_files")
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmSubprocess] = [

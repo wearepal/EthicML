@@ -5,24 +5,11 @@ import pytest
 from matplotlib import pyplot as plt
 
 from ethicml import (
-    CV,
-    LR,
-    NMI,
-    SVM,
-    TPR,
-    Accuracy,
-    Adult,
     DataTuple,
-    Kamiran,
     KernelType,
-    ProbPos,
     Results,
-    Toy,
     TrainTestPair,
-    Upsampler,
-    UpsampleStrategy,
     evaluate_models,
-    load_data,
     plot_results,
     save_2d_plot,
     save_jointplot,
@@ -30,10 +17,14 @@ from ethicml import (
     save_multijointplot,
     train_test_split,
 )
+from ethicml.data import Adult, Toy, load_data
+from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
+from ethicml.models import LR, SVM, Kamiran, Upsampler, UpsampleStrategy
 
 
 @pytest.mark.slow
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
+@pytest.mark.xdist_group("results_files")
 def test_plot_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
     train, _ = toy_train_test
@@ -41,6 +32,7 @@ def test_plot_tsne(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.usefixtures("plot_cleanup")  # fixtures are defined in `tests/conftest.py`
+@pytest.mark.xdist_group("results_files")
 def test_plot_no_tsne(toy_train_test: TrainTestPair):
     """Test plot."""
     train, _ = toy_train_test
@@ -49,6 +41,7 @@ def test_plot_no_tsne(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.usefixtures("plot_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_joint_plot(toy_train_test: TrainTestPair):
     """Test joint plot."""
     train, _ = toy_train_test
@@ -57,6 +50,7 @@ def test_joint_plot(toy_train_test: TrainTestPair):
 
 @pytest.mark.slow
 @pytest.mark.usefixtures("plot_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_multijoint_plot(toy_train_test: TrainTestPair):
     """Test joint plot."""
     train, _ = toy_train_test
@@ -64,6 +58,7 @@ def test_multijoint_plot(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.usefixtures("plot_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_label_plot():
     """Test label plot."""
     data: DataTuple = load_data(Adult())
@@ -74,6 +69,7 @@ def test_label_plot():
 
 
 @pytest.mark.usefixtures("plot_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_plot_evals():
     """Test plot evals."""
     results: Results = evaluate_models(

@@ -27,8 +27,8 @@ from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.beutel import BeutelArgs
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.beutel import BeutelArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -260,7 +260,7 @@ def encode_dataset(
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
 
-    return datatuple.replace(x=pd.DataFrame(data_to_return)).rename(f"Beutel: {datatuple.name}")
+    return datatuple.replace(x=pd.DataFrame(data_to_return))
 
 
 def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: T) -> T:

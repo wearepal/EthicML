@@ -6,28 +6,19 @@ import pandas as pd
 import pytest
 from pytest import approx
 
-from ethicml import (
-    LR,
-    SVM,
+from ethicml import DataTuple, KernelType, Prediction, train_test_split
+from ethicml.data import Adult, Dataset, NonBinaryToy, Toy, load_data
+from ethicml.metrics import (
     TPR,
     Accuracy,
-    Adult,
-    Dataset,
-    DataTuple,
-    InAlgorithm,
-    KernelType,
     Metric,
-    NonBinaryToy,
-    Prediction,
     ProbNeg,
     ProbOutcome,
     ProbPos,
     Theil,
-    Toy,
-    load_data,
     metric_per_sensitive_attribute,
-    train_test_split,
 )
+from ethicml.models import LR, SVM, InAlgorithm
 from tests.conftest import get_id
 
 

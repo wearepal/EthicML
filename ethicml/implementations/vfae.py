@@ -22,8 +22,8 @@ from .utils import load_data_from_flags, save_transformations
 from .vfae_modules import VFAENetwork, loss_function
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
-    from ethicml.algorithms.preprocess.vfae import VfaeArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.vfae import VfaeArgs
 
 
 def fit(train: DataTuple, flags: VfaeArgs):
@@ -83,7 +83,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
             # z1 = model.reparameterize(z1_mu, z1_logvar)
             post_train += z1_mu.data.tolist()
 
-    return dataset.replace(x=pd.DataFrame(post_train)).rename(f"VFAE: {dataset.name}")
+    return dataset.replace(x=pd.DataFrame(post_train))
 
 
 def train_and_transform(train: DataTuple, test: T, flags: VfaeArgs) -> Tuple[DataTuple, T]:

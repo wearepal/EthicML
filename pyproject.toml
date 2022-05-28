@@ -62,6 +62,7 @@ pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "316dad4"}
 types-Pillow = "^9.0.15"
 omegaconf = ">=2.2.1"
+pytest-xdist = "^2.5.0"
 
 [tool.black]
 line-length = 100
@@ -132,7 +133,7 @@ mypy_path = "typings"
 
 # ===== the following modules in EthicML aren't ready to be type checked so strictly =====
 [[tool.mypy.overrides]]
-module = ["tests.*", "ethicml.implementations.*", "ethicml.algorithms.inprocess.fair_gpyt"]
+module = ["tests.*", "ethicml.implementations.*", "ethicml.models.inprocess.fair_gpyt"]
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 

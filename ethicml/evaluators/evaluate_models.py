@@ -5,8 +5,6 @@ from typing_extensions import Literal
 
 import pandas as pd
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.evaluators.parallelism import run_in_parallel
@@ -17,6 +15,8 @@ from ethicml.metrics.per_sensitive_attribute import (
     metric_per_sensitive_attribute,
     ratio_per_sensitive_attribute,
 )
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
+from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.utility.data_structures import (

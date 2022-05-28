@@ -15,7 +15,7 @@ from joblib import dump, load
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 
-from ethicml.algorithms.inprocess.svm import select_svm
+from ethicml.models.inprocess.svm import select_svm
 from ethicml.utility import (
     ClassifierType,
     DataTuple,
@@ -29,8 +29,8 @@ from ethicml.utility import (
 if TYPE_CHECKING:
     from fairlearn.reductions import ExponentiatedGradient
 
-    from ethicml.algorithms.inprocess.agarwal_reductions import AgarwalArgs
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.agarwal_reductions import AgarwalArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
@@ -53,8 +53,8 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
         ) from e
 
     fairness_class: UtilityParity
-    fairness_type = FairnessType[args["fairness"]]
-    classifier_type = ClassifierType[args["classifier"]]
+    fairness_type = FairnessType(args["fairness"])
+    classifier_type = ClassifierType(args["classifier"])
     kernel_type = None if args["kernel"] == "" else KernelType[args["kernel"]]
 
     if fairness_type is FairnessType.dp:

@@ -15,8 +15,8 @@ from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
 from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.fair_dummies import FairDummiesArgs
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.fair_dummies import FairDummiesArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLearner:

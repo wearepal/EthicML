@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, InAlgoArgs, InAlgorithmSubprocess, Prediction, SubgroupTuple
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+from ethicml import DataTuple, HyperParamType, Prediction, SubgroupTuple
+from ethicml.models import InAlgoArgs, InAlgorithmSubprocess
 
 NPZ: Final[str] = "test.npz"
 

@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 from torch import Tensor
 
-from ethicml.algorithms.preprocess.vfae import VfaeArgs
+from ethicml.models.preprocess.vfae import VfaeArgs
 
 from ..pytorch_common import quadratic_time_mmd
 from .vfae_network import LvInfo
