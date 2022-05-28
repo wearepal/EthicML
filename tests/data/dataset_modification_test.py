@@ -4,13 +4,8 @@ import pandas as pd
 import pytest
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-from ethicml import (
-    Dataset,
-    available_tabular,
-    get_dataset_obj_by_name,
-    scale_continuous,
-    train_test_split,
-)
+from ethicml import scale_continuous, train_test_split
+from ethicml.data import Dataset, available_tabular, get_dataset_obj_by_name
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())

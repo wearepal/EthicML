@@ -22,8 +22,8 @@ from .utils import load_data_from_flags, save_transformations
 from .vfae_modules import VFAENetwork, loss_function
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
-    from ethicml.algorithms.preprocess.vfae import VfaeArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.vfae import VfaeArgs
 
 
 def fit(train: DataTuple, flags: VfaeArgs):

@@ -5,24 +5,11 @@ import pytest
 from matplotlib import pyplot as plt
 
 from ethicml import (
-    CV,
-    LR,
-    NMI,
-    SVM,
-    TPR,
-    Accuracy,
-    Adult,
     DataTuple,
-    Kamiran,
     KernelType,
-    ProbPos,
     Results,
-    Toy,
     TrainTestPair,
-    Upsampler,
-    UpsampleStrategy,
     evaluate_models,
-    load_data,
     plot_results,
     save_2d_plot,
     save_jointplot,
@@ -30,6 +17,9 @@ from ethicml import (
     save_multijointplot,
     train_test_split,
 )
+from ethicml.data import Adult, Toy, load_data
+from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
+from ethicml.models import LR, SVM, Kamiran, Upsampler, UpsampleStrategy
 
 
 @pytest.mark.slow

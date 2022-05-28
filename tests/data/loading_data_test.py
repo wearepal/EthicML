@@ -7,8 +7,34 @@ import pandas as pd
 import pytest
 
 import ethicml as em
-from ethicml import Admissions, Adult, Compas, Credit, Crime, DataTuple, German, LoadableDataset
-from ethicml.data.util import flatten_dict
+from ethicml import DataTuple
+from ethicml.data import (
+    AcsEmployment,
+    AcsIncome,
+    Admissions,
+    Adult,
+    Compas,
+    Credit,
+    Crime,
+    Dataset,
+    German,
+    Health,
+    LabelGroup,
+    Law,
+    Lipton,
+    LoadableDataset,
+    NonBinaryToy,
+    Nursery,
+    Sqf,
+    Synthetic,
+    SyntheticScenarios,
+    SyntheticTargets,
+    Toy,
+    create_data_obj,
+    flatten_dict,
+    group_disc_feat_indices,
+    simple_spec,
+)
 
 
 def test_can_load_test_data(data_root: Path):
@@ -21,7 +47,7 @@ def test_can_load_test_data(data_root: Path):
 class DT(NamedTuple):
     """Describe data for the tests."""
 
-    dataset: em.Dataset
+    dataset: Dataset
     samples: int
     x_features: int
     discrete_features: int
@@ -135,7 +161,7 @@ dts: Final = [
         sum_y=11_208,
     ),
     DT(
-        dataset=em.Adult(split=em.Adult.Splits.RACE),
+        dataset=Adult(split=Adult.Splits.RACE),
         samples=45_222,
         x_features=98,
         discrete_features=93,
@@ -161,7 +187,7 @@ dts: Final = [
         sum_y=11_208,
     ),
     DT(
-        dataset=em.Adult(split=Adult.Splits.RACE_BINARY),
+        dataset=Adult(split=Adult.Splits.RACE_BINARY),
         samples=45_222,
         x_features=98,
         discrete_features=93,
@@ -174,7 +200,7 @@ dts: Final = [
         sum_y=11_208,
     ),
     DT(
-        dataset=em.Adult(split=Adult.Splits.NATIONALITY),
+        dataset=Adult(split=Adult.Splits.NATIONALITY),
         samples=45_222,
         x_features=62,
         discrete_features=57,
@@ -187,7 +213,7 @@ dts: Final = [
         sum_y=11_208,
     ),
     DT(
-        dataset=em.Adult(split=Adult.Splits.EDUCTAION),
+        dataset=Adult(split=Adult.Splits.EDUCTAION),
         samples=45_222,
         x_features=86,
         discrete_features=82,
@@ -200,7 +226,7 @@ dts: Final = [
         sum_y=11_208,
     ),
     DT(
-        dataset=em.Compas(),
+        dataset=Compas(),
         samples=6_167,
         x_features=400,
         discrete_features=395,
@@ -226,7 +252,7 @@ dts: Final = [
         sum_y=2_809,
     ),
     DT(
-        dataset=em.Compas(split=Compas.Splits.RACE),
+        dataset=Compas(split=Compas.Splits.RACE),
         samples=6_167,
         x_features=400,
         discrete_features=395,
@@ -239,7 +265,7 @@ dts: Final = [
         sum_y=2_809,
     ),
     DT(
-        dataset=em.Compas(split=Compas.Splits.RACE_SEX),
+        dataset=Compas(split=Compas.Splits.RACE_SEX),
         samples=6_167,
         x_features=399,
         discrete_features=394,
@@ -330,7 +356,7 @@ dts: Final = [
         sum_y=300,
     ),
     DT(
-        dataset=em.Health(),
+        dataset=Health(),
         samples=171_067,
         x_features=130,
         discrete_features=12,
@@ -343,7 +369,7 @@ dts: Final = [
         sum_y=54_052,
     ),
     DT(
-        dataset=em.Health(split=em.Health.Splits.SEX),
+        dataset=Health(split=Health.Splits.SEX),
         samples=171_067,
         x_features=130,
         discrete_features=12,
@@ -356,7 +382,7 @@ dts: Final = [
         sum_y=54_052,
     ),
     DT(
-        dataset=em.Law(split=em.Law.Splits.SEX),
+        dataset=Law(split=Law.Splits.SEX),
         samples=21_791,
         x_features=3,
         discrete_features=0,
@@ -369,7 +395,7 @@ dts: Final = [
         sum_y=19_360,
     ),
     DT(
-        dataset=em.Law(split=em.Law.Splits.RACE),
+        dataset=Law(split=Law.Splits.RACE),
         samples=21_791,
         x_features=3,
         discrete_features=0,
@@ -382,7 +408,7 @@ dts: Final = [
         sum_y=19_360,
     ),
     DT(
-        dataset=em.Law(split=em.Law.Splits.SEX_RACE),
+        dataset=Law(split=Law.Splits.SEX_RACE),
         samples=21_791,
         x_features=3,
         discrete_features=0,
@@ -395,7 +421,7 @@ dts: Final = [
         sum_y=19_360,
     ),
     DT(
-        dataset=em.Lipton(),
+        dataset=Lipton(),
         samples=2_000,
         x_features=2,
         discrete_features=0,
@@ -408,7 +434,7 @@ dts: Final = [
         sum_y=-562,
     ),
     DT(
-        dataset=em.NonBinaryToy(),
+        dataset=NonBinaryToy(),
         samples=400,
         x_features=10,
         discrete_features=8,
@@ -421,7 +447,7 @@ dts: Final = [
         sum_y=826,
     ),
     DT(
-        dataset=em.Nursery(),
+        dataset=Nursery(),
         samples=12960,
         x_features=22,
         discrete_features=21,
@@ -434,7 +460,7 @@ dts: Final = [
         sum_y=4320,
     ),
     DT(
-        dataset=em.Sqf(),
+        dataset=Sqf(),
         samples=12_347,
         x_features=145,
         discrete_features=139,
@@ -447,7 +473,7 @@ dts: Final = [
         sum_y=1_289,
     ),
     DT(
-        dataset=em.Sqf(split=em.Sqf.Splits.SEX),
+        dataset=Sqf(split=Sqf.Splits.SEX),
         samples=12_347,
         x_features=145,
         discrete_features=139,
@@ -460,7 +486,7 @@ dts: Final = [
         sum_y=1_289,
     ),
     DT(
-        dataset=em.Sqf(split=em.Sqf.Splits.RACE),
+        dataset=Sqf(split=Sqf.Splits.RACE),
         samples=12_347,
         x_features=145,
         discrete_features=139,
@@ -473,7 +499,7 @@ dts: Final = [
         sum_y=1_289,
     ),
     DT(
-        dataset=em.Sqf(split=em.Sqf.Splits.RACE_SEX),
+        dataset=Sqf(split=Sqf.Splits.RACE_SEX),
         samples=12_347,
         x_features=144,
         discrete_features=138,
@@ -486,7 +512,7 @@ dts: Final = [
         sum_y=1_289,
     ),
     DT(
-        dataset=em.Toy(),
+        dataset=Toy(),
         samples=400,
         x_features=10,
         discrete_features=8,
@@ -499,7 +525,7 @@ dts: Final = [
         sum_y=231,
     ),
     DT(
-        dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+        dataset=AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
         samples=22_268,
         x_features=45,
         discrete_features=40,
@@ -512,7 +538,7 @@ dts: Final = [
         sum_y=6_924,
     ),
     DT(
-        dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
+        dataset=AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["PA"]),
         samples=68_308,
         x_features=45,
         discrete_features=40,
@@ -525,7 +551,7 @@ dts: Final = [
         sum_y=24_385,
     ),
     DT(
-        dataset=em.AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
+        dataset=AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL", "PA"]),
         samples=90_576,
         x_features=45,
         discrete_features=40,
@@ -538,9 +564,7 @@ dts: Final = [
         sum_y=31_309,
     ),
     DT(
-        dataset=em.AcsIncome(
-            root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Race"
-        ),
+        dataset=AcsIncome(root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Race"),
         samples=22_268,
         x_features=38,
         discrete_features=33,
@@ -553,7 +577,7 @@ dts: Final = [
         sum_y=6_924,
     ),
     DT(
-        dataset=em.AcsIncome(
+        dataset=AcsIncome(
             root=Path("~/Data"), year="2018", horizon=1, states=["AL"], split="Sex-Race"
         ),
         samples=22_268,
@@ -568,7 +592,7 @@ dts: Final = [
         sum_y=6_924,
     ),
     DT(
-        dataset=em.AcsEmployment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
+        dataset=AcsEmployment(root=Path("~/Data"), year="2018", horizon=1, states=["AL"]),
         samples=47_777,
         x_features=90,
         discrete_features=89,
@@ -616,23 +640,23 @@ def test_data_shape(dt: DT):
 
 @pytest.mark.parametrize("fair", [False, True])
 @pytest.mark.parametrize(
-    "target", [em.Synthetic.Targets.Y1, em.Synthetic.Targets.Y2, em.Synthetic.Targets.Y3]
+    "target", [Synthetic.Targets.Y1, Synthetic.Targets.Y2, Synthetic.Targets.Y3]
 )
 @pytest.mark.parametrize(
     "scenario",
     [
-        em.Synthetic.Scenarios.S1,
-        em.Synthetic.Scenarios.S2,
-        em.Synthetic.Scenarios.S3,
-        em.Synthetic.Scenarios.S4,
+        Synthetic.Scenarios.S1,
+        Synthetic.Scenarios.S2,
+        Synthetic.Scenarios.S3,
+        Synthetic.Scenarios.S4,
     ],
 )
 @pytest.mark.parametrize("samples", [10, 100, 1_000])
 def test_synth_data_shape(
-    scenario: em.SyntheticScenarios, target: em.SyntheticTargets, fair: bool, samples: int
+    scenario: SyntheticScenarios, target: SyntheticTargets, fair: bool, samples: int
 ):
     """Test loading data."""
-    dataset = em.Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
+    dataset = Synthetic(scenario=scenario, target=target, fair=fair, num_samples=samples)
     data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
     assert (samples,) == data.s.shape
@@ -659,9 +683,7 @@ def test_synth_data_shape(
 def test_load_data_as_a_function(data_root: Path):
     """Test load data as a function."""
     data_loc = data_root / "toy.csv"
-    data_obj: em.Dataset = em.create_data_obj(
-        data_loc, s_column="sensitive-attr", y_column="decision"
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     assert data_obj is not None
     assert data_obj.feature_split["x"] == [
         "a1",
@@ -683,9 +705,7 @@ def test_load_data_as_a_function(data_root: Path):
 def test_joining_2_load_functions(data_root: Path):
     """Test joining 2 load functions."""
     data_loc = data_root / "toy.csv"
-    data_obj: em.Dataset = em.create_data_obj(
-        data_loc, s_column="sensitive-attr", y_column="decision"
-    )
+    data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     data: DataTuple = data_obj.load()
     assert (400, 10) == data.x.shape
     assert (400,) == data.s.shape
@@ -694,11 +714,11 @@ def test_joining_2_load_functions(data_root: Path):
 
 def test_load_compas_feature_length():
     """Test load compas feature length."""
-    data: DataTuple = em.Compas().load()
-    assert len(em.Compas().ordered_features["x"]) == 400
-    assert len(em.Compas().discrete_features) == 395
-    assert len(em.Compas().continuous_features) == 5
-    disc_feature_groups = em.Compas().disc_feature_groups
+    data: DataTuple = Compas().load()
+    assert len(Compas().ordered_features["x"]) == 400
+    assert len(Compas().discrete_features) == 395
+    assert len(Compas().continuous_features) == 5
+    disc_feature_groups = Compas().disc_feature_groups
     assert disc_feature_groups is not None
     assert len(disc_feature_groups["c-charge-desc"]) == 389
     assert data.s.shape == (6167,)
@@ -746,7 +766,7 @@ def test_load_adult_race_sex():
 
 def test_race_feature_split():
     """Test race feature split."""
-    adult_data: em.Dataset = Adult(split=Adult.Splits.CUSTOM)
+    adult_data: Dataset = Adult(split=Adult.Splits.CUSTOM)
     adult_data._sens_attr_spec = "race_White"
     adult_data._s_prefix = ["race"]
     adult_data._class_label_spec = "salary_>50K"
@@ -818,7 +838,7 @@ def test_load_adult_education():
 
 def test_load_adult_education_drop():
     """Test load adult education."""
-    adult_data = em.Adult(split=Adult.Splits.EDUCTAION, binarize_nationality=True)
+    adult_data = Adult(split=Adult.Splits.EDUCTAION, binarize_nationality=True)
     assert adult_data.name == "Adult Education, binary nationality"
     assert "education_HS-grad" in adult_data.sens_attrs
     assert "education_other" in adult_data.sens_attrs
@@ -844,7 +864,7 @@ def test_load_adult_education_drop():
 def test_additional_columns_load(data_root: Path):
     """Test additional columns load."""
     data_loc = data_root / "adult.csv.zip"
-    data_obj: em.Dataset = em.create_data_obj(
+    data_obj: Dataset = create_data_obj(
         data_loc,
         s_column="race_White",
         y_column="salary_>50K",
@@ -859,7 +879,7 @@ def test_additional_columns_load(data_root: Path):
 
 def test_domain_adapt_adult():
     """Test domain adapt adult."""
-    data: DataTuple = em.Adult().load()
+    data: DataTuple = Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0.",
@@ -873,7 +893,7 @@ def test_domain_adapt_adult():
     assert (6116,) == test.s.shape
     assert (6116,) == test.y.shape
 
-    data = em.Adult().load()
+    data = Adult().load()
     train, test = em.domain_split(
         datatup=data, tr_cond="education_Masters == 0.", te_cond="education_Masters == 1."
     )
@@ -885,7 +905,7 @@ def test_domain_adapt_adult():
     assert (5028,) == test.s.shape
     assert (5028,) == test.y.shape
 
-    data = em.Adult().load()
+    data = Adult().load()
     train, test = em.domain_split(
         datatup=data,
         tr_cond="education_Masters == 0. & education_Doctorate == 0. & education_Bachelors == 0.",
@@ -931,7 +951,7 @@ def test_concat():
 def test_group_prefixes():
     """Test group prefixes."""
     names = ["a_asf", "a_fds", "good_lhdf", "good_dsdw", "sas"]
-    grouped_indices = em.group_disc_feat_indices(names, prefix_sep="_")
+    grouped_indices = group_disc_feat_indices(names, prefix_sep="_")
 
     assert len(grouped_indices) == 3
     assert grouped_indices[0] == slice(0, 2)
@@ -941,14 +961,14 @@ def test_group_prefixes():
 
 def test_expand_s():
     """Test expanding s."""
-    data = em.LoadableDataset(
+    data = LoadableDataset(
         name="test",
         filename_or_path="non-existent",
         features=[],
         cont_features=[],
         sens_attr_spec={
-            "Gender": em.LabelGroup(["Female", "Male"], multiplier=3),
-            "Race": em.LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
+            "Gender": LabelGroup(["Female", "Male"], multiplier=3),
+            "Race": LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
         },
         class_label_spec="label",
         num_samples=7,
@@ -975,10 +995,10 @@ def test_expand_s():
 def test_simple_spec():
     """Test the simple spec function."""
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
-    spec = em.simple_spec(sens_attrs)
+    spec = simple_spec(sens_attrs)
     assert spec == {
-        "gender": em.LabelGroup(["female", "male"], multiplier=3),
-        "race": em.LabelGroup(["blue", "green", "pink"], multiplier=1),
+        "gender": LabelGroup(["female", "male"], multiplier=3),
+        "race": LabelGroup(["blue", "green", "pink"], multiplier=1),
     }
 
 

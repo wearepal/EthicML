@@ -1,7 +1,7 @@
 """Test utility functions."""
 import pytest
 
-from ethicml import available_tabular, get_dataset_obj_by_name
+from ethicml.data import available_tabular, get_dataset_obj_by_name
 
 
 @pytest.mark.parametrize("name", available_tabular())

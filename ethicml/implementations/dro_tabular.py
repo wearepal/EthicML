@@ -30,8 +30,8 @@ from ethicml.implementations.utils import load_data_from_flags
 from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.fairness_wo_demographics import DroArgs
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.fairness_wo_demographics import DroArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def train_model(

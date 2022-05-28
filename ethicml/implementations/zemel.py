@@ -17,8 +17,8 @@ from ethicml.implementations.utils import load_data_from_flags, save_transformat
 from ethicml.utility import DataTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
-    from ethicml.algorithms.preprocess.zemel import ZemelArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.zemel import ZemelArgs
 
 
 class Model(NamedTuple):

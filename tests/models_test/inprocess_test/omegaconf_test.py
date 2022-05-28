@@ -4,27 +4,27 @@ from typing import Type
 import pytest
 from omegaconf import OmegaConf
 
-import ethicml as em
+from ethicml import models
 
 
 @pytest.mark.parametrize(
     "algo_class",
     [
-        em.Agarwal,
-        em.Blind,
-        em.Corels,
-        em.DPOracle,
-        em.LR,
-        em.LRCV,
-        em.Majority,
-        em.Oracle,
-        em.SVM,
-        em.DRO,
-        em.Kamiran,
-        em.MLP,
+        models.Agarwal,
+        models.Blind,
+        models.Corels,
+        models.DPOracle,
+        models.LR,
+        models.LRCV,
+        models.Majority,
+        models.Oracle,
+        models.SVM,
+        models.DRO,
+        models.Kamiran,
+        models.MLP,
     ],
 )
-def test_hydra_compatibility(algo_class: Type[em.InAlgorithm]) -> None:
+def test_hydra_compatibility(algo_class: Type[models.InAlgorithm]) -> None:
     """Test hydra compatibility."""
     # create config object from dataclass (usually taken care of by hydra)
     conf = OmegaConf.structured(algo_class)

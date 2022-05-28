@@ -8,43 +8,41 @@ import pytest
 from pytest import approx
 
 from ethicml import (
+    ClassifierType,
+    CrossValidator,
+    DataTuple,
+    FairnessType,
+    KernelType,
+    Prediction,
+    TrainTestPair,
+    TrainValPair,
+    evaluate_models,
+    train_test_split,
+)
+from ethicml.data import Compas, Toy, load_data
+from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
+from ethicml.models import (
     DRO,
     LR,
     LRCV,
     MLP,
     SVM,
-    AbsCV,
-    Accuracy,
     Agarwal,
     Blind,
-    ClassifierType,
-    Compas,
     Corels,
-    CrossValidator,
-    DataTuple,
     DPOracle,
     FairDummies,
-    FairnessType,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamiran,
     Kamishima,
-    KernelType,
     Majority,
-    MetricStaticName,
     Oracle,
-    Prediction,
-    Toy,
-    TrainTestPair,
-    TrainValPair,
-    evaluate_models,
-    load_data,
-    train_test_split,
 )
-from ethicml.algorithms.inprocess.adv_debiasing import AdvDebiasing
-from ethicml.algorithms.inprocess.fair_dummies import FairDummies
-from ethicml.algorithms.inprocess.hgr import HGR
-from ethicml.algorithms.inprocess.in_algorithm import HyperParamType
+from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
+from ethicml.models.inprocess.fair_dummies import FairDummies
+from ethicml.models.inprocess.hgr import HGR
+from ethicml.models.inprocess.in_algorithm import HyperParamType
 
 TMPDIR: Final = Path("/tmp")
 

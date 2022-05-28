@@ -12,11 +12,11 @@ import torch
 from joblib import dump, load
 
 from ethicml import DataTuple, SoftPrediction, SubgroupTuple
-from ethicml.algorithms.inprocess.adv_debiasing import AdvDebArgs
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
+from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClassLearner:

@@ -5,9 +5,9 @@ import numpy as np
 import pytest
 
 import ethicml as em
-from ethicml import LR, Hardt, InAlgorithm, PostAlgorithm, Prediction, ProbPos
-from ethicml.algorithms.postprocess.dp_flip import DPFlip
-from ethicml.utility.data_structures import TrainValPair
+from ethicml import Prediction, TrainValPair
+from ethicml.metrics import ProbPos, diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from ethicml.models import LR, DPFlip, Hardt, InAlgorithm, PostAlgorithm
 
 
 class PostprocessTest(NamedTuple):
@@ -48,8 +48,8 @@ def test_post(
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
     assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
-    diffs = em.diff_per_sensitive_attribute(
-        em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     if isinstance(post_model, DPFlip):
         for diff in diffs.values():
@@ -88,8 +88,8 @@ def test_post_sep_fit_pred(
     fair_preds = fair_model.predict(Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
     assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
-    diffs = em.diff_per_sensitive_attribute(
-        em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     if isinstance(post_model, DPFlip):
         for diff in diffs.values():
@@ -120,8 +120,8 @@ def test_dp_flip_inverted_s(toy_train_val: TrainValPair) -> None:
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == 57
     assert np.count_nonzero(fair_preds.hard.values == 0) == 23
-    diffs = em.diff_per_sensitive_attribute(
-        em.metric_per_sensitive_attribute(fair_preds, test, ProbPos())
+    diffs = diff_per_sensitive_attribute(
+        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
     )
     for diff in diffs.values():
         assert pytest.approx(diff, abs=1e-2) == 0
