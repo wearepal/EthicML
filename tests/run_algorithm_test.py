@@ -53,6 +53,7 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 
 
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_empty_evaluate():
     """Test empty evaluate."""
     empty_result = em.evaluate_models([em.Toy()], repeats=3)
@@ -67,6 +68,7 @@ def test_empty_evaluate():
 
 @pytest.mark.parametrize("repeats", [1, 2, 3])
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_repeats_error(repeats: int):
     """Add a test to check that the right number of reults are produced with repeats."""
     dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
@@ -92,6 +94,7 @@ def test_run_alg_repeats_error(repeats: int):
 @pytest.mark.parametrize("on", ["data", "model", "both"])
 @pytest.mark.parametrize("repeats", [2, 3, 5])
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
     """Check the repeat_on arg."""
     dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
@@ -124,6 +127,7 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
 
 
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_scaler():
     """Test run alg suite."""
     dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
@@ -160,6 +164,7 @@ def test_run_alg_suite_scaler():
 
 
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_suite():
     """Test run alg suite."""
     dataset = em.Adult(split=em.Adult.Splits.RACE_BINARY)
@@ -202,6 +207,7 @@ def test_run_alg_suite():
 
 
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_wrong_metrics():
     """Test run alg suite wrong metrics."""
     datasets: List[em.Dataset] = [em.Toy(), em.Adult()]
@@ -223,6 +229,7 @@ def test_run_alg_suite_wrong_metrics():
 
 
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_err_handling():
     """Test run alg suite handles when an err is thrown."""
 
@@ -262,6 +269,7 @@ def test_run_alg_suite_err_handling():
 
 @pytest.mark.slow
 @pytest.mark.usefixtures("results_cleanup")
+@pytest.mark.xdist_group("results_files")
 def test_run_alg_suite_no_pipeline():
     """Run alg suite while avoiding the 'fair pipeline'."""
     datasets: List[em.Dataset] = [em.Toy(), em.Adult()]

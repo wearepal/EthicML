@@ -62,6 +62,7 @@ pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "316dad4"}
 types-Pillow = "^9.0.15"
 omegaconf = ">=2.2.1"
+pytest-xdist = "^2.5.0"
 
 [tool.black]
 line-length = 100

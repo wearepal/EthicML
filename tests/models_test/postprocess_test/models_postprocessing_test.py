@@ -63,6 +63,7 @@ def test_post(
         PostprocessTest(post_model=Hardt(), name="Hardt", num_pos=35),
     ],
 )
+@pytest.mark.xdist_group("post_model_files")
 def test_post_sep_fit_pred(
     toy_train_val: TrainValPair, post_model: PostAlgorithm, name: str, num_pos: int
 ) -> None:
