@@ -148,6 +148,7 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.parametrize("name,model,num_pos", INPROCESS_TESTS)
+@pytest.mark.xdist_group("in_model_files")
 def test_inprocess_sep_train_pred(
     toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
 ):
@@ -217,6 +218,7 @@ def kamishima_gen() -> Generator[Kamishima, None, None]:
 
 
 @pytest.mark.slow
+@pytest.mark.xdist_group("in_model_files")
 def test_kamishima(toy_train_test: TrainTestPair, kamishima_gen: Kamishima) -> None:
     """Test Kamishima."""
     train, test = toy_train_test
@@ -266,6 +268,7 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
 
 
 @pytest.mark.slow
+@pytest.mark.xdist_group("results_files")
 def test_threaded_agarwal():
     """Test threaded agarwal."""
     models: List[InAlgorithmSubprocess] = [

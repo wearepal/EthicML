@@ -112,6 +112,7 @@ def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
+@pytest.mark.xdist_group("pre_model_files")
 def test_pre_sep_fit_transform(
     toy_train_val: TrainValPair, model: PreAlgorithm, name: str, num_pos: int
 ):
