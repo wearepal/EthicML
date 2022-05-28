@@ -1,5 +1,5 @@
 """EthicML"""
 
-from . import b_metrics
-from .b_metrics import nonparamaterized_metric_test
-from .c_data_test import loading_data_test
+from . import c_metrics
+from .b_data import loading_data_test
+from .c_metrics import nonparamaterized_metric_test

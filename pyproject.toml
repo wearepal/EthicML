@@ -133,7 +133,7 @@ mypy_path = "typings"
 
 # ===== the following modules in EthicML aren't ready to be type checked so strictly =====
 [[tool.mypy.overrides]]
-module = ["tests.*", "tests.c_data_test.*", "ethicml.implementations.*", "ethicml.algorithms.inprocess.fair_gpyt"]
+module = ["tests.*", "ethicml.implementations.*", "ethicml.algorithms.inprocess.fair_gpyt"]
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 
