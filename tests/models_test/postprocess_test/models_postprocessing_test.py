@@ -6,7 +6,7 @@ import pytest
 
 import ethicml as em
 from ethicml import LR, Hardt, InAlgorithm, PostAlgorithm, Prediction, ProbPos
-from ethicml.algorithms.postprocess.dp_flip import DPFlip
+from ethicml.models.postprocess.dp_flip import DPFlip
 from ethicml.utility.data_structures import TrainValPair
 
 

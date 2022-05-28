@@ -5,8 +5,9 @@ Some example code
 .. code:: python
 
    import ethicml as em
+   import ethicml.metrics as emme
 
-   em.run_metrics(predictions, test_data, metrics=[em.Accuracy(), em.TPR(), em.ProbPos()])
+   em.run_metrics(predictions, test_data, metrics=[emme.Accuracy(), emme.TPR(), emme.ProbPos()])
 """
 from .accuracy import *
 from .anti_spur import *

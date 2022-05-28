@@ -27,8 +27,8 @@ from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.preprocess.beutel import BeutelArgs
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.beutel import BeutelArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 

@@ -1,1 +1,0 @@
-"""Definitions of algorithms."""

@@ -5,8 +5,8 @@ from typing_extensions import Literal
 
 import pandas as pd
 
-from ethicml.algorithms.inprocess.in_algorithm import InAlgorithm
-from ethicml.algorithms.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
+from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
 from ethicml.evaluators.parallelism import run_in_parallel

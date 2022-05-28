@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def main():

@@ -7,8 +7,8 @@ from typing import TYPE_CHECKING, Tuple
 from ethicml.utility import DataTuple, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.algorithms.inprocess.in_subprocess import InAlgoRunArgs
-    from ethicml.algorithms.preprocess.pre_subprocess import PreAlgoRunArgs
+    from ethicml.models.inprocess.in_subprocess import InAlgoRunArgs
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoRunArgs
 
 
 def load_data_from_flags(args: PreAlgoRunArgs | InAlgoRunArgs) -> Tuple[DataTuple, SubgroupTuple]:

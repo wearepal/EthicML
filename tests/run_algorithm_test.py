@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
 from ethicml import DataTuple, Prediction, TestTuple
-from ethicml.algorithms.inprocess.in_algorithm import _I, InAlgorithmDC
+from ethicml.models.inprocess.in_algorithm import _I, InAlgorithmDC
 from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.utility import ClassifierType, KernelType
 
