@@ -21,6 +21,7 @@ repos:
     rev: 6.1.1  # pick a git hash / tag to point to
     hooks:
       - id: pydocstyle
+        additional_dependencies: ['.[toml]']
         args:
           - --convention=google
           - --add-ignore=D105,D107

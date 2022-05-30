@@ -1,9 +1,11 @@
 """Runs given metrics on given algorithms for given datasets."""
+import warnings
 from pathlib import Path
 from typing import Dict, List, NamedTuple, Optional, Sequence, Union
 from typing_extensions import Literal
 
 import pandas as pd
+from joblib import Parallel, delayed
 
 from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
@@ -235,7 +237,14 @@ def evaluate_models(
         algos=inprocess_models, data=data_splits, seeds=model_seeds, num_jobs=num_jobs
     )
     inprocess_untransformed = _gather_metrics(
-        all_predictions, test_data, inprocess_models, metrics, per_sens_metrics, outdir, topic
+        all_predictions,
+        test_data,
+        inprocess_models,
+        metrics,
+        per_sens_metrics,
+        outdir,
+        topic,
+        num_jobs=num_jobs,
     )
     all_results.append_df(inprocess_untransformed)
 
@@ -275,7 +284,14 @@ def evaluate_models(
         num_jobs=num_jobs,
     )
     transf_results = _gather_metrics(
-        transf_preds, transformed_test, run_on_transformed, metrics, per_sens_metrics, outdir, topic
+        transf_preds,
+        transformed_test,
+        run_on_transformed,
+        metrics,
+        per_sens_metrics,
+        outdir,
+        topic,
+        num_jobs=num_jobs,
     )
     all_results.append_df(transf_results)
 
@@ -291,6 +307,7 @@ def _gather_metrics(
     per_sens_metrics: Sequence[Metric],
     outdir: Path,
     topic: Optional[str],
+    num_jobs: int = 1,
 ) -> Results:
     """Take a list of lists of predictions and compute all metrics.
 
@@ -311,38 +328,61 @@ def _gather_metrics(
     all_results = ResultsAggregator()
 
     # compute metrics, collect them and write them to files
-    for preds_for_dataset, data_info in zip(all_predictions_t, test_data):
-        # ============================= handle results of one dataset =============================
-        results_df = pd.DataFrame(columns=columns)  # create empty results dataframe
-        predictions: Prediction
-        for predictions, model in zip(preds_for_dataset, inprocess_models):
-            # construct a row of the results dataframe
-            hyperparameters: Dict[str, Union[str, float]] = {
-                k: v if isinstance(v, (float, int)) else str(v)
-                for k, v in model.get_hyperparameters().items()
-            }
+    runner = Parallel(n_jobs=num_jobs, verbose=10, backend="loky")
+    results = runner(
+        _run_metrics(model, data_info, predictions, metrics, per_sens_metrics)
+        for preds_for_dataset, data_info in zip(all_predictions_t, test_data)
+        for predictions, model in zip(preds_for_dataset, inprocess_models)
+    )
 
-            seed = predictions.info["model_seed"]
-            assert isinstance(seed, int)
-            df_row: Dict[str, HyperParamValue] = {
-                "dataset": data_info.dataset_name,
-                "scaler": data_info.scaler,
-                "transform": data_info.transform_name,
-                "model": model.name,
-                "model_seed": seed,
-                **data_info.split_info,
-                **hyperparameters,
-            }
-            df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
+    results_df = pd.DataFrame(columns=columns).from_dict(results)
+    if len(results_df):
+        all_results.append_df(results_df)
 
-            results_df = results_df.append(df_row, ignore_index=True, sort=False)
-
+    for _, data_info in zip(all_predictions_t, test_data):
         # write results to CSV files and load previous results from the files if they already exist
         csv_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)
-        aggregator = ResultsAggregator(results_df)
+        aggregator = ResultsAggregator(
+            results_df[
+                (results_df["transform"] == data_info.transform_name)
+                & (results_df["dataset"] == data_info.dataset_name)
+            ]
+        )
         # put old results before new results -> prepend=True
         aggregator.append_from_csv(csv_file, prepend=True)
         aggregator.save_as_csv(csv_file)
-        all_results.append_df(results_df)
 
     return all_results.results
+
+
+@delayed
+def _run_metrics(model, data_info, predictions, metrics, per_sens_metrics):
+    warnings.filterwarnings('ignore')
+
+    hyperparameters: Dict[str, Union[str, float]] = {
+        k: v if isinstance(v, (float, int)) else str(v)
+        for k, v in model.get_hyperparameters().items()
+    }
+
+    df_row: Dict[str, Union[str, float]] = {
+        "dataset": data_info.dataset_name,
+        "scaler": data_info.scaler,
+        "transform": data_info.transform_name,
+        "model": model.name,
+        "model_seed": predictions.info["model_seed"],
+        **data_info.split_info,
+        **hyperparameters,
+    }
+    df_row.update(
+        run_metrics(
+            predictions=predictions,
+            actual=data_info.test,
+            metrics=metrics,
+            per_sens_metrics=per_sens_metrics,
+            use_sens_name=False,
+        )
+    )
+    if "algorithm_failed" not in df_row.keys():
+        df_row["algorithm_failed"] = 0.0
+
+    return df_row

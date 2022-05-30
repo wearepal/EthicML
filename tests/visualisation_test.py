@@ -89,11 +89,11 @@ def test_plot_evals():
 
     # plot with metrics
     figs_and_plots = plot_results(results, Accuracy(), ProbPos())
-    # num(datasets) * num(preprocess) * num(accuracy combinations) * num(prop_pos combinations)
-    assert len(figs_and_plots) == 2 * 2 * 1 * 2
+    # num(datasets) * num(preprocess) * num(accuracy in results) * num(prob_pos in results)
+    assert len(figs_and_plots) == 1 * 2 * 1 * 2
 
     # plot with column names
-    figs_and_plots = plot_results(results, "Accuracy", "prob_pos_sensitive-attr_0")
+    figs_and_plots = plot_results(results, "Accuracy", "prob_pos_S_0")
     assert len(figs_and_plots) == 1 * 2 * 1 * 1
 
     with pytest.raises(ValueError, match='No matching columns found for Metric "NMI preds and s".'):

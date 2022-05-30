@@ -25,7 +25,6 @@ def test_can_load_test_data(toy_train_test: em.TrainTestPair):
 
 def test_run_parallel(toy_train_val: em.TrainValPair):
     """Test run parallel."""
-
     data0 = toy_train_val
     data1 = toy_train_val
     result = em.run_in_parallel(
@@ -196,7 +195,7 @@ def test_run_alg_suite():
     for file in file_names:
         written_file = pd.read_csv(Path(f"./results/{file}"))
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
-        assert written_file.shape == (2, 19)
+        assert written_file.shape == (2, 20)
 
     reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
