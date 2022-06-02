@@ -121,6 +121,7 @@ class AcsBase(Dataset):
     @property
     def feature_split(self) -> FeatureSplit:
         """Return a feature split dictionary.
+
         This should have separate entries for the features, the labels and the sensitive attributes.
         """
         features_to_remove = self.features_to_remove
@@ -220,6 +221,7 @@ class AcsBase(Dataset):
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
     ) -> Tuple[pd.Series, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs.
+
         :param attributes: DataFrame containing the attributes.
         :param label_type: Type of label to construct.
         """

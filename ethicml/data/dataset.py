@@ -32,6 +32,8 @@ __all__ = [
 
 
 class LabelSpecsPair(NamedTuple):
+    """A pair of label specs."""
+
     s: LabelSpec
     y: LabelSpec
 
@@ -169,7 +171,7 @@ class CSVDataset(Dataset, ABC):
         return to_remove
 
     @final
-    def filter_features(self, features: Sequence[str]) -> List[str]:
+    def _filter_features(self, features: Sequence[str]) -> List[str]:
         return [feat for feat in features if feat not in self.features_to_remove]
 
     @property
@@ -189,12 +191,12 @@ class CSVDataset(Dataset, ABC):
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return self.filter_features(self.get_unfiltered_continuous())
+        return self._filter_features(self.get_unfiltered_continuous())
 
     @property
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
-        return self.filter_features(flatten_dict(self.get_disc_feature_groups()))
+        return self._filter_features(flatten_dict(self.get_disc_feature_groups()))
 
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
