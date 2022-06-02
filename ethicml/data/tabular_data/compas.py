@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type, Union
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Compas", "CompasSplits"]
@@ -19,7 +19,7 @@ class CompasSplits(Enum):
 
 
 @dataclass
-class Compas(LoadableDataset):
+class Compas(LegacyDataset):
     """Compas (or ProPublica) dataset."""
 
     split: CompasSplits = CompasSplits.SEX
@@ -470,6 +470,5 @@ class Compas(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

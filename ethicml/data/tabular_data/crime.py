@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["Crime", "CrimeSplits"]
@@ -17,7 +17,7 @@ class CrimeSplits(Enum):
 
 
 @dataclass
-class Crime(LoadableDataset):
+class Crime(LegacyDataset):
     """UCI Communities and Crime dataset."""
 
     split: CrimeSplits = CrimeSplits.RACE_BINARY
@@ -208,6 +208,5 @@ class Crime(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

@@ -7,12 +7,12 @@ import pandas as pd
 
 from ethicml.utility import DataTuple
 
-from .dataset import Dataset, LoadableDataset
+from .dataset import Dataset, LegacyDataset
 
 __all__ = ["load_data", "create_data_obj"]
 
 
-def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
+def load_data(dataset: Dataset) -> DataTuple:
     """Load dataset from its CSV file.
 
     This function only exists for backwards compatibility. Use dataset.load() instead.
@@ -21,7 +21,7 @@ def load_data(dataset: Dataset, ordered: bool = False) -> DataTuple:
     :param ordered: if True, return features such that discrete come first, then continuous (Default: False)
     :returns: DataTuple with dataframes of features, labels and sensitive attributes
     """
-    return dataset.load(ordered=ordered)
+    return dataset.load()
 
 
 def create_data_obj(
@@ -44,7 +44,7 @@ def create_data_obj(
 
 
 @dataclass
-class ConfigurableDataset(LoadableDataset):
+class ConfigurableDataset(LegacyDataset):
     """A configurable dataset class."""
 
     filepath_: Optional[Path] = None
@@ -75,5 +75,4 @@ class ConfigurableDataset(LoadableDataset):
             sens_attr_spec=self.s_column,
             class_label_spec=self.y_column,
             filename_or_path=self.filepath_,
-            discrete_only=False,
         )

@@ -1,13 +1,13 @@
 """Class to describe features of the Lipton dataset."""
 from dataclasses import dataclass
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 
 __all__ = ["Lipton"]
 
 
 @dataclass
-class Lipton(LoadableDataset):
+class Lipton(LegacyDataset):
     """Synthetic dataset from the Lipton et al. 2018.
 
     Described in section 4.1 of `Does mitigating ML's impact disparity require treatment disparity?`
@@ -34,5 +34,4 @@ class Lipton(LoadableDataset):
             cont_features=continuous_features,
             sens_attr_spec="sens",
             class_label_spec="hired",
-            discrete_only=False,
         )

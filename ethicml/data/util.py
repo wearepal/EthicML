@@ -1,45 +1,21 @@
 """Useful methods that are used in some of the data objects."""
-import functools
-import warnings
 from itertools import groupby
-from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Sequence, TypeVar
-from typing_extensions import ParamSpec
+from typing import Dict, List, Mapping, NamedTuple, Optional, Sequence
+
+import pandas as pd
 
 __all__ = [
     "LabelGroup",
     "LabelSpec",
-    "deprecated",
     "filter_features_by_prefixes",
     "flatten_dict",
+    "from_dummies",
     "get_discrete_features",
     "group_disc_feat_indices",
     "label_spec_to_feature_list",
     "simple_spec",
+    "single_col_spec",
 ]
-
-_P = ParamSpec("_P")
-_T = TypeVar("_T")
-
-
-def deprecated(func: Callable[_P, _T]) -> Callable[_P, _T]:
-    """Decorate functions as deprecated.
-
-    It will result in a warning being emitted when the function is used.
-    """
-
-    @functools.wraps(func)
-    def new_func(*args: _P.args, **kwargs: _P.kwargs) -> Any:
-        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
-        warnings.warn(
-            f"The {func.__name__} class is deprecated. "
-            f"Use the function `{func.__name__.lower()}` instead.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-        warnings.simplefilter('default', DeprecationWarning)  # reset filter
-        return func(*args, **kwargs)
-
-    return new_func
 
 
 class LabelGroup(NamedTuple):
@@ -165,3 +141,24 @@ def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
         # we assume here that the columns only contain 0s and 1s
         multiplier *= num_columns if num_columns > 1 else 2
     return label_spec
+
+
+def single_col_spec(col: str, feature_name: Optional[str] = None) -> LabelSpec:
+    """Create a label spec for the case where the label is defined by a single column."""
+    return {col if feature_name is None else feature_name: LabelGroup([col])}
+
+
+def from_dummies(data: pd.DataFrame, categorical_cols: Mapping[str, Sequence[str]]) -> pd.DataFrame:
+    """Convert one-hot encoded columns into categorical columns."""
+    out = data.copy()
+
+    for col_parent, filter_col in categorical_cols.items():
+        if len(filter_col) > 1:
+            undummified = (
+                out[filter_col].idxmax(axis=1).apply(lambda x: x.split(f"{col_parent}_", 1)[1])
+            )
+
+            out[col_parent] = undummified
+            out.drop(filter_col, axis=1, inplace=True)
+
+    return out

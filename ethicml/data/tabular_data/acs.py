@@ -8,7 +8,8 @@ Paper: https://arxiv.org/abs/2108.04884
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, List, Union
+from typing import Generator, Iterable, List, Optional, Tuple, Union
+from typing_extensions import Literal
 
 import numpy as np
 import pandas as pd
@@ -16,9 +17,17 @@ from folktables import ACSDataSource, adult_filter, folktables, state_list
 from ranzen import implements
 
 from ethicml.utility import DataTuple
+from ethicml.utility.data_helpers import undo_one_hot
 
-from ..dataset import Dataset
-from ..util import flatten_dict, simple_spec
+from ..dataset import Dataset, DiscFeatureGroup, FeatureSplit
+from ..util import (
+    LabelSpec,
+    filter_features_by_prefixes,
+    flatten_dict,
+    get_discrete_features,
+    label_spec_to_feature_list,
+    simple_spec,
+)
 
 __all__ = ["AcsIncome", "AcsEmployment"]
 
@@ -63,31 +72,91 @@ class AcsBase(Dataset):
         assert all(state in state_list for state in states)
 
         state_string = "_".join(states)
-        super().__init__(
-            name=f"{name}_{year}_{horizon}_{state_string}_{self.split}",
-            filename_or_path=self.root,
-            features=[],
-            cont_features=[],
-            sens_attr_spec="",
-            class_label_spec=class_label_spec,
-            class_label_prefix=class_label_prefix,
-            discrete_only=discrete_only,
-            num_samples=0,
+        self._name = f"{name}_{year}_{horizon}_{state_string}_{self.split}"
+        self._sens_attr_spec: Union[str, LabelSpec] = ""
+        self._s_prefix: List[str] = []
+        self._class_label_spec: Union[str, LabelSpec] = class_label_spec
+        self._class_label_prefix = class_label_prefix
+        self._discrete_only = discrete_only
+        self._features: List[str] = []
+        self._cont_features_unfiltered: List[str] = []
+        self._map_to_binary = False
+        self._discrete_feature_groups: Optional[DiscFeatureGroup] = None
+
+    @property
+    def name(self) -> str:
+        """Name of the dataset."""
+        return self._name
+
+    @property
+    def sens_attrs(self) -> List[str]:
+        """Get the list of sensitive attributes."""
+        if isinstance(self._sens_attr_spec, str):
+            return [self._sens_attr_spec]
+        assert isinstance(self._sens_attr_spec, dict)
+        return label_spec_to_feature_list(self._sens_attr_spec)
+
+    @property
+    def class_labels(self) -> List[str]:
+        """Get the list of class labels."""
+        if isinstance(self._class_label_spec, str):
+            return [self._class_label_spec]
+        assert isinstance(self._class_label_spec, dict)
+        return label_spec_to_feature_list(self._class_label_spec)
+
+    @property
+    def features_to_remove(self) -> List[str]:
+        """Features that have to be removed from x."""
+        to_remove: List[str] = []
+        to_remove += self._s_prefix
+        to_remove += self._class_label_prefix
+        if self._discrete_only:
+            to_remove += self.continuous_features
+        return to_remove
+
+    @property
+    def feature_split(self) -> FeatureSplit:
+        """Return a feature split dictionary.
+        This should have separate entries for the features, the labels and the sensitive attributes.
+        """
+        features_to_remove = self.features_to_remove
+
+        return {
+            "x": filter_features_by_prefixes(self._features, features_to_remove),
+            "s": self.sens_attrs,
+            "y": self.class_labels,
+        }
+
+    @property
+    def continuous_features(self) -> List[str]:
+        """List of features that are continuous."""
+        return filter_features_by_prefixes(self._cont_features_unfiltered, self.features_to_remove)
+
+    @property
+    def discrete_features(self) -> List[str]:
+        """List of features that are discrete."""
+        return get_discrete_features(
+            list(self._features), self.features_to_remove, self.continuous_features
         )
 
-    def _backend_load(
-        self, dataframe: pd.DataFrame, *, labels_as_features: bool, ordered: bool
-    ) -> DataTuple:
+    @property
+    def disc_feature_groups(self) -> Optional[DiscFeatureGroup]:
+        """Return Dictionary of feature groups."""
+        if self._discrete_feature_groups is None:
+            return None
+        dfgs = self._discrete_feature_groups
+        return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
+
+    def _backend_load(self, dataframe: pd.DataFrame, *, labels_as_features: bool) -> DataTuple:
         # +++ BELOW HERE IS A COPY OF DATASET LOAD +++
 
         assert isinstance(dataframe, pd.DataFrame)
 
-        feature_split = self.ordered_features if ordered else self.feature_split
+        feature_split = self.feature_split
         if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:
             feature_split_x = feature_split["x"]
-
         # =========================================================================================
         # Check whether we have to generate some complementary columns for binary features.
         # This happens when we have for example several races: race-asian-pac-islander etc, but we
@@ -143,6 +212,34 @@ class AcsBase(Dataset):
 
         return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
+    def _one_hot_encode_and_combine(
+        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
+    ) -> Tuple[pd.Series, Optional[pd.Series]]:
+        """Construct a new label according to the LabelSpecs.
+        :param attributes: DataFrame containing the attributes.
+        :param label_type: Type of label to construct.
+        """
+        mask = None  # the mask is needed when we have to discard samples
+
+        label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
+        if isinstance(label_mapping, str):
+            return attributes[label_mapping], mask
+
+        # create a Series of zeroes with the same length as the dataframe
+        combination: pd.Series = pd.Series(  # type: ignore[call-overload]
+            0, index=range(len(attributes)), name=",".join(label_mapping)
+        )
+
+        for name, spec in label_mapping.items():
+            if len(spec.columns) > 1:  # data is one-hot encoded
+                raw_values = attributes[spec.columns]
+                assert (raw_values.sum(axis="columns") == 1).all(), f"{name} is not one-hot"
+                values = undo_one_hot(raw_values)
+            else:
+                values = attributes[spec.columns[0]]
+            combination += spec.multiplier * values
+        return combination, mask
+
 
 class AcsIncome(AcsBase):
     """The ACS Income Dataset from EAAMO21/NeurIPS21 - Retiring Adult."""
@@ -192,7 +289,7 @@ class AcsIncome(AcsBase):
         return table[key]
 
     @implements(Dataset)
-    def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
+    def load(self, labels_as_features: bool = False) -> DataTuple:
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
@@ -289,7 +386,7 @@ class AcsIncome(AcsBase):
 
         dataframe = dataframe.reset_index(drop=True)
 
-        return self._backend_load(dataframe, labels_as_features=labels_as_features, ordered=ordered)
+        return self._backend_load(dataframe, labels_as_features=labels_as_features)
 
 
 class AcsEmployment(AcsBase):
@@ -348,7 +445,7 @@ class AcsEmployment(AcsBase):
         return table[key]
 
     @implements(Dataset)
-    def load(self, ordered: bool = False, labels_as_features: bool = False) -> DataTuple:
+    def load(self, labels_as_features: bool = False) -> DataTuple:
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
@@ -472,4 +569,4 @@ class AcsEmployment(AcsBase):
 
         dataframe = dataframe.reset_index(drop=True)
 
-        return self._backend_load(dataframe, labels_as_features=labels_as_features, ordered=ordered)
+        return self._backend_load(dataframe, labels_as_features=labels_as_features)

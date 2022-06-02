@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["Health", "HealthSplits"]
@@ -17,7 +17,7 @@ class HealthSplits(Enum):
 
 
 @dataclass
-class Health(LoadableDataset):
+class Health(LegacyDataset):
     """Heritage Health dataset."""
 
     split: HealthSplits = HealthSplits.SEX
@@ -192,6 +192,5 @@ class Health(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_prefix=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

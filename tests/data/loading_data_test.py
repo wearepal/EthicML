@@ -22,7 +22,7 @@ from ethicml.data import (
     LabelGroup,
     Law,
     Lipton,
-    LoadableDataset,
+    LegacyDataset,
     NonBinaryToy,
     Nursery,
     Sqf,
@@ -616,7 +616,7 @@ def test_data_shape(dt: DT):
     assert (dt.samples,) == data.s.shape
     assert (dt.samples,) == data.y.shape
 
-    assert len(dt.dataset.ordered_features["x"]) == dt.x_features
+    assert len(dt.dataset.feature_split["x"]) == dt.x_features
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
@@ -628,7 +628,7 @@ def test_data_shape(dt: DT):
 
     assert data.name == dt.name
 
-    data: DataTuple = dt.dataset.load(ordered=True)
+    data: DataTuple = dt.dataset.load()
     assert (dt.samples, dt.x_features) == data.x.shape
     assert (dt.samples,) == data.s.shape
     assert (dt.samples,) == data.y.shape
@@ -662,7 +662,7 @@ def test_synth_data_shape(
     assert (samples,) == data.s.shape
     assert (samples,) == data.y.shape
 
-    assert len(dataset.ordered_features["x"]) == 4
+    assert len(dataset.feature_split["x"]) == 4
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
@@ -674,7 +674,7 @@ def test_synth_data_shape(
     else:
         assert data.name == f"Synthetic - Scenario {scenario.value}, target {target.value}"
 
-    data: DataTuple = dataset.load(ordered=True)
+    data: DataTuple = dataset.load()
     assert (samples, 4) == data.x.shape
     assert (samples,) == data.s.shape
     assert (samples,) == data.y.shape
@@ -715,7 +715,7 @@ def test_joining_2_load_functions(data_root: Path):
 def test_load_compas_feature_length():
     """Test load compas feature length."""
     data: DataTuple = Compas().load()
-    assert len(Compas().ordered_features["x"]) == 400
+    assert len(Compas().feature_split["x"]) == 400
     assert len(Compas().discrete_features) == 395
     assert len(Compas().continuous_features) == 5
     disc_feature_groups = Compas().disc_feature_groups
@@ -764,21 +764,6 @@ def test_load_adult_race_sex():
     assert "salary" not in adult_race_sex.disc_feature_groups
 
 
-def test_race_feature_split():
-    """Test race feature split."""
-    adult_data: Dataset = Adult(split=Adult.Splits.CUSTOM)
-    adult_data._sens_attr_spec = "race_White"
-    adult_data._s_prefix = ["race"]
-    adult_data._class_label_spec = "salary_>50K"
-    adult_data._class_label_prefix = ["salary"]
-
-    data: DataTuple = adult_data.load()
-
-    assert (45222, 98) == data.x.shape
-    assert (45222,) == data.s.shape
-    assert (45222,) == data.y.shape
-
-
 def test_load_adult_drop_native():
     """Test load adult drop native."""
     adult_data = Adult(split=Adult.Splits.SEX, binarize_nationality=True)
@@ -787,7 +772,7 @@ def test_load_adult_drop_native():
     assert "native-country_Canada" not in adult_data.discrete_features
 
     # with dummies
-    data = adult_data.load(ordered=True)
+    data = adult_data.load()
     assert (45222, 62) == data.x.shape
     assert (45222,) == data.s.shape
     assert (45222,) == data.y.shape
@@ -799,7 +784,7 @@ def test_load_adult_drop_native():
     assert (native_cols.sum(axis="columns") == 1).all()
 
     # with dummies, not ordered
-    data = adult_data.load(ordered=False)
+    data = adult_data.load()
     assert (45222, 62) == data.x.shape
     assert (45222,) == data.s.shape
     assert (45222,) == data.y.shape
@@ -820,7 +805,7 @@ def test_load_adult_education():
     assert "education_Masters" not in adult_data.sens_attrs
 
     # ordered
-    data = adult_data.load(ordered=True)
+    data = adult_data.load()
     assert (45222, 86) == data.x.shape
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
@@ -845,7 +830,7 @@ def test_load_adult_education_drop():
     assert "education_Masters" not in adult_data.sens_attrs
 
     # ordered
-    data = adult_data.load(ordered=True)
+    data = adult_data.load()
     assert (45222, 47) == data.x.shape
     assert (45222,) == data.s.shape
     assert data.s.nunique() == 3
@@ -961,7 +946,7 @@ def test_group_prefixes():
 
 def test_expand_s():
     """Test expanding s."""
-    data = LoadableDataset(
+    data = LegacyDataset(
         name="test",
         filename_or_path="non-existent",
         features=[],
@@ -972,7 +957,6 @@ def test_expand_s():
         },
         class_label_spec="label",
         num_samples=7,
-        discrete_only=False,
     )
 
     compact_df = pd.Series([0, 4, 3, 1, 3, 5, 2], name="Gender,Race")
@@ -1004,7 +988,7 @@ def test_simple_spec():
 
 @pytest.mark.slow
 @pytest.mark.parametrize("data", [Adult, Admissions, Compas, Credit, Crime, German])
-def test_aif_conversion(data: Callable[[], LoadableDataset]):
+def test_aif_conversion(data: Callable[[], LegacyDataset]):
     """Load a dataset in AIF form.
 
     There might be a case where you want to load an EthicML dataset

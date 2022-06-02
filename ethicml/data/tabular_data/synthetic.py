@@ -5,7 +5,7 @@ from typing import ClassVar, Type
 
 import teext as tx
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 
 __all__ = ["SyntheticScenarios", "SyntheticTargets", "Synthetic"]
 
@@ -28,7 +28,7 @@ class SyntheticTargets(Enum):
 
 
 @dataclass
-class Synthetic(LoadableDataset):
+class Synthetic(LegacyDataset):
     r"""Dataset with synthetic data.
 
     ⊥ = is independent of
@@ -67,5 +67,4 @@ class Synthetic(LoadableDataset):
             cont_features=["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"],
             sens_attr_spec="s",
             class_label_spec=f"y{target}" + ("f" if self.fair else ""),
-            discrete_only=self.discrete_only,
         )
