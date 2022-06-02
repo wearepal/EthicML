@@ -82,11 +82,15 @@ class AcsBase(Dataset):
         self._cont_features_unfiltered: List[str] = []
         self._map_to_binary = False
         self._discrete_feature_groups: Optional[DiscFeatureGroup] = None
+        self._num_samples = 0
 
     @property
     def name(self) -> str:
         """Name of the dataset."""
         return self._name
+
+    def __len__(self) -> int:
+        return self._num_samples
 
     @property
     def sens_attrs(self) -> List[str]:

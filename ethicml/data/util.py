@@ -1,10 +1,12 @@
 """Useful methods that are used in some of the data objects."""
 from itertools import groupby
 from typing import Dict, List, Mapping, NamedTuple, Optional, Sequence
+from typing_extensions import TypeAlias
 
 import pandas as pd
 
 __all__ = [
+    "DiscFeatureGroup",
     "LabelGroup",
     "LabelSpec",
     "filter_features_by_prefixes",
@@ -13,9 +15,12 @@ __all__ = [
     "get_discrete_features",
     "group_disc_feat_indices",
     "label_spec_to_feature_list",
+    "reduce_feature_group",
     "simple_spec",
     "single_col_spec",
 ]
+
+DiscFeatureGroup: TypeAlias = Dict[str, List[str]]
 
 
 class LabelGroup(NamedTuple):
@@ -94,6 +99,30 @@ def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
 
 
 def reduce_feature_group(
+    disc_feature_groups: Mapping[str, List[str]],
+    feature_group: str,
+    to_keep: Sequence[str],
+    remaining_feature_name: str,
+) -> DiscFeatureGroup:
+    """Drop all features in the given feature group except the ones in to_keep.
+
+    :param disc_feature_groups: Dictionary of feature groups.
+    :param feature_group: Name of the feature group that will be replaced by ``to_keep``.
+    :param to_keep: List of features that will be kept in the feature group.
+    :param remaining_feature_name: Name of the dummy feature that will be used to summarize the
+        removed features.
+    :returns: Modified dictionary of feature groups.
+    """
+    # first set the given feature group to just the value that we want to keep
+    features_to_keep = list(to_keep)
+    # then add a new dummy feature to the feature group. `load_data()` will create this for us
+    features_to_keep.append(f"{feature_group}{remaining_feature_name}")
+    new_dfgs = dict(disc_feature_groups)
+    new_dfgs[feature_group] = features_to_keep
+    return new_dfgs
+
+
+def reduce_feature_group_mut(
     disc_feature_groups: Dict[str, List[str]],
     feature_group: str,
     to_keep: Sequence[str],

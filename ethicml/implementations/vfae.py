@@ -12,8 +12,8 @@ from joblib import dump, load
 from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
-from ethicml.data.dataset import CSVDataset
 
+from ethicml.data.dataset import CSVDataset
 from ethicml.data.lookup import get_dataset_obj_by_name
 from ethicml.implementations.beutel import set_seed
 from ethicml.utility import DataTuple, SubgroupTuple

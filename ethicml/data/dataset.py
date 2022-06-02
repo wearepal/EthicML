@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from typing import ClassVar, Dict, List, NamedTuple, Optional, Sequence, Tuple, Union
-from typing_extensions import Literal, TypeAlias, TypedDict, final
+from typing_extensions import Literal, TypedDict, final
 
 import pandas as pd
 from ranzen import implements
@@ -13,23 +13,22 @@ from ethicml.common import ROOT_PATH
 from ethicml.utility import DataTuple, undo_one_hot
 
 from .util import (
+    DiscFeatureGroup,
     LabelSpec,
-    label_spec_to_feature_list,
+    flatten_dict,
     from_dummies,
+    label_spec_to_feature_list,
     single_col_spec,
 )
 
 __all__ = [
     "Dataset",
-    "DiscFeatureGroup",
     "FeatureSplit",
     "LabelSpecsPair",
     "LegacyDataset",
     "CSVDataset",
     "CSVDatasetDC",
 ]
-
-DiscFeatureGroup: TypeAlias = Dict[str, List[str]]
 
 
 class LabelSpecsPair(NamedTuple):
@@ -97,10 +96,6 @@ class CSVDataset(Dataset, ABC):
     @abstractmethod
     def get_unfiltered_continuous(self) -> List[str]:
         """Continuous features."""
-
-    @abstractmethod
-    def get_unfiltered_discrete(self) -> List[str]:
-        """Discrete features."""
 
     @abstractmethod
     def get_name(self) -> str:
@@ -200,7 +195,7 @@ class CSVDataset(Dataset, ABC):
     @property
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
-        return self.filter_features(self.get_unfiltered_discrete())
+        return self.filter_features(flatten_dict(self.get_disc_feature_groups()))
 
     @property
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
@@ -208,7 +203,7 @@ class CSVDataset(Dataset, ABC):
         dfgs = self.get_disc_feature_groups()
         if dfgs is None:
             return None
-        return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
+        return {k: v for k, v in dfgs.items() if k not in self.get_label_specs()[1]}
 
     @implements(Dataset)
     def __len__(self) -> int:
@@ -414,7 +409,12 @@ class LegacyDataset(CSVDataset):
         self._num_samples = num_samples
         self._s_prefix = [] if s_prefix is None else s_prefix
         self._class_label_prefix = [] if class_label_prefix is None else class_label_prefix
-        self._discrete_feature_groups = discrete_feature_groups
+        if discrete_feature_groups is not None:
+            self._discrete_feature_groups = discrete_feature_groups
+        else:
+            self._discrete_feature_groups = {
+                "all": [feat for feat in self._features if feat not in cont_features]
+            }
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = list(cont_features)
 
@@ -427,11 +427,6 @@ class LegacyDataset(CSVDataset):
     def get_unfiltered_continuous(self) -> List[str]:
         """Continuous features."""
         return self._cont_features_unfiltered
-
-    @implements(CSVDataset)
-    def get_unfiltered_discrete(self) -> List[str]:
-        """Discrete features."""
-        return [feat for feat in self._features if feat not in self.continuous_features]
 
     @implements(CSVDataset)
     def get_name(self) -> str:
