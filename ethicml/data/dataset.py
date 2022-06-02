@@ -123,9 +123,9 @@ class CSVDataset(Dataset, ABC):
     def invert_sens_attr(self) -> bool:
         """Whether to invert the sensitive attribute."""
 
-    def get_disc_feature_groups(self) -> Optional[DiscFeatureGroup]:
+    @abstractmethod
+    def get_disc_feature_groups(self) -> DiscFeatureGroup:
         """Discrete feature groups."""
-        return None
 
     @property
     @final
@@ -161,9 +161,8 @@ class CSVDataset(Dataset, ABC):
         """Features that have to be removed from x."""
         to_remove: List[str] = []
         disc_feature_groups = self.get_disc_feature_groups()
-        if disc_feature_groups is not None:
-            for group in self.get_label_specs()[1]:
-                to_remove += disc_feature_groups[group]
+        for group in self.get_label_specs()[1]:
+            to_remove += disc_feature_groups[group]
 
         if self.load_discrete_only:
             to_remove += self.continuous_features
@@ -201,8 +200,6 @@ class CSVDataset(Dataset, ABC):
     def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
         """Return Dictionary of feature groups."""
         dfgs = self.get_disc_feature_groups()
-        if dfgs is None:
-            return None
         return {k: v for k, v in dfgs.items() if k not in self.get_label_specs()[1]}
 
     @implements(Dataset)
@@ -227,26 +224,24 @@ class CSVDataset(Dataset, ABC):
         # is that this cannot be done before this point, because only here have we actually loaded
         # the data. So, we have to do it here, with all the information we can piece together.
 
-        disc_feature_groups = self.get_disc_feature_groups()
-        if disc_feature_groups is not None:
-            for group in disc_feature_groups.values():
-                if len(group) == 1:
-                    continue
-                for feature in group:
-                    if feature in dataframe.columns:
-                        continue  # nothing to do
-                    missing_feature = feature
+        for group in self.get_disc_feature_groups().values():
+            if len(group) == 1:
+                continue
+            for feature in group:
+                if feature in dataframe.columns:
+                    continue  # nothing to do
+                missing_feature = feature
 
-                    existing_features = [other for other in group if other in dataframe.columns]
-                    assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
-                    # the dummy feature is the inverse of the existing feature
-                    or_combination = dataframe[existing_features[0]] == 1
-                    for other in existing_features[1:]:
-                        or_combination |= dataframe[other] == 1
-                    inverse: pd.Series = 1 - or_combination
-                    dataframe = pd.concat(
-                        [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
-                    )
+                existing_features = [other for other in group if other in dataframe.columns]
+                assert len(existing_features) == len(group) - 1, "at most 1 feature missing"
+                # the dummy feature is the inverse of the existing feature
+                or_combination = dataframe[existing_features[0]] == 1
+                for other in existing_features[1:]:
+                    or_combination |= dataframe[other] == 1
+                inverse: pd.Series = 1 - or_combination
+                dataframe = pd.concat(
+                    [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
+                )
 
         # =========================================================================================
         x_data = dataframe[feature_split_x]
@@ -347,9 +342,8 @@ class CSVDataset(Dataset, ABC):
 
         data = self.load()
         disc_feature_groups = self.get_disc_feature_groups()
-        if disc_feature_groups is not None:
-            data_collapsed = from_dummies(data.x, disc_feature_groups)
-            data = data.replace(x=data_collapsed)
+        data_collapsed = from_dummies(data.x, disc_feature_groups)
+        data = data.replace(x=data_collapsed)
         df = data.data
 
         return StandardDataset(
@@ -358,9 +352,7 @@ class CSVDataset(Dataset, ABC):
             favorable_classes=lambda x: x > 0,
             protected_attribute_names=[data.s_column],
             privileged_classes=[lambda x: x == 1],
-            categorical_features=disc_feature_groups.keys()
-            if disc_feature_groups is not None
-            else None,
+            categorical_features=disc_feature_groups.keys(),
         )
 
 
@@ -413,13 +405,13 @@ class LegacyDataset(CSVDataset):
             self._discrete_feature_groups = discrete_feature_groups
         else:
             self._discrete_feature_groups = {
-                "all": [feat for feat in self._features if feat not in cont_features]
+                feat: [feat] for feat in self._features if feat not in cont_features
             }
         self._raw_file_name_or_path = filename_or_path
         self._cont_features_unfiltered = list(cont_features)
 
     @implements(CSVDataset)
-    def get_disc_feature_groups(self) -> Optional[DiscFeatureGroup]:
+    def get_disc_feature_groups(self) -> DiscFeatureGroup:
         """Discrete feature groups."""
         return self._discrete_feature_groups
 
