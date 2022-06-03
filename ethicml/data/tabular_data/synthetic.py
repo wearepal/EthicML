@@ -1,11 +1,13 @@
 """Class to describe features of the Synthetic dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type
+from pathlib import Path
+from typing import ClassVar, List, Tuple, Type, Union
 
-import teext as tx
+from ranzen import implements
 
-from ..dataset import LegacyDataset
+from ethicml.data.dataset import CSVDatasetDC, LabelSpecsPair
+from ethicml.data.util import DiscFeatureGroup, single_col_spec
 
 __all__ = ["SyntheticScenarios", "SyntheticTargets", "Synthetic"]
 
@@ -28,7 +30,7 @@ class SyntheticTargets(Enum):
 
 
 @dataclass
-class Synthetic(LegacyDataset):
+class Synthetic(CSVDatasetDC):
     r"""Dataset with synthetic data.
 
     ⊥ = is independent of
@@ -53,18 +55,32 @@ class Synthetic(LegacyDataset):
     num_samples: int = 1_000
 
     def __post_init__(self) -> None:
-        scenario: int = self.scenario.value
-        target: int = self.target.value
-        assert self.num_samples <= 100_000
-        num_samples = tx.assert_positive_int(self.num_samples)
+        assert 0 < self.num_samples <= 100_000
 
-        super().__init__(
-            name=f"Synthetic - Scenario {scenario}, target {target}"
-            + (" fair" if self.fair else ""),
-            num_samples=num_samples,
-            filename_or_path=f"synthetic_scenario_{scenario}.csv",
-            features=["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"],
-            cont_features=["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"],
-            sens_attr_spec="s",
-            class_label_spec=f"y{target}" + ("f" if self.fair else ""),
+    @implements(CSVDatasetDC)
+    def get_cont_features(self) -> List[str]:
+        return ["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"]
+
+    @implements(CSVDatasetDC)
+    def get_name(self) -> str:
+        return (
+            f"Synthetic - Scenario {self.scenario.value}, "
+            f"target {self.target.value}{' fair' if self.fair else ''}"
         )
+
+    @implements(CSVDatasetDC)
+    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+        y = single_col_spec(f"y{self.target.value}{'f' if self.fair else ''}")
+        return LabelSpecsPair(s=single_col_spec("s"), y=y), []
+
+    @implements(CSVDatasetDC)
+    def get_num_samples(self) -> int:
+        return self.num_samples
+
+    @implements(CSVDatasetDC)
+    def get_filename_or_path(self) -> Union[str, Path]:
+        return f"synthetic_scenario_{self.scenario.value}.csv"
+
+    @implements(CSVDatasetDC)
+    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+        return {}

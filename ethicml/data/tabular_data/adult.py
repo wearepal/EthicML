@@ -1,13 +1,12 @@
 """Class to describe features of the Adult dataset."""
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
-from typing import ClassVar, List, Tuple, Type, Union
+from typing import ClassVar, List, Tuple, Type
 from typing_extensions import Final
 
 from ranzen import implements
 
-from ..dataset import CSVDatasetDC, LabelSpecsPair
+from ..dataset import LabelSpecsPair, StaticCSVDataset
 from ..util import (
     DiscFeatureGroup,
     flatten_dict,
@@ -31,7 +30,7 @@ class AdultSplits(Enum):
 
 
 @dataclass
-class Adult(CSVDatasetDC):
+class Adult(StaticCSVDataset):
     """UCI Adult dataset.
 
     :param discrete_only: If True, continuous features are dropped. (Default: False)
@@ -42,20 +41,14 @@ class Adult(CSVDatasetDC):
     """
 
     Splits: ClassVar[Type[AdultSplits]] = AdultSplits
+    num_samples: ClassVar[int] = 45_222
+    csv_file: ClassVar[str] = "adult.csv.zip"
 
     split: AdultSplits = Splits.SEX
     binarize_nationality: bool = False
     binarize_race: bool = False
 
-    @implements(CSVDatasetDC)
-    def get_num_samples(self) -> int:
-        return 45222
-
-    @implements(CSVDatasetDC)
-    def get_filename_or_path(self) -> Union[str, Path]:
-        return "adult.csv.zip"
-
-    @implements(CSVDatasetDC)
+    @implements(StaticCSVDataset)
     def get_name(self) -> str:
         name = f"Adult {self.split.value}"
         if self.binarize_nationality:
@@ -64,7 +57,7 @@ class Adult(CSVDatasetDC):
             name += ", binary race"
         return name
 
-    @implements(CSVDatasetDC)
+    @implements(StaticCSVDataset)
     def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
@@ -97,7 +90,7 @@ class Adult(CSVDatasetDC):
             raise NotImplementedError
         return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec), label_feature_groups
 
-    @implements(CSVDatasetDC)
+    @implements(StaticCSVDataset)
     def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
@@ -131,7 +124,7 @@ class Adult(CSVDatasetDC):
                 assert len(flatten_dict(dfgs)) == 97  # 93 (discrete) features + 4 class labels
         return dfgs
 
-    @implements(CSVDatasetDC)
+    @implements(StaticCSVDataset)
     def get_cont_features(self) -> List[str]:
         feats = [
             "age",

@@ -30,6 +30,7 @@ __all__ = [
     "FeatureSplit",
     "LabelSpecsPair",
     "LegacyDataset",
+    "StaticCSVDataset",
 ]
 
 
@@ -378,6 +379,22 @@ class CSVDatasetDC(CSVDataset):
     def invert_sens_attr(self) -> bool:
         """Whether to invert the sensitive attribute."""
         return self.invert_s
+
+
+@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+class StaticCSVDataset(CSVDatasetDC):
+    """Dataset whose size and file location does not depend on constructor arguments."""
+
+    num_samples: ClassVar[int] = 0
+    csv_file: ClassVar[str] = "<overwrite me>"
+
+    @implements(CSVDataset)
+    def get_num_samples(self) -> int:
+        return self.num_samples
+
+    @implements(CSVDataset)
+    def get_filename_or_path(self) -> Union[str, Path]:
+        return self.csv_file
 
 
 @dataclass(init=False)
