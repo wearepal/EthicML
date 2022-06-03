@@ -41,7 +41,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["AdmissionsSplits", "Admissions"]
@@ -55,7 +55,7 @@ class AdmissionsSplits(Enum):
 
 
 @dataclass
-class Admissions(LoadableDataset):
+class Admissions(LegacyDataset):
     """UFRGS Admissions dataset."""
 
     split: AdmissionsSplits = AdmissionsSplits.GENDER
@@ -102,8 +102,7 @@ class Admissions(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_spec=class_label_spec,
             filename_or_path="admissions.csv.zip",
-            s_prefix=s_prefix,
-            class_label_prefix=class_label_prefix,
-            discrete_only=self.discrete_only,
+            s_feature_groups=s_prefix,
+            class_feature_groups=class_label_prefix,
             discrete_feature_groups=disc_feature_groups,
         )

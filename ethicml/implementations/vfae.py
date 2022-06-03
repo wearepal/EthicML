@@ -13,6 +13,7 @@ from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
+from ethicml.data.dataset import CSVDataset
 from ethicml.data.lookup import get_dataset_obj_by_name
 from ethicml.implementations.beutel import set_seed
 from ethicml.utility import DataTuple, SubgroupTuple
@@ -33,6 +34,7 @@ def fit(train: DataTuple, flags: VfaeArgs):
     :param flags:
     """
     dataset = get_dataset_obj_by_name(flags["dataset"])()
+    assert isinstance(dataset, CSVDataset)
 
     # Set up the data
     train_data = CustomDataset(train)

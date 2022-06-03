@@ -2,14 +2,14 @@
 
 from dataclasses import dataclass
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["Toy"]
 
 
 @dataclass
-class Toy(LoadableDataset):
+class Toy(LegacyDataset):
     """Dataset with toy data for testing."""
 
     def __post_init__(self) -> None:
@@ -27,6 +27,5 @@ class Toy(LoadableDataset):
             cont_features=continuous_features,
             sens_attr_spec="sensitive-attr",
             class_label_spec="decision",
-            discrete_only=False,
             discrete_feature_groups=disc_feature_groups,
         )

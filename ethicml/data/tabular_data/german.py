@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["German", "GermanSplits"]
@@ -17,7 +17,7 @@ class GermanSplits(Enum):
 
 
 @dataclass
-class German(LoadableDataset):
+class German(LegacyDataset):
     """German credit dataset."""
 
     split: GermanSplits = GermanSplits.SEX
@@ -130,10 +130,9 @@ class German(LoadableDataset):
             filename_or_path="german.csv",
             features=discrete_features + continuous_features,
             cont_features=continuous_features,
-            s_prefix=s_prefix,
+            s_feature_groups=s_prefix,
             sens_attr_spec=sens_attr_spec,
-            class_label_prefix=class_label_prefix,
+            class_feature_groups=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

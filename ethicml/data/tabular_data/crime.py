@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type
 
-from ..dataset import LoadableDataset
-from ..util import flatten_dict
+from ..dataset import LegacyDataset
+from ..util import filter_features_by_prefixes, flatten_dict
 
 __all__ = ["Crime", "CrimeSplits"]
 
@@ -17,7 +17,7 @@ class CrimeSplits(Enum):
 
 
 @dataclass
-class Crime(LoadableDataset):
+class Crime(LegacyDataset):
     """UCI Communities and Crime dataset."""
 
     split: CrimeSplits = CrimeSplits.RACE_BINARY
@@ -188,9 +188,13 @@ class Crime(LoadableDataset):
         features = [feature for feature in features if feature not in features_to_remove]
         if self.split is CrimeSplits.RACE_BINARY:
             sens_attr_spec = ">0.06black"
-            s_prefix = [">0.06black", "race", "white", "black", "indian", "Asian", "Hisp", "Other"]
+            s_prefix = [">0.06black"]
             class_label_spec = "high_crime"
-            class_label_prefix = ["high_crime", "Violent"]
+            class_label_prefix = ["high_crime"]
+            continuous_features = filter_features_by_prefixes(
+                continuous_features,
+                ["Violent", "race", "white", "black", "indian", "Asian", "Hisp", "Other"],
+            )
         elif self.split is CrimeSplits.CUSTOM:
             sens_attr_spec = ""
             s_prefix = []
@@ -204,10 +208,9 @@ class Crime(LoadableDataset):
             filename_or_path="crime.csv",
             features=features,
             cont_features=continuous_features,
-            s_prefix=s_prefix,
+            s_feature_groups=s_prefix,
             sens_attr_spec=sens_attr_spec,
-            class_label_prefix=class_label_prefix,
+            class_feature_groups=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

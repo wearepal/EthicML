@@ -1,45 +1,26 @@
 """Useful methods that are used in some of the data objects."""
-import functools
-import warnings
 from itertools import groupby
-from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Sequence, TypeVar
-from typing_extensions import ParamSpec
+from typing import Dict, List, Mapping, NamedTuple, Optional, Sequence
+from typing_extensions import TypeAlias
+
+import pandas as pd
 
 __all__ = [
+    "DiscFeatureGroup",
     "LabelGroup",
     "LabelSpec",
-    "deprecated",
     "filter_features_by_prefixes",
     "flatten_dict",
+    "from_dummies",
     "get_discrete_features",
     "group_disc_feat_indices",
     "label_spec_to_feature_list",
+    "reduce_feature_group",
     "simple_spec",
+    "single_col_spec",
 ]
 
-_P = ParamSpec("_P")
-_T = TypeVar("_T")
-
-
-def deprecated(func: Callable[_P, _T]) -> Callable[_P, _T]:
-    """Decorate functions as deprecated.
-
-    It will result in a warning being emitted when the function is used.
-    """
-
-    @functools.wraps(func)
-    def new_func(*args: _P.args, **kwargs: _P.kwargs) -> Any:
-        warnings.simplefilter('always', DeprecationWarning)  # turn off filter
-        warnings.warn(
-            f"The {func.__name__} class is deprecated. "
-            f"Use the function `{func.__name__.lower()}` instead.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-        warnings.simplefilter('default', DeprecationWarning)  # reset filter
-        return func(*args, **kwargs)
-
-    return new_func
+DiscFeatureGroup: TypeAlias = Dict[str, List[str]]
 
 
 class LabelGroup(NamedTuple):
@@ -118,6 +99,30 @@ def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
 
 
 def reduce_feature_group(
+    disc_feature_groups: Mapping[str, List[str]],
+    feature_group: str,
+    to_keep: Sequence[str],
+    remaining_feature_name: str,
+) -> DiscFeatureGroup:
+    """Drop all features in the given feature group except the ones in to_keep.
+
+    :param disc_feature_groups: Dictionary of feature groups.
+    :param feature_group: Name of the feature group that will be replaced by ``to_keep``.
+    :param to_keep: List of features that will be kept in the feature group.
+    :param remaining_feature_name: Name of the dummy feature that will be used to summarize the
+        removed features.
+    :returns: Modified dictionary of feature groups.
+    """
+    # first set the given feature group to just the value that we want to keep
+    features_to_keep = list(to_keep)
+    # then add a new dummy feature to the feature group. `load_data()` will create this for us
+    features_to_keep.append(f"{feature_group}{remaining_feature_name}")
+    new_dfgs = dict(disc_feature_groups)
+    new_dfgs[feature_group] = features_to_keep
+    return new_dfgs
+
+
+def reduce_feature_group_mut(
     disc_feature_groups: Dict[str, List[str]],
     feature_group: str,
     to_keep: Sequence[str],
@@ -165,3 +170,24 @@ def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
         # we assume here that the columns only contain 0s and 1s
         multiplier *= num_columns if num_columns > 1 else 2
     return label_spec
+
+
+def single_col_spec(col: str, feature_name: Optional[str] = None) -> LabelSpec:
+    """Create a label spec for the case where the label is defined by a single column."""
+    return {col if feature_name is None else feature_name: LabelGroup([col])}
+
+
+def from_dummies(data: pd.DataFrame, categorical_cols: Mapping[str, Sequence[str]]) -> pd.DataFrame:
+    """Convert one-hot encoded columns into categorical columns."""
+    out = data.copy()
+
+    for col_parent, filter_col in categorical_cols.items():
+        if len(filter_col) > 1:
+            undummified = (
+                out[filter_col].idxmax(axis=1).apply(lambda x: x.split(f"{col_parent}_", 1)[1])
+            )
+
+            out[col_parent] = undummified
+            out.drop(filter_col, axis=1, inplace=True)
+
+    return out

@@ -7,7 +7,7 @@ from typing import List
 import torch
 from torch import Tensor, nn
 
-from ethicml.data.dataset import Dataset
+from ethicml.data.dataset import CSVDataset, FeatureOrder
 
 from .categorical import Categorical
 
@@ -15,10 +15,10 @@ from .categorical import Categorical
 class Decoder(nn.Module):
     """Decoder for VFAE."""
 
-    def __init__(self, dataset: Dataset, deploy: bool = False):
+    def __init__(self, dataset: CSVDataset, deploy: bool = False):
         super().__init__()
         self._deploy = deploy
-        self.features: List[str] = dataset.feature_split["x"]
+        self.features: List[str] = dataset.feature_split(order=FeatureOrder.cont_first)["x"]
 
         latent_dims = 50
         hidden_size = 100

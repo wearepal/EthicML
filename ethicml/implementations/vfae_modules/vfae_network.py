@@ -6,7 +6,7 @@ from typing import Any, List, NamedTuple, Optional, Tuple
 import torch
 from torch import Tensor, nn
 
-from ethicml.data.dataset import Dataset
+from ethicml.data.dataset import CSVDataset
 
 from .decoder import Decoder
 from .encoder import Encoder
@@ -32,7 +32,7 @@ class VFAENetwork(nn.Module):
 
     def __init__(
         self,
-        dataset: Dataset,
+        dataset: CSVDataset,
         supervised: bool,
         input_size: int,
         latent_dims: int,

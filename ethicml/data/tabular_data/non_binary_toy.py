@@ -1,14 +1,14 @@
 """Class to describe features of the toy dataset with more than 2 classes."""
 from dataclasses import dataclass
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import flatten_dict
 
 __all__ = ["NonBinaryToy"]
 
 
 @dataclass
-class NonBinaryToy(LoadableDataset):
+class NonBinaryToy(LegacyDataset):
     """Dataset with toy data for testing."""
 
     def __post_init__(self) -> None:
@@ -27,8 +27,7 @@ class NonBinaryToy(LoadableDataset):
             features=continuous_features + discrete_features,
             cont_features=continuous_features,
             sens_attr_spec="sensitive-attr_1",
-            s_prefix=["sensitive-attr"],
+            s_feature_groups=["sensitive-attr"],
             class_label_spec="decision",
-            discrete_only=False,
             discrete_feature_groups=disc_feature_groups,
         )
