@@ -97,7 +97,7 @@ class Law(LegacyDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_spec=class_label_spec,
             filename_or_path="law.csv.zip",
-            s_prefix=s_prefix,
-            class_label_prefix=class_label_prefix,
+            s_feature_groups=s_prefix,
+            class_feature_groups=class_label_prefix,
             discrete_feature_groups=disc_feature_groups,
         )

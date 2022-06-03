@@ -616,7 +616,7 @@ def test_data_shape(dt: DT):
     assert (dt.samples,) == data.s.shape
     assert (dt.samples,) == data.y.shape
 
-    assert len(dt.dataset.feature_split["x"]) == dt.x_features
+    assert len(dt.dataset.feature_split()["x"]) == dt.x_features
     assert len(dt.dataset.discrete_features) == dt.discrete_features
     assert len(dt.dataset.continuous_features) == (dt.x_features - dt.discrete_features)
 
@@ -662,7 +662,7 @@ def test_synth_data_shape(
     assert (samples,) == data.s.shape
     assert (samples,) == data.y.shape
 
-    assert len(dataset.feature_split["x"]) == 4
+    assert len(dataset.feature_split()["x"]) == 4
     assert len(dataset.discrete_features) == 0
     assert len(dataset.continuous_features) == 4
 
@@ -685,7 +685,7 @@ def test_load_data_as_a_function(data_root: Path):
     data_loc = data_root / "toy.csv"
     data_obj: Dataset = create_data_obj(data_loc, s_column="sensitive-attr", y_column="decision")
     assert data_obj is not None
-    assert data_obj.feature_split["x"] == [
+    assert data_obj.feature_split()["x"] == [
         "a1",
         "a2",
         "disc_1_a",
@@ -697,8 +697,8 @@ def test_load_data_as_a_function(data_root: Path):
         "disc_2_y",
         "disc_2_z",
     ]
-    assert data_obj.feature_split["s"] == ["sensitive-attr"]
-    assert data_obj.feature_split["y"] == ["decision"]
+    assert data_obj.feature_split()["s"] == ["sensitive-attr"]
+    assert data_obj.feature_split()["y"] == ["decision"]
     assert len(data_obj) == 400
 
 
@@ -715,7 +715,7 @@ def test_joining_2_load_functions(data_root: Path):
 def test_load_compas_feature_length():
     """Test load compas feature length."""
     data: DataTuple = Compas().load()
-    assert len(Compas().feature_split["x"]) == 400
+    assert len(Compas().feature_split()["x"]) == 400
     assert len(Compas().discrete_features) == 395
     assert len(Compas().continuous_features) == 5
     disc_feature_groups = Compas().disc_feature_groups
@@ -946,15 +946,16 @@ def test_group_prefixes():
 
 def test_expand_s():
     """Test expanding s."""
+    sens_attr_spec = {
+        "Gender": LabelGroup(["Female", "Male"], multiplier=3),
+        "Race": LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
+    }
     data = LegacyDataset(
         name="test",
         filename_or_path="non-existent",
         features=[],
         cont_features=[],
-        sens_attr_spec={
-            "Gender": LabelGroup(["Female", "Male"], multiplier=3),
-            "Race": LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
-        },
+        sens_attr_spec=sens_attr_spec,
         class_label_spec="label",
         num_samples=7,
     )
@@ -970,7 +971,9 @@ def test_expand_s():
     multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
-    pd.testing.assert_series_equal(data._one_hot_encode_and_combine(raw_df, "s")[0], compact_df)
+    pd.testing.assert_series_equal(
+        data._one_hot_encode_and_combine(raw_df, sens_attr_spec)[0], compact_df
+    )
     pd.testing.assert_frame_equal(
         data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
     )

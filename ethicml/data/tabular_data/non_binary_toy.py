@@ -27,7 +27,7 @@ class NonBinaryToy(LegacyDataset):
             features=continuous_features + discrete_features,
             cont_features=continuous_features,
             sens_attr_spec="sensitive-attr_1",
-            s_prefix=["sensitive-attr"],
+            s_feature_groups=["sensitive-attr"],
             class_label_spec="decision",
             discrete_feature_groups=disc_feature_groups,
         )

@@ -18,7 +18,7 @@ class Decoder(nn.Module):
     def __init__(self, dataset: CSVDataset, deploy: bool = False):
         super().__init__()
         self._deploy = deploy
-        self.features: List[str] = dataset.feature_split["x"]
+        self.features: List[str] = dataset.feature_split()["x"]
 
         latent_dims = 50
         hidden_size = 100

@@ -19,7 +19,7 @@ from ranzen import implements
 from ethicml.utility import DataTuple
 from ethicml.utility.data_helpers import undo_one_hot
 
-from ..dataset import Dataset, DiscFeatureGroup, FeatureSplit
+from ..dataset import Dataset, DiscFeatureGroup, FeatureOrder, FeatureSplit
 from ..util import (
     LabelSpec,
     filter_features_by_prefixes,
@@ -118,12 +118,8 @@ class AcsBase(Dataset):
             to_remove += self.continuous_features
         return to_remove
 
-    @property
-    def feature_split(self) -> FeatureSplit:
-        """Return a feature split dictionary.
-
-        This should have separate entries for the features, the labels and the sensitive attributes.
-        """
+    @implements(Dataset)
+    def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
         features_to_remove = self.features_to_remove
 
         return {
@@ -145,11 +141,10 @@ class AcsBase(Dataset):
         )
 
     @property
-    def disc_feature_groups(self) -> Optional[DiscFeatureGroup]:
+    def disc_feature_groups(self) -> DiscFeatureGroup:
         """Return Dictionary of feature groups."""
-        if self._discrete_feature_groups is None:
-            return None
         dfgs = self._discrete_feature_groups
+        assert dfgs is not None
         return {k: v for k, v in dfgs.items() if k not in self.features_to_remove}
 
     def _backend_load(self, dataframe: pd.DataFrame, *, labels_as_features: bool) -> DataTuple:
@@ -157,7 +152,7 @@ class AcsBase(Dataset):
 
         assert isinstance(dataframe, pd.DataFrame)
 
-        feature_split = self.feature_split
+        feature_split = self.feature_split()
         if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:
@@ -295,7 +290,9 @@ class AcsIncome(AcsBase):
         return table[key]
 
     @implements(Dataset)
-    def load(self, labels_as_features: bool = False) -> DataTuple:
+    def load(
+        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+    ) -> DataTuple:
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )
@@ -451,7 +448,9 @@ class AcsEmployment(AcsBase):
         return table[key]
 
     @implements(Dataset)
-    def load(self, labels_as_features: bool = False) -> DataTuple:
+    def load(
+        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+    ) -> DataTuple:
         datasource = ACSDataSource(
             survey_year=self.year, horizon=f'{self.horizon}-Year', survey=self.survey
         )

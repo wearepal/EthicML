@@ -66,7 +66,7 @@ class Adult(CSVDatasetDC):
 
     @implements(CSVDatasetDC)
     def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
-        disc_feature_groups = self.get_disc_feature_groups()
+        disc_feature_groups = self.get_unfiltered_disc_feat_groups()
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
         if self.split is AdultSplits.SEX:
@@ -99,7 +99,7 @@ class Adult(CSVDatasetDC):
         return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec), label_feature_groups
 
     @implements(CSVDatasetDC)
-    def get_disc_feature_groups(self) -> DiscFeatureGroup:
+    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
@@ -133,7 +133,7 @@ class Adult(CSVDatasetDC):
         return dfgs
 
     @implements(CSVDatasetDC)
-    def get_unfiltered_continuous(self) -> List[str]:
+    def get_cont_features(self) -> List[str]:
         feats = [
             "age",
             "capital-gain",

@@ -2,6 +2,7 @@
 import typing
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 from typing import ClassVar, Dict, List, NamedTuple, Optional, Sequence, Tuple, Union
 from typing_extensions import Literal, TypedDict, final
@@ -22,12 +23,13 @@ from .util import (
 )
 
 __all__ = [
+    "CSVDataset",
+    "CSVDatasetDC",
     "Dataset",
+    "FeatureOrder",
     "FeatureSplit",
     "LabelSpecsPair",
     "LegacyDataset",
-    "CSVDataset",
-    "CSVDatasetDC",
 ]
 
 
@@ -46,6 +48,13 @@ class FeatureSplit(TypedDict):
     y: List[str]
 
 
+class FeatureOrder(Enum):
+    """Order of features in the loaded datatuple."""
+
+    cont_first = auto()
+    disc_first = auto()
+
+
 class Dataset(ABC):
     """Data structure that holds all the information needed to load a given dataset."""
 
@@ -55,7 +64,9 @@ class Dataset(ABC):
         """Name of the dataset."""
 
     @abstractmethod
-    def load(self, labels_as_features: bool = False) -> DataTuple:
+    def load(
+        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+    ) -> DataTuple:
         """Load dataset from its CSV file.
 
         :param labels_as_features: if True, the s and y labels are included in the x features
@@ -72,14 +83,18 @@ class Dataset(ABC):
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
 
-    @property
     @abstractmethod
-    def feature_split(self) -> FeatureSplit:
-        """Return a features dictionary."""
+    def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
+        """Return an order features dictionary.
+
+        This should have separate entries for the features, the labels and the
+        sensitive attributes, but the x features are ordered so first are the discrete features,
+        then the continuous.
+        """
 
     @property
     @abstractmethod
-    def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
+    def disc_feature_groups(self) -> DiscFeatureGroup:
         """Return Dictionary of feature groups."""
 
     @abstractmethod
@@ -96,7 +111,7 @@ class CSVDataset(Dataset, ABC):
     """If True, convert labels from {-1, 1} to {0, 1}."""
 
     @abstractmethod
-    def get_unfiltered_continuous(self) -> List[str]:
+    def get_cont_features(self) -> List[str]:
         """Continuous features."""
 
     @abstractmethod
@@ -126,8 +141,8 @@ class CSVDataset(Dataset, ABC):
         """Whether to invert the sensitive attribute."""
 
     @abstractmethod
-    def get_disc_feature_groups(self) -> DiscFeatureGroup:
-        """Discrete feature groups."""
+    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+        """Discrete feature groups, including features for the labels."""
 
     @property
     @final
@@ -157,76 +172,94 @@ class CSVDataset(Dataset, ABC):
         """Get the list of class labels."""
         return label_spec_to_feature_list(self.get_label_specs()[0].y)
 
-    @property
-    @final
-    def features_to_remove(self) -> List[str]:
-        """Features that have to be removed from x."""
-        to_remove: List[str] = []
-        disc_feature_groups = self.get_disc_feature_groups()
-        for group in self.get_label_specs()[1]:
-            to_remove += disc_feature_groups[group]
-
-        if self.load_discrete_only:
-            to_remove += self.continuous_features
-        return to_remove
-
-    @final
-    def _filter_features(self, features: Sequence[str]) -> List[str]:
-        return [feat for feat in features if feat not in self.features_to_remove]
-
-    @property
-    def feature_split(self) -> FeatureSplit:
-        """Return an order features dictionary.
-
-        This should have separate entries for the features, the labels and the
-        sensitive attributes, but the x features are ordered so first are the discrete features,
-        then the continuous.
-        """
+    @implements(Dataset)
+    def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
+        if order is FeatureOrder.disc_first:
+            x = self.discrete_features + self.continuous_features
+        else:
+            x = self.continuous_features + self.discrete_features
+        label_specs, _ = self.get_label_specs()
         return {
-            "x": self.discrete_features + self.continuous_features,
-            "s": self.sens_attrs,
-            "y": self.class_labels,
+            "x": x,
+            "s": label_spec_to_feature_list(label_specs.s),
+            "y": label_spec_to_feature_list(label_specs.y),
         }
 
     @property
     def continuous_features(self) -> List[str]:
         """List of features that are continuous."""
-        return self._filter_features(self.get_unfiltered_continuous())
+        if self.load_discrete_only:
+            return []
+        return self.get_cont_features()
 
     @property
     def discrete_features(self) -> List[str]:
         """List of features that are discrete."""
-        return self._filter_features(flatten_dict(self.get_disc_feature_groups()))
+        return flatten_dict(self.disc_feature_groups)
 
     @property
-    def disc_feature_groups(self) -> Optional[Dict[str, List[str]]]:
-        """Return Dictionary of feature groups."""
-        dfgs = self.get_disc_feature_groups()
-        return {k: v for k, v in dfgs.items() if k not in self.get_label_specs()[1]}
+    def disc_feature_groups(self) -> DiscFeatureGroup:
+        """Return Dictionary of feature groups, without s and y labels."""
+        dfgs = self.get_unfiltered_disc_feat_groups()
+        # select those feature groups that are not for the x and y labels
+        return {group: v for group, v in dfgs.items() if group not in self.get_label_specs()[1]}
 
     @implements(Dataset)
     def __len__(self) -> int:
         return self.get_num_samples()
 
     @implements(Dataset)
-    def load(self, labels_as_features: bool = False) -> DataTuple:
+    def load(
+        self, labels_as_features: bool = False, order: FeatureOrder = FeatureOrder.disc_first
+    ) -> DataTuple:
         dataframe: pd.DataFrame = pd.read_csv(self.filepath, nrows=self.get_num_samples())
         assert isinstance(dataframe, pd.DataFrame)
 
-        feature_split = self.feature_split
+        feature_split = self.feature_split(order=order)
         if labels_as_features:
             feature_split_x = feature_split["x"] + feature_split["s"] + feature_split["y"]
         else:
             feature_split_x = feature_split["x"]
 
-        # =========================================================================================
-        # Check whether we have to generate some complementary columns for binary features.
-        # This happens when we have for example several races: race-asian-pac-islander etc, but we
-        # want to have a an attribute called "race_other" that summarizes them all. Now the problem
-        # is that this cannot be done before this point, because only here have we actually loaded
-        # the data. So, we have to do it here, with all the information we can piece together.
+        dataframe = self._generate_missing_columns(dataframe)
 
-        for group in self.get_disc_feature_groups().values():
+        x_data = dataframe[feature_split_x]
+        s_df = dataframe[feature_split["s"]]
+        y_df = dataframe[feature_split["y"]]
+
+        if self.map_to_binary:
+            s_df = (s_df + 1) // 2  # map from {-1, 1} to {0, 1}
+            y_df = (y_df + 1) // 2  # map from {-1, 1} to {0, 1}
+
+        if self.invert_sens_attr:
+            assert s_df.nunique().values[0] == 2, "s must be binary"
+            s_df = 1 - s_df
+
+        label_specs, _ = self.get_label_specs()
+
+        # the following operations remove rows if a label group is not properly one-hot encoded
+        s_data, s_mask = self._one_hot_encode_and_combine(s_df, label_spec=label_specs.s)
+        if s_mask is not None:
+            x_data = x_data.loc[s_mask].reset_index(drop=True)
+            s_data = s_data.loc[s_mask].reset_index(drop=True)
+            y_df = y_df.loc[s_mask].reset_index(drop=True)
+        y_data, y_mask = self._one_hot_encode_and_combine(y_df, label_spec=label_specs.y)
+        if y_mask is not None:
+            x_data = x_data.loc[y_mask].reset_index(drop=True)
+            s_data = s_data.loc[y_mask].reset_index(drop=True)
+            y_data = y_data.loc[y_mask].reset_index(drop=True)
+
+        return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
+
+    def _generate_missing_columns(self, dataframe: pd.DataFrame) -> pd.DataFrame:
+        """Check whether we have to generate some complementary columns for binary features.
+
+        This happens when we have, for example, several races: race-asian-pac-islander, etc, but we
+        want to have an attribute called "race_other" that summarizes them all. Now, the problem
+        is that this cannot be done before this point, because only here have we actually loaded
+        the data. So, we have to do it here, with all the information we can piece together.
+        """
+        for group in self.get_unfiltered_disc_feat_groups().values():
             if len(group) == 1:
                 continue
             for feature in group:
@@ -244,53 +277,24 @@ class CSVDataset(Dataset, ABC):
                 dataframe = pd.concat(
                     [dataframe, inverse.to_frame(name=missing_feature)], axis="columns"
                 )
-
-        # =========================================================================================
-        x_data = dataframe[feature_split_x]
-        s_df = dataframe[feature_split["s"]]
-        y_df = dataframe[feature_split["y"]]
-
-        if self.map_to_binary:
-            s_df = (s_df + 1) // 2  # map from {-1, 1} to {0, 1}
-            y_df = (y_df + 1) // 2  # map from {-1, 1} to {0, 1}
-
-        if self.invert_sens_attr:
-            assert s_df.nunique().values[0] == 2, "s must be binary"
-            s_df = 1 - s_df
-
-        # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._one_hot_encode_and_combine(s_df, label_type="s")
-        if s_mask is not None:
-            x_data = x_data.loc[s_mask].reset_index(drop=True)
-            s_data = s_data.loc[s_mask].reset_index(drop=True)
-            y_df = y_df.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._one_hot_encode_and_combine(y_df, label_type="y")
-        if y_mask is not None:
-            x_data = x_data.loc[y_mask].reset_index(drop=True)
-            s_data = s_data.loc[y_mask].reset_index(drop=True)
-            y_data = y_data.loc[y_mask].reset_index(drop=True)
-
-        return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
+        return dataframe
 
     def _one_hot_encode_and_combine(
-        self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
+        self, attributes: pd.DataFrame, label_spec: LabelSpec
     ) -> Tuple[pd.Series, Optional[pd.Series]]:
         """Construct a new label according to the LabelSpecs.
 
         :param attributes: DataFrame containing the attributes.
-        :param label_type: Type of label to construct.
+        :param label_spec: A label spec.
         """
         mask = None  # the mask is needed when we have to discard samples
 
-        label_specs, _ = self.get_label_specs()
-        label_mapping = label_specs.s if label_type == "s" else label_specs.y
-
         # create a Series of zeroes with the same length as the dataframe
         combination: pd.Series = pd.Series(  # type: ignore[call-overload]
-            0, index=range(len(attributes)), name=",".join(label_mapping)
+            0, index=range(len(attributes)), name=",".join(label_spec)
         )
 
-        for name, spec in label_mapping.items():
+        for name, spec in label_spec.items():
             if len(spec.columns) > 1:  # data is one-hot encoded
                 raw_values = attributes[spec.columns]
                 if self.discard_non_one_hot:
@@ -343,7 +347,7 @@ class CSVDataset(Dataset, ABC):
         from aif360.datasets import StandardDataset
 
         data = self.load()
-        disc_feature_groups = self.get_disc_feature_groups()
+        disc_feature_groups = self.get_unfiltered_disc_feat_groups()
         data_collapsed = from_dummies(data.x, disc_feature_groups)
         data = data.replace(x=data_collapsed)
         df = data.data
@@ -392,8 +396,8 @@ class LegacyDataset(CSVDataset):
         sens_attr_spec: Union[str, LabelSpec],
         class_label_spec: Union[str, LabelSpec],
         num_samples: int,
-        s_prefix: Optional[Sequence[str]] = None,
-        class_label_prefix: Optional[Sequence[str]] = None,
+        s_feature_groups: Optional[Sequence[str]] = None,
+        class_feature_groups: Optional[Sequence[str]] = None,
         discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
     ) -> None:
         self._name = name
@@ -401,8 +405,8 @@ class LegacyDataset(CSVDataset):
         self._sens_attr_spec = sens_attr_spec
         self._class_label_spec = class_label_spec
         self._num_samples = num_samples
-        self._s_prefix = [] if s_prefix is None else s_prefix
-        self._class_label_prefix = [] if class_label_prefix is None else class_label_prefix
+        self._s_prefix = [] if s_feature_groups is None else s_feature_groups
+        self._class_label_prefix = [] if class_feature_groups is None else class_feature_groups
         if discrete_feature_groups is not None:
             self._discrete_feature_groups = discrete_feature_groups
         else:
@@ -413,23 +417,19 @@ class LegacyDataset(CSVDataset):
         self._cont_features_unfiltered = list(cont_features)
 
     @implements(CSVDataset)
-    def get_disc_feature_groups(self) -> DiscFeatureGroup:
-        """Discrete feature groups."""
+    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return self._discrete_feature_groups
 
     @implements(CSVDataset)
-    def get_unfiltered_continuous(self) -> List[str]:
-        """Continuous features."""
+    def get_cont_features(self) -> List[str]:
         return self._cont_features_unfiltered
 
     @implements(CSVDataset)
     def get_name(self) -> str:
-        """Name of the dataset."""
         return self._name
 
     @implements(CSVDataset)
     def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
-        """Label specs and discrete feature groups that have to be removed from ``x``."""
         s_spec = self._sens_attr_spec
         y_spec = self._class_label_spec
         return (
@@ -442,7 +442,6 @@ class LegacyDataset(CSVDataset):
 
     @implements(CSVDataset)
     def get_num_samples(self) -> int:
-        """Number of samples in the dataset."""
         return self._num_samples
 
     @implements(CSVDataset)

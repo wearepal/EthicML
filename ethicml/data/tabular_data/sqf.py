@@ -155,9 +155,9 @@ class Sqf(LegacyDataset):
             filename_or_path="sqf.csv",
             features=discrete_features + continuous_features,
             cont_features=continuous_features,
-            s_prefix=s_prefix,
+            s_feature_groups=s_prefix,
             sens_attr_spec=sens_attr_spec,
-            class_label_prefix=class_label_prefix,
+            class_feature_groups=class_label_prefix,
             class_label_spec=class_label_spec,
             discrete_feature_groups=disc_feature_groups,
         )
