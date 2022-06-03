@@ -66,24 +66,23 @@ class Adult(CSVDatasetDC):
 
     @implements(CSVDatasetDC)
     def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
-        disc_feature_groups = self.get_unfiltered_disc_feat_groups()
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
         if self.split is AdultSplits.SEX:
             sens_attr_spec = single_col_spec("sex_Male")
             label_feature_groups += ["sex"]
         elif self.split is AdultSplits.RACE:
-            sens_attr_spec = simple_spec({"race": disc_feature_groups["race"]})
+            sens_attr_spec = simple_spec({"race": DISC_FEATURE_GROUPS["race"]})
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_BINARY:
             sens_attr_spec = single_col_spec("race_White")
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_SEX:
-            sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": disc_feature_groups["race"]})
+            sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]})
             label_feature_groups += ["sex", "race"]
         elif self.split is AdultSplits.NATIONALITY:
             sens = "native-country"
-            sens_attr_spec = simple_spec({sens: disc_feature_groups[sens]})
+            sens_attr_spec = simple_spec({sens: DISC_FEATURE_GROUPS[sens]})
             label_feature_groups += ["native-country"]
         elif self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
