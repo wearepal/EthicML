@@ -348,7 +348,7 @@ class CSVDataset(Dataset, ABC):
         from aif360.datasets import StandardDataset
 
         data = self.load()
-        disc_feature_groups = self.get_unfiltered_disc_feat_groups()
+        disc_feature_groups = self.disc_feature_groups
         data_collapsed = from_dummies(data.x, disc_feature_groups)
         data = data.replace(x=data_collapsed)
         df = data.data
