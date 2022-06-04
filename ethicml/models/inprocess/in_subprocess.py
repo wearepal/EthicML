@@ -75,7 +75,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             train_path = tmp_path / "train.npz"
-            train.to_npz(train_path)
+            train.save_to_file(train_path)
             args: InAlgoFitArgs = {
                 "mode": "fit",
                 "train": str(train_path),
@@ -96,7 +96,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
             tmp_path = Path(tmpdir)
             test_path = tmp_path / "test.npz"
             pred_path = tmp_path / "predictions.npz"
-            test.to_npz(test_path)
+            test.save_to_file(test_path)
             args: InAlgoPredArgs = {
                 "mode": "predict",
                 "test": str(test_path),
@@ -104,7 +104,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
                 "model": str(self.model_path),
             }
             self.call_script(self._script_command(args))
-            return Prediction.from_npz(pred_path)
+            return Prediction.from_file(pred_path)
 
     @final
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
@@ -120,8 +120,8 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
             train_path = tmp_path / "train.npz"
             test_path = tmp_path / "test.npz"
             pred_path = tmp_path / "predictions.npz"
-            train.to_npz(train_path)
-            test.to_npz(test_path)
+            train.save_to_file(train_path)
+            test.save_to_file(test_path)
             args: InAlgoRunArgs = {
                 "mode": "run",
                 "train": str(train_path),
@@ -130,7 +130,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
                 "seed": seed,
             }
             self.call_script(self._script_command(args))
-            return Prediction.from_npz(pred_path)
+            return Prediction.from_file(pred_path)
 
     @final
     def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:

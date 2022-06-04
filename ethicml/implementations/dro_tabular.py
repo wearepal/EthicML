@@ -159,17 +159,17 @@ def main() -> None:
     data: Union[DataTuple, TestTuple]
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)
-        train_and_predict(train, test, flags, seed=in_algo_args["seed"]).to_npz(
+        train_and_predict(train, test, flags, seed=in_algo_args["seed"]).save_to_file(
             Path(in_algo_args["predictions"])
         )
     elif in_algo_args["mode"] == "fit":
-        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        data = DataTuple.from_file(Path(in_algo_args["train"]))
         model = fit(data, flags, seed=in_algo_args["seed"])
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        data = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
+        data = SubgroupTuple.from_file(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
-        predict(model, data, flags).to_npz(Path(in_algo_args["predictions"]))
+        predict(model, data, flags).save_to_file(Path(in_algo_args["predictions"]))
 
 
 if __name__ == "__main__":

@@ -80,7 +80,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
             train_path = tmp_path / "train.npz"
-            train.to_npz(train_path)
+            train.save_to_file(train_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
@@ -96,7 +96,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             self.call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_train = DataTuple.from_npz(transformed_train_path)
+            transformed_train = DataTuple.from_file(transformed_train_path)
 
         # prefix the name of the algorithm to the dataset name
         if train.name is not None:
@@ -114,7 +114,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
             test_path = tmp_path / "test.npz"
-            data.to_npz(test_path)
+            data.save_to_file(test_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_test_path = tmp_path / "transformed_test.npz"
@@ -129,7 +129,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             self.call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_test: T = data.from_npz(transformed_test_path)
+            transformed_test: T = data.from_file(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         if data.name is not None:
@@ -150,8 +150,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
             train_path, test_path = tmp_path / "train.npz", tmp_path / "test.npz"
-            train.to_npz(train_path)
-            test.to_npz(test_path)
+            train.save_to_file(train_path)
+            test.save_to_file(test_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
@@ -169,8 +169,8 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             self.call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_train = DataTuple.from_npz(transformed_train_path)
-            transformed_test = test.from_npz(transformed_test_path)
+            transformed_train = DataTuple.from_file(transformed_train_path)
+            transformed_test = test.from_file(transformed_test_path)
 
         # prefix the name of the algorithm to the dataset name
         if train.name is not None:

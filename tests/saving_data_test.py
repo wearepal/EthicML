@@ -41,7 +41,7 @@ def test_simple_saving() -> None:
         def _script_command(self, in_algo_args: InAlgoArgs):  # type: ignore[misc]
             """Check if the dataframes loaded from the files are the same as the original ones."""
             assert in_algo_args["mode"] == "run", "model doesn't support the fit/predict split yet"
-            loaded = DataTuple.from_npz(Path(in_algo_args["train"]))
+            loaded = DataTuple.from_file(Path(in_algo_args["train"]))
             pd.testing.assert_frame_equal(data_tuple.x, loaded.x)
             pd.testing.assert_series_equal(data_tuple.s, loaded.s)
             pd.testing.assert_series_equal(data_tuple.y, loaded.y)
@@ -62,16 +62,16 @@ def test_simple_saving() -> None:
 def test_predictions_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]))
-    preds.to_npz(temp_dir / NPZ)
-    loaded = Prediction.from_npz(temp_dir / NPZ)
+    preds.save_to_file(temp_dir / NPZ)
+    loaded = Prediction.from_file(temp_dir / NPZ)
     pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
 
 
 def test_predictions_info_loaded(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": 123.4})
-    preds.to_npz(temp_dir / NPZ)
-    loaded = Prediction.from_npz(temp_dir / NPZ)
+    preds.save_to_file(temp_dir / NPZ)
+    loaded = Prediction.from_file(temp_dir / NPZ)
     pd.testing.assert_series_equal(preds.hard, loaded.hard, check_dtype=False)
     assert preds.info == loaded.info
 
@@ -80,7 +80,7 @@ def test_predictions_info_loaded_bad(temp_dir: Path) -> None:
     """Test that predictions can be saved and loaded."""
     preds = Prediction(hard=pd.Series([1]), info={"sample": np.array([1, 2, 3])})  # type: ignore
     with pytest.raises(AssertionError):
-        preds.to_npz(temp_dir / NPZ)
+        preds.save_to_file(temp_dir / NPZ)
 
 
 def test_dataset_name_none() -> None:
@@ -94,9 +94,9 @@ def test_dataset_name_none() -> None:
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
         path = tmp_path / "pytest.npz"
-        datatup.to_npz(path)
+        datatup.save_to_file(path)
         # reload from feather file
-        reloaded = DataTuple.from_npz(path)
+        reloaded = DataTuple.from_file(path)
     assert reloaded.name is None
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_series_equal(datatup.s, reloaded.s)
@@ -112,9 +112,9 @@ def test_dataset_name_with_spaces() -> None:
     with TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
         path = tmp_path / "pytest2.npz"
-        datatup.to_npz(path)
+        datatup.save_to_file(path)
         # reload from feather file
-        reloaded = SubgroupTuple.from_npz(path)
+        reloaded = SubgroupTuple.from_file(path)
     assert name == reloaded.name
     pd.testing.assert_frame_equal(datatup.x, reloaded.x)
     pd.testing.assert_series_equal(datatup.s, reloaded.s)
