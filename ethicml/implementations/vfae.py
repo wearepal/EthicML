@@ -164,15 +164,15 @@ def main() -> None:
         save_transformations(train_and_transform(train, test, flags), pre_algo_args)
     elif pre_algo_args["mode"] == "fit":
         set_seed(pre_algo_args["seed"])
-        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        train = DataTuple.from_file(Path(pre_algo_args["train"]))
         enc = fit(train, flags)
         transformed_train = transform(enc, train, flags)
-        transformed_train.to_npz(Path(pre_algo_args["new_train"]))
+        transformed_train.save_to_file(Path(pre_algo_args["new_train"]))
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(model, DataTuple.from_npz(Path(pre_algo_args["test"])), flags)
-        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
+        transformed_test = transform(model, DataTuple.from_file(Path(pre_algo_args["test"])), flags)
+        transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":

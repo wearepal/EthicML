@@ -450,14 +450,14 @@ def main() -> None:
             train_and_transform(train, test, flags, pre_algo_args["seed"]), pre_algo_args
         )
     elif pre_algo_args["mode"] == "fit":
-        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        train = DataTuple.from_file(Path(pre_algo_args["train"]))
         transformed_train, enc = fit(train, flags, seed=pre_algo_args["seed"])
-        transformed_train.to_npz(Path(pre_algo_args["new_train"]))
+        transformed_train.save_to_file(Path(pre_algo_args["new_train"]))
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(DataTuple.from_npz(Path(pre_algo_args["test"])), model, flags)
-        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
+        transformed_test = transform(DataTuple.from_file(Path(pre_algo_args["test"])), model, flags)
+        transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":

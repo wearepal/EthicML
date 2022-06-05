@@ -16,7 +16,7 @@ def load_data_from_flags(args: PreAlgoRunArgs | InAlgoRunArgs) -> Tuple[DataTupl
 
     :param args:
     """
-    return DataTuple.from_npz(Path(args["train"])), SubgroupTuple.from_npz(Path(args["test"]))
+    return DataTuple.from_file(Path(args["train"])), SubgroupTuple.from_file(Path(args["test"]))
 
 
 def save_transformations(
@@ -30,5 +30,5 @@ def save_transformations(
     train, test = transforms
     assert isinstance(train, DataTuple)
     assert isinstance(test, (DataTuple, SubgroupTuple))
-    train.to_npz(Path(pre_algo_run_args["new_train"]))
-    test.to_npz(Path(pre_algo_run_args["new_test"]))
+    train.save_to_file(Path(pre_algo_run_args["new_train"]))
+    test.save_to_file(Path(pre_algo_run_args["new_test"]))
