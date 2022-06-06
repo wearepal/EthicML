@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Preprocess algorithms" href="preprocess.html" /><link rel="prev" title="Inprocess algorithms" href="inprocess.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Postprocess algorithms - EthicML 1.0.0-alpha.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Postprocess algorithms - EthicML 1.0.0-alpha.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -166,6 +166,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml.models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Algorithms base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inprocess.html">Inprocess algorithms</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Postprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocess.html">Preprocess algorithms</a></li>
@@ -190,7 +191,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -213,7 +215,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PostAlgorithm</span></span><a class="headerlink" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="base.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract Base Class for all algorithms that do post-processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm.fit">
@@ -235,6 +237,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm.get_name">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.get_name" title="Permalink to this definition">#</a></dt>
@@ -245,11 +248,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm.predict">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.predict" title="Permalink to this definition">#</a></dt>
@@ -270,6 +275,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.post_algorithm.PostAlgorithm.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.run" title="Permalink to this definition">#</a></dt>
@@ -292,7 +298,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.postprocess.dp_flip">
 <span id="dp-flip"></span><h2>DP Flip<a class="headerlink" href="#module-ethicml.models.postprocess.dp_flip" title="Permalink to this headline">#</a></h2>
@@ -326,6 +334,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.dp_flip.DPFlip.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.dp_flip.DPFlip.get_name" title="Permalink to this definition">#</a></dt>
@@ -336,11 +345,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.dp_flip.DPFlip.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.postprocess.dp_flip.DPFlip.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.dp_flip.DPFlip.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.dp_flip.DPFlip.predict" title="Permalink to this definition">#</a></dt>
@@ -361,6 +372,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.dp_flip.DPFlip.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.dp_flip.DPFlip.run" title="Permalink to this definition">#</a></dt>
@@ -383,7 +395,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.postprocess.hardt">
 <span id="hardt"></span><h2>Hardt<a class="headerlink" href="#module-ethicml.models.postprocess.hardt" title="Permalink to this headline">#</a></h2>
@@ -423,6 +437,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.hardt.Hardt.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.hardt.Hardt.get_name" title="Permalink to this definition">#</a></dt>
@@ -433,11 +448,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.hardt.Hardt.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.postprocess.hardt.Hardt.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.hardt.Hardt.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.hardt.Hardt.predict" title="Permalink to this definition">#</a></dt>
@@ -458,6 +475,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.postprocess.hardt.Hardt.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.postprocess.hardt.Hardt.run" title="Permalink to this definition">#</a></dt>
@@ -480,7 +498,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 

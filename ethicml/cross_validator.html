@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Model evaluation" href="evaluate_models.html" /><link rel="prev" title="ethicml" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Cross-validation - EthicML 1.0.0-alpha.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Cross-validation - EthicML 1.0.0-alpha.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -165,10 +165,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../models/index.html">ethicml.models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../models/inprocess.html">Inprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../models/postprocess.html">Postprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../models/preprocess.html">Preprocess algorithms</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml.models/index.html">ethicml.models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/base.html">Algorithms base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/preprocess.html">Preprocess algorithms</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
@@ -190,7 +191,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -208,10 +210,11 @@
 <span id="cross-validation"></span><h1>Cross-validation<a class="headerlink" href="#module-ethicml.evaluators.cross_validator" title="Permalink to this headline">#</a></h1>
 <p>Cross Validation for any in process (at the moment) Algorithm.</p>
 <p><strong>Classes:</strong></p>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CVResults</span></code></a></p></td>
@@ -221,7 +224,8 @@
 <td><p>A simple approach to Cross Validation.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CVResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults" title="Permalink to this definition">#</a></dt>
@@ -233,7 +237,7 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
 
 <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
-<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"C"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
+<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
 
 <span class="n">cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">primary</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
@@ -241,9 +245,9 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">])</span>
 <span class="n">best_result</span> <span class="o">=</span> <span class="n">cv_results</span><span class="o">.</span><span class="n">get_best_in_top_k</span><span class="p">(</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best C: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">'C'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best Accuracy: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">'Accuracy'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Best CV Score: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">'CV absolute'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best C: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best Accuracy: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best CV Score: </span><span class="si">{</span><span class="n">best_result</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;CV absolute&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">cv_results</span><span class="o">.</span><span class="n">mean_storage</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">cv_results</span><span class="o">.</span><span class="n">raw_storage</span><span class="p">)</span>
 </pre></div>
@@ -252,7 +256,7 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>List</em><em>[</em><em>ethicml.evaluators.cross_validator.ResultTuple</em><em>]</em>) – </p></li>
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – </p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -265,10 +269,11 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="../models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm">ethicml.models.inprocess.in_algorithm.InAlgorithm</a></p>
+<dd class="field-even"><p><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm">ethicml.models.inprocess.in_algorithm.InAlgorithm</a></p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.best_hyper_params">
 <span class="sig-name descname"><span class="pre">best_hyper_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.best_hyper_params" title="Permalink to this definition">#</a></dt>
@@ -282,6 +287,7 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.get_best_in_top_k">
 <span class="sig-name descname"><span class="pre">get_best_in_top_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secondary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.get_best_in_top_k" title="Permalink to this definition">#</a></dt>
@@ -301,6 +307,7 @@ secondary metric from the top K.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CVResults.get_best_result">
 <span class="sig-name descname"><span class="pre">get_best_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.get_best_result" title="Permalink to this definition">#</a></dt>
@@ -314,7 +321,9 @@ secondary metric from the top K.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CrossValidator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CrossValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CrossValidator" title="Permalink to this definition">#</a></dt>
@@ -325,7 +334,7 @@ Results are returned in a CVResults object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
 
 <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
-<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"C"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
+<span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
 
 <span class="n">lr_cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
@@ -337,7 +346,7 @@ Results are returned in a CVResults object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
 <li><p><strong>hyperparams</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – a dictionary where the keys are the names of hyperparameters and the values
 are lists of possible values for the hyperparameters</p></li>
 <li><p><strong>folds</strong> (<em>int</em>) – the number of folds</p></li>
@@ -365,6 +374,7 @@ which is the number of available CPUs</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.evaluators.cross_validator.CrossValidator.run_async">
 <span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CrossValidator.run_async" title="Permalink to this definition">#</a></dt>
@@ -384,7 +394,9 @@ which is the number of available CPUs</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 
         </article>

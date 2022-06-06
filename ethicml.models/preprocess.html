@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ethicml.metrics" href="../ethicml.metrics.html" /><link rel="prev" title="Postprocess algorithms" href="postprocess.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Preprocess algorithms - EthicML 1.0.0-alpha.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Preprocess algorithms - EthicML 1.0.0-alpha.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -166,6 +166,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml.models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Algorithms base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inprocess.html">Inprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocess.html">Postprocess algorithms</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Preprocess algorithms</a></li>
@@ -190,7 +191,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -213,7 +215,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PreAlgorithm</span></span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="base.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract Base Class for all algorithms that do pre-processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.fit">
@@ -235,6 +237,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_name">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_name" title="Permalink to this definition">#</a></dt>
@@ -245,6 +248,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_out_size">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -255,11 +259,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run" title="Permalink to this definition">#</a></dt>
@@ -280,6 +286,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run_test" title="Permalink to this definition">#</a></dt>
@@ -300,6 +307,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.pre_algorithm.PreAlgorithm.transform">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.transform" title="Permalink to this definition">#</a></dt>
@@ -316,7 +324,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.preprocess.beutel">
 <span id="beutel"></span><h2>Beutel<a class="headerlink" href="#module-ethicml.models.preprocess.beutel" title="Permalink to this headline">#</a></h2>
@@ -324,7 +334,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Beutel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness=ranzen.enum_name_str.dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enc_activation='Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_activation='Sigmoid()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_loss='CrossEntropyLoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_loss='BCELoss()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adv_weight=1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_pcnt=0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.PreAlgorithmSubprocess" title="ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>Beutel’s adversarially learned fair representations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -357,7 +367,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -366,12 +376,14 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.fit" title="Permalink to this definition">#</a></dt>
@@ -392,6 +404,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.get_name" title="Permalink to this definition">#</a></dt>
@@ -402,6 +415,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.get_out_size">
 <span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -412,16 +426,19 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.model_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.model_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to where the model with be stored.</p>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.run" title="Permalink to this definition">#</a></dt>
@@ -442,6 +459,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.run_test" title="Permalink to this definition">#</a></dt>
@@ -462,6 +480,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.beutel.Beutel.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.beutel.Beutel.transform" title="Permalink to this definition">#</a></dt>
@@ -478,7 +497,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.preprocess.calders">
 <span id="calders"></span><h2>Calders<a class="headerlink" href="#module-ethicml.models.preprocess.calders" title="Permalink to this headline">#</a></h2>
@@ -518,6 +539,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.get_name" title="Permalink to this definition">#</a></dt>
@@ -528,6 +550,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.get_out_size">
 <span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -538,11 +561,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.run" title="Permalink to this definition">#</a></dt>
@@ -563,6 +588,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.run_test" title="Permalink to this definition">#</a></dt>
@@ -583,6 +609,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.calders.Calders.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.calders.Calders.transform" title="Permalink to this definition">#</a></dt>
@@ -599,7 +626,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.preprocess.upsampler">
 <span id="upsampling"></span><h2>Upsampling<a class="headerlink" href="#module-ethicml.models.preprocess.upsampler" title="Permalink to this headline">#</a></h2>
@@ -610,6 +639,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
 <p>Strategy for upsampling.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Upsampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.uniform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler" title="Permalink to this definition">#</a></dt>
@@ -644,6 +674,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.get_name" title="Permalink to this definition">#</a></dt>
@@ -654,6 +685,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.get_out_size">
 <span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -664,11 +696,13 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.run" title="Permalink to this definition">#</a></dt>
@@ -689,6 +723,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.run_test" title="Permalink to this definition">#</a></dt>
@@ -709,6 +744,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.upsampler.Upsampler.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.upsampler.Upsampler.transform" title="Permalink to this definition">#</a></dt>
@@ -725,7 +761,9 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.preprocess.vfae">
 <span id="vfae"></span><h2>VFAE<a class="headerlink" href="#module-ethicml.models.preprocess.vfae" title="Permalink to this headline">#</a></h2>
@@ -733,7 +771,7 @@ of samples.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VFAE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset='toy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supervised=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness=ranzen.enum_name_str.dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latent_dims=50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2_enc_size=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1_dec_size=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.PreAlgorithmSubprocess" title="ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>VFAE Object - see implementation file for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -763,7 +801,7 @@ of samples.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -772,12 +810,14 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.fit" title="Permalink to this definition">#</a></dt>
@@ -798,6 +838,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.get_name" title="Permalink to this definition">#</a></dt>
@@ -808,6 +849,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.get_out_size">
 <span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -818,16 +860,19 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.model_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.model_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to where the model with be stored.</p>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.run" title="Permalink to this definition">#</a></dt>
@@ -848,6 +893,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.run_test" title="Permalink to this definition">#</a></dt>
@@ -868,6 +914,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.vfae.VFAE.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.vfae.VFAE.transform" title="Permalink to this definition">#</a></dt>
@@ -884,7 +931,9 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.preprocess.zemel">
 <span id="zemel"></span><h2>Zemel<a class="headerlink" href="#module-ethicml.models.preprocess.zemel" title="Permalink to this headline">#</a></h2>
@@ -892,7 +941,7 @@ of samples.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Zemel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Az</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.PreAlgorithmSubprocess" title="ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.preprocess.pre_subprocess.PreAlgorithmSubprocess</span></code></p>
 <p>AIF360 implementation of Zemel’s LFR.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -921,7 +970,7 @@ of samples.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -930,12 +979,14 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.fit" title="Permalink to this definition">#</a></dt>
@@ -956,6 +1007,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.get_name" title="Permalink to this definition">#</a></dt>
@@ -966,6 +1018,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.get_out_size">
 <span class="sig-name descname"><span class="pre">get_out_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.get_out_size" title="Permalink to this definition">#</a></dt>
@@ -976,16 +1029,19 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.model_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.model_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to where the model with be stored.</p>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.run" title="Permalink to this definition">#</a></dt>
@@ -1006,6 +1062,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.run_test" title="Permalink to this definition">#</a></dt>
@@ -1026,6 +1083,7 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.preprocess.zemel.Zemel.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.preprocess.zemel.Zemel.transform" title="Permalink to this definition">#</a></dt>
@@ -1042,7 +1100,9 @@ of samples.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 

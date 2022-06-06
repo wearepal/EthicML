@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Cross-validation" href="cross_validator.html" /><link rel="prev" title="Welcome to EthicML’s documentation!" href="../index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Inprocess algorithms" href="inprocess.html" /><link rel="prev" title="ethicml.models" href="index.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
-        <title>ethicml - EthicML 1.0.0-alpha.2 documentation</title>
+        <title>Algorithms base - EthicML 1.0.0-alpha.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -155,21 +155,21 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">ethicml</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="evaluate_models.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/cross_validator.html">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/parallelism.html">Parallel evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/utility.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml.models/index.html">ethicml.models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/base.html">Algorithms base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/inprocess.html">Inprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/postprocess.html">Postprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/preprocess.html">Preprocess algorithms</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml.models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Algorithms base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html">Preprocess algorithms</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
@@ -206,20 +206,83 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-ethicml">
-<span id="ethicml"></span><h1>ethicml<a class="headerlink" href="#module-ethicml" title="Permalink to this headline">#</a></h1>
-<p>The main namespace.</p>
-<p>This namespace contains utilities and data structures.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="evaluate_models.html">Model evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
-</ul>
+          <section id="module-ethicml.models.algorithm_base">
+<span id="algorithms-base"></span><h1>Algorithms base<a class="headerlink" href="#module-ethicml.models.algorithm_base" title="Permalink to this headline">#</a></h1>
+<p>Base class for Algorithms.</p>
+<p><strong>Classes:</strong></p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
+<td><p>Base class for Algorithms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.models.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin</span></code></a></p></td>
+<td><p>Mixin for running algorithms in a subprocess, to be used with <a class="reference internal" href="#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Algorithm</span></span><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for Algorithms.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm.get_name">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm.get_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the algorithm.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubprocessAlgorithmMixin</span></span><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Mixin for running algorithms in a subprocess, to be used with <a class="reference internal" href="#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin.call_script">
+<span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.call_script" title="Permalink to this definition">#</a></dt>
+<dd><p>Call a (Python) script as a separate process.</p>
+<p>An exception is thrown if the called script failed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to a (Python) executable.</p>
+<p>By default, the Python executable that called this script is used.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -227,23 +290,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="cross_validator.html">
+          <a class="next-page" href="inprocess.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Cross-validation</div>
+                <div class="title">Inprocess algorithms</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../index.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">ethicml.models</div>
                 
               </div>
             </a>

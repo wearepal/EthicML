@@ -3,12 +3,12 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="ethicml.models" href="index.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Inprocess algorithms - EthicML 1.0.0-alpha.1 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Inprocess algorithms - EthicML 1.0.0-alpha.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -166,6 +166,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml.models</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base.html">Algorithms base</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Inprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocess.html">Postprocess algorithms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocess.html">Preprocess algorithms</a></li>
@@ -190,7 +191,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -213,7 +215,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithm</span></span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="base.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.Algorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract Base Class for algorithms that run in the middle of the pipeline.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.fit">
@@ -235,6 +237,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.get_hyperparameters">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -245,6 +248,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.get_name">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.get_name" title="Permalink to this definition">#</a></dt>
@@ -255,11 +259,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.predict">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.predict" title="Permalink to this definition">#</a></dt>
@@ -276,6 +282,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.run" title="Permalink to this definition">#</a></dt>
@@ -296,6 +303,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.run_test" title="Permalink to this definition">#</a></dt>
@@ -316,7 +324,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithmDC</span></span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC" title="Permalink to this definition">#</a></dt>
@@ -342,6 +352,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -352,6 +363,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_name">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_name" title="Permalink to this definition">#</a></dt>
@@ -362,11 +374,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.predict">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.predict" title="Permalink to this definition">#</a></dt>
@@ -383,6 +397,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run" title="Permalink to this definition">#</a></dt>
@@ -403,6 +418,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run_test" title="Permalink to this definition">#</a></dt>
@@ -423,7 +439,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InAlgorithmNoParams</span></span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams" title="Permalink to this definition">#</a></dt>
@@ -449,6 +467,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -459,6 +478,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_name">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_name" title="Permalink to this definition">#</a></dt>
@@ -469,11 +489,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.predict">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.predict" title="Permalink to this definition">#</a></dt>
@@ -490,6 +512,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run" title="Permalink to this definition">#</a></dt>
@@ -510,6 +533,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run_test" title="Permalink to this definition">#</a></dt>
@@ -530,7 +554,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.agarwal_reductions">
 <span id="agarwal"></span><h2>Agarwal<a class="headerlink" href="#module-ethicml.models.inprocess.agarwal_reductions" title="Permalink to this headline">#</a></h2>
@@ -538,7 +564,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agarwal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fairness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.InAlgorithmSubprocess" title="ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess</span></code></p>
 <p>Agarwal class.</p>
 <p>A wrapper around the Exponentiated Gradient method documented
 <a class="reference external" href="https://fairlearn.org/v0.7.0/api_reference/fairlearn.reductions.html#fairlearn.reductions.ExponentiatedGradient">on this website</a>.</p>
@@ -567,7 +593,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -576,12 +602,14 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.fit" title="Permalink to this definition">#</a></dt>
@@ -602,6 +630,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -612,6 +641,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.get_name" title="Permalink to this definition">#</a></dt>
@@ -622,16 +652,19 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.model_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.model_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to where the model with be stored.</p>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.predict" title="Permalink to this definition">#</a></dt>
@@ -648,6 +681,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.run" title="Permalink to this definition">#</a></dt>
@@ -668,6 +702,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.run_test" title="Permalink to this definition">#</a></dt>
@@ -688,7 +723,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.fairness_wo_demographics">
 <span id="distributionally-robust-optimization"></span><h2>Distributionally-robust optimization<a class="headerlink" href="#module-ethicml.models.inprocess.fairness_wo_demographics" title="Permalink to this headline">#</a></h2>
@@ -696,7 +733,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DRO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir=PosixPath('.')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta=0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_size=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.InAlgorithmSubprocess" title="ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_subprocess.InAlgorithmSubprocess</span></code></p>
 <p>Implementation of <a class="reference external" href="https://arxiv.org/abs/1806.08010">https://arxiv.org/abs/1806.08010</a> .</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -721,7 +758,7 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -730,12 +767,14 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to a (Python) executable.</p>
 <p>By default, the Python executable that called this script is used.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.fit" title="Permalink to this definition">#</a></dt>
@@ -756,6 +795,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -766,6 +806,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.get_name" title="Permalink to this definition">#</a></dt>
@@ -776,16 +817,19 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.model_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.model_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Path to where the model with be stored.</p>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.predict" title="Permalink to this definition">#</a></dt>
@@ -802,6 +846,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.run" title="Permalink to this definition">#</a></dt>
@@ -822,6 +867,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.run_test" title="Permalink to this definition">#</a></dt>
@@ -842,7 +888,9 @@
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.installed_model">
 <span id="base-for-installed-model"></span><h2>Base for installed model<a class="headerlink" href="#module-ethicml.models.inprocess.installed_model" title="Permalink to this headline">#</a></h2>
@@ -854,7 +902,7 @@ in its own venv and makes everyone happy.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstalledModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_poetry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.models.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_algorithm.InAlgorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="base.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="ethicml.models.algorithm_base.SubprocessAlgorithmMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.algorithm_base.SubprocessAlgorithmMixin</span></code></a>, <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_algorithm.InAlgorithm</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>The model that does the magic.</p>
 <p>Download code from given URL and create Pip environment with Pipfile found in the code.</p>
 <dl class="field-list simple">
@@ -879,7 +927,7 @@ simply the last part of the repository URL).</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -888,11 +936,13 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.fit">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.fit" title="Permalink to this definition">#</a></dt>
@@ -913,6 +963,7 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.get_hyperparameters">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -923,6 +974,7 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.get_name" title="Permalink to this definition">#</a></dt>
@@ -933,11 +985,13 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.predict">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.predict" title="Permalink to this definition">#</a></dt>
@@ -954,6 +1008,7 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.remove" title="Permalink to this definition">#</a></dt>
@@ -964,6 +1019,7 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.run">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.run" title="Permalink to this definition">#</a></dt>
@@ -984,6 +1040,7 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.run_test" title="Permalink to this definition">#</a></dt>
@@ -1004,7 +1061,9 @@ simply the last part of the repository URL).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.kamiran">
 <span id="kamiran"></span><h2>Kamiran<a class="headerlink" href="#module-ethicml.models.inprocess.kamiran" title="Permalink to this headline">#</a></h2>
@@ -1047,6 +1106,7 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1057,6 +1117,7 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.get_name" title="Permalink to this definition">#</a></dt>
@@ -1067,11 +1128,13 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.predict" title="Permalink to this definition">#</a></dt>
@@ -1088,6 +1151,7 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.run" title="Permalink to this definition">#</a></dt>
@@ -1108,6 +1172,7 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.run_test" title="Permalink to this definition">#</a></dt>
@@ -1128,7 +1193,9 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.compute_instance_weights">
 <span class="sig-name descname"><span class="pre">compute_instance_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">balance_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upweight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.compute_instance_weights" title="Permalink to this definition">#</a></dt>
@@ -1154,6 +1221,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.kamishima">
 <span id="kamishima"></span><h2>Kamishima<a class="headerlink" href="#module-ethicml.models.inprocess.kamishima" title="Permalink to this headline">#</a></h2>
@@ -1179,7 +1247,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -1188,11 +1256,13 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.fit" title="Permalink to this definition">#</a></dt>
@@ -1212,6 +1282,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1222,6 +1293,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.get_name" title="Permalink to this definition">#</a></dt>
@@ -1232,11 +1304,13 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.predict" title="Permalink to this definition">#</a></dt>
@@ -1253,6 +1327,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.remove" title="Permalink to this definition">#</a></dt>
@@ -1263,6 +1338,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.run" title="Permalink to this definition">#</a></dt>
@@ -1283,6 +1359,7 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.run_test" title="Permalink to this definition">#</a></dt>
@@ -1303,7 +1380,9 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.logistic_regression">
 <span id="logistic-regression"></span><h2>Logistic regression<a class="headerlink" href="#module-ethicml.models.inprocess.logistic_regression" title="Permalink to this headline">#</a></h2>
@@ -1343,6 +1422,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1353,6 +1433,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.get_name" title="Permalink to this definition">#</a></dt>
@@ -1363,11 +1444,13 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.predict" title="Permalink to this definition">#</a></dt>
@@ -1384,6 +1467,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.run" title="Permalink to this definition">#</a></dt>
@@ -1404,6 +1488,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.run_test" title="Permalink to this definition">#</a></dt>
@@ -1424,7 +1509,9 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LRCV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV" title="Permalink to this definition">#</a></dt>
@@ -1457,6 +1544,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1467,6 +1555,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.get_name" title="Permalink to this definition">#</a></dt>
@@ -1477,11 +1566,13 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.predict" title="Permalink to this definition">#</a></dt>
@@ -1498,6 +1589,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.run" title="Permalink to this definition">#</a></dt>
@@ -1518,6 +1610,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.run_test" title="Permalink to this definition">#</a></dt>
@@ -1538,7 +1631,9 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.majority">
 <span id="majority"></span><h2>Majority<a class="headerlink" href="#module-ethicml.models.inprocess.majority" title="Permalink to this headline">#</a></h2>
@@ -1572,6 +1667,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1582,6 +1678,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.get_name" title="Permalink to this definition">#</a></dt>
@@ -1592,11 +1689,13 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.predict" title="Permalink to this definition">#</a></dt>
@@ -1613,6 +1712,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.run" title="Permalink to this definition">#</a></dt>
@@ -1633,6 +1733,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.run_test" title="Permalink to this definition">#</a></dt>
@@ -1653,7 +1754,9 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.manual">
 <span id="manual-methods"></span><h2>Manual methods<a class="headerlink" href="#module-ethicml.models.inprocess.manual" title="Permalink to this headline">#</a></h2>
@@ -1689,6 +1792,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1699,6 +1803,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.get_name" title="Permalink to this definition">#</a></dt>
@@ -1709,11 +1814,13 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.predict" title="Permalink to this definition">#</a></dt>
@@ -1730,6 +1837,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.run" title="Permalink to this definition">#</a></dt>
@@ -1750,6 +1858,7 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.run_test" title="Permalink to this definition">#</a></dt>
@@ -1770,7 +1879,9 @@ for details.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.mlp">
 <span id="mlp"></span><h2>MLP<a class="headerlink" href="#module-ethicml.models.inprocess.mlp" title="Permalink to this headline">#</a></h2>
@@ -1813,6 +1924,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1823,6 +1935,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.get_name" title="Permalink to this definition">#</a></dt>
@@ -1833,11 +1946,13 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.predict" title="Permalink to this definition">#</a></dt>
@@ -1854,6 +1969,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.run" title="Permalink to this definition">#</a></dt>
@@ -1874,6 +1990,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.run_test" title="Permalink to this definition">#</a></dt>
@@ -1894,7 +2011,9 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.oracle">
 <span id="oracle"></span><h2>Oracle<a class="headerlink" href="#module-ethicml.models.inprocess.oracle" title="Permalink to this headline">#</a></h2>
@@ -1931,6 +2050,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -1941,6 +2061,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.get_name" title="Permalink to this definition">#</a></dt>
@@ -1951,11 +2072,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.predict" title="Permalink to this definition">#</a></dt>
@@ -1972,6 +2095,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.run" title="Permalink to this definition">#</a></dt>
@@ -1992,6 +2116,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.run_test" title="Permalink to this definition">#</a></dt>
@@ -2012,7 +2137,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Oracle</span></span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle" title="Permalink to this definition">#</a></dt>
@@ -2045,6 +2172,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2055,6 +2183,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.get_name" title="Permalink to this definition">#</a></dt>
@@ -2065,11 +2194,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.predict" title="Permalink to this definition">#</a></dt>
@@ -2086,6 +2217,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.run" title="Permalink to this definition">#</a></dt>
@@ -2106,6 +2238,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.run_test" title="Permalink to this definition">#</a></dt>
@@ -2126,7 +2259,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.svm">
 <span id="svm"></span><h2>SVM<a class="headerlink" href="#module-ethicml.models.inprocess.svm" title="Permalink to this headline">#</a></h2>
@@ -2168,6 +2303,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2178,6 +2314,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.get_name" title="Permalink to this definition">#</a></dt>
@@ -2188,11 +2325,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.predict" title="Permalink to this definition">#</a></dt>
@@ -2209,6 +2348,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.run" title="Permalink to this definition">#</a></dt>
@@ -2229,6 +2369,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.run_test" title="Permalink to this definition">#</a></dt>
@@ -2249,7 +2390,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 <section id="module-ethicml.models.inprocess.zafar">
 <span id="zafar"></span><h2>Zafar<a class="headerlink" href="#module-ethicml.models.inprocess.zafar" title="Permalink to this headline">#</a></h2>
@@ -2273,7 +2416,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -2282,11 +2425,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.fit" title="Permalink to this definition">#</a></dt>
@@ -2306,6 +2451,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2316,6 +2462,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.get_name" title="Permalink to this definition">#</a></dt>
@@ -2326,11 +2473,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.predict" title="Permalink to this definition">#</a></dt>
@@ -2347,6 +2496,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.remove" title="Permalink to this definition">#</a></dt>
@@ -2357,6 +2507,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.run" title="Permalink to this definition">#</a></dt>
@@ -2377,6 +2528,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.run_test" title="Permalink to this definition">#</a></dt>
@@ -2397,7 +2549,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarBaseline</span></span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline" title="Permalink to this definition">#</a></dt>
@@ -2417,7 +2571,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -2426,11 +2580,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.fit" title="Permalink to this definition">#</a></dt>
@@ -2450,6 +2606,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2460,6 +2617,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.get_name" title="Permalink to this definition">#</a></dt>
@@ -2470,11 +2628,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.predict" title="Permalink to this definition">#</a></dt>
@@ -2491,6 +2651,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.remove" title="Permalink to this definition">#</a></dt>
@@ -2501,6 +2662,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.run" title="Permalink to this definition">#</a></dt>
@@ -2521,6 +2683,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.run_test" title="Permalink to this definition">#</a></dt>
@@ -2541,7 +2704,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarEqOdds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds" title="Permalink to this definition">#</a></dt>
@@ -2565,7 +2730,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -2574,11 +2739,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.fit" title="Permalink to this definition">#</a></dt>
@@ -2598,6 +2765,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2608,6 +2776,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.get_name" title="Permalink to this definition">#</a></dt>
@@ -2618,11 +2787,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.predict" title="Permalink to this definition">#</a></dt>
@@ -2639,6 +2810,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.remove" title="Permalink to this definition">#</a></dt>
@@ -2649,6 +2821,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.run" title="Permalink to this definition">#</a></dt>
@@ -2669,6 +2842,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.run_test" title="Permalink to this definition">#</a></dt>
@@ -2689,7 +2863,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarEqOpp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp" title="Permalink to this definition">#</a></dt>
@@ -2713,7 +2889,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -2722,11 +2898,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.fit" title="Permalink to this definition">#</a></dt>
@@ -2746,6 +2924,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2756,6 +2935,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.get_name" title="Permalink to this definition">#</a></dt>
@@ -2766,11 +2946,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.predict" title="Permalink to this definition">#</a></dt>
@@ -2787,6 +2969,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.remove" title="Permalink to this definition">#</a></dt>
@@ -2797,6 +2980,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.run" title="Permalink to this definition">#</a></dt>
@@ -2817,6 +3001,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.run_test" title="Permalink to this definition">#</a></dt>
@@ -2837,7 +3022,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ZafarFairness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness" title="Permalink to this definition">#</a></dt>
@@ -2857,7 +3044,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{"PATH":</span> <span class="pre">"/usr/bin"}</span></code>.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
@@ -2866,11 +3053,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.executable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">executable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.executable" title="Permalink to this definition">#</a></dt>
 <dd><p>Python executable from the virtualenv associated with the model.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.fit" title="Permalink to this definition">#</a></dt>
@@ -2890,6 +3079,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.get_hyperparameters">
 <span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.get_hyperparameters" title="Permalink to this definition">#</a></dt>
@@ -2900,6 +3090,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.get_name" title="Permalink to this definition">#</a></dt>
@@ -2910,11 +3101,13 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.predict" title="Permalink to this definition">#</a></dt>
@@ -2931,6 +3124,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.remove">
 <span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.remove" title="Permalink to this definition">#</a></dt>
@@ -2941,6 +3135,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.run" title="Permalink to this definition">#</a></dt>
@@ -2961,6 +3156,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.run_test">
 <span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.run_test" title="Permalink to this definition">#</a></dt>
@@ -2981,7 +3177,9 @@ but can be useful if you want to either do a sanity check, or report potential v
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 
@@ -2999,14 +3197,14 @@ but can be useful if you want to either do a sanity check, or report potential v
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="index.html">
+          <a class="prev-page" href="base.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">ethicml.models</div>
+                <div class="title">Algorithms base</div>
                 
               </div>
             </a>
