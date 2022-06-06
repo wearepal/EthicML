@@ -246,7 +246,7 @@ def main() -> None:
             train_and_transform(train, test, flags, seed=pre_algo_args["seed"]), pre_algo_args
         )
     elif pre_algo_args["mode"] == "fit":
-        train = DataTuple.from_npz(Path(pre_algo_args["train"]))
+        train = DataTuple.from_file(Path(pre_algo_args["train"]))
         model = fit(train, flags, seed=pre_algo_args["seed"])
         training_sensitive = train.x.loc[train.s == 0].to_numpy()
         training_nonsensitive = train.x.loc[train.s == 1].to_numpy()
@@ -254,14 +254,14 @@ def main() -> None:
             model.prototypes, model.w, training_nonsensitive, training_sensitive, train
         )
         data = train.replace(x=train_transformed)
-        data.to_npz(Path(pre_algo_args["new_train"]))
+        data.save_to_file(Path(pre_algo_args["new_train"]))
         dump(model, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
         transformed_test = transform(
-            DataTuple.from_npz(Path(pre_algo_args["test"])), model.prototypes, model.w
+            DataTuple.from_file(Path(pre_algo_args["test"])), model.prototypes, model.w
         )
-        transformed_test.to_npz(Path(pre_algo_args["new_test"]))
+        transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 
 if __name__ == "__main__":

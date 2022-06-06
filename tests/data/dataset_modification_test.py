@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 from ethicml import scale_continuous, train_test_split
 from ethicml.data import Dataset, available_tabular, get_dataset_obj_by_name
+from ethicml.data.util import from_dummies
 
 
 @pytest.mark.parametrize("dataset_name", available_tabular())
@@ -72,7 +73,5 @@ def test_from_dummies():
     """Test that the _from_dummies method produces the inverse of pd.get_dummies for an em.Datase."""
     df = pd.DataFrame({"a": ["a", "b", "c"], "b": ["q", "w", "e"]})
     dummied = pd.get_dummies(df)
-    repacked = Dataset._from_dummies(
-        dummied, {"a": ["a_a", "a_b", "a_c"], "b": ["b_q", "b_w", "b_e"]}
-    )
+    repacked = from_dummies(dummied, {"a": ["a_a", "a_b", "a_c"], "b": ["b_q", "b_w", "b_e"]})
     pandas.testing.assert_frame_equal(df, repacked)

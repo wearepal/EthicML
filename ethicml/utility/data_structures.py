@@ -155,7 +155,7 @@ class SubgroupTuple(SubsetMixin):
         """Change only the name."""
         return SubgroupTuple(data=self.data, s_column=self.s_column, name=name)
 
-    def to_npz(self, data_path: Path) -> None:
+    def save_to_file(self, data_path: Path) -> None:
         """Save SubgroupTuple as an npz file.
 
         :param data_path: Path to save the npz file.
@@ -167,7 +167,7 @@ class SubgroupTuple(SubsetMixin):
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> SubgroupTuple:
+    def from_file(cls, data_path: Path) -> SubgroupTuple:
         """Load test tuple from npz file.
 
         :param data_path: Path to load the npz file.
@@ -271,7 +271,7 @@ class DataTuple(SubsetMixin):
         """
         return self.replace_data(data=mapper(self.data))
 
-    def to_npz(self, data_path: Path) -> None:
+    def save_to_file(self, data_path: Path) -> None:
         """Save DataTuple as an npz file.
 
         :param data_path: Path to the npz file.
@@ -283,7 +283,7 @@ class DataTuple(SubsetMixin):
         )
 
     @classmethod
-    def from_npz(cls, data_path: Path) -> DataTuple:
+    def from_file(cls, data_path: Path) -> DataTuple:
         """Load data tuple from npz file.
 
         :param data_path: Path to the npz file.
@@ -419,7 +419,7 @@ class Prediction:
         return self._info
 
     @staticmethod
-    def from_npz(npz_path: Path) -> Prediction:
+    def from_file(npz_path: Path) -> Prediction:
         """Load prediction from npz file.
 
         :param npz_path: Path to the npz file.
@@ -434,7 +434,7 @@ class Prediction:
                 return SoftPrediction(soft=np.squeeze(data["soft"]), info=info)
             return Prediction(hard=pd.Series(np.squeeze(data["hard"])), info=info)
 
-    def to_npz(self, npz_path: Path) -> None:
+    def save_to_file(self, npz_path: Path) -> None:
         """Save prediction as npz file.
 
         :param npz_path: Path to the npz file.

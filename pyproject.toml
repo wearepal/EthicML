@@ -19,7 +19,7 @@ classifiers=[
     "Typing :: Typed",
 ]
 keywords=["ml", "fairness"]
-repository="https://github.com/predictive-analytics-lab/EthicML"
+repository="https://github.com/wearepal/EthicML"
 
 [tool.poetry.dependencies]
 python = ">=3.7.1,<3.11"
@@ -60,7 +60,7 @@ pylint = "^2.13.5"
 pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "316dad4"}
-types-Pillow = "^9.0.15"
+types-Pillow = "^9.0.19"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
 

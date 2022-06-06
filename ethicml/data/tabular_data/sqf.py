@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type, Union
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, simple_spec
 
 __all__ = ["Sqf", "SqfSplits"]
@@ -19,7 +19,7 @@ class SqfSplits(Enum):
 
 
 @dataclass
-class Sqf(LoadableDataset):
+class Sqf(LegacyDataset):
     """Stop, question and frisk dataset.
 
     This data is from the 2016, source: http://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
@@ -155,10 +155,9 @@ class Sqf(LoadableDataset):
             filename_or_path="sqf.csv",
             features=discrete_features + continuous_features,
             cont_features=continuous_features,
-            s_prefix=s_prefix,
+            s_feature_groups=s_prefix,
             sens_attr_spec=sens_attr_spec,
-            class_label_prefix=class_label_prefix,
+            class_feature_groups=class_label_prefix,
             class_label_spec=class_label_spec,
-            discrete_only=self.discrete_only,
             discrete_feature_groups=disc_feature_groups,
         )

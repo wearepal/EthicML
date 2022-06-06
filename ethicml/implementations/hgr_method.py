@@ -77,21 +77,21 @@ def main() -> None:
     flags: HgrArgs = json.loads(sys.argv[2])
 
     if in_algo_args["mode"] == "run":
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
+        train, test = DataTuple.from_file(Path(in_algo_args["train"])), SubgroupTuple.from_file(
             Path(in_algo_args["test"])
         )
-        SoftPrediction(soft=train_and_predict(train, test, flags, in_algo_args["seed"])).to_npz(
-            Path(in_algo_args["predictions"])
-        )
+        SoftPrediction(
+            soft=train_and_predict(train, test, flags, in_algo_args["seed"])
+        ).save_to_file(Path(in_algo_args["predictions"]))
     elif in_algo_args["mode"] == "fit":
-        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        data = DataTuple.from_file(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
         setattr(model, "ethicml_random_seed", in_algo_args["seed"])  # need to save the seed as well
         dump(model, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        test = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
+        test = SubgroupTuple.from_file(Path(in_algo_args["test"]))
         model = load(Path(in_algo_args["model"]))
-        SoftPrediction(soft=predict(model, test)).to_npz(Path(in_algo_args["predictions"]))
+        SoftPrediction(soft=predict(model, test)).save_to_file(Path(in_algo_args["predictions"]))
     else:
         raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 

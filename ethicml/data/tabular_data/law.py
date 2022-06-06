@@ -4,24 +4,25 @@ This dataset comes from Kusner et al Counterfactual Fairness.
 
 Link to repo: https://github.com/mkusner/counterfactual-fairness/
 
+.. code-block:: bibtex
 
-@inproceedings{NIPS2017_a486cd07,
- author = {Kusner, Matt J and Loftus, Joshua and Russell, Chris and Silva, Ricardo},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {I. Guyon and U. V. Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
- pages = {},
- publisher = {Curran Associates, Inc.},
- title = {Counterfactual Fairness},
- url = {https://proceedings.neurips.cc/paper/2017/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf},
- volume = {30},
- year = {2017}
-}
+   @inproceedings{NIPS2017_a486cd07,
+     author = {Kusner, Matt J and Loftus, Joshua and Russell, Chris and Silva, Ricardo},
+     booktitle = {Advances in Neural Information Processing Systems},
+     editor = {I. Guyon and U. V. Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+     pages = {},
+     publisher = {Curran Associates, Inc.},
+     title = {Counterfactual Fairness},
+     url = {https://proceedings.neurips.cc/paper/2017/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf},
+     volume = {30},
+     year = {2017}
+   }
 """
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Mapping, Type, Union
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import LabelGroup, flatten_dict, simple_spec
 
 __all__ = ["Law", "LawSplits"]
@@ -37,7 +38,7 @@ class LawSplits(Enum):
 
 
 @dataclass
-class Law(LoadableDataset):
+class Law(LegacyDataset):
     """LSAC Law School dataset."""
 
     split: LawSplits = LawSplits.SEX
@@ -97,8 +98,7 @@ class Law(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_spec=class_label_spec,
             filename_or_path="law.csv.zip",
-            s_prefix=s_prefix,
-            class_label_prefix=class_label_prefix,
-            discrete_only=self.discrete_only,
+            s_feature_groups=s_prefix,
+            class_feature_groups=class_label_prefix,
             discrete_feature_groups=disc_feature_groups,
         )

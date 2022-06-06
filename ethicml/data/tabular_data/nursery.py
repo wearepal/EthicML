@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type, Union
 
-from ..dataset import LoadableDataset
+from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict
 
 __all__ = ["Nursery", "NurserySplits"]
@@ -17,7 +17,7 @@ class NurserySplits(Enum):
 
 
 @dataclass
-class Nursery(LoadableDataset):
+class Nursery(LegacyDataset):
     """UCI Adult dataset.
 
     :param discrete_only: If True, continuous features are dropped. (Default: False)
@@ -77,8 +77,7 @@ class Nursery(LoadableDataset):
             sens_attr_spec=sens_attr_spec,
             class_label_spec=class_label_spec,
             filename_or_path="nursery.csv.zip",
-            s_prefix=s_prefix,
-            class_label_prefix=class_label_prefix,
-            discrete_only=self.discrete_only,
+            s_feature_groups=s_prefix,
+            class_feature_groups=class_label_prefix,
             discrete_feature_groups=disc_feature_groups,
         )

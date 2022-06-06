@@ -144,30 +144,32 @@ def main() -> None:
     if in_algo_args["mode"] == "run":
         random.seed(in_algo_args["seed"])
         np.random.seed(in_algo_args["seed"])
-        train, test = DataTuple.from_npz(Path(in_algo_args["train"])), SubgroupTuple.from_npz(
+        train, test = DataTuple.from_file(Path(in_algo_args["train"])), SubgroupTuple.from_file(
             Path(in_algo_args["test"])
         )
         Prediction(
             hard=train_and_predict(train, test, flags, in_algo_args["seed"])["preds"]
-        ).to_npz(Path(in_algo_args["predictions"]))
+        ).save_to_file(Path(in_algo_args["predictions"]))
     elif in_algo_args["mode"] == "fit":
         random.seed(in_algo_args["seed"])
         np.random.seed(in_algo_args["seed"])
-        data = DataTuple.from_npz(Path(in_algo_args["train"]))
+        data = DataTuple.from_file(Path(in_algo_args["train"]))
         model = fit(data, flags, in_algo_args["seed"])
         with working_dir(Path(in_algo_args["model"])):
             model.ethicml_random_seed = in_algo_args["seed"]  # need to save the seed as well
             model_file = cloudpickle.dumps(model)
         dump(model_file, Path(in_algo_args["model"]))
     elif in_algo_args["mode"] == "predict":
-        testdata = SubgroupTuple.from_npz(Path(in_algo_args["test"]))
+        testdata = SubgroupTuple.from_file(Path(in_algo_args["test"]))
         model_file = load(Path(in_algo_args["model"]))
         with working_dir(Path(in_algo_args["model"])):
             model = cloudpickle.loads(model_file)
             seed = model.ethicml_random_seed
         random.seed(seed)
         np.random.seed(seed)
-        Prediction(hard=predict(model, testdata)["preds"]).to_npz(Path(in_algo_args["predictions"]))
+        Prediction(hard=predict(model, testdata)["preds"]).save_to_file(
+            Path(in_algo_args["predictions"])
+        )
     else:
         raise RuntimeError(f"Unknown mode: {in_algo_args['mode']}")
 

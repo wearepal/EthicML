@@ -3,14 +3,10 @@ ethicml.models
 **************
 
 .. automodule:: ethicml.models
+    :no-members:
+    :no-imported-members:
 
 .. toctree::
    :glob:
 
    ./*
-
-
-Algorithms base
-===============
-
-.. automodule:: ethicml.models.algorithm_base
