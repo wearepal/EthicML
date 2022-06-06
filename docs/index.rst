@@ -2,6 +2,9 @@
 Welcome to EthicML's documentation!
 ***********************************
 
+.. note::
+   If you are looking for the pre-1.0 documentation, you can find that here: https://wearepal.ai/EthicML-0.x/
+
 Package for evaluating the performance of methods
 which aim to increase fairness, accountability and/or transparency of machine learning models.
 
