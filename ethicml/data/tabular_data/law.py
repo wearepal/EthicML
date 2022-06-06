@@ -4,18 +4,19 @@ This dataset comes from Kusner et al Counterfactual Fairness.
 
 Link to repo: https://github.com/mkusner/counterfactual-fairness/
 
+.. code-block:: bibtex
 
-@inproceedings{NIPS2017_a486cd07,
- author = {Kusner, Matt J and Loftus, Joshua and Russell, Chris and Silva, Ricardo},
- booktitle = {Advances in Neural Information Processing Systems},
- editor = {I. Guyon and U. V. Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
- pages = {},
- publisher = {Curran Associates, Inc.},
- title = {Counterfactual Fairness},
- url = {https://proceedings.neurips.cc/paper/2017/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf},
- volume = {30},
- year = {2017}
-}
+   @inproceedings{NIPS2017_a486cd07,
+     author = {Kusner, Matt J and Loftus, Joshua and Russell, Chris and Silva, Ricardo},
+     booktitle = {Advances in Neural Information Processing Systems},
+     editor = {I. Guyon and U. V. Luxburg and S. Bengio and H. Wallach and R. Fergus and S. Vishwanathan and R. Garnett},
+     pages = {},
+     publisher = {Curran Associates, Inc.},
+     title = {Counterfactual Fairness},
+     url = {https://proceedings.neurips.cc/paper/2017/file/a486cd07e4ac3d270571622f4f316ec5-Paper.pdf},
+     volume = {30},
+     year = {2017}
+   }
 """
 from dataclasses import dataclass
 from enum import Enum
