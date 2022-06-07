@@ -9,7 +9,7 @@ on:
     - 'examples/**'
     - '**/*.md'
     - .github/dependabot.yml
-    - .github/labeler.yml
+    - .github/release.yml
     - .github/workflows/docs.yml
     - .github/workflows/dummy_ci.yml
     - .github/workflows/dependabot_auto.yml
