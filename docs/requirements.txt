@@ -1,0 +1,7 @@
+sphinx
+autodocsumm
+typing_extensions
+furo
+toml
+nbsphinx
+ipython
