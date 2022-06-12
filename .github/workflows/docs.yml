@@ -22,7 +22,7 @@ jobs:
     - name: Install sphinx
       run: |
         pip install wheel
-        pip install sphinx autodocsumm typing_extensions furo toml
+        pip install -r docs/requirements.txt
     - name: Build docs
       run: |
         sphinx-build -b html ./docs ./docs/_build

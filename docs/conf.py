@@ -67,6 +67,8 @@ autodoc_mock_imports = [
 ]
 add_module_names = False  # do not show classes and functions with full module name (ethicml.data..)
 
+nbsphinx_execute = "never"
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
@@ -74,6 +76,8 @@ extensions = [
     # Need the autodoc and autosummary packages to generate our docs.
     "sphinx.ext.autodoc",
     "autodocsumm",
+    "nbsphinx",
+    'IPython.sphinxext.ipython_console_highlighting',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

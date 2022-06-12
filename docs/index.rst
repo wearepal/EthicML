@@ -45,6 +45,7 @@ Table of contents
    :maxdepth: 1
 
    tutorials/migration_guide
+   tutorials/adult_dataset
 
 
 
