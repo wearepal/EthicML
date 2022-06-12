@@ -79,6 +79,8 @@ jobs:
         pip install wheel
         pip install 'pydocstyle[toml]'
         pip install -r docs/requirements.txt
+    - name: Install pandoc
+      run: sudo apt-get install -y pandoc
     - name: Check docstrings with pydocstyle
       run: |
         pydocstyle --count -e ethicml
