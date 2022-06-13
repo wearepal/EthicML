@@ -83,8 +83,9 @@ def run_metrics(
     for metric in per_sens_metrics:
         per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
         if diffs_and_ratios:
-            per_sens.update(diff_per_sens(per_sens))
-            per_sens.update(ratio_per_sens(per_sens))
+            diffs_ratios = diff_per_sens(per_sens)
+            diffs_ratios.update(ratio_per_sens(per_sens))
+            per_sens.update(diffs_ratios)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     result.update(predictions.info)

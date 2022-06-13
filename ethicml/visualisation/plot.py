@@ -327,7 +327,7 @@ def plot_results(
         # if there are multiple matches, then the metric was `per_sensitive_attribute`. In this
         # case, we *only* want ratios and differences; not the plain result
         if len(cols) > 1:
-            cols = [col for col in cols if ("-" in col) or ("/" in col)]
+            cols = [col for col in cols if ("-" in col) or ("÷" in col)]
         return cols
 
     if isinstance(metric_x, str):
@@ -376,10 +376,8 @@ def plot_results(
                     continue  # nothing was plotted -> don't save it and don't add it to the list
 
                 if save:
-                    metric_a = x_axis.replace("/", "_over_")
-                    metric_b = y_axis.replace("/", "_over_")
                     fig.savefig(
-                        directory / f"{dataset} {transform} {metric_a} {metric_b}.pdf",
+                        directory / f"{dataset} {transform} {x_axis} {y_axis}.pdf",
                         bbox_inches="tight",
                     )
                 plt.close(fig)
