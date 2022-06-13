@@ -9,7 +9,7 @@ from ethicml.utility import EvalTuple, Prediction
 from .confusion_matrix import CfmMetric
 from .fpr import FPR
 from .metric import Metric
-from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from .per_sensitive_attribute import diff_per_sens, metric_per_sens
 from .tpr import TPR
 
 __all__ = ["AverageOddsDiff"]
@@ -30,12 +30,12 @@ class AverageOddsDiff(CfmMetric):
     @implements(Metric)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         tpr = TPR(pos_class=self.pos_class, labels=self.labels)
-        tpr_per_sens = metric_per_sensitive_attribute(prediction, actual, tpr)
+        tpr_per_sens = metric_per_sens(prediction, actual, tpr)
         fpr = FPR(pos_class=self.pos_class, labels=self.labels)
-        fpr_per_sens = metric_per_sensitive_attribute(prediction, actual, fpr)
+        fpr_per_sens = metric_per_sens(prediction, actual, fpr)
 
-        tpr_diff = diff_per_sensitive_attribute(tpr_per_sens)
-        fpr_diff = diff_per_sensitive_attribute(fpr_per_sens)
+        tpr_diff = diff_per_sens(tpr_per_sens)
+        fpr_diff = diff_per_sens(fpr_per_sens)
 
         tpr_sum = 0.0
         fpr_sum = 0.0

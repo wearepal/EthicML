@@ -9,7 +9,7 @@ on:
     - 'examples/**'
     - '**/*.md'
     - .github/dependabot.yml
-    - .github/labeler.yml
+    - .github/release.yml
     - .github/workflows/docs.yml
     - .github/workflows/dummy_ci.yml
     - .github/workflows/dependabot_auto.yml
@@ -77,7 +77,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install wheel
-        pip install 'pydocstyle[toml]' sphinx autodocsumm typing_extensions furo toml
+        pip install 'pydocstyle[toml]'
+        pip install -r docs/requirements.txt
+    - name: Install pandoc
+      run: sudo apt-get install -y pandoc
     - name: Check docstrings with pydocstyle
       run: |
         pydocstyle --count -e ethicml

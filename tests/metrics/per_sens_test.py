@@ -16,7 +16,7 @@ from ethicml.metrics import (
     ProbOutcome,
     ProbPos,
     Theil,
-    metric_per_sensitive_attribute,
+    metric_per_sens,
 )
 from ethicml.models import LR, SVM, InAlgorithm
 from tests.conftest import get_id
@@ -41,7 +41,7 @@ def test_issue_431():
     train, test = train_test
     model: InAlgorithm = LR()
     predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(
+    acc_per_sens = metric_per_sens(
         predictions, test, TPR(pos_class=1, labels=list(range(y.nunique())))
     )
     print(acc_per_sens)
@@ -167,7 +167,7 @@ def test_metric_per_sens_attr(
     train, test = train_test
     model: InAlgorithm = classifier
     predictions: Prediction = model.run(train, test)
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, metric)
+    acc_per_sens = metric_per_sens(predictions, test, metric)
     try:
         for key, value in acc_per_sens.items():
             assert value == approx(expected_values[key], abs=0.001)
@@ -175,7 +175,7 @@ def test_metric_per_sens_attr(
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
         raise AssertionError
 
-    acc_per_sens = metric_per_sensitive_attribute(predictions, test, metric, use_sens_name=False)
+    acc_per_sens = metric_per_sens(predictions, test, metric, use_sens_name=False)
     try:
         for key, value in expected_values.items():
             # Check that the sensitive attribute name is now just 'S'.

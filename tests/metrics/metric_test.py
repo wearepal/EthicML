@@ -20,7 +20,7 @@ from ethicml.metrics import (
     RobustAccuracy,
     Theil,
 )
-from ethicml.models import LR, SVM, InAlgorithm, Kamiran
+from ethicml.models import LR, SVM, InAlgorithm, Reweighting
 from tests.conftest import get_id
 
 
@@ -45,7 +45,7 @@ METRIC_TESTS = [
     MetricTest(model=SVM(), metric=AverageOddsDiff(), name="AverageOddsDiff", expected=0.105),
     MetricTest(model=SVM(), metric=Theil(), name="Theil_Index", expected=0.033),
     MetricTest(model=LR(), metric=Theil(), name="Theil_Index", expected=0.029),
-    MetricTest(model=Kamiran(), metric=Theil(), name="Theil_Index", expected=0.030),
+    MetricTest(model=Reweighting(), metric=Theil(), name="Theil_Index", expected=0.030),
     MetricTest(model=SVM(), metric=Hsic(), name="HSIC", expected=0.020),
     MetricTest(model=SVM(), metric=AS(), name="anti_spurious", expected=0.852),
     MetricTest(

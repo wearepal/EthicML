@@ -13,14 +13,14 @@ from ethicml.models.inprocess.shared import settings_for_svm_lr
 from ethicml.models.inprocess.svm import KernelType, select_svm
 from ethicml.utility import ClassifierType, DataTuple, Prediction, SoftPrediction, TestTuple
 
-__all__ = ["Kamiran", "compute_instance_weights"]
+__all__ = ["Reweighting", "compute_instance_weights"]
 
 
 VALID_MODELS = {ClassifierType.lr, ClassifierType.svm}
 
 
 @dataclass
-class Kamiran(InAlgorithm):
+class Reweighting(InAlgorithm):
     """An implementation of the Reweighing method from `Kamiran and Calders 2012 <https://link.springer.com/article/10.1007/s10115-011-0463-8>`_.
 
     Each sample is assigned an instance-weight based on the joing probability of S and Y which is
