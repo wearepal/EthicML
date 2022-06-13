@@ -116,7 +116,7 @@ def test_run_metrics(toy_train_val: TrainValPair):
     assert results["TPR_sensitive-attr_0"] == approx(0.923, abs=0.001)
     assert results["TPR_sensitive-attr_1"] == approx(1.0, abs=0.001)
     assert results["TPR_sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
-    assert results["TPR_sensitive-attr_0/sensitive-attr_1"] == approx(0.923, abs=0.001)
+    assert results["TPR_sensitive-attr_0÷sensitive-attr_1"] == approx(0.923, abs=0.001)
     assert results["CV"] == approx(0.630, abs=0.001)
 
 
@@ -189,16 +189,16 @@ def test_tpr_ratio_non_binary_race():
 
     tpr_diff = ratio_per_sens(tprs)
     test_dict = {
-        "race_0/race_1": approx(0.32, abs=0.1),
-        "race_0/race_2": approx(0.37, abs=0.1),
-        "race_0/race_3": approx(0.33, abs=0.1),
-        "race_0/race_4": approx(0.44, abs=0.1),
-        "race_1/race_2": approx(0.88, abs=0.1),
-        "race_1/race_3": approx(0.97, abs=0.1),
-        "race_1/race_4": approx(0.72, abs=0.1),
-        "race_2/race_3": approx(0.91, abs=0.1),
-        "race_2/race_4": approx(0.74, abs=0.1),
-        "race_3/race_4": approx(0.74, abs=0.1),
+        "race_0÷race_1": approx(0.32, abs=0.1),
+        "race_0÷race_2": approx(0.37, abs=0.1),
+        "race_0÷race_3": approx(0.33, abs=0.1),
+        "race_0÷race_4": approx(0.44, abs=0.1),
+        "race_1÷race_2": approx(0.88, abs=0.1),
+        "race_1÷race_3": approx(0.97, abs=0.1),
+        "race_1÷race_4": approx(0.72, abs=0.1),
+        "race_2÷race_3": approx(0.91, abs=0.1),
+        "race_2÷race_4": approx(0.74, abs=0.1),
+        "race_3÷race_4": approx(0.74, abs=0.1),
     }
 
     for key, val in tpr_diff.items():

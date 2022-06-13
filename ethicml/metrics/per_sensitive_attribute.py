@@ -61,7 +61,10 @@ def metric_per_sens(
 
 
 def aggregate_over_sens(
-    per_sens_res: Mapping[str, float], aggregator: Callable[[float, float], float]
+    per_sens_res: Mapping[str, float],
+    aggregator: Callable[[float, float], float],
+    infix: str,
+    prefix: str = "",
 ) -> Dict[str, float]:
     """Aggregate metrics over sensitive attributes.
 
@@ -75,7 +78,7 @@ def aggregate_over_sens(
     for i, sens_key_i in enumerate(sens_keys):
         i_value: float = per_sens_res[sens_key_i]
         for j in range(i + 1, len(sens_keys)):
-            key: str = f"{sens_key_i}/{sens_keys[j]}"
+            key: str = f"{prefix}{sens_key_i}{infix}{sens_keys[j]}"
             j_value: float = per_sens_res[sens_keys[j]]
 
             aggregated_over_sens[key] = aggregator(i_value, j_value)
@@ -89,7 +92,7 @@ def diff_per_sens(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     :param per_sens_res: dictionary of the results
     :returns: dictionary of differences
     """
-    return aggregate_over_sens(per_sens_res, aggregator=_abs_diff)
+    return aggregate_over_sens(per_sens_res, aggregator=_abs_diff, infix="-")
 
 
 def _abs_diff(i_value: float, j_value: float) -> float:
@@ -102,7 +105,7 @@ def ratio_per_sens(per_sens_res: Dict[str, float]) -> Dict[str, float]:
     :param per_sens_res: dictionary of the results
     :returns: dictionary of ratios
     """
-    return aggregate_over_sens(per_sens_res, aggregator=_safe_ratio)
+    return aggregate_over_sens(per_sens_res, aggregator=_safe_ratio, infix="÷")
 
 
 def _safe_ratio(i_value: float, j_value: float) -> float:
