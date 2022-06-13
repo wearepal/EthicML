@@ -6,7 +6,7 @@ import pytest
 
 import ethicml as em
 from ethicml import Prediction, TrainValPair
-from ethicml.metrics import ProbPos, diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from ethicml.metrics import ProbPos, diff_per_sens, metric_per_sens
 from ethicml.models import LR, DPFlip, Hardt, InAlgorithm, PostAlgorithm
 
 
@@ -48,9 +48,7 @@ def test_post(
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
     assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
-    )
+    diffs = diff_per_sens(metric_per_sens(fair_preds, test, ProbPos()))
     if isinstance(post_model, DPFlip):
         for diff in diffs.values():
             assert pytest.approx(diff, abs=1e-2) == 0
@@ -88,9 +86,7 @@ def test_post_sep_fit_pred(
     fair_preds = fair_model.predict(Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == num_pos
     assert np.count_nonzero(fair_preds.hard.values == 0) == len(fair_preds) - num_pos
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
-    )
+    diffs = diff_per_sens(metric_per_sens(fair_preds, test, ProbPos()))
     if isinstance(post_model, DPFlip):
         for diff in diffs.values():
             assert pytest.approx(diff, abs=1e-2) == 0
@@ -120,8 +116,6 @@ def test_dp_flip_inverted_s(toy_train_val: TrainValPair) -> None:
     fair_preds = post_model.run(Prediction(pred_train), train, Prediction(pred_test), test)
     assert np.count_nonzero(fair_preds.hard.values == 1) == 57
     assert np.count_nonzero(fair_preds.hard.values == 0) == 23
-    diffs = diff_per_sensitive_attribute(
-        metric_per_sensitive_attribute(fair_preds, test, ProbPos())
-    )
+    diffs = diff_per_sens(metric_per_sens(fair_preds, test, ProbPos()))
     for diff in diffs.values():
         assert pytest.approx(diff, abs=1e-2) == 0

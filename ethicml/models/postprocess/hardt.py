@@ -7,7 +7,7 @@ from numpy.random import RandomState
 from ranzen import implements
 from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 
-from ethicml.metrics.per_sensitive_attribute import metric_per_sensitive_attribute
+from ethicml.metrics.per_sensitive_attribute import metric_per_sens
 from ethicml.metrics.tnr import TNR
 from ethicml.metrics.tpr import TPR
 from ethicml.utility import DataTuple, Prediction, TestTuple
@@ -55,12 +55,12 @@ class Hardt(PostAlgorithm):
         fraction_s1 = 1 - fraction_s0
 
         s_col = train.s.name
-        tprs = metric_per_sensitive_attribute(train_predictions, train, TPR())
+        tprs = metric_per_sens(train_predictions, train, TPR())
         tpr0 = tprs[f"{s_col}_0"]
         tpr1 = tprs[f"{s_col}_1"]
         fnr0 = 1 - tpr0
         fnr1 = 1 - tpr1
-        tnrs = metric_per_sensitive_attribute(train_predictions, train, TNR())
+        tnrs = metric_per_sens(train_predictions, train, TNR())
         tnr0 = tnrs[f"{s_col}_0"]
         tnr1 = tnrs[f"{s_col}_1"]
         fpr0 = 1 - tnr0

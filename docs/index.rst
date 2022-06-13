@@ -25,7 +25,7 @@ Example
        per_sens_metrics=[metrics.ProbPos(), metrics.TPR()],
        repeats=5,
    )
-   em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
+   em.plot_results(results, "Accuracy", "prob_pos_Male_0÷Male_1")
 
 
 Table of contents

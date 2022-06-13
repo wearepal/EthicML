@@ -8,7 +8,7 @@ from ethicml.utility import EvalTuple, Prediction
 
 from .confusion_matrix import CfmMetric
 from .metric import MetricStaticName
-from .per_sensitive_attribute import diff_per_sensitive_attribute, metric_per_sensitive_attribute
+from .per_sensitive_attribute import diff_per_sens, metric_per_sens
 from .prob_pos import ProbPos
 
 __all__ = ["AbsCV", "CV"]
@@ -24,8 +24,8 @@ class CV(CfmMetric):
     @implements(MetricStaticName)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         prob_pos = ProbPos(pos_class=self.pos_class, labels=self.labels)
-        per_sens = metric_per_sensitive_attribute(prediction, actual, metric=prob_pos)
-        diffs = diff_per_sensitive_attribute(per_sens)
+        per_sens = metric_per_sens(prediction, actual, metric=prob_pos)
+        diffs = diff_per_sens(per_sens)
 
         return 1 - list(diffs.values())[0]
 
