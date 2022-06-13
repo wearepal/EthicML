@@ -20,7 +20,7 @@ from ethicml import models
         models.Oracle,
         models.SVM,
         models.DRO,
-        models.Kamiran,
+        models.Reweighting,
         models.MLP,
     ],
 )

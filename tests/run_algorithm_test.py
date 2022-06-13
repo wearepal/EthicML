@@ -73,7 +73,7 @@ def test_run_alg_repeats_error(repeats: int):
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset]
     preprocess_models: List[models.PreAlgorithm] = []
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Kamiran()]
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = em.evaluate_models(
@@ -99,7 +99,7 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
     dataset = emda.Adult(split=emda.Adult.Splits.RACE_BINARY)
     datasets: List[emda.Dataset] = [dataset]
     preprocess_models: List[models.PreAlgorithm] = []
-    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Kamiran()]
+    inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
     results_no_scaler = em.evaluate_models(
@@ -274,7 +274,7 @@ def test_run_alg_suite_no_pipeline():
     datasets: List[emda.Dataset] = [emda.Toy(), emda.Adult()]
     preprocess_models: List[models.PreAlgorithm] = [models.Upsampler()]
     inprocess_models: List[models.InAlgorithm] = [
-        models.Kamiran(classifier=ClassifierType.lr),
+        models.Reweighting(classifier=ClassifierType.lr),
         models.LR(),
     ]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]

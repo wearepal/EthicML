@@ -19,7 +19,7 @@ from ethicml import (
 )
 from ethicml.data import Adult, Toy, load_data
 from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
-from ethicml.models import LR, SVM, Kamiran, Upsampler, UpsampleStrategy
+from ethicml.models import LR, SVM, Reweighting, Upsampler, UpsampleStrategy
 
 
 @pytest.mark.slow
@@ -75,7 +75,7 @@ def test_plot_evals():
     results: Results = evaluate_models(
         datasets=[Toy()],
         preprocess_models=[Upsampler(strategy=UpsampleStrategy.preferential)],
-        inprocess_models=[LR(), SVM(kernel=KernelType.linear), Kamiran()],
+        inprocess_models=[LR(), SVM(kernel=KernelType.linear), Reweighting()],
         metrics=[Accuracy(), CV()],
         per_sens_metrics=[TPR(), ProbPos()],
         repeats=3,

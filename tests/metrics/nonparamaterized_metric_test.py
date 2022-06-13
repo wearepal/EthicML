@@ -29,9 +29,9 @@ from ethicml.metrics import (
     ProbPos,
     RenyiCorrelation,
     Yanovich,
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-    ratio_per_sensitive_attribute,
+    diff_per_sens,
+    metric_per_sens,
+    ratio_per_sens,
 )
 from ethicml.models import LR, LRCV, SVM, InAlgorithm
 
@@ -41,13 +41,13 @@ def test_tpr_diff(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    tprs = metric_per_sens(predictions, test, TPR())
     assert TPR().name == "TPR"
     assert tprs == {
         "sensitive-attr_0": approx(0.923, abs=0.001),
         "sensitive-attr_1": approx(1.0, abs=0.001),
     }
-    tpr_diff = diff_per_sensitive_attribute(tprs)
+    tpr_diff = diff_per_sens(tprs)
     print(tpr_diff)
     assert tpr_diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
 
@@ -57,13 +57,13 @@ def test_ppv_diff(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    results = metric_per_sensitive_attribute(predictions, test, PPV())
+    results = metric_per_sens(predictions, test, PPV())
     assert PPV().name == "PPV"
     assert results == {
         "sensitive-attr_0": approx(0.857, abs=0.001),
         "sensitive-attr_1": approx(0.903, abs=0.001),
     }
-    diff = diff_per_sensitive_attribute(results)
+    diff = diff_per_sens(results)
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.05, abs=0.1)
 
 
@@ -72,13 +72,13 @@ def test_npv_diff(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    results = metric_per_sensitive_attribute(predictions, test, NPV())
+    results = metric_per_sens(predictions, test, NPV())
     assert NPV().name == "NPV"
     assert results == {
         "sensitive-attr_0": approx(0.958, abs=0.001),
         "sensitive-attr_1": approx(1.0, abs=0.001),
     }
-    diff = diff_per_sensitive_attribute(results)
+    diff = diff_per_sens(results)
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.042, abs=0.001)
 
 
@@ -87,13 +87,13 @@ def test_bcr_diff(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
-    results = metric_per_sensitive_attribute(predictions, test, BCR())
+    results = metric_per_sens(predictions, test, BCR())
     assert BCR().name == "BCR"
     assert results == {
         "sensitive-attr_0": approx(0.921, abs=0.001),
         "sensitive-attr_1": approx(0.892, abs=0.001),
     }
-    diff = diff_per_sensitive_attribute(results)
+    diff = diff_per_sens(results)
     assert diff["sensitive-attr_0-sensitive-attr_1"] == approx(0.029, abs=0.001)
 
 
@@ -103,7 +103,7 @@ def test_use_appropriate_metric(toy_train_val: TrainValPair):
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run(train, test)
     with pytest.raises(MetricNotApplicable):
-        metric_per_sensitive_attribute(predictions, test, CV())
+        metric_per_sens(predictions, test, CV())
 
 
 def test_run_metrics(toy_train_val: TrainValPair):
@@ -136,7 +136,7 @@ def test_tpr_diff_non_binary_race():
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
-    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    tprs = metric_per_sens(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
         "race_0": approx(0.37, abs=0.01),
@@ -149,7 +149,7 @@ def test_tpr_diff_non_binary_race():
     for key, val in tprs.items():
         assert val == test_dict[key]
 
-    tpr_diff = diff_per_sensitive_attribute(tprs)
+    tpr_diff = diff_per_sens(tprs)
     test_dict = {
         "race_0-race_1": approx(0.25, abs=0.01),
         "race_0-race_2": approx(0.23, abs=0.01),
@@ -174,7 +174,7 @@ def test_tpr_ratio_non_binary_race():
     train, test = train_test
     model: InAlgorithm = SVM()
     predictions: Prediction = model.run_test(train, test)
-    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    tprs = metric_per_sens(predictions, test, TPR())
     assert TPR().name == "TPR"
     test_dict = {
         "race_0": approx(0.37, abs=0.01),
@@ -187,7 +187,7 @@ def test_tpr_ratio_non_binary_race():
     for key, val in tprs.items():
         assert val == test_dict[key]
 
-    tpr_diff = ratio_per_sensitive_attribute(tprs)
+    tpr_diff = ratio_per_sens(tprs)
     test_dict = {
         "race_0/race_1": approx(0.32, abs=0.1),
         "race_0/race_2": approx(0.37, abs=0.1),
@@ -237,7 +237,7 @@ def test_nb_tpr():
     with pytest.raises(LabelOutOfBounds):
         _ = TPR(pos_class=5).score(predictions, test)
 
-    accs = metric_per_sensitive_attribute(predictions, test, TPR())
+    accs = metric_per_sens(predictions, test, TPR())
     assert accs == {
         "sensitive-attr_1_0": approx(0.0, abs=0.1),
         "sensitive-attr_1_1": approx(0.0, abs=0.1),
@@ -262,7 +262,7 @@ def test_nb_tpr():
     with pytest.raises(LabelOutOfBounds):
         _ = TPR(pos_class=5).score(predictions, test)
 
-    tprs = metric_per_sensitive_attribute(predictions, test, TPR())
+    tprs = metric_per_sens(predictions, test, TPR())
     assert tprs == {
         "sensitive-attr_1_0": approx(0.0, abs=0.1),
         "sensitive-attr_1_1": approx(0.0, abs=0.1),
@@ -290,7 +290,7 @@ def test_nb_tnr():
     with pytest.raises(LabelOutOfBounds):
         _ = TNR(pos_class=5).score(predictions, test)
 
-    accs = metric_per_sensitive_attribute(predictions, test, TNR())
+    accs = metric_per_sens(predictions, test, TNR())
     assert accs == {
         "sensitive-attr_1_0": approx(1.0, abs=0.1),
         "sensitive-attr_1_1": approx(1.0, abs=0.1),
@@ -315,7 +315,7 @@ def test_nb_tnr():
     with pytest.raises(LabelOutOfBounds):
         _ = TNR(pos_class=5).score(predictions, test)
 
-    tnrs = metric_per_sensitive_attribute(predictions, test, TNR())
+    tnrs = metric_per_sens(predictions, test, TNR())
     assert tnrs == {
         "sensitive-attr_1_0": approx(1.0, abs=0.1),
         "sensitive-attr_1_1": approx(1.0, abs=0.1),
@@ -323,12 +323,12 @@ def test_nb_tnr():
 
 
 def _compute_di(preds: Prediction, actual: EvalTuple) -> float:
-    ratios = ratio_per_sensitive_attribute(metric_per_sensitive_attribute(preds, actual, ProbPos()))
+    ratios = ratio_per_sens(metric_per_sens(preds, actual, ProbPos()))
     return next(iter(ratios.values()))
 
 
 def _compute_inv_cv(preds: Prediction, actual: EvalTuple) -> float:
-    diffs = diff_per_sensitive_attribute(metric_per_sensitive_attribute(preds, actual, ProbPos()))
+    diffs = diff_per_sens(metric_per_sens(preds, actual, ProbPos()))
     return next(iter(diffs.values()))
 
 

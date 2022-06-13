@@ -11,9 +11,9 @@ from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicable,
-    diff_per_sensitive_attribute,
-    metric_per_sensitive_attribute,
-    ratio_per_sensitive_attribute,
+    diff_per_sens,
+    metric_per_sens,
+    ratio_per_sens,
 )
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
@@ -81,12 +81,10 @@ def run_metrics(
         result[metric.name] = metric.score(predictions, actual)
 
     for metric in per_sens_metrics:
-        per_sens = metric_per_sensitive_attribute(predictions, actual, metric, use_sens_name)
+        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
         if diffs_and_ratios:
-            diff_per_sens = diff_per_sensitive_attribute(per_sens)
-            ratio_per_sens = ratio_per_sensitive_attribute(per_sens)
-            per_sens.update(diff_per_sens)
-            per_sens.update(ratio_per_sens)
+            per_sens.update(diff_per_sens(per_sens))
+            per_sens.update(ratio_per_sens(per_sens))
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     result.update(predictions.info)

@@ -34,10 +34,10 @@ from ethicml.models import (
     FairDummies,
     InAlgorithm,
     InAlgorithmSubprocess,
-    Kamiran,
     Kamishima,
     Majority,
     Oracle,
+    Reweighting,
 )
 from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
 from ethicml.models.inprocess.fair_dummies import FairDummies
@@ -104,7 +104,7 @@ INPROCESS_TESTS = [
         name="HGR deep_model", model=HGR(dir=TMPDIR, model_type="deep_model"), num_pos=69
     ),
     InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
-    InprocessTest(name="Kamiran & Calders lr C=1.0", model=Kamiran(), num_pos=44),
+    InprocessTest(name="Kamiran & Calders lr C=1.0", model=Reweighting(), num_pos=44),
     InprocessTest(name="Logistic Regression (C=1.0)", model=LR(), num_pos=44),
     InprocessTest(name="LRCV", model=LRCV(), num_pos=40),
     InprocessTest(name="Majority", model=Majority(), num_pos=80),
@@ -133,7 +133,7 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
     """Test the weights of the Kamiran model are accessible."""
     train, test = toy_train_test
 
-    model = Kamiran()
+    model = Reweighting()
 
     _ = model.run(train, test)
     assert model.group_weights is not None
