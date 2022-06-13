@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
-        <title>Inprocess algorithms - EthicML 1.0.0-alpha.2 documentation</title>
+        <title>Inprocess algorithms - EthicML 1.0.0-alpha.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -154,7 +154,8 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
+  <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/cross_validator.html">Cross-validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate_models.html">Model evaluation</a></li>
@@ -173,6 +174,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/migration_guide.html">Migration guide to 1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/adult_dataset.html">Runnning experiments on the Adult dataset</a></li>
 </ul>
 
 </div>
@@ -1069,8 +1075,8 @@ simply the last part of the repository URL).</p></li>
 <span id="kamiran"></span><h2>Kamiran<a class="headerlink" href="#module-ethicml.models.inprocess.kamiran" title="Permalink to this headline">#</a></h2>
 <p>Kamiran and Calders 2012.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Kamiran</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Reweighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ranzen.enum_name_str.lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.models.inprocess.in_algorithm.InAlgorithm</span></code></a></p>
 <p>An implementation of the Reweighing method from <a class="reference external" href="https://link.springer.com/article/10.1007/s10115-011-0463-8">Kamiran and Calders 2012</a>.</p>
 <p>Each sample is assigned an instance-weight based on the joing probability of S and Y which is
@@ -1088,8 +1094,8 @@ used during training of a classifier.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.fit" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.fit" title="Permalink to this definition">#</a></dt>
 <dd><p>Fit Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1108,8 +1114,8 @@ used during training of a classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.get_hyperparameters">
-<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.get_hyperparameters" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.get_hyperparameters">
+<span class="sig-name descname"><span class="pre">get_hyperparameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.get_hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1119,8 +1125,8 @@ used during training of a classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.get_name">
-<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.get_name" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.get_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -1130,14 +1136,14 @@ used during training of a classifier.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.name" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.predict" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.predict" title="Permalink to this definition">#</a></dt>
 <dd><p>Make predictions on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1153,8 +1159,8 @@ used during training of a classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.run" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Run Algorithm on the given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1174,8 +1180,8 @@ used during training of a classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Kamiran.run_test">
-<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Kamiran.run_test" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.models.inprocess.kamiran.Reweighting.run_test">
+<span class="sig-name descname"><span class="pre">run_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">888</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamiran.Reweighting.run_test" title="Permalink to this definition">#</a></dt>
 <dd><p>Run with reduced training set so that it finishes quicker.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -3270,5 +3276,6 @@ but can be useful if you want to either do a sanity check, or report potential v
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

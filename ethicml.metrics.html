@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Migration guide to 1.0" href="tutorials/migration_guide.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
-        <title>ethicml.metrics - EthicML 1.0.0-alpha.2 documentation</title>
+        <title>ethicml.metrics - EthicML 1.0.0-alpha.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -154,7 +154,8 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
+  <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/cross_validator.html">Cross-validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/evaluate_models.html">Model evaluation</a></li>
@@ -173,6 +174,11 @@
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">ethicml.metrics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/migration_guide.html">Migration guide to 1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/adult_dataset.html">Runnning experiments on the Adult dataset</a></li>
 </ul>
 
 </div>
@@ -336,13 +342,16 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.diff_per_sensitive_attribute" title="ethicml.metrics.diff_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sensitive_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.aggregate_over_sens" title="ethicml.metrics.aggregate_over_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aggregate_over_sens</span></code></a></p></td>
+<td><p>Aggregate metrics over sensitive attributes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.diff_per_sens" title="ethicml.metrics.diff_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diff_per_sens</span></code></a></p></td>
 <td><p>Compute the difference in the metrics per sensitive attribute.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.metric_per_sensitive_attribute" title="ethicml.metrics.metric_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sensitive_attribute</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.metric_per_sens" title="ethicml.metrics.metric_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metric_per_sens</span></code></a></p></td>
 <td><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ratio_per_sensitive_attribute" title="ethicml.metrics.ratio_per_sensitive_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sensitive_attribute</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ratio_per_sens" title="ethicml.metrics.ratio_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sens</span></code></a></p></td>
 <td><p>Compute the ratios in the metrics per sensitive attribute.</p></td>
 </tr>
 </tbody>
@@ -2053,8 +2062,30 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.diff_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">diff_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.diff_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.aggregate_over_sens">
+<span class="sig-name descname"><span class="pre">aggregate_over_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.aggregate_over_sens" title="Permalink to this definition">#</a></dt>
+<dd><p>Aggregate metrics over sensitive attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>per_sens_res</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – Dictionary of the results.</p></li>
+<li><p><strong>aggregator</strong> (<em>Callable</em><em>[</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>float</em><em>]</em>) – A callable that is used to aggregate results.</p></li>
+<li><p><strong>infix</strong> (<em>str</em>) – </p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of the aggregated results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.metrics.diff_per_sens">
+<span class="sig-name descname"><span class="pre">diff_per_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.diff_per_sens" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the difference in the metrics per sensitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2070,8 +2101,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.metric_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">metric_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.metric_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.metric_per_sens">
+<span class="sig-name descname"><span class="pre">metric_per_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.metric_per_sens" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute a metric repeatedly on subsets of the data that share a senstitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2089,8 +2120,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.metrics.ratio_per_sensitive_attribute">
-<span class="sig-name descname"><span class="pre">ratio_per_sensitive_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ratio_per_sensitive_attribute" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.metrics.ratio_per_sens">
+<span class="sig-name descname"><span class="pre">ratio_per_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ratio_per_sens" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2112,7 +2143,15 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="tutorials/migration_guide.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Migration guide to 1.0</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="ethicml.models/preprocess.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
@@ -2155,6 +2194,8 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

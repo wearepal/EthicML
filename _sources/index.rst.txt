@@ -25,19 +25,27 @@ Example
        per_sens_metrics=[metrics.ProbPos(), metrics.TPR()],
        repeats=5,
    )
-   em.plot_results(results, "Accuracy", "prob_pos_Male_0/Male_1")
+   em.plot_results(results, "Accuracy", "prob_pos_Male_0÷Male_1")
 
 
-API
----
+Table of contents
+=================
 
 .. toctree::
+   :caption: API
    :maxdepth: 2
 
    ethicml/index
    ethicml.data
    ethicml.models/index
    ethicml.metrics
+
+.. toctree::
+   :caption: Tutorials
+   :maxdepth: 1
+
+   tutorials/migration_guide
+   tutorials/adult_dataset
 
 
 

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/><title>Index - EthicML 1.0.0-alpha.2 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/><title>Index - EthicML 1.0.0-alpha.3 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -121,7 +121,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.2 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +144,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -152,7 +152,8 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/cross_validator.html">Cross-validation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/evaluate_models.html">Model evaluation</a></li>
@@ -171,6 +172,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/migration_guide.html">Migration guide to 1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/adult_dataset.html">Runnning experiments on the Adult dataset</a></li>
 </ul>
 
 </div>
@@ -306,6 +312,8 @@
         <li><a href="ethicml.data.html#ethicml.data.AdultSplits">AdultSplits (class in ethicml.data)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal">Agarwal (class in ethicml.models.inprocess.agarwal_reductions)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.aggregate_over_sens">aggregate_over_sens() (in module ethicml.metrics)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
@@ -593,7 +601,7 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.DependencyTarget">DependencyTarget (class in ethicml.metrics)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.diff_per_sensitive_attribute">diff_per_sensitive_attribute() (in module ethicml.metrics)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.diff_per_sens">diff_per_sens() (in module ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.AcsEmployment.disc_feature_groups">disc_feature_groups (AcsEmployment property)</a>
 
@@ -1162,8 +1170,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.fit">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.fit">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.fit">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.fit">(LR method)</a>
@@ -1179,6 +1185,8 @@
           <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.fit">(PostAlgorithm method)</a>
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.fit">(PreAlgorithm method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.fit">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.fit">(SVM method)</a>
 </li>
@@ -1354,8 +1362,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.get_hyperparameters">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.get_hyperparameters">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.get_hyperparameters">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.get_hyperparameters">(LR method)</a>
@@ -1367,6 +1373,8 @@
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.mlp.MLP.get_hyperparameters">(MLP method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.get_hyperparameters">(Oracle method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.get_hyperparameters">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.get_hyperparameters">(SVM method)</a>
 </li>
@@ -1500,8 +1508,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.get_name">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.get_name">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.get_name">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.data.html#ethicml.data.Law.get_name">(Law method)</a>
@@ -1545,6 +1551,8 @@
           <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.get_name">(ProbPos method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.get_name">(RenyiCorrelation method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.get_name">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RobustAccuracy.get_name">(RobustAccuracy method)</a>
 </li>
@@ -1799,8 +1807,6 @@
   <h2>K</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran">Kamiran (class in ethicml.models.inprocess.kamiran)</a>
-</li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima">Kamishima (class in ethicml.models.inprocess.kamishima)</a>
 </li>
     </ul></td>
@@ -1987,7 +1993,7 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.metric_per_sensitive_attribute">metric_per_sensitive_attribute() (in module ethicml.metrics)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.metric_per_sens">metric_per_sens() (in module ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.MetricNotApplicable">MetricNotApplicable</a>
 </li>
@@ -2171,8 +2177,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.name">(InstalledModel property)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.name">(Kamiran property)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.name">(Kamishima property)</a>
 </li>
           <li><a href="ethicml.data.html#ethicml.data.Law.name">(Law property)</a>
@@ -2216,6 +2220,8 @@
           <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.name">(ProbPos property)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.name">(RenyiCorrelation property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.name">(Reweighting property)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RobustAccuracy.name">(RobustAccuracy property)</a>
 </li>
@@ -2325,8 +2331,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.predict">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.predict">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.predict">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.predict">(LR method)</a>
@@ -2340,6 +2344,8 @@
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.predict">(Oracle method)</a>
 </li>
           <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.predict">(PostAlgorithm method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.predict">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.predict">(SVM method)</a>
 </li>
@@ -2386,7 +2392,7 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.RandomSplit">RandomSplit (class in ethicml.preprocessing)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.ratio_per_sensitive_attribute">ratio_per_sensitive_attribute() (in module ethicml.metrics)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.ratio_per_sens">ratio_per_sens() (in module ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.reduce_feature_group">reduce_feature_group() (in module ethicml.data)</a>
 </li>
@@ -2438,6 +2444,8 @@
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.ResultsAggregator">ResultsAggregator (class in ethicml.utility)</a>
 </li>
+        <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting">Reweighting (class in ethicml.models.inprocess.kamiran)</a>
+</li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.RobustAccuracy">RobustAccuracy (class in ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.run">run() (Agarwal method)</a>
@@ -2467,8 +2475,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.run">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.run">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.run">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.run">(LR method)</a>
@@ -2484,6 +2490,8 @@
           <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.run">(PostAlgorithm method)</a>
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run">(PreAlgorithm method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.run">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.run">(SVM method)</a>
 </li>
@@ -2533,8 +2541,6 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.run_test">(InstalledModel method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Kamiran.run_test">(Kamiran method)</a>
-</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.run_test">(Kamishima method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.run_test">(LR method)</a>
@@ -2548,6 +2554,8 @@
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.run_test">(Oracle method)</a>
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run_test">(PreAlgorithm method)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.run_test">(Reweighting method)</a>
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.run_test">(SVM method)</a>
 </li>
@@ -2965,5 +2973,6 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>
