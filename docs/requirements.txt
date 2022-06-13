@@ -3,5 +3,5 @@ autodocsumm
 typing_extensions
 furo
 toml
-nbsphinx
+nbsphinx @ git+https://github.com/thomkeh/nbsphinx.git@e69b06f131428c595361117754b3b0fbc385d43a
 ipython
