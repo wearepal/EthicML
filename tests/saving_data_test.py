@@ -154,3 +154,10 @@ def test_data_tuple_len() -> None:
         name=None,
     )
     assert len(datatup_equal_len) == 3
+
+
+def test_overlapping_columns() -> None:
+    """Test overlapping column names."""
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    with pytest.raises(AssertionError):
+        SubgroupTuple.from_df(x=x, s=x["a1"])

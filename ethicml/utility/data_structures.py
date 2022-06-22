@@ -124,6 +124,7 @@ class SubgroupTuple(SubsetMixin):
         """Make a SubgroupTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
+        assert s_column not in x.columns, "overlapping columns in `x` and `s`"
         assert len(x) == len(s), "data has to have the same length"
         return cls(data=pd.concat([x, s], axis="columns", sort=False), s_column=s_column, name=name)
 
@@ -204,6 +205,8 @@ class DataTuple(SubsetMixin):
         s_column = s.name
         y_column = y.name
         assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert s_column not in x.columns, "overlapping columns in `x` and `s`"
+        assert y_column not in x.columns, "overlapping columns in `x` and `y`"
         assert len(x) == len(s) == len(y), "data has to have the same length"
         return cls(
             data=pd.concat([x, s, y], axis="columns", sort=False),
@@ -321,6 +324,7 @@ class LabelTuple(SubsetMixin):
         s_column = s.name
         y_column = y.name
         assert isinstance(s_column, str) and isinstance(y_column, str)
+        assert s_column != y_column, f"name of `s` and `y` is the same: {s_column}"
         assert len(s) == len(y), "data has to have the same length"
         return cls(
             data=pd.concat([s, y], axis="columns", sort=False),  # type: ignore[arg-type]
