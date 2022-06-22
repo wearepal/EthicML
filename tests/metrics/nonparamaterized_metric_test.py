@@ -125,8 +125,7 @@ def test_get_info(toy_train_val: TrainValPair):
     train, test = toy_train_val
     model: LRCV = LRCV()
     predictions: Prediction = model.run(train, test)
-    results = em.run_metrics(predictions, test, [], [])
-    assert results["C"] == approx(166.810, abs=0.001)
+    assert predictions.info["C"] == approx(166.810, abs=0.001)
 
 
 def test_tpr_diff_non_binary_race():
