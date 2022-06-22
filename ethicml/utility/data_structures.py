@@ -109,9 +109,10 @@ class SubsetMixin(ABC):
 class SubgroupTuple(SubsetMixin):
     """A tuple of dataframes for the features and the sensitive attribute."""
 
-    __slots__ = ("data", "s_column", "name")
+    __slots__ = ("data", "s_column", "s_in_x", "name")
     data: pd.DataFrame
     s_column: str
+    s_in_x: bool
     name: str | None
 
     def __post_init__(self) -> None:
@@ -124,13 +125,22 @@ class SubgroupTuple(SubsetMixin):
         """Make a SubgroupTuple."""
         s_column = s.name
         assert isinstance(s_column, str)
-        assert s_column not in x.columns, "overlapping columns in `x` and `s`"
         assert len(x) == len(s), "data has to have the same length"
-        return cls(data=pd.concat([x, s], axis="columns", sort=False), s_column=s_column, name=name)
+        if s_column in x.columns:
+            # sometimes s can appear in x, but we should ensure they're actually the same
+            pd.testing.assert_series_equal(s, x[s_column])
+            data = x
+            s_in_x = True
+        else:
+            data = pd.concat([x, s], axis="columns", sort=False)
+            s_in_x = False
+        return cls(data=data, s_column=s_column, s_in_x=s_in_x, name=name)
 
     @property
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
+        if self.s_in_x:
+            return self.data
         return self.data.drop(self.s_column, inplace=False, axis="columns")
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
@@ -149,12 +159,15 @@ class SubgroupTuple(SubsetMixin):
         """Make a copy of the DataTuple but change the underlying data."""
         assert self.s_column in data.columns, f"column {self.s_column} not present"
         return SubgroupTuple(
-            data=data, s_column=self.s_column, name=self.name if name is None else name
+            data=data,
+            s_column=self.s_column,
+            s_in_x=self.s_in_x,
+            name=self.name if name is None else name,
         )
 
     def rename(self, name: str) -> SubgroupTuple:
         """Change only the name."""
-        return SubgroupTuple(data=self.data, s_column=self.s_column, name=name)
+        return SubgroupTuple(data=self.data, s_column=self.s_column, s_in_x=self.s_in_x, name=name)
 
     def save_to_file(self, data_path: Path) -> None:
         """Save SubgroupTuple as an npz file.
@@ -187,10 +200,11 @@ class SubgroupTuple(SubsetMixin):
 class DataTuple(SubsetMixin):
     """A tuple of dataframes for the features, the sensitive attribute and the class labels."""
 
-    __slots__ = ("data", "s_column", "y_column", "name")
+    __slots__ = ("data", "s_column", "y_column", "s_in_x", "name")
     data: pd.DataFrame
     s_column: str
     y_column: str
+    s_in_x: bool
     name: str | None
 
     def __post_init__(self) -> None:
@@ -205,19 +219,23 @@ class DataTuple(SubsetMixin):
         s_column = s.name
         y_column = y.name
         assert isinstance(s_column, str) and isinstance(y_column, str)
-        assert s_column not in x.columns, "overlapping columns in `x` and `s`"
-        assert y_column not in x.columns, "overlapping columns in `x` and `y`"
+        assert y_column not in x.columns, f"overlapping columns in `x` and `y`: {y_column}"
         assert len(x) == len(s) == len(y), "data has to have the same length"
-        return cls(
-            data=pd.concat([x, s, y], axis="columns", sort=False),
-            s_column=s_column,
-            y_column=y_column,
-            name=name,
-        )
+        if s_column in x.columns:
+            # sometimes s can appear in x, but we should ensure they're actually the same
+            pd.testing.assert_series_equal(s, x[s_column])
+            data = pd.concat([x, y], axis="columns", sort=False)
+            s_in_x = True
+        else:
+            data = pd.concat([x, s, y], axis="columns", sort=False)
+            s_in_x = False
+        return cls(data=data, s_column=s_column, y_column=y_column, s_in_x=s_in_x, name=name)
 
     @property
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
+        if self.s_in_x:
+            return self.data.drop(self.y_column, inplace=False, axis="columns")
         return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
@@ -234,6 +252,7 @@ class DataTuple(SubsetMixin):
         return SubgroupTuple(
             data=self.data.drop(self.y_column, inplace=False, axis="columns"),
             s_column=self.s_column,
+            s_in_x=self.s_in_x,
             name=self.name,
         )
 
@@ -254,7 +273,13 @@ class DataTuple(SubsetMixin):
 
     def rename(self, name: str) -> DataTuple:
         """Change only the name."""
-        return DataTuple(data=self.data, s_column=self.s_column, y_column=self.y_column, name=name)
+        return DataTuple(
+            data=self.data,
+            s_column=self.s_column,
+            y_column=self.y_column,
+            s_in_x=self.s_in_x,
+            name=name,
+        )
 
     def replace_data(self, data: pd.DataFrame, name: str | None = None) -> DataTuple:
         """Make a copy of the DataTuple but change the underlying data."""
@@ -264,6 +289,7 @@ class DataTuple(SubsetMixin):
             data=data,
             s_column=self.s_column,
             y_column=self.y_column,
+            s_in_x=self.s_in_x,
             name=self.name if name is None else name,
         )
 
