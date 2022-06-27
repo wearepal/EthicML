@@ -114,7 +114,10 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
             test_path = tmp_path / "test.npz"
-            data.save_to_file(test_path)
+            if isinstance(data, DataTuple):
+                data.remove_y().save_to_file(test_path)
+            else:
+                data.save_to_file(test_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_test_path = tmp_path / "transformed_test.npz"
@@ -129,7 +132,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             self.call_script(self._script_command(args))
 
             # ================================== load results =====================================
-            transformed_test: T = data.from_file(transformed_test_path)
+            transformed_test: T = _load_file(transformed_test_path, data)
 
         # prefix the name of the algorithm to the dataset name
         if data.name is not None:
@@ -151,7 +154,10 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
             # ================================ write data to files ================================
             train_path, test_path = tmp_path / "train.npz", tmp_path / "test.npz"
             train.save_to_file(train_path)
-            test.save_to_file(test_path)
+            if isinstance(test, DataTuple):
+                test.remove_y().save_to_file(test_path)
+            else:
+                test.save_to_file(test_path)
 
             # ========================== generate commandline arguments ===========================
             transformed_train_path = tmp_path / "transformed_train.npz"
@@ -170,7 +176,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
 
             # ================================== load results =====================================
             transformed_train = DataTuple.from_file(transformed_train_path)
-            transformed_test = test.from_file(transformed_test_path)
+            transformed_test = _load_file(transformed_test_path, test)
 
         # prefix the name of the algorithm to the dataset name
         if train.name is not None:
@@ -202,3 +208,11 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
     @abstractmethod
     def _get_flags(self) -> Mapping[str, Any]:
         """Return flags that are used to configure this algorithm."""
+
+
+def _load_file(file_path: Path, original: T) -> T:
+    loaded = SubgroupTuple.from_file(file_path)
+    if isinstance(original, DataTuple):
+        return DataTuple.from_df(x=loaded.x, s=loaded.s, y=original.y, name=loaded.name)
+    else:
+        return loaded
