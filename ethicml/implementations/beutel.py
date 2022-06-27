@@ -21,8 +21,7 @@ from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.splits import train_test_split
-from ethicml.utility import DataTuple, FairnessType
-from ethicml.utility.data_structures import SubgroupTuple
+from ethicml.utility import DataTuple, FairnessType, SubgroupTuple
 
 from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
