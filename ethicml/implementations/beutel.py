@@ -458,9 +458,8 @@ def main() -> None:
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(
-            SubgroupTuple.from_file(Path(pre_algo_args["test"])), model, flags
-        )
+        test = SubgroupTuple.from_file(Path(pre_algo_args["test"]))
+        transformed_test = transform(test, model, flags)
         transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 

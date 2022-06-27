@@ -14,8 +14,7 @@ from scipy.spatial.distance import cdist
 from scipy.special import softmax  # type: ignore[attr-defined]
 
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
-from ethicml.utility import DataTuple, TestTuple
-from ethicml.utility.data_structures import SubgroupTuple
+from ethicml.utility import DataTuple, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs
