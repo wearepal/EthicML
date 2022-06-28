@@ -1,0 +1,2071 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utils" href="util.html" /><link rel="prev" title="Datasets" href="index.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
+        <title>Tabular datasets - EthicML 0.7.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">EthicML 0.7.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">EthicML 0.7.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../algorithms/index.html">Algorithms</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../algorithms/preprocess.html">Preprocess algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Datasets</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tabular datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vision_data.html">Vision dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../evaluators/index.html">Evaluation helpers</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/cross_validator.html">Cross-validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../evaluators/parallelism.html">Parallel evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../metrics/index.html">Metrics</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../metrics/per_sensitive_attribute.html">Compare metrics between groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utility.html">Utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision.html">Vision data helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualisation.html">Visualisation helpers</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="tabular-datasets">
+<h1>Tabular datasets<a class="headerlink" href="#tabular-datasets" title="Permalink to this headline">#</a></h1>
+<section id="module-ethicml.data.tabular_data.adult">
+<span id="adult"></span><h2>Adult<a class="headerlink" href="#module-ethicml.data.tabular_data.adult" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Adult dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AdultSplits.SEX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>UCI Adult dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.adult.AdultSplits" title="ethicml.data.tabular_data.adult.AdultSplits"><em>ethicml.data.tabular_data.adult.AdultSplits</em></a>) – </p></li>
+<li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>binarize_race</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.adult.AdultSplits" title="ethicml.data.tabular_data.adult.AdultSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.adult.AdultSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.Adult.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.adult.Adult.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.AdultSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AdultSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.AdultSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Available dataset splits for the Adult dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.adult.adult">
+<span class="sig-name descname"><span class="pre">adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_nationality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize_race</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.adult.adult" title="Permalink to this definition">#</a></dt>
+<dd><p>UCI Adult dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.adult.AdultSplits" title="ethicml.data.tabular_data.adult.AdultSplits"><em>ethicml.data.tabular_data.adult.AdultSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>binarize_nationality</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>binarize_race</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.adult.Adult" title="ethicml.data.tabular_data.adult.Adult">ethicml.data.tabular_data.adult.Adult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.compas">
+<span id="compas"></span><h2>Compas<a class="headerlink" href="#module-ethicml.data.tabular_data.compas" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Compas dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CompasSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Compas (or ProPublica) dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.compas.CompasSplits" title="ethicml.data.tabular_data.compas.CompasSplits"><em>ethicml.data.tabular_data.compas.CompasSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.compas.CompasSplits" title="ethicml.data.tabular_data.compas.CompasSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.compas.CompasSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.Compas.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.compas.Compas.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.CompasSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CompasSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.CompasSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Available dataset splits for the COMPAS dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.compas.compas">
+<span class="sig-name descname"><span class="pre">compas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.compas.compas" title="Permalink to this definition">#</a></dt>
+<dd><p>Compas (or ProPublica) dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.compas.CompasSplits" title="ethicml.data.tabular_data.compas.CompasSplits"><em>ethicml.data.tabular_data.compas.CompasSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.compas.Compas" title="ethicml.data.tabular_data.compas.Compas">ethicml.data.tabular_data.compas.Compas</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.credit">
+<span id="credit"></span><h2>Credit<a class="headerlink" href="#module-ethicml.data.tabular_data.credit" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the UCI Credit dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Credit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CreditSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>UCI Credit Card dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.credit.CreditSplits" title="ethicml.data.tabular_data.credit.CreditSplits"><em>ethicml.data.tabular_data.credit.CreditSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.credit.CreditSplits" title="ethicml.data.tabular_data.credit.CreditSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.credit.CreditSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.Credit.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.credit.Credit.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.CreditSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CreditSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.CreditSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Splits for the Credit dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.credit.credit">
+<span class="sig-name descname"><span class="pre">credit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.credit.credit" title="Permalink to this definition">#</a></dt>
+<dd><p>UCI Credit Card dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.credit.CreditSplits" title="ethicml.data.tabular_data.credit.CreditSplits"><em>ethicml.data.tabular_data.credit.CreditSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.credit.Credit" title="ethicml.data.tabular_data.credit.Credit">ethicml.data.tabular_data.credit.Credit</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.crime">
+<span id="crime"></span><h2>Crime<a class="headerlink" href="#module-ethicml.data.tabular_data.crime" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Communities and Crime dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Crime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">CrimeSplits.RACE_BINARY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>UCI Communities and Crime dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.crime.CrimeSplits" title="ethicml.data.tabular_data.crime.CrimeSplits"><em>ethicml.data.tabular_data.crime.CrimeSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.crime.CrimeSplits" title="ethicml.data.tabular_data.crime.CrimeSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.crime.CrimeSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.Crime.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.crime.Crime.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.CrimeSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CrimeSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.CrimeSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Splits for the Crime dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.crime.crime">
+<span class="sig-name descname"><span class="pre">crime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Race-Binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.crime.crime" title="Permalink to this definition">#</a></dt>
+<dd><p>UCI Communities and Crime dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.crime.CrimeSplits" title="ethicml.data.tabular_data.crime.CrimeSplits"><em>ethicml.data.tabular_data.crime.CrimeSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.crime.Crime" title="ethicml.data.tabular_data.crime.Crime">ethicml.data.tabular_data.crime.Crime</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.german">
+<span id="german"></span><h2>German<a class="headerlink" href="#module-ethicml.data.tabular_data.german" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the German dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">German</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">GermanSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>German credit dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.german.GermanSplits" title="ethicml.data.tabular_data.german.GermanSplits"><em>ethicml.data.tabular_data.german.GermanSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.german.German.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.german.GermanSplits" title="ethicml.data.tabular_data.german.GermanSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.german.GermanSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.German.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.German.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.german.German.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.GermanSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GermanSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.GermanSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Splits for the German dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.german.german">
+<span class="sig-name descname"><span class="pre">german</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.german.german" title="Permalink to this definition">#</a></dt>
+<dd><p>German credit dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.german.GermanSplits" title="ethicml.data.tabular_data.german.GermanSplits"><em>ethicml.data.tabular_data.german.GermanSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.german.German" title="ethicml.data.tabular_data.german.German">ethicml.data.tabular_data.german.German</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.health">
+<span id="health"></span><h2>Health<a class="headerlink" href="#module-ethicml.data.tabular_data.health" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Heritage Health dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">HealthSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Heritage Health dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.health.HealthSplits" title="ethicml.data.tabular_data.health.HealthSplits"><em>ethicml.data.tabular_data.health.HealthSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.health.HealthSplits" title="ethicml.data.tabular_data.health.HealthSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.health.HealthSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.Health.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.health.Health.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.HealthSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HealthSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.HealthSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Splits for the Health dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.health.health">
+<span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.health.health" title="Permalink to this definition">#</a></dt>
+<dd><p>Heritage Health dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.health.HealthSplits" title="ethicml.data.tabular_data.health.HealthSplits"><em>ethicml.data.tabular_data.health.HealthSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.health.Health" title="ethicml.data.tabular_data.health.Health">ethicml.data.tabular_data.health.Health</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.non_binary_toy">
+<span id="non-binary-toy"></span><h2>Non-binary toy<a class="headerlink" href="#module-ethicml.data.tabular_data.non_binary_toy" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the toy dataset with more than 2 classes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NonBinaryToy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Dataset with non-binary toy data for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.non_binary_toy.nonbinary_toy">
+<span class="sig-name descname"><span class="pre">nonbinary_toy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.non_binary_toy.nonbinary_toy" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset with non-binary toy data for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.data.tabular_data.non_binary_toy.NonBinaryToy" title="ethicml.data.tabular_data.non_binary_toy.NonBinaryToy">ethicml.data.tabular_data.non_binary_toy.NonBinaryToy</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.sqf">
+<span id="stop-question-frisk"></span><h2>Stop, question, frisk<a class="headerlink" href="#module-ethicml.data.tabular_data.sqf" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the SQF dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Sqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SqfSplits.SEX</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Stop, question and frisk dataset.</p>
+<p>This data is from the 2016, source: <a class="reference external" href="http://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page">http://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>split</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.sqf.SqfSplits" title="ethicml.data.tabular_data.sqf.SqfSplits"><em>ethicml.data.tabular_data.sqf.SqfSplits</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.Splits">
+<span class="sig-name descname"><span class="pre">Splits</span></span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.Splits" title="Permalink to this definition">#</a></dt>
+<dd><p>Shorthand for the Enum that defines the splits associated with this class.</p>
+<p>alias of <a class="reference internal" href="#ethicml.data.tabular_data.sqf.SqfSplits" title="ethicml.data.tabular_data.sqf.SqfSplits"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.tabular_data.sqf.SqfSplits</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.Sqf.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.sqf.Sqf.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.SqfSplits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SqfSplits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.SqfSplits" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Splits for the SQF dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.sqf.sqf">
+<span class="sig-name descname"><span class="pre">sqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sex'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.sqf.sqf" title="Permalink to this definition">#</a></dt>
+<dd><p>Stop, question and frisk dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.sqf.SqfSplits" title="ethicml.data.tabular_data.sqf.SqfSplits"><em>ethicml.data.tabular_data.sqf.SqfSplits</em></a><em>, </em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.sqf.Sqf" title="ethicml.data.tabular_data.sqf.Sqf">ethicml.data.tabular_data.sqf.Sqf</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.synthetic">
+<span id="synthetic"></span><h2>Synthetic<a class="headerlink" href="#module-ethicml.data.tabular_data.synthetic" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Synthetic dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Synthetic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SyntheticScenarios.S1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">SyntheticTargets.Y3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Dataset with synthetic data.</p>
+<p>⊥ = is independent of
+~ = is an ancestor of in the causal model used to generate the data</p>
+<dl class="simple">
+<dt>Scenario 1 = X⊥S &amp; Y⊥S.</dt><dd><ul class="simple">
+<li><p>This models completely fair data.</p></li>
+</ul>
+</dd>
+<dt>Scenario 2 = X_2⊥S &amp; Y_2⊥S; X_1~S, Y_1~S &amp; Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where the inputs are biased. This is propogated through to the target.</p></li>
+</ul>
+</dd>
+<dt>Scenario 3 = X⊥S, Y_1⊥S, Y_2⊥S; Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where the target is biased.</p></li>
+</ul>
+</dd>
+<dt>Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where both the input and target are directly biased.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>scenario</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticScenarios" title="ethicml.data.tabular_data.synthetic.SyntheticScenarios"><em>ethicml.data.tabular_data.synthetic.SyntheticScenarios</em></a>) – </p></li>
+<li><p><strong>target</strong> (<a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticTargets" title="ethicml.data.tabular_data.synthetic.SyntheticTargets"><em>ethicml.data.tabular_data.synthetic.SyntheticTargets</em></a>) – </p></li>
+<li><p><strong>fair</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.Synthetic.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.Synthetic.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.SyntheticScenarios">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SyntheticScenarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.SyntheticScenarios" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Scenarios for the synthetic dataset.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.SyntheticTargets">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SyntheticTargets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.SyntheticTargets" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Targets for the synthetic dataset.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.synthetic.synthetic">
+<span class="sig-name descname"><span class="pre">synthetic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fair</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.synthetic.synthetic" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset with synthetic data.</p>
+<p>⊥ = is independent of
+~ = is an ancestor of in the causal model used to generate the data</p>
+<dl class="simple">
+<dt>Scenario 1 = X⊥S &amp; Y⊥S.</dt><dd><ul class="simple">
+<li><p>This models completely fair data.</p></li>
+</ul>
+</dd>
+<dt>Scenario 2 = X_2⊥S &amp; Y_2⊥S; X_1~S, Y_1~S &amp; Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where the inputs are biased. This is propogated through to the target.</p></li>
+</ul>
+</dd>
+<dt>Scenario 3 = X⊥S, Y_1⊥S, Y_2⊥S; Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where the target is biased.</p></li>
+</ul>
+</dd>
+<dt>Scenario 4 = X_2⊥S, Y_2⊥S; X_1~S, Y_1~S, Y_3~S</dt><dd><ul class="simple">
+<li><p>This models data where both the input and target are directly biased.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticScenarios" title="ethicml.data.tabular_data.synthetic.SyntheticScenarios"><em>ethicml.data.tabular_data.synthetic.SyntheticScenarios</em></a><em>, </em><em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>, </em><em>4</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>target</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.SyntheticTargets" title="ethicml.data.tabular_data.synthetic.SyntheticTargets"><em>ethicml.data.tabular_data.synthetic.SyntheticTargets</em></a><em>, </em><em>Literal</em><em>[</em><em>1</em><em>, </em><em>2</em><em>, </em><em>3</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>fair</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.data.tabular_data.synthetic.Synthetic" title="ethicml.data.tabular_data.synthetic.Synthetic">ethicml.data.tabular_data.synthetic.Synthetic</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ethicml.data.tabular_data.toy">
+<span id="toy"></span><h2>Toy<a class="headerlink" href="#module-ethicml.data.tabular_data.toy" title="Permalink to this headline">#</a></h2>
+<p>Class to describe features of the Toy dataset.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Toy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#ethicml.data.dataset.LoadableDataset" title="ethicml.data.dataset.LoadableDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethicml.data.dataset.LoadableDataset</span></code></a></p>
+<p>Dataset with toy data for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.__len__" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of elements in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.class_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">class_labels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.class_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of class labels.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.continuous_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">continuous_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.continuous_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.disc_feature_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disc_feature_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.disc_feature_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of feature groups.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.discrete_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discrete_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.discrete_features" title="Permalink to this definition">#</a></dt>
+<dd><p>List of features that are discrete.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.expand_labels">
+<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.expand_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>pandas.DataFrame</em>) – </p></li>
+<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.feature_split">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.feature_split" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a feature split dictionary.</p>
+<p>This should have separate entries for the features, the labels and the sensitive attributes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.features_to_remove">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features_to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.features_to_remove" title="Permalink to this definition">#</a></dt>
+<dd><p>Features that have to be removed from x.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.filepath">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filepath</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.filepath" title="Permalink to this definition">#</a></dt>
+<dd><p>Filepath from which to load the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load dataset from its CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ordered</strong> (<em>bool</em>) – if True, return features such that discrete come first, then continuous</p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.load_aif">
+<span class="sig-name descname"><span class="pre">load_aif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.load_aif" title="Permalink to this definition">#</a></dt>
+<dd><p>Load the dataset as an AIF360 dataset.</p>
+<p>Experimental.
+Requires the aif360 library.</p>
+<p>Ignores the type check as the return type is not yet defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.ordered_features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ordered_features</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="index.html#ethicml.data.dataset.FeatureSplit" title="ethicml.data.dataset.FeatureSplit"><span class="pre">ethicml.data.dataset.FeatureSplit</span></a></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.ordered_features" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an order features dictionary.</p>
+<p>This should have separate entries for the features, the labels and the
+sensitive attributes, but the x features are ordered so first are the discrete features,
+then the continuous.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.Toy.sens_attrs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sens_attrs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.tabular_data.toy.Toy.sens_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the list of sensitive attributes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.tabular_data.toy.toy">
+<span class="sig-name descname"><span class="pre">toy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.tabular_data.toy.toy" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset with toy data for testing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.data.tabular_data.toy.Toy" title="ethicml.data.tabular_data.toy.Toy">ethicml.data.tabular_data.toy.Toy</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="util.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Utils</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Datasets</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, O. Thomas, T. Kehrenberg, M. Bartlett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tabular datasets</a><ul>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.adult">Adult</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.compas">Compas</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.credit">Credit</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.crime">Crime</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.german">German</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.health">Health</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.non_binary_toy">Non-binary toy</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.sqf">Stop, question, frisk</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.synthetic">Synthetic</a></li>
+<li><a class="reference internal" href="#module-ethicml.data.tabular_data.toy">Toy</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    </body>
+</html>
