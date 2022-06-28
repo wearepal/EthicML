@@ -888,6 +888,15 @@ def test_domain_adapt_adult():
     assert (21256, 1) == test.y.shape
 
 
+def test_discrete_only() -> None:
+    """Test discrete only."""
+    adult = Adult(discrete_only=True)
+    ordered = adult.load(ordered=True)
+    assert (45222, 96) == ordered.x.shape
+    unordered = adult.load(ordered=False)
+    assert (45222, 96) == unordered.x.shape
+
+
 def test_query():
     """Test query."""
     x: pd.DataFrame = pd.DataFrame(columns=["0a", "b"], data=[[0, 1], [2, 3], [4, 5]])

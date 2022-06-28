@@ -105,7 +105,7 @@ class Dataset:
         to_remove += self._s_prefix
         to_remove += self._class_label_prefix
         if self._discrete_only:
-            to_remove += self.continuous_features
+            to_remove += self._cont_features_unfiltered
         return to_remove
 
     @property
