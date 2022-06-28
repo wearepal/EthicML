@@ -10,7 +10,6 @@ packages = [
 include=["ethicml/py.typed"]
 exclude = ["ethicml/data/csvs/raw/*"]
 classifiers=[
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -119,7 +118,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-python_version = "3.7"
+python_version = "3.8"
 no_implicit_optional = true
 allow_redefinition = true
 strict_equality = true

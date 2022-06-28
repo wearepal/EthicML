@@ -8,8 +8,7 @@ Paper: https://arxiv.org/abs/2108.04884
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, List, Optional, Tuple, Union
-from typing_extensions import Literal
+from typing import Generator, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd

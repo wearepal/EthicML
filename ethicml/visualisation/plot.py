@@ -1,8 +1,7 @@
 """Create plots of a dataset."""
 import itertools
 from pathlib import Path
-from typing import Any, Callable, List, Optional, Tuple, Union
-from typing_extensions import Literal
+from typing import Any, Callable, List, Literal, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd

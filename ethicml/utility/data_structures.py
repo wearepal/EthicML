@@ -9,9 +9,11 @@ from pathlib import Path
 from typing import (
     Callable,
     Dict,
+    Final,
     Iterable,
     Iterator,
     List,
+    Literal,
     Mapping,
     NamedTuple,
     NewType,
@@ -20,8 +22,9 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
+    final,
 )
-from typing_extensions import Final, Literal, TypeAlias, final
+from typing_extensions import TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -141,7 +144,7 @@ class SubgroupTuple(SubsetMixin):
         """Getter for property x."""
         if self.s_in_x:
             return self.data
-        return self.data.drop(self.s_column, inplace=False, axis="columns")  # type: ignore[return-value]
+        return self.data.drop(self.s_column, inplace=False, axis="columns")
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
@@ -235,8 +238,8 @@ class DataTuple(SubsetMixin):
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
         if self.s_in_x:
-            return self.data.drop(self.y_column, inplace=False, axis="columns")  # type: ignore[return-value]
-        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")  # type: ignore[return-value]
+            return self.data.drop(self.y_column, inplace=False, axis="columns")
+        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
 
     @property
     def y(self) -> pd.Series[int]:
@@ -250,7 +253,7 @@ class DataTuple(SubsetMixin):
     def remove_y(self) -> SubgroupTuple:
         """Convert the DataTuple instance to a SubgroupTuple instance."""
         return SubgroupTuple(
-            data=self.data.drop(self.y_column, inplace=False, axis="columns"),  # type: ignore[arg-type]
+            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
             s_column=self.s_column,
             s_in_x=self.s_in_x,
             name=self.name,

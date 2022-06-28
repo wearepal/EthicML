@@ -1,7 +1,6 @@
 """Runs given metrics on given algorithms for given datasets."""
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Optional, Sequence, Union
-from typing_extensions import Literal
+from typing import Dict, List, Literal, NamedTuple, Optional, Sequence, Union
 
 import pandas as pd
 

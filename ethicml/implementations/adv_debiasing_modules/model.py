@@ -3,8 +3,8 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
-from typing import Tuple
-from typing_extensions import Literal, Self
+from typing import Literal, Tuple
+from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
