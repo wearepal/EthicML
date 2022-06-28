@@ -206,7 +206,6 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     plot.set_xlabel(f"Percent {data.s.name}=s")
     plot.set_title("Dataset Composition by class and sensitive attribute")
 
-    reveal_type(y_0_label)
     plot.legend(
         [quadrant1, quadrant2, quadrant3, quadrant4],
         [
