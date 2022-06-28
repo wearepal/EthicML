@@ -1,6 +1,6 @@
 from pathlib import Path
-from typing import Any, Callable, Generic, Iterable, List, Optional, Tuple, TypeVar, Union
-from typing_extensions import Literal, ParamSpec, TypeAlias
+from typing import Any, Callable, Generic, Iterable, List, Literal, Optional, Tuple, TypeVar, Union
+from typing_extensions import ParamSpec, TypeAlias
 
 _CompressLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 

@@ -7,8 +7,7 @@ http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
-from typing_extensions import Literal, TypedDict
+from typing import List, Literal, TypedDict
 
 from ranzen import implements
 

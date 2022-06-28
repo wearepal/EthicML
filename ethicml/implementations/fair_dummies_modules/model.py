@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import random
-from typing import Callable, Tuple
-from typing_extensions import Literal, Self
+from typing import Callable, Literal, Tuple
+from typing_extensions import Self
 
 import numpy as np
 import pandas as pd

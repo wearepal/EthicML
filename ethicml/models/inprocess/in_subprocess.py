@@ -4,8 +4,8 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, List, Mapping, TypeVar, Union
-from typing_extensions import Literal, TypeAlias, TypedDict, final
+from typing import Any, List, Literal, Mapping, TypedDict, TypeVar, Union, final
+from typing_extensions import TypeAlias
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.models.inprocess.in_algorithm import InAlgorithm

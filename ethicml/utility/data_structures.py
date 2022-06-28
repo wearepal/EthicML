@@ -9,9 +9,11 @@ from pathlib import Path
 from typing import (
     Callable,
     Dict,
+    Final,
     Iterable,
     Iterator,
     List,
+    Literal,
     Mapping,
     NamedTuple,
     NewType,
@@ -20,8 +22,9 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
+    final,
 )
-from typing_extensions import Final, Literal, TypeAlias, final
+from typing_extensions import TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -352,8 +355,9 @@ class LabelTuple(SubsetMixin):
         assert isinstance(s_column, str) and isinstance(y_column, str)
         assert s_column != y_column, f"name of `s` and `y` is the same: {s_column}"
         assert len(s) == len(y), "data has to have the same length"
+        it: Iterable[pd.Series] = [s, y]
         return cls(
-            data=pd.concat([s, y], axis="columns", sort=False),  # type: ignore[arg-type]
+            data=pd.concat(it, axis="columns", sort=False),
             s_column=s_column,
             y_column=y_column,
             name=name,

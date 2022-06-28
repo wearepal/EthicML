@@ -1,8 +1,7 @@
 """Create plots of a dataset."""
 import itertools
 from pathlib import Path
-from typing import Any, Callable, List, Optional, Tuple, Union
-from typing_extensions import Literal
+from typing import Any, Callable, List, Literal, Optional, Tuple, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -40,8 +39,8 @@ def maybe_tsne(data: DataTuple) -> Tuple[pd.DataFrame, str, str]:
         x2_name = "tsne2"
     else:
         amalgamated = data.data
-        x1_name = f"{columns[0]}"
-        x2_name = f"{columns[1]}"
+        x1_name = f"{columns[0]}"  # type: ignore[str-bytes-safe]
+        x2_name = f"{columns[1]}"  # type: ignore[str-bytes-safe]
     return amalgamated, x1_name, x2_name
 
 
@@ -168,7 +167,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 
     quadrant1 = plot.bar(
         0,
-        height=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
+        height=y_s0[y_0_label] * 100,
         width=s_0_val * 100,
         align="edge",
         edgecolor="black",
@@ -176,7 +175,7 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant2 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
+        height=y_s1[y_0_label] * 100,  # type: ignore[index]
         width=s_1_val * 100,
         align="edge",
         edgecolor="black",
@@ -184,18 +183,18 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     )
     quadrant3 = plot.bar(
         0,
-        height=y_s0[y_1_label] * 100,  # type: ignore[call-overload]
+        height=y_s0[y_1_label] * 100,  # type: ignore[index]
         width=s_0_val * 100,
-        bottom=y_s0[y_0_label] * 100,  # type: ignore[call-overload]
+        bottom=y_s0[y_0_label] * 100,  # type: ignore[index]
         align="edge",
         edgecolor="black",
         color="C2",
     )
     quadrant4 = plot.bar(
         s_0_val * 100,
-        height=y_s1[y_1_label] * 100,  # type: ignore[call-overload]
+        height=y_s1[y_1_label] * 100,  # type: ignore[index]
         width=s_1_val * 100,
-        bottom=y_s1[y_0_label] * 100,  # type: ignore[call-overload]
+        bottom=y_s1[y_0_label] * 100,  # type: ignore[index]
         align="edge",
         edgecolor="black",
         color="C3",
@@ -210,10 +209,10 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
     plot.legend(
         [quadrant1, quadrant2, quadrant3, quadrant4],
         [
-            f"y={y_0_label}, s={s_0_label}",
-            f"y={y_0_label}, s={s_1_label}",
-            f"y={y_1_label}, s={s_0_label}",
-            f"y={y_1_label}, s={s_1_label}",
+            f"y={y_0_label}, s={s_0_label}",  # type: ignore[str-bytes-safe]
+            f"y={y_0_label}, s={s_1_label}",  # type: ignore[str-bytes-safe]
+            f"y={y_1_label}, s={s_0_label}",  # type: ignore[str-bytes-safe]
+            f"y={y_1_label}, s={s_1_label}",  # type: ignore[str-bytes-safe]
         ],
     )
 
