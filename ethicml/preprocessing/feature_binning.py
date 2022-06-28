@@ -28,6 +28,6 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
         if len(group) == 1 and data.x[group[0]].nunique() > 2:
             copy[group] = pd.DataFrame(pd.cut(data.x[group].to_numpy()[:, 0], 5))
             copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
-            copy = copy.drop(group, axis="columns")
+            copy = copy.drop(group, axis="columns")  # type: ignore[arg-type]
 
     return data.replace(x=copy)

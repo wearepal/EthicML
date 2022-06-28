@@ -98,7 +98,7 @@ def _calders_algorithm(
     for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
         data[group] = unsorted_data.replace_data(
-            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)
+            data=unsorted_data.data.reindex_like(ranking).reset_index(drop=True)
         )
 
     all_disadvantaged = len(data[(disadvantaged_group, good_class)]) + dis_group_len

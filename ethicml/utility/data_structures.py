@@ -141,7 +141,7 @@ class SubgroupTuple(SubsetMixin):
         """Getter for property x."""
         if self.s_in_x:
             return self.data
-        return self.data.drop(self.s_column, inplace=False, axis="columns")
+        return self.data.drop(self.s_column, inplace=False, axis="columns")  # type: ignore[return-value]
 
     def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
         """Overwrite magic method __iter__."""
@@ -235,8 +235,8 @@ class DataTuple(SubsetMixin):
     def x(self) -> pd.DataFrame:
         """Getter for property x."""
         if self.s_in_x:
-            return self.data.drop(self.y_column, inplace=False, axis="columns")
-        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")
+            return self.data.drop(self.y_column, inplace=False, axis="columns")  # type: ignore[return-value]
+        return self.data.drop([self.s_column, self.y_column], inplace=False, axis="columns")  # type: ignore[return-value]
 
     @property
     def y(self) -> pd.Series[int]:
@@ -250,7 +250,7 @@ class DataTuple(SubsetMixin):
     def remove_y(self) -> SubgroupTuple:
         """Convert the DataTuple instance to a SubgroupTuple instance."""
         return SubgroupTuple(
-            data=self.data.drop(self.y_column, inplace=False, axis="columns"),
+            data=self.data.drop(self.y_column, inplace=False, axis="columns"),  # type: ignore[arg-type]
             s_column=self.s_column,
             s_in_x=self.s_in_x,
             name=self.name,
@@ -352,8 +352,9 @@ class LabelTuple(SubsetMixin):
         assert isinstance(s_column, str) and isinstance(y_column, str)
         assert s_column != y_column, f"name of `s` and `y` is the same: {s_column}"
         assert len(s) == len(y), "data has to have the same length"
+        it: Iterable[pd.Series] = [s, y]
         return cls(
-            data=pd.concat([s, y], axis="columns", sort=False),  # type: ignore[arg-type]
+            data=pd.concat(it, axis="columns", sort=False),
             s_column=s_column,
             y_column=y_column,
             name=name,
