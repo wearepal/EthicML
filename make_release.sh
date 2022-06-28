@@ -27,55 +27,22 @@ if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   exit 2
 fi
 
-if [ $(git symbolic-ref --short -q HEAD) != "main" ]; then
-  echo "not on main branch"
+if [ $(git symbolic-ref --short -q HEAD) != "0.x" ]; then
+  echo "not on 0.x branch"
   exit 3
 fi
 
 echo ""
 echo "######################################"
-echo "#  ensure main branch is up-to-date  #"
+echo "# ensure 0.x branch is up-to-date  #"
 echo "######################################"
 git pull
 
-echo ""
-echo "######################################"
-echo "#       checkout release branch      #"
-echo "######################################"
-git checkout release
-
-echo ""
 echo "#######################################"
-echo "# ensure release branch is up-to-date #"
+echo "#            bump version             #"
 echo "#######################################"
-git pull
-
-echo ""
-echo "#######################################"
-echo "#   merge main into release branch  #"
-echo "#######################################"
-git merge --no-ff main --no-edit
-
-# bump version
 poetry version $version_bump
-
-# commit change
-git add pyproject.toml
-git commit -m "Bump version"
-
-# create tag and push
-new_tag=v$(poetry version -s)
-echo "#######################################"
-echo "#          new tag: $new_tag          #"
-echo "#######################################"
-git tag $new_tag
-git push origin release $new_tag
-
-# clean previous build and build
-echo "#######################################"
-echo "#        clean up old builds          #"
-echo "#######################################"
-rm -rf build dist
+new_version=$(poetry version -s)
 
 echo "#######################################"
 echo "#            do new build             #"
@@ -90,14 +57,52 @@ echo "#######################################"
 #  `poetry config pypi-token.pypi <api token>`
 poetry publish
 
+echo "#######################################"
+echo "#         create new branch           #"
+echo "#######################################"
+branch_name=release-$new_version
+git checkout -b $branch_name
+
+echo "#######################################"
+echo "#       commit version change         #"
+echo "#######################################"
+git add pyproject.toml
+git commit -m "Bump version"
+
+echo "#######################################"
+echo "#          new tag: $new_tag          #"
+echo "#######################################"
+new_tag=v${new_version}
+git tag $new_tag
+
+echo "#######################################"
+echo "#      bump prerelease version        #"
+echo "#######################################"
+poetry version prerelease
+
+echo "#######################################"
+echo "#       commit version change         #"
+echo "#######################################"
+git add pyproject.toml
+git commit -m "Bump version to prerelease"
+
+echo "#######################################"
+echo "#       commit version change         #"
+echo "#######################################"
+git push origin $branch_name $new_tag
+
+echo "#######################################"
+echo "#     create PR for version bump      #"
+echo "#######################################"
+gh pr create --fill --base "0.x"
+
+echo "#######################################"
+echo "#           create release            #"
+echo "#######################################"
+gh release create $new_tag --generate-notes
+
 # clean up
 echo "#######################################"
-echo "#        go back to main branch       #"
+echo "#      go back to 0.x branch         #"
 echo "#######################################"
-git checkout main
-
-echo "#####################################################"
-echo "#               all done! now go to                 #"
-echo "# https://github.com/predictive-analytics-lab/EthicML/releases/tag/$new_tag"
-echo "# and click on \"Edit Tag\" to write release notes  #"
-echo "#####################################################"
+git checkout 0.x
