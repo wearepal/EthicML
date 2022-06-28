@@ -486,7 +486,7 @@ class AcsEmployment(AcsBase):
             target_transform=lambda x: x == 1,
             group=self.split,
             preprocess=lambda x: x,
-            postprocess=lambda x: np.nan_to_num(x, -1),
+            postprocess=lambda x: np.nan_to_num(x, nan=-1),
         )
 
         dataframe = data_obj._preprocess(dataframe)
