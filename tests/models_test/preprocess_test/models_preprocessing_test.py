@@ -85,11 +85,13 @@ METHOD_LIST_EXTENSION = [
 
 
 @pytest.mark.parametrize("model,name,num_pos", METHOD_LIST + METHOD_LIST_EXTENSION)
-def test_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
+def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_pos: int):
     """Test preprocessing."""
     train, test = toy_train_test
 
     svm_model: InAlgorithm = SVM()
+    assert svm_model is not None
+    assert svm_model.name == "SVM (rbf)"
 
     assert model.name == name
     new_train, new_test = model.run(train, test)
@@ -128,32 +130,6 @@ def test_pre_sep_fit_transform(
 
     assert new_train.x.shape[1] == model.get_out_size()
     assert new_test.x.shape[1] == model.get_out_size()
-    assert new_test.name == f"{name}: {str(test.name)}"
-    assert new_train.name == f"{name}: {str(train.name)}"
-
-    preds = svm_model.run_test(new_train, new_test)
-    assert np.count_nonzero(preds.hard.values == 1) == num_pos
-    assert np.count_nonzero(preds.hard.values == 0) == len(preds) - num_pos
-
-
-@pytest.mark.parametrize("model,name,num_pos", METHOD_LIST)
-def test_threaded_pre(toy_train_test: TrainTestPair, model: PreAlgorithm, name: str, num_pos: int):
-    """Test vfae."""
-    train, test = toy_train_test
-
-    svm_model: InAlgorithm = SVM()
-    assert svm_model is not None
-    assert svm_model.name == "SVM (rbf)"
-
-    assert model.name == name
-    new_train_test = model.run(train, test)
-    new_train, new_test = new_train_test
-
-    assert len(new_train) == len(train)
-    assert new_test.x.shape[0] == test.x.shape[0]
-
-    assert new_train.x.shape[0] == train.x.shape[0]
-    assert new_test.x.shape[0] == test.x.shape[0]
     assert new_test.name == f"{name}: {str(test.name)}"
     assert new_train.name == f"{name}: {str(train.name)}"
 

@@ -14,10 +14,10 @@ from scipy.spatial.distance import cdist
 from scipy.special import softmax  # type: ignore[attr-defined]
 
 from ethicml.implementations.utils import load_data_from_flags, save_transformations
-from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility import DataTuple, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
-    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs
     from ethicml.models.preprocess.zemel import ZemelArgs
 
 
@@ -108,8 +108,8 @@ def get_xhat_y_hat(
 
 
 def train_and_transform(
-    train: DataTuple, test: T, flags: ZemelArgs, seed: int
-) -> (Tuple[DataTuple, T]):
+    train: DataTuple, test: SubgroupTuple, flags: ZemelArgs, seed: int
+) -> (Tuple[DataTuple, SubgroupTuple]):
     """Train and transform.
 
     :param train:
@@ -130,7 +130,7 @@ def train_and_transform(
     return train.replace(x=train_transformed), test.replace(x=test_transformed)
 
 
-def transform(data: T, prototypes: np.ndarray, w: np.ndarray) -> T:
+def transform(data: SubgroupTuple, prototypes: np.ndarray, w: np.ndarray) -> SubgroupTuple:
     """Transform.
 
     :param data:
@@ -258,9 +258,8 @@ def main() -> None:
         dump(model, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(
-            DataTuple.from_file(Path(pre_algo_args["test"])), model.prototypes, model.w
-        )
+        test = SubgroupTuple.from_file(Path(pre_algo_args["test"]))
+        transformed_test = transform(test, model.prototypes, model.w)
         transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 

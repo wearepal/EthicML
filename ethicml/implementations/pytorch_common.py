@@ -1,7 +1,6 @@
 """Functions that are common to PyTorch models."""
 import random
-from typing import Tuple
-from typing_extensions import Literal
+from typing import Literal, Tuple
 
 import numpy as np
 import pandas as pd

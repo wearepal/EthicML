@@ -1,8 +1,7 @@
 """Split into train and test data."""
 import itertools
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List, Optional, Tuple
-from typing_extensions import Literal
+from typing import Dict, Iterator, List, Literal, Optional, Tuple
 
 import numpy as np
 import pandas as pd

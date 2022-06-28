@@ -1,6 +1,8 @@
 """Transparently show how the UCI Nursey dataset was modified from the raw download."""
 # The Heritage Health dataset. It needs some (mild) preprocessing before we can plug and play.
 
+from typing import Hashable, List
+
 import pandas as pd
 
 if __name__ == "__main__":
@@ -29,10 +31,19 @@ if __name__ == "__main__":
     for column in features:
         df[column] = df[column].astype("category").cat.codes
 
-    features1 = ['form', 'health', "finance", "class", "parents", "has_nurs", "housing", "social"]
+    features1: List[Hashable] = [
+        'form',
+        'health',
+        "finance",
+        "class",
+        "parents",
+        "has_nurs",
+        "housing",
+        "social",
+    ]
     x1 = df.drop(features1, axis=1)
 
-    x2 = df.drop(features, axis=1)
+    x2 = df.drop(features, axis=1)  # type: ignore[arg-type]
     x2 = pd.get_dummies(x2)
 
     df = pd.concat([x1, x2], axis=1)

@@ -1,5 +1,5 @@
 {
-  "pythonVersion": "3.7",
+  "pythonVersion": "3.8",
   "reportMissingTypeStubs": "none",
   "reportUnknownParameterType": "none",
   "reportUnknownArgumentType": "none",

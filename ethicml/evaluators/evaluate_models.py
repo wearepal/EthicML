@@ -1,7 +1,6 @@
 """Runs given metrics on given algorithms for given datasets."""
 from pathlib import Path
-from typing import Dict, List, NamedTuple, Optional, Sequence, Union
-from typing_extensions import Literal
+from typing import Dict, List, Literal, NamedTuple, Optional, Sequence, Union
 
 import pandas as pd
 
@@ -63,7 +62,7 @@ def run_metrics(
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
     use_sens_name: bool = True,
-) -> Dict[str, HyperParamValue]:
+) -> Dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
@@ -73,8 +72,9 @@ def run_metrics(
     :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)
     :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
                         If False, refer to the sensitive varibale as `S`. (Default: True)
+    :returns: A dictionary of all the metric results.
     """
-    result: Dict[str, HyperParamValue] = {}
+    result: Dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
         return {"algorithm_failed": 1.0}
     for metric in metrics:
@@ -88,7 +88,6 @@ def run_metrics(
             per_sens.update(diffs_ratios)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
-    result.update(predictions.info)
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
@@ -333,6 +332,7 @@ def _gather_metrics(
                 **hyperparameters,
             }
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
+            df_row.update(predictions.info)
 
             results_df = results_df.append(df_row, ignore_index=True, sort=False)
 

@@ -1,7 +1,7 @@
 """Common plotting functions / datastructures."""
 
-from typing import Any, Dict, List, NamedTuple, Optional, Tuple
-from typing_extensions import Literal, TypeAlias
+from typing import Any, Dict, List, Literal, NamedTuple, Optional, Tuple
+from typing_extensions import TypeAlias
 
 import matplotlib as mpl
 import pandas as pd

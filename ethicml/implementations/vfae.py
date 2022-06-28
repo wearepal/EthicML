@@ -88,7 +88,9 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
     return dataset.replace(x=pd.DataFrame(post_train))
 
 
-def train_and_transform(train: DataTuple, test: T, flags: VfaeArgs) -> Tuple[DataTuple, T]:
+def train_and_transform(
+    train: DataTuple, test: SubgroupTuple, flags: VfaeArgs
+) -> Tuple[DataTuple, SubgroupTuple]:
     """Train the model and transform the dataset.
 
     :param train:
@@ -171,7 +173,8 @@ def main() -> None:
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(model, DataTuple.from_file(Path(pre_algo_args["test"])), flags)
+        test = SubgroupTuple.from_file(Path(pre_algo_args["test"]))
+        transformed_test = transform(model, test, flags)
         transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 

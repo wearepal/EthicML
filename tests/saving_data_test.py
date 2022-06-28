@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ethicml import DataTuple, HyperParamType, Prediction, SubgroupTuple
+from ethicml import DataTuple, HyperParamType, LabelTuple, Prediction, SubgroupTuple
 from ethicml.models import InAlgoArgs, InAlgorithmSubprocess
 
 NPZ: Final[str] = "test.npz"
@@ -154,3 +154,44 @@ def test_data_tuple_len() -> None:
         name=None,
     )
     assert len(datatup_equal_len) == 3
+
+
+def test_overlapping_columns() -> None:
+    """Test overlapping column names."""
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    datatup = SubgroupTuple.from_df(x=x, s=x["a1"])
+    pd.testing.assert_frame_equal(datatup.x, datatup.s.to_frame())
+
+
+def test_overlapping_columns_unequal() -> None:
+    """Test overlapping column names."""
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    s = pd.Series([4.0, 1.0], name="a1")
+    with pytest.raises(AssertionError):
+        SubgroupTuple.from_df(x=x, s=s)
+
+
+def test_overlapping_columns_y() -> None:
+    """Test overlapping column names."""
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    y = pd.Series([4.0, 1.0], name="y1")
+    datatup = DataTuple.from_df(x=x, s=x["a1"], y=y)
+    pd.testing.assert_frame_equal(datatup.x, datatup.s.to_frame())
+    pd.testing.assert_series_equal(datatup.y, y)
+
+
+def test_overlapping_columns_unequal_y() -> None:
+    """Test overlapping column names."""
+    x = pd.DataFrame([3.0, 2.0], columns=["a1"])
+    s = pd.Series([4.0, 1.0], name="a1")
+    y = pd.Series([0.0, 5.0], name="y1")
+    with pytest.raises(AssertionError):
+        DataTuple.from_df(x=x, s=s, y=y)
+
+
+def test_s_y_same_name() -> None:
+    """Test s and y having the same name."""
+    s = pd.Series([4.0, 1.0], name="a")
+    y = pd.Series([0.0, 5.0], name="a")
+    with pytest.raises(AssertionError):
+        LabelTuple.from_df(s=s, y=y)

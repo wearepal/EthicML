@@ -8,8 +8,7 @@ Paper: https://arxiv.org/abs/2108.04884
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, List, Optional, Tuple, Union
-from typing_extensions import Literal
+from typing import Generator, Iterable, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -487,7 +486,7 @@ class AcsEmployment(AcsBase):
             target_transform=lambda x: x == 1,
             group=self.split,
             preprocess=lambda x: x,
-            postprocess=lambda x: np.nan_to_num(x, -1),
+            postprocess=lambda x: np.nan_to_num(x, nan=-1),
         )
 
         dataframe = data_obj._preprocess(dataframe)

@@ -21,14 +21,14 @@ from torch.optim.lr_scheduler import ExponentialLR
 
 from ethicml.preprocessing.adjust_labels import LabelBinarizer, assert_binary_labels
 from ethicml.preprocessing.splits import train_test_split
-from ethicml.utility import DataTuple, FairnessType
+from ethicml.utility import DataTuple, FairnessType, SubgroupTuple
 
 from .pytorch_common import CustomDataset, TestDataset, make_dataset_and_loader
 from .utils import load_data_from_flags, save_transformations
 
 if TYPE_CHECKING:
     from ethicml.models.preprocess.beutel import BeutelArgs
-    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs, T
+    from ethicml.models.preprocess.pre_subprocess import PreAlgoArgs
 
 STRING_TO_ACTIVATION_MAP = {"Sigmoid()": nn.Sigmoid()}
 
@@ -187,7 +187,7 @@ def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple
     return transformed_train, enc
 
 
-def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
+def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: BeutelArgs) -> SubgroupTuple:
     """Transform the test data using the trained autoencoder.
 
     :param data:
@@ -202,8 +202,8 @@ def transform(data: T, enc: torch.nn.Module, flags: BeutelArgs) -> T:
 
 
 def train_and_transform(
-    train: DataTuple, test: T, flags: BeutelArgs, seed: int
-) -> Tuple[DataTuple, T]:
+    train: DataTuple, test: SubgroupTuple, flags: BeutelArgs, seed: int
+) -> Tuple[DataTuple, SubgroupTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test.
 
     :param train:
@@ -263,7 +263,9 @@ def encode_dataset(
     return datatuple.replace(x=pd.DataFrame(data_to_return))
 
 
-def encode_testset(enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: T) -> T:
+def encode_testset(
+    enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: SubgroupTuple
+) -> SubgroupTuple:
     """Encode a dataset.
 
     :param enc:
@@ -456,7 +458,8 @@ def main() -> None:
         dump(enc, Path(pre_algo_args["model"]))
     elif pre_algo_args["mode"] == "transform":
         model = load(Path(pre_algo_args["model"]))
-        transformed_test = transform(DataTuple.from_file(Path(pre_algo_args["test"])), model, flags)
+        test = SubgroupTuple.from_file(Path(pre_algo_args["test"]))
+        transformed_test = transform(test, model, flags)
         transformed_test.save_to_file(Path(pre_algo_args["new_test"]))
 
 

@@ -2,8 +2,7 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
-from typing_extensions import Literal
+from typing import List, Literal
 
 import numpy as np
 import pandas as pd
