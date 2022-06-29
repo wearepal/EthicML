@@ -20,5 +20,5 @@ class ProbPos(CfmMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
-        _, f_pos, _, t_pos = self.confusion_matrix(prediction=prediction, actual=actual)
+        _, f_pos, _, t_pos = self._confusion_matrix(prediction=prediction, actual=actual)
         return (t_pos + f_pos) / prediction.hard.size

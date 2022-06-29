@@ -1,6 +1,6 @@
 """Classes related to running algorithms in subprocesses."""
 import json
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -50,7 +50,7 @@ _IS = TypeVar("_IS", bound="InAlgorithmSubprocess")
 
 
 @dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm):
+class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     """In-Algorithm that uses a subprocess to run.
 
     :param dir: Directory to store the model.
