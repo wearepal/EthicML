@@ -375,7 +375,7 @@ class CSVDataset(Dataset, ABC):
 
 
 @dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class CSVDatasetDC(CSVDataset):
+class CSVDatasetDC(CSVDataset, ABC):
     """Dataset that uses the default load function."""
 
     discrete_only: bool = False
@@ -393,7 +393,7 @@ class CSVDatasetDC(CSVDataset):
 
 
 @dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
-class StaticCSVDataset(CSVDatasetDC):
+class StaticCSVDataset(CSVDatasetDC, ABC):
     """Dataset whose size and file location does not depend on constructor arguments."""
 
     num_samples: ClassVar[int] = 0

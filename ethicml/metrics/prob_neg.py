@@ -20,5 +20,5 @@ class ProbNeg(CfmMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
-        t_neg, _, f_neg, _ = self.confusion_matrix(prediction=prediction, actual=actual)
+        t_neg, _, f_neg, _ = self._confusion_matrix(prediction=prediction, actual=actual)
         return (t_neg + f_neg) / prediction.hard.size

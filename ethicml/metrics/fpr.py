@@ -20,5 +20,5 @@ class FPR(CfmMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
-        t_neg, f_pos, _, _ = self.confusion_matrix(prediction=prediction, actual=actual)
+        t_neg, f_pos, _, _ = self._confusion_matrix(prediction=prediction, actual=actual)
         return f_pos / (f_pos + t_neg)
