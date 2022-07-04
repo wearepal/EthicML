@@ -50,7 +50,7 @@ ci = ["fairlearn","pytest","pytest-cov","cloudpickle","omegaconf"]
 all = ["fairlearn","cloudpickle"]
 
 [tool.poetry.dev-dependencies]
-black = "^22.0"
+black = "^22.6"
 isort = "5.10.1"
 mypy = ">=0.950"
 pre-commit = "^2.19.0"
