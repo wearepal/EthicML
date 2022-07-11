@@ -60,7 +60,7 @@ pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "2f140fb"}
 pandas-stubs = ">=1.4.2.220626"
-types-Pillow = "^9.0.19"
+types-Pillow = "^9.2.0"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
 

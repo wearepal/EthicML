@@ -889,7 +889,7 @@ telegram = ["requests"]
 
 [[package]]
 name = "types-pillow"
-version = "9.0.20"
+version = "9.2.0"
 description = "Typing stubs for Pillow"
 category = "dev"
 optional = false
@@ -957,7 +957,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "3b52c2422ca868dcbef17cdde514a166630b660c69fe31c3c8ba1f22a84121c3"
+content-hash = "037a040f4e000776de8e1902df725fb4a9ce1749c9a15ee3a1a90a549cf74f5b"
 
 [metadata.files]
 antlr4-python3-runtime = []
