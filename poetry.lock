@@ -516,7 +516,7 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "pre-commit"
-version = "2.19.0"
+version = "2.20.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
@@ -957,7 +957,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "037a040f4e000776de8e1902df725fb4a9ce1749c9a15ee3a1a90a549cf74f5b"
+content-hash = "ecdddf4e7f08d3a388e97b87c3f3d056733b00724d687f1d16133b82a4210506"
 
 [metadata.files]
 antlr4-python3-runtime = []
