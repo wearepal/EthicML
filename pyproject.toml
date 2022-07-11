@@ -53,7 +53,7 @@ all = ["fairlearn","cloudpickle"]
 black = "^22.6"
 isort = "5.10.1"
 mypy = ">=0.950"
-pre-commit = "^2.19.0"
+pre-commit = "^2.20.0"
 pydocstyle = {version = "^6.1.1", extras = ["toml"]}
 pylint = "^2.13.5"
 pytest = ">=6.2.2,<8.0.0"
