@@ -126,6 +126,15 @@ jobs:
           key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
 
       #----------------------------------------------
+      # cache the directory where pip caches packages
+      #----------------------------------------------
+      - name: Cache Pip cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: pip-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+
+      #----------------------------------------------
       #  ---------  install dependencies  --------
       #----------------------------------------------
       - name: Install dependencies
