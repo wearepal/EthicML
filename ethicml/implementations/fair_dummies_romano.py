@@ -20,11 +20,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLearner:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -50,23 +46,14 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
 
 
 def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
 ) -> np.ndarray:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
     return predict(model, test)
 

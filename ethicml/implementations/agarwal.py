@@ -34,11 +34,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGradient:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     try:
         from fairlearn.reductions import (
             DemographicParity,
@@ -90,11 +86,7 @@ def fit(train: DataTuple, args: AgarwalArgs, seed: int = 888) -> ExponentiatedGr
 
 
 def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> pd.DataFrame:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     randomized_predictions = exponentiated_gradient.predict(test.x)
     preds = pd.DataFrame(randomized_predictions, columns=["preds"])
 
@@ -106,22 +98,14 @@ def predict(exponentiated_gradient: ExponentiatedGradient, test: TestTuple) -> p
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: AgarwalArgs, seed: int
 ) -> pd.DataFrame:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     exponentiated_gradient = fit(train, args, seed)
     return predict(exponentiated_gradient, test)
 
 
 @contextlib.contextmanager
 def working_dir(root: Path) -> Generator[None, None, None]:
-    """Change the working directory to the given path.
-
-    :param root:
-    """
+    """Change the working directory to the given path."""
     curdir = os.getcwd()
     os.chdir(root.expanduser().resolve().parent)
     try:

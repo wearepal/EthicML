@@ -24,13 +24,7 @@ class MetricNotApplicable(Exception):
 def metric_per_sens(
     prediction: Prediction, actual: EvalTuple, metric: Metric, use_sens_name: bool = True
 ) -> Dict[str, float]:
-    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute.
-
-    :param prediction:
-    :param actual:
-    :param metric:
-    :param use_sens_name:  (Default: True)
-    """
+    """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
             f"Metric {metric.name} is not applicable per sensitive "

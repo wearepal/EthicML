@@ -78,12 +78,7 @@ class CustomDataset(Dataset):
 def make_dataset_and_loader(
     data: DataTuple, *, batch_size: int, shuffle: bool, seed: int, drop_last: bool
 ) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
-    """Given a datatuple, create a dataset and a corresponding dataloader.
-
-    :param data:
-    :param flags:
-    :returns: Tuple of a pytorch dataset and dataloader.
-    """
+    """Given a datatuple, create a dataset and a corresponding dataloader."""
 
     def seed_worker(worker_id):
         worker_seed = torch.initial_seed() % 2**32

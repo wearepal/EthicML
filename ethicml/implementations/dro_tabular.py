@@ -37,13 +37,7 @@ if TYPE_CHECKING:
 def train_model(
     epoch: int, model: DROClassifier, train_loader: DataLoader, optimizer: Optimizer
 ) -> None:
-    """Train a model.
-
-    :param epoch:
-    :param model:
-    :param train_loader:
-    :param optimizer:
-    """
+    """Train a model."""
     model.train()
     train_loss = 0.0
     for batch_idx, (data_x, _, data_y) in enumerate(train_loader):
@@ -66,11 +60,7 @@ def train_model(
 
 
 def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
-    """Train a network and return predictions.
-
-    :param train:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     set_seed(seed)
     train_data = CustomDataset(train)
@@ -92,12 +82,7 @@ def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
 
 
 def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPrediction:
-    """Train a network and return predictions.
-
-    :param model:
-    :param test:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     test_data = TestDataset(test)
     test_loader = DataLoader(test_data, batch_size=args["batch_size"])
@@ -115,12 +100,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: DroArgs, seed: int
 ) -> SoftPrediction:
-    """Train a network and return predictions.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     set_seed(seed)
     train_data = CustomDataset(train)

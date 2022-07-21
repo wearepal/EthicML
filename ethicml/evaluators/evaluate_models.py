@@ -33,20 +33,13 @@ __all__ = ["evaluate_models", "run_metrics", "load_results"]
 
 
 def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
-    """Get all possible combinations of sensitive attribute and metrics.
-
-    :param metrics:
-    :param train:
-    """
+    """Get all possible combinations of sensitive attribute and metrics."""
     poss_values = [f"{train.s.name}_{unique}" for unique in train.s.unique()]
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
 def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
-    """Check if the given metrics allow application per sensitive attribute.
-
-    :param per_sens_metrics:
-    """
+    """Check if the given metrics allow application per sensitive attribute."""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable(
@@ -290,16 +283,7 @@ def _gather_metrics(
     outdir: Path,
     topic: Optional[str],
 ) -> Results:
-    """Take a list of lists of predictions and compute all metrics.
-
-    :param all_predictions:
-    :param test_data:
-    :param inprocess_models:
-    :param metrics:
-    :param per_sens_metrics:
-    :param outdir:
-    :param topic:
-    """
+    """Take a list of lists of predictions and compute all metrics."""
     columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
     # transpose `all_results` so that the order in the results dataframe is correct

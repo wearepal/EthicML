@@ -7,11 +7,7 @@ __all__ = ["undo_one_hot", "shuffle_df"]
 
 
 def shuffle_df(df: pd.DataFrame, random_state: int) -> pd.DataFrame:
-    """Shuffle a given dataframe.
-
-    :param df:
-    :param random_state:
-    """
+    """Shuffle a given dataframe."""
     return df.sample(frac=1.0, random_state=random_state).reset_index(drop=True)
 
 
@@ -28,11 +24,7 @@ def undo_one_hot(df: pd.DataFrame, new_column_name: str) -> pd.DataFrame:
 def undo_one_hot(
     df: pd.DataFrame, new_column_name: Optional[str] = None
 ) -> Union[pd.Series, pd.DataFrame]:
-    """Undo one-hot encoding.
-
-    :param df:
-    :param new_column_name:  (Default: None)
-    """
+    """Undo one-hot encoding."""
     # we have to overwrite the column names because `idxmax` uses the column names
     df.columns = pd.Index(range(df.shape[1]))
     result = df.idxmax(axis="columns")

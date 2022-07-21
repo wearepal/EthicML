@@ -19,14 +19,7 @@ from ethicml.utility import FairnessType
 def kullback_leibler(
     mu1: Tensor, logvar1: Tensor, mu2: Optional[Tensor] = None, logvar2: Optional[Tensor] = None
 ) -> Tensor:
-    """KL Divergence.
-
-    :param mu1:
-    :param logvar1:
-    :param mu2:  (Default: None)
-    :param logvar2:  (Default: None)
-    :returns: Tensorof divergence in each dim.
-    """
+    """KL Divergence in each dim."""
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
     logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
     return (
@@ -44,17 +37,7 @@ def loss_function(
     x_dec: Tensor,
     y_pred: Optional[Tensor],
 ) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
-    """Loss function for VFAE.
-
-    :param flags:
-    :param z1_triplet:
-    :param z2_triplet:
-    :param z1_d_triplet:
-    :param data_triplet:
-    :param x_dec:
-    :param y_pred:
-    :returns: Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
-    """
+    """Loss function for VFAE, with prediction loss, reconstruction loss, KL Divergence and MMD."""
     z1, z1_mu, z1_logvar = z1_triplet
     if flags["supervised"]:
         assert z2_triplet is not None

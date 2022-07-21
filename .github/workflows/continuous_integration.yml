@@ -92,6 +92,25 @@ jobs:
       run: |
         sphinx-build -W -b html ./docs ./docs/_build
 
+  check_with_darglint:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Install darglint
+      run: |
+        python -m pip install --upgrade pip
+        pip install darglint
+    - name: Check with darglint
+      run: |
+        darglint --verbosity 2 --no-exit-code ethicml > darglint.out
+        cat darglint.out
+        if [ $(wc -l < darglint.out) -gt "65" ]; then return 1; fi
+
   test_with_pytest:
     needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
     runs-on: ubuntu-latest
