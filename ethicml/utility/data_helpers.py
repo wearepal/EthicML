@@ -12,7 +12,7 @@ def shuffle_df(df: pd.DataFrame, random_state: int) -> pd.DataFrame:
     :param df:
     :param random_state:
     """
-    return df.sample(frac=1.0, random_state=random_state).reset_index(drop=True)  # type: ignore[return-value]
+    return df.sample(frac=1.0, random_state=random_state).reset_index(drop=True)
 
 
 @overload

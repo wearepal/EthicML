@@ -98,7 +98,7 @@ def _calders_algorithm(
     for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
         data[group] = unsorted_data.replace_data(
-            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)  # type: ignore[misc,call-arg]
+            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)
         )
 
     all_disadvantaged = len(data[(disadvantaged_group, good_class)]) + dis_group_len
@@ -110,7 +110,7 @@ def _calders_algorithm(
     num_to_swap = round(
         (adv_group_len * all_disadvantaged - dis_group_good_len * all_advantaged) / len(dataset)
     )
-    data[dis_group].y.iloc[:num_to_swap] = good_class  # type: ignore[call-overload]
-    data[adv_group].y.iloc[:num_to_swap] = bad_class  # type: ignore[call-overload]
+    data[dis_group].y.iloc[:num_to_swap] = good_class
+    data[adv_group].y.iloc[:num_to_swap] = bad_class
 
     return concat(list(data.values())), test

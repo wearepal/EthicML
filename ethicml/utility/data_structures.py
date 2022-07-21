@@ -583,10 +583,10 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
     if data_frame is None:
-        return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
+        return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))  # type: ignore
     # ensure correct index
     if data_frame.index.names != RESULTS_COLUMNS:
-        return Results(data_frame.set_index(RESULTS_COLUMNS))
+        return Results(data_frame.set_index(RESULTS_COLUMNS))  # type: ignore
     else:
         return Results(data_frame)
 
@@ -610,7 +610,8 @@ class ResultsAggregator:
         :param prepend: Whether to prepend or append the dataframe. (Default: False)
         """
         if data_frame.index.names != RESULTS_COLUMNS:
-            data_frame = data_frame.set_index(RESULTS_COLUMNS)  # set correct index
+            # set the correct index
+            data_frame = data_frame.set_index(RESULTS_COLUMNS)  # type: ignore
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
         # set sort=False so that the order of the columns is preserved
         self._results = Results(pd.concat(order, sort=False, axis="index"))
@@ -683,7 +684,7 @@ def aggregate_results(
     :param aggregator: Aggregator to use. The aggreators are the ones used in pandas.
         (Default: ("mean", "std"))
     """
-    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]  # type: ignore[arg-type]
+    return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
 
 
 @enum_name_str
