@@ -43,7 +43,7 @@ if __name__ == "__main__":
     ]
     x1 = df.drop(features1, axis=1)
 
-    x2 = df.drop(features, axis=1)  # type: ignore[arg-type]
+    x2 = df.drop(features, axis=1)
     x2 = pd.get_dummies(x2)
 
     df = pd.concat([x1, x2], axis=1)
