@@ -118,13 +118,13 @@ jobs:
           installer-parallel: true
       - name: Set ENV VARS
         run: |
-          echo "POETRY_VERSION=$(poetry --version)" >> $GITHUB_ENV
+          echo "POETRY_VERSION=$(poetry -V | cut -d' ' -f3)" >> $GITHUB_ENV
 
       #----------------------------------------------
       # cache the directory where poetry caches packages
       #----------------------------------------------
       - name: Cache Poetry cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry
           key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
@@ -133,7 +133,7 @@ jobs:
       # cache the directory where pip caches packages
       #----------------------------------------------
       - name: Cache Pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: pip-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}
