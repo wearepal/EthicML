@@ -329,16 +329,16 @@ def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTupl
         train_inds = np.array([i for i in indices if i not in val_inds])  # probably inefficient
 
         train_x = data.x.iloc[train_inds].reset_index(drop=True)
-        train_s = data.s.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
-        train_y = data.y.iloc[train_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        train_s = data.s.iloc[train_inds].reset_index(drop=True)
+        train_y = data.y.iloc[train_inds].reset_index(drop=True)
 
         assert train_x.shape == (len(train_inds), data.x.shape[1])
         assert train_s.shape == (len(train_inds),)
         assert train_y.shape == (len(train_inds),)
 
         val_x = data.x.iloc[val_inds].reset_index(drop=True)
-        val_s = data.s.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
-        val_y = data.y.iloc[val_inds].reset_index(drop=True)  # type: ignore[call-overload]
+        val_s = data.s.iloc[val_inds].reset_index(drop=True)
+        val_y = data.y.iloc[val_inds].reset_index(drop=True)
 
         assert val_x.shape == (len(val_inds), data.x.shape[1])
         assert val_s.shape == (len(val_inds),)

@@ -64,7 +64,7 @@ class Upsampler(PreAlgorithm):
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     """Given 2 datatuples, concatenate them and shuffle."""
-    assert (first_dt.x.columns == second_dt.x.columns).all()  # type: ignore[attr-defined]
+    assert (first_dt.x.columns == second_dt.x.columns).all()
     assert first_dt.s_column == second_dt.s_column
     assert first_dt.y_column == second_dt.y_column
 
@@ -72,7 +72,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     b_combined: pd.DataFrame = second_dt.data
 
     combined = pd.concat([a_combined, b_combined], axis="index")
-    combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)  # type: ignore[assignment]
+    combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)
 
     return first_dt.replace_data(combined)
 
@@ -126,7 +126,7 @@ def upsample(
     upsampled: Dict[Tuple[int, int], DataTuple] = {}
     all_data: pd.DataFrame
     for key, val in data.items():
-        all_data = val.data.sample(  # type: ignore[assignment]
+        all_data = val.data.sample(
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
         upsampled[key] = val.replace_data(all_data)
