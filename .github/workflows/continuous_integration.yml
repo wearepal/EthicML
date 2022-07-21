@@ -92,8 +92,25 @@ jobs:
       run: |
         sphinx-build -W -b html ./docs ./docs/_build
 
+  check_with_darglint:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Install darglint
+      run: |
+        python -m pip install --upgrade pip
+        pip install darglint
+    - name: Check with darglint
+      run: |
+        sh run_darglint.sh
+
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint]
     runs-on: ubuntu-latest
 
     steps:

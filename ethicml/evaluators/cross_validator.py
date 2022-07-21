@@ -92,17 +92,11 @@ class CVResults:
         return mean_vals
 
     def get_best_result(self, measure: Metric) -> ResultTuple:
-        """Get the hyperparameter combination for the best performance of a measure.
-
-        :param measure:
-        """
+        """Get the hyperparameter combination for the best performance of a measure."""
         mean_vals = self.mean_storage
 
         def _get_score(item: Tuple[str, ResultTuple]) -> float:
-            """Take an entry from `mean_storage` and return the desired score `measure`.
-
-            :param item:
-            """
+            """Take an entry from `mean_storage` and return the desired score `measure`."""
             _, result = item
             return result.scores[measure.name]
 
@@ -112,17 +106,11 @@ class CVResults:
         return mean_vals[best_hyp_string]
 
     def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
-        """Get hyper-parameters that return the 'best' result for the metric of interest.
-
-        :param measure:
-        """
+        """Get hyper-parameters that return the 'best' result for the metric of interest."""
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
-        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric.
-
-        :param measure:
-        """
+        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric."""
         return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:

@@ -154,12 +154,7 @@ class RandomSplit(DataSplitter):
 def generate_proportional_split_indices(
     data: DataTuple, train_percentage: float, random_seed: int = 42
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Generate the indices of the train and test splits using a proportional sampling scheme.
-
-    :param data:
-    :param train_percentage:
-    :param random_seed:  (Default: 42)
-    """
+    """Generate the indices of the train and test splits using a proportional sampling scheme."""
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)
 
@@ -312,11 +307,7 @@ class BalancedTestSplit(RandomSplit):
 
 
 def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
-    """So much love to sklearn for making their source code open.
-
-    :param data:
-    :param folds:
-    """
+    """So much love to sklearn for making their source code open."""
     indices: np.ndarray = np.arange(data.x.shape[0])
 
     fold_sizes: np.ndarray = np.full(folds, data.x.shape[0] // folds, dtype=np.int32)

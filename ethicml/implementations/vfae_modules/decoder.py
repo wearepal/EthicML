@@ -50,11 +50,7 @@ class Decoder(nn.Module):
         )
 
     def forward(self, x: Tensor, s: Tensor) -> Tensor:
-        """Forward pass.
-
-        :param x:
-        :param s:
-        """
+        """Forward pass."""
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s.view(-1, 1)), 1))
         decoded = torch.cat(

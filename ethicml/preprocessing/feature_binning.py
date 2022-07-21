@@ -15,7 +15,8 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     Given a datatuple, bin the columns that have ordinal features
     and return as afresh new DataTuple.
 
-    :param data:
+    :param data: The data to bin.
+    :returns: A DataTuple where the ordinal columns have been replaced.
     """
     groups: Sequence[List[str]] = [
         list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])

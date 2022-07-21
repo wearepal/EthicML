@@ -19,11 +19,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     try:
         import torch
 
@@ -50,23 +46,14 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
 
 
 def predict(model: HgrClassLearner, test: SubgroupTuple) -> np.ndarray:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: SubgroupTuple, args: HgrArgs, seed: int
 ) -> np.ndarray:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
     return predict(model, test)
 

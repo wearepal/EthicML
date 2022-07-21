@@ -244,12 +244,7 @@ def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTu
 
 
 def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
-    """Get the subset where s and y are equal and the subset where they are opposite.
-
-    :param data:
-    :param s_name:
-    :param y_name:
-    """
+    """Get the subset where s and y are equal and the subset where they are opposite."""
     s_values = np.unique(data.s.to_numpy())
     y_values = np.unique(data.y.to_numpy())
     assert len(s_values) == 2, "function only works with binary sensitive attribute"
