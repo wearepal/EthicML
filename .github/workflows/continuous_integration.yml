@@ -109,10 +109,12 @@ jobs:
       run: |
         darglint --verbosity 2 --no-exit-code ethicml > darglint.out
         cat darglint.out
-        if [ $(wc -l < darglint.out) -gt "65" ]; then return 1; fi
+        num_errors=$(wc -l < darglint.out)
+        echo "Number of errors: $num_errors"
+        if [ "$num_errors" -gt "65" ]; then return 1; fi
 
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint]
     runs-on: ubuntu-latest
 
     steps:
