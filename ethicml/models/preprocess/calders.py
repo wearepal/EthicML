@@ -1,5 +1,5 @@
 """Kamiran&Calders 2012, massaging."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -19,9 +19,7 @@ class Calders(PreAlgorithm):
 
     preferable_class: int = 1
     disadvantaged_group: int = 0
-
-    def __post_init__(self) -> None:
-        self._out_size: Optional[int] = None
+    _out_size: Optional[int] = field(init=False, default=None)
 
     @implements(PreAlgorithm)
     def get_out_size(self) -> int:

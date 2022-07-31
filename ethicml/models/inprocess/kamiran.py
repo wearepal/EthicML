@@ -1,5 +1,5 @@
 """Kamiran and Calders 2012."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
 import numpy as np
@@ -34,12 +34,12 @@ class Reweighting(InAlgorithm):
     classifier: ClassifierType = ClassifierType.lr
     C: Optional[float] = None
     kernel: Optional[KernelType] = None
+    group_weights: Optional[Dict[str, Any]] = field(init=False, default=None)
 
     def __post_init__(self) -> None:
         self.chosen_c, self.chosen_kernel = settings_for_svm_lr(
             self.classifier, self.C, self.kernel
         )
-        self.group_weights: Optional[Dict[str, Any]] = None
 
     @implements(InAlgorithm)
     def get_hyperparameters(self) -> HyperParamType:

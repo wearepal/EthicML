@@ -1,5 +1,5 @@
 """Zemel's Learned Fair Representations."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 from typing_extensions import TypedDict
 
@@ -35,9 +35,7 @@ class Zemel(PreAlgorithmSubprocess):
     max_iter: int = 5_000
     maxfun: int = 5_000
     epsilon: float = 1e-5
-
-    def __post_init__(self) -> None:
-        self._in_size: Optional[int] = None  # the super class will set this for us
+    _in_size: Optional[int] = field(init=False, default=None)
 
     @implements(PreAlgorithmSubprocess)
     def _get_flags(self) -> ZemelArgs:
