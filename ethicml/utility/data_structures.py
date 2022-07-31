@@ -579,14 +579,15 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
     function checks whether the columns are correct.
 
     :param data_frame: A dataframe to use for initialization. (Default: None)
+    :returns: An initialised ``Results`` object.
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)
     if data_frame is None:
-        return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))  # type: ignore
+        return Results(pd.DataFrame(columns=RESULTS_COLUMNS).set_index(RESULTS_COLUMNS))
     # ensure correct index
     if data_frame.index.names != RESULTS_COLUMNS:
-        return Results(data_frame.set_index(RESULTS_COLUMNS))  # type: ignore
+        return Results(data_frame.set_index(RESULTS_COLUMNS))
     else:
         return Results(data_frame)
 
@@ -611,7 +612,7 @@ class ResultsAggregator:
         """
         if data_frame.index.names != RESULTS_COLUMNS:
             # set the correct index
-            data_frame = data_frame.set_index(RESULTS_COLUMNS)  # type: ignore
+            data_frame = data_frame.set_index(RESULTS_COLUMNS)
         order = [data_frame, self.results] if prepend else [self.results, data_frame]
         # set sort=False so that the order of the columns is preserved
         self._results = Results(pd.concat(order, sort=False, axis="index"))

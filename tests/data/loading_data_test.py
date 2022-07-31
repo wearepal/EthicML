@@ -33,7 +33,7 @@ from ethicml.data import (
     create_data_obj,
     flatten_dict,
     group_disc_feat_indices,
-    simple_spec,
+    spec_from_binary_cols,
 )
 
 
@@ -982,7 +982,7 @@ def test_expand_s():
 def test_simple_spec():
     """Test the simple spec function."""
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
-    spec = simple_spec(sens_attrs)
+    spec = spec_from_binary_cols(sens_attrs)
     assert spec == {
         "gender": LabelGroup(["female", "male"], multiplier=3),
         "race": LabelGroup(["blue", "green", "pink"], multiplier=1),

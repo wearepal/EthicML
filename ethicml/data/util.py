@@ -16,7 +16,7 @@ __all__ = [
     "group_disc_feat_indices",
     "label_spec_to_feature_list",
     "reduce_feature_group",
-    "simple_spec",
+    "spec_from_binary_cols",
     "single_col_spec",
 ]
 
@@ -156,7 +156,7 @@ def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
     return feature_list
 
 
-def simple_spec(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
+def spec_from_binary_cols(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
     """Create label specs for the most common case where columns contain 0s and 1s.
 
     :param label_defs: Mapping of label names to column names.

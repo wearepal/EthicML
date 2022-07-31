@@ -11,8 +11,8 @@ from ..util import (
     DiscFeatureGroup,
     flatten_dict,
     reduce_feature_group,
-    simple_spec,
     single_col_spec,
+    spec_from_binary_cols,
 )
 
 __all__ = ["Adult", "AdultSplits"]
@@ -65,23 +65,25 @@ class Adult(StaticCSVDataset):
             sens_attr_spec = single_col_spec("sex_Male")
             label_feature_groups += ["sex"]
         elif self.split is AdultSplits.RACE:
-            sens_attr_spec = simple_spec({"race": DISC_FEATURE_GROUPS["race"]})
+            sens_attr_spec = spec_from_binary_cols({"race": DISC_FEATURE_GROUPS["race"]})
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_BINARY:
             sens_attr_spec = single_col_spec("race_White")
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_SEX:
-            sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]})
+            sens_attr_spec = spec_from_binary_cols(
+                {"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]}
+            )
             label_feature_groups += ["sex", "race"]
         elif self.split is AdultSplits.NATIONALITY:
             sens = "native-country"
-            sens_attr_spec = simple_spec({sens: DISC_FEATURE_GROUPS[sens]})
+            sens_attr_spec = spec_from_binary_cols({sens: DISC_FEATURE_GROUPS[sens]})
             label_feature_groups += ["native-country"]
         elif self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
             remaining_feature_name = "other"
 
-            sens_attr_spec = simple_spec(
+            sens_attr_spec = spec_from_binary_cols(
                 {"education": to_keep + [f"education_{remaining_feature_name}"]}
             )
             label_feature_groups += ["education"]

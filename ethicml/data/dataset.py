@@ -214,7 +214,9 @@ class CSVDataset(Dataset, ABC):
         """Return Dictionary of feature groups, without s and y labels."""
         dfgs = self.get_unfiltered_disc_feat_groups()
         # select those feature groups that are not for the x and y labels
-        return {group: v for group, v in dfgs.items() if group not in self.get_label_specs()[1]}
+        to_remove = self.get_label_specs()[1]
+        assert all(group in dfgs for group in to_remove), f"can't remove all groups"
+        return {group: v for group, v in dfgs.items() if group not in to_remove}
 
     @implements(Dataset)
     def __len__(self) -> int:

@@ -23,7 +23,7 @@ from enum import Enum
 from typing import ClassVar, Mapping, Type, Union
 
 from ..dataset import LegacyDataset
-from ..util import LabelGroup, flatten_dict, simple_spec
+from ..util import LabelGroup, flatten_dict, spec_from_binary_cols
 
 __all__ = ["Law", "LawSplits"]
 
@@ -76,7 +76,9 @@ class Law(LegacyDataset):
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
         elif self.split is LawSplits.SEX_RACE:
-            sens_attr_spec = simple_spec({"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]})
+            sens_attr_spec = spec_from_binary_cols(
+                {"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]}
+            )
             s_prefix = ["Race", "Sex"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]

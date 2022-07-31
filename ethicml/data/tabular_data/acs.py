@@ -25,7 +25,7 @@ from ..util import (
     flatten_dict,
     get_discrete_features,
     label_spec_to_feature_list,
-    simple_spec,
+    spec_from_binary_cols,
 )
 
 __all__ = ["AcsIncome", "AcsEmployment"]
@@ -369,12 +369,12 @@ class AcsIncome(AcsBase):
             self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
             self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Race":
-            self._sens_attr_spec = simple_spec(
+            self._sens_attr_spec = spec_from_binary_cols(
                 {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
             )
             self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Sex-Race":
-            self._sens_attr_spec = simple_spec(
+            self._sens_attr_spec = spec_from_binary_cols(
                 {
                     f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
                     f"{self.sens_lookup['Race']}": disc_feature_groups[
@@ -554,12 +554,12 @@ class AcsEmployment(AcsBase):
             self._sens_attr_spec = f"{self.sens_lookup[self.split]}_1"
             self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Race":
-            self._sens_attr_spec = simple_spec(
+            self._sens_attr_spec = spec_from_binary_cols(
                 {self.sens_lookup[self.split]: disc_feature_groups[self.sens_lookup[self.split]]}
             )
             self._s_prefix = [self.sens_lookup[self.split]]
         elif self.split == "Sex-Race":
-            self._sens_attr_spec = simple_spec(
+            self._sens_attr_spec = spec_from_binary_cols(
                 {
                     f"{self.sens_lookup['Sex']}": [f"{self.sens_lookup['Sex']}_1"],
                     f"{self.sens_lookup['Race']}": disc_feature_groups[

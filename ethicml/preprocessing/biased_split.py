@@ -218,7 +218,7 @@ def get_biased_and_debiased_subsets(
     min_size = min(len(sy_equal_for_debiased_ss), len(sy_opp_for_debiased_ss))
 
     def _get_equal_sized_subset(df: pd.DataFrame) -> pd.DataFrame:
-        return df.sample(n=min_size, random_state=seed)  # type: ignore[return-value]
+        return df.sample(n=min_size, random_state=seed)
 
     debiased_subset_part1 = sy_equal_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
     debiased_subset_part2 = sy_opp_for_debiased_ss.apply_to_joined_df(_get_equal_sized_subset)
