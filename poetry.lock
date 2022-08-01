@@ -902,7 +902,7 @@ telegram = ["requests"]
 
 [[package]]
 name = "types-pillow"
-version = "9.2.0"
+version = "9.2.1"
 description = "Typing stubs for Pillow"
 category = "dev"
 optional = false
@@ -978,7 +978,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "68af02e1d1242f106c5d53ae0d444373346a901dfa48ea2c4610f040b40318a0"
+content-hash = "8f551a9ce354c79e29c2d6670cabd2ee90624e6b30eb78f7daad0eb564a59b81"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -1629,8 +1629,8 @@ tqdm = [
     {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
 types-pillow = [
-    {file = "types-Pillow-9.2.0.tar.gz", hash = "sha256:6823851e179dcc157424175b5dc0e1204b1c949e1de32417ff2fbfa7e3d3f45b"},
-    {file = "types_Pillow-9.2.0-py3-none-any.whl", hash = "sha256:f367d22b54239b09607fcd8d4514b86bac6bf7d6ed1d5bdfa41782ea62083b2a"},
+    {file = "types-Pillow-9.2.1.tar.gz", hash = "sha256:9781104ee2176f680576523fa2a2b83b134957aec6f4d62582cc9e74c93a60b4"},
+    {file = "types_Pillow-9.2.1-py3-none-any.whl", hash = "sha256:d63743ef631e47f8d8669590ea976162321a9a7604588b424b6306533453fb63"},
 ]
 types-pytz = [
     {file = "types-pytz-2022.1.2.tar.gz", hash = "sha256:1a8b25c225c5e6bd8468aa9eb45ddd3b337f6716d4072ad0aa4ef1e41478eebc"},
