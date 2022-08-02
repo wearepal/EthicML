@@ -79,12 +79,12 @@ __Developer note__: All methods must assume S and Y are multi-class.
 We use a DataTuple class to contain the triplet
 
 ```python
-triplet = DataTuple(x: pandas.DataFrame, s: pandas.DataFrame, y: pandas.DataFrame)
+triplet = DataTuple(x: pandas.DataFrame, s: pandas.Series, y: pandas.Series)
 ```
 
 In addition, we have a variation: the SubgroupTuple which contains the pair
 ```python
-pair = SubgroupTuple(x: pandas.DataFrame, s: pandas.DataFrame)
+pair = SubgroupTuple(x: pandas.DataFrame, s: pandas.Series)
 ```
 This is to reduce the risk of a user accidentally evaluating performance on their training set.
 
