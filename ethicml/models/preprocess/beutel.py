@@ -47,8 +47,9 @@ class Beutel(PreAlgorithmSubprocess):
     adv_weight: float = 1.0
     validation_pcnt: float = 0.1
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         return self.enc_size[-1]
 
     @implements(PreAlgorithmSubprocess)

@@ -56,8 +56,9 @@ class Zemel(PreAlgorithmSubprocess):
     def name(self) -> str:
         return "Zemel"
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         assert self._in_size is not None
         return self._in_size
 

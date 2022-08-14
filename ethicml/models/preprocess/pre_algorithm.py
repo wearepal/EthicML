@@ -53,6 +53,7 @@ class PreAlgorithm(Algorithm, ABC):
         train_testing = train.get_n_samples()
         return self.run(train_testing, test, seed)
 
+    @property
     @abstractmethod
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         """Return the number of features to generate."""

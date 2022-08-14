@@ -30,12 +30,12 @@ def test_simple_saving() -> None:
 
         is_fairness_algo: ClassVar[bool] = False
 
-        @property  # type: ignore[misc]
+        @property
         @final
         def name(self) -> str:
             return "Check equality"
 
-        @property  # type: ignore[misc]
+        @property
         @final
         def hyperparameters(self) -> HyperParamType:
             return {}

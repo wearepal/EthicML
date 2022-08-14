@@ -22,8 +22,9 @@ class Calders(PreAlgorithm):
     disadvantaged_group: int = 0
     _out_size: Optional[int] = field(init=False, default=None)
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         assert self._out_size is not None
         return self._out_size
 

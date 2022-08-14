@@ -56,8 +56,9 @@ class VFAE(PreAlgorithmSubprocess):
             "z1_dec_size": self.z1_dec_size,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         return self.latent_dims
 
     @property  # type: ignore[misc]
