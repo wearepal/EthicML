@@ -49,7 +49,11 @@ class LabelSpecsPair(NamedTuple):
     """A pair of label specs."""
 
     s: LabelSpec
+    """Spec for building the s label."""
     y: LabelSpec
+    """Spec for building the y label."""
+    to_remove: List[str]
+    """List of feature groups that need to be removed because they are label building blocks."""
 
 
 class FeatureSplit(TypedDict):
@@ -123,15 +127,7 @@ class CSVDataset(Dataset, ABC):
     """If True, convert labels from {-1, 1} to {0, 1}."""
 
     @abstractmethod
-    def get_cont_features(self) -> List[str]:
-        """Continuous features."""
-
-    @abstractmethod
-    def get_name(self) -> str:
-        """Name of the dataset."""
-
-    @abstractmethod
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         """Label specs and discrete feature groups that have to be removed from ``x``."""
 
     @abstractmethod
@@ -152,15 +148,10 @@ class CSVDataset(Dataset, ABC):
     def invert_sens_attr(self) -> bool:
         """Whether to invert the sensitive attribute."""
 
-    @abstractmethod
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
-        """Discrete feature groups, including features for the labels."""
-
     @property
-    @final
-    def name(self) -> str:
-        """Name of the dataset."""
-        return self.get_name()
+    @abstractmethod
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+        """Discrete feature groups, including features for the labels."""
 
     @property
     @final
@@ -176,33 +167,28 @@ class CSVDataset(Dataset, ABC):
     @final
     def sens_attrs(self) -> List[str]:
         """Get the list of sensitive attributes."""
-        return label_spec_to_feature_list(self.get_label_specs()[0].s)
+        return label_spec_to_feature_list(self.get_label_specs().s)
 
     @property
     @final
     def class_labels(self) -> List[str]:
         """Get the list of class labels."""
-        return label_spec_to_feature_list(self.get_label_specs()[0].y)
+        return label_spec_to_feature_list(self.get_label_specs().y)
 
     @implements(Dataset)
     def feature_split(self, order: FeatureOrder = FeatureOrder.disc_first) -> FeatureSplit:
-        if order is FeatureOrder.disc_first:
+        if self.load_discrete_only:
+            x = self.discrete_features
+        elif order is FeatureOrder.disc_first:
             x = self.discrete_features + self.continuous_features
         else:
             x = self.continuous_features + self.discrete_features
-        label_specs, _ = self.get_label_specs()
+        label_specs = self.get_label_specs()
         return {
             "x": x,
             "s": label_spec_to_feature_list(label_specs.s),
             "y": label_spec_to_feature_list(label_specs.y),
         }
-
-    @property
-    def continuous_features(self) -> List[str]:
-        """List of features that are continuous."""
-        if self.load_discrete_only:
-            return []
-        return self.get_cont_features()
 
     @property
     def discrete_features(self) -> List[str]:
@@ -212,9 +198,9 @@ class CSVDataset(Dataset, ABC):
     @property
     def disc_feature_groups(self) -> DiscFeatureGroup:
         """Return Dictionary of feature groups, without s and y labels."""
-        dfgs = self.get_unfiltered_disc_feat_groups()
+        dfgs = self.unfiltered_disc_feat_groups
         # select those feature groups that are not for the x and y labels
-        to_remove = self.get_label_specs()[1]
+        to_remove = self.get_label_specs().to_remove
         assert all(group in dfgs for group in to_remove), f"can't remove all groups"
         return {group: v for group, v in dfgs.items() if group not in to_remove}
 
@@ -249,7 +235,7 @@ class CSVDataset(Dataset, ABC):
             assert s_df.nunique().values[0] == 2, "s must be binary"
             s_df = 1 - s_df
 
-        label_specs, _ = self.get_label_specs()
+        label_specs = self.get_label_specs()
 
         # the following operations remove rows if a label group is not properly one-hot encoded
         s_data, s_mask = self._one_hot_encode_and_combine(s_df, label_spec=label_specs.s)
@@ -273,7 +259,7 @@ class CSVDataset(Dataset, ABC):
         is that this cannot be done before this point, because only here have we actually loaded
         the data. So, we have to do it here, with all the information we can piece together.
         """
-        for group in self.get_unfiltered_disc_feat_groups().values():
+        for group in self.unfiltered_disc_feat_groups.values():
             if len(group) == 1:
                 continue
             for feature in group:
@@ -328,7 +314,7 @@ class CSVDataset(Dataset, ABC):
         :param label: DataFrame containing the labels.
         :param label_type: Type of label to expand.
         """
-        label_specs, _ = self.get_label_specs()
+        label_specs = self.get_label_specs()
         label_mapping = label_specs.s if label_type == "s" else label_specs.y
 
         # first order the multipliers; this is important for disentangling the values
@@ -438,36 +424,37 @@ class LegacyDataset(CSVDataset):
         self._s_prefix = [] if s_feature_groups is None else s_feature_groups
         self._class_label_prefix = [] if class_feature_groups is None else class_feature_groups
         if discrete_feature_groups is not None:
-            self._discrete_feature_groups = discrete_feature_groups
+            self._unfiltered_disc_feat_groups = discrete_feature_groups
         else:
-            self._discrete_feature_groups = {
+            self._unfiltered_disc_feat_groups = {
                 feat: [feat] for feat in self._features if feat not in cont_features
             }
         self._raw_file_name_or_path = filename_or_path
-        self._cont_features_unfiltered = list(cont_features)
+        self._cont_features = list(cont_features)
 
+    @property
     @implements(CSVDataset)
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
-        return self._discrete_feature_groups
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+        return self._unfiltered_disc_feat_groups
 
+    @property
     @implements(CSVDataset)
-    def get_cont_features(self) -> List[str]:
-        return self._cont_features_unfiltered
+    def continuous_features(self) -> List[str]:
+        return self._cont_features
 
+    @property
     @implements(CSVDataset)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return self._name
 
     @implements(CSVDataset)
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         s_spec = self._sens_attr_spec
         y_spec = self._class_label_spec
-        return (
-            LabelSpecsPair(
-                s=single_col_spec(s_spec) if isinstance(s_spec, str) else s_spec,
-                y=single_col_spec(y_spec) if isinstance(y_spec, str) else y_spec,
-            ),
-            list(self._s_prefix) + list(self._class_label_prefix),
+        return LabelSpecsPair(
+            s=single_col_spec(s_spec) if isinstance(s_spec, str) else s_spec,
+            y=single_col_spec(y_spec) if isinstance(y_spec, str) else y_spec,
+            to_remove=list(self._s_prefix) + list(self._class_label_prefix),
         )
 
     @implements(CSVDataset)

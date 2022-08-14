@@ -1,4 +1,6 @@
 """Post-processing method by Hardt et al."""
+from __future__ import annotations
+
 from dataclasses import dataclass
 
 import numpy as np
@@ -29,7 +31,7 @@ class Hardt(PostAlgorithm):
         return "Hardt"
 
     @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> Hardt:
         self.model_params = self._fit(train_predictions, train)
         return self
 

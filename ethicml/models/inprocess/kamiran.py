@@ -1,4 +1,6 @@
 """Kamiran and Calders 2012."""
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
@@ -60,7 +62,7 @@ class Reweighting(InAlgorithm):
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithm:
+    def fit(self, train: DataTuple, seed: int = 888) -> Reweighting:
         self.clf = self._train(
             train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )

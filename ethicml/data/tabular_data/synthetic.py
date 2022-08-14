@@ -57,21 +57,23 @@ class Synthetic(CSVDatasetDC):
     def __post_init__(self) -> None:
         assert 0 < self.num_samples <= 100_000
 
+    @property
     @implements(CSVDatasetDC)
-    def get_cont_features(self) -> List[str]:
+    def continuous_features(self) -> List[str]:
         return ["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"]
 
+    @property
     @implements(CSVDatasetDC)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return (
             f"Synthetic - Scenario {self.scenario.value}, "
             f"target {self.target.value}{' fair' if self.fair else ''}"
         )
 
     @implements(CSVDatasetDC)
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         y = single_col_spec(f"y{self.target.value}{'f' if self.fair else ''}")
-        return LabelSpecsPair(s=single_col_spec("s"), y=y), []
+        return LabelSpecsPair(s=single_col_spec("s"), y=y, to_remove=[])
 
     @implements(CSVDatasetDC)
     def get_num_samples(self) -> int:
@@ -81,6 +83,7 @@ class Synthetic(CSVDatasetDC):
     def get_filename_or_path(self) -> Union[str, Path]:
         return f"synthetic_scenario_{self.scenario.value}.csv"
 
+    @property
     @implements(CSVDatasetDC)
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return {}

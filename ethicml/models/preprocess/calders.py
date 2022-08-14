@@ -1,4 +1,6 @@
 """Kamiran&Calders 2012, massaging."""
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 
@@ -31,7 +33,7 @@ class Calders(PreAlgorithm):
         return "Calders"
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> Tuple[Calders, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = _calders_algorithm(
             train, train, self.preferable_class, self.disadvantaged_group, seed

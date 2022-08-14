@@ -1,4 +1,6 @@
 """Wrapper for SKLearn implementation of MLP."""
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import ClassVar, Tuple
 
@@ -34,7 +36,7 @@ class MLP(InAlgorithmDC):
         return "MLP"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+    def fit(self, train: DataTuple, seed: int = 888) -> MLP:
         self.clf = select_mlp(
             self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size
         )

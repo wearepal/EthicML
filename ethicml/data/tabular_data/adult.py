@@ -48,8 +48,9 @@ class Adult(StaticCSVDataset):
     binarize_nationality: bool = False
     binarize_race: bool = False
 
+    @property
     @implements(StaticCSVDataset)
-    def get_name(self) -> str:
+    def name(self) -> str:
         name = f"Adult {self.split.value}"
         if self.binarize_nationality:
             name += ", binary nationality"
@@ -58,7 +59,7 @@ class Adult(StaticCSVDataset):
         return name
 
     @implements(StaticCSVDataset)
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
         if self.split is AdultSplits.SEX:
@@ -90,10 +91,11 @@ class Adult(StaticCSVDataset):
 
         else:
             raise NotImplementedError
-        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec), label_feature_groups
+        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
+    @property
     @implements(StaticCSVDataset)
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
@@ -126,8 +128,9 @@ class Adult(StaticCSVDataset):
                 assert len(flatten_dict(dfgs)) == 97  # 93 (discrete) features + 4 class labels
         return dfgs
 
+    @property
     @implements(StaticCSVDataset)
-    def get_cont_features(self) -> List[str]:
+    def continuous_features(self) -> List[str]:
         feats = [
             "age",
             "capital-gain",
