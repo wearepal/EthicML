@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import sys
-from typing import TYPE_CHECKING, NamedTuple, Tuple
+from typing import TYPE_CHECKING, NamedTuple
 
 from joblib import dump, load
 import numpy as np

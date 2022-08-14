@@ -2,7 +2,7 @@
 from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
-from typing import Callable, ClassVar, Tuple
+from typing import Callable, ClassVar
 
 import pandas as pd
 from ranzen import implements

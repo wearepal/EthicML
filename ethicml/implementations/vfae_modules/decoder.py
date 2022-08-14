@@ -2,7 +2,6 @@
 # pylint: disable=arguments-differ
 from __future__ import annotations
 from itertools import groupby
-from typing import List
 
 import torch
 from torch import Tensor, nn

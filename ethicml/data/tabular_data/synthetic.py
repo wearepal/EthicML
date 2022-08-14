@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ranzen import implements
 

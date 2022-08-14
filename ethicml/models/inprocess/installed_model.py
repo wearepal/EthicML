@@ -12,7 +12,6 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
-from typing import Optional
 
 import git
 from ranzen.decorators import implements

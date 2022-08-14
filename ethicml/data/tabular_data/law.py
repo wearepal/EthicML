@@ -21,7 +21,7 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Mapping, Type, Union
+from typing import ClassVar, Mapping, Type
 
 from ..dataset import LegacyDataset
 from ..util import LabelGroup, flatten_dict, spec_from_binary_cols

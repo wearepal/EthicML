@@ -2,7 +2,7 @@
 from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import NamedTuple, Union
+from typing import NamedTuple
 
 import numpy as np
 import pandas as pd

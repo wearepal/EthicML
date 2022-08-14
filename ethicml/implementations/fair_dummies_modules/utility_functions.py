@@ -1,6 +1,5 @@
 """Fair Dummies utility functions."""
 from __future__ import annotations
-from typing import Tuple
 
 import numpy as np
 from sklearn.neighbors import KernelDensity

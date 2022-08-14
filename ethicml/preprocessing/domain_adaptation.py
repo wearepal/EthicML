@@ -1,6 +1,5 @@
 """Set of scripts for splitting the train and test datasets based on conditions."""
 from __future__ import annotations
-from typing import Tuple
 
 import pandas as pd
 

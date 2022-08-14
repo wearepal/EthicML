@@ -9,7 +9,7 @@ from __future__ import annotations
 import contextlib
 import os
 from pathlib import Path
-from typing import Generator, Iterable, Literal, Union
+from typing import Generator, Iterable, Literal
 
 from folktables import ACSDataSource, adult_filter, folktables, state_list
 import numpy as np
