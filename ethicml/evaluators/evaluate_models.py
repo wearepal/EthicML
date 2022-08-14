@@ -1,7 +1,7 @@
 """Runs given metrics on given algorithms for given datasets."""
 from __future__ import annotations
 from pathlib import Path
-from typing import Dict, List, Literal, NamedTuple, Optional, Sequence, Union
+from typing import Literal, NamedTuple, Sequence, Union
 
 import pandas as pd
 
@@ -105,9 +105,7 @@ def load_results(
     return None
 
 
-def _result_path(
-    outdir: Path, dataset_name: str, transform_name: str, topic: str | None
-) -> Path:
+def _result_path(outdir: Path, dataset_name: str, transform_name: str, topic: str | None) -> Path:
     base_name: str = "" if topic is None else f"{topic}_"
     return outdir / f"{base_name}{dataset_name}_{transform_name}.csv"
 

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, List, Literal, Mapping, Optional, Tuple, TypedDict, TypeVar, Union, final
+from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
 from typing_extensions import TypeAlias
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin

@@ -1,7 +1,7 @@
 """Kamiran&Calders 2012, massaging."""
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import pandas as pd
 from ranzen import implements

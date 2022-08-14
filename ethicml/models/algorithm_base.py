@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 import subprocess
 import sys
-from typing import Dict, List, Optional
+from typing import Optional
 
 __all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
 

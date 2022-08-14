@@ -11,14 +11,12 @@ from typing import (
     Final,
     Iterable,
     Iterator,
-    List,
     Literal,
     Mapping,
     NamedTuple,
     NewType,
     Optional,
     Sequence,
-    Tuple,
     TypeVar,
     Union,
     final,
@@ -115,7 +113,7 @@ class SubgroupTuple(SubsetMixin):
     data: pd.DataFrame
     s_column: str
     s_in_x: bool
-    name: str | None
+    name: Optional[str]
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -207,7 +205,7 @@ class DataTuple(SubsetMixin):
     s_column: str
     y_column: str
     s_in_x: bool
-    name: str | None
+    name: Optional[str]
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -338,7 +336,7 @@ class LabelTuple(SubsetMixin):
     data: pd.DataFrame
     s_column: str
     y_column: str
-    name: str | None
+    name: Optional[str]
 
     def __post_init__(self) -> None:
         assert self.s_column in self.data.columns, f"column {self.s_column} not present"
@@ -386,9 +384,7 @@ class LabelTuple(SubsetMixin):
         """Overwrite magic method __iter__."""
         return iter([self.s, self.y])
 
-    def replace(
-        self, *, s: pd.Series | None = None, y: pd.Series | None = None
-    ) -> LabelTuple:
+    def replace(self, *, s: pd.Series | None = None, y: pd.Series | None = None) -> LabelTuple:
         """Create a copy of the LabelTuple but change the given values."""
         return LabelTuple.from_df(
             s=s if s is not None else self.s, y=y if y is not None else self.y, name=self.name

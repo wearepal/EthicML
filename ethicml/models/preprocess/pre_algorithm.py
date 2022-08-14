@@ -1,7 +1,7 @@
 """Abstract Base Class of all algorithms in the framework."""
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Tuple, TypeVar
+from typing import TypeVar
 
 from ethicml.models.algorithm_base import Algorithm
 from ethicml.utility import DataTuple, SubgroupTuple

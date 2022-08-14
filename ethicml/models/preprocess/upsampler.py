@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import itertools
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import pandas as pd
 from ranzen import enum_name_str, implements
@@ -34,7 +34,7 @@ class Upsampler(PreAlgorithm):
     """
 
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
-    _out_size: int | None = field(init=False, default=None)
+    _out_size: Optional[int] = field(init=False, default=None)
 
     @implements(PreAlgorithm)
     def get_name(self) -> str:

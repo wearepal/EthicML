@@ -5,19 +5,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
 import typing
-from typing import (
-    ClassVar,
-    Dict,
-    List,
-    Literal,
-    NamedTuple,
-    Optional,
-    Sequence,
-    Tuple,
-    TypedDict,
-    Union,
-    final,
-)
+from typing import ClassVar, Literal, NamedTuple, Sequence, TypedDict, final
 
 import pandas as pd
 from ranzen import implements

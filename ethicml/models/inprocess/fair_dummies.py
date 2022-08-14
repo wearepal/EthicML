@@ -4,7 +4,7 @@ https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import Literal, TypedDict
 
 from ranzen import implements
 

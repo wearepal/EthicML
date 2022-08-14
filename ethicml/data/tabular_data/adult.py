@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, List, Type
+from typing import ClassVar, Type
 from typing_extensions import Final
 
 from ranzen import implements

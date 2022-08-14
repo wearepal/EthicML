@@ -2,7 +2,7 @@
 from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
@@ -19,7 +19,7 @@ class CfmMetric(MetricStaticName, ABC):
 
     pos_class: int = 1
     """The class to treat as being "positive"."""
-    labels: list[int] | None = None
+    labels: Optional[List[int]] = None
     """List of possible target values. If `None`, then this is inferred from the data when run."""
 
     def _confusion_matrix(

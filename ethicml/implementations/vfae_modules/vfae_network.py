@@ -1,7 +1,7 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
 from __future__ import annotations
-from typing import Any, List, NamedTuple, Optional, Tuple
+from typing import Any, NamedTuple, Tuple
 
 import torch
 from torch import Tensor, nn

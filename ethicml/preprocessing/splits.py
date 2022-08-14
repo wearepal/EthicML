@@ -2,7 +2,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import itertools
-from typing import Dict, Iterator, List, Literal, Optional, Tuple
+from typing import Iterator, Literal, Tuple
 
 import numpy as np
 from numpy.random import RandomState
