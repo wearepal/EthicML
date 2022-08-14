@@ -1,7 +1,8 @@
 """Applies sci-kit learn's confusion matrix."""
+from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 from sklearn.metrics import confusion_matrix as conf_mtx
@@ -23,7 +24,7 @@ class CfmMetric(MetricStaticName, ABC):
 
     def _confusion_matrix(
         self, prediction: Prediction, actual: EvalTuple
-    ) -> Tuple[int, int, int, int]:
+    ) -> tuple[int, int, int, int]:
         """Apply sci-kit learn's confusion matrix.
 
         :param prediction: The predictions.

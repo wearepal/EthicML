@@ -1,7 +1,8 @@
 """Class to describe features of the Adult dataset."""
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, List, Tuple, Type
+from typing import ClassVar, Type
 from typing_extensions import Final
 
 from ranzen import implements
@@ -48,8 +49,9 @@ class Adult(StaticCSVDataset):
     binarize_nationality: bool = False
     binarize_race: bool = False
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_name(self) -> str:
+    def name(self) -> str:
         name = f"Adult {self.split.value}"
         if self.binarize_nationality:
             name += ", binary nationality"
@@ -58,7 +60,7 @@ class Adult(StaticCSVDataset):
         return name
 
     @implements(StaticCSVDataset)
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
         if self.split is AdultSplits.SEX:
@@ -90,10 +92,11 @@ class Adult(StaticCSVDataset):
 
         else:
             raise NotImplementedError
-        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec), label_feature_groups
+        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
@@ -126,8 +129,9 @@ class Adult(StaticCSVDataset):
                 assert len(flatten_dict(dfgs)) == 97  # 93 (discrete) features + 4 class labels
         return dfgs
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_cont_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         feats = [
             "age",
             "capital-gain",

@@ -1,6 +1,7 @@
 """Runs given metrics on given algorithms for given datasets."""
+from __future__ import annotations
 from pathlib import Path
-from typing import Dict, List, Literal, NamedTuple, Optional, Sequence, Union
+from typing import Literal, NamedTuple, Sequence
 
 import pandas as pd
 
@@ -32,7 +33,7 @@ from ethicml.utility.data_structures import (
 __all__ = ["evaluate_models", "run_metrics", "load_results"]
 
 
-def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
+def get_sensitive_combinations(metrics: list[Metric], train: DataTuple) -> list[str]:
     """Get all possible combinations of sensitive attribute and metrics."""
     poss_values = [f"{train.s.name}_{unique}" for unique in train.s.unique()]
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
@@ -55,7 +56,7 @@ def run_metrics(
     per_sens_metrics: Sequence[Metric] = (),
     diffs_and_ratios: bool = True,
     use_sens_name: bool = True,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
@@ -67,7 +68,7 @@ def run_metrics(
                         If False, refer to the sensitive varibale as `S`. (Default: True)
     :returns: A dictionary of all the metric results.
     """
-    result: Dict[str, float] = {}
+    result: dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
         return {"algorithm_failed": 1.0}
     for metric in metrics:
@@ -87,9 +88,9 @@ def run_metrics(
 def load_results(
     dataset_name: str,
     transform_name: str,
-    topic: Optional[str] = None,
+    topic: str | None = None,
     outdir: Path = Path(".") / "results",
-) -> Optional[Results]:
+) -> Results | None:
     """Load results from a CSV file that was created by `evaluate_models`.
 
     :param dataset_name: name of the dataset of the results
@@ -104,15 +105,13 @@ def load_results(
     return None
 
 
-def _result_path(
-    outdir: Path, dataset_name: str, transform_name: str, topic: Optional[str]
-) -> Path:
+def _result_path(outdir: Path, dataset_name: str, transform_name: str, topic: str | None) -> Path:
     base_name: str = "" if topic is None else f"{topic}_"
     return outdir / f"{base_name}{dataset_name}_{transform_name}.csv"
 
 
 def _delete_previous_results(
-    outdir: Path, datasets: List[Dataset], transforms: Sequence[PreAlgorithm], topic: Optional[str]
+    outdir: Path, datasets: list[Dataset], transforms: Sequence[PreAlgorithm], topic: str | None
 ) -> None:
     for dataset in datasets:
         transform_list = ["no_transform"]
@@ -127,12 +126,12 @@ class _DataInfo(NamedTuple):
     test: DataTuple
     dataset_name: str
     transform_name: str
-    split_info: Dict[str, float]
+    split_info: dict[str, float]
     scaler: str
 
 
 def evaluate_models(
-    datasets: List[Dataset],
+    datasets: list[Dataset],
     *,
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
@@ -141,11 +140,11 @@ def evaluate_models(
     repeats: int = 1,
     test_mode: bool = False,
     delete_previous: bool = True,
-    splitter: Optional[DataSplitter] = None,
-    topic: Optional[str] = None,
+    splitter: DataSplitter | None = None,
+    topic: str | None = None,
     fair_pipeline: bool = True,
-    num_jobs: Optional[int] = None,
-    scaler: Optional[ScalerType] = None,
+    num_jobs: int | None = None,
+    scaler: ScalerType | None = None,
     repeat_on: Literal["data", "model", "both"] = "both",
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -189,9 +188,9 @@ def evaluate_models(
     all_results = ResultsAggregator()
 
     # ======================================= prepare data ========================================
-    data_splits: List[TrainValPair] = []
-    test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
-    model_seeds: List[int] = []
+    data_splits: list[TrainValPair] = []
+    test_data: list[_DataInfo] = []  # contains the test set and other things needed for the metrics
+    model_seeds: list[int] = []
     for dataset in datasets:
         for split_id in range(repeats):
             train: DataTuple
@@ -237,8 +236,8 @@ def evaluate_models(
     )
 
     # append the transformed data to `transformed_data`
-    transformed_data: List[TrainValPair] = []
-    transformed_test: List[_DataInfo] = []
+    transformed_data: list[TrainValPair] = []
+    transformed_test: list[_DataInfo] = []
     for transformed, pre_model in zip(all_transformed, preprocess_models):
         for (transf_train, transf_test), data_info in zip(transformed, test_data):
             transformed_data.append(TrainValPair(transf_train, transf_test))
@@ -275,13 +274,13 @@ def evaluate_models(
 
 
 def _gather_metrics(
-    all_predictions: List[List[Prediction]],
+    all_predictions: list[list[Prediction]],
     test_data: Sequence[_DataInfo],
     inprocess_models: Sequence[InAlgorithm],
     metrics: Sequence[Metric],
     per_sens_metrics: Sequence[Metric],
     outdir: Path,
-    topic: Optional[str],
+    topic: str | None,
 ) -> Results:
     """Take a list of lists of predictions and compute all metrics."""
     columns = ["dataset", "scaler", "transform", "model", "split_id"]
@@ -299,14 +298,14 @@ def _gather_metrics(
         predictions: Prediction
         for predictions, model in zip(preds_for_dataset, inprocess_models):
             # construct a row of the results dataframe
-            hyperparameters: Dict[str, Union[str, float]] = {
+            hyperparameters: dict[str, str | float] = {
                 k: v if isinstance(v, (float, int)) else str(v)
-                for k, v in model.get_hyperparameters().items()
+                for k, v in model.hyperparameters.items()
             }
 
             seed = predictions.info["model_seed"]
             assert isinstance(seed, int)
-            df_row: Dict[str, HyperParamValue] = {
+            df_row: dict[str, HyperParamValue] = {
                 "dataset": data_info.dataset_name,
                 "scaler": data_info.scaler,
                 "transform": data_info.transform_name,

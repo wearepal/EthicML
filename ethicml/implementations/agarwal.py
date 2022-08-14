@@ -1,17 +1,16 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)."""
 from __future__ import annotations
-
 import contextlib
 import json
 import os
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING, Generator
 
+from joblib import dump, load
 import numpy as np
 import pandas as pd
-from joblib import dump, load
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 

@@ -22,22 +22,22 @@ from ethicml import (
 from ethicml.data import Compas, Toy, load_data
 from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
 from ethicml.models import (
-    DRO,
-    LR,
-    LRCV,
-    MLP,
-    SVM,
     Agarwal,
     Blind,
     Corels,
     DPOracle,
+    DRO,
     FairDummies,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamishima,
+    LR,
+    LRCV,
     Majority,
+    MLP,
     Oracle,
     Reweighting,
+    SVM,
 )
 from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
 from ethicml.models.inprocess.fair_dummies import FairDummies
@@ -243,7 +243,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     class _LocalInstalledLR(InAlgorithmSubprocess):
         is_fairness_algo: ClassVar[bool] = False
 
-        def get_name(self) -> str:
+        @property
+        def name(self) -> str:
             return "local installed LR"
 
         def _get_path_to_script(self) -> List[str]:
@@ -252,7 +253,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         def _get_flags(self) -> Mapping[str, Any]:
             return {}
 
-        def get_hyperparameters(self) -> HyperParamType:
+        @property
+        def hyperparameters(self) -> HyperParamType:
             return {}
 
     model: InAlgorithm = _LocalInstalledLR()

@@ -1,4 +1,5 @@
 """Accuracy that is balanced with respect to the class labels."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
 

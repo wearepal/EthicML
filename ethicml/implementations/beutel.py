@@ -1,19 +1,17 @@
 """Implementation of Beutel's adversarially learned fair representations."""
 # Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
 # pylint: disable=arguments-differ
-
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, List, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, Sequence
 
+from joblib import dump, load
 import numpy as np
 import pandas as pd
 import torch
-from joblib import dump, load
 from torch import Tensor, nn
 from torch.autograd import Function
 from torch.optim import Adam
@@ -48,7 +46,7 @@ def build_networks(
     train_data: CustomDataset,
     enc_activation: nn.Module,
     adv_activation: nn.Module,
-) -> Tuple[Encoder, Model]:
+) -> tuple[Encoder, Model]:
     """Build the networks we use.
 
     Pulled into a separate function to make the code a bit neater.
@@ -76,7 +74,7 @@ def build_networks(
     return enc, model
 
 
-def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> Tuple[DataTuple, Encoder]:
+def fit(train: DataTuple, flags: BeutelArgs, seed: int = 888) -> tuple[DataTuple, Encoder]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
     set_seed(seed)
     fairness = FairnessType[flags["fairness"]]
@@ -186,7 +184,7 @@ def transform(data: SubgroupTuple, enc: torch.nn.Module, flags: BeutelArgs) -> S
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: BeutelArgs, seed: int
-) -> Tuple[DataTuple, SubgroupTuple]:
+) -> tuple[DataTuple, SubgroupTuple]:
     """Train the fair autoencoder on the training data and then transform both training and test."""
     transformed_train, enc = fit(train, flags, seed)
     transformed_test = transform(test, enc, flags)
@@ -217,7 +215,7 @@ def encode_dataset(
     enc: nn.Module, dataloader: torch.utils.data.DataLoader, datatuple: DataTuple
 ) -> DataTuple:
     """Encode a dataset."""
-    data_to_return: List[Any] = []
+    data_to_return: list[Any] = []
 
     for embedding, _, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
@@ -229,7 +227,7 @@ def encode_testset(
     enc: nn.Module, dataloader: torch.utils.data.DataLoader, testtuple: SubgroupTuple
 ) -> SubgroupTuple:
     """Encode a dataset."""
-    data_to_return: List[Any] = []
+    data_to_return: list[Any] = []
 
     for embedding, _ in dataloader:
         data_to_return += enc(embedding).data.numpy().tolist()
@@ -259,7 +257,7 @@ def _grad_reverse(features: Tensor, lambda_: float) -> Tensor:
 class Encoder(nn.Module):
     """Encoder of the GAN."""
 
-    def __init__(self, enc_size: Sequence[int], init_size: int, activation: Optional[nn.Module]):
+    def __init__(self, enc_size: Sequence[int], init_size: int, activation: nn.Module | None):
         super().__init__()
         self.encoder = nn.Sequential()
         if not enc_size:  # In the case that encoder size [] is specified
@@ -367,7 +365,7 @@ class Model(nn.Module):
         self.adv = adv
         self.pred = pred
 
-    def forward(self, x: Tensor, y: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
+    def forward(self, x: Tensor, y: Tensor) -> tuple[Tensor, Tensor, Tensor]:
         """Forward pass."""
         encoded = self.enc(x)
         s_hat = self.adv(encoded, y)

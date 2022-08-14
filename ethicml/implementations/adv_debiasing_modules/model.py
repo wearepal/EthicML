@@ -3,16 +3,17 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
-from typing import Literal, Tuple
+from __future__ import annotations
+from typing import Literal
 from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from ranzen import implements
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from ranzen import implements
 
 from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (
@@ -75,7 +76,7 @@ def train_loop(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train model."""
     # Train adversary
     for x, z, y in data_loader:
@@ -120,7 +121,7 @@ def train_regressor(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train regression model."""
     # Train adversary
     for x, z, y in data_loader:

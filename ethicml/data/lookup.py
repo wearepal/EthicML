@@ -1,6 +1,6 @@
 """Lookup tables / switch statements for project level objects."""
-
-from typing import Callable, Dict, List
+from __future__ import annotations
+from typing import Callable
 
 from .dataset import Dataset
 from .tabular_data.adult import Adult
@@ -16,7 +16,7 @@ from .tabular_data.toy import Toy
 __all__ = ["available_tabular", "get_dataset_obj_by_name"]
 
 
-def _lookup_table() -> Dict[str, Callable[[], Dataset]]:
+def _lookup_table() -> dict[str, Callable[[], Dataset]]:
     return {
         Adult.__name__.lower(): Adult,
         Compas.__name__.lower(): Compas,
@@ -43,6 +43,6 @@ def get_dataset_obj_by_name(name: str) -> Callable[[], Dataset]:
     return lookup[lowercase_name]
 
 
-def available_tabular() -> List[str]:
+def available_tabular() -> list[str]:
     """List of tabular dataset names."""
     return list(_lookup_table())

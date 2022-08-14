@@ -3,9 +3,8 @@
 https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import Literal, TypedDict
 
 from ranzen import implements
 
@@ -40,7 +39,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
     lambda_vec = 0.999999
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.adv_debiasing_method"]
 
     @implements(InAlgorithmSubprocess)
@@ -55,8 +54,9 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
             "n_clf_epochs": self.n_clf_epochs,
@@ -67,6 +67,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Adversarial Debiasing"

@@ -1,4 +1,5 @@
 """Independence of 2 variables."""
+from __future__ import annotations
 from typing_extensions import Type
 
 import numpy as np
@@ -103,7 +104,7 @@ def hgr_cond(x: torch.Tensor, y: torch.Tensor, z: torch.Tensor, density: Type[Kd
     marginal_xz = h3d.sum(dim=1).unsqueeze(1)
     marginal_yz = h3d.sum(dim=0).unsqueeze(0)
     Q = h3d / (torch.sqrt(marginal_xz) * torch.sqrt(marginal_yz))
-    return np.array(([torch.svd(Q[:, :, i])[1][1] for i in range(Q.shape[2])]))
+    return np.array([torch.svd(Q[:, :, i])[1][1] for i in range(Q.shape[2])])
 
 
 def chi_2_cond(

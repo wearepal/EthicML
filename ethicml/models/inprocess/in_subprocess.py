@@ -1,10 +1,11 @@
 """Classes related to running algorithms in subprocesses."""
-import json
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, List, Literal, Mapping, TypedDict, TypeVar, Union, final
+from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
 from typing_extensions import TypeAlias
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
@@ -133,7 +134,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             return Prediction.from_file(pred_path)
 
     @final
-    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+    def _script_command(self, in_algo_args: InAlgoArgs) -> list[str]:
         """Return the command that will run the script.
 
         The flag interface consists of two strings, both JSON strings: the general in-algo flags
@@ -149,7 +150,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         return self._get_path_to_script() + interface
 
     @abstractmethod
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         """Return arguments that are passed to the python executable."""
 
     @abstractmethod

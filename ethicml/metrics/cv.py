@@ -1,4 +1,5 @@
 """For assessing Calder-Verwer metric, :math:`1-(P(Y=1|S=1)-P(Y=1|S!=1))`."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
 

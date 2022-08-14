@@ -5,13 +5,13 @@ Say you find a paper from a few years ago with code. It's not unreasonable that 
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
 in its own venv and makes everyone happy.
 """
+from __future__ import annotations
+from abc import ABC
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import sys
-from abc import ABC
-from pathlib import Path
-from typing import Optional
 
 import git
 from ranzen.decorators import implements
@@ -42,8 +42,8 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         name: str,
         dir_name: str,
         top_dir: str,
-        url: Optional[str] = None,
-        executable: Optional[str] = None,
+        url: str | None = None,
+        executable: str | None = None,
         use_poetry: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
@@ -64,8 +64,9 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             self.__executable = executable
         self.__name = name
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return self.__name
 
     @property

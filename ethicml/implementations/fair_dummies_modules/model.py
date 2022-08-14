@@ -1,16 +1,15 @@
 """FairDummies Models."""
 from __future__ import annotations
-
 import random
-from typing import Callable, Literal, Tuple
+from typing import Callable, Literal
 from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader
 
 from ... import DataTuple
@@ -188,7 +187,7 @@ def train_classifier(
     dis_steps: int,
     loss_steps: int,
     num_classes: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train classifier."""
     # Train adversary
     for _ in range(dis_steps):
@@ -329,7 +328,7 @@ def train_regressor_fast_loader(
     second_moment_scaling: torch.Tensor,
     dis_steps: int,
     loss_steps: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train regressor."""
     # Train adversary
     for _ in range(dis_steps):
@@ -385,7 +384,7 @@ def train_regressor(
     second_moment_scaling: torch.Tensor,
     dis_steps: int,
     loss_steps: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train the regressor."""
     # Train adversary
     for _ in range(dis_steps):

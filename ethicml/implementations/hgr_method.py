@@ -1,14 +1,13 @@
 """Fair Dummies Implementation."""
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING
 
-import numpy as np
 from joblib import dump, load
+import numpy as np
 
 from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.hgr_modules.hgr_impl import HgrClassLearner

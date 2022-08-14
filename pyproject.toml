@@ -109,9 +109,12 @@ skip-string-normalization = true
 
 [tool.isort]
 known_third_party = ["PIL", "black", "git", "fairlearn", "kit", "matplotlib", "mypy", "numpy", "pandas", "pylint", "pytest", "scipy", "seaborn", "setuptools", "sklearn", "tap", "teext", "torch", "tqdm"]
-extra_standard_library = ["typing_extensions"]
+known_future_library = []
+extra_standard_library = ["__future__", "typing_extensions"]
 profile = "black"
 line_length = 100
+force_sort_within_sections = "True"
+classes = ["LR", "LRCV", "SVM", "VFAE", "MLP", "DRO", "HRG", "TPR", "TNR", "CV", "NMI", "BCR", "PPV", "NPV", "AS", "F1"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -158,10 +161,7 @@ module = [
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = [
-    "ranzen.*",
-    "pytest.*",
-]
+module = ["pytest.*"]
 follow_imports = "skip"
 follow_imports_for_stubs = true
 

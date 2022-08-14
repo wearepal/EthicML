@@ -1,4 +1,5 @@
 """Functions used in either generating data, or pre-processing raw data."""
+from __future__ import annotations
 
 import numpy as np
 

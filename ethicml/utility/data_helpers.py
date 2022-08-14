@@ -1,5 +1,6 @@
 """Helper functions for working with DataFrames (and Series)."""
-from typing import Optional, Union, overload
+from __future__ import annotations
+from typing import overload
 
 import pandas as pd
 
@@ -21,9 +22,7 @@ def undo_one_hot(df: pd.DataFrame, new_column_name: str) -> pd.DataFrame:
     ...
 
 
-def undo_one_hot(
-    df: pd.DataFrame, new_column_name: Optional[str] = None
-) -> Union[pd.Series, pd.DataFrame]:
+def undo_one_hot(df: pd.DataFrame, new_column_name: str | None = None) -> pd.Series | pd.DataFrame:
     """Undo one-hot encoding."""
     # we have to overwrite the column names because `idxmax` uses the column names
     df.columns = pd.Index(range(df.shape[1]))

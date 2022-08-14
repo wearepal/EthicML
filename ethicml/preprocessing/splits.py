@@ -1,11 +1,12 @@
 """Split into train and test data."""
-import itertools
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List, Literal, Optional, Tuple
+import itertools
+from typing import Iterator, Literal
 
 import numpy as np
-import pandas as pd
 from numpy.random import RandomState
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple
@@ -27,7 +28,7 @@ class DataSplitter(ABC):
     @abstractmethod
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         """Split the given data.
 
         :param data: the data to split
@@ -46,7 +47,7 @@ class SequentialSplit(DataSplitter):
     @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         del split_id
         train_len = round(self.train_percentage * len(data))
 
@@ -62,10 +63,10 @@ class SequentialSplit(DataSplitter):
 
 def train_test_split(
     data: DataTuple,
-    train_percentage: Optional[float] = 0.8,
+    train_percentage: float | None = 0.8,
     random_seed: int = 0,
-    num_test_samples: Optional[int] = None,
-) -> Tuple[DataTuple, DataTuple]:
+    num_test_samples: int | None = None,
+) -> tuple[DataTuple, DataTuple]:
     """Split a data tuple into two datatuple along the rows of the DataFrames.
 
     :param data: data tuple to split
@@ -134,7 +135,7 @@ class RandomSplit(DataSplitter):
     :param start_seed: random seed for the first split
     """
 
-    def __init__(self, train_percentage: float = 0.8, start_seed: Optional[int] = 0):
+    def __init__(self, train_percentage: float = 0.8, start_seed: int | None = 0):
         super().__init__()
         self.start_seed = start_seed
         self.train_percentage = train_percentage
@@ -145,24 +146,24 @@ class RandomSplit(DataSplitter):
     @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         random_seed = self._get_seed(split_id)
-        split_info: Dict[str, float] = {"seed": random_seed}
+        split_info: dict[str, float] = {"seed": random_seed}
         return train_test_split(data, self.train_percentage, random_seed) + (split_info,)
 
 
 def generate_proportional_split_indices(
     data: DataTuple, train_percentage: float, random_seed: int = 42
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Generate the indices of the train and test splits using a proportional sampling scheme."""
     # local random state that won't affect the global state
     random = RandomState(seed=random_seed)
 
-    s_vals: List[int] = list(map(int, data.s.unique()))
-    y_vals: List[int] = list(map(int, data.y.unique()))
+    s_vals: list[int] = list(map(int, data.s.unique()))
+    y_vals: list[int] = list(map(int, data.y.unique()))
 
-    train_indices: List[np.ndarray] = []
-    test_indices: List[np.ndarray] = []
+    train_indices: list[np.ndarray] = []
+    test_indices: list[np.ndarray] = []
 
     # iterate over all combinations of s and y
     for s, y in itertools.product(s_vals, y_vals):
@@ -196,7 +197,7 @@ class ProportionalSplit(RandomSplit):
     @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         random_seed = self._get_seed(split_id)
         train_indices, test_indices = generate_proportional_split_indices(
             data, train_percentage=self.train_percentage, random_seed=random_seed
@@ -213,7 +214,7 @@ class ProportionalSplit(RandomSplit):
         # assert that no data points got lost anywhere
         assert len(data) == len(train) + len(test)
 
-        split_info: Dict[str, float] = {"seed": random_seed}
+        split_info: dict[str, float] = {"seed": random_seed}
 
         return train, test, split_info
 
@@ -238,17 +239,17 @@ class BalancedTestSplit(RandomSplit):
     @implements(DataSplitter)
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         random_seed = self._get_seed(split_id)
         random = RandomState(seed=random_seed)
 
-        s_vals: List[int] = list(map(int, data.s.unique()))
-        y_vals: List[int] = list(map(int, data.y.unique()))
+        s_vals: list[int] = list(map(int, data.s.unique()))
+        y_vals: list[int] = list(map(int, data.y.unique()))
 
-        train_indices: List[np.ndarray] = []
-        test_indices: List[np.ndarray] = []
+        train_indices: list[np.ndarray] = []
+        test_indices: list[np.ndarray] = []
 
-        num_test: Dict[Tuple[int, int], int] = {}
+        num_test: dict[tuple[int, int], int] = {}
         # find out how many samples are available for the test set
         for s, y in itertools.product(s_vals, y_vals):
             # find all indices for this group
@@ -306,7 +307,7 @@ class BalancedTestSplit(RandomSplit):
         return train, test, split_info
 
 
-def fold_data(data: DataTuple, folds: int) -> Iterator[Tuple[DataTuple, DataTuple]]:
+def fold_data(data: DataTuple, folds: int) -> Iterator[tuple[DataTuple, DataTuple]]:
     """So much love to sklearn for making their source code open."""
     indices: np.ndarray = np.arange(data.x.shape[0])
 

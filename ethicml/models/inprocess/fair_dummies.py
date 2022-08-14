@@ -3,9 +3,8 @@
 https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import Literal, TypedDict
 
 from ranzen import implements
 
@@ -46,7 +45,7 @@ class FairDummies(InAlgorithmSubprocess):
     second_moment_scaling: float = 1e-5
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.fair_dummies_romano"]
 
     @implements(InAlgorithmSubprocess)
@@ -67,8 +66,9 @@ class FairDummies(InAlgorithmSubprocess):
             "second_moment_scaling": self.second_moment_scaling,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
             "pretrain_pred_epochs": self.pretrain_pred_epochs,
@@ -82,6 +82,7 @@ class FairDummies(InAlgorithmSubprocess):
             "second_moment_scaling": self.second_moment_scaling,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Fair Dummies {self.model_type}"

@@ -1,7 +1,8 @@
 """Class to describe features of the SQF dataset."""
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ..dataset import LegacyDataset
 from ..util import LabelSpec, flatten_dict, spec_from_binary_cols
@@ -126,7 +127,7 @@ class Sqf(LegacyDataset):
 
         continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
-        sens_attr_spec: Union[str, LabelSpec]
+        sens_attr_spec: str | LabelSpec
         if self.split is SqfSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]

@@ -1,9 +1,10 @@
 """Post-processing method by Hardt et al."""
+from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-import pandas as pd
 from numpy.random import RandomState
+import pandas as pd
 from ranzen import implements
 from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 
@@ -24,12 +25,13 @@ class Hardt(PostAlgorithm):
     unfavorable_label: int = 0
     favorable_label: int = 1
 
+    @property  # type: ignore[misc]
     @implements(PostAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Hardt"
 
     @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> PostAlgorithm:
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> Hardt:
         self.model_params = self._fit(train_predictions, train)
         return self
 

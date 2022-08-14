@@ -1,7 +1,6 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
-
-from typing import List, Tuple
+from __future__ import annotations
 
 from torch import Tensor, nn
 
@@ -10,7 +9,7 @@ class Encoder(nn.Module):
     """Encoder for VFAE."""
 
     def __init__(
-        self, enc_size: List[int], init_size: int, ld: int, activation: nn.Module = nn.ReLU()
+        self, enc_size: list[int], init_size: int, ld: int, activation: nn.Module = nn.ReLU()
     ) -> None:
         super().__init__()
         self.encoder = nn.Sequential()
@@ -34,7 +33,7 @@ class Encoder(nn.Module):
             self.z1_enc_mu = nn.Linear(enc_size[-1], ld)
             self.z1_enc_logvar = nn.Linear(enc_size[-1], ld)
 
-    def forward(self, input_: Tensor) -> Tuple[Tensor, Tensor]:
+    def forward(self, input_: Tensor) -> tuple[Tensor, Tensor]:
         """Forward pass of encoder."""
         step = self.encoder(input_)
         return self.z1_enc_mu(step), self.z1_enc_logvar(step)

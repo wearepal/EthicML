@@ -1,6 +1,7 @@
 """Wrapper for SKLearn implementation of SVM."""
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import ClassVar
 
 import numpy as np
 import pandas as pd
@@ -30,12 +31,13 @@ class SVM(InAlgorithmDC):
     C: float = field(default_factory=lambda: SVC().C)
     kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmDC)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"SVM ({self.kernel})"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple, seed: int = 888) -> "SVM":
+    def fit(self, train: DataTuple, seed: int = 888) -> SVM:
         self.clf = select_svm(self.C, self.kernel, seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
@@ -51,7 +53,7 @@ class SVM(InAlgorithmDC):
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: KernelType, seed: int) -> Union[LinearSVC, SVC]:
+def select_svm(C: float, kernel: KernelType, seed: int) -> LinearSVC | SVC:
     """Select the appropriate SVM model for the given parameters.
 
     :param C: The penalty parameter of the error term.

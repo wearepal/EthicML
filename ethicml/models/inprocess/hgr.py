@@ -5,9 +5,8 @@ Based on: https://github.com/criteo-research/continuous-fairness
 http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import Literal, TypedDict
 
 from ranzen import implements
 
@@ -38,7 +37,7 @@ class HGR(InAlgorithmSubprocess):
     model_type: str = "deep_model"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.hgr_method"]
 
     @implements(InAlgorithmSubprocess)
@@ -54,8 +53,9 @@ class HGR(InAlgorithmSubprocess):
             "model_type": model_type,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
             "epochs": self.epochs,
@@ -64,6 +64,7 @@ class HGR(InAlgorithmSubprocess):
             "model_type": self.model_type,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"HGR {self.model_type}"

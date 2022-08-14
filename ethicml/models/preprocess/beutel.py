@@ -1,4 +1,5 @@
 """Beutel's algorithm."""
+from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List
 from typing_extensions import TypedDict
@@ -16,9 +17,9 @@ class BeutelArgs(TypedDict):
     """Args for the Beutel Implementation."""
 
     fairness: str
-    enc_size: List[int]
-    adv_size: List[int]
-    pred_size: List[int]
+    enc_size: list[int]
+    adv_size: list[int]
+    pred_size: list[int]
     enc_activation: str
     adv_activation: str
     batch_size: int
@@ -46,8 +47,9 @@ class Beutel(PreAlgorithmSubprocess):
     adv_weight: float = 1.0
     validation_pcnt: float = 0.1
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         return self.enc_size[-1]
 
     @implements(PreAlgorithmSubprocess)
@@ -68,10 +70,11 @@ class Beutel(PreAlgorithmSubprocess):
             "validation_pcnt": self.validation_pcnt,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Beutel {self.fairness}"
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.beutel"]

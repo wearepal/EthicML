@@ -1,5 +1,5 @@
 """Fairness without Demographics Classifier."""
-from typing import List
+from __future__ import annotations
 
 from ranzen import implements
 from ranzen.torch import CrossEntropyLoss
@@ -13,7 +13,7 @@ __all__ = ["DROClassifier"]
 class DROClassifier(nn.Module):
     """Simple Classifier using Fairness without Demographics Loss."""
 
-    def __init__(self, in_size: int, out_size: int, network_size: List[int], eta: float) -> None:
+    def __init__(self, in_size: int, out_size: int, network_size: list[int], eta: float) -> None:
         super().__init__()
 
         self.loss = DROLoss(loss_module=CrossEntropyLoss, eta=eta)

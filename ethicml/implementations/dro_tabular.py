@@ -1,13 +1,12 @@
 """Implementation of Fairness without Demographics."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Union
+import sys
+from typing import TYPE_CHECKING
 
-import numpy as np
 from joblib import dump, load
+import numpy as np
 
 try:
     import torch
@@ -88,7 +87,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
     test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Transform output
-    post_test: List[torch.Tensor] = []
+    post_test: list[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
@@ -123,7 +122,7 @@ def train_and_predict(
         train_model(epoch, model, train_loader, optimizer)
 
     # Transform output
-    post_test: List[torch.Tensor] = []
+    post_test: list[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
@@ -136,7 +135,7 @@ def main() -> None:
     """Run the FWD model as a standalone program on tabular data."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: DroArgs = json.loads(sys.argv[2])
-    data: Union[DataTuple, TestTuple]
+    data: DataTuple | TestTuple
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)
         train_and_predict(train, test, flags, seed=in_algo_args["seed"]).save_to_file(

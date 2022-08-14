@@ -1,5 +1,6 @@
 """Generate biased subsets."""
-from typing import Dict, Sequence, Tuple
+from __future__ import annotations
+from typing import Sequence
 
 import numpy as np
 import pandas as pd
@@ -42,7 +43,7 @@ class BiasedSubset(DataSplitter):
 
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         """Do BiasedSplit."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_subset(
@@ -57,7 +58,7 @@ def get_biased_subset(
     unbiased_pcnt: float,
     seed: int = 42,
     data_efficient: bool = True,
-) -> Tuple[DataTuple, DataTuple]:
+) -> tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a normal subset.
 
     The two subsets don't generally sum up to the whole set.
@@ -137,7 +138,7 @@ class BiasedDebiasedSubsets(DataSplitter):
 
     def __call__(
         self, data: DataTuple, split_id: int = 0
-    ) -> Tuple[DataTuple, DataTuple, Dict[str, float]]:
+    ) -> tuple[DataTuple, DataTuple, dict[str, float]]:
         """Do Biased and Debiased Split."""
         mixing_factor = self.mixing_factors[split_id]
         biased, unbiased = get_biased_and_debiased_subsets(
@@ -152,7 +153,7 @@ def get_biased_and_debiased_subsets(
     unbiased_pcnt: float,
     seed: int = 42,
     fixed_unbiased: bool = True,
-) -> Tuple[DataTuple, DataTuple]:
+) -> tuple[DataTuple, DataTuple]:
     """Split the given data into a biased subset and a debiased subset.
 
     In contrast to :func:`get_biased_subset()`, this function makes the unbiased subset *really*
@@ -236,14 +237,14 @@ def get_biased_and_debiased_subsets(
     return biased_subset, debiased_subset
 
 
-def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> Tuple[DataTuple, DataTuple]:
+def _random_split(data: DataTuple, first_pcnt: float, seed: int) -> tuple[DataTuple, DataTuple]:
     if len(data) == 0:
         return data, data
     splitter = ProportionalSplit(train_percentage=first_pcnt, start_seed=seed)
     return splitter(data)[:2]
 
 
-def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> Tuple[DataTuple, DataTuple]:
+def _get_sy_equal_and_opp(data: DataTuple, s_name: str, y_name: str) -> tuple[DataTuple, DataTuple]:
     """Get the subset where s and y are equal and the subset where they are opposite."""
     s_values = np.unique(data.s.to_numpy())
     y_values = np.unique(data.y.to_numpy())

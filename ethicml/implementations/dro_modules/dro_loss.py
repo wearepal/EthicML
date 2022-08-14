@@ -1,5 +1,6 @@
 """DRO Loss."""
-from typing import Optional, Type
+from __future__ import annotations
+from typing import Type
 
 from ranzen import implements
 from torch import Tensor, nn
@@ -11,7 +12,7 @@ __all__ = ["DROLoss"]
 class DROLoss(nn.Module):
     """Fairness Without Demographics Loss."""
 
-    def __init__(self, loss_module: Optional[Type[_Loss]] = None, eta: float = 0.5):
+    def __init__(self, loss_module: Type[_Loss] | None = None, eta: float = 0.5):
         """Set up the loss, set which loss you want to optimize and the eta to offset by."""
         super().__init__()
         if loss_module is None:

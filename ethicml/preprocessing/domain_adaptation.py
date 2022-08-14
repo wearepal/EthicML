@@ -1,6 +1,5 @@
 """Set of scripts for splitting the train and test datasets based on conditions."""
-
-from typing import Tuple
+from __future__ import annotations
 
 import pandas as pd
 
@@ -27,7 +26,7 @@ def query_dt(datatup: DataTuple, query_str: str) -> DataTuple:
 
 def domain_split(
     datatup: DataTuple, tr_cond: str, te_cond: str, seed: int = 888
-) -> Tuple[DataTuple, DataTuple]:
+) -> tuple[DataTuple, DataTuple]:
     """Split a datatuple based on a condition.
 
     :param datatup: DataTuple

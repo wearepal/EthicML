@@ -1,9 +1,8 @@
 """Implementation of logistic regression (actually just a wrapper around sklearn)"""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
+import sys
 from typing import TYPE_CHECKING
 
 import numpy as np

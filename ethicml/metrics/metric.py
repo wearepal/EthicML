@@ -1,5 +1,5 @@
 """Abstract Base Class of all metrics in the framework."""
-
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import ClassVar
 from typing_extensions import final

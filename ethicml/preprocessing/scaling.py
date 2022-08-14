@@ -1,5 +1,5 @@
 """Scale a dataset."""
-from typing import Tuple
+from __future__ import annotations
 from typing_extensions import Protocol
 
 import pandas as pd
@@ -30,7 +30,7 @@ def scale_continuous(
     scaler: ScalerType,
     inverse: bool = False,
     fit: bool = True,
-) -> Tuple[DataTuple, ScalerType]:
+) -> tuple[DataTuple, ScalerType]:
     """Use a scaler on just the continuous features.
 
     :param dataset: Dataset object. Used to find the continuous features.
