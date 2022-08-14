@@ -127,7 +127,7 @@ class Sqf(LegacyDataset):
 
         continuous_features = ["perstop", "ht_feet", "age", "ht_inch", "perobs", "weight"]
 
-        sens_attr_spec: Union[str, LabelSpec]
+        sens_attr_spec: str | LabelSpec
         if self.split is SqfSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]

@@ -22,9 +22,9 @@ class VfaeArgs(TypedDict):
     batch_size: int
     fairness: str
     latent_dims: int
-    z1_enc_size: List[int]
-    z2_enc_size: List[int]
-    z1_dec_size: List[int]
+    z1_enc_size: list[int]
+    z2_enc_size: list[int]
+    z1_dec_size: list[int]
 
 
 @dataclass
@@ -65,5 +65,5 @@ class VFAE(PreAlgorithmSubprocess):
         return "VFAE"
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.vfae"]

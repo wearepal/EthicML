@@ -61,5 +61,5 @@ class Zemel(PreAlgorithmSubprocess):
         return self._in_size
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.zemel"]

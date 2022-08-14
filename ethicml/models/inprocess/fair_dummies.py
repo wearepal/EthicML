@@ -45,7 +45,7 @@ class FairDummies(InAlgorithmSubprocess):
     second_moment_scaling: float = 1e-5
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.fair_dummies_romano"]
 
     @implements(InAlgorithmSubprocess)

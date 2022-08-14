@@ -69,14 +69,14 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return self.dir.resolve(strict=True) / f"model_{self.name}.joblib"
 
     @final
-    def fit(self: _P, train: DataTuple, seed: int = 888) -> Tuple[_P, DataTuple]:
+    def fit(self: _P, train: DataTuple, seed: int = 888) -> tuple[_P, DataTuple]:
         """Fit transformer in a subprocess on the given data.
 
         :param train: Data tuple of the training data.
         :param seed: Random seed for model initialization.
         :returns: A tuple of Self and the test data.
         """
-        self._in_size: Optional[int] = train.x.shape[1]
+        self._in_size: int | None = train.x.shape[1]
         with TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
             # ================================ write data to files ================================
@@ -141,7 +141,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return transformed_test
 
     @final
-    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         """Generate fair features in a subprocess with the given data.
 
         :param train: Data tuple of the training data.
@@ -187,7 +187,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return transformed_train, transformed_test
 
     @final
-    def _script_command(self, pre_algo_args: PreAlgoArgs) -> List[str]:
+    def _script_command(self, pre_algo_args: PreAlgoArgs) -> list[str]:
         """Return the command that will run the script.
 
         The flag interface consists of two strings, both JSON strings: the general pre-algo flags
@@ -203,7 +203,7 @@ class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
         return self._get_path_to_script() + interface
 
     @abstractmethod
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         """Return arguments that are passed to the python executable."""
 
     @abstractmethod

@@ -35,7 +35,7 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
         return sys.executable
 
     def call_script(
-        self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
+        self, cmd_args: list[str], env: dict[str, str] | None = None, cwd: Path | None = None
     ) -> None:
         """Call a (Python) script as a separate process.
 

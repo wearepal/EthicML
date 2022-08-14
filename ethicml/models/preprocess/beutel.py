@@ -17,9 +17,9 @@ class BeutelArgs(TypedDict):
     """Args for the Beutel Implementation."""
 
     fairness: str
-    enc_size: List[int]
-    adv_size: List[int]
-    pred_size: List[int]
+    enc_size: list[int]
+    adv_size: list[int]
+    pred_size: list[int]
     enc_activation: str
     adv_activation: str
     batch_size: int
@@ -74,5 +74,5 @@ class Beutel(PreAlgorithmSubprocess):
         return f"Beutel {self.fairness}"
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.beutel"]

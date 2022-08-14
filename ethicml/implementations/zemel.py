@@ -78,7 +78,7 @@ def LFR_optim_objective(
 
 def get_xhat_y_hat(
     prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Get xhat y hat."""
     M = softmax(-cdist(x, prototypes), axis=1)
     x_hat = np.matmul(M, prototypes)
@@ -90,7 +90,7 @@ def get_xhat_y_hat(
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: ZemelArgs, seed: int
-) -> (Tuple[DataTuple, SubgroupTuple]):
+) -> (tuple[DataTuple, SubgroupTuple]):
     """Train and transform."""
     prototypes, w = fit(train, flags, seed=seed)
 

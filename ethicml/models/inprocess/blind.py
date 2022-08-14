@@ -28,7 +28,7 @@ class Blind(InAlgorithmNoParams):
         return "Blind"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Blind":
+    def fit(self, train: DataTuple, seed: int = 888) -> Blind:
         self.vals = train.y.drop_duplicates()
         self.seed = seed
         return self

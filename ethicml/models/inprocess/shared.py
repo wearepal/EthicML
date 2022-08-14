@@ -11,8 +11,8 @@ __all__ = ["settings_for_svm_lr"]
 
 
 def settings_for_svm_lr(
-    classifier: ClassifierType, C: Optional[float], kernel: Optional[KernelType]
-) -> Tuple[float, Optional[KernelType]]:
+    classifier: ClassifierType, C: float | None, kernel: KernelType | None
+) -> tuple[float, KernelType | None]:
     """If necessary get the default settings for the C and kernel parameter of SVM and LR."""
     if classifier is ClassifierType.gbt:
         return 1.0, None

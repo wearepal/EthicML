@@ -437,7 +437,7 @@ class Compas(LegacyDataset):
             "priors-count",
         ]
 
-        sens_attr_spec: Union[str, LabelSpec]
+        sens_attr_spec: str | LabelSpec
         if self.split is CompasSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]

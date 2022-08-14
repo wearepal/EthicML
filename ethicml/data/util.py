@@ -27,21 +27,21 @@ DiscFeatureGroup: TypeAlias = Dict[str, List[str]]
 class LabelGroup(NamedTuple):
     """Definition of a group of columns that should be interpreted as a single label."""
 
-    columns: List[str]  # list of columns that belong to the group
+    columns: list[str]  # list of columns that belong to the group
     multiplier: int = 1  # multiplier assigned to this group (needed when combining groups)
 
 
 LabelSpec = Mapping[str, LabelGroup]
 
 
-def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> List[str]:
+def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> list[str]:
     """Filter the features by prefixes.
 
     :param features: list of features names
     :param prefixes: list of prefixes
     :returns: filtered feature names
     """
-    res: List[str] = []
+    res: list[str] = []
     for name in features:
         filtered = any(name.startswith(pref) for pref in prefixes)
         if not filtered:
@@ -50,8 +50,8 @@ def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]
 
 
 def get_discrete_features(
-    all_feats: List[str], feats_to_remove: List[str], cont_feats: List[str]
-) -> List[str]:
+    all_feats: list[str], feats_to_remove: list[str], cont_feats: list[str]
+) -> list[str]:
     """Get a list of the discrete features in a dataset.
 
     :param all_feats: List of all features in the dataset.
@@ -66,7 +66,7 @@ def get_discrete_features(
     ]
 
 
-def group_disc_feat_indices(disc_feat_names: List[str], prefix_sep: str = "_") -> List[slice]:
+def group_disc_feat_indices(disc_feat_names: list[str], prefix_sep: str = "_") -> list[slice]:
     """Group discrete features names according to the first segment of their name.
 
     Returns a list of their corresponding slices (assumes order is maintained).
@@ -81,7 +81,7 @@ def group_disc_feat_indices(disc_feat_names: List[str], prefix_sep: str = "_") -
 
     group_iter = groupby(disc_feat_names, _first_segment)
 
-    feature_slices: List[slice] = []
+    feature_slices: list[slice] = []
     start_idx = 0
     for _, group in group_iter:
         len_group = len(list(group))
@@ -92,7 +92,7 @@ def group_disc_feat_indices(disc_feat_names: List[str], prefix_sep: str = "_") -
     return feature_slices
 
 
-def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
+def flatten_dict(dictionary: Mapping[str, list[str]] | None) -> list[str]:
     """Flatten a dictionary of lists by joining all lists to one big list."""
     if dictionary is None:
         return []
@@ -100,7 +100,7 @@ def flatten_dict(dictionary: Optional[Mapping[str, List[str]]]) -> List[str]:
 
 
 def reduce_feature_group(
-    disc_feature_groups: Mapping[str, List[str]],
+    disc_feature_groups: Mapping[str, list[str]],
     feature_group: str,
     to_keep: Sequence[str],
     remaining_feature_name: str,
@@ -124,11 +124,11 @@ def reduce_feature_group(
 
 
 def reduce_feature_group_mut(
-    disc_feature_groups: Dict[str, List[str]],
+    disc_feature_groups: dict[str, list[str]],
     feature_group: str,
     to_keep: Sequence[str],
     remaining_feature_name: str,
-) -> List[str]:
+) -> list[str]:
     """Drop all features in the given feature group except the ones in to_keep.
 
     :param disc_feature_groups: Dictionary of feature groups.
@@ -146,12 +146,12 @@ def reduce_feature_group_mut(
     return flatten_dict(disc_feature_groups)
 
 
-def label_spec_to_feature_list(spec: LabelSpec) -> List[str]:
+def label_spec_to_feature_list(spec: LabelSpec) -> list[str]:
     """Extract all the feature column names from a dictionary of label specifications.
 
     :param spec: Dictionary of label specifications.
     """
-    feature_list: List[str] = []
+    feature_list: list[str] = []
     for group in spec.values():
         feature_list += group.columns
     return feature_list
@@ -173,7 +173,7 @@ def spec_from_binary_cols(label_defs: Mapping[str, Sequence[str]]) -> LabelSpec:
     return label_spec
 
 
-def single_col_spec(col: str, feature_name: Optional[str] = None) -> LabelSpec:
+def single_col_spec(col: str, feature_name: str | None = None) -> LabelSpec:
     """Create a label spec for the case where the label is defined by a single column."""
     return {col if feature_name is None else feature_name: LabelGroup([col])}
 

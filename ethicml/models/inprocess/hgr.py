@@ -37,7 +37,7 @@ class HGR(InAlgorithmSubprocess):
     model_type: str = "deep_model"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.hgr_method"]
 
     @implements(InAlgorithmSubprocess)

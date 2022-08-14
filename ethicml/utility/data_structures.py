@@ -122,7 +122,7 @@ class SubgroupTuple(SubsetMixin):
 
     @classmethod
     def from_df(
-        cls, *, x: pd.DataFrame, s: pd.Series[int], name: Optional[str] = None
+        cls, *, x: pd.DataFrame, s: pd.Series[int], name: str | None = None
     ) -> SubgroupTuple:
         """Make a SubgroupTuple."""
         s_column = s.name
@@ -145,12 +145,12 @@ class SubgroupTuple(SubsetMixin):
             return self.data
         return self.data.drop(self.s_column, inplace=False, axis="columns")
 
-    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+    def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s])
 
     def replace(
-        self, *, x: Optional[pd.DataFrame] = None, s: Optional[pd.Series] = None
+        self, *, x: pd.DataFrame | None = None, s: pd.Series | None = None
     ) -> SubgroupTuple:
         """Create a copy of the SubgroupTuple but change the given values."""
         return SubgroupTuple.from_df(
@@ -215,7 +215,7 @@ class DataTuple(SubsetMixin):
 
     @classmethod
     def from_df(
-        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+        cls, *, x: pd.DataFrame, s: pd.Series[int], y: pd.Series[int], name: str | None = None
     ) -> DataTuple:
         """Make a DataTuple."""
         s_column = s.name
@@ -245,7 +245,7 @@ class DataTuple(SubsetMixin):
         """Getter for property y."""
         return self.data[self.y_column]
 
-    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+    def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
         """Overwrite magic method __iter__."""
         return iter([self.x, self.s, self.y])
 
@@ -261,9 +261,9 @@ class DataTuple(SubsetMixin):
     def replace(
         self,
         *,
-        x: Optional[pd.DataFrame] = None,
-        s: Optional[pd.Series] = None,
-        y: Optional[pd.Series] = None,
+        x: pd.DataFrame | None = None,
+        s: pd.Series | None = None,
+        y: pd.Series | None = None,
     ) -> DataTuple:
         """Create a copy of the DataTuple but change the given values."""
         return DataTuple.from_df(
@@ -346,7 +346,7 @@ class LabelTuple(SubsetMixin):
 
     @classmethod
     def from_df(
-        cls, *, s: pd.Series[int], y: pd.Series[int], name: Optional[str] = None
+        cls, *, s: pd.Series[int], y: pd.Series[int], name: str | None = None
     ) -> LabelTuple:
         """Make a LabelTuple."""
         s_column = s.name
@@ -382,12 +382,12 @@ class LabelTuple(SubsetMixin):
         """Getter for property y."""
         return self.data[self.y_column]
 
-    def __iter__(self) -> Iterator[Union[pd.DataFrame, pd.Series]]:
+    def __iter__(self) -> Iterator[pd.DataFrame | pd.Series]:
         """Overwrite magic method __iter__."""
         return iter([self.s, self.y])
 
     def replace(
-        self, *, s: Optional[pd.Series] = None, y: Optional[pd.Series] = None
+        self, *, s: pd.Series | None = None, y: pd.Series | None = None
     ) -> LabelTuple:
         """Create a copy of the LabelTuple but change the given values."""
         return LabelTuple.from_df(
@@ -418,7 +418,7 @@ T = TypeVar("T", SubgroupTuple, DataTuple)
 class Prediction:
     """Prediction of an algorithm."""
 
-    def __init__(self, hard: pd.Series, info: Optional[HyperParamType] = None):
+    def __init__(self, hard: pd.Series, info: HyperParamType | None = None):
         """Make a prediction obj."""
         assert isinstance(hard, pd.Series), "please use pd.Series"
         self._hard = hard
@@ -485,7 +485,7 @@ class Prediction:
 class SoftPrediction(Prediction):
     """Prediction of an algorithm that makes soft predictions."""
 
-    def __init__(self, soft: np.ndarray, info: Optional[HyperParamType] = None):
+    def __init__(self, soft: np.ndarray, info: HyperParamType | None = None):
         """Make a soft prediction object."""
         super().__init__(hard=pd.Series(soft.argmax(axis=1).astype(int), name="hard"), info=info)
         self._soft = soft
@@ -498,8 +498,8 @@ class SoftPrediction(Prediction):
 
 def write_as_npz(
     data_path: Path,
-    data: Dict[str, Union[pd.DataFrame, pd.Series]],
-    extra: Optional[Dict[str, np.ndarray]] = None,
+    data: dict[str, pd.DataFrame | pd.Series],
+    extra: dict[str, np.ndarray] | None = None,
 ) -> None:
     """Write the given dataframes to an npz file.
 
@@ -509,7 +509,7 @@ def write_as_npz(
     """
     extra = extra or {}
     as_numpy = {entry: values.to_numpy() for entry, values in data.items()}
-    column_names: Dict[str, np.ndarray] = {
+    column_names: dict[str, np.ndarray] = {
         f"{entry}_names": np.array(values.columns.tolist())
         if isinstance(values, pd.DataFrame)
         else np.array([values.name])
@@ -571,7 +571,7 @@ Results = NewType("Results", pd.DataFrame)  # Container for results from `evalua
 RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]
 
 
-def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
+def make_results(data_frame: None | pd.DataFrame | Path = None) -> Results:
     """Initialise Results object.
 
     You should always use this function instead of using the "constructor" directly, because this
@@ -594,7 +594,7 @@ def make_results(data_frame: Union[None, pd.DataFrame, Path] = None) -> Results:
 class ResultsAggregator:
     """Aggregate results."""
 
-    def __init__(self, initial: Optional[pd.DataFrame] = None):
+    def __init__(self, initial: pd.DataFrame | None = None):
         """Init results aggregator obj."""
         self._results = make_results(initial)
 
@@ -638,7 +638,7 @@ class ResultsAggregator:
 
 def map_over_results_index(
     results: Results,
-    mapper: Callable[[Tuple[str, str, str, str, str]], Tuple[str, str, str, str, str]],
+    mapper: Callable[[tuple[str, str, str, str, str]], tuple[str, str, str, str, str]],
 ) -> Results:
     """Change the values of the index with a transformation function."""
     results_mapped = results.copy()
@@ -649,7 +649,7 @@ def map_over_results_index(
 def filter_results(
     results: Results,
     values: Iterable,
-    index: Union[str, PandasIndex] = "model",
+    index: str | PandasIndex = "model",
 ) -> Results:
     """Filter the entries based on the given values.
 
@@ -675,7 +675,7 @@ def filter_and_map_results(results: Results, mapping: Mapping[str, str]) -> Resu
 
 
 def aggregate_results(
-    results: Results, metrics: List[str], aggregator: Union[str, Tuple[str, ...]] = ("mean", "std")
+    results: Results, metrics: list[str], aggregator: str | tuple[str, ...] = ("mean", "std")
 ) -> pd.DataFrame:
     """Aggregate results over the repeats.
 

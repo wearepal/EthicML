@@ -18,7 +18,7 @@ class DroArgs(TypedDict):
     batch_size: int
     epochs: int
     eta: float
-    network_size: List[int]
+    network_size: list[int]
 
 
 @dataclass
@@ -57,5 +57,5 @@ class DRO(InAlgorithmSubprocess):
         return "Dist Robust Optim"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.dro_tabular"]

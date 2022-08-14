@@ -55,7 +55,7 @@ def fit(train: DataTuple, flags: VfaeArgs):
 
 def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
     """Transform the dataset."""
-    data: Union[CustomDataset, TestDataset]
+    data: CustomDataset | TestDataset
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
@@ -63,7 +63,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
         data = TestDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
 
-    post_train: List[List[float]] = []
+    post_train: list[list[float]] = []
     model.eval()
     with torch.no_grad():
         for sample in loader:
@@ -80,7 +80,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: VfaeArgs
-) -> Tuple[DataTuple, SubgroupTuple]:
+) -> tuple[DataTuple, SubgroupTuple]:
     """Train the model and transform both the train dataset and the test dataset."""
     model = fit(train, flags)
 

@@ -29,7 +29,7 @@ class Oracle(InAlgorithmNoParams):
         return "Oracle"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Oracle":
+    def fit(self, train: DataTuple, seed: int = 888) -> Oracle:
         return self
 
     @implements(InAlgorithmNoParams)
@@ -57,7 +57,7 @@ class DPOracle(InAlgorithmNoParams):
         return "DemPar. Oracle"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "DPOracle":
+    def fit(self, train: DataTuple, seed: int = 888) -> DPOracle:
         self.seed = seed
         return self
 

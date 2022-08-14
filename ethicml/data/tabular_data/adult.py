@@ -131,7 +131,7 @@ class Adult(StaticCSVDataset):
 
     @property
     @implements(StaticCSVDataset)
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         feats = [
             "age",
             "capital-gain",

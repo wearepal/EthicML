@@ -18,7 +18,7 @@ def main() -> None:
     hair_length_1: np.ndarray = 35 * rng.beta(2, 2, SAMPLES)
     hair_length = np.where(z == 1, hair_length_1, hair_length_0)
 
-    pois = rng.poisson((25 + 6 * z))
+    pois = rng.poisson(25 + 6 * z)
     norm = rng.normal(20, 0.2, SAMPLES)
     work_experience: np.ndarray = pois - norm
 

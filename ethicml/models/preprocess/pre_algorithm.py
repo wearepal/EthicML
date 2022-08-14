@@ -16,7 +16,7 @@ class PreAlgorithm(Algorithm, ABC):
     """Abstract Base Class for all algorithms that do pre-processing."""
 
     @abstractmethod
-    def fit(self: _PA, train: DataTuple, seed: int = 888) -> Tuple[_PA, DataTuple]:
+    def fit(self: _PA, train: DataTuple, seed: int = 888) -> tuple[_PA, DataTuple]:
         """Fit transformer on the given data.
 
         :param train: Data tuple of the training data.
@@ -33,7 +33,7 @@ class PreAlgorithm(Algorithm, ABC):
         """
 
     @abstractmethod
-    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         """Generate fair features with the given data.
 
         :param train: Data tuple of the training data.
@@ -42,7 +42,7 @@ class PreAlgorithm(Algorithm, ABC):
         :returns: A tuple of the transforme training data and the test data.
         """
 
-    def run_test(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
+    def run_test(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         """Run with reduced training set so that it finishes quicker.
 
         :param train: Data tuple of the training data.

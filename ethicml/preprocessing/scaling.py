@@ -31,7 +31,7 @@ def scale_continuous(
     scaler: ScalerType,
     inverse: bool = False,
     fit: bool = True,
-) -> Tuple[DataTuple, ScalerType]:
+) -> tuple[DataTuple, ScalerType]:
     """Use a scaler on just the continuous features.
 
     :param dataset: Dataset object. Used to find the continuous features.

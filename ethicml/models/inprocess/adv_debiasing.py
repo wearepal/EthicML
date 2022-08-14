@@ -39,7 +39,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
     lambda_vec = 0.999999
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.adv_debiasing_method"]
 
     @implements(InAlgorithmSubprocess)

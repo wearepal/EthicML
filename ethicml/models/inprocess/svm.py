@@ -36,7 +36,7 @@ class SVM(InAlgorithmDC):
         return f"SVM ({self.kernel})"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple, seed: int = 888) -> "SVM":
+    def fit(self, train: DataTuple, seed: int = 888) -> SVM:
         self.clf = select_svm(self.C, self.kernel, seed)
         self.clf.fit(train.x, train.y.to_numpy().ravel())
         return self
@@ -52,7 +52,7 @@ class SVM(InAlgorithmDC):
         return Prediction(hard=pd.Series(clf.predict(test.x)))
 
 
-def select_svm(C: float, kernel: KernelType, seed: int) -> Union[LinearSVC, SVC]:
+def select_svm(C: float, kernel: KernelType, seed: int) -> LinearSVC | SVC:
     """Select the appropriate SVM model for the given parameters.
 
     :param C: The penalty parameter of the error term.

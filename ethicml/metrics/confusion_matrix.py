@@ -19,12 +19,12 @@ class CfmMetric(MetricStaticName, ABC):
 
     pos_class: int = 1
     """The class to treat as being "positive"."""
-    labels: Optional[List[int]] = None
+    labels: list[int] | None = None
     """List of possible target values. If `None`, then this is inferred from the data when run."""
 
     def _confusion_matrix(
         self, prediction: Prediction, actual: EvalTuple
-    ) -> Tuple[int, int, int, int]:
+    ) -> tuple[int, int, int, int]:
         """Apply sci-kit learn's confusion matrix.
 
         :param prediction: The predictions.

@@ -59,7 +59,7 @@ class Nursery(LegacyDataset):
 
         continuous_features = ["children"]
 
-        sens_attr_spec: Union[str, LabelSpec]
+        sens_attr_spec: str | LabelSpec
         if self.split is NurserySplits.FINANCE:
             sens_attr_spec = "finance_conv"
             s_prefix = ["finance"]

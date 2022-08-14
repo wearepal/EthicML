@@ -49,12 +49,12 @@ class AcsBase(Dataset):
     def __init__(
         self,
         name: str,
-        root: Union[str, Path],
+        root: str | Path,
         year: str,
         horizon: int,
-        states: List[str],
+        states: list[str],
         class_label_spec: str,
-        class_label_prefix: List[str],
+        class_label_prefix: list[str],
         discrete_only: bool = False,
         invert_s: bool = False,
     ):
@@ -73,15 +73,15 @@ class AcsBase(Dataset):
 
         state_string = "_".join(states)
         self._name = f"{name}_{year}_{horizon}_{state_string}_{self.split}"
-        self._sens_attr_spec: Union[str, LabelSpec] = ""
-        self._s_prefix: List[str] = []
-        self._class_label_spec: Union[str, LabelSpec] = class_label_spec
+        self._sens_attr_spec: str | LabelSpec = ""
+        self._s_prefix: list[str] = []
+        self._class_label_spec: str | LabelSpec = class_label_spec
         self._class_label_prefix = class_label_prefix
         self._discrete_only = discrete_only
-        self._features: List[str] = []
-        self._cont_features_unfiltered: List[str] = []
+        self._features: list[str] = []
+        self._cont_features_unfiltered: list[str] = []
         self._map_to_binary = False
-        self._discrete_feature_groups: Optional[DiscFeatureGroup] = None
+        self._discrete_feature_groups: DiscFeatureGroup | None = None
         self._num_samples = 0
 
     @property
@@ -93,7 +93,7 @@ class AcsBase(Dataset):
         return self._num_samples
 
     @property
-    def sens_attrs(self) -> List[str]:
+    def sens_attrs(self) -> list[str]:
         """Get the list of sensitive attributes."""
         if isinstance(self._sens_attr_spec, str):
             return [self._sens_attr_spec]
@@ -101,7 +101,7 @@ class AcsBase(Dataset):
         return label_spec_to_feature_list(self._sens_attr_spec)
 
     @property
-    def class_labels(self) -> List[str]:
+    def class_labels(self) -> list[str]:
         """Get the list of class labels."""
         if isinstance(self._class_label_spec, str):
             return [self._class_label_spec]
@@ -109,9 +109,9 @@ class AcsBase(Dataset):
         return label_spec_to_feature_list(self._class_label_spec)
 
     @property
-    def features_to_remove(self) -> List[str]:
+    def features_to_remove(self) -> list[str]:
         """Features that have to be removed from x."""
-        to_remove: List[str] = []
+        to_remove: list[str] = []
         to_remove += self._s_prefix
         to_remove += self._class_label_prefix
         if self._discrete_only:
@@ -129,12 +129,12 @@ class AcsBase(Dataset):
         }
 
     @property
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         """List of features that are continuous."""
         return filter_features_by_prefixes(self._cont_features_unfiltered, self.features_to_remove)
 
     @property
-    def discrete_features(self) -> List[str]:
+    def discrete_features(self) -> list[str]:
         """List of features that are discrete."""
         return get_discrete_features(
             list(self._features), self.features_to_remove, self.continuous_features
@@ -214,7 +214,7 @@ class AcsBase(Dataset):
 
     def _one_hot_encode_and_combine(
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
-    ) -> Tuple[pd.Series, Optional[pd.Series]]:
+    ) -> tuple[pd.Series, pd.Series | None]:
         """Construct a new label according to the LabelSpecs.
 
         :param attributes: DataFrame containing the attributes.
@@ -247,10 +247,10 @@ class AcsIncome(AcsBase):
 
     def __init__(
         self,
-        root: Union[str, Path],
+        root: str | Path,
         year: str,
         horizon: int,
-        states: List[str],
+        states: list[str],
         split: str = "Sex",
         target_threshold: int = 50_000,
         discrete_only: bool = False,
@@ -397,10 +397,10 @@ class AcsEmployment(AcsBase):
 
     def __init__(
         self,
-        root: Union[str, Path],
+        root: str | Path,
         year: str,
         horizon: int,
-        states: List[str],
+        states: list[str],
         split: str = "Sex",
         discrete_only: bool = False,
         invert_s: bool = False,

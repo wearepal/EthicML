@@ -42,5 +42,5 @@ class Toy(StaticCSVDataset):
 
     @property
     @implements(StaticCSVDataset)
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         return ["a1", "a2"]

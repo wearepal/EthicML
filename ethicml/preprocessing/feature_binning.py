@@ -19,7 +19,7 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     :param data: The data to bin.
     :returns: A DataTuple where the ordinal columns have been replaced.
     """
-    groups: Sequence[List[str]] = [
+    groups: Sequence[list[str]] = [
         list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])
     ]
 

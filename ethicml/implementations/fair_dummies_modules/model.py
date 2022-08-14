@@ -187,7 +187,7 @@ def train_classifier(
     dis_steps: int,
     loss_steps: int,
     num_classes: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train classifier."""
     # Train adversary
     for _ in range(dis_steps):
@@ -328,7 +328,7 @@ def train_regressor_fast_loader(
     second_moment_scaling: torch.Tensor,
     dis_steps: int,
     loss_steps: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train regressor."""
     # Train adversary
     for _ in range(dis_steps):
@@ -384,7 +384,7 @@ def train_regressor(
     second_moment_scaling: torch.Tensor,
     dis_steps: int,
     loss_steps: int,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train the regressor."""
     # Train adversary
     for _ in range(dis_steps):

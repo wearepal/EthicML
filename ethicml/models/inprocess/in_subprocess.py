@@ -134,7 +134,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             return Prediction.from_file(pred_path)
 
     @final
-    def _script_command(self, in_algo_args: InAlgoArgs) -> List[str]:
+    def _script_command(self, in_algo_args: InAlgoArgs) -> list[str]:
         """Return the command that will run the script.
 
         The flag interface consists of two strings, both JSON strings: the general in-algo flags
@@ -150,7 +150,7 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         return self._get_path_to_script() + interface
 
     @abstractmethod
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         """Return arguments that are passed to the python executable."""
 
     @abstractmethod

@@ -14,7 +14,7 @@ __all__ = ["Agarwal"]
 
 from ethicml.utility import KernelType
 
-VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
+VALID_MODELS: set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
 class AgarwalArgs(TypedDict):
@@ -85,5 +85,5 @@ class Agarwal(InAlgorithmSubprocess):
         return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.agarwal"]

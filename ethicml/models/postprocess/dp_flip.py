@@ -23,7 +23,7 @@ class DPFlip(PostAlgorithm):
         return "DemPar. Post Process"
 
     @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> DPFlip:
         return self
 
     @implements(PostAlgorithm)
@@ -76,7 +76,7 @@ class DPFlip(PostAlgorithm):
         return preds
 
     @staticmethod
-    def _fit(test: TestTuple, preds: Prediction) -> Tuple[int, int]:
+    def _fit(test: TestTuple, preds: Prediction) -> tuple[int, int]:
         y_0 = preds.hard[preds.hard == 0]
         y_1 = preds.hard[preds.hard == 1]
         s_0 = test.s[test.s == 0]

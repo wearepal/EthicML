@@ -54,7 +54,7 @@ class MLP(InAlgorithmDC):
 
 
 def select_mlp(
-    hidden_layer_sizes: Tuple[int, ...], seed: int, lr: float, batch_size: int
+    hidden_layer_sizes: tuple[int, ...], seed: int, lr: float, batch_size: int
 ) -> MLPClassifier:
     """Create MLP model for the given parameters.
 

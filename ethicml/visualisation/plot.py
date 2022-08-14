@@ -27,7 +27,7 @@ __all__ = [
 MARKERS = ["s", "p", "P", "*", "+", "x", "o", "v"]
 
 
-def maybe_tsne(data: DataTuple) -> Tuple[pd.DataFrame, str, str]:
+def maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
     columns = data.x.columns
 
     if len(columns) > 2:
@@ -66,7 +66,7 @@ def save_2d_plot(data: DataTuple, filepath: str) -> None:
     plt.clf()
 
 
-def save_jointplot(data: DataTuple, filepath: str, dims: Tuple[int, int] = (0, 1)) -> None:
+def save_jointplot(data: DataTuple, filepath: str, dims: tuple[int, int] = (0, 1)) -> None:
     """Make joint plot."""
     file_path = Path(filepath)
     columns = data.x.columns
@@ -88,7 +88,7 @@ def multivariate_grid(
     df: pd.DataFrame,
     scatter_alpha: float = 0.5,
 ) -> None:
-    def colored_scatter(x: Any, y: Any, c: Optional[str] = None) -> Callable[[Any], None]:
+    def colored_scatter(x: Any, y: Any, c: str | None = None) -> Callable[[Any], None]:
         def scatter(*args: Any, **kwargs: Any) -> None:
             args = (x, y)
             if c is not None:
@@ -134,7 +134,7 @@ def save_multijointplot(data: DataTuple, filepath: str) -> None:
     plt.clf()
 
 
-def make_gif(files: List[str], name: str = "movie") -> None:
+def make_gif(files: list[str], name: str = "movie") -> None:
     """Make GIF."""
     import imageio
 
@@ -225,17 +225,17 @@ def save_label_plot(data: DataTuple, filename: str) -> None:
 def single_plot(
     plot: plt.Axes,
     results: Results,
-    xaxis: Tuple[str, str],
-    yaxis: Tuple[str, str],
+    xaxis: tuple[str, str],
+    yaxis: tuple[str, str],
     dataset: str,
-    transform: Optional[str],
+    transform: str | None,
     ptype: PlotType = "box",
-    legend_pos: Optional[LegendType] = "outside",
+    legend_pos: LegendType | None = "outside",
     legend_yanchor: float = 1.0,
     markersize: int = 6,
     alternating_style: bool = True,
     include_nan_entries: bool = False,
-) -> Union[None, Literal[False], legend.Legend]:
+) -> None | Literal[False] | legend.Legend:
     """Provide the functionality of the individual plotting functions through a nice interface.
 
     This function can also be used to create figures with multiple plots on them, because it does
@@ -260,11 +260,11 @@ def single_plot(
     """
     mask_for_dataset = results.index.get_level_values("dataset") == dataset
     if transform is not None:
-        transforms: List[str] = [transform]
+        transforms: list[str] = [transform]
     else:
         transforms = [str(t) for t in results.index.to_frame()["transform"].unique()]
 
-    entries: List[DataEntry] = []
+    entries: list[DataEntry] = []
     count = 0
     for model in results.index.to_frame()["model"].unique():
         mask_for_model = results.index.get_level_values("model") == model
@@ -299,13 +299,13 @@ def single_plot(
 
 def plot_results(
     results: Results,
-    metric_y: Union[str, Metric],
-    metric_x: Union[str, Metric],
+    metric_y: str | Metric,
+    metric_x: str | Metric,
     ptype: PlotType = "box",
     save: bool = True,
     dpi: int = 300,
     transforms_separately: bool = True,
-) -> List[Tuple[figure.Figure, plt.Axes]]:
+) -> list[tuple[figure.Figure, plt.Axes]]:
     """Plot the given result with boxes that represent mean and standard deviation.
 
     :param results: a DataFrame that already contains the values of the metrics
@@ -320,7 +320,7 @@ def plot_results(
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)
 
-    def _get_columns(metric: Metric) -> List[str]:
+    def _get_columns(metric: Metric) -> list[str]:
         cols = [col for col in results.columns if metric.name in col]
         if not cols:
             raise ValueError(f'No matching columns found for Metric "{metric.name}".')
@@ -349,13 +349,13 @@ def plot_results(
     # this preserves the order of x and y
     possible_pairs = list(itertools.product(cols_x, cols_y))
 
-    transforms: List[Optional[str]]
+    transforms: list[str | None]
     if transforms_separately:
         transforms = [str(t) for t in results.index.to_frame()["transform"].unique()]
     else:
         transforms = [None]
 
-    figure_list: List[Tuple[figure.Figure, plt.Axes]] = []
+    figure_list: list[tuple[figure.Figure, plt.Axes]] = []
     for dataset in results.index.to_frame()["dataset"].unique():
         dataset_: str = str(dataset)
         for transform in transforms:

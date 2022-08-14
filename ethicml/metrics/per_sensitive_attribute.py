@@ -23,7 +23,7 @@ class MetricNotApplicable(Exception):
 
 def metric_per_sens(
     prediction: Prediction, actual: EvalTuple, metric: Metric, use_sens_name: bool = True
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Compute a metric repeatedly on subsets of the data that share a senstitive attribute."""
     if not metric.apply_per_sensitive:
         raise MetricNotApplicable(
@@ -34,7 +34,7 @@ def metric_per_sens(
     assert actual.s.shape[0] == actual.y.shape[0]
     assert prediction.hard.shape[0] == actual.y.shape[0]
 
-    per_sensitive_attr: Dict[str, float] = {}
+    per_sensitive_attr: dict[str, float] = {}
 
     s_column: str = actual.s_column
 
@@ -59,7 +59,7 @@ def aggregate_over_sens(
     aggregator: Callable[[float, float], float],
     infix: str,
     prefix: str = "",
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Aggregate metrics over sensitive attributes.
 
     :param per_sens_res: Dictionary of the results.
@@ -67,7 +67,7 @@ def aggregate_over_sens(
     :returns: Dictionary of the aggregated results.
     """
     sens_keys = sorted(per_sens_res.keys())
-    aggregated_over_sens: Dict[str, float] = {}
+    aggregated_over_sens: dict[str, float] = {}
 
     for i, sens_key_i in enumerate(sens_keys):
         i_value: float = per_sens_res[sens_key_i]
@@ -80,7 +80,7 @@ def aggregate_over_sens(
     return aggregated_over_sens
 
 
-def diff_per_sens(per_sens_res: Dict[str, float]) -> Dict[str, float]:
+def diff_per_sens(per_sens_res: dict[str, float]) -> dict[str, float]:
     """Compute the difference in the metrics per sensitive attribute.
 
     :param per_sens_res: dictionary of the results
@@ -93,7 +93,7 @@ def _abs_diff(i_value: float, j_value: float) -> float:
     return abs(i_value - j_value)
 
 
-def ratio_per_sens(per_sens_res: Dict[str, float]) -> Dict[str, float]:
+def ratio_per_sens(per_sens_res: dict[str, float]) -> dict[str, float]:
     """Compute the ratios in the metrics per sensitive attribute.
 
     :param per_sens_res: dictionary of the results

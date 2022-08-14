@@ -67,7 +67,7 @@ class Law(LegacyDataset):
         continuous_features = ["LSAT", "UGPA", "ZFYA"]
 
         if self.split is LawSplits.SEX:
-            sens_attr_spec: Union[str, Mapping[str, LabelGroup]] = "Sex_1"
+            sens_attr_spec: str | Mapping[str, LabelGroup] = "Sex_1"
             s_prefix = ["Sex", "Race"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]

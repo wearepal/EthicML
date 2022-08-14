@@ -53,16 +53,16 @@ class LabelSpecsPair(NamedTuple):
     """Spec for building the s label."""
     y: LabelSpec
     """Spec for building the y label."""
-    to_remove: List[str]
+    to_remove: list[str]
     """List of feature groups that need to be removed because they are label building blocks."""
 
 
 class FeatureSplit(TypedDict):
     """A dictionary of the list of columns that belong to the feature groups."""
 
-    x: List[str]
-    s: List[str]
-    y: List[str]
+    x: list[str]
+    s: list[str]
+    y: list[str]
 
 
 class FeatureOrder(Enum):
@@ -92,12 +92,12 @@ class Dataset(ABC):
 
     @property
     @abstractmethod
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         """Continuous features."""
 
     @property
     @abstractmethod
-    def discrete_features(self) -> List[str]:
+    def discrete_features(self) -> list[str]:
         """List of features that are discrete."""
 
     @abstractmethod
@@ -136,7 +136,7 @@ class CSVDataset(Dataset, ABC):
         """Number of samples in the dataset."""
 
     @abstractmethod
-    def get_filename_or_path(self) -> Union[str, Path]:
+    def get_filename_or_path(self) -> str | Path:
         """Filename of CSV files containing the data."""
 
     @property
@@ -166,13 +166,13 @@ class CSVDataset(Dataset, ABC):
 
     @property
     @final
-    def sens_attrs(self) -> List[str]:
+    def sens_attrs(self) -> list[str]:
         """Get the list of sensitive attributes."""
         return label_spec_to_feature_list(self.get_label_specs().s)
 
     @property
     @final
-    def class_labels(self) -> List[str]:
+    def class_labels(self) -> list[str]:
         """Get the list of class labels."""
         return label_spec_to_feature_list(self.get_label_specs().y)
 
@@ -192,7 +192,7 @@ class CSVDataset(Dataset, ABC):
         }
 
     @property
-    def discrete_features(self) -> List[str]:
+    def discrete_features(self) -> list[str]:
         """List of features that are discrete."""
         return flatten_dict(self.disc_feature_groups)
 
@@ -282,7 +282,7 @@ class CSVDataset(Dataset, ABC):
 
     def _one_hot_encode_and_combine(
         self, attributes: pd.DataFrame, label_spec: LabelSpec
-    ) -> Tuple[pd.Series, Optional[pd.Series]]:
+    ) -> tuple[pd.Series, pd.Series | None]:
         """Construct a new label according to the LabelSpecs.
 
         :param attributes: DataFrame containing the attributes.
@@ -393,7 +393,7 @@ class StaticCSVDataset(CSVDatasetDC, ABC):
         return self.num_samples
 
     @implements(CSVDataset)
-    def get_filename_or_path(self) -> Union[str, Path]:
+    def get_filename_or_path(self) -> str | Path:
         return self.csv_file
 
 
@@ -407,15 +407,15 @@ class LegacyDataset(CSVDataset):
     def __init__(
         self,
         name: str,
-        filename_or_path: Union[str, Path],
+        filename_or_path: str | Path,
         features: Sequence[str],
         cont_features: Sequence[str],
-        sens_attr_spec: Union[str, LabelSpec],
-        class_label_spec: Union[str, LabelSpec],
+        sens_attr_spec: str | LabelSpec,
+        class_label_spec: str | LabelSpec,
         num_samples: int,
-        s_feature_groups: Optional[Sequence[str]] = None,
-        class_feature_groups: Optional[Sequence[str]] = None,
-        discrete_feature_groups: Optional[Dict[str, List[str]]] = None,
+        s_feature_groups: Sequence[str] | None = None,
+        class_feature_groups: Sequence[str] | None = None,
+        discrete_feature_groups: dict[str, list[str]] | None = None,
     ) -> None:
         self._name = name
         self._features = features
@@ -440,7 +440,7 @@ class LegacyDataset(CSVDataset):
 
     @property
     @implements(CSVDataset)
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         return self._cont_features
 
     @property
@@ -463,7 +463,7 @@ class LegacyDataset(CSVDataset):
         return self._num_samples
 
     @implements(CSVDataset)
-    def get_filename_or_path(self) -> Union[str, Path]:
+    def get_filename_or_path(self) -> str | Path:
         return self._raw_file_name_or_path
 
     @property

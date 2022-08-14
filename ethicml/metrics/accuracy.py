@@ -19,7 +19,7 @@ class SklearnMetric(MetricStaticName, ABC):
     """Wrapper around an sklearn metric."""
 
     # we have to store the callable in a 1-element tuple because otherwise mypy gets confused
-    sklearn_metric: ClassVar[Tuple[Callable[[pd.Series, pd.Series], float]]]
+    sklearn_metric: ClassVar[tuple[Callable[[pd.Series, pd.Series], float]]]
 
     @implements(MetricStaticName)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
@@ -54,8 +54,8 @@ class RobustAccuracy(SklearnMetric):
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         score_func = super().score
         return min(
-            [
+            
                 score_func(prediction.get_s_subset(actual.s, _s), actual.get_s_subset(_s))
                 for _s in actual.s.unique()
-            ]
+            
         )

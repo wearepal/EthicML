@@ -26,7 +26,7 @@ class Corels(InAlgorithmNoParams):
         return "CORELS"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Corels":
+    def fit(self, train: DataTuple, seed: int = 888) -> Corels:
         return self
 
     @implements(InAlgorithmNoParams)

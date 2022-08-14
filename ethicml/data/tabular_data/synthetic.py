@@ -60,7 +60,7 @@ class Synthetic(CSVDatasetDC):
 
     @property
     @implements(CSVDatasetDC)
-    def continuous_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         return ["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"]
 
     @property
@@ -81,7 +81,7 @@ class Synthetic(CSVDatasetDC):
         return self.num_samples
 
     @implements(CSVDatasetDC)
-    def get_filename_or_path(self) -> Union[str, Path]:
+    def get_filename_or_path(self) -> str | Path:
         return f"synthetic_scenario_{self.scenario.value}.csv"
 
     @property

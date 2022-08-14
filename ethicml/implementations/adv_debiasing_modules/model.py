@@ -76,7 +76,7 @@ def train_loop(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train model."""
     # Train adversary
     for x, z, y in data_loader:
@@ -121,7 +121,7 @@ def train_regressor(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train regression model."""
     # Train adversary
     for x, z, y in data_loader:

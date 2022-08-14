@@ -44,7 +44,7 @@ class Reweighting(InAlgorithm):
 
     @implements(InAlgorithm)
     def get_hyperparameters(self) -> HyperParamType:
-        _hyperparameters: Dict[str, Any] = {"C": self.C}
+        _hyperparameters: dict[str, Any] = {"C": self.C}
         if self.classifier is ClassifierType.svm:
             assert self.kernel is not None
             _hyperparameters["kernel"] = self.kernel
@@ -83,7 +83,7 @@ class Reweighting(InAlgorithm):
         train: DataTuple,
         classifier: ClassifierType,
         C: float,
-        kernel: Optional[KernelType],
+        kernel: KernelType | None,
         seed: int,
     ) -> sklearn.linear_model._base.LinearModel:
         if classifier is ClassifierType.svm:

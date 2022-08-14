@@ -43,8 +43,8 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         name: str,
         dir_name: str,
         top_dir: str,
-        url: Optional[str] = None,
-        executable: Optional[str] = None,
+        url: str | None = None,
+        executable: str | None = None,
         use_poetry: bool = False,
     ):
         # QUESTION: do we really need `store_dir`? we could also just clone the code into "."
