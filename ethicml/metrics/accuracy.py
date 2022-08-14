@@ -2,7 +2,7 @@
 from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
-from typing import Callable, ClassVar
+from typing import Callable, ClassVar, Tuple
 
 import pandas as pd
 from ranzen import implements
@@ -19,7 +19,7 @@ class SklearnMetric(MetricStaticName, ABC):
     """Wrapper around an sklearn metric."""
 
     # we have to store the callable in a 1-element tuple because otherwise mypy gets confused
-    sklearn_metric: ClassVar[tuple[Callable[[pd.Series, pd.Series], float]]]
+    sklearn_metric: ClassVar[Tuple[Callable[[pd.Series, pd.Series], float]]]
 
     @implements(MetricStaticName)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
