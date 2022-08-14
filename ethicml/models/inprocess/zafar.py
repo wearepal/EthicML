@@ -1,6 +1,6 @@
 """Algorithms by Zafar et al. for Demographic Parity."""
-import json
 from abc import abstractmethod
+import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union

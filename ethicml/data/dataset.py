@@ -1,9 +1,9 @@
 """Data structure for all datasets that come with the framework."""
-import typing
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
+import typing
 from typing import (
     ClassVar,
     Dict,

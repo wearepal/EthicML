@@ -1,8 +1,8 @@
 """Test Hydra compatability."""
 from typing import Type
 
-import pytest
 from omegaconf import OmegaConf
+import pytest
 
 from ethicml import models
 

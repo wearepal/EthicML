@@ -1,7 +1,7 @@
 """Classes related to running algorithms in subprocesses."""
-import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, List, Literal, Mapping, Optional, Tuple, TypedDict, TypeVar, Union, final

@@ -3,8 +3,8 @@
 from typing import Optional, Tuple
 
 import torch
-import torch.nn.functional as F
 from torch import Tensor
+import torch.nn.functional as F
 
 from ethicml.models.preprocess.vfae import VfaeArgs
 

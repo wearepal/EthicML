@@ -1,11 +1,10 @@
 """Post-processing method by Hardt et al."""
 from __future__ import annotations
-
 from dataclasses import dataclass
 
 import numpy as np
-import pandas as pd
 from numpy.random import RandomState
+import pandas as pd
 from ranzen import implements
 from scipy.optimize import OptimizeResult, linprog  # type: ignore[attr-defined]
 

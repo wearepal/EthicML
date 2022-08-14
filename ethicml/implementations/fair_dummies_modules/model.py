@@ -1,16 +1,15 @@
 """FairDummies Models."""
 from __future__ import annotations
-
 import random
 from typing import Callable, Literal, Tuple
 from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from sklearn.preprocessing import StandardScaler
 from torch.utils.data import DataLoader
 
 from ... import DataTuple

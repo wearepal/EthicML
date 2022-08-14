@@ -3,10 +3,10 @@ import itertools
 from pathlib import Path
 from typing import Any, Callable, List, Literal, Optional, Tuple, Union
 
+from matplotlib import figure, legend
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from matplotlib import figure, legend
 from sklearn.manifold import TSNE  # type: ignore[attr-defined]
 
 from ethicml.metrics.metric import Metric

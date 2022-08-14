@@ -20,7 +20,7 @@ from ethicml.metrics import (
     RobustAccuracy,
     Theil,
 )
-from ethicml.models import LR, SVM, InAlgorithm, Reweighting
+from ethicml.models import InAlgorithm, LR, Reweighting, SVM
 from tests.conftest import get_id
 
 

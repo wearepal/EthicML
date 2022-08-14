@@ -1,7 +1,7 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
-import itertools
 from dataclasses import dataclass, field
 from enum import Enum, auto
+import itertools
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd

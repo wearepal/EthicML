@@ -1,13 +1,12 @@
 """Kamiran and Calders 2012."""
 from __future__ import annotations
-
 from dataclasses import dataclass, field
 from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
-import sklearn
 from ranzen import implements
+import sklearn
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.models.inprocess.in_algorithm import HyperParamType, InAlgorithm

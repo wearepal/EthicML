@@ -18,7 +18,7 @@ from ethicml.metrics import (
     Theil,
     metric_per_sens,
 )
-from ethicml.models import LR, SVM, InAlgorithm
+from ethicml.models import InAlgorithm, LR, SVM
 from tests.conftest import get_id
 
 

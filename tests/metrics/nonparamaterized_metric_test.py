@@ -33,7 +33,7 @@ from ethicml.metrics import (
     metric_per_sens,
     ratio_per_sens,
 )
-from ethicml.models import LR, LRCV, SVM, InAlgorithm
+from ethicml.models import InAlgorithm, LR, LRCV, SVM
 
 
 def test_tpr_diff(toy_train_val: TrainValPair):

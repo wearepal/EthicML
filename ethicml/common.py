@@ -1,6 +1,6 @@
 """Common variables / constants that make things run smoother."""
-import os
 from importlib import util
+import os
 from pathlib import Path
 
 __all__ = ["TORCH_AVAILABLE", "ROOT_DIR", "ROOT_PATH"]

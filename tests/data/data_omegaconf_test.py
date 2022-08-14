@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import Type, Union
 
-import pytest
 from omegaconf import OmegaConf, ValidationError
+import pytest
 
 import ethicml.data as emda
 

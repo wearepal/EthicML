@@ -10,9 +10,9 @@ import os
 from pathlib import Path
 from typing import Generator, Iterable, List, Literal, Optional, Tuple, Union
 
+from folktables import ACSDataSource, adult_filter, folktables, state_list
 import numpy as np
 import pandas as pd
-from folktables import ACSDataSource, adult_filter, folktables, state_list
 from ranzen import implements
 
 from ethicml.utility import DataTuple

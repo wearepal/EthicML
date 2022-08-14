@@ -5,12 +5,12 @@ Say you find a paper from a few years ago with code. It's not unreasonable that 
 be dependency clashes, python clashes, clashes galore. This approach downloads a model, runs it
 in its own venv and makes everyone happy.
 """
+from abc import ABC
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import sys
-from abc import ABC
-from pathlib import Path
 from typing import Optional
 
 import git

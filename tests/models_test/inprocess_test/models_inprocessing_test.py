@@ -22,22 +22,22 @@ from ethicml import (
 from ethicml.data import Compas, Toy, load_data
 from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
 from ethicml.models import (
-    DRO,
-    LR,
-    LRCV,
-    MLP,
-    SVM,
     Agarwal,
     Blind,
     Corels,
     DPOracle,
+    DRO,
     FairDummies,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamishima,
+    LR,
+    LRCV,
     Majority,
+    MLP,
     Oracle,
     Reweighting,
+    SVM,
 )
 from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
 from ethicml.models.inprocess.fair_dummies import FairDummies

@@ -5,7 +5,6 @@ Based on: https://github.com/criteo-research/continuous-fairness
 http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import List, Literal, TypedDict
 

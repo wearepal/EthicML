@@ -1,8 +1,8 @@
 """Test whether metrics classes are compatible with OmegaConf and thus hydra."""
 from typing import Type
 
-import pytest
 from omegaconf import OmegaConf
+import pytest
 
 from ethicml import metrics
 

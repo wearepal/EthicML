@@ -1,14 +1,13 @@
 """Implementation of VFAE."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
+import sys
 from typing import TYPE_CHECKING, List, Tuple, Union
 
+from joblib import dump, load
 import pandas as pd
 import torch
-from joblib import dump, load
 from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader

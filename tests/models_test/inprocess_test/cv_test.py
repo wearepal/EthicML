@@ -7,7 +7,7 @@ import pytest
 import ethicml as em
 from ethicml import KernelType, Prediction, TrainTestPair
 from ethicml.metrics import Accuracy
-from ethicml.models import LR, SVM, InAlgorithm
+from ethicml.models import InAlgorithm, LR, SVM
 
 
 class CvParam(NamedTuple):

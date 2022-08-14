@@ -1,15 +1,14 @@
 """Fair Dummies Implementation."""
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING
 
+from joblib import dump, load
 import numpy as np
 import torch
-from joblib import dump, load
 
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
 from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple

@@ -1,10 +1,9 @@
 """Data structures that are used throughout the code."""
 from __future__ import annotations
-
-import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum, auto
+import json
 from pathlib import Path
 from typing import (
     Callable,
@@ -27,8 +26,8 @@ from typing import (
 from typing_extensions import TypeAlias
 
 import numpy as np
-import pandas as pd
 from numpy import typing as npt
+import pandas as pd
 from ranzen import enum_name_str
 
 __all__ = [

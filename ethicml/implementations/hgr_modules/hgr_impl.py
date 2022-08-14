@@ -9,9 +9,9 @@ from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
-from sklearn.preprocessing import StandardScaler
 
 from ... import DataTuple
 from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, make_dataset_and_loader

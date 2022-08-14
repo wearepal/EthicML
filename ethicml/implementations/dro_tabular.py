@@ -1,13 +1,12 @@
 """Implementation of Fairness without Demographics."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
+import sys
 from typing import TYPE_CHECKING, List, Union
 
-import numpy as np
 from joblib import dump, load
+import numpy as np
 
 try:
     import torch

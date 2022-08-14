@@ -1,11 +1,11 @@
 """Split into train and test data."""
-import itertools
 from abc import ABC, abstractmethod
+import itertools
 from typing import Dict, Iterator, List, Literal, Optional, Tuple
 
 import numpy as np
-import pandas as pd
 from numpy.random import RandomState
+import pandas as pd
 from ranzen import implements
 
 from ethicml.utility import DataTuple

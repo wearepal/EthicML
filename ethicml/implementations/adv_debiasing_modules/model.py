@@ -8,11 +8,11 @@ from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from ranzen import implements
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from ranzen import implements
 
 from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (

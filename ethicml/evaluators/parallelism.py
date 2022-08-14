@@ -2,9 +2,9 @@
 from typing import List, Optional, Sequence, Tuple, TypeVar, Union, cast, overload
 from typing_extensions import Protocol, TypeAlias
 
+from joblib import Parallel, delayed
 import numpy as np
 import pandas as pd
-from joblib import Parallel, delayed
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm

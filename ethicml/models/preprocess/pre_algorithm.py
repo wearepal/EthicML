@@ -1,6 +1,5 @@
 """Abstract Base Class of all algorithms in the framework."""
 from __future__ import annotations
-
 from abc import ABC, abstractmethod
 from typing import Tuple, TypeVar
 

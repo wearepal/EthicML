@@ -4,8 +4,8 @@ from typing import Any, Dict, List, Literal, NamedTuple, Optional, Tuple
 from typing_extensions import TypeAlias
 
 import matplotlib as mpl
-import pandas as pd
 from matplotlib import pyplot as plt
+import pandas as pd
 
 LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name
 PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name

@@ -1,15 +1,14 @@
 """Zemel algorithm."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
+import sys
 from typing import TYPE_CHECKING, NamedTuple, Tuple
 
+from joblib import dump, load
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
-from joblib import dump, load
 from scipy.spatial.distance import cdist
 from scipy.special import softmax  # type: ignore[attr-defined]
 
