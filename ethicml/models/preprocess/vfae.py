@@ -60,8 +60,9 @@ class VFAE(PreAlgorithmSubprocess):
     def get_out_size(self) -> int:
         return self.latent_dims
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "VFAE"
 
     @implements(PreAlgorithmSubprocess)

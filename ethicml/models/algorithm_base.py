@@ -12,13 +12,8 @@ class Algorithm(ABC):
     """Base class for Algorithms."""
 
     @property
-    def name(self) -> str:
-        """Name of the algorithm."""
-        return self.get_name()
-
-    # a method is nicer to implement than a property because you can use the @implements decorator
     @abstractmethod
-    def get_name(self) -> str:
+    def name(self) -> str:
         """Name of the algorithm."""
 
 

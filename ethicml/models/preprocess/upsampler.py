@@ -36,8 +36,9 @@ class Upsampler(PreAlgorithm):
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
     _out_size: Optional[int] = field(init=False, default=None)
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Upsample {self.strategy}"
 
     @implements(PreAlgorithm)

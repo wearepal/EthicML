@@ -18,8 +18,9 @@ class Majority(InAlgorithmNoParams):
 
     is_fairness_algo: ClassVar[bool] = False
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Majority"
 
     @implements(InAlgorithmNoParams)

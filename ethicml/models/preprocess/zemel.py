@@ -51,8 +51,9 @@ class Zemel(PreAlgorithmSubprocess):
             "threshold": self.threshold,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Zemel"
 
     @implements(PreAlgorithmSubprocess)

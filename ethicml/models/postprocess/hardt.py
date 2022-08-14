@@ -25,8 +25,9 @@ class Hardt(PostAlgorithm):
     unfavorable_label: int = 0
     favorable_label: int = 1
 
+    @property  # type: ignore[misc]
     @implements(PostAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Hardt"
 
     @implements(PostAlgorithm)

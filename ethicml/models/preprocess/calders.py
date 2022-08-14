@@ -27,8 +27,9 @@ class Calders(PreAlgorithm):
         assert self._out_size is not None
         return self._out_size
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Calders"
 
     @implements(PreAlgorithm)

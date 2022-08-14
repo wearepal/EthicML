@@ -244,7 +244,8 @@ def test_run_alg_suite_err_handling():
         def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
             raise NotImplementedError("This won't run.")
 
-        def get_name(self) -> str:
+        @property
+        def name(self) -> str:
             return "Problem"
 
     datasets: List[emda.Dataset] = [emda.Toy()]

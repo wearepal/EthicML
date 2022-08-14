@@ -421,17 +421,17 @@ class LegacyDataset(CSVDataset):
         self._raw_file_name_or_path = filename_or_path
         self._cont_features = list(cont_features)
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDataset)
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return self._unfiltered_disc_feat_groups
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDataset)
     def continuous_features(self) -> list[str]:
         return self._cont_features
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDataset)
     def name(self) -> str:
         return self._name

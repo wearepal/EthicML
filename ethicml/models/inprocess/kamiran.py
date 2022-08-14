@@ -42,16 +42,18 @@ class Reweighting(InAlgorithm):
             self.classifier, self.C, self.kernel
         )
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         _hyperparameters: dict[str, Any] = {"C": self.C}
         if self.classifier is ClassifierType.svm:
             assert self.kernel is not None
             _hyperparameters["kernel"] = self.kernel
         return _hyperparameters
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         lr_params = f" C={self.chosen_c}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
             f" C={self.C}, kernel={self.chosen_kernel}"
@@ -113,7 +115,7 @@ class Reweighting(InAlgorithm):
     def _predict(
         self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
     ) -> Prediction:
-        return SoftPrediction((model.predict_proba(test.x)), info=self.get_hyperparameters())
+        return SoftPrediction((model.predict_proba(test.x)), info=self.hyperparameters)
 
 
 def compute_instance_weights(

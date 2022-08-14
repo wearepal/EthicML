@@ -64,8 +64,9 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
             self.__executable = executable
         self.__name = name
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return self.__name
 
     @property

@@ -41,8 +41,9 @@ class Kamishima(InstalledModel):
         self.eta = eta
         self._fit_info: _FitInfo | None = None
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {"eta": self.eta}
 
     @implements(InAlgorithm)

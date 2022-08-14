@@ -46,14 +46,16 @@ class DRO(InAlgorithmSubprocess):
             "network_size": self.network_size,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         _hyperparameters = asdict(self)
         _hyperparameters.pop("dir")  # this is not really a hyperparameter
         return _hyperparameters
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Dist Robust Optim"
 
     @implements(InAlgorithmSubprocess)

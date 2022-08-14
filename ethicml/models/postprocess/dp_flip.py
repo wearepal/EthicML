@@ -17,8 +17,9 @@ __all__ = ["DPFlip"]
 class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
+    @property
     @implements(PostAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "DemPar. Post Process"
 
     @implements(PostAlgorithm)

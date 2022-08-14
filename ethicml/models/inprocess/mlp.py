@@ -30,8 +30,9 @@ class MLP(InAlgorithmDC):
     batch_size: int = 32
     lr: float = 1e-3
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmDC)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "MLP"
 
     @implements(InAlgorithmDC)
@@ -44,13 +45,13 @@ class MLP(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        return SoftPrediction(soft=self.clf.predict_proba(test.x), info=self.get_hyperparameters())
+        return SoftPrediction(soft=self.clf.predict_proba(test.x), info=self.hyperparameters)
 
     @implements(InAlgorithmDC)
     def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
         clf = select_mlp(self.hidden_layer_sizes, seed=seed, lr=self.lr, batch_size=self.batch_size)
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.get_hyperparameters())
+        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.hyperparameters)
 
 
 def select_mlp(

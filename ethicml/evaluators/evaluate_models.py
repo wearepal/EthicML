@@ -300,7 +300,7 @@ def _gather_metrics(
             # construct a row of the results dataframe
             hyperparameters: dict[str, str | float] = {
                 k: v if isinstance(v, (float, int)) else str(v)
-                for k, v in model.get_hyperparameters().items()
+                for k, v in model.hyperparameters.items()
             }
 
             seed = predictions.info["model_seed"]

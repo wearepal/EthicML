@@ -4,7 +4,7 @@ from abc import abstractmethod
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, NamedTuple, Union
+from typing import Any, ClassVar, NamedTuple
 from typing_extensions import Final
 
 import pandas as pd
@@ -126,8 +126,9 @@ class ZafarBaseline(_ZafarAlgorithmBase):
     def __init__(self) -> None:
         super().__init__(name="ZafarBaseline", sub_dir=SUB_DIR_IMPACT)
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {}
 
     @implements(_ZafarAlgorithmBase)
@@ -142,8 +143,9 @@ class ZafarAccuracy(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarAccuracy, γ={gamma}", sub_dir=SUB_DIR_IMPACT)
         self.gamma = gamma
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {"gamma": self.gamma}
 
     @implements(_ZafarAlgorithmBase)
@@ -158,8 +160,9 @@ class ZafarFairness(_ZafarAlgorithmBase):
         super().__init__(name=f"ZafarFairness, C={C}", sub_dir=SUB_DIR_IMPACT)
         self._c = C
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {"C": self._c}
 
     @implements(_ZafarAlgorithmBase)
@@ -180,8 +183,9 @@ class ZafarEqOpp(_ZafarAlgorithmBase):
         self._mu = mu
         self._eps = eps
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {"tau": self._tau, "mu": self._mu, "eps": self._eps}
 
     @implements(_ZafarAlgorithmBase)

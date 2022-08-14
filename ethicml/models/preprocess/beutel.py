@@ -70,7 +70,7 @@ class Beutel(PreAlgorithmSubprocess):
         }
 
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Beutel {self.fairness}"
 
     @implements(PreAlgorithmSubprocess)

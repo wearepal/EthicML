@@ -61,8 +61,9 @@ class InAlgorithm(Algorithm, ABC):
         train_testing = train.get_n_samples()
         return self.run(train_testing, test, seed)
 
+    @property
     @abstractmethod
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         """Return list of hyperparameters."""
 
 
@@ -70,8 +71,9 @@ class InAlgorithm(Algorithm, ABC):
 class InAlgorithmNoParams(InAlgorithm, ABC):
     """Base class for algorithms without parameters."""
 
+    @property
     @final
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         """Return list of hyperparameters."""
         return {}
 
@@ -79,7 +81,8 @@ class InAlgorithmNoParams(InAlgorithm, ABC):
 class InAlgorithmDC(InAlgorithm, ABC):
     """Base class for algorithms that are dataclasses."""
 
+    @property
     @final
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         """Return list of hyperparameters."""
         return asdict(self)

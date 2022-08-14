@@ -24,8 +24,9 @@ class Oracle(InAlgorithmNoParams):
 
     is_fairness_algo: ClassVar[bool] = False
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Oracle"
 
     @implements(InAlgorithmNoParams)
@@ -53,7 +54,7 @@ class DPOracle(InAlgorithmNoParams):
     """
 
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "DemPar. Oracle"
 
     @implements(InAlgorithmNoParams)

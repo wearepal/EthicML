@@ -18,7 +18,7 @@ class Toy(StaticCSVDataset):
     num_samples: ClassVar[int] = 400
     csv_file: ClassVar[str] = "toy.csv"
 
-    @property
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
     def name(self) -> str:
         return "Toy"
@@ -31,7 +31,7 @@ class Toy(StaticCSVDataset):
             to_remove=[],
         )
 
-    @property
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return {
@@ -39,7 +39,7 @@ class Toy(StaticCSVDataset):
             "disc_2": ["disc_2_x", "disc_2_y", "disc_2_z"],
         }
 
-    @property
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
     def continuous_features(self) -> list[str]:
         return ["a1", "a2"]

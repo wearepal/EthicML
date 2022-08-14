@@ -58,12 +58,12 @@ class Synthetic(CSVDatasetDC):
     def __post_init__(self) -> None:
         assert 0 < self.num_samples <= 100_000
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDatasetDC)
     def continuous_features(self) -> list[str]:
         return ["x1f", "x2f", "n1", "n2"] if self.fair else ["x1", "x2", "n1", "n2"]
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDatasetDC)
     def name(self) -> str:
         return (
@@ -84,7 +84,7 @@ class Synthetic(CSVDatasetDC):
     def get_filename_or_path(self) -> str | Path:
         return f"synthetic_scenario_{self.scenario.value}.csv"
 
-    @property
+    @property  # type: ignore[misc]
     @implements(CSVDatasetDC)
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return {}
