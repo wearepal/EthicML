@@ -70,6 +70,7 @@ class Beutel(PreAlgorithmSubprocess):
             "validation_pcnt": self.validation_pcnt,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
     def name(self) -> str:
         return f"Beutel {self.fairness}"

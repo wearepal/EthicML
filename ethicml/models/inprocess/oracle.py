@@ -53,6 +53,7 @@ class DPOracle(InAlgorithmNoParams):
     but can be useful if you want to either do a sanity check, or report potential values.
     """
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
     def name(self) -> str:
         return "DemPar. Oracle"
