@@ -9,13 +9,13 @@ from pytest import approx
 from ethicml import DataTuple, KernelType, Prediction, train_test_split
 from ethicml.data import Adult, Dataset, NonBinaryToy, Toy, load_data
 from ethicml.metrics import (
-    TPR,
     Accuracy,
     Metric,
     ProbNeg,
     ProbOutcome,
     ProbPos,
     Theil,
+    TPR,
     metric_per_sens,
 )
 from ethicml.models import InAlgorithm, LR, SVM

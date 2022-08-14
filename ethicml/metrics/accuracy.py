@@ -1,4 +1,5 @@
 """Accuracy and related metrics."""
+from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from typing import Callable, ClassVar, Tuple

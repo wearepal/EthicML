@@ -1,5 +1,5 @@
 """Lookup tables / switch statements for project level objects."""
-
+from __future__ import annotations
 from typing import Callable, Dict, List
 
 from .dataset import Dataset

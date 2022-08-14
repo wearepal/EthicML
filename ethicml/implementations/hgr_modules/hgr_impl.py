@@ -3,6 +3,7 @@
 # https://github.com/criteo-research/continuous-fairness
 # The function for measuring HGR is in the facl package, can be downloaded from
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
+from __future__ import annotations
 import random
 from typing import Literal
 from typing_extensions import Self

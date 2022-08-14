@@ -7,16 +7,16 @@ from pytest import approx
 
 from ethicml import LabelTuple, Prediction, TrainValPair
 from ethicml.metrics import (
-    AS,
-    CV,
-    F1,
-    NMI,
     Accuracy,
+    AS,
     AverageOddsDiff,
     BalancedAccuracy,
+    CV,
     DependencyTarget,
+    F1,
     Hsic,
     Metric,
+    NMI,
     RobustAccuracy,
     Theil,
 )

@@ -1,5 +1,5 @@
 """Common plotting functions / datastructures."""
-
+from __future__ import annotations
 from typing import Any, Dict, List, Literal, NamedTuple, Optional, Tuple
 from typing_extensions import TypeAlias
 

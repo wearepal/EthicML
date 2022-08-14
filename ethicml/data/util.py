@@ -1,4 +1,5 @@
 """Useful methods that are used in some of the data objects."""
+from __future__ import annotations
 from itertools import groupby
 from typing import Dict, List, Mapping, NamedTuple, Optional, Sequence
 from typing_extensions import TypeAlias

@@ -18,7 +18,7 @@ from ethicml import (
     train_test_split,
 )
 from ethicml.data import Adult, Toy, load_data
-from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
+from ethicml.metrics import Accuracy, CV, NMI, ProbPos, TPR
 from ethicml.models import LR, Reweighting, SVM, Upsampler, UpsampleStrategy
 
 

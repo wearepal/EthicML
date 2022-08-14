@@ -1,4 +1,5 @@
 """Classes related to running algorithms in subprocesses."""
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 import json

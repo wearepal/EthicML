@@ -1,4 +1,5 @@
 """File For feature binning."""
+from __future__ import annotations
 from itertools import groupby
 from typing import List, Sequence
 

@@ -1,5 +1,5 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
-
+from __future__ import annotations
 from typing import Optional, Tuple
 
 import torch

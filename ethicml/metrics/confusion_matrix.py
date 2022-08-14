@@ -1,4 +1,5 @@
 """Applies sci-kit learn's confusion matrix."""
+from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from typing import List, Optional, Tuple

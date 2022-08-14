@@ -1,5 +1,6 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
+from __future__ import annotations
 
 import torch
 from torch import nn

@@ -1,4 +1,5 @@
 """Zemel's Learned Fair Representations."""
+from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import List, Optional
 from typing_extensions import TypedDict

@@ -1,7 +1,6 @@
 """Implementation of Beutel's adversarially learned fair representations."""
 # Disable pylint checking overwritten method signatures. Pytorch forward passes use **kwargs
 # pylint: disable=arguments-differ
-
 from __future__ import annotations
 import json
 from pathlib import Path

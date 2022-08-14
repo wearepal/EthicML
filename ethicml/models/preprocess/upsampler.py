@@ -1,4 +1,5 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
+from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import itertools

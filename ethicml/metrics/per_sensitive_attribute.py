@@ -1,5 +1,5 @@
 """Evaluator for a metric per sensitive attribute class."""
-
+from __future__ import annotations
 from typing import Callable, Dict, Mapping
 
 import pandas as pd

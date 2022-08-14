@@ -1,4 +1,5 @@
 """Implementation of Agarwal model."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Optional, Set
 from typing_extensions import TypedDict

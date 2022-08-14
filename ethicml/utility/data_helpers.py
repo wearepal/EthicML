@@ -1,4 +1,5 @@
 """Helper functions for working with DataFrames (and Series)."""
+from __future__ import annotations
 from typing import Optional, Union, overload
 
 import pandas as pd

@@ -1,4 +1,5 @@
 """Simply returns the majority label from the train set."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
 

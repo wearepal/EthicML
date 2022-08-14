@@ -3,6 +3,7 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
+from __future__ import annotations
 from typing import Literal, Tuple
 from typing_extensions import Self
 

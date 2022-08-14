@@ -1,4 +1,5 @@
 """Fairness without Demographics Classifier."""
+from __future__ import annotations
 from typing import List
 
 from ranzen import implements
