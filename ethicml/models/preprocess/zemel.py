@@ -1,6 +1,6 @@
 """Zemel's Learned Fair Representations."""
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 from typing_extensions import TypedDict
 
@@ -36,7 +36,9 @@ class Zemel(PreAlgorithmSubprocess):
     max_iter: int = 5_000
     maxfun: int = 5_000
     epsilon: float = 1e-5
-    _in_size: Optional[int] = field(init=False, default=None)
+
+    def __post_init__(self) -> None:
+        self._in_size: Optional[int] = None
 
     @implements(PreAlgorithmSubprocess)
     def _get_flags(self) -> ZemelArgs:

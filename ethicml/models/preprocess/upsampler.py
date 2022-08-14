@@ -1,6 +1,6 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
 import itertools
 from typing import Optional
@@ -34,7 +34,9 @@ class Upsampler(PreAlgorithm):
     """
 
     strategy: UpsampleStrategy = UpsampleStrategy.uniform
-    _out_size: Optional[int] = field(init=False, default=None)
+
+    def __post_init__(self) -> None:
+        self._out_size: Optional[int] = None
 
     @property  # type: ignore[misc]
     @implements(PreAlgorithm)

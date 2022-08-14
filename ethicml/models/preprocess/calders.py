@@ -1,6 +1,6 @@
 """Kamiran&Calders 2012, massaging."""
 from __future__ import annotations
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 import pandas as pd
@@ -20,7 +20,9 @@ class Calders(PreAlgorithm):
 
     preferable_class: int = 1
     disadvantaged_group: int = 0
-    _out_size: Optional[int] = field(init=False, default=None)
+
+    def __post_init__(self) -> None:
+        self._out_size: Optional[int] = None
 
     @property  # type: ignore[misc]
     @implements(PreAlgorithm)
