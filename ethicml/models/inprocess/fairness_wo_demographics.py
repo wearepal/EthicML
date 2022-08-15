@@ -1,8 +1,7 @@
 """Fairness without Demographics."""
 from __future__ import annotations
 from dataclasses import asdict, dataclass, field
-from typing import List
-from typing_extensions import TypedDict
+from typing import List, TypedDict
 
 from ranzen import implements
 

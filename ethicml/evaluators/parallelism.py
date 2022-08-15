@@ -1,7 +1,7 @@
 """Collection of functions that enable parallelism."""
 from __future__ import annotations
-from typing import List, Sequence, Tuple, TypeVar, cast, overload
-from typing_extensions import Protocol, TypeAlias
+from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
+from typing_extensions import TypeAlias
 
 from joblib import Parallel, delayed
 import numpy as np

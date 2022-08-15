@@ -1,7 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
-from typing_extensions import Final
+from typing import Any, ClassVar, Dict, Final, Generator, List, Mapping, NamedTuple
 
 import numpy as np
 import pytest

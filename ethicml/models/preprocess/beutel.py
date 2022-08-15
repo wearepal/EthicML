@@ -1,8 +1,7 @@
 """Beutel's algorithm."""
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
-from typing_extensions import TypedDict
+from typing import List, TypedDict
 
 from ranzen import implements
 

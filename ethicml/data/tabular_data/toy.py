@@ -1,7 +1,7 @@
 """Class to describe features of the Toy dataset."""
 from __future__ import annotations
 from dataclasses import dataclass
-from typing_extensions import ClassVar
+from typing import ClassVar
 
 from ranzen import implements
 

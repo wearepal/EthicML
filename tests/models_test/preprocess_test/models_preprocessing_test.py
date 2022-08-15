@@ -1,7 +1,6 @@
 """Test preprocessing models."""
 from pathlib import Path
-from typing import NamedTuple
-from typing_extensions import Final
+from typing import Final, NamedTuple
 
 import numpy as np
 import pandas as pd

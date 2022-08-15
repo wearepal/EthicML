@@ -4,8 +4,7 @@ from abc import abstractmethod
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, NamedTuple
-from typing_extensions import Final
+from typing import Any, ClassVar, Final, NamedTuple
 
 import pandas as pd
 from ranzen import implements
