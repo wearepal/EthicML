@@ -1,5 +1,6 @@
 """Evaluator for a metric per sensitive attribute class."""
 from __future__ import annotations
+from enum import Flag, auto
 from typing import Callable, Mapping
 
 import pandas as pd
@@ -10,15 +11,56 @@ from .metric import Metric
 
 __all__ = [
     "MetricNotApplicable",
+    "PerSens",
     "aggregate_over_sens",
     "diff_per_sens",
+    "max_per_sens",
     "metric_per_sens",
+    "min_per_sens",
     "ratio_per_sens",
 ]
 
 
 class MetricNotApplicable(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
+
+
+class PerSens(Flag):
+    """Aggregation methods for metrics that are computed per sensitive attributes.
+
+    The members of this class are *flags*, which means that they can be combined
+    with bit-wise *or*.
+
+    :param value: Turn a value into a ``Flag`` member.
+
+    :example:
+
+    >>> PerSens.DIFFS | PerSens.MAX
+    <PerSens.MAX|DIFFS: 3>
+    >>> (PerSens.DIFFS | PerSens.RATIOS) == PerSens.DIFFS_RATIOS
+    True
+    >>> PerSens.DIFFS in PerSens.DIFFS_RATIOS
+    True
+    >>> PerSens.DIFFS in PerSens.DIFFS
+    True
+    >>> PerSens.DIFFS in PerSens.MIN_MAX
+    False
+    """
+
+    DIFFS = auto()
+    """Differences of the per-group results."""
+    MAX = auto()
+    """Maximum of the per-group results."""
+    MIN = auto()
+    """Minimum of the per-group results."""
+    RATIOS = auto()
+    """Ratios of the per-group results."""
+    DIFFS_RATIOS = DIFFS | RATIOS
+    """Differences and ratios of the per-group results."""
+    MIN_MAX = MIN | MAX
+    """Minimum and maximum of the per-group results."""
+    ALL = DIFFS | RATIOS | MIN | MAX
+    """All aggregations."""
 
 
 def metric_per_sens(
@@ -59,6 +101,7 @@ def aggregate_over_sens(
     aggregator: Callable[[float, float], float],
     infix: str,
     prefix: str = "",
+    suffix: str = "",
 ) -> dict[str, float]:
     """Aggregate metrics over sensitive attributes.
 
@@ -72,7 +115,7 @@ def aggregate_over_sens(
     for i, sens_key_i in enumerate(sens_keys):
         i_value: float = per_sens_res[sens_key_i]
         for j in range(i + 1, len(sens_keys)):
-            key: str = f"{prefix}{sens_key_i}{infix}{sens_keys[j]}"
+            key: str = f"{prefix}{sens_key_i}{infix}{sens_keys[j]}{suffix}"
             j_value: float = per_sens_res[sens_keys[j]]
 
             aggregated_over_sens[key] = aggregator(i_value, j_value)
@@ -107,3 +150,21 @@ def _safe_ratio(i_value: float, j_value: float) -> float:
     max_val = max(i_value, j_value)
 
     return min_val / max_val if max_val != 0 else float("nan")
+
+
+def min_per_sens(per_sens_res: dict[str, float]) -> dict[str, float]:
+    """Compute the minimum value of the metrics per sensitive attribute.
+
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of min values
+    """
+    return aggregate_over_sens(per_sens_res, aggregator=min, prefix="min(", infix=",", suffix=")")
+
+
+def max_per_sens(per_sens_res: dict[str, float]) -> dict[str, float]:
+    """Compute the maximum value of the metrics per sensitive attribute.
+
+    :param per_sens_res: dictionary of the results
+    :returns: dictionary of max values
+    """
+    return aggregate_over_sens(per_sens_res, aggregator=max, prefix="max(", infix=",", suffix=")")

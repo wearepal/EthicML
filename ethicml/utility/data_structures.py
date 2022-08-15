@@ -562,7 +562,9 @@ class TrainValPair(NamedTuple):
     test: DataTuple
 
 
-Results = NewType("Results", pd.DataFrame)  # Container for results from `evaluate_models`
+Results = NewType("Results", pd.DataFrame)
+"""Container for results from :func:`ethicml.evaluators.evaluate.evaluate_models`."""
+
 
 RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]
 
@@ -574,7 +576,7 @@ def make_results(data_frame: None | pd.DataFrame | Path = None) -> Results:
     function checks whether the columns are correct.
 
     :param data_frame: A dataframe to use for initialization. (Default: None)
-    :returns: An initialised ``Results`` object.
+    :returns: An initialised :class:`Results` object.
     """
     if isinstance(data_frame, Path):
         data_frame = pd.read_csv(data_frame)

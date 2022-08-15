@@ -2,8 +2,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, ClassVar, List, Mapping
-from typing_extensions import Final, final
+from typing import Any, ClassVar, Final, List, Mapping, final
 
 import numpy as np
 import pandas as pd

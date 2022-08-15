@@ -11,8 +11,11 @@ from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicable,
+    PerSens,
     diff_per_sens,
+    max_per_sens,
     metric_per_sens,
+    min_per_sens,
     ratio_per_sens,
 )
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
@@ -54,7 +57,7 @@ def run_metrics(
     actual: EvalTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
-    diffs_and_ratios: bool = True,
+    aggregation: PerSens | None = PerSens.DIFFS_RATIOS,
     use_sens_name: bool = True,
 ) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
@@ -63,9 +66,10 @@ def run_metrics(
     :param actual: EvalTuple with the labels
     :param metrics: list of metrics (Default: ())
     :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
-    :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)
+    :param aggregation: Optionally specify aggregations that are performed on the per-sens metrics.
+        (Default: ``DIFFS_RATIOS``)
     :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
-                        If False, refer to the sensitive varibale as `S`. (Default: True)
+        If False, refer to the sensitive variable as "S". (Default: ``True``)
     :returns: A dictionary of all the metric results.
     """
     result: dict[str, float] = {}
@@ -76,10 +80,19 @@ def run_metrics(
 
     for metric in per_sens_metrics:
         per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
-        if diffs_and_ratios:
-            diffs_ratios = diff_per_sens(per_sens)
-            diffs_ratios.update(ratio_per_sens(per_sens))
-            per_sens.update(diffs_ratios)
+        if aggregation is not None:
+            # we can't add the aggregations directly to ``per_sens`` because then
+            # we would create aggregations of aggregations
+            aggregations: dict[str, float] = {}
+            if PerSens.DIFFS in aggregation:
+                aggregations.update(diff_per_sens(per_sens))
+            if PerSens.RATIOS in aggregation:
+                aggregations.update(ratio_per_sens(per_sens))
+            if PerSens.MIN in aggregation:
+                aggregations.update(min_per_sens(per_sens))
+            if PerSens.MAX in aggregation:
+                aggregations.update(max_per_sens(per_sens))
+            per_sens.update(aggregations)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary

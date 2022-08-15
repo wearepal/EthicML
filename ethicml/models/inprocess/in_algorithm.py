@@ -2,8 +2,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import asdict
-from typing import ClassVar, TypeVar
-from typing_extensions import final
+from typing import ClassVar, TypeVar, final
 
 from ethicml.models.algorithm_base import Algorithm
 from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple

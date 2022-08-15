@@ -6,3 +6,5 @@ Utils
    :members:
    :imported-members:
    :autosummary:
+
+.. autoclass:: Results
