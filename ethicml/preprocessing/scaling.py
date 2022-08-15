@@ -7,10 +7,12 @@ import pandas as pd
 from ethicml.data import Dataset
 from ethicml.utility.data_structures import DataTuple
 
-__all__ = ["scale_continuous"]
+__all__ = ["ScalerType", "scale_continuous"]
 
 
 class ScalerType(Protocol):
+    """Protocol describing a scaler class."""
+
     def fit(self, df: pd.DataFrame) -> None:
         ...
 
@@ -41,12 +43,13 @@ def scale_continuous(
         `fit_transform` operation, else just `transform`. (Default: True)
     :returns: Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).
 
-    Examples:
-        >>> dataset = adult()
-        >>> datatuple = dataset.load()
-        >>> train, test = train_test_split(datatuple)
-        >>> train, scaler = scale_continuous(dataset, train, scaler)
-        >>> test, scaler = scale_continuous(dataset, test, scaler, fit=False)
+    Example:
+
+    >>> dataset = adult()
+    >>> datatuple = dataset.load()
+    >>> train, test = train_test_split(datatuple)
+    >>> train, scaler = scale_continuous(dataset, train, scaler)
+    >>> test, scaler = scale_continuous(dataset, test, scaler, fit=False)
     """
     new_feats = datatuple.x.copy().astype('float64')
     if inverse:

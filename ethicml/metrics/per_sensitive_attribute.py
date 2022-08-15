@@ -1,5 +1,6 @@
 """Evaluator for a metric per sensitive attribute class."""
 from __future__ import annotations
+from enum import Flag, auto
 from typing import Callable, Mapping
 
 import pandas as pd
@@ -10,6 +11,7 @@ from .metric import Metric
 
 __all__ = [
     "MetricNotApplicable",
+    "PerSens",
     "aggregate_over_sens",
     "diff_per_sens",
     "metric_per_sens",
@@ -19,6 +21,41 @@ __all__ = [
 
 class MetricNotApplicable(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
+
+
+class PerSens(Flag):
+    """Aggregation methods for metrics that are computed per sensitive attributes.
+
+    The members of this class are *flags*, which means that they can be combined
+    with bit-wise *or*.
+
+    :param value: Turn a value into a ``Flag`` member.
+
+    :example:
+
+    >>> PerSens.DIFFS | PerSens.MAX
+    <PerSens.MAX|DIFFS: 3>
+    >>> (PerSens.DIFFS | PerSens.RATIOS) == PerSens.DIFFS_RATIOS
+    True
+    >>> bool(PerSens.DIFFS & PerSens.DIFFS_RATIOS)
+    True
+    >>> bool(PerSens.DIFFS & PerSens.MIN_MAX)
+    False
+    """
+    DIFFS = auto()
+    """Differences of the per-group results."""
+    MAX = auto()
+    """Maximum of the per-group results."""
+    MIN = auto()
+    """Minimum of the per-group results."""
+    RATIOS = auto()
+    """Ratios of the per-group results."""
+    DIFFS_RATIOS = DIFFS | RATIOS
+    """Differences and ratios of the per-group results."""
+    MIN_MAX = MIN | MAX
+    """Minimum and maximum of the per-group results."""
+    ALL = DIFFS | RATIOS | MIN | MAX
+    """All aggregations."""
 
 
 def metric_per_sens(
