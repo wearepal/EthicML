@@ -55,7 +55,7 @@ class Beutel(PreAlgorithmSubprocess):
     def _get_flags(self) -> BeutelArgs:
         # TODO: replace this with dataclasses.asdict()
         return {
-            "fairness": str(self.fairness),
+            "fairness": self.fairness,
             "enc_size": list(self.enc_size),
             "adv_size": list(self.adv_size),
             "pred_size": list(self.pred_size),

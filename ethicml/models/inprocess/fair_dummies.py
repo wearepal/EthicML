@@ -83,4 +83,4 @@ class FairDummies(InAlgorithmSubprocess):
     @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
-        return f"Fair Dummies {self.model_type}"
+        return f"Fair Dummies {self.model_type}_model"

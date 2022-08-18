@@ -45,7 +45,7 @@ class VFAE(PreAlgorithmSubprocess):
         # TODO: replace this with dataclasses.asdict()
         return {
             "supervised": self.supervised,
-            "fairness": str(self.fairness),
+            "fairness": self.fairness,
             "batch_size": self.batch_size,
             "epochs": self.epochs,
             "dataset": self.dataset,

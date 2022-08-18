@@ -64,4 +64,4 @@ class HGR(InAlgorithmSubprocess):
     @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
-        return f"HGR {self.model_type}"
+        return f"HGR {self.model_type}_model"

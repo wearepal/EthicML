@@ -62,7 +62,7 @@ class Agarwal(InAlgorithmSubprocess):
             "eps": self.eps,
             "iters": self.iters,
             "C": chosen_c,
-            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
+            "kernel": chosen_kernel if chosen_kernel is not None else "",
         }
 
     @property  # type: ignore[misc]

@@ -53,9 +53,9 @@ class HgrRegLearner:
         self.batch_size = batch_size
 
         self.out_shape = out_shape
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
 
         else:
@@ -153,9 +153,9 @@ class HgrClassLearner:
         self.batch_size = batch_size
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
             raise NotImplementedError

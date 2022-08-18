@@ -473,9 +473,9 @@ class EquiClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.model: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.model = LinearModel(in_shape=in_shape, out_shape=num_classes)
         else:
             raise NotImplementedError
@@ -627,9 +627,9 @@ class EquiRegLearner:
         self.use_standardscaler = use_standardscaler
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.model: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.model = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
             raise NotImplementedError

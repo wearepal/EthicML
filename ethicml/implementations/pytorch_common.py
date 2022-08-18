@@ -279,7 +279,7 @@ class GeneralLearner:
         cost_func: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: ModelType,
+        model_type: Literal["deep_proba", "deep_regression"],
         out_shape: int = 1,
     ):
 
