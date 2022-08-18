@@ -1,11 +1,12 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
-import itertools
+from __future__ import annotations
 from dataclasses import dataclass
-from enum import Enum, auto
-from typing import Dict, List, Optional, Tuple
+from enum import auto
+import itertools
+from typing import Optional
 
 import pandas as pd
-from ranzen import enum_name_str, implements
+from ranzen import StrEnum, implements
 
 from ethicml.utility import DataTuple, SoftPrediction
 
@@ -15,8 +16,7 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Upsampler", "UpsampleStrategy"]
 
 
-@enum_name_str
-class UpsampleStrategy(Enum):
+class UpsampleStrategy(StrEnum):
     """Strategy for upsampling."""
 
     uniform = auto()
@@ -37,17 +37,19 @@ class Upsampler(PreAlgorithm):
     def __post_init__(self) -> None:
         self._out_size: Optional[int] = None
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Upsample {self.strategy}"
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         assert self._out_size is not None
         return self._out_size
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> Tuple["Upsampler", DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Upsampler, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = upsample(train, train, self.strategy, seed, name=self.name)
         return self, new_train
@@ -57,14 +59,14 @@ class Upsampler(PreAlgorithm):
         return data.rename(f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         return upsample(train, test, self.strategy, seed, name=self.name)
 
 
 def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     """Given 2 datatuples, concatenate them and shuffle."""
-    assert (first_dt.x.columns == second_dt.x.columns).all()  # type: ignore[attr-defined]
+    assert (first_dt.x.columns == second_dt.x.columns).all()
     assert first_dt.s_column == second_dt.s_column
     assert first_dt.y_column == second_dt.y_column
 
@@ -72,7 +74,7 @@ def concat_datatuples(first_dt: DataTuple, second_dt: DataTuple) -> DataTuple:
     b_combined: pd.DataFrame = second_dt.data
 
     combined = pd.concat([a_combined, b_combined], axis="index")
-    combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)  # type: ignore[assignment]
+    combined: pd.DataFrame = combined.sample(frac=1.0, random_state=1).reset_index(drop=True)
 
     return first_dt.replace_data(combined)
 
@@ -83,7 +85,7 @@ def upsample(
     strategy: UpsampleStrategy,
     seed: int,
     name: str,
-) -> Tuple[DataTuple, T]:
+) -> tuple[DataTuple, T]:
     """Upsample a datatuple.
 
     :param dataset: Dataset that is used to determine the imbalance.
@@ -92,19 +94,19 @@ def upsample(
     :param seed: Seed for the upsampling.
     :param name: Name of the upsampling strategy.
     """
-    s_vals: List[int] = list(map(int, dataset.s.unique()))
-    y_vals: List[int] = list(map(int, dataset.y.unique()))
+    s_vals: list[int] = list(map(int, dataset.s.unique()))
+    y_vals: list[int] = list(map(int, dataset.y.unique()))
 
     groups = itertools.product(s_vals, y_vals)
 
-    data: Dict[Tuple[int, int], DataTuple] = {}
+    data: dict[tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
         data[(s, y)] = dataset.replace_data(dataset.data.loc[s_y_mask].reset_index(drop=True))
 
-    percentages: Dict[Tuple[int, int], float] = {}
+    percentages: dict[tuple[int, int], float] = {}
 
-    vals: List[int] = []
+    vals: list[int] = []
     for key, val in data.items():
         vals.append(val.x.shape[0])
 
@@ -123,15 +125,15 @@ def upsample(
 
             percentages[key] = round((y_eq_y * s_eq_s / (num_batch * num_samples)), 8)
 
-    upsampled: Dict[Tuple[int, int], DataTuple] = {}
+    upsampled: dict[tuple[int, int], DataTuple] = {}
     all_data: pd.DataFrame
     for key, val in data.items():
-        all_data = val.data.sample(  # type: ignore[assignment]
+        all_data = val.data.sample(
             frac=percentages[key], random_state=seed, replace=True
         ).reset_index(drop=True)
         upsampled[key] = val.replace_data(all_data)
 
-    upsampled_datatuple: Optional[DataTuple] = None
+    upsampled_datatuple: DataTuple | None = None
     for key, val in upsampled.items():
         if upsampled_datatuple is None:
             upsampled_datatuple = val
@@ -143,7 +145,7 @@ def upsample(
         ranker = LR()
         rank: SoftPrediction = ranker.run(dataset, dataset)
 
-        selected: List[pd.DataFrame] = []
+        selected: list[pd.DataFrame] = []
 
         all_data = dataset.data
         all_data = pd.concat(

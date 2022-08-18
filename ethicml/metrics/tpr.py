@@ -1,4 +1,5 @@
 """For assessing TPR."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
 
@@ -20,5 +21,5 @@ class TPR(CfmMetric):
 
     @implements(Metric)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
-        _, _, f_neg, t_pos = self.confusion_matrix(prediction=prediction, actual=actual)
+        _, _, f_neg, t_pos = self._confusion_matrix(prediction=prediction, actual=actual)
         return t_pos / (t_pos + f_neg)

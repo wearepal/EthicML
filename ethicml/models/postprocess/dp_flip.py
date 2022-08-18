@@ -1,6 +1,6 @@
 """Demographic Parity Label flipping approach."""
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -17,12 +17,13 @@ __all__ = ["DPFlip"]
 class DPFlip(PostAlgorithm):
     """Randomly flip a number of decisions such that perfect demographic parity is achieved."""
 
+    @property  # type: ignore[misc]
     @implements(PostAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "DemPar. Post Process"
 
     @implements(PostAlgorithm)
-    def fit(self, train_predictions: Prediction, train: DataTuple) -> "DPFlip":
+    def fit(self, train_predictions: Prediction, train: DataTuple) -> DPFlip:
         return self
 
     @implements(PostAlgorithm)
@@ -75,7 +76,7 @@ class DPFlip(PostAlgorithm):
         return preds
 
     @staticmethod
-    def _fit(test: TestTuple, preds: Prediction) -> Tuple[int, int]:
+    def _fit(test: TestTuple, preds: Prediction) -> tuple[int, int]:
         y_0 = preds.hard[preds.hard == 0]
         y_1 = preds.hard[preds.hard == 1]
         s_0 = test.s[test.s == 0]

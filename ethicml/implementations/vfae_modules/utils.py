@@ -1,10 +1,9 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
-
-from typing import Optional, Tuple
+from __future__ import annotations
 
 import torch
-import torch.nn.functional as F
 from torch import Tensor
+import torch.nn.functional as F
 
 from ethicml.models.preprocess.vfae import VfaeArgs
 
@@ -17,16 +16,9 @@ from ethicml.utility import FairnessType
 
 
 def kullback_leibler(
-    mu1: Tensor, logvar1: Tensor, mu2: Optional[Tensor] = None, logvar2: Optional[Tensor] = None
+    mu1: Tensor, logvar1: Tensor, mu2: Tensor | None = None, logvar2: Tensor | None = None
 ) -> Tensor:
-    """KL Divergence.
-
-    :param mu1:
-    :param logvar1:
-    :param mu2:  (Default: None)
-    :param logvar2:  (Default: None)
-    :returns: Tensorof divergence in each dim.
-    """
+    """KL Divergence in each dim."""
     mu2 = mu2 if mu2 is not None else torch.tensor([0.0])
     logvar2 = logvar2 if logvar2 is not None else torch.tensor([0.0])
     return (
@@ -38,23 +30,13 @@ def kullback_leibler(
 def loss_function(
     flags: VfaeArgs,
     z1_triplet: LvInfo,
-    z2_triplet: Optional[LvInfo],
-    z1_d_triplet: Optional[LvInfo],
-    data_triplet: Tuple[Tensor, Tensor, Tensor],
+    z2_triplet: LvInfo | None,
+    z1_d_triplet: LvInfo | None,
+    data_triplet: tuple[Tensor, Tensor, Tensor],
     x_dec: Tensor,
-    y_pred: Optional[Tensor],
-) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
-    """Loss function for VFAE.
-
-    :param flags:
-    :param z1_triplet:
-    :param z2_triplet:
-    :param z1_d_triplet:
-    :param data_triplet:
-    :param x_dec:
-    :param y_pred:
-    :returns: Tuple of prediction loss, reconstruction loss, KL Divergence and MMD.
-    """
+    y_pred: Tensor | None,
+) -> tuple[Tensor, Tensor, Tensor, Tensor]:
+    """Loss function for VFAE, with prediction loss, reconstruction loss, KL Divergence and MMD."""
     z1, z1_mu, z1_logvar = z1_triplet
     if flags["supervised"]:
         assert z2_triplet is not None

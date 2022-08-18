@@ -1,9 +1,9 @@
 """Base class for Algorithms."""
-import subprocess
-import sys
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, List, Optional
+import subprocess
+import sys
 
 __all__ = ["Algorithm", "SubprocessAlgorithmMixin"]
 
@@ -12,13 +12,8 @@ class Algorithm(ABC):
     """Base class for Algorithms."""
 
     @property
-    def name(self) -> str:
-        """Name of the algorithm."""
-        return self.get_name()
-
-    # a method is nicer to implement than a property because you can use the @implements decorator
     @abstractmethod
-    def get_name(self) -> str:
+    def name(self) -> str:
         """Name of the algorithm."""
 
 
@@ -34,7 +29,7 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
         return sys.executable
 
     def call_script(
-        self, cmd_args: List[str], env: Optional[Dict[str, str]] = None, cwd: Optional[Path] = None
+        self, cmd_args: list[str], env: dict[str, str] | None = None, cwd: Path | None = None
     ) -> None:
         """Call a (Python) script as a separate process.
 

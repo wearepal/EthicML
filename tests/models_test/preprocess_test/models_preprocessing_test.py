@@ -1,7 +1,6 @@
 """Test preprocessing models."""
 from pathlib import Path
-from typing import NamedTuple
-from typing_extensions import Final
+from typing import Final, NamedTuple
 
 import numpy as np
 import pandas as pd
@@ -9,16 +8,16 @@ import pytest
 from pytest import approx
 
 import ethicml as em
-from ethicml import DataTuple, FairnessType, TrainTestPair, TrainValPair
+from ethicml import DataTuple, FairnessType, TrainValPair
 from ethicml.models import (
-    SVM,
-    VFAE,
     Beutel,
     Calders,
     InAlgorithm,
     PreAlgorithm,
+    SVM,
     Upsampler,
     UpsampleStrategy,
+    VFAE,
     Zemel,
 )
 
@@ -100,8 +99,8 @@ def test_pre(toy_train_test: TrainValPair, model: PreAlgorithm, name: str, num_p
         assert new_train.x.shape[0] == train.x.shape[0]
         assert new_test.x.shape[0] == test.x.shape[0]
 
-    assert new_train.x.shape[1] == model.get_out_size()
-    assert new_test.x.shape[1] == model.get_out_size()
+    assert new_train.x.shape[1] == model.out_size
+    assert new_test.x.shape[1] == model.out_size
     assert new_test.name == f"{name}: {str(test.name)}"
     assert new_train.name == f"{name}: {str(train.name)}"
 
@@ -128,8 +127,8 @@ def test_pre_sep_fit_transform(
         assert new_train.x.shape[0] == train.x.shape[0]
         assert new_test.x.shape[0] == test.x.shape[0]
 
-    assert new_train.x.shape[1] == model.get_out_size()
-    assert new_test.x.shape[1] == model.get_out_size()
+    assert new_train.x.shape[1] == model.out_size
+    assert new_test.x.shape[1] == model.out_size
     assert new_test.name == f"{name}: {str(test.name)}"
     assert new_train.name == f"{name}: {str(train.name)}"
 

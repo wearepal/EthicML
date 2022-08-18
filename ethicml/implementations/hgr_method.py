@@ -1,17 +1,17 @@
 """Fair Dummies Implementation."""
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING
 
-import numpy as np
 from joblib import dump, load
+import numpy as np
 
 from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.hgr_modules.hgr_impl import HgrClassLearner
+from ethicml.utility.data_structures import ModelType
 
 if TYPE_CHECKING:
     from ethicml.models.inprocess.hgr import HgrArgs
@@ -19,11 +19,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     try:
         import torch
 
@@ -44,29 +40,20 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         in_shape=len(train.x.columns),
         out_shape=train.y.nunique(),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
     )
     return model.fit(train, seed=seed)
 
 
 def predict(model: HgrClassLearner, test: SubgroupTuple) -> np.ndarray:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: SubgroupTuple, args: HgrArgs, seed: int
 ) -> np.ndarray:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
     return predict(model, test)
 

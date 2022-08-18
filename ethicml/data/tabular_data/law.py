@@ -18,12 +18,13 @@ Link to repo: https://github.com/mkusner/counterfactual-fairness/
      year = {2017}
    }
 """
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Mapping, Type, Union
+from typing import ClassVar, Mapping, Type
 
 from ..dataset import LegacyDataset
-from ..util import LabelGroup, flatten_dict, simple_spec
+from ..util import LabelGroup, flatten_dict, spec_from_binary_cols
 
 __all__ = ["Law", "LawSplits"]
 
@@ -66,7 +67,7 @@ class Law(LegacyDataset):
         continuous_features = ["LSAT", "UGPA", "ZFYA"]
 
         if self.split is LawSplits.SEX:
-            sens_attr_spec: Union[str, Mapping[str, LabelGroup]] = "Sex_1"
+            sens_attr_spec: str | Mapping[str, LabelGroup] = "Sex_1"
             s_prefix = ["Sex", "Race"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
@@ -76,7 +77,9 @@ class Law(LegacyDataset):
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]
         elif self.split is LawSplits.SEX_RACE:
-            sens_attr_spec = simple_spec({"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]})
+            sens_attr_spec = spec_from_binary_cols(
+                {"Sex": ["Sex_1"], "Race": disc_feature_groups["Race"]}
+            )
             s_prefix = ["Race", "Sex"]
             class_label_spec = "PF_1"
             class_label_prefix = ["PF"]

@@ -1,15 +1,14 @@
 """Zemel algorithm."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, NamedTuple, Tuple
+import sys
+from typing import TYPE_CHECKING, NamedTuple
 
+from joblib import dump, load
 import numpy as np
 import pandas as pd
 import scipy.optimize as optim
-from joblib import dump, load
 from scipy.spatial.distance import cdist
 from scipy.special import softmax  # type: ignore[attr-defined]
 
@@ -41,20 +40,7 @@ def LFR_optim_objective(
     print_interval: int,
     verbose: bool,
 ) -> np.number:
-    """LFR optim objective.
-
-    :param parameters:
-    :param x_unprivileged:
-    :param x_privileged:
-    :param y_unprivileged:
-    :param y_privileged:
-    :param clusters:
-    :param A_x:
-    :param A_y:
-    :param A_z:
-    :param print_interval:
-    :param verbose:
-    """
+    """LFR optim objective."""
     _, features_dim = x_unprivileged.shape
 
     w = parameters[:clusters]
@@ -92,13 +78,8 @@ def LFR_optim_objective(
 
 def get_xhat_y_hat(
     prototypes: np.ndarray, w: np.ndarray, x: np.ndarray
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Get xhat y hat.
-
-    :param prototypes:
-    :param w:
-    :param x:
-    """
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Get xhat y hat."""
     M = softmax(-cdist(x, prototypes), axis=1)
     x_hat = np.matmul(M, prototypes)
     y_hat = np.clip(
@@ -109,13 +90,8 @@ def get_xhat_y_hat(
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: ZemelArgs, seed: int
-) -> (Tuple[DataTuple, SubgroupTuple]):
-    """Train and transform.
-
-    :param train:
-    :param test:
-    :param flags:
-    """
+) -> (tuple[DataTuple, SubgroupTuple]):
+    """Train and transform."""
     prototypes, w = fit(train, flags, seed=seed)
 
     training_sensitive = train.x.loc[train.s == 0].to_numpy()
@@ -131,12 +107,7 @@ def train_and_transform(
 
 
 def transform(data: SubgroupTuple, prototypes: np.ndarray, w: np.ndarray) -> SubgroupTuple:
-    """Transform.
-
-    :param data:
-    :param prototypes:
-    :param w:
-    """
+    """Transform."""
     data_sens = data.x.loc[data.s == 0].to_numpy()
     data_nons = data.x.loc[data.s == 1].to_numpy()
     transformed = trans(prototypes, w, data_nons, data_sens, data)
@@ -144,11 +115,7 @@ def transform(data: SubgroupTuple, prototypes: np.ndarray, w: np.ndarray) -> Sub
 
 
 def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
-    """Train the Zemel model and return the transformed features of the train and test sets.
-
-    :param train:
-    :param flags:
-    """
+    """Train the Zemel model and return the transformed features of the train and test sets."""
     np.random.seed(seed)
 
     training_sensitive = train.x.loc[train.s == 0].to_numpy()
@@ -201,14 +168,7 @@ def fit(train: DataTuple, flags: ZemelArgs, seed: int) -> Model:
 def trans(
     prototypes: np.ndarray, w: np.ndarray, nonsens: np.ndarray, sens: np.ndarray, dataset: TestTuple
 ) -> pd.DataFrame:
-    """Trans.
-
-    :param prototypes:
-    :param w:
-    :param nonsens:
-    :param sens:
-    :param dataset:
-    """
+    """Trans."""
     _, features_hat_nonsensitive, _ = get_xhat_y_hat(prototypes, w, nonsens)
 
     _, features_hat_sensitive, _ = get_xhat_y_hat(prototypes, w, sens)

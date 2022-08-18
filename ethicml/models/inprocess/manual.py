@@ -1,4 +1,5 @@
 """Manually specified (i.e. not learned) models."""
+from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
@@ -20,12 +21,13 @@ class Corels(InAlgorithmNoParams):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "CORELS"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Corels":
+    def fit(self, train: DataTuple, seed: int = 888) -> Corels:
         return self
 
     @implements(InAlgorithmNoParams)

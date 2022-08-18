@@ -20,6 +20,10 @@ on:
     - make_release.sh
     - CITATION.cff
 
+env:
+  PYTHON_VERSION: "3.8"
+
+
 jobs:
 
   lint_with_pylint:
@@ -28,10 +32,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Install pylint
       run: |
         python -m pip install --upgrade pip
@@ -47,10 +51,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Install black
       run: |
         python -m pip install --upgrade pip
@@ -88,8 +92,25 @@ jobs:
       run: |
         sphinx-build -W -b html ./docs ./docs/_build
 
+  check_with_darglint:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Install darglint
+      run: |
+        python -m pip install --upgrade pip
+        pip install darglint
+    - name: Check with darglint
+      run: |
+        sh run_darglint.sh
+
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint]
     runs-on: ubuntu-latest
 
     steps:
@@ -98,10 +119,10 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: ${{ env.PYTHON_VERSION }}
 
       #----------------------------------------------
       #  -----  install & configure poetry  -----
@@ -112,23 +133,32 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
+      - name: Set ENV VARS
+        run: |
+          echo "POETRY_VERSION=$(poetry -V | cut -d' ' -f3)" >> $GITHUB_ENV
 
       #----------------------------------------------
-      #       load cached venv if cache exists
+      # cache the directory where poetry caches packages
       #----------------------------------------------
-      - name: Set up Poetry cache for Python dependencies
-        id: cached-poetry-dependencies
-        # uses: actions/cache@v2
-        uses: pat-s/always-upload-cache@v2
+      - name: Cache Poetry cache
+        uses: actions/cache@v3
         with:
-          path: .venv
-          key: venvEM2-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+          path: ~/.cache/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
 
       #----------------------------------------------
-      # install dependencies if cache does not exist
+      # cache the directory where pip caches packages
+      #----------------------------------------------
+      - name: Cache Pip cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: pip-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+
+      #----------------------------------------------
+      #  ---------  install dependencies  --------
       #----------------------------------------------
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
           poetry install -E ci --no-interaction --no-root
           poetry run pip install torch --extra-index-url https://download.pytorch.org/whl/cpu

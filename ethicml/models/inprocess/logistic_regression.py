@@ -1,4 +1,5 @@
 """Wrapper around Sci-Kit Learn Logistic Regression."""
+from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
 
@@ -28,12 +29,13 @@ class LR(InAlgorithmDC):
     is_fairness_algo: ClassVar[bool] = False
     C: float = field(default_factory=lambda: LogisticRegression().C)
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmDC)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Logistic Regression (C={self.C})"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+    def fit(self, train: DataTuple, seed: int = 888) -> LR:
         random_state = np.random.RandomState(seed=seed)
         self.clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
@@ -46,13 +48,13 @@ class LR(InAlgorithmDC):
         return Prediction(hard=pd.Series(self.clf.predict(test.x)))
 
     @implements(InAlgorithmDC)
-    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
+    def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> SoftPrediction:
         random_state = np.random.RandomState(seed=seed)
         clf = LogisticRegression(
             solver="liblinear", random_state=random_state, C=self.C, multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.get_hyperparameters())
+        return SoftPrediction(soft=clf.predict_proba(test.x), info=self.hyperparameters)
 
 
 @dataclass
@@ -65,12 +67,13 @@ class LRCV(InAlgorithmDC):
     is_fairness_algo: ClassVar[bool] = False
     n_splits: int = 3
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmDC)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "LRCV"
 
     @implements(InAlgorithmDC)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithmDC:
+    def fit(self, train: DataTuple, seed: int = 888) -> LRCV:
         random_state = np.random.RandomState(seed=seed)
         folder = KFold(n_splits=self.n_splits, shuffle=True, random_state=random_state)
         self.clf = LogisticRegressionCV(
@@ -81,7 +84,7 @@ class LRCV(InAlgorithmDC):
 
     @implements(InAlgorithmDC)
     def predict(self, test: TestTuple) -> Prediction:
-        params = self.get_hyperparameters()
+        params = self.hyperparameters
         params["C"] = self.clf.C_[0]
         return SoftPrediction(soft=self.clf.predict_proba(test.x), info=params)
 
@@ -93,6 +96,6 @@ class LRCV(InAlgorithmDC):
             cv=folder, n_jobs=-1, random_state=random_state, solver="liblinear", multi_class="auto"
         )
         clf.fit(train.x, train.y.to_numpy().ravel())
-        params = self.get_hyperparameters()
+        params = self.hyperparameters
         params["C"] = clf.C_[0]
         return SoftPrediction(soft=clf.predict_proba(test.x), info=params)

@@ -1,7 +1,7 @@
 """Zemel's Learned Fair Representations."""
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional
-from typing_extensions import TypedDict
+from typing import Optional, TypedDict
 
 from ranzen import implements
 
@@ -37,7 +37,7 @@ class Zemel(PreAlgorithmSubprocess):
     epsilon: float = 1e-5
 
     def __post_init__(self) -> None:
-        self._in_size: Optional[int] = None  # the super class will set this for us
+        self._in_size: Optional[int] = None
 
     @implements(PreAlgorithmSubprocess)
     def _get_flags(self) -> ZemelArgs:
@@ -52,15 +52,17 @@ class Zemel(PreAlgorithmSubprocess):
             "threshold": self.threshold,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Zemel"
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         assert self._in_size is not None
         return self._in_size
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.zemel"]

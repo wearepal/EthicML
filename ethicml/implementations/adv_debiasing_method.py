@@ -1,30 +1,25 @@
 """Fair Dummies Implementation."""
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING
 
+from joblib import dump, load
 import numpy as np
 import torch
-from joblib import dump, load
 
-from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
-from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
+from ethicml.utility import DataTuple, ModelType, SoftPrediction, SubgroupTuple
 
 if TYPE_CHECKING:
+    from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
 def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClassLearner:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -38,7 +33,7 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
         cost_pred=torch.nn.CrossEntropyLoss(),
         in_shape=len(train.x.columns),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
         num_classes=train.y.nunique(),
         lambda_vec=args["lambda_vec"],
     )
@@ -46,23 +41,14 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
 
 
 def predict(model: AdvDebiasingClassLearner, test: SubgroupTuple) -> np.ndarray:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: SubgroupTuple, args: AdvDebArgs, seed: int
 ) -> np.ndarray:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
     return predict(model, test)
 

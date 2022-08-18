@@ -1,4 +1,5 @@
 """Class to describe features of the Heritage Health dataset."""
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import ClassVar, Type

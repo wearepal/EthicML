@@ -2,12 +2,14 @@
 
 a score of 0 denotes independence
 """
-import math
+from __future__ import annotations
 from dataclasses import dataclass
+import math
 from typing import ClassVar
 
 import numpy as np
 from numpy.random import RandomState
+from ranzen.decorators import implements
 
 from ethicml.metrics.metric import MetricStaticName
 from ethicml.utility import EvalTuple, Prediction
@@ -18,13 +20,7 @@ __all__ = ["Hsic"]
 def hsic(
     prediction: np.ndarray, label: np.ndarray, sigma_first: float, sigma_second: float
 ) -> float:
-    """Calculate the HSIC value.
-
-    :param prediction:
-    :param label:
-    :param sigma_first:
-    :param sigma_second:
-    """
+    """Calculate the HSIC value."""
     xx_gram = np.array(np.matmul(np.expand_dims(prediction, 1), np.expand_dims(prediction, 1).T))
     yy_gram = np.array(np.matmul(np.expand_dims(label, 1), np.expand_dims(label, 1).T))
 
@@ -60,20 +56,17 @@ def hsic(
 
 @dataclass
 class Hsic(MetricStaticName):
-    """See module string."""
+    """We add the ability to take the average of hsic score.
+
+    As for larger datasets it will kill your machine.
+    """
 
     seed: int = 888
     _name: ClassVar[str] = "HSIC"
     apply_per_sensitive: ClassVar[bool] = False
 
+    @implements(MetricStaticName)
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
-        """We add the ability to take the average of hsic score.
-
-        As for larger datasets it will kill your machine
-
-        :param prediction:
-        :param actual:
-        """
         preds = prediction.hard.to_numpy()[:, np.newaxis]
         sens_labels = actual.s.to_numpy()[:, np.newaxis]
 

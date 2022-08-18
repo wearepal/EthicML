@@ -1,6 +1,6 @@
 """Script to generate the toy dataset."""
-import random
 from pathlib import Path
+import random
 
 import numpy as np
 import pandas as pd

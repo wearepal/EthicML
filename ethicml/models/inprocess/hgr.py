@@ -5,14 +5,13 @@ Based on: https://github.com/criteo-research/continuous-fairness
 http://proceedings.mlr.press/v97/mary19a/mary19a.pdf
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import TypedDict
 
 from ranzen import implements
 
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
-from ethicml.utility import HyperParamType
+from ethicml.utility import HyperParamType, ModelType
 
 __all__ = ["HGR", "HgrArgs"]
 
@@ -24,7 +23,7 @@ class HgrArgs(TypedDict):
     epochs: int
     mu: float
     batch_size: int
-    model_type: Literal["deep_model", "linear_model"]
+    model_type: str
 
 
 @dataclass
@@ -35,27 +34,14 @@ class HGR(InAlgorithmSubprocess):
     epochs: int = 50
     mu: float = 0.98
     batch_size: int = 128
-    model_type: str = "deep_model"
+    model_type: ModelType = ModelType.deep
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.hgr_method"]
 
     @implements(InAlgorithmSubprocess)
     def _get_flags(self) -> HgrArgs:
-        model_type: Literal["deep_model", "linear_model"] = (
-            "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
-        )
-        return {
-            "lr": self.lr,
-            "epochs": self.epochs,
-            "mu": self.mu,
-            "batch_size": self.batch_size,
-            "model_type": model_type,
-        }
-
-    @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
             "epochs": self.epochs,
@@ -64,6 +50,18 @@ class HGR(InAlgorithmSubprocess):
             "model_type": self.model_type,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
-        return f"HGR {self.model_type}"
+    def hyperparameters(self) -> HyperParamType:
+        return {
+            "lr": self.lr,
+            "epochs": self.epochs,
+            "mu": self.mu,
+            "batch_size": self.batch_size,
+            "model_type": self.model_type,
+        }
+
+    @property  # type: ignore[misc]
+    @implements(InAlgorithmSubprocess)
+    def name(self) -> str:
+        return f"HGR {self.model_type}_model"

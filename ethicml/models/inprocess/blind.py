@@ -1,6 +1,5 @@
 """Simply returns a random (but legal) label."""
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import ClassVar
 
@@ -24,12 +23,13 @@ class Blind(InAlgorithmNoParams):
 
     is_fairness_algo: ClassVar[bool] = False
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Blind"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Blind":
+    def fit(self, train: DataTuple, seed: int = 888) -> Blind:
         self.vals = train.y.drop_duplicates()
         self.seed = seed
         return self

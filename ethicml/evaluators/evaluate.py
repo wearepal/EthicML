@@ -1,6 +1,7 @@
 """Runs given metrics on given algorithms for given datasets."""
+from __future__ import annotations
 from pathlib import Path
-from typing import Dict, List, Literal, NamedTuple, Optional, Sequence, Union
+from typing import Literal, NamedTuple, Sequence
 
 import pandas as pd
 
@@ -10,8 +11,11 @@ from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.metric import Metric
 from ethicml.metrics.per_sensitive_attribute import (
     MetricNotApplicable,
+    PerSens,
     diff_per_sens,
+    max_per_sens,
     metric_per_sens,
+    min_per_sens,
     ratio_per_sens,
 )
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
@@ -32,21 +36,14 @@ from ethicml.utility.data_structures import (
 __all__ = ["evaluate_models", "run_metrics", "load_results"]
 
 
-def get_sensitive_combinations(metrics: List[Metric], train: DataTuple) -> List[str]:
-    """Get all possible combinations of sensitive attribute and metrics.
-
-    :param metrics:
-    :param train:
-    """
+def get_sensitive_combinations(metrics: list[Metric], train: DataTuple) -> list[str]:
+    """Get all possible combinations of sensitive attribute and metrics."""
     poss_values = [f"{train.s.name}_{unique}" for unique in train.s.unique()]
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
 
 
 def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
-    """Check if the given metrics allow application per sensitive attribute.
-
-    :param per_sens_metrics:
-    """
+    """Check if the given metrics allow application per sensitive attribute."""
     for metric in per_sens_metrics:
         if not metric.apply_per_sensitive:
             raise MetricNotApplicable(
@@ -60,21 +57,22 @@ def run_metrics(
     actual: EvalTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
-    diffs_and_ratios: bool = True,
+    aggregation: PerSens | None = PerSens.DIFFS_RATIOS,
     use_sens_name: bool = True,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
 
     :param predictions: DataFrame with predictions
     :param actual: EvalTuple with the labels
     :param metrics: list of metrics (Default: ())
     :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
-    :param diffs_and_ratios: if True, compute diffs and ratios per sensitive attribute (Default: True)
+    :param aggregation: Optionally specify aggregations that are performed on the per-sens metrics.
+        (Default: ``DIFFS_RATIOS``)
     :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
-                        If False, refer to the sensitive varibale as `S`. (Default: True)
+        If False, refer to the sensitive variable as "S". (Default: ``True``)
     :returns: A dictionary of all the metric results.
     """
-    result: Dict[str, float] = {}
+    result: dict[str, float] = {}
     if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
         return {"algorithm_failed": 1.0}
     for metric in metrics:
@@ -82,10 +80,19 @@ def run_metrics(
 
     for metric in per_sens_metrics:
         per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
-        if diffs_and_ratios:
-            diffs_ratios = diff_per_sens(per_sens)
-            diffs_ratios.update(ratio_per_sens(per_sens))
-            per_sens.update(diffs_ratios)
+        if aggregation is not None:
+            # we can't add the aggregations directly to ``per_sens`` because then
+            # we would create aggregations of aggregations
+            aggregations: dict[str, float] = {}
+            if PerSens.DIFFS in aggregation:
+                aggregations.update(diff_per_sens(per_sens))
+            if PerSens.RATIOS in aggregation:
+                aggregations.update(ratio_per_sens(per_sens))
+            if PerSens.MIN in aggregation:
+                aggregations.update(min_per_sens(per_sens))
+            if PerSens.MAX in aggregation:
+                aggregations.update(max_per_sens(per_sens))
+            per_sens.update(aggregations)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
@@ -94,9 +101,9 @@ def run_metrics(
 def load_results(
     dataset_name: str,
     transform_name: str,
-    topic: Optional[str] = None,
+    topic: str | None = None,
     outdir: Path = Path(".") / "results",
-) -> Optional[Results]:
+) -> Results | None:
     """Load results from a CSV file that was created by `evaluate_models`.
 
     :param dataset_name: name of the dataset of the results
@@ -111,15 +118,13 @@ def load_results(
     return None
 
 
-def _result_path(
-    outdir: Path, dataset_name: str, transform_name: str, topic: Optional[str]
-) -> Path:
+def _result_path(outdir: Path, dataset_name: str, transform_name: str, topic: str | None) -> Path:
     base_name: str = "" if topic is None else f"{topic}_"
     return outdir / f"{base_name}{dataset_name}_{transform_name}.csv"
 
 
 def _delete_previous_results(
-    outdir: Path, datasets: List[Dataset], transforms: Sequence[PreAlgorithm], topic: Optional[str]
+    outdir: Path, datasets: list[Dataset], transforms: Sequence[PreAlgorithm], topic: str | None
 ) -> None:
     for dataset in datasets:
         transform_list = ["no_transform"]
@@ -134,12 +139,12 @@ class _DataInfo(NamedTuple):
     test: DataTuple
     dataset_name: str
     transform_name: str
-    split_info: Dict[str, float]
+    split_info: dict[str, float]
     scaler: str
 
 
 def evaluate_models(
-    datasets: List[Dataset],
+    datasets: list[Dataset],
     *,
     preprocess_models: Sequence[PreAlgorithm] = (),
     inprocess_models: Sequence[InAlgorithm] = (),
@@ -148,11 +153,11 @@ def evaluate_models(
     repeats: int = 1,
     test_mode: bool = False,
     delete_previous: bool = True,
-    splitter: Optional[DataSplitter] = None,
-    topic: Optional[str] = None,
+    splitter: DataSplitter | None = None,
+    topic: str | None = None,
     fair_pipeline: bool = True,
-    num_jobs: Optional[int] = None,
-    scaler: Optional[ScalerType] = None,
+    num_jobs: int | None = None,
+    scaler: ScalerType | None = None,
     repeat_on: Literal["data", "model", "both"] = "both",
 ) -> Results:
     """Evaluate all the given models for all the given datasets and compute all the given metrics.
@@ -196,9 +201,9 @@ def evaluate_models(
     all_results = ResultsAggregator()
 
     # ======================================= prepare data ========================================
-    data_splits: List[TrainValPair] = []
-    test_data: List[_DataInfo] = []  # contains the test set and other things needed for the metrics
-    model_seeds: List[int] = []
+    data_splits: list[TrainValPair] = []
+    test_data: list[_DataInfo] = []  # contains the test set and other things needed for the metrics
+    model_seeds: list[int] = []
     for dataset in datasets:
         for split_id in range(repeats):
             train: DataTuple
@@ -244,8 +249,8 @@ def evaluate_models(
     )
 
     # append the transformed data to `transformed_data`
-    transformed_data: List[TrainValPair] = []
-    transformed_test: List[_DataInfo] = []
+    transformed_data: list[TrainValPair] = []
+    transformed_test: list[_DataInfo] = []
     for transformed, pre_model in zip(all_transformed, preprocess_models):
         for (transf_train, transf_test), data_info in zip(transformed, test_data):
             transformed_data.append(TrainValPair(transf_train, transf_test))
@@ -282,24 +287,15 @@ def evaluate_models(
 
 
 def _gather_metrics(
-    all_predictions: List[List[Prediction]],
+    all_predictions: list[list[Prediction]],
     test_data: Sequence[_DataInfo],
     inprocess_models: Sequence[InAlgorithm],
     metrics: Sequence[Metric],
     per_sens_metrics: Sequence[Metric],
     outdir: Path,
-    topic: Optional[str],
+    topic: str | None,
 ) -> Results:
-    """Take a list of lists of predictions and compute all metrics.
-
-    :param all_predictions:
-    :param test_data:
-    :param inprocess_models:
-    :param metrics:
-    :param per_sens_metrics:
-    :param outdir:
-    :param topic:
-    """
+    """Take a list of lists of predictions and compute all metrics."""
     columns = ["dataset", "scaler", "transform", "model", "split_id"]
 
     # transpose `all_results` so that the order in the results dataframe is correct
@@ -315,14 +311,14 @@ def _gather_metrics(
         predictions: Prediction
         for predictions, model in zip(preds_for_dataset, inprocess_models):
             # construct a row of the results dataframe
-            hyperparameters: Dict[str, Union[str, float]] = {
+            hyperparameters: dict[str, str | float] = {
                 k: v if isinstance(v, (float, int)) else str(v)
-                for k, v in model.get_hyperparameters().items()
+                for k, v in model.hyperparameters.items()
             }
 
             seed = predictions.info["model_seed"]
             assert isinstance(seed, int)
-            df_row: Dict[str, HyperParamValue] = {
+            df_row: dict[str, HyperParamValue] = {
                 "dataset": data_info.dataset_name,
                 "scaler": data_info.scaler,
                 "transform": data_info.transform_name,

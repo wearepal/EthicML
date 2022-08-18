@@ -1,8 +1,8 @@
 """Class to describe features of the Adult dataset."""
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, List, Tuple, Type
-from typing_extensions import Final
+from typing import ClassVar, Final, Type
 
 from ranzen import implements
 
@@ -11,8 +11,8 @@ from ..util import (
     DiscFeatureGroup,
     flatten_dict,
     reduce_feature_group,
-    simple_spec,
     single_col_spec,
+    spec_from_binary_cols,
 )
 
 __all__ = ["Adult", "AdultSplits"]
@@ -48,8 +48,9 @@ class Adult(StaticCSVDataset):
     binarize_nationality: bool = False
     binarize_race: bool = False
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_name(self) -> str:
+    def name(self) -> str:
         name = f"Adult {self.split.value}"
         if self.binarize_nationality:
             name += ", binary nationality"
@@ -58,40 +59,43 @@ class Adult(StaticCSVDataset):
         return name
 
     @implements(StaticCSVDataset)
-    def get_label_specs(self) -> Tuple[LabelSpecsPair, List[str]]:
+    def get_label_specs(self) -> LabelSpecsPair:
         class_label_spec = single_col_spec("salary_>50K")
         label_feature_groups = ["salary"]
         if self.split is AdultSplits.SEX:
             sens_attr_spec = single_col_spec("sex_Male")
             label_feature_groups += ["sex"]
         elif self.split is AdultSplits.RACE:
-            sens_attr_spec = simple_spec({"race": DISC_FEATURE_GROUPS["race"]})
+            sens_attr_spec = spec_from_binary_cols({"race": DISC_FEATURE_GROUPS["race"]})
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_BINARY:
             sens_attr_spec = single_col_spec("race_White")
             label_feature_groups += ["race"]
         elif self.split is AdultSplits.RACE_SEX:
-            sens_attr_spec = simple_spec({"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]})
+            sens_attr_spec = spec_from_binary_cols(
+                {"sex": ["sex_Male"], "race": DISC_FEATURE_GROUPS["race"]}
+            )
             label_feature_groups += ["sex", "race"]
         elif self.split is AdultSplits.NATIONALITY:
             sens = "native-country"
-            sens_attr_spec = simple_spec({sens: DISC_FEATURE_GROUPS[sens]})
+            sens_attr_spec = spec_from_binary_cols({sens: DISC_FEATURE_GROUPS[sens]})
             label_feature_groups += ["native-country"]
         elif self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
             remaining_feature_name = "other"
 
-            sens_attr_spec = simple_spec(
+            sens_attr_spec = spec_from_binary_cols(
                 {"education": to_keep + [f"education_{remaining_feature_name}"]}
             )
             label_feature_groups += ["education"]
 
         else:
             raise NotImplementedError
-        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec), label_feature_groups
+        return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
         if self.split is AdultSplits.EDUCTAION:
             to_keep = ["education_HS-grad", "education_Some-college"]
@@ -124,8 +128,9 @@ class Adult(StaticCSVDataset):
                 assert len(flatten_dict(dfgs)) == 97  # 93 (discrete) features + 4 class labels
         return dfgs
 
+    @property  # type: ignore[misc]
     @implements(StaticCSVDataset)
-    def get_cont_features(self) -> List[str]:
+    def continuous_features(self) -> list[str]:
         feats = [
             "age",
             "capital-gain",

@@ -1,11 +1,13 @@
 """Functions that are common to PyTorch models."""
+from __future__ import annotations
 import random
-from typing import Literal, Tuple
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 
 from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility.data_structures import ModelType
 
 try:
     import torch
@@ -17,7 +19,7 @@ except ImportError as e:
     ) from e
 
 
-def _get_info(data: TestTuple) -> Tuple[np.ndarray, np.ndarray, int, int, pd.Index, str]:
+def _get_info(data: TestTuple) -> tuple[np.ndarray, np.ndarray, int, int, pd.Index, str]:
     features = data.x.to_numpy(dtype=np.float32)
     sens_labels = data.s.to_numpy(dtype=np.float32)  # type: ignore[type-var]
     num = data.s.shape[0]
@@ -35,7 +37,7 @@ class TestDataset(Dataset):
         self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(data)
         self.sdim = 1
 
-    def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray]:
+    def __getitem__(self, index: int) -> tuple[np.ndarray, np.ndarray]:
         """Implement __getitem__ magic method."""
         return self.x[index, ...], self.s[index, ...]
 
@@ -44,7 +46,7 @@ class TestDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[pd.Index, str]:
+    def names(self) -> tuple[pd.Index, str]:
         """Get tuple of x names and s names."""
         return self.x_names, self.s_names
 
@@ -61,7 +63,7 @@ class CustomDataset(Dataset):
         self.ydim = data.y.nunique()
         self.y_names = str(data.y.name)
 
-    def __getitem__(self, index: int) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def __getitem__(self, index: int) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Implement __getitem__ magic method."""
         return self.x[index, ...], self.s[index, ...], self.y[index, ...]
 
@@ -70,20 +72,15 @@ class CustomDataset(Dataset):
         return self.num
 
     @property
-    def names(self) -> Tuple[pd.Index, str, str]:
+    def names(self) -> tuple[pd.Index, str, str]:
         """Get tuple of x names, s names and y names."""
         return self.x_names, self.s_names, self.y_names
 
 
 def make_dataset_and_loader(
     data: DataTuple, *, batch_size: int, shuffle: bool, seed: int, drop_last: bool
-) -> Tuple[CustomDataset, torch.utils.data.DataLoader]:
-    """Given a datatuple, create a dataset and a corresponding dataloader.
-
-    :param data:
-    :param flags:
-    :returns: Tuple of a pytorch dataset and dataloader.
-    """
+) -> tuple[CustomDataset, torch.utils.data.DataLoader]:
+    """Given a datatuple, create a dataset and a corresponding dataloader."""
 
     def seed_worker(worker_id):
         worker_seed = torch.initial_seed() % 2**32

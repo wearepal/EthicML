@@ -1,4 +1,5 @@
 """Accuracy and related metrics."""
+from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass
 from typing import Callable, ClassVar, Tuple
@@ -53,8 +54,6 @@ class RobustAccuracy(SklearnMetric):
     def score(self, prediction: Prediction, actual: EvalTuple) -> float:
         score_func = super().score
         return min(
-            [
-                score_func(prediction.get_s_subset(actual.s, _s), actual.get_s_subset(_s))
-                for _s in actual.s.unique()
-            ]
+            score_func(prediction.get_s_subset(actual.s, _s), actual.get_s_subset(_s))
+            for _s in actual.s.unique()
         )

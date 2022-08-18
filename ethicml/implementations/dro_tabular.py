@@ -1,13 +1,12 @@
 """Implementation of Fairness without Demographics."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Union
+import sys
+from typing import TYPE_CHECKING
 
-import numpy as np
 from joblib import dump, load
+import numpy as np
 
 try:
     import torch
@@ -37,13 +36,7 @@ if TYPE_CHECKING:
 def train_model(
     epoch: int, model: DROClassifier, train_loader: DataLoader, optimizer: Optimizer
 ) -> None:
-    """Train a model.
-
-    :param epoch:
-    :param model:
-    :param train_loader:
-    :param optimizer:
-    """
+    """Train a model."""
     model.train()
     train_loss = 0.0
     for batch_idx, (data_x, _, data_y) in enumerate(train_loader):
@@ -66,11 +59,7 @@ def train_model(
 
 
 def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
-    """Train a network and return predictions.
-
-    :param train:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     set_seed(seed)
     train_data = CustomDataset(train)
@@ -92,18 +81,13 @@ def fit(train: DataTuple, args: DroArgs, seed: int) -> DROClassifier:
 
 
 def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPrediction:
-    """Train a network and return predictions.
-
-    :param model:
-    :param test:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     test_data = TestDataset(test)
     test_loader = DataLoader(test_data, batch_size=args["batch_size"])
 
     # Transform output
-    post_test: List[torch.Tensor] = []
+    post_test: list[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
@@ -115,12 +99,7 @@ def predict(model: DROClassifier, test: TestTuple, args: DroArgs) -> SoftPredict
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: DroArgs, seed: int
 ) -> SoftPrediction:
-    """Train a network and return predictions.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a network and return predictions."""
     # Set up the data
     set_seed(seed)
     train_data = CustomDataset(train)
@@ -143,7 +122,7 @@ def train_and_predict(
         train_model(epoch, model, train_loader, optimizer)
 
     # Transform output
-    post_test: List[torch.Tensor] = []
+    post_test: list[torch.Tensor] = []
     model.eval()
     with torch.no_grad():
         for _x, _ in test_loader:
@@ -156,7 +135,7 @@ def main() -> None:
     """Run the FWD model as a standalone program on tabular data."""
     in_algo_args: InAlgoArgs = json.loads(sys.argv[1])
     flags: DroArgs = json.loads(sys.argv[2])
-    data: Union[DataTuple, TestTuple]
+    data: DataTuple | TestTuple
     if in_algo_args["mode"] == "run":
         train, test = load_data_from_flags(in_algo_args)
         train_and_predict(train, test, flags, seed=in_algo_args["seed"]).save_to_file(

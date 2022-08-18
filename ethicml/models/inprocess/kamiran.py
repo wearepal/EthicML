@@ -1,11 +1,12 @@
 """Kamiran and Calders 2012."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
-import sklearn
 from ranzen import implements
+import sklearn
 from sklearn.linear_model import LogisticRegression
 
 from ethicml.models.inprocess.in_algorithm import HyperParamType, InAlgorithm
@@ -36,21 +37,23 @@ class Reweighting(InAlgorithm):
     kernel: Optional[KernelType] = None
 
     def __post_init__(self) -> None:
+        self.group_weights: Optional[Dict[str, Any]] = None
         self.chosen_c, self.chosen_kernel = settings_for_svm_lr(
             self.classifier, self.C, self.kernel
         )
-        self.group_weights: Optional[Dict[str, Any]] = None
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
-        _hyperparameters: Dict[str, Any] = {"C": self.C}
+    def hyperparameters(self) -> HyperParamType:
+        _hyperparameters: dict[str, Any] = {"C": self.C}
         if self.classifier is ClassifierType.svm:
             assert self.kernel is not None
             _hyperparameters["kernel"] = self.kernel
         return _hyperparameters
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         lr_params = f" C={self.chosen_c}" if self.classifier is ClassifierType.lr else ""
         svm_params = (
             f" C={self.C}, kernel={self.chosen_kernel}"
@@ -60,7 +63,7 @@ class Reweighting(InAlgorithm):
         return f"Kamiran & Calders {self.classifier}{lr_params}{svm_params}"
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> InAlgorithm:
+    def fit(self, train: DataTuple, seed: int = 888) -> Reweighting:
         self.clf = self._train(
             train, classifier=self.classifier, C=self.chosen_c, kernel=self.chosen_kernel, seed=seed
         )
@@ -82,7 +85,7 @@ class Reweighting(InAlgorithm):
         train: DataTuple,
         classifier: ClassifierType,
         C: float,
-        kernel: Optional[KernelType],
+        kernel: KernelType | None,
         seed: int,
     ) -> sklearn.linear_model._base.LinearModel:
         if classifier is ClassifierType.svm:
@@ -112,7 +115,7 @@ class Reweighting(InAlgorithm):
     def _predict(
         self, model: sklearn.linear_model._base.LinearModel, test: TestTuple
     ) -> Prediction:
-        return SoftPrediction((model.predict_proba(test.x)), info=self.get_hyperparameters())
+        return SoftPrediction((model.predict_proba(test.x)), info=self.hyperparameters)
 
 
 def compute_instance_weights(

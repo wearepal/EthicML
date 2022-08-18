@@ -1,8 +1,7 @@
 """Fairness without Demographics."""
-
+from __future__ import annotations
 from dataclasses import asdict, dataclass, field
-from typing import List
-from typing_extensions import TypedDict
+from typing import List, TypedDict
 
 from ranzen import implements
 
@@ -18,7 +17,7 @@ class DroArgs(TypedDict):
     batch_size: int
     epochs: int
     eta: float
-    network_size: List[int]
+    network_size: list[int]
 
 
 @dataclass
@@ -46,16 +45,18 @@ class DRO(InAlgorithmSubprocess):
             "network_size": self.network_size,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         _hyperparameters = asdict(self)
         _hyperparameters.pop("dir")  # this is not really a hyperparameter
         return _hyperparameters
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Dist Robust Optim"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.dro_tabular"]

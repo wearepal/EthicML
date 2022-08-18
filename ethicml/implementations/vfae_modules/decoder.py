@@ -1,8 +1,7 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
-
+from __future__ import annotations
 from itertools import groupby
-from typing import List
 
 import torch
 from torch import Tensor, nn
@@ -18,7 +17,7 @@ class Decoder(nn.Module):
     def __init__(self, dataset: CSVDataset, deploy: bool = False):
         super().__init__()
         self._deploy = deploy
-        self.features: List[str] = dataset.feature_split(order=FeatureOrder.cont_first)["x"]
+        self.features: list[str] = dataset.feature_split(order=FeatureOrder.cont_first)["x"]
 
         latent_dims = 50
         hidden_size = 100
@@ -31,7 +30,7 @@ class Decoder(nn.Module):
             self.shared_net.add_module(f"ReLu {depth:d}", nn.ReLU())
             in_features = num_units  # update input size to next layer
 
-        def _add_output_layer(feature_group: List[str]) -> nn.Module:
+        def _add_output_layer(feature_group: list[str]) -> nn.Module:
             n_dims = len(feature_group)
             categorical = n_dims > 1  # feature is categorical if it has more than 1 possible output
 
@@ -50,11 +49,7 @@ class Decoder(nn.Module):
         )
 
     def forward(self, x: Tensor, s: Tensor) -> Tensor:
-        """Forward pass.
-
-        :param x:
-        :param s:
-        """
+        """Forward pass."""
         batch_size = x.size(0)
         decoded = self.shared_net(torch.cat((x, s.view(-1, 1)), 1))
         decoded = torch.cat(

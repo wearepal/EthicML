@@ -1,8 +1,8 @@
 """Testing for plotting functionality."""
 from typing import List, Tuple
 
-import pytest
 from matplotlib import pyplot as plt
+import pytest
 
 from ethicml import (
     DataTuple,
@@ -18,8 +18,8 @@ from ethicml import (
     train_test_split,
 )
 from ethicml.data import Adult, Toy, load_data
-from ethicml.metrics import CV, NMI, TPR, Accuracy, ProbPos
-from ethicml.models import LR, SVM, Reweighting, Upsampler, UpsampleStrategy
+from ethicml.metrics import Accuracy, CV, NMI, ProbPos, TPR
+from ethicml.models import LR, Reweighting, SVM, Upsampler, UpsampleStrategy
 
 
 @pytest.mark.slow

@@ -1,4 +1,5 @@
 """Simple class to make class labels binary. Useful if a network uses BCELoss for example."""
+from __future__ import annotations
 
 import numpy as np
 import pandas as pd
@@ -9,10 +10,7 @@ __all__ = ["LabelBinarizer"]
 
 
 def assert_binary_labels(data_tuple: DataTuple) -> None:
-    """Assert that datasets only include binary labels.
-
-    :param data_tuple:
-    """
+    """Assert that datasets only include binary labels."""
     assert data_tuple.y.nunique() == 2
     assert (np.unique(data_tuple.y.to_numpy()) == np.array([0, 1])).all()
 
@@ -25,10 +23,7 @@ class LabelBinarizer:
         self.max_val: int
 
     def adjust(self, dataset: DataTuple) -> DataTuple:
-        """Take a datatuple and make the labels [0,1].
-
-        :param dataset:
-        """
+        """Take a datatuple and make the labels [0,1]."""
         assert dataset.y.nunique() == 2
 
         # make copy of dataset
@@ -42,10 +37,7 @@ class LabelBinarizer:
         return dataset.replace(y=new_y)
 
     def post_only_labels(self, labels: pd.Series) -> pd.Series:
-        """Inverse of adjust but only for a DataFrame instead of a DataTuple.
-
-        :param labels:
-        """
+        """Inverse of adjust but only for a DataFrame instead of a DataTuple."""
         assert labels.nunique() == 2
 
         # make copy of the labels
@@ -56,9 +48,6 @@ class LabelBinarizer:
         return labels_copy
 
     def post(self, dataset: DataTuple) -> DataTuple:
-        """Inverse of adjust.
-
-        :param dataset:
-        """
+        """Inverse of adjust."""
         transformed_y = self.post_only_labels(dataset.y)
         return dataset.replace(y=pd.Series(transformed_y, name=dataset.y.name))

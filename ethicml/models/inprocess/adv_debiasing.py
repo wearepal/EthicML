@@ -3,14 +3,14 @@
 https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
-
 from dataclasses import dataclass
-from typing import List, Literal, TypedDict
+from typing import TypedDict
 
 from ranzen import implements
 
 from ethicml.models.inprocess.in_algorithm import HyperParamType
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
+from ethicml.utility.data_structures import ModelType
 
 __all__ = ["AdvDebiasing", "AdvDebArgs"]
 
@@ -23,7 +23,7 @@ class AdvDebArgs(TypedDict):
     n_adv_epochs: int
     n_epoch_combined: int
     batch_size: int
-    model_type: Literal["deep_model", "linear_model"]
+    model_type: str
     lambda_vec: float
 
 
@@ -36,11 +36,11 @@ class AdvDebiasing(InAlgorithmSubprocess):
     n_adv_epochs = 2
     n_epoch_combined = 40
     batch_size = 32
-    model_type: Literal["deep_model", "linear_model"] = "deep_model"
+    model_type: ModelType = ModelType.deep
     lambda_vec = 0.999999
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.adv_debiasing_method"]
 
     @implements(InAlgorithmSubprocess)
@@ -55,8 +55,9 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {
             "lr": self.lr,
             "n_clf_epochs": self.n_clf_epochs,
@@ -67,6 +68,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Adversarial Debiasing"

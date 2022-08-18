@@ -1,7 +1,7 @@
 """Variational Fair Auto-Encoder by Louizos et al."""
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
-from typing_extensions import TypedDict
+from typing import List, TypedDict
 
 from ranzen import implements
 
@@ -21,9 +21,9 @@ class VfaeArgs(TypedDict):
     batch_size: int
     fairness: str
     latent_dims: int
-    z1_enc_size: List[int]
-    z2_enc_size: List[int]
-    z1_dec_size: List[int]
+    z1_enc_size: list[int]
+    z2_enc_size: list[int]
+    z1_dec_size: list[int]
 
 
 @dataclass
@@ -45,7 +45,7 @@ class VFAE(PreAlgorithmSubprocess):
         # TODO: replace this with dataclasses.asdict()
         return {
             "supervised": self.supervised,
-            "fairness": str(self.fairness),
+            "fairness": self.fairness,
             "batch_size": self.batch_size,
             "epochs": self.epochs,
             "dataset": self.dataset,
@@ -55,14 +55,16 @@ class VFAE(PreAlgorithmSubprocess):
             "z1_dec_size": self.z1_dec_size,
         }
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         return self.latent_dims
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "VFAE"
 
     @implements(PreAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.vfae"]

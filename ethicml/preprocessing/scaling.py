@@ -1,27 +1,29 @@
 """Scale a dataset."""
-from typing import Tuple
-from typing_extensions import Protocol
+from __future__ import annotations
+from typing import Protocol
 
 import pandas as pd
 
 from ethicml.data import Dataset
 from ethicml.utility.data_structures import DataTuple
 
-__all__ = ["scale_continuous"]
+__all__ = ["ScalerType", "scale_continuous"]
 
 
 class ScalerType(Protocol):
+    """Protocol describing a scaler class."""
+
     def fit(self, df: pd.DataFrame) -> None:
-        ...
+        """Fit parameters of the transformation to the given data."""
 
     def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
-        ...
+        """Fit parameters of the transformation to the given data and then transform."""
 
     def inverse_transform(self, df: pd.DataFrame) -> pd.DataFrame:
-        ...
+        """Invert the transformation."""
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
-        ...
+        """Transform the given data."""
 
 
 def scale_continuous(
@@ -30,8 +32,15 @@ def scale_continuous(
     scaler: ScalerType,
     inverse: bool = False,
     fit: bool = True,
-) -> Tuple[DataTuple, ScalerType]:
+) -> tuple[DataTuple, ScalerType]:
     """Use a scaler on just the continuous features.
+
+    :example:
+        >>> dataset = adult()
+        >>> datatuple = dataset.load()
+        >>> train, test = train_test_split(datatuple)
+        >>> train, scaler = scale_continuous(dataset, train, scaler)
+        >>> test, scaler = scale_continuous(dataset, test, scaler, fit=False)
 
     :param dataset: Dataset object. Used to find the continuous features.
     :param datatuple: DataTuple on which to sclae the continuous features.
@@ -40,13 +49,6 @@ def scale_continuous(
     :param fit: If not `inverse`, should the scaler be fit to the data? If `True`, do
         `fit_transform` operation, else just `transform`. (Default: True)
     :returns: Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).
-
-    Examples:
-        >>> dataset = adult()
-        >>> datatuple = dataset.load()
-        >>> train, test = train_test_split(datatuple)
-        >>> train, scaler = scale_continuous(dataset, train, scaler)
-        >>> test, scaler = scale_continuous(dataset, test, scaler, fit=False)
     """
     new_feats = datatuple.x.copy().astype('float64')
     if inverse:

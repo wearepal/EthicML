@@ -1,7 +1,8 @@
 """Wrapper for calling Kamishima model."""
+from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import NamedTuple, Optional, Union
+from typing import NamedTuple
 
 import numpy as np
 import pandas as pd
@@ -38,10 +39,11 @@ class Kamishima(InstalledModel):
             top_dir="kamfadm",
         )
         self.eta = eta
-        self._fit_info: Optional[_FitInfo] = None
+        self._fit_info: _FitInfo | None = None
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithm)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         return {"eta": self.eta}
 
     @implements(InAlgorithm)
@@ -52,13 +54,13 @@ class Kamishima(InstalledModel):
             return self._predict(test, fit_info, tmp_path)
 
     @implements(InAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Kamishima":
+    def fit(self, train: DataTuple, seed: int = 888) -> Kamishima:
         with TemporaryDirectory() as tmpdir:
             self._fit_info = self._fit(train, Path(tmpdir), seed, model_dir=self._code_path)
         return self
 
     def _fit(
-        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Optional[Path] = None
+        self, train: DataTuple, tmp_path: Path, seed: int, model_dir: Path | None = None
     ) -> _FitInfo:
         train_path = tmp_path / "train.txt"
         _create_file_in_kamishima_format(train, train_path)
@@ -96,7 +98,7 @@ class Kamishima(InstalledModel):
         return Prediction(hard=to_return)
 
 
-def _create_file_in_kamishima_format(data: Union[DataTuple, TestTuple], file_path: Path) -> None:
+def _create_file_in_kamishima_format(data: DataTuple | TestTuple, file_path: Path) -> None:
     """Create a text file with the data.
 
     :param data: Data to write to the file.

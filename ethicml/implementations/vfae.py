@@ -1,14 +1,13 @@
 """Implementation of VFAE."""
 from __future__ import annotations
-
 import json
-import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Tuple, Union
+import sys
+from typing import TYPE_CHECKING
 
+from joblib import dump, load
 import pandas as pd
 import torch
-from joblib import dump, load
 from torch import optim
 from torch.optim import Adam
 from torch.utils.data import DataLoader
@@ -28,11 +27,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, flags: VfaeArgs):
-    """Train the model.
-
-    :param train:
-    :param flags:
-    """
+    """Train the model."""
     dataset = get_dataset_obj_by_name(flags["dataset"])()
     assert isinstance(dataset, CSVDataset)
 
@@ -59,13 +54,8 @@ def fit(train: DataTuple, flags: VfaeArgs):
 
 
 def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
-    """Transform the dataset.
-
-    :param model:
-    :param dataset:
-    :param flags:
-    """
-    data: Union[CustomDataset, TestDataset]
+    """Transform the dataset."""
+    data: CustomDataset | TestDataset
     if isinstance(dataset, DataTuple):
         data = CustomDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
@@ -73,7 +63,7 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
         data = TestDataset(dataset)
         loader = DataLoader(data, batch_size=flags["batch_size"], shuffle=False)
 
-    post_train: List[List[float]] = []
+    post_train: list[list[float]] = []
     model.eval()
     with torch.no_grad():
         for sample in loader:
@@ -90,14 +80,8 @@ def transform(model: VFAENetwork, dataset: T, flags: VfaeArgs) -> T:
 
 def train_and_transform(
     train: DataTuple, test: SubgroupTuple, flags: VfaeArgs
-) -> Tuple[DataTuple, SubgroupTuple]:
-    """Train the model and transform the dataset.
-
-    :param train:
-    :param test:
-    :param flags:
-    :returns: Tuple of Encoded Train Dataset and Test Dataset.
-    """
+) -> tuple[DataTuple, SubgroupTuple]:
+    """Train the model and transform both the train dataset and the test dataset."""
     model = fit(train, flags)
 
     # Transform output
@@ -107,15 +91,7 @@ def train_and_transform(
 def train_model(
     epoch: int, model: VFAENetwork, train_loader: DataLoader, optimizer: Adam, flags: VfaeArgs
 ) -> None:
-    """Train the model.
-
-    :param epoch:
-    :param model:
-    :param train_loader:
-    :param optimizer:
-    :param flags:
-    :returns: None
-    """
+    """Train the model."""
     model.train()
     train_loss = 0.0
     for batch_idx, (data_x, data_s, data_y) in enumerate(train_loader):

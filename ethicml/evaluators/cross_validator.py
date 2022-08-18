@@ -1,8 +1,9 @@
 """Cross Validation for any in process (at the moment) Algorithm."""
+from __future__ import annotations
 from collections import defaultdict
 from itertools import product
 from statistics import mean
-from typing import Any, Dict, List, Mapping, NamedTuple, Optional, Sequence, Tuple, Type
+from typing import Any, Mapping, NamedTuple, Sequence, Type
 
 from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.accuracy import Accuracy
@@ -18,9 +19,9 @@ __all__ = ["CrossValidator", "CVResults"]
 class ResultTuple(NamedTuple):
     """Result of one experiment."""
 
-    params: Dict[str, Any]  # the parameter setting used for this run
+    params: dict[str, Any]  # the parameter setting used for this run
     fold_id: int  # the ID of the fold
-    scores: Dict[str, float]  # the achieved scores
+    scores: dict[str, float]  # the achieved scores
 
 
 class CVResults:
@@ -52,16 +53,16 @@ class CVResults:
 
     """
 
-    def __init__(self, results: List[ResultTuple], model: Type[InAlgorithm]):
+    def __init__(self, results: list[ResultTuple], model: type[InAlgorithm]):
         self.raw_storage = results
         self.model = model
         self.mean_storage = self._organize_and_compute_means()
 
-    def _organize_and_compute_means(self) -> Dict[str, ResultTuple]:
+    def _organize_and_compute_means(self) -> dict[str, ResultTuple]:
         """Compute means over folds and generate unique string for each hyperparameter setting."""
         # first, group the entries that have the same hyperparameters
         max_fold_id = 0
-        grouped: Dict[str, List[ResultTuple]] = defaultdict(list)
+        grouped: dict[str, list[ResultTuple]] = defaultdict(list)
         for result in self.raw_storage:
             # we convert the hyperparameter dictionaries to strings in order to compare them
             hyp_string = ", ".join(f"{key!s}={val!r}" for (key, val) in result.params.items())
@@ -70,11 +71,11 @@ class CVResults:
                 max_fold_id = result.fold_id
 
         # compute the mean value of each measure within each group
-        mean_vals: Dict[str, ResultTuple] = {}
+        mean_vals: dict[str, ResultTuple] = {}
         for hyp_string, results in grouped.items():
             # re-order the data: we want a dictionary that has all the scores as a list
             # first we create empty list according to the dictionary keys in the first result
-            scores_dict: Dict[str, List[float]] = {
+            scores_dict: dict[str, list[float]] = {
                 score_name: [] for score_name in results[0].scores
             }
             # then we iterate over results and score names to fill the lists of score values
@@ -92,17 +93,11 @@ class CVResults:
         return mean_vals
 
     def get_best_result(self, measure: Metric) -> ResultTuple:
-        """Get the hyperparameter combination for the best performance of a measure.
-
-        :param measure:
-        """
+        """Get the hyperparameter combination for the best performance of a measure."""
         mean_vals = self.mean_storage
 
-        def _get_score(item: Tuple[str, ResultTuple]) -> float:
-            """Take an entry from `mean_storage` and return the desired score `measure`.
-
-            :param item:
-            """
+        def _get_score(item: tuple[str, ResultTuple]) -> float:
+            """Take an entry from `mean_storage` and return the desired score `measure`."""
             _, result = item
             return result.scores[measure.name]
 
@@ -111,18 +106,12 @@ class CVResults:
 
         return mean_vals[best_hyp_string]
 
-    def best_hyper_params(self, measure: Metric) -> Dict[str, Any]:
-        """Get hyper-parameters that return the 'best' result for the metric of interest.
-
-        :param measure:
-        """
+    def best_hyper_params(self, measure: Metric) -> dict[str, Any]:
+        """Get hyper-parameters that return the 'best' result for the metric of interest."""
         return self.get_best_result(measure).params
 
     def best(self, measure: Metric) -> InAlgorithm:
-        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric.
-
-        :param measure:
-        """
+        """Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric."""
         return self.model(**self.best_hyper_params(measure))
 
     def get_best_in_top_k(self, primary: Metric, secondary: Metric, top_k: int) -> ResultTuple:
@@ -137,13 +126,13 @@ class CVResults:
         """
         mean_vals = self.mean_storage
 
-        def _get_primary_score(item: Tuple[str, ResultTuple]) -> float:
+        def _get_primary_score(item: tuple[str, ResultTuple]) -> float:
             return item[1].scores[primary.name]
 
         sorted_by_primary = sorted(mean_vals.items(), key=_get_primary_score)
         top_k_candidates = sorted_by_primary[:top_k]
 
-        def _get_secondary_score(item: Tuple[str, ResultTuple]) -> float:
+        def _get_secondary_score(item: tuple[str, ResultTuple]) -> float:
             return item[1].scores[secondary.name]
 
         best_hyp_string, _ = max(top_k_candidates, key=_get_secondary_score)
@@ -151,13 +140,13 @@ class CVResults:
 
 
 class _ResultsAccumulator:
-    def __init__(self, measures: Optional[List[Metric]] = None):
+    def __init__(self, measures: list[Metric] | None = None):
         self._measures = [Accuracy(), AbsCV()] if measures is None else measures
-        self.results: List[ResultTuple] = []
+        self.results: list[ResultTuple] = []
 
     def __call__(
-        self, parameter_setting: Dict[str, Any], preds: Prediction, test: DataTuple, fold_id: int
-    ) -> Dict[str, float]:
+        self, parameter_setting: dict[str, Any], preds: Prediction, test: DataTuple, fold_id: int
+    ) -> dict[str, float]:
         """Compute the scores for the given predictions and append to the list of results."""
         # compute all measures
         # TODO: this should also compute diffs and ratios
@@ -207,9 +196,9 @@ class CrossValidator:
         self.max_parallel = max_parallel
 
         keys, values = zip(*hyperparams.items())
-        self.experiments: List[Dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
+        self.experiments: list[dict[str, Any]] = [dict(zip(keys, v)) for v in product(*values)]
 
-    def run_async(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
+    def run_async(self, train: DataTuple, measures: list[Metric] | None = None) -> CVResults:
         """Run the cross validation experiments asynchronously.
 
         :param train: the training data
@@ -220,7 +209,7 @@ class CrossValidator:
         # instantiate all models
         models = [self.model(**experiment) for experiment in self.experiments]
         # create all folds
-        data_folds: List[Tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
+        data_folds: list[tuple[DataTuple, DataTuple]] = list(fold_data(train, folds=self.folds))
         # convert to right format
         pair_folds = [TrainValPair(train_fold, val) for (train_fold, val) in data_folds]
         # run everything in parallel
@@ -237,7 +226,7 @@ class CrossValidator:
                 compute_scores_and_append(experiment, preds, val, i)
         return CVResults(compute_scores_and_append.results, self.model)
 
-    def run(self, train: DataTuple, measures: Optional[List[Metric]] = None) -> CVResults:
+    def run(self, train: DataTuple, measures: list[Metric] | None = None) -> CVResults:
         """Run the cross validation experiments.
 
         :param train: the training data

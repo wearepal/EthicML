@@ -1,5 +1,18 @@
 from pathlib import Path
-from typing import Any, Callable, Generic, Iterable, List, Literal, Optional, Tuple, TypeVar, Union
+from types import TracebackType
+from typing import (
+    Any,
+    Callable,
+    Generic,
+    Iterable,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    TypeVar,
+    Union,
+    overload,
+)
 from typing_extensions import ParamSpec, TypeAlias
 
 _CompressLevel: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -31,7 +44,12 @@ class Parallel:
     def __call__(self, iterable: Iterable[_DelayedResult[_T]]) -> List[_T]: ...
     def print_progress(self) -> None: ...
     def __enter__(self: _TP) -> _TP: ...
-    def __exit__(self, exc_type, exc_value, traceback) -> None: ...
+    @overload
+    def __exit__(self, exc_type: None, exc_val: None, exc_tb: None) -> None: ...
+    @overload
+    def __exit__(
+        self, exc_type: type[BaseException], exc_val: BaseException, exc_tb: TracebackType
+    ) -> None: ...
     def retrieve(self) -> None: ...
 
 class _DelayedResult(Generic[_T]): ...

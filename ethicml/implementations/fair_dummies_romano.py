@@ -1,18 +1,17 @@
 """Fair Dummies Implementation."""
 from __future__ import annotations
-
 import json
+from pathlib import Path
 import random
 import sys
-from pathlib import Path
 from typing import TYPE_CHECKING
 
+from joblib import dump, load
 import numpy as np
 import torch
-from joblib import dump, load
 
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
-from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
+from ethicml.utility import DataTuple, ModelType, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.models.inprocess.fair_dummies import FairDummiesArgs
@@ -20,11 +19,7 @@ if TYPE_CHECKING:
 
 
 def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLearner:
-    """Fit a model.
-
-    :param train:
-    :param args:
-    """
+    """Fit a model."""
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -40,7 +35,7 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
         cost_pred=torch.nn.CrossEntropyLoss(),
         in_shape=len(train.x.columns),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
         lambda_vec=args["lambda_vec"],
         second_moment_scaling=args["second_moment_scaling"],
         num_classes=train.y.nunique(),
@@ -50,23 +45,14 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
 
 
 def predict(model: EquiClassLearner, test: TestTuple) -> np.ndarray:
-    """Compute predictions on the given test data.
-
-    :param exponentiated_gradient:
-    :param test:
-    """
+    """Compute predictions on the given test data."""
     return model.predict(test.x)
 
 
 def train_and_predict(
     train: DataTuple, test: TestTuple, args: FairDummiesArgs, seed: int
 ) -> np.ndarray:
-    """Train a logistic regression model and compute predictions on the given test data.
-
-    :param train:
-    :param test:
-    :param args:
-    """
+    """Train a logistic regression model and compute predictions on the given test data."""
     model = fit(train, args, seed)
     return predict(model, test)
 

@@ -1,7 +1,7 @@
 """Implementation for Louizos et al Variational Fair Autoencoder."""
 # pylint: disable=arguments-differ
-
-from typing import Any, List, NamedTuple, Optional, Tuple
+from __future__ import annotations
+from typing import Any, NamedTuple
 
 import torch
 from torch import Tensor, nn
@@ -36,9 +36,9 @@ class VFAENetwork(nn.Module):
         supervised: bool,
         input_size: int,
         latent_dims: int,
-        z1_enc_size: List[int],
-        z2_enc_size: List[int],
-        z1_dec_size: List[int],
+        z1_enc_size: list[int],
+        z2_enc_size: list[int],
+        z1_dec_size: list[int],
     ):
         super().__init__()
         torch.manual_seed(888)
@@ -52,56 +52,35 @@ class VFAENetwork(nn.Module):
         self.x_dec = Decoder(dataset)
         self.ypred = nn.Linear(latent_dims, 1)
 
-    def encode_z1(self, x: Tensor, s: Tensor) -> Tuple[Tensor, Tensor]:
-        """Encode Z1.
-
-        :param x:
-        :param s:
-        """
+    def encode_z1(self, x: Tensor, s: Tensor) -> tuple[Tensor, Tensor]:
+        """Encode Z1."""
         return self.z1_encoder(torch.cat((x, s.view(-1, 1)), 1))
 
-    def encode_z2(self, z1: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
-        """Encode Z2.
-
-        :param z1:
-        :param y:
-        """
+    def encode_z2(self, z1: Tensor, y: Tensor) -> tuple[Tensor, Tensor]:
+        """Encode Z2."""
         return self.z2_encoder(torch.cat((z1, y.view(-1, 1)), 1))
 
-    def decode_z1(self, z2: Tensor, y: Tensor) -> Tuple[Tensor, Tensor]:
-        """Decode Z1.
-
-        :param z2:
-        :param y:
-        """
+    def decode_z1(self, z2: Tensor, y: Tensor) -> tuple[Tensor, Tensor]:
+        """Decode Z1."""
         return self.z1_decoder(torch.cat((z2, y.view(-1, 1)), 1))
 
     @staticmethod
     def reparameterize(mean: Tensor, logvar: Tensor) -> Tensor:
-        """Reparametrization trick - Leaving as a method to try and control reproducability.
-
-        :param mean:
-        :param logvar:
-        """
+        """Reparametrization trick - Leaving as a method to try and control reproducability."""
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps.mul(std).add_(mean)
 
     def forward(
         self, x: Tensor, s: Tensor, y: Tensor
-    ) -> Tuple[LvInfo, Optional[LvInfo], Optional[LvInfo], Tensor, Optional[Tensor],]:
-        """Forward pass for network.
-
-        :param x:
-        :param s:
-        :param y:
-        """
+    ) -> tuple[LvInfo, LvInfo | None, LvInfo | None, Tensor, Tensor | None,]:
+        """Forward pass for network."""
         z1_mu, z1_logvar = self.encode_z1(x, s)
         z1 = self.reparameterize(z1_mu, z1_logvar)
 
-        z2_triplet: Optional[Tuple[Any, Any, Any]]
-        z1_d_triplet: Optional[Tuple[Any, Any, Any]]
-        y_pred: Optional[torch.Tensor]
+        z2_triplet: tuple[Any, Any, Any] | None
+        z1_d_triplet: tuple[Any, Any, Any] | None
+        y_pred: torch.Tensor | None
         if self.supervised:
             z2_mu, z2_logvar = self.encode_z2(z1, y)
             z2 = self.reparameterize(z2_mu, z2_logvar)

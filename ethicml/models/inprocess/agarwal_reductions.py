@@ -1,7 +1,7 @@
 """Implementation of Agarwal model."""
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional, Set
-from typing_extensions import TypedDict
+from typing import Optional, TypedDict
 
 from ranzen import implements
 
@@ -13,14 +13,14 @@ __all__ = ["Agarwal"]
 
 from ethicml.utility import KernelType
 
-VALID_MODELS: Set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
+VALID_MODELS: set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 
 
 class AgarwalArgs(TypedDict):
     """Args for the Agarwal implementation."""
 
-    classifier: int
-    fairness: int
+    classifier: str
+    fairness: str
     eps: float
     iters: int
     C: float
@@ -57,16 +57,17 @@ class Agarwal(InAlgorithmSubprocess):
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
         # TODO: replace this with dataclasses.asdict()
         return {
-            "classifier": self.classifier.value,
-            "fairness": self.fairness.value,
+            "classifier": self.classifier,
+            "fairness": self.fairness,
             "eps": self.eps,
             "iters": self.iters,
             "C": chosen_c,
-            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
+            "kernel": chosen_kernel if chosen_kernel is not None else "",
         }
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_hyperparameters(self) -> HyperParamType:
+    def hyperparameters(self) -> HyperParamType:
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
         _hyperparameters: HyperParamType = {
             "C": chosen_c,
@@ -79,10 +80,11 @@ class Agarwal(InAlgorithmSubprocess):
             _hyperparameters["kernel"] = chosen_kernel
         return _hyperparameters
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmSubprocess)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"
 
     @implements(InAlgorithmSubprocess)
-    def _get_path_to_script(self) -> List[str]:
+    def _get_path_to_script(self) -> list[str]:
         return ["-m", "ethicml.implementations.agarwal"]

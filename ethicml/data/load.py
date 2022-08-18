@@ -1,4 +1,5 @@
 """Load Data from .csv files."""
+from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
@@ -25,8 +26,8 @@ def load_data(dataset: Dataset) -> DataTuple:
 
 
 def create_data_obj(
-    filepath: Path, s_column: str, y_column: str, additional_to_drop: Optional[List[str]] = None
-) -> "ConfigurableDataset":
+    filepath: Path, s_column: str, y_column: str, additional_to_drop: list[str] | None = None
+) -> ConfigurableDataset:
     """Create a `ConfigurableDataset` from the given file.
 
     :param filepath: path to a CSV file
@@ -61,7 +62,7 @@ class ConfigurableDataset(LegacyDataset):
 
         dataframe: pd.DataFrame = pd.read_csv(self.filepath_)
 
-        columns: List[str] = [str(x) for x in dataframe.columns.to_numpy().tolist()]
+        columns: list[str] = [str(x) for x in dataframe.columns.to_numpy().tolist()]
         columns.remove(self.s_column)
         columns.remove(self.y_column)
         for additional in self.additional_to_drop:

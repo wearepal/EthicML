@@ -1,7 +1,6 @@
 """EthicML Tests."""
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Generator, List, Mapping, NamedTuple
-from typing_extensions import Final
+from typing import Any, ClassVar, Dict, Final, Generator, List, Mapping, NamedTuple
 
 import numpy as np
 import pytest
@@ -13,35 +12,35 @@ from ethicml import (
     DataTuple,
     FairnessType,
     KernelType,
+    ModelType,
     Prediction,
     TrainTestPair,
     TrainValPair,
     evaluate_models,
     train_test_split,
 )
-from ethicml.data import Compas, Toy, load_data
+from ethicml.data import Adult, Compas, Toy, load_data
 from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
 from ethicml.models import (
-    DRO,
-    LR,
-    LRCV,
-    MLP,
-    SVM,
+    HGR,
+    AdvDebiasing,
     Agarwal,
     Blind,
     Corels,
     DPOracle,
+    DRO,
     FairDummies,
     InAlgorithm,
     InAlgorithmSubprocess,
     Kamishima,
+    LR,
+    LRCV,
     Majority,
+    MLP,
     Oracle,
     Reweighting,
+    SVM,
 )
-from ethicml.models.inprocess.adv_debiasing import AdvDebiasing
-from ethicml.models.inprocess.fair_dummies import FairDummies
-from ethicml.models.inprocess.hgr import HGR
 from ethicml.models.inprocess.in_algorithm import HyperParamType
 
 TMPDIR: Final = Path("/tmp")
@@ -98,10 +97,10 @@ INPROCESS_TESTS = [
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=0.5, dir=TMPDIR), num_pos=43),
     InprocessTest(name="Dist Robust Optim", model=DRO(eta=5.0, dir=TMPDIR), num_pos=20),
     InprocessTest(
-        name="HGR linear_model", model=HGR(dir=TMPDIR, model_type="linear_model"), num_pos=60
+        name="HGR linear_model", model=HGR(dir=TMPDIR, model_type=ModelType.linear), num_pos=60
     ),
     InprocessTest(
-        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type="deep_model"), num_pos=69
+        name="HGR deep_model", model=HGR(dir=TMPDIR, model_type=ModelType.deep), num_pos=69
     ),
     InprocessTest(name="Fair Dummies deep_model", model=FairDummies(dir=TMPDIR), num_pos=59),
     InprocessTest(name="Kamiran & Calders lr C=1.0", model=Reweighting(), num_pos=44),
@@ -149,7 +148,7 @@ def test_kamiran_weights(toy_train_test: TrainTestPair):
 @pytest.mark.xdist_group("in_model_files")
 def test_inprocess_sep_train_pred(
     toy_train_val: TrainValPair, name: str, model: InAlgorithm, num_pos: int
-):
+) -> None:
     """Test an inprocess model with distinct train and predict steps."""
     train, test = toy_train_val
 
@@ -243,7 +242,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
     class _LocalInstalledLR(InAlgorithmSubprocess):
         is_fairness_algo: ClassVar[bool] = False
 
-        def get_name(self) -> str:
+        @property
+        def name(self) -> str:
             return "local installed LR"
 
         def _get_path_to_script(self) -> List[str]:
@@ -252,7 +252,8 @@ def test_local_installed_lr(toy_train_test: TrainTestPair):
         def _get_flags(self) -> Mapping[str, Any]:
             return {}
 
-        def get_hyperparameters(self) -> HyperParamType:
+        @property
+        def hyperparameters(self) -> HyperParamType:
             return {}
 
     model: InAlgorithm = _LocalInstalledLR()
@@ -286,3 +287,15 @@ def test_threaded_agarwal():
         datasets=[Toy()], inprocess_models=models, metrics=[AssertResult()], delete_previous=True
     )
     assert results["assert_result"].iloc[0]
+
+
+@pytest.mark.xdist_group("in_model_files")
+def test_agarwal_interleaved() -> None:
+    """Test fit-predict Agarwal with interleaved calls."""
+    adult_train, adult_test = train_test_split(Adult().load())
+    ag1 = Agarwal(classifier=ClassifierType.lr, iters=1)
+    ag1.fit(adult_train)
+    compas_train, _ = train_test_split(Compas().load())
+    ag2 = Agarwal(classifier=ClassifierType.lr, iters=1)
+    ag2.fit(compas_train)
+    ag1.predict(adult_test)

@@ -1,7 +1,6 @@
 """Test the loading data capability."""
 from pathlib import Path
-from typing import Callable, NamedTuple
-from typing_extensions import Final
+from typing import Callable, Final, NamedTuple
 
 import pandas as pd
 import pytest
@@ -33,7 +32,7 @@ from ethicml.data import (
     create_data_obj,
     flatten_dict,
     group_disc_feat_indices,
-    simple_spec,
+    spec_from_binary_cols,
 )
 
 
@@ -982,7 +981,7 @@ def test_expand_s():
 def test_simple_spec():
     """Test the simple spec function."""
     sens_attrs = {"race": ["blue", "green", "pink"], "gender": ["female", "male"]}
-    spec = simple_spec(sens_attrs)
+    spec = spec_from_binary_cols(sens_attrs)
     assert spec == {
         "gender": LabelGroup(["female", "male"], multiplier=3),
         "race": LabelGroup(["blue", "green", "pink"], multiplier=1),

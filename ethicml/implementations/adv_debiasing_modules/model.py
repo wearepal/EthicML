@@ -3,16 +3,17 @@
 Original implementation is modified to handle regression and multi-class
 classification problems
 """
-from typing import Literal, Tuple
+from __future__ import annotations
+from typing import Literal
 from typing_extensions import Self
 
 import numpy as np
 import pandas as pd
+from ranzen import implements
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from ranzen import implements
 
 from ethicml import DataTuple
 from ethicml.implementations.pytorch_common import (
@@ -21,6 +22,7 @@ from ethicml.implementations.pytorch_common import (
     LinearModel,
     make_dataset_and_loader,
 )
+from ethicml.utility.data_structures import ModelType
 
 
 class Adversary(nn.Module):
@@ -75,7 +77,7 @@ def train_loop(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train model."""
     # Train adversary
     for x, z, y in data_loader:
@@ -120,7 +122,7 @@ def train_regressor(
     clf_optimizer: torch.optim.Optimizer,
     adv_optimizer: torch.optim.Optimizer,
     lambdas: torch.Tensor,
-) -> Tuple[nn.Module, nn.Module]:
+) -> tuple[nn.Module, nn.Module]:
     """Train regression model."""
     # Train adversary
     for x, z, y in data_loader:
@@ -198,7 +200,7 @@ class AdvDebiasingClassLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         num_classes: int,
         lambda_vec: float,
     ):
@@ -209,9 +211,9 @@ class AdvDebiasingClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
         else:
             raise NotImplementedError
@@ -290,7 +292,7 @@ class AdvDebiasingRegLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         out_shape: int,
         lambda_vec: float,
     ):
@@ -301,9 +303,9 @@ class AdvDebiasingRegLearner:
         self.out_shape = out_shape
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
             raise NotImplementedError

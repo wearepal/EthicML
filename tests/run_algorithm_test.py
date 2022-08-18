@@ -1,6 +1,6 @@
 """Test that an algorithm can run against some data."""
-import os
 from dataclasses import dataclass
+import os
 from pathlib import Path
 from typing import List, Literal
 
@@ -10,8 +10,8 @@ import pytest
 from sklearn.preprocessing import StandardScaler
 
 import ethicml as em
-import ethicml.data as emda
 from ethicml import ClassifierType, DataTuple, KernelType, Prediction, TestTuple, metrics, models
+import ethicml.data as emda
 from ethicml.models.inprocess.in_algorithm import _I, InAlgorithmDC
 
 
@@ -244,7 +244,8 @@ def test_run_alg_suite_err_handling():
         def run(self, train: DataTuple, test: TestTuple, seed: int = 888) -> Prediction:
             raise NotImplementedError("This won't run.")
 
-        def get_name(self) -> str:
+        @property
+        def name(self) -> str:
             return "Problem"
 
     datasets: List[emda.Dataset] = [emda.Toy()]

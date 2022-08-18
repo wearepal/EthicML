@@ -4,7 +4,7 @@ This namespace contains utilities and data structures.
 """
 from .common import *
 from .evaluators.cross_validator import *
-from .evaluators.evaluate_models import *
+from .evaluators.evaluate import *
 from .evaluators.parallelism import *
 from .preprocessing.adjust_labels import *
 from .preprocessing.biased_split import *

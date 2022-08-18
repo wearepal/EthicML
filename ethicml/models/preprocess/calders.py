@@ -1,6 +1,7 @@
 """Kamiran&Calders 2012, massaging."""
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import pandas as pd
 from ranzen import implements
@@ -23,17 +24,19 @@ class Calders(PreAlgorithm):
     def __post_init__(self) -> None:
         self._out_size: Optional[int] = None
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_out_size(self) -> int:
+    def out_size(self) -> int:
         assert self._out_size is not None
         return self._out_size
 
+    @property  # type: ignore[misc]
     @implements(PreAlgorithm)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Calders"
 
     @implements(PreAlgorithm)
-    def fit(self, train: DataTuple, seed: int = 888) -> Tuple[PreAlgorithm, DataTuple]:
+    def fit(self, train: DataTuple, seed: int = 888) -> tuple[Calders, DataTuple]:
         self._out_size = train.x.shape[1]
         new_train, _ = _calders_algorithm(
             train, train, self.preferable_class, self.disadvantaged_group, seed
@@ -45,7 +48,7 @@ class Calders(PreAlgorithm):
         return data.rename(f"{self.name}: {data.name}")
 
     @implements(PreAlgorithm)
-    def run(self, train: DataTuple, test: T, seed: int = 888) -> Tuple[DataTuple, T]:
+    def run(self, train: DataTuple, test: T, seed: int = 888) -> tuple[DataTuple, T]:
         self._out_size = train.x.shape[1]
         new_train, new_test = _calders_algorithm(
             train, test, self.preferable_class, self.disadvantaged_group, seed
@@ -57,9 +60,9 @@ class Calders(PreAlgorithm):
 
 def _calders_algorithm(
     dataset: DataTuple, test: T, good_class: int, disadvantaged_group: int, seed: int
-) -> Tuple[DataTuple, T]:
-    s_vals: List[int] = list(map(int, dataset.s.unique()))
-    y_vals: List[int] = list(map(int, dataset.y.unique()))
+) -> tuple[DataTuple, T]:
+    s_vals: list[int] = list(map(int, dataset.s.unique()))
+    y_vals: list[int] = list(map(int, dataset.y.unique()))
 
     assert len(s_vals) == 2
     assert len(y_vals) == 2
@@ -70,7 +73,7 @@ def _calders_algorithm(
     advantaged_group = s_0 if disadvantaged_group == s_1 else s_1
 
     groups = ((s_0, y_0), (s_0, y_1), (s_1, y_0), (s_1, y_1))
-    data: Dict[Tuple[int, int], DataTuple] = {}
+    data: dict[tuple[int, int], DataTuple] = {}
     for s, y in groups:
         s_y_mask = (dataset.s == s) & (dataset.y == y)
         data[(s, y)] = dataset.replace_data(data=dataset.data.loc[s_y_mask].reset_index(drop=True))
@@ -98,7 +101,7 @@ def _calders_algorithm(
     for group, ranking in [(dis_group, dis_group_rank), (adv_group, adv_group_rank)]:
         unsorted_data = data[group]
         data[group] = unsorted_data.replace_data(
-            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)  # type: ignore[misc,call-arg]
+            data=unsorted_data.data.reindex(index=ranking.index).reset_index(drop=True)
         )
 
     all_disadvantaged = len(data[(disadvantaged_group, good_class)]) + dis_group_len
@@ -110,7 +113,7 @@ def _calders_algorithm(
     num_to_swap = round(
         (adv_group_len * all_disadvantaged - dis_group_good_len * all_advantaged) / len(dataset)
     )
-    data[dis_group].y.iloc[:num_to_swap] = good_class  # type: ignore[call-overload]
-    data[adv_group].y.iloc[:num_to_swap] = bad_class  # type: ignore[call-overload]
+    data[dis_group].y.iloc[:num_to_swap] = good_class
+    data[adv_group].y.iloc[:num_to_swap] = bad_class
 
     return concat(list(data.values())), test

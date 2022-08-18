@@ -1,10 +1,11 @@
 """Collection of functions that enable parallelism."""
-from typing import List, Optional, Sequence, Tuple, TypeVar, Union, cast, overload
-from typing_extensions import Protocol, TypeAlias
+from __future__ import annotations
+from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
+from typing_extensions import TypeAlias
 
+from joblib import Parallel, delayed
 import numpy as np
 import pandas as pd
-from joblib import Parallel, delayed
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
@@ -22,21 +23,21 @@ DataSeq: TypeAlias = Sequence[TrainValPair]
 
 @overload
 def run_in_parallel(
-    algos: InSeq, *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
+    algos: InSeq, *, data: DataSeq, seeds: list[int], num_jobs: int | None = None
 ) -> InResult:
     ...
 
 
 @overload
 def run_in_parallel(
-    algos: PreSeq, *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
+    algos: PreSeq, *, data: DataSeq, seeds: list[int], num_jobs: int | None = None
 ) -> PreResult:
     ...
 
 
 def run_in_parallel(
-    algos: Union[InSeq, PreSeq], *, data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
-) -> Union[InResult, PreResult]:
+    algos: InSeq | PreSeq, *, data: DataSeq, seeds: list[int], num_jobs: int | None = None
+) -> InResult | PreResult:
     """Run the given algorithms (embarrassingly) parallel.
 
     :param algos: list of algorithms
@@ -55,7 +56,7 @@ def run_in_parallel(
     else:
         pre_algos = cast(Sequence[PreAlgorithm], algos)
         # the following line is needed to help mypy along
-        generic_algos: Sequence[Algorithm[Tuple[DataTuple, DataTuple]]] = pre_algos
+        generic_algos: Sequence[Algorithm[tuple[DataTuple, DataTuple]]] = pre_algos
         return arrange_in_parallel(algos=generic_algos, data=data, seeds=seeds, num_jobs=num_jobs)
 
 
@@ -70,8 +71,8 @@ class Algorithm(Protocol[_RT]):
 
 
 def arrange_in_parallel(
-    algos: Sequence[Algorithm[_RT]], data: DataSeq, seeds: List[int], num_jobs: Optional[int] = None
-) -> List[List[_RT]]:
+    algos: Sequence[Algorithm[_RT]], data: DataSeq, seeds: list[int], num_jobs: int | None = None
+) -> list[list[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
     :param algos: list of tuples consisting of a `run_async` function of an algorithm and a name

@@ -1,10 +1,11 @@
 """Class to describe features of the Compas dataset."""
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Type, Union
+from typing import ClassVar, Type
 
 from ..dataset import LegacyDataset
-from ..util import LabelSpec, flatten_dict, simple_spec
+from ..util import LabelSpec, flatten_dict, spec_from_binary_cols
 
 __all__ = ["Compas", "CompasSplits"]
 
@@ -436,7 +437,7 @@ class Compas(LegacyDataset):
             "priors-count",
         ]
 
-        sens_attr_spec: Union[str, LabelSpec]
+        sens_attr_spec: str | LabelSpec
         if self.split is CompasSplits.SEX:
             sens_attr_spec = "sex"
             s_prefix = ["sex"]
@@ -448,7 +449,7 @@ class Compas(LegacyDataset):
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]
         elif self.split is CompasSplits.RACE_SEX:
-            sens_attr_spec = simple_spec({"sex": ["sex"], "race": ["race"]})
+            sens_attr_spec = spec_from_binary_cols({"sex": ["sex"], "race": ["race"]})
             s_prefix = ["race", "sex"]
             class_label_spec = "two-year-recid"
             class_label_prefix = ["two-year-recid"]

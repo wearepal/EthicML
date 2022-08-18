@@ -1,11 +1,11 @@
 """Common plotting functions / datastructures."""
-
-from typing import Any, Dict, List, Literal, NamedTuple, Optional, Tuple
+from __future__ import annotations
+from typing import Any, Literal, NamedTuple
 from typing_extensions import TypeAlias
 
 import matplotlib as mpl
-import pandas as pd
 from matplotlib import pyplot as plt
+import pandas as pd
 
 LegendType: TypeAlias = Literal["inside", "outside"]  # pylint: disable=invalid-name
 PlotType: TypeAlias = Literal["box", "cross", "scatter", "line"]  # pylint: disable=invalid-name
@@ -23,14 +23,14 @@ class PlotDef(NamedTuple):
     """All the things needed to make a plot."""
 
     title: str
-    entries: List[DataEntry]
-    legend_pos: Optional[LegendType] = None
+    entries: list[DataEntry]
+    legend_pos: LegendType | None = None
     legend_yanchor: float = 1.0
 
 
 def common_plotting_settings(
     plot: plt.Axes, plot_def: PlotDef, xaxis_title: str, yaxis_title: str
-) -> Optional[mpl.legend.Legend]:
+) -> mpl.legend.Legend | None:
     """Commonly used settings for plots.
 
     :param plot: a pyplot plot object
@@ -61,13 +61,13 @@ def common_plotting_settings(
 def errorbox(
     plot: plt.Axes,
     plot_def: PlotDef,
-    xaxis: Tuple[str, str],
-    yaxis: Tuple[str, str],
+    xaxis: tuple[str, str],
+    yaxis: tuple[str, str],
     firstcolor: int = 0,
     firstshape: int = 0,
     markersize: int = 6,
     use_cross: bool = False,
-) -> Optional[mpl.legend.Legend]:
+) -> mpl.legend.Legend | None:
     """Generate a figure with errorboxes that reflect the std dev of an entry.
 
     :param plot: a pyplot Axes object
@@ -172,12 +172,12 @@ def errorbox(
 def scatter(
     plot: plt.Axes,
     plot_def: PlotDef,
-    xaxis: Tuple[str, str],
-    yaxis: Tuple[str, str],
+    xaxis: tuple[str, str],
+    yaxis: tuple[str, str],
     startindex: int = 0,
     markersize: int = 6,
     connect_dots: bool = False,
-) -> Optional[mpl.legend.Legend]:
+) -> mpl.legend.Legend | None:
     """Generate a scatter plot.
 
     :param plot: a pyplot plot object
@@ -194,7 +194,7 @@ def scatter(
     xaxis_measure, yaxis_measure = xaxis[0], yaxis[0]
     filled_counter = startindex
     for i, entry in enumerate(plot_def.entries):
-        additional_params: Dict[str, Any]
+        additional_params: dict[str, Any]
         if entry.do_fill or connect_dots:
             additional_params = {}
             shp_index = filled_counter

@@ -1,13 +1,13 @@
 """Fair Dummies utility functions."""
-from typing import List, Optional, Tuple
+from __future__ import annotations
 
 import numpy as np
 from sklearn.neighbors import KernelDensity
 
 
 def density_estimation(
-    y: np.ndarray, *, a: np.ndarray, y_test: Optional[np.ndarray] = None
-) -> Tuple[List[float], List[float]]:
+    y: np.ndarray, *, a: np.ndarray, y_test: np.ndarray | None = None
+) -> tuple[list[float], list[float]]:
     """Estimate the distribusion of P{A|Y}."""
     if y_test is None:
         y_test = np.array([])

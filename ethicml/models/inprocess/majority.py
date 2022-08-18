@@ -1,4 +1,5 @@
 """Simply returns the majority label from the train set."""
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import ClassVar
 
@@ -17,12 +18,13 @@ class Majority(InAlgorithmNoParams):
 
     is_fairness_algo: ClassVar[bool] = False
 
+    @property  # type: ignore[misc]
     @implements(InAlgorithmNoParams)
-    def get_name(self) -> str:
+    def name(self) -> str:
         return "Majority"
 
     @implements(InAlgorithmNoParams)
-    def fit(self, train: DataTuple, seed: int = 888) -> "Majority":
+    def fit(self, train: DataTuple, seed: int = 888) -> Majority:
         self.maj = train.y.mode(dropna=True).to_numpy()
         return self
 

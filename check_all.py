@@ -3,9 +3,9 @@
 import subprocess
 
 import black
-import pytest
 from mypy import api as mypy
 from pylint import lint as pylint
+import pytest
 
 # pytest
 print("############### pytest #################")

@@ -1,6 +1,7 @@
 """File For feature binning."""
+from __future__ import annotations
 from itertools import groupby
-from typing import List, Sequence
+from typing import Sequence
 
 import pandas as pd
 
@@ -15,9 +16,10 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
     Given a datatuple, bin the columns that have ordinal features
     and return as afresh new DataTuple.
 
-    :param data:
+    :param data: The data to bin.
+    :returns: A DataTuple where the ordinal columns have been replaced.
     """
-    groups: Sequence[List[str]] = [
+    groups: Sequence[list[str]] = [
         list(group) for _, group in groupby(data.x.columns, lambda x: x.split("_")[0])
     ]
 
@@ -28,6 +30,6 @@ def bin_cont_feats(data: DataTuple) -> DataTuple:
         if len(group) == 1 and data.x[group[0]].nunique() > 2:
             copy[group] = pd.DataFrame(pd.cut(data.x[group].to_numpy()[:, 0], 5))
             copy = pd.concat([copy, pd.get_dummies(copy[group])], axis="columns")
-            copy = copy.drop(group, axis="columns")  # type: ignore[arg-type]
+            copy = copy.drop(group, axis="columns")
 
     return data.replace(x=copy)
