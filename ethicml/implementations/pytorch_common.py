@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from ethicml.utility import DataTuple, TestTuple
+from ethicml.utility.data_structures import ModelType
 
 try:
     import torch
@@ -278,7 +279,7 @@ class GeneralLearner:
         cost_func: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_proba", "deep_regression"],
+        model_type: ModelType,
         out_shape: int = 1,
     ):
 

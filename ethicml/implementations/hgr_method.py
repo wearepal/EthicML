@@ -11,6 +11,7 @@ import numpy as np
 
 from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.hgr_modules.hgr_impl import HgrClassLearner
+from ethicml.utility.data_structures import ModelType
 
 if TYPE_CHECKING:
     from ethicml.models.inprocess.hgr import HgrArgs
@@ -39,7 +40,7 @@ def fit(train: DataTuple, args: HgrArgs, seed: int = 888) -> HgrClassLearner:
         in_shape=len(train.x.columns),
         out_shape=train.y.nunique(),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
     )
     return model.fit(train, seed=seed)
 

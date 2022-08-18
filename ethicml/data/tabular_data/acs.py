@@ -323,7 +323,7 @@ class AcsIncome(AcsBase):
             target_transform=lambda x: x > self.target_threshold,
             group=self.split,
             preprocess=adult_filter,
-            postprocess=lambda x: np.nan_to_num(x, -1),
+            postprocess=lambda x: np.nan_to_num(x, nan=-1),
         )
 
         dataframe = data_obj._preprocess(dataframe)

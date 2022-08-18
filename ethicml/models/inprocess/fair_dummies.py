@@ -4,12 +4,13 @@ https://github.com/yromano/fair_dummies
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Literal, TypedDict
+from typing import TypedDict
 
 from ranzen import implements
 
 from ethicml.models.inprocess.in_algorithm import HyperParamType
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
+from ethicml.utility.data_structures import ModelType
 
 __all__ = ["FairDummies", "FairDummiesArgs"]
 
@@ -24,7 +25,7 @@ class FairDummiesArgs(TypedDict):
     loss_steps: int
     dis_steps: int
     batch_size: int
-    model_type: Literal["deep_model", "linear_model"]
+    model_type: str
     lambda_vec: float
     second_moment_scaling: float
 
@@ -40,7 +41,7 @@ class FairDummies(InAlgorithmSubprocess):
     loss_steps: int = 1
     dis_steps: int = 1
     batch_size: int = 32
-    model_type: str = "deep_model"
+    model_type: ModelType = ModelType.deep
     lambda_vec: float = 0.9
     second_moment_scaling: float = 1e-5
 
@@ -50,9 +51,6 @@ class FairDummies(InAlgorithmSubprocess):
 
     @implements(InAlgorithmSubprocess)
     def _get_flags(self) -> FairDummiesArgs:
-        model_type: Literal["deep_model", "linear_model"] = (
-            "deep_model" if self.model_type.lower() == "deep_model" else "linear_model"
-        )
         return {
             "lr": self.lr,
             "pretrain_pred_epochs": self.pretrain_pred_epochs,
@@ -61,7 +59,7 @@ class FairDummies(InAlgorithmSubprocess):
             "loss_steps": self.loss_steps,
             "dis_steps": self.dis_steps,
             "batch_size": self.batch_size,
-            "model_type": model_type,
+            "model_type": self.model_type,
             "lambda_vec": self.lambda_vec,
             "second_moment_scaling": self.second_moment_scaling,
         }

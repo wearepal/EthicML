@@ -22,6 +22,7 @@ from ethicml.implementations.pytorch_common import (
     LinearModel,
     make_dataset_and_loader,
 )
+from ethicml.utility.data_structures import ModelType
 
 
 class Adversary(nn.Module):
@@ -199,7 +200,7 @@ class AdvDebiasingClassLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         num_classes: int,
         lambda_vec: float,
     ):
@@ -291,7 +292,7 @@ class AdvDebiasingRegLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         out_shape: int,
         lambda_vec: float,
     ):

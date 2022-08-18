@@ -5,7 +5,6 @@
 # https://github.com/criteo-research/continuous-fairness/tree/master/facl/independence
 from __future__ import annotations
 import random
-from typing import Literal
 from typing_extensions import Self
 
 import numpy as np
@@ -14,8 +13,14 @@ from sklearn.preprocessing import StandardScaler
 import torch
 import torch.nn as nn
 
-from ... import DataTuple
-from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, make_dataset_and_loader
+from ethicml.implementations.pytorch_common import (
+    DeepModel,
+    DeepRegModel,
+    LinearModel,
+    make_dataset_and_loader,
+)
+from ethicml.utility.data_structures import DataTuple, ModelType
+
 from .density_estimation import Kde
 from .facl_hgr import chi_2_cond
 
@@ -132,7 +137,7 @@ class HgrClassLearner:
         in_shape: int,
         out_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
     ):
 
         self.in_shape = in_shape

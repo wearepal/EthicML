@@ -12,6 +12,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
+from ethicml.utility.data_structures import ModelType
+
 from ... import DataTuple
 from ..pytorch_common import DeepModel, DeepRegModel, LinearModel, PandasDataSet
 from .utility_functions import density_estimation
@@ -450,7 +452,7 @@ class EquiClassLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         lambda_vec: float,
         second_moment_scaling: float,
         num_classes: int,
@@ -611,7 +613,7 @@ class EquiRegLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         lambda_vec: float,
         second_moment_scaling: float,
         out_shape: int,

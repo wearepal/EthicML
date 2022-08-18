@@ -26,7 +26,7 @@ from typing_extensions import TypeAlias
 import numpy as np
 from numpy import typing as npt
 import pandas as pd
-from ranzen import enum_name_str
+from ranzen import StrEnum
 
 __all__ = [
     "ClassifierType",
@@ -37,6 +37,7 @@ __all__ = [
     "HyperParamValue",
     "KernelType",
     "LabelTuple",
+    "ModelType",
     "Prediction",
     "Results",
     "ResultsAggregator",
@@ -530,8 +531,7 @@ def concat(
     return datatup_list[0].replace_data(data)
 
 
-@enum_name_str
-class FairnessType(Enum):
+class FairnessType(StrEnum):
     """Fairness type."""
 
     dp = auto()
@@ -539,8 +539,7 @@ class FairnessType(Enum):
     eq_odds = auto()
 
 
-@enum_name_str
-class ClassifierType(Enum):
+class ClassifierType(StrEnum):
     """Classifier type."""
 
     lr = auto()
@@ -685,8 +684,7 @@ def aggregate_results(
     return results.groupby(["dataset", "scaler", "transform", "model"]).agg(aggregator)[metrics]
 
 
-@enum_name_str
-class KernelType(Enum):
+class KernelType(StrEnum):
     """Values for SVM Kernel."""
 
     linear = auto()
@@ -695,5 +693,12 @@ class KernelType(Enum):
     sigmoid = auto()
 
 
-HyperParamValue: TypeAlias = Union[bool, int, float, str, FairnessType, KernelType]
+class ModelType(StrEnum):
+    """What to use as the underlying model for the fairness method."""
+
+    deep = auto()
+    linear = auto()
+
+
+HyperParamValue: TypeAlias = Union[bool, int, float, str]
 HyperParamType: TypeAlias = Dict[str, HyperParamValue]

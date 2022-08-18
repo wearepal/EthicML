@@ -10,11 +10,11 @@ from joblib import dump, load
 import numpy as np
 import torch
 
-from ethicml import DataTuple, SoftPrediction, SubgroupTuple
 from ethicml.implementations.adv_debiasing_modules.model import AdvDebiasingClassLearner
-from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
+from ethicml.utility import DataTuple, ModelType, SoftPrediction, SubgroupTuple
 
 if TYPE_CHECKING:
+    from ethicml.models.inprocess.adv_debiasing import AdvDebArgs
     from ethicml.models.inprocess.in_subprocess import InAlgoArgs
 
 
@@ -33,7 +33,7 @@ def fit(train: DataTuple, args: AdvDebArgs, seed: int = 888) -> AdvDebiasingClas
         cost_pred=torch.nn.CrossEntropyLoss(),
         in_shape=len(train.x.columns),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
         num_classes=train.y.nunique(),
         lambda_vec=args["lambda_vec"],
     )
