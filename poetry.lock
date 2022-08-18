@@ -478,7 +478,7 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "pipenv"
-version = "2022.8.17"
+version = "2022.7.24"
 description = "Python Development Workflow for Humans."
 category = "main"
 optional = false
@@ -978,7 +978,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "19aa53ee91da170dbba52b9f17330910e3df422cb1bcf70c165d0c412677143a"
+content-hash = "e11cfb34c3232995a153f63e433d05053b29efc6b27ec603cc3e3249b5b20d58"
 
 [metadata.files]
 antlr4-python3-runtime = [
@@ -1362,8 +1362,8 @@ pathspec = [
 ]
 pillow = []
 pipenv = [
-    {file = "pipenv-2022.8.17-py2.py3-none-any.whl", hash = "sha256:a134a34d8eefb088c61c51a2b067d8ae2b8c8ef7a80f7cae9a88bc01886faf0c"},
-    {file = "pipenv-2022.8.17.tar.gz", hash = "sha256:863d75dcd8b3ca8fcd7bfce49978454622dd80fbed1e547d2f43de13c6e1723c"},
+    {file = "pipenv-2022.7.24-py2.py3-none-any.whl", hash = "sha256:79d7cf8709b0c165ed3f136acc8ca4ff9771ee32117117cc21969e39911becf8"},
+    {file = "pipenv-2022.7.24.tar.gz", hash = "sha256:374e63450220d7abb298cbaee06c4b02274e6f1cb2ce7b7b677fd5fd3dd30841"},
 ]
 platformdirs = [
     {file = "platformdirs-2.5.2-py3-none-any.whl", hash = "sha256:027d8e83a2d7de06bbac4e5ef7e023c02b863d7ea5d079477e722bb41ab25788"},
