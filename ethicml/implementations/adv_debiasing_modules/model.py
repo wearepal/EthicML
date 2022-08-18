@@ -22,6 +22,7 @@ from ethicml.implementations.pytorch_common import (
     LinearModel,
     make_dataset_and_loader,
 )
+from ethicml.utility.data_structures import ModelType
 
 
 class Adversary(nn.Module):
@@ -199,7 +200,7 @@ class AdvDebiasingClassLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         num_classes: int,
         lambda_vec: float,
     ):
@@ -210,9 +211,9 @@ class AdvDebiasingClassLearner:
         self.num_classes = num_classes
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.clf: nn.Module = DeepModel(in_shape=in_shape, out_shape=num_classes)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.clf = LinearModel(in_shape=in_shape, out_shape=num_classes)
         else:
             raise NotImplementedError
@@ -291,7 +292,7 @@ class AdvDebiasingRegLearner:
         cost_pred: nn.Module,
         in_shape: int,
         batch_size: int,
-        model_type: Literal["deep_model", "linear_model"],
+        model_type: ModelType,
         out_shape: int,
         lambda_vec: float,
     ):
@@ -302,9 +303,9 @@ class AdvDebiasingRegLearner:
         self.out_shape = out_shape
 
         self.model_type = model_type
-        if self.model_type == "deep_model":
+        if self.model_type is ModelType.deep:
             self.clf: nn.Module = DeepRegModel(in_shape=in_shape, out_shape=out_shape)
-        elif self.model_type == "linear_model":
+        elif self.model_type is ModelType.linear:
             self.clf = LinearModel(in_shape=in_shape, out_shape=out_shape)
         else:
             raise NotImplementedError

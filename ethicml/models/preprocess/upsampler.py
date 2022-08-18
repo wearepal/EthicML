@@ -1,12 +1,12 @@
 """Simple upsampler that makes subgroups the same size as the majority group."""
 from __future__ import annotations
 from dataclasses import dataclass
-from enum import Enum, auto
+from enum import auto
 import itertools
 from typing import Optional
 
 import pandas as pd
-from ranzen import enum_name_str, implements
+from ranzen import StrEnum, implements
 
 from ethicml.utility import DataTuple, SoftPrediction
 
@@ -16,8 +16,7 @@ from .pre_algorithm import PreAlgorithm, T
 __all__ = ["Upsampler", "UpsampleStrategy"]
 
 
-@enum_name_str
-class UpsampleStrategy(Enum):
+class UpsampleStrategy(StrEnum):
     """Strategy for upsampling."""
 
     uniform = auto()

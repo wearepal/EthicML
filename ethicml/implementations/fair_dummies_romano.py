@@ -11,7 +11,7 @@ import numpy as np
 import torch
 
 from ethicml.implementations.fair_dummies_modules.model import EquiClassLearner
-from ethicml.utility import DataTuple, SoftPrediction, SubgroupTuple, TestTuple
+from ethicml.utility import DataTuple, ModelType, SoftPrediction, SubgroupTuple, TestTuple
 
 if TYPE_CHECKING:
     from ethicml.models.inprocess.fair_dummies import FairDummiesArgs
@@ -35,7 +35,7 @@ def fit(train: DataTuple, args: FairDummiesArgs, seed: int = 888) -> EquiClassLe
         cost_pred=torch.nn.CrossEntropyLoss(),
         in_shape=len(train.x.columns),
         batch_size=args["batch_size"],
-        model_type=args["model_type"],
+        model_type=ModelType(args["model_type"]),
         lambda_vec=args["lambda_vec"],
         second_moment_scaling=args["second_moment_scaling"],
         num_classes=train.y.nunique(),

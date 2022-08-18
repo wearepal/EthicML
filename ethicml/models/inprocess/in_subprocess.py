@@ -1,12 +1,14 @@
 """Classes related to running algorithms in subprocesses."""
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from functools import cached_property
 import json
 from pathlib import Path
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, gettempdir
 from typing import Any, Literal, Mapping, TypedDict, TypeVar, Union, final
 from typing_extensions import TypeAlias
+import uuid
 
 from ethicml.models.algorithm_base import SubprocessAlgorithmMixin
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
@@ -57,13 +59,13 @@ class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     :param dir: Directory to store the model.
     """
 
-    dir: Path = Path(".")
+    dir: Path = field(default_factory=lambda: Path(gettempdir()))
 
-    @property
-    @final
+    @cached_property  # needs to be cached because of the uuid4() call
     def model_path(self) -> Path:
         """Path to where the model with be stored."""
-        return self.dir.resolve(strict=True) / f"model_{self.name}.joblib"
+        name = self.name.replace(" ", "_")
+        return self.dir.resolve(strict=True) / f"model_{name}_{uuid.uuid4()}.joblib"
 
     @final
     def fit(self: _IS, train: DataTuple, seed: int = 888) -> _IS:

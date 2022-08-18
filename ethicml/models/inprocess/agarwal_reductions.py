@@ -19,8 +19,8 @@ VALID_MODELS: set[ClassifierType] = {ClassifierType.lr, ClassifierType.svm}
 class AgarwalArgs(TypedDict):
     """Args for the Agarwal implementation."""
 
-    classifier: int
-    fairness: int
+    classifier: str
+    fairness: str
     eps: float
     iters: int
     C: float
@@ -57,12 +57,12 @@ class Agarwal(InAlgorithmSubprocess):
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
         # TODO: replace this with dataclasses.asdict()
         return {
-            "classifier": self.classifier.value,
-            "fairness": self.fairness.value,
+            "classifier": self.classifier,
+            "fairness": self.fairness,
             "eps": self.eps,
             "iters": self.iters,
             "C": chosen_c,
-            "kernel": str(chosen_kernel) if chosen_kernel is not None else "",
+            "kernel": chosen_kernel if chosen_kernel is not None else "",
         }
 
     @property  # type: ignore[misc]
