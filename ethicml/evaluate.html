@@ -1,12 +1,12 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Parallel evaluation" href="parallelism.html" /><link rel="prev" title="Cross-validation" href="cross_validator.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
-        <title>Model evaluation - EthicML 1.0.0-alpha.4 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>Model evaluation - EthicML 1.0.0-beta.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.4 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -212,105 +212,102 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-ethicml.evaluators.evaluate_models">
-<span id="model-evaluation"></span><h1>Model evaluation<a class="headerlink" href="#module-ethicml.evaluators.evaluate_models" title="Permalink to this headline">#</a></h1>
+          <section id="module-ethicml.evaluators.evaluate">
+<span id="model-evaluation"></span><h1>Model evaluation<a class="headerlink" href="#module-ethicml.evaluators.evaluate" title="Permalink to this heading">#</a></h1>
 <p>Runs given metrics on given algorithms for given datasets.</p>
 <p><strong>Functions:</strong></p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate_models.evaluate_models" title="ethicml.evaluators.evaluate_models.evaluate_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_models</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate.evaluate_models" title="ethicml.evaluators.evaluate.evaluate_models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_models</span></code></a></p></td>
 <td><p>Evaluate all the given models for all the given datasets and compute all the given metrics.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate_models.load_results" title="ethicml.evaluators.evaluate_models.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate.load_results" title="ethicml.evaluators.evaluate.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a></p></td>
 <td><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate_models.run_metrics" title="ethicml.evaluators.evaluate_models.run_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_metrics</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.evaluate.run_metrics" title="ethicml.evaluators.evaluate.run_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_metrics</span></code></a></p></td>
 <td><p>Run all the given metrics on the given predictions and return the results.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.evaluators.evaluate_models.evaluate_models">
-<span class="sig-name descname"><span class="pre">evaluate_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocess_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inprocess_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_previous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fair_pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate_models.evaluate_models" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.evaluators.evaluate.evaluate_models">
+<span class="sig-name descname"><span class="pre">evaluate_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datasets</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocess_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inprocess_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_previous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">splitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fair_pipeline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate.evaluate_models" title="Permalink to this definition">#</a></dt>
 <dd><p>Evaluate all the given models for all the given datasets and compute all the given metrics.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datasets</strong> (<em>List</em><em>[</em><a class="reference internal" href="../ethicml.data.html#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a><em>]</em>) – List of dataset objects.</p></li>
-<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.models.preprocess.pre_algorithm.PreAlgorithm"><em>ethicml.models.preprocess.pre_algorithm.PreAlgorithm</em></a><em>]</em>) – List of preprocess model objects. (Default: ())</p></li>
-<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – List of inprocess model objects. (Default: ())</p></li>
-<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – List of metric objects. (Default: ())</p></li>
-<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – List of metric objects that will be evaluated per sensitive attribute.
+<li><p><strong>datasets</strong> (<em>list</em><em>[</em><a class="reference internal" href="../ethicml.data.html#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>ethicml.data.dataset.Dataset</em></a><em>]</em>) – List of dataset objects.</p></li>
+<li><p><strong>preprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm" title="ethicml.models.preprocess.pre_algorithm.PreAlgorithm"><em>PreAlgorithm</em></a><em>]</em>) – List of preprocess model objects. (Default: ())</p></li>
+<li><p><strong>inprocess_models</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>InAlgorithm</em></a><em>]</em>) – List of inprocess model objects. (Default: ())</p></li>
+<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a><em>]</em>) – List of metric objects. (Default: ())</p></li>
+<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a><em>]</em>) – List of metric objects that will be evaluated per sensitive attribute.
 (Default: ())</p></li>
 <li><p><strong>repeats</strong> (<em>int</em>) – Number of repeats to perform for the experiments. (Default: 1)</p></li>
 <li><p><strong>test_mode</strong> (<em>bool</em>) – If True, only use a small subset of the data so that the models run faster.
 (Default: False)</p></li>
 <li><p><strong>delete_previous</strong> (<em>bool</em>) – True by default. If True, delete previous results in the directory.</p></li>
-<li><p><strong>splitter</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><em>ethicml.preprocessing.splits.DataSplitter</em></a><em>]</em>) – Custom train-test splitter. (Default: None)</p></li>
+<li><p><strong>splitter</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.DataSplitter" title="ethicml.preprocessing.splits.DataSplitter"><em>DataSplitter</em></a><em>]</em>) – Custom train-test splitter. (Default: None)</p></li>
 <li><p><strong>topic</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A string that identifies the run; the string is prepended to the filename.
 (Default: None)</p></li>
 <li><p><strong>fair_pipeline</strong> (<em>bool</em>) – if True, run fair inprocess algorithms on the output of preprocessing.
 (Default: True)</p></li>
 <li><p><strong>num_jobs</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Number of parallel jobs; if None, the number of CPUs is used. (Default: None)</p></li>
-<li><p><strong>scaler</strong> (<em>Optional</em><em>[</em><em>ethicml.preprocessing.scaling.ScalerType</em><em>]</em>) – Sklearn-style scaler to be used on the continuous features. (Default: None)</p></li>
+<li><p><strong>scaler</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.scaling.ScalerType"><em>ScalerType</em></a><em>]</em>) – Sklearn-style scaler to be used on the continuous features. (Default: None)</p></li>
 <li><p><strong>repeat_on</strong> (<em>Literal</em><em>[</em><em>'data'</em><em>, </em><em>'model'</em><em>, </em><em>'both'</em><em>]</em>) – Should the <cite>data</cite> or <cite>model</cite> seed be varied for each run? Or should they <cite>both</cite> be the same? (Default: “both”)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ethicml.utility.data_structures.Results</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="utility.html#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.evaluators.evaluate_models.load_results">
-<span class="sig-name descname"><span class="pre">load_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('results')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate_models.load_results" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.evaluators.evaluate.load_results">
+<span class="sig-name descname"><span class="pre">load_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PosixPath('results')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate.load_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Load results from a CSV file that was created by <cite>evaluate_models</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataset_name</strong> (<em>str</em>) – name of the dataset of the results</p></li>
 <li><p><strong>transform_name</strong> (<em>str</em>) – name of the transformation that was used for the results</p></li>
 <li><p><strong>topic</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – (optional) topic string of the results (Default: None)</p></li>
-<li><p><strong>outdir</strong> (<em>pathlib.Path</em>) – directory where the results are stored (Default: Path(“.”) / “results”)</p></li>
+<li><p><strong>outdir</strong> (<em>Path</em>) – directory where the results are stored (Default: Path(“.”) / “results”)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>DataFrame if the file exists; None otherwise</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Optional</em>[ethicml.utility.data_structures.Results]</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Optional</em>[<a class="reference internal" href="utility.html#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.evaluators.evaluate_models.run_metrics">
-<span class="sig-name descname"><span class="pre">run_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diffs_and_ratios</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate_models.run_metrics" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.evaluators.evaluate.run_metrics">
+<span class="sig-name descname"><span class="pre">run_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PerSens.DIFFS_RATIOS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.evaluate.run_metrics" title="Permalink to this definition">#</a></dt>
 <dd><p>Run all the given metrics on the given predictions and return the results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> (<a class="reference internal" href="utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>ethicml.utility.data_structures.Prediction</em></a>) – DataFrame with predictions</p></li>
-<li><p><strong>actual</strong> (<em>Union</em><em>[</em><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple" title="ethicml.utility.data_structures.LabelTuple"><em>ethicml.utility.data_structures.LabelTuple</em></a><em>, </em><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a><em>]</em>) – EvalTuple with the labels</p></li>
-<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – list of metrics (Default: ())</p></li>
-<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em>) – list of metrics that are computed per sensitive attribute (Default: ())</p></li>
-<li><p><strong>diffs_and_ratios</strong> (<em>bool</em>) – if True, compute diffs and ratios per sensitive attribute (Default: True)</p></li>
+<li><p><strong>predictions</strong> (<a class="reference internal" href="utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – DataFrame with predictions</p></li>
+<li><p><strong>actual</strong> (<em>Union</em><em>[</em><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple" title="ethicml.utility.data_structures.LabelTuple"><em>LabelTuple</em></a><em>, </em><a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – EvalTuple with the labels</p></li>
+<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a><em>]</em>) – list of metrics (Default: ())</p></li>
+<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a><em>]</em>) – list of metrics that are computed per sensitive attribute (Default: ())</p></li>
+<li><p><strong>aggregation</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><em>ethicml.metrics.per_sensitive_attribute.PerSens</em></a><em> | </em><em>None</em>) – Optionally specify aggregations that are performed on the per-sens metrics.
+(Default: <code class="docutils literal notranslate"><span class="pre">DIFFS_RATIOS</span></code>)</p></li>
 <li><p><strong>use_sens_name</strong> (<em>bool</em>) – if True, use the name of the senisitive variable in the returned results.
-If False, refer to the sensitive varibale as <cite>S</cite>. (Default: True)</p></li>
+If False, refer to the sensitive variable as “S”. (Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary of all the metric results.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><em>Dict</em>[str, float]</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -371,6 +368,7 @@ If False, refer to the sensitive varibale as <cite>S</cite>. (Default: True)</p>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

@@ -1,12 +1,12 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Inprocess algorithms" href="inprocess.html" /><link rel="prev" title="ethicml.models" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
-        <title>Algorithms base - EthicML 1.0.0-alpha.4 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>Algorithms base - EthicML 1.0.0-beta.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.4 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -158,7 +158,7 @@
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate.html">Model evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/utility.html">Utils</a></li>
@@ -213,15 +213,11 @@
         </div>
         <article role="main">
           <section id="module-ethicml.models.algorithm_base">
-<span id="algorithms-base"></span><h1>Algorithms base<a class="headerlink" href="#module-ethicml.models.algorithm_base" title="Permalink to this headline">#</a></h1>
+<span id="algorithms-base"></span><h1>Algorithms base<a class="headerlink" href="#module-ethicml.models.algorithm_base" title="Permalink to this heading">#</a></h1>
 <p>Base class for Algorithms.</p>
 <p><strong>Classes:</strong></p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Algorithm</span></code></a></p></td>
 <td><p>Base class for Algorithms.</p></td>
@@ -235,22 +231,11 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Algorithm</span></span><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for Algorithms.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm.get_name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm.get_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the algorithm.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.algorithm_base.Algorithm.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm.name" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ethicml.models.algorithm_base.Algorithm.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Name of the algorithm.</p>
 </dd></dl>
 
@@ -259,7 +244,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SubprocessAlgorithmMixin</span></span><a class="headerlink" href="#ethicml.models.algorithm_base.SubprocessAlgorithmMixin" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Mixin for running algorithms in a subprocess, to be used with <a class="reference internal" href="#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">Algorithm</span></code></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.models.algorithm_base.SubprocessAlgorithmMixin.call_script">
@@ -267,14 +252,14 @@
 <dd><p>Call a (Python) script as a separate process.</p>
 <p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cmd_args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
-<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
-<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>pathlib.Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
+<li><p><strong>cmd_args</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of strings that are passed as commandline arguments to the executable.</p></li>
+<li><p><strong>env</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Environment variables specified as a dictionary; e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;PATH&quot;:</span> <span class="pre">&quot;/usr/bin&quot;}</span></code>.</p></li>
+<li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -345,6 +330,7 @@
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

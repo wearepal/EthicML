@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/><title>Index - EthicML 1.0.0-alpha.4 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/><title>Index - EthicML 1.0.0-beta.1 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -121,7 +121,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-alpha.4 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -144,7 +144,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.4 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -156,7 +156,7 @@
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml/evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml/evaluate.html">Model evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/utility.html">Utils</a></li>
@@ -315,11 +315,11 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.aggregate_over_sens">aggregate_over_sens() (in module ethicml.metrics)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml/utility.html#ethicml.utility.aggregate_results">aggregate_results() (in module ethicml.utility)</a>
 </li>
         <li><a href="ethicml.models/base.html#ethicml.models.algorithm_base.Algorithm">Algorithm (class in ethicml.models.algorithm_base)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.ALL">ALL (PerSens attribute)</a>
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.ResultsAggregator.append_df">append_df() (ResultsAggregator method)</a>
 </li>
@@ -331,8 +331,64 @@
           <li><a href="ethicml/utility.html#ethicml.utility.Heaviside.apply">(Heaviside method)</a>
 </li>
         </ul></li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.Metric.apply_per_sensitive">apply_per_sensitive (Metric attribute)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.apply_per_sensitive">apply_per_sensitive (AbsCV attribute)</a>
+
+        <ul>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.Accuracy.apply_per_sensitive">(Accuracy attribute)</a>
 </li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.AS.apply_per_sensitive">(AS attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.apply_per_sensitive">(AverageOddsDiff attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.apply_per_sensitive">(BalancedAccuracy attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.apply_per_sensitive">(BCR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.apply_per_sensitive">(CfmMetric attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CV.apply_per_sensitive">(CV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.F1.apply_per_sensitive">(F1 attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.apply_per_sensitive">(FNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.apply_per_sensitive">(FPR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.Hsic.apply_per_sensitive">(Hsic attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.Metric.apply_per_sensitive">(Metric attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.MetricStaticName.apply_per_sensitive">(MetricStaticName attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.NMI.apply_per_sensitive">(NMI attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.apply_per_sensitive">(NPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.apply_per_sensitive">(PPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg.apply_per_sensitive">(ProbNeg attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbOutcome.apply_per_sensitive">(ProbOutcome attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.apply_per_sensitive">(ProbPos attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.apply_per_sensitive">(RenyiCorrelation attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.RobustAccuracy.apply_per_sensitive">(RobustAccuracy attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric.apply_per_sensitive">(SklearnMetric attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.apply_per_sensitive">(Theil attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.apply_per_sensitive">(TNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.apply_per_sensitive">(TPR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich.apply_per_sensitive">(Yanovich attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml/utility.html#ethicml.utility.DataTuple.apply_to_joined_df">apply_to_joined_df() (DataTuple method)</a>
 </li>
         <li><a href="ethicml/parallelism.html#ethicml.evaluators.parallelism.arrange_in_parallel">arrange_in_parallel() (in module ethicml.evaluators.parallelism)</a>
@@ -465,6 +521,8 @@
 </li>
         <li><a href="ethicml.data.html#ethicml.data.LabelGroup.columns">columns (LabelGroup attribute)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.Compas">Compas (class in ethicml.data)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.CompasSplits">CompasSplits (class in ethicml.data)</a>
@@ -473,38 +531,6 @@
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.concat">concat() (in module ethicml.utility)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.confusion_matrix">confusion_matrix() (AbsCV method)</a>
-
-        <ul>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.confusion_matrix">(AverageOddsDiff method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.confusion_matrix">(BalancedAccuracy method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.confusion_matrix">(BCR method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.confusion_matrix">(CfmMetric method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.CV.confusion_matrix">(CV method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.confusion_matrix">(FNR method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.confusion_matrix">(FPR method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.confusion_matrix">(NPV method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.confusion_matrix">(PPV method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg.confusion_matrix">(ProbNeg method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.confusion_matrix">(ProbPos method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.confusion_matrix">(TNR method)</a>
-</li>
-          <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.confusion_matrix">(TPR method)</a>
-</li>
-        </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.AcsEmployment.continuous_features">continuous_features (AcsEmployment property)</a>
 
         <ul>
@@ -603,6 +629,10 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.diff_per_sens">diff_per_sens() (in module ethicml.metrics)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.DIFFS">DIFFS (PerSens attribute)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.DIFFS_RATIOS">DIFFS_RATIOS (PerSens attribute)</a>
+</li>
         <li><a href="ethicml.data.html#ethicml.data.AcsEmployment.disc_feature_groups">disc_feature_groups (AcsEmployment property)</a>
 
         <ul>
@@ -647,10 +677,46 @@
           <li><a href="ethicml.data.html#ethicml.data.Toy.disc_feature_groups">(Toy property)</a>
 </li>
         </ul></li>
+        <li><a href="ethicml.data.html#ethicml.data.Admissions.discard_non_one_hot">discard_non_one_hot (Admissions attribute)</a>
+
+        <ul>
+          <li><a href="ethicml.data.html#ethicml.data.Adult.discard_non_one_hot">(Adult attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Compas.discard_non_one_hot">(Compas attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Credit.discard_non_one_hot">(Credit attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Crime.discard_non_one_hot">(Crime attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.discard_non_one_hot">(CSVDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.discard_non_one_hot">(CSVDatasetDC attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.German.discard_non_one_hot">(German attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Health.discard_non_one_hot">(Health attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Law.discard_non_one_hot">(Law attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.discard_non_one_hot">(LegacyDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Lipton.discard_non_one_hot">(Lipton attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.discard_non_one_hot">(NonBinaryToy attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Nursery.discard_non_one_hot">(Nursery attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Sqf.discard_non_one_hot">(Sqf attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.discard_non_one_hot">(StaticCSVDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Synthetic.discard_non_one_hot">(Synthetic attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Toy.discard_non_one_hot">(Toy attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="ethicml.data.html#ethicml.data.CSVDataset.discard_non_one_hot">discard_non_one_hot (CSVDataset attribute)</a>
-</li>
         <li><a href="ethicml.data.html#ethicml.data.AcsEmployment.discrete_features">discrete_features (AcsEmployment property)</a>
 
         <ul>
@@ -733,10 +799,10 @@
 </li>
         </ul></li>
         <li>
-    ethicml.evaluators.evaluate_models
+    ethicml.evaluators.evaluate
 
         <ul>
-          <li><a href="ethicml/evaluate_models.html#module-ethicml.evaluators.evaluate_models">module</a>
+          <li><a href="ethicml/evaluate.html#module-ethicml.evaluators.evaluate">module</a>
 </li>
         </ul></li>
         <li>
@@ -965,7 +1031,7 @@
           <li><a href="ethicml/visualisation.html#module-ethicml.visualisation">module</a>
 </li>
         </ul></li>
-        <li><a href="ethicml/evaluate_models.html#ethicml.evaluators.evaluate_models.evaluate_models">evaluate_models() (in module ethicml.evaluators.evaluate_models)</a>
+        <li><a href="ethicml/evaluate.html#ethicml.evaluators.evaluate.evaluate_models">evaluate_models() (in module ethicml.evaluators.evaluate)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.executable">executable (Agarwal property)</a>
 
@@ -1139,10 +1205,10 @@
         </ul></li>
         <li><a href="ethicml/utility.html#ethicml.utility.filter_and_map_results">filter_and_map_results() (in module ethicml.utility)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.filter_features_by_prefixes">filter_features_by_prefixes() (in module ethicml.data)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml/utility.html#ethicml.utility.filter_results">filter_results() (in module ethicml.utility)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.fit">fit() (Agarwal method)</a>
@@ -1188,6 +1254,8 @@
 </li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.fit">(Reweighting method)</a>
 </li>
+          <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType.fit">(ScalerType method)</a>
+</li>
           <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.fit">(SVM method)</a>
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.fit">(Upsampler method)</a>
@@ -1207,6 +1275,8 @@
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.zemel.Zemel.fit">(Zemel method)</a>
 </li>
         </ul></li>
+        <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType.fit_transform">fit_transform() (ScalerType method)</a>
+</li>
         <li><a href="ethicml.data.html#ethicml.data.flatten_dict">flatten_dict() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.FNR">FNR (class in ethicml.metrics)</a>
@@ -1265,44 +1335,6 @@
 </li>
         <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.get_biased_subset">get_biased_subset() (in module ethicml.preprocessing)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.Admissions.get_cont_features">get_cont_features() (Admissions method)</a>
-
-        <ul>
-          <li><a href="ethicml.data.html#ethicml.data.Adult.get_cont_features">(Adult method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Compas.get_cont_features">(Compas method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Credit.get_cont_features">(Credit method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Crime.get_cont_features">(Crime method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.get_cont_features">(CSVDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.get_cont_features">(CSVDatasetDC method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.German.get_cont_features">(German method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Health.get_cont_features">(Health method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Law.get_cont_features">(Law method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.get_cont_features">(LegacyDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Lipton.get_cont_features">(Lipton method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.get_cont_features">(NonBinaryToy method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Nursery.get_cont_features">(Nursery method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Sqf.get_cont_features">(Sqf method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.get_cont_features">(StaticCSVDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Synthetic.get_cont_features">(Synthetic method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Toy.get_cont_features">(Toy method)</a>
-</li>
-        </ul></li>
         <li><a href="ethicml.data.html#ethicml.data.get_dataset_obj_by_name">get_dataset_obj_by_name() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.get_discrete_features">get_discrete_features() (in module ethicml.data)</a>
@@ -1343,50 +1375,6 @@
           <li><a href="ethicml.data.html#ethicml.data.Synthetic.get_filename_or_path">(Synthetic method)</a>
 </li>
           <li><a href="ethicml.data.html#ethicml.data.Toy.get_filename_or_path">(Toy method)</a>
-</li>
-        </ul></li>
-        <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.get_hyperparameters">get_hyperparameters() (Agarwal method)</a>
-
-        <ul>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.manual.Corels.get_hyperparameters">(Corels method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.DPOracle.get_hyperparameters">(DPOracle method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.get_hyperparameters">(DRO method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.get_hyperparameters">(InAlgorithm method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_hyperparameters">(InAlgorithmDC method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_hyperparameters">(InAlgorithmNoParams method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.get_hyperparameters">(InstalledModel method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.get_hyperparameters">(Kamishima method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.get_hyperparameters">(LR method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.get_hyperparameters">(LRCV method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.majority.Majority.get_hyperparameters">(Majority method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.mlp.MLP.get_hyperparameters">(MLP method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.get_hyperparameters">(Oracle method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.get_hyperparameters">(Reweighting method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.get_hyperparameters">(SVM method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.get_hyperparameters">(ZafarAccuracy method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.get_hyperparameters">(ZafarBaseline method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.get_hyperparameters">(ZafarEqOdds method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.get_hyperparameters">(ZafarEqOpp method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.get_hyperparameters">(ZafarFairness method)</a>
 </li>
         </ul></li>
         <li><a href="ethicml.data.html#ethicml.data.Admissions.get_label_specs">get_label_specs() (Admissions method)</a>
@@ -1442,14 +1430,6 @@
 </li>
           <li><a href="ethicml/utility.html#ethicml.utility.Activation.get_name">(Activation method)</a>
 </li>
-          <li><a href="ethicml.data.html#ethicml.data.Admissions.get_name">(Admissions method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Adult.get_name">(Adult method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.get_name">(Agarwal method)</a>
-</li>
-          <li><a href="ethicml.models/base.html#ethicml.models.algorithm_base.Algorithm.get_name">(Algorithm method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.AS.get_name">(AS method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.get_name">(AverageOddsDiff method)</a>
@@ -1458,31 +1438,9 @@
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.get_name">(BCR method)</a>
 </li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.beutel.Beutel.get_name">(Beutel method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.calders.Calders.get_name">(Calders method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.get_name">(CfmMetric method)</a>
 </li>
-          <li><a href="ethicml.data.html#ethicml.data.Compas.get_name">(Compas method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.manual.Corels.get_name">(Corels method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Credit.get_name">(Credit method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Crime.get_name">(Crime method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.get_name">(CSVDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.get_name">(CSVDatasetDC method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.CV.get_name">(CV method)</a>
-</li>
-          <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip.get_name">(DPFlip method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.DPOracle.get_name">(DPOracle method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.get_name">(DRO method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.F1.get_name">(F1 method)</a>
 </li>
@@ -1490,59 +1448,19 @@
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.get_name">(FPR method)</a>
 </li>
-          <li><a href="ethicml.data.html#ethicml.data.German.get_name">(German method)</a>
-</li>
-          <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.hardt.Hardt.get_name">(Hardt method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Health.get_name">(Health method)</a>
-</li>
           <li><a href="ethicml/utility.html#ethicml.utility.Heaviside.get_name">(Heaviside method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.Hsic.get_name">(Hsic method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.get_name">(InAlgorithm method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.get_name">(InAlgorithmDC method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.get_name">(InAlgorithmNoParams method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.get_name">(InstalledModel method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.get_name">(Kamishima method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Law.get_name">(Law method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.get_name">(LegacyDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Lipton.get_name">(Lipton method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.get_name">(LR method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.get_name">(LRCV method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.majority.Majority.get_name">(Majority method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.Metric.get_name">(Metric method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.MetricStaticName.get_name">(MetricStaticName method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.mlp.MLP.get_name">(MLP method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.NMI.get_name">(NMI method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.get_name">(NonBinaryToy method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.get_name">(NPV method)</a>
 </li>
-          <li><a href="ethicml.data.html#ethicml.data.Nursery.get_name">(Nursery method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.get_name">(Oracle method)</a>
-</li>
-          <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.get_name">(PostAlgorithm method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.get_name">(PPV method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_name">(PreAlgorithm method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg.get_name">(ProbNeg method)</a>
 </li>
@@ -1552,45 +1470,17 @@
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RenyiCorrelation.get_name">(RenyiCorrelation method)</a>
 </li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.get_name">(Reweighting method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.RobustAccuracy.get_name">(RobustAccuracy method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.SklearnMetric.get_name">(SklearnMetric method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Sqf.get_name">(Sqf method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.get_name">(StaticCSVDataset method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.get_name">(SVM method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Synthetic.get_name">(Synthetic method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.Theil.get_name">(Theil method)</a>
 </li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.get_name">(TNR method)</a>
 </li>
-          <li><a href="ethicml.data.html#ethicml.data.Toy.get_name">(Toy method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.get_name">(TPR method)</a>
 </li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.get_name">(Upsampler method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.vfae.VFAE.get_name">(VFAE method)</a>
-</li>
           <li><a href="ethicml.metrics.html#ethicml.metrics.Yanovich.get_name">(Yanovich method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.get_name">(ZafarAccuracy method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.get_name">(ZafarBaseline method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.get_name">(ZafarEqOdds method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.get_name">(ZafarEqOpp method)</a>
-</li>
-          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.get_name">(ZafarFairness method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.zemel.Zemel.get_name">(Zemel method)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -1633,20 +1523,6 @@
           <li><a href="ethicml.data.html#ethicml.data.Toy.get_num_samples">(Toy method)</a>
 </li>
         </ul></li>
-        <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.beutel.Beutel.get_out_size">get_out_size() (Beutel method)</a>
-
-        <ul>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.calders.Calders.get_out_size">(Calders method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.get_out_size">(PreAlgorithm method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.get_out_size">(Upsampler method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.vfae.VFAE.get_out_size">(VFAE method)</a>
-</li>
-          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.zemel.Zemel.get_out_size">(Zemel method)</a>
-</li>
-        </ul></li>
         <li><a href="ethicml/utility.html#ethicml.utility.DataTuple.get_s_subset">get_s_subset() (DataTuple method)</a>
 
         <ul>
@@ -1657,44 +1533,6 @@
           <li><a href="ethicml/utility.html#ethicml.utility.SoftPrediction.get_s_subset">(SoftPrediction method)</a>
 </li>
           <li><a href="ethicml/utility.html#ethicml.utility.SubgroupTuple.get_s_subset">(SubgroupTuple method)</a>
-</li>
-        </ul></li>
-        <li><a href="ethicml.data.html#ethicml.data.Admissions.get_unfiltered_disc_feat_groups">get_unfiltered_disc_feat_groups() (Admissions method)</a>
-
-        <ul>
-          <li><a href="ethicml.data.html#ethicml.data.Adult.get_unfiltered_disc_feat_groups">(Adult method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Compas.get_unfiltered_disc_feat_groups">(Compas method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Credit.get_unfiltered_disc_feat_groups">(Credit method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Crime.get_unfiltered_disc_feat_groups">(Crime method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.get_unfiltered_disc_feat_groups">(CSVDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.get_unfiltered_disc_feat_groups">(CSVDatasetDC method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.German.get_unfiltered_disc_feat_groups">(German method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Health.get_unfiltered_disc_feat_groups">(Health method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Law.get_unfiltered_disc_feat_groups">(Law method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.get_unfiltered_disc_feat_groups">(LegacyDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Lipton.get_unfiltered_disc_feat_groups">(Lipton method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.get_unfiltered_disc_feat_groups">(NonBinaryToy method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Nursery.get_unfiltered_disc_feat_groups">(Nursery method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Sqf.get_unfiltered_disc_feat_groups">(Sqf method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.get_unfiltered_disc_feat_groups">(StaticCSVDataset method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Synthetic.get_unfiltered_disc_feat_groups">(Synthetic method)</a>
-</li>
-          <li><a href="ethicml.data.html#ethicml.data.Toy.get_unfiltered_disc_feat_groups">(Toy method)</a>
 </li>
         </ul></li>
         <li><a href="ethicml.data.html#ethicml.data.group_disc_feat_indices">group_disc_feat_indices() (in module ethicml.data)</a>
@@ -1715,8 +1553,6 @@
         </ul></li>
         <li><a href="ethicml.models/postprocess.html#ethicml.models.postprocess.hardt.Hardt">Hardt (class in ethicml.models.postprocess.hardt)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.Health">Health (class in ethicml.data)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.HealthSplits">HealthSplits (class in ethicml.data)</a>
@@ -1725,6 +1561,50 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Hsic">Hsic (class in ethicml.metrics)</a>
 </li>
+        <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.hyperparameters">hyperparameters (Agarwal property)</a>
+
+        <ul>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.manual.Corels.hyperparameters">(Corels property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.DPOracle.hyperparameters">(DPOracle property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.hyperparameters">(DRO property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.hyperparameters">(InAlgorithm property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.hyperparameters">(InAlgorithmDC property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.hyperparameters">(InAlgorithmNoParams property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.hyperparameters">(InstalledModel property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.hyperparameters">(Kamishima property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR.hyperparameters">(LR property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.hyperparameters">(LRCV property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.majority.Majority.hyperparameters">(Majority property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.mlp.MLP.hyperparameters">(MLP property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle.hyperparameters">(Oracle property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.hyperparameters">(Reweighting property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.svm.SVM.hyperparameters">(SVM property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.hyperparameters">(ZafarAccuracy property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.hyperparameters">(ZafarBaseline property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.hyperparameters">(ZafarEqOdds property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.hyperparameters">(ZafarEqOpp property)</a>
+</li>
+          <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.hyperparameters">(ZafarFairness property)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -1756,6 +1636,8 @@
 </li>
         </ul></li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel">InstalledModel (class in ethicml.models.inprocess.installed_model)</a>
+</li>
+        <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType.inverse_transform">inverse_transform() (ScalerType method)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Admissions.invert_sens_attr">invert_sens_attr (Admissions property)</a>
 
@@ -1831,8 +1713,36 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.LabelOutOfBounds">LabelOutOfBounds</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.labels">labels (CfmMetric attribute)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.labels">labels (AbsCV attribute)</a>
+
+        <ul>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.labels">(AverageOddsDiff attribute)</a>
 </li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.labels">(BalancedAccuracy attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.labels">(BCR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.labels">(CfmMetric attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CV.labels">(CV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.labels">(FNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.labels">(FPR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.labels">(NPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.labels">(PPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg.labels">(ProbNeg attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.labels">(ProbPos attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.labels">(TNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.labels">(TPR attribute)</a>
+</li>
+        </ul></li>
         <li><a href="ethicml.data.html#ethicml.data.LabelSpecsPair">LabelSpecsPair (class in ethicml.data)</a>
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.LabelTuple">LabelTuple (class in ethicml.utility)</a>
@@ -1889,6 +1799,8 @@
           <li><a href="ethicml.data.html#ethicml.data.Toy.load">(Toy method)</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.Admissions.load_aif">load_aif() (Admissions method)</a>
 
         <ul>
@@ -1927,8 +1839,6 @@
           <li><a href="ethicml.data.html#ethicml.data.Toy.load_aif">(Toy method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.load_data">load_data() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Admissions.load_discrete_only">load_discrete_only (Admissions property)</a>
@@ -1969,7 +1879,7 @@
           <li><a href="ethicml.data.html#ethicml.data.Toy.load_discrete_only">(Toy property)</a>
 </li>
         </ul></li>
-        <li><a href="ethicml/evaluate_models.html#ethicml.evaluators.evaluate_models.load_results">load_results() (in module ethicml.evaluators.evaluate_models)</a>
+        <li><a href="ethicml/evaluate.html#ethicml.evaluators.evaluate.load_results">load_results() (in module ethicml.evaluators.evaluate)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.logistic_regression.LR">LR (class in ethicml.models.inprocess.logistic_regression)</a>
 </li>
@@ -1989,7 +1899,47 @@
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.map_over_results_index">map_over_results_index() (in module ethicml.utility)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.CSVDataset.map_to_binary">map_to_binary (CSVDataset attribute)</a>
+        <li><a href="ethicml.data.html#ethicml.data.Admissions.map_to_binary">map_to_binary (Admissions attribute)</a>
+
+        <ul>
+          <li><a href="ethicml.data.html#ethicml.data.Adult.map_to_binary">(Adult attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Compas.map_to_binary">(Compas attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Credit.map_to_binary">(Credit attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Crime.map_to_binary">(Crime attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.map_to_binary">(CSVDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.map_to_binary">(CSVDatasetDC attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.German.map_to_binary">(German attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Health.map_to_binary">(Health attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Law.map_to_binary">(Law attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.map_to_binary">(LegacyDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Lipton.map_to_binary">(Lipton attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.map_to_binary">(NonBinaryToy attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Nursery.map_to_binary">(Nursery attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Sqf.map_to_binary">(Sqf attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.map_to_binary">(StaticCSVDataset attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Synthetic.map_to_binary">(Synthetic attribute)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Toy.map_to_binary">(Toy attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.MAX">MAX (PerSens attribute)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.max_per_sens">max_per_sens() (in module ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.Metric">Metric (class in ethicml.metrics)</a>
 </li>
@@ -1998,6 +1948,12 @@
         <li><a href="ethicml.metrics.html#ethicml.metrics.MetricNotApplicable">MetricNotApplicable</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.MetricStaticName">MetricStaticName (class in ethicml.metrics)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.MIN">MIN (PerSens attribute)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.MIN_MAX">MIN_MAX (PerSens attribute)</a>
+</li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.min_per_sens">min_per_sens() (in module ethicml.metrics)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.mlp.MLP">MLP (class in ethicml.models.inprocess.mlp)</a>
 </li>
@@ -2013,6 +1969,10 @@
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.zemel.Zemel.model_path">(Zemel property)</a>
 </li>
         </ul></li>
+        <li><a href="ethicml/utility.html#ethicml.utility.ModelType">ModelType (class in ethicml.utility)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     module
 
@@ -2023,7 +1983,7 @@
 </li>
           <li><a href="ethicml/cross_validator.html#module-ethicml.evaluators.cross_validator">ethicml.evaluators.cross_validator</a>
 </li>
-          <li><a href="ethicml/evaluate_models.html#module-ethicml.evaluators.evaluate_models">ethicml.evaluators.evaluate_models</a>
+          <li><a href="ethicml/evaluate.html#module-ethicml.evaluators.evaluate">ethicml.evaluators.evaluate</a>
 </li>
           <li><a href="ethicml/parallelism.html#module-ethicml.evaluators.parallelism">ethicml.evaluators.parallelism</a>
 </li>
@@ -2090,8 +2050,6 @@
           <li><a href="ethicml/visualisation.html#module-ethicml.visualisation">ethicml.visualisation</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.data.html#ethicml.data.LabelGroup.multiplier">multiplier (LabelGroup attribute)</a>
 </li>
     </ul></td>
@@ -2284,6 +2242,20 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.oracle.Oracle">Oracle (class in ethicml.models.inprocess.oracle)</a>
 </li>
+        <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.beutel.Beutel.out_size">out_size (Beutel property)</a>
+
+        <ul>
+          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.calders.Calders.out_size">(Calders property)</a>
+</li>
+          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.out_size">(PreAlgorithm property)</a>
+</li>
+          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.out_size">(Upsampler property)</a>
+</li>
+          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.vfae.VFAE.out_size">(VFAE property)</a>
+</li>
+          <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.zemel.Zemel.out_size">(Zemel property)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -2292,14 +2264,44 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens">PerSens (class in ethicml.metrics)</a>
+</li>
         <li><a href="ethicml/visualisation.html#ethicml.visualisation.plot_results">plot_results() (in module ethicml.visualisation)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.FeatureSplit.pop">pop() (FeatureSplit method)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.FeatureSplit.popitem">popitem() (FeatureSplit method)</a>
 </li>
-        <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.pos_class">pos_class (CfmMetric attribute)</a>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.AbsCV.pos_class">pos_class (AbsCV attribute)</a>
+
+        <ul>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.AverageOddsDiff.pos_class">(AverageOddsDiff attribute)</a>
 </li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BalancedAccuracy.pos_class">(BalancedAccuracy attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.BCR.pos_class">(BCR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CfmMetric.pos_class">(CfmMetric attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.CV.pos_class">(CV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FNR.pos_class">(FNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.FPR.pos_class">(FPR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.NPV.pos_class">(NPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.PPV.pos_class">(PPV attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbNeg.pos_class">(ProbNeg attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.ProbPos.pos_class">(ProbPos attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TNR.pos_class">(TNR attribute)</a>
+</li>
+          <li><a href="ethicml.metrics.html#ethicml.metrics.TPR.pos_class">(TPR attribute)</a>
+</li>
+        </ul></li>
         <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.LabelBinarizer.post">post() (LabelBinarizer method)</a>
 </li>
         <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.LabelBinarizer.post_only_labels">post_only_labels() (LabelBinarizer method)</a>
@@ -2394,6 +2396,8 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.ratio_per_sens">ratio_per_sens() (in module ethicml.metrics)</a>
 </li>
+        <li><a href="ethicml.metrics.html#ethicml.metrics.PerSens.RATIOS">RATIOS (PerSens attribute)</a>
+</li>
         <li><a href="ethicml.data.html#ethicml.data.reduce_feature_group">reduce_feature_group() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.remove">remove() (InstalledModel method)</a>
@@ -2440,6 +2444,8 @@
           <li><a href="ethicml/utility.html#ethicml.utility.SubgroupTuple.replace_data">(SubgroupTuple method)</a>
 </li>
         </ul></li>
+        <li><a href="ethicml/utility.html#ethicml.utility.Results">Results (class in ethicml.utility)</a>
+</li>
         <li><a href="ethicml/utility.html#ethicml.utility.ResultsAggregator.results">results (ResultsAggregator property)</a>
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.ResultsAggregator">ResultsAggregator (class in ethicml.utility)</a>
@@ -2518,7 +2524,7 @@
 </li>
         <li><a href="ethicml/parallelism.html#ethicml.evaluators.parallelism.run_in_parallel">run_in_parallel() (in module ethicml.evaluators.parallelism)</a>
 </li>
-        <li><a href="ethicml/evaluate_models.html#ethicml.evaluators.evaluate_models.run_metrics">run_metrics() (in module ethicml.evaluators.evaluate_models)</a>
+        <li><a href="ethicml/evaluate.html#ethicml.evaluators.evaluate.run_metrics">run_metrics() (in module ethicml.evaluators.evaluate)</a>
 </li>
         <li><a href="ethicml.models/inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.run_test">run_test() (Agarwal method)</a>
 
@@ -2615,6 +2621,8 @@
 </li>
         </ul></li>
         <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.scale_continuous">scale_continuous() (in module ethicml.preprocessing)</a>
+</li>
+        <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType">ScalerType (class in ethicml.preprocessing)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Synthetic.Scenarios">Scenarios (Synthetic attribute)</a>
 </li>
@@ -2724,8 +2732,6 @@
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.shuffle_df">shuffle_df() (in module ethicml.utility)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.simple_spec">simple_spec() (in module ethicml.data)</a>
-</li>
         <li><a href="ethicml.data.html#ethicml.data.single_col_spec">single_col_spec() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml/visualisation.html#ethicml.visualisation.single_plot">single_plot() (in module ethicml.visualisation)</a>
@@ -2735,6 +2741,8 @@
         <li><a href="ethicml/utility.html#ethicml.utility.SoftPrediction.soft">soft (SoftPrediction property)</a>
 </li>
         <li><a href="ethicml/utility.html#ethicml.utility.SoftPrediction">SoftPrediction (class in ethicml.utility)</a>
+</li>
+        <li><a href="ethicml.data.html#ethicml.data.spec_from_binary_cols">spec_from_binary_cols() (in module ethicml.data)</a>
 </li>
         <li><a href="ethicml.data.html#ethicml.data.Admissions.Splits">Splits (Admissions attribute)</a>
 
@@ -2796,6 +2804,8 @@
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TNR">TNR (class in ethicml.metrics)</a>
 </li>
+        <li><a href="ethicml.data.html#ethicml.data.LabelSpecsPair.to_remove">to_remove (LabelSpecsPair attribute)</a>
+</li>
         <li><a href="ethicml.data.html#ethicml.data.Toy">Toy (class in ethicml.data)</a>
 </li>
         <li><a href="ethicml.metrics.html#ethicml.metrics.TPR">TPR (class in ethicml.metrics)</a>
@@ -2821,6 +2831,8 @@
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.transform">(PreAlgorithm method)</a>
 </li>
+          <li><a href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType.transform">(ScalerType method)</a>
+</li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.transform">(Upsampler method)</a>
 </li>
           <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.vfae.VFAE.transform">(VFAE method)</a>
@@ -2838,10 +2850,48 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="ethicml/utility.html#ethicml.utility.undo_one_hot">undo_one_hot() (in module ethicml.utility)</a>
 </li>
-        <li><a href="ethicml.data.html#ethicml.data.FeatureSplit.update">update() (FeatureSplit method)</a>
+        <li><a href="ethicml.data.html#ethicml.data.Admissions.unfiltered_disc_feat_groups">unfiltered_disc_feat_groups (Admissions property)</a>
+
+        <ul>
+          <li><a href="ethicml.data.html#ethicml.data.Adult.unfiltered_disc_feat_groups">(Adult property)</a>
 </li>
+          <li><a href="ethicml.data.html#ethicml.data.Compas.unfiltered_disc_feat_groups">(Compas property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Credit.unfiltered_disc_feat_groups">(Credit property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Crime.unfiltered_disc_feat_groups">(Crime property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDataset.unfiltered_disc_feat_groups">(CSVDataset property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.CSVDatasetDC.unfiltered_disc_feat_groups">(CSVDatasetDC property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.German.unfiltered_disc_feat_groups">(German property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Health.unfiltered_disc_feat_groups">(Health property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Law.unfiltered_disc_feat_groups">(Law property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.LegacyDataset.unfiltered_disc_feat_groups">(LegacyDataset property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Lipton.unfiltered_disc_feat_groups">(Lipton property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.NonBinaryToy.unfiltered_disc_feat_groups">(NonBinaryToy property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Nursery.unfiltered_disc_feat_groups">(Nursery property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Sqf.unfiltered_disc_feat_groups">(Sqf property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.StaticCSVDataset.unfiltered_disc_feat_groups">(StaticCSVDataset property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Synthetic.unfiltered_disc_feat_groups">(Synthetic property)</a>
+</li>
+          <li><a href="ethicml.data.html#ethicml.data.Toy.unfiltered_disc_feat_groups">(Toy property)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="ethicml.data.html#ethicml.data.FeatureSplit.update">update() (FeatureSplit method)</a>
+</li>
         <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.Upsampler">Upsampler (class in ethicml.models.preprocess.upsampler)</a>
 </li>
         <li><a href="ethicml.models/preprocess.html#ethicml.models.preprocess.upsampler.UpsampleStrategy">UpsampleStrategy (class in ethicml.models.preprocess.upsampler)</a>
@@ -2971,6 +3021,7 @@
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>

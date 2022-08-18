@@ -1,12 +1,12 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Model evaluation" href="evaluate_models.html" /><link rel="prev" title="ethicml" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Model evaluation" href="evaluate.html" /><link rel="prev" title="ethicml" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
-        <title>Cross-validation - EthicML 1.0.0-alpha.4 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>Cross-validation - EthicML 1.0.0-beta.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-alpha.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-alpha.4 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -158,7 +158,7 @@
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="evaluate_models.html">Model evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluate.html">Model evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utility.html">Utils</a></li>
@@ -213,15 +213,11 @@
         </div>
         <article role="main">
           <section id="module-ethicml.evaluators.cross_validator">
-<span id="cross-validation"></span><h1>Cross-validation<a class="headerlink" href="#module-ethicml.evaluators.cross_validator" title="Permalink to this headline">#</a></h1>
+<span id="cross-validation"></span><h1>Cross-validation<a class="headerlink" href="#module-ethicml.evaluators.cross_validator" title="Permalink to this heading">#</a></h1>
 <p>Cross Validation for any in process (at the moment) Algorithm.</p>
 <p><strong>Classes:</strong></p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CVResults</span></code></a></p></td>
 <td><p>Stores the results of a cross validation experiment.</p></td>
@@ -259,10 +255,10 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<em>List</em><em>[</em><em>ethicml.evaluators.cross_validator.ResultTuple</em><em>]</em>) – </p></li>
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – </p></li>
+<li><p><strong>results</strong> (<em>list</em><em>[</em><em>ResultTuple</em><em>]</em>) – </p></li>
+<li><p><strong>model</strong> (<em>type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>InAlgorithm</em></a><em>]</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -271,11 +267,11 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <span class="sig-name descname"><span class="pre">best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.best" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a model initialised with the hyper-parameters that perform optimally on average across folds for a given metric.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – </p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm">ethicml.models.inprocess.in_algorithm.InAlgorithm</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>InAlgorithm</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,11 +281,11 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <span class="sig-name descname"><span class="pre">best_hyper_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.best_hyper_params" title="Permalink to this definition">#</a></dt>
 <dd><p>Get hyper-parameters that return the ‘best’ result for the metric of interest.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – </p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><em>Dict</em>[str, <em>Any</em>]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -301,15 +297,15 @@ Or, use the <cite>mean_storage</cite> property to access the average results for
 <p>First sort the results according to the primary metric, then take the best according to the
 secondary metric from the top K.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>primary</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – Metric to first sort by.</p></li>
-<li><p><strong>secondary</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – Metric to sort the top-K models by for a second time, the top will be selected.</p></li>
+<li><p><strong>primary</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – Metric to first sort by.</p></li>
+<li><p><strong>secondary</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – Metric to sort the top-K models by for a second time, the top will be selected.</p></li>
 <li><p><strong>top_k</strong> (<em>int</em>) – Number of entries to consider.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ethicml.evaluators.cross_validator.ResultTuple</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ResultTuple</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -319,11 +315,11 @@ secondary metric from the top K.</p>
 <span class="sig-name descname"><span class="pre">get_best_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">measure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CVResults.get_best_result" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the hyperparameter combination for the best performance of a measure.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>measure</strong> (<a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – </p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ethicml.evaluators.cross_validator.ResultTuple</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ResultTuple</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -350,9 +346,9 @@ Results are returned in a CVResults object.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>ethicml.models.inprocess.in_algorithm.InAlgorithm</em></a><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
+<li><p><strong>model</strong> (<em>Type</em><em>[</em><a class="reference internal" href="../ethicml.models/inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm" title="ethicml.models.inprocess.in_algorithm.InAlgorithm"><em>InAlgorithm</em></a><em>]</em>) – the class (not an instance) of the model for cross validation</p></li>
 <li><p><strong>hyperparams</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – a dictionary where the keys are the names of hyperparameters and the values
 are lists of possible values for the hyperparameters</p></li>
 <li><p><strong>folds</strong> (<em>int</em>) – the number of folds</p></li>
@@ -366,17 +362,17 @@ which is the number of available CPUs</p></li>
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CrossValidator.run" title="Permalink to this definition">#</a></dt>
 <dd><p>Run the cross validation experiments.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training data</p></li>
-<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – (Default: None)</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – the training data</p></li>
+<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – (Default: None)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>CVResults</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults"><em>CVResults</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -386,17 +382,17 @@ which is the number of available CPUs</p></li>
 <span class="sig-name descname"><span class="pre">run_async</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measures</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.evaluators.cross_validator.CrossValidator.run_async" title="Permalink to this definition">#</a></dt>
 <dd><p>Run the cross validation experiments asynchronously.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>ethicml.utility.data_structures.DataTuple</em></a>) – the training data</p></li>
-<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – (Default: None)</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – the training data</p></li>
+<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – (Default: None)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>CVResults</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults">ethicml.evaluators.cross_validator.CVResults</a></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.evaluators.cross_validator.CVResults" title="ethicml.evaluators.cross_validator.CVResults"><em>CVResults</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,7 +406,7 @@ which is the number of available CPUs</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="evaluate_models.html">
+          <a class="next-page" href="evaluate.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
@@ -459,6 +455,7 @@ which is the number of available CPUs</p></li>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
