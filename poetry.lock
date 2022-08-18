@@ -478,7 +478,7 @@ tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "pa
 
 [[package]]
 name = "pipenv"
-version = "2022.8.15"
+version = "2022.8.17"
 description = "Python Development Workflow for Humans."
 category = "main"
 optional = false
@@ -1448,8 +1448,8 @@ pillow = [
     {file = "Pillow-9.2.0.tar.gz", hash = "sha256:75e636fd3e0fb872693f23ccb8a5ff2cd578801251f3a4f6854c6a5d437d3c04"},
 ]
 pipenv = [
-    {file = "pipenv-2022.8.15-py2.py3-none-any.whl", hash = "sha256:26c1dd6156953a37715c7f962719cc25ea8c7815f6c833bfc8f12cdf3508aae8"},
-    {file = "pipenv-2022.8.15.tar.gz", hash = "sha256:bd9bf3963290bfd2e3bcd0dc453b819ffcbe9e849852d86683c9bb385fb271cb"},
+    {file = "pipenv-2022.8.17-py2.py3-none-any.whl", hash = "sha256:a134a34d8eefb088c61c51a2b067d8ae2b8c8ef7a80f7cae9a88bc01886faf0c"},
+    {file = "pipenv-2022.8.17.tar.gz", hash = "sha256:863d75dcd8b3ca8fcd7bfce49978454622dd80fbed1e547d2f43de13c6e1723c"},
 ]
 platformdirs = [
     {file = "platformdirs-2.5.2-py3-none-any.whl", hash = "sha256:027d8e83a2d7de06bbac4e5ef7e023c02b863d7ea5d079477e722bb41ab25788"},
