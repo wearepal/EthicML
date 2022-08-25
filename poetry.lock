@@ -978,7 +978,7 @@ ci = ["fairlearn", "pytest", "pytest-cov", "cloudpickle", "omegaconf"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "e11cfb34c3232995a153f63e433d05053b29efc6b27ec603cc3e3249b5b20d58"
+content-hash = "81658da3a041163666bab445f46cea567b178ceb3933921915f2e9147a72a94e"
 
 [metadata.files]
 antlr4-python3-runtime = [
