@@ -1,5 +1,6 @@
 """Test the 'per sensitive attribute' evaluations."""
-from typing import Dict, NamedTuple, Tuple
+from typing import Callable, Dict, FrozenSet, NamedTuple, Tuple
+from typing_extensions import assert_type
 
 import numpy as np
 import pandas as pd
@@ -11,6 +12,7 @@ from ethicml.data import Adult, Dataset, NonBinaryToy, Toy, load_data
 from ethicml.metrics import (
     Accuracy,
     Metric,
+    PerSens,
     ProbNeg,
     ProbOutcome,
     ProbPos,
@@ -183,3 +185,10 @@ def test_metric_per_sens_attr(
     except AssertionError:
         print({key: round(value, 3) for key, value in acc_per_sens.items()})
         raise AssertionError
+
+
+def test_persens_enum() -> None:
+    """Check that PerSens was constructed correctly."""
+    assert set(PerSens) == PerSens.ALL  # type: ignore
+    assert_type(PerSens.DIFFS_RATIOS, FrozenSet[PerSens])  # type: ignore
+    assert_type(PerSens.DIFFS.func, Callable[[Dict[str, float]], Dict[str, float]])

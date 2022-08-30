@@ -46,6 +46,8 @@ autodoc_default_options = {
 autodoc_typehints = "description"
 autodoc_type_aliases = {
     "pd.DataFrame": "pandas.DataFrame",
+    "pd.Series": "pandas.Series",
+    "HyperParamType": "HyperParamType",
 }
 autodoc_mock_imports = [
     "PIL",

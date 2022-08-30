@@ -408,7 +408,11 @@ class LabelTuple(SubsetMixin):
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
+"""Union of :class:`SubgroupTuple` and :class:`DataTuple`."""
+
 EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
+"""Union of :class:`LabelTuple` and :class:`DataTuple`."""
+
 T = TypeVar("T", SubgroupTuple, DataTuple)
 
 

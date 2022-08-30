@@ -119,21 +119,21 @@ def test_run_metrics(toy_train_val: TrainValPair):
     assert results["TPR_sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
     assert results["TPR_sensitive-attr_0÷sensitive-attr_1"] == approx(0.923, abs=0.001)
     assert results["CV"] == approx(0.630, abs=0.001)
-    results = em.run_metrics(predictions, test, [], [TPR()], PerSens.MIN | PerSens.DIFFS)
+    results = em.run_metrics(predictions, test, [], [TPR()], {PerSens.MIN, PerSens.DIFFS})
     assert len(results) == 4
     assert results["TPR_sensitive-attr_0"] == approx(0.923, abs=0.001)
     assert results["TPR_sensitive-attr_1"] == approx(1.0, abs=0.001)
     assert results["TPR_sensitive-attr_0-sensitive-attr_1"] == approx(0.077, abs=0.001)
     assert results["TPR_min(sensitive-attr_0,sensitive-attr_1)"] == approx(0.923, abs=0.001)
     results = em.run_metrics(
-        predictions, test, [], [TPR()], PerSens.MAX | PerSens.RATIOS, use_sens_name=False
+        predictions, test, [], [TPR()], {PerSens.MAX, PerSens.RATIOS}, use_sens_name=False
     )
     assert len(results) == 4
     assert results["TPR_S_0"] == approx(0.923, abs=0.001)
     assert results["TPR_S_1"] == approx(1.0, abs=0.001)
     assert results["TPR_S_0÷S_1"] == approx(0.923, abs=0.001)
     assert results["TPR_max(S_0,S_1)"] == approx(1.0, abs=0.001)
-    results = em.run_metrics(predictions, test, [], [TPR()], aggregation=None, use_sens_name=False)
+    results = em.run_metrics(predictions, test, [], [TPR()], aggregation=set(), use_sens_name=False)
     assert len(results) == 2
     assert results["TPR_S_0"] == approx(0.923, abs=0.001)
     assert results["TPR_S_1"] == approx(1.0, abs=0.001)
