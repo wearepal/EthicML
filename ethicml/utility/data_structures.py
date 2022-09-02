@@ -408,7 +408,11 @@ class LabelTuple(SubsetMixin):
 
 
 TestTuple: TypeAlias = Union[SubgroupTuple, DataTuple]
+"""Union of :class:`SubgroupTuple` and :class:`DataTuple`."""
+
 EvalTuple: TypeAlias = Union[LabelTuple, DataTuple]
+"""Union of :class:`LabelTuple` and :class:`DataTuple`."""
+
 T = TypeVar("T", SubgroupTuple, DataTuple)
 
 
@@ -562,7 +566,7 @@ class TrainValPair(NamedTuple):
 
 
 Results = NewType("Results", pd.DataFrame)
-"""Container for results from :func:`ethicml.evaluators.evaluate.evaluate_models`."""
+"""Container for results from :func:`~ethicml.evaluators.evaluate.evaluate_models`."""
 
 
 RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]

@@ -1,11 +1,12 @@
 """Scale a dataset."""
 from __future__ import annotations
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
 import pandas as pd
 
-from ethicml.data import Dataset
-from ethicml.utility.data_structures import DataTuple
+if TYPE_CHECKING:
+    from ethicml.data import Dataset
+    from ethicml.utility.data_structures import DataTuple
 
 __all__ = ["ScalerType", "scale_continuous"]
 

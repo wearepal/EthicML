@@ -1,7 +1,7 @@
 """Evaluator for a metric per sensitive attribute class."""
 from __future__ import annotations
-from enum import Flag, auto
-from typing import Callable, Mapping
+from enum import Enum
+from typing import Callable, ClassVar, Mapping
 
 import pandas as pd
 
@@ -23,44 +23,6 @@ __all__ = [
 
 class MetricNotApplicable(Exception):
     """Metric Not Applicable per sensitive attribute, apply to whole dataset instead."""
-
-
-class PerSens(Flag):
-    """Aggregation methods for metrics that are computed per sensitive attributes.
-
-    The members of this class are *flags*, which means that they can be combined
-    with bit-wise *or*.
-
-    :param value: Turn a value into a ``Flag`` member.
-
-    :example:
-
-    >>> PerSens.DIFFS | PerSens.MAX
-    <PerSens.MAX|DIFFS: 3>
-    >>> (PerSens.DIFFS | PerSens.RATIOS) == PerSens.DIFFS_RATIOS
-    True
-    >>> PerSens.DIFFS in PerSens.DIFFS_RATIOS
-    True
-    >>> PerSens.DIFFS in PerSens.DIFFS
-    True
-    >>> PerSens.DIFFS in PerSens.MIN_MAX
-    False
-    """
-
-    DIFFS = auto()
-    """Differences of the per-group results."""
-    MAX = auto()
-    """Maximum of the per-group results."""
-    MIN = auto()
-    """Minimum of the per-group results."""
-    RATIOS = auto()
-    """Ratios of the per-group results."""
-    DIFFS_RATIOS = DIFFS | RATIOS
-    """Differences and ratios of the per-group results."""
-    MIN_MAX = MIN | MAX
-    """Minimum and maximum of the per-group results."""
-    ALL = DIFFS | RATIOS | MIN | MAX
-    """All aggregations."""
 
 
 def metric_per_sens(
@@ -168,3 +130,34 @@ def max_per_sens(per_sens_res: dict[str, float]) -> dict[str, float]:
     :returns: dictionary of max values
     """
     return aggregate_over_sens(per_sens_res, aggregator=max, prefix="max(", infix=",", suffix=")")
+
+
+class PerSens(Enum):
+    """Aggregation methods for metrics that are computed per sensitive attributes."""
+
+    _ignore_ = ["ALL", "DIFFS_RATIOS", "MIN_MAX"]  # these are class variables and not enum members
+
+    ALL: ClassVar[frozenset[PerSens]]
+    """All aggregations."""
+    DIFFS = (diff_per_sens,)
+    """Differences of the per-group results."""
+    DIFFS_RATIOS: ClassVar[frozenset[PerSens]]
+    """Equivalent to ``{DIFFS, RATIOS}``."""
+    MAX = (max_per_sens,)
+    """Maximum of the per-group results."""
+    MIN = (min_per_sens,)
+    """Minimum of the per-group results."""
+    MIN_MAX: ClassVar[frozenset[PerSens]]
+    """Equivalent to ``{MIN, MAX}``."""
+    RATIOS = (ratio_per_sens,)
+    """Ratios of the per-group results."""
+
+    def __init__(self, agg_func: Callable[[dict[str, float]], dict[str, float]]):
+        self.func = agg_func
+
+
+# Unfortunately, we have to set the ClassVars outside of the class body.
+# This problem is solved in Python 3.11, but we can't rely on that yet.
+PerSens.DIFFS_RATIOS = frozenset({PerSens.DIFFS, PerSens.RATIOS})
+PerSens.MIN_MAX = frozenset({PerSens.MIN, PerSens.MAX})
+PerSens.ALL = frozenset({PerSens.DIFFS, PerSens.RATIOS, PerSens.MIN, PerSens.MAX})

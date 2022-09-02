@@ -1,27 +1,15 @@
 """Runs given metrics on given algorithms for given datasets."""
 from __future__ import annotations
 from pathlib import Path
-from typing import Literal, NamedTuple, Sequence
+from typing import TYPE_CHECKING, Literal, NamedTuple, Sequence
 
 import pandas as pd
 
-from ethicml.data.dataset import Dataset
 from ethicml.data.load import load_data
-from ethicml.evaluators.parallelism import run_in_parallel
-from ethicml.metrics.metric import Metric
-from ethicml.metrics.per_sensitive_attribute import (
-    MetricNotApplicable,
-    PerSens,
-    diff_per_sens,
-    max_per_sens,
-    metric_per_sens,
-    min_per_sens,
-    ratio_per_sens,
-)
-from ethicml.models.inprocess.in_algorithm import InAlgorithm
-from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
+from ethicml.metrics.per_sensitive_attribute import MetricNotApplicable, PerSens, metric_per_sens
 from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
+from ethicml.run.parallelism import run_in_parallel
 from ethicml.utility.data_structures import (
     DataTuple,
     EvalTuple,
@@ -32,6 +20,14 @@ from ethicml.utility.data_structures import (
     TrainValPair,
     make_results,
 )
+
+if TYPE_CHECKING:  # the following imports are only needed for type checking
+    from collections.abc import Set as AbstractSet
+
+    from ethicml.data.dataset import Dataset
+    from ethicml.metrics.metric import Metric
+    from ethicml.models.inprocess.in_algorithm import InAlgorithm
+    from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 
 __all__ = ["evaluate_models", "run_metrics", "load_results"]
 
@@ -57,7 +53,7 @@ def run_metrics(
     actual: EvalTuple,
     metrics: Sequence[Metric] = (),
     per_sens_metrics: Sequence[Metric] = (),
-    aggregation: PerSens | None = PerSens.DIFFS_RATIOS,
+    aggregation: PerSens | AbstractSet[PerSens] = PerSens.DIFFS_RATIOS,
     use_sens_name: bool = True,
 ) -> dict[str, float]:
     """Run all the given metrics on the given predictions and return the results.
@@ -80,19 +76,15 @@ def run_metrics(
 
     for metric in per_sens_metrics:
         per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
-        if aggregation is not None:
-            # we can't add the aggregations directly to ``per_sens`` because then
-            # we would create aggregations of aggregations
-            aggregations: dict[str, float] = {}
-            if PerSens.DIFFS in aggregation:
-                aggregations.update(diff_per_sens(per_sens))
-            if PerSens.RATIOS in aggregation:
-                aggregations.update(ratio_per_sens(per_sens))
-            if PerSens.MIN in aggregation:
-                aggregations.update(min_per_sens(per_sens))
-            if PerSens.MAX in aggregation:
-                aggregations.update(max_per_sens(per_sens))
-            per_sens.update(aggregations)
+        agg_funcs: AbstractSet[PerSens] = (
+            {aggregation} if isinstance(aggregation, PerSens) else aggregation
+        )
+        # we can't add the aggregations directly to ``per_sens`` because then
+        # we would create aggregations of aggregations
+        aggregations: dict[str, float] = {}
+        for agg in agg_funcs:
+            aggregations.update(agg.func(per_sens))
+        per_sens.update(aggregations)
         for key, value in per_sens.items():
             result[f"{metric.name}_{key}"] = value
     return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary

@@ -5,12 +5,12 @@ from itertools import product
 from statistics import mean
 from typing import Any, Mapping, NamedTuple, Sequence, Type
 
-from ethicml.evaluators.parallelism import run_in_parallel
 from ethicml.metrics.accuracy import Accuracy
 from ethicml.metrics.cv import AbsCV
 from ethicml.metrics.metric import Metric
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.preprocessing.splits import fold_data
+from ethicml.run.parallelism import run_in_parallel
 from ethicml.utility import DataTuple, Prediction, TrainValPair
 
 __all__ = ["CrossValidator", "CVResults"]
