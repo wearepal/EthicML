@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from pytest import approx
 
-from ethicml import CrossValidator, CVResults, Prediction, TrainTestPair
+from ethicml import Prediction, TrainTestPair
 from ethicml.metrics import AbsCV, Accuracy
 from ethicml.models import (
     InAlgorithm,
@@ -14,6 +14,7 @@ from ethicml.models import (
     ZafarEqOpp,
     ZafarFairness,
 )
+from ethicml.run import CrossValidator, CVResults
 
 
 @pytest.fixture(scope="session")

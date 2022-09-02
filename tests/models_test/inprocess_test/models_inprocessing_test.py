@@ -8,7 +8,6 @@ from pytest import approx
 
 from ethicml import (
     ClassifierType,
-    CrossValidator,
     DataTuple,
     FairnessType,
     KernelType,
@@ -16,7 +15,6 @@ from ethicml import (
     Prediction,
     TrainTestPair,
     TrainValPair,
-    evaluate_models,
     train_test_split,
 )
 from ethicml.data import Adult, Compas, Toy, load_data
@@ -42,6 +40,7 @@ from ethicml.models import (
     SVM,
 )
 from ethicml.models.inprocess.in_algorithm import HyperParamType
+from ethicml.run import CrossValidator, evaluate_models
 
 TMPDIR: Final = Path("/tmp")
 

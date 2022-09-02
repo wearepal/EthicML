@@ -69,6 +69,15 @@ jobs:
       run: |
         echo "pass!"
 
+  test_minimal_dependencies:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check with darglint
+      run: |
+        echo "pass!"
+
   test_with_pytest:
 
     runs-on: ubuntu-latest

@@ -109,8 +109,42 @@ jobs:
       run: |
         sh run_darglint.sh
 
+  test_minimal_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.2
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      - name: Set ENV VARS
+        run: |
+          echo "POETRY_VERSION=$(poetry -V | cut -d' ' -f3)" >> $GITHUB_ENV
+
+      #----------------------------------------------
+      # cache the directory where poetry caches packages
+      #----------------------------------------------
+      - name: Cache Poetry cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+      - name: Install dependencies
+        run: |
+          poetry install --no-interaction --no-root
+      - name: Test import
+        run: |
+          poetry run python -c "import ethicml"
+
   test_with_pytest:
-    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint]
+    needs: [lint_with_pylint, format_with_black_and_isort, check_docstrings, check_with_darglint, test_minimal_dependencies]
     runs-on: ubuntu-latest
 
     steps:

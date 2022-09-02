@@ -50,7 +50,6 @@ autodoc_type_aliases = {
     "HyperParamType": "HyperParamType",
 }
 autodoc_mock_imports = [
-    "PIL",
     "folktables",
     "git",
     "joblib",
