@@ -3,13 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ethicml.data" href="../ethicml.data.html" /><link rel="prev" title="Utils" href="utility.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Migration guide to 1.0" href="tutorials/migration_guide.html" /><link rel="prev" title="ethicml.run" href="ethicml.run.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Visualisation helpers - EthicML 1.0.0-beta.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+        <title>ethicml.plot - EthicML 1.0.0-beta.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,12 +143,12 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
@@ -156,29 +156,27 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Visualisation helpers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ethicml/preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml/utility.html">Utils</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml.models/index.html">ethicml.models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/base.html">Algorithms base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/inprocess.html">Inprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/postprocess.html">Postprocess algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml.models/preprocess.html">Preprocess algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ethicml.models/index.html">ethicml.models</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.models/base.html">Algorithms base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.models/inprocess.html">Inprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.models/postprocess.html">Postprocess algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethicml.models/preprocess.html">Preprocess algorithms</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/migration_guide.html">Migration guide to 1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/adult_dataset.html">Runnning experiments on the Adult dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/migration_guide.html">Migration guide to 1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/adult_dataset.html">Runnning experiments on the Adult dataset</a></li>
 </ul>
 
 </div>
@@ -212,44 +210,44 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-ethicml.visualisation">
-<span id="visualisation-helpers"></span><h1>Visualisation helpers<a class="headerlink" href="#module-ethicml.visualisation" title="Permalink to this heading">#</a></h1>
+          <section id="module-ethicml.plot">
+<span id="ethicml-plot"></span><h1>ethicml.plot<a class="headerlink" href="#module-ethicml.plot" title="Permalink to this heading">#</a></h1>
 <p>Module for tools for plotting results.</p>
 <p><strong>Functions:</strong></p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.plot_results" title="ethicml.visualisation.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.plot.plot_results" title="ethicml.plot.plot_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_results</span></code></a></p></td>
 <td><p>Plot the given result with boxes that represent mean and standard deviation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_2d_plot" title="ethicml.visualisation.save_2d_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_2d_plot</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.plot.save_2d_plot" title="ethicml.plot.save_2d_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_2d_plot</span></code></a></p></td>
 <td><p>Make 2D plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.save_jointplot" title="ethicml.visualisation.save_jointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_jointplot</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.plot.save_jointplot" title="ethicml.plot.save_jointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_jointplot</span></code></a></p></td>
 <td><p>Make joint plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.save_label_plot" title="ethicml.visualisation.save_label_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_label_plot</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.plot.save_label_plot" title="ethicml.plot.save_label_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_label_plot</span></code></a></p></td>
 <td><p>Make label plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.visualisation.save_multijointplot" title="ethicml.visualisation.save_multijointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_multijointplot</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.plot.save_multijointplot" title="ethicml.plot.save_multijointplot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_multijointplot</span></code></a></p></td>
 <td><p>Make joint plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.visualisation.single_plot" title="ethicml.visualisation.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.plot.single_plot" title="ethicml.plot.single_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_plot</span></code></a></p></td>
 <td><p>Provide the functionality of the individual plotting functions through a nice interface.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.plot_results">
-<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms_separately</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.plot_results" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.plot_results">
+<span class="sig-name descname"><span class="pre">plot_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transforms_separately</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.plot_results" title="Permalink to this definition">#</a></dt>
 <dd><p>Plot the given result with boxes that represent mean and standard deviation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference internal" href="utility.html#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – a DataFrame that already contains the values of the metrics</p></li>
-<li><p><strong>metric_y</strong> (<em>str</em><em> | </em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
-<li><p><strong>metric_x</strong> (<em>str</em><em> | </em><a class="reference internal" href="../ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – a DataFrame that already contains the values of the metrics</p></li>
+<li><p><strong>metric_y</strong> (<em>str</em><em> | </em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – a Metric object or a column name that defines which metric to plot on the y-axis</p></li>
+<li><p><strong>metric_x</strong> (<em>str</em><em> | </em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a>) – a Metric object or a column name that defines which metric to plot on the x-axis</p></li>
 <li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type (Default: “box”)</p></li>
 <li><p><strong>save</strong> (<em>bool</em>) – if True, save the plot as a PDF (Default: True)</p></li>
 <li><p><strong>dpi</strong> (<em>int</em>) – DPI of the plots (Default: 300)</p></li>
@@ -266,13 +264,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.save_2d_plot">
-<span class="sig-name descname"><span class="pre">save_2d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_2d_plot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.save_2d_plot">
+<span class="sig-name descname"><span class="pre">save_2d_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.save_2d_plot" title="Permalink to this definition">#</a></dt>
 <dd><p>Make 2D plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -283,13 +281,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.save_jointplot">
-<span class="sig-name descname"><span class="pre">save_jointplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_jointplot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.save_jointplot">
+<span class="sig-name descname"><span class="pre">save_jointplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.save_jointplot" title="Permalink to this definition">#</a></dt>
 <dd><p>Make joint plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 <li><p><strong>dims</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – </p></li>
 </ul>
@@ -301,13 +299,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.save_label_plot">
-<span class="sig-name descname"><span class="pre">save_label_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_label_plot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.save_label_plot">
+<span class="sig-name descname"><span class="pre">save_label_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.save_label_plot" title="Permalink to this definition">#</a></dt>
 <dd><p>Make label plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
 <li><p><strong>filename</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -318,13 +316,13 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.save_multijointplot">
-<span class="sig-name descname"><span class="pre">save_multijointplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.save_multijointplot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.save_multijointplot">
+<span class="sig-name descname"><span class="pre">save_multijointplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.save_multijointplot" title="Permalink to this definition">#</a></dt>
 <dd><p>Make joint plot.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
 <li><p><strong>filepath</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
@@ -335,8 +333,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ethicml.visualisation.single_plot">
-<span class="sig-name descname"><span class="pre">single_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outside'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_yanchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternating_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_nan_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.visualisation.single_plot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.plot.single_plot">
+<span class="sig-name descname"><span class="pre">single_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outside'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_yanchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternating_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_nan_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.plot.single_plot" title="Permalink to this definition">#</a></dt>
 <dd><p>Provide the functionality of the individual plotting functions through a nice interface.</p>
 <p>This function can also be used to create figures with multiple plots on them, because it does
 not generate a Figure object itself.</p>
@@ -344,7 +342,7 @@ not generate a Figure object itself.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plot</strong> (<em>matplotlib.pyplot.Axes</em>) – Plot object</p></li>
-<li><p><strong>results</strong> (<a class="reference internal" href="utility.html#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – DataFrame with the data</p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – DataFrame with the data</p></li>
 <li><p><strong>xaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the x-axis</p></li>
 <li><p><strong>yaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the y-axis</p></li>
 <li><p><strong>dataset</strong> (<em>str</em>) – string that identifies the dataset</p></li>
@@ -376,23 +374,23 @@ value = 1.0)</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../ethicml.data.html">
+          <a class="next-page" href="tutorials/migration_guide.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ethicml.data</div>
+                <div class="title">Migration guide to 1.0</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="utility.html">
+          <a class="prev-page" href="ethicml.run.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Utils</div>
+                <div class="title">ethicml.run</div>
                 
               </div>
             </a>
@@ -422,12 +420,12 @@ value = 1.0)</p></li>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

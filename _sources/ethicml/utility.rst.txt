@@ -7,4 +7,11 @@ Utils
    :imported-members:
    :autosummary:
 
-.. autoclass:: Results
+Aliases
+=======
+
+.. autoclass:: ethicml.utility.data_structures.Results
+.. autoclass:: ethicml.utility.data_structures.TestTuple
+.. autoclass:: ethicml.utility.data_structures.EvalTuple
+.. autoclass:: ethicml.utility.data_structures.HyperParamValue
+.. autoclass:: ethicml.utility.data_structures.HyperParamType

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Inprocess algorithms - EthicML 1.0.0-beta.1 documentation</title>
+        <title>Inprocess algorithms - EthicML 1.0.0-beta.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -157,12 +157,8 @@
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/utility.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
@@ -174,6 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.plot.html">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -246,7 +244,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithm.hyperparameters">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithm.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -345,7 +343,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmDC.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -444,7 +442,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -886,7 +884,7 @@ simply the last part of the repository URL).</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.hyperparameters">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1291,7 +1289,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LR.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LR.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1394,7 +1392,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.logistic_regression.LRCV.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.logistic_regression.LRCV.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1498,7 +1496,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.majority.Majority.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.majority.Majority.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1604,7 +1602,7 @@ for details.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.manual.Corels.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.manual.Corels.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1717,7 +1715,7 @@ Documentation: <a class="reference external" href="https://scikit-learn.org/stab
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.mlp.MLP.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.mlp.MLP.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1824,7 +1822,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.DPOracle.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.DPOracle.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -1927,7 +1925,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.oracle.Oracle.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.oracle.Oracle.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 
@@ -2039,7 +2037,7 @@ but can be useful if you want to either do a sanity check, or report potential v
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.models.inprocess.svm.SVM.hyperparameters">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.hyperparameters" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hyperparameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.models.inprocess.svm.SVM.hyperparameters" title="Permalink to this definition">#</a></dt>
 <dd><p>Return list of hyperparameters.</p>
 </dd></dl>
 

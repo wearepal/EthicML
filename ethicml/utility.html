@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Visualisation helpers" href="visualisation.html" /><link rel="prev" title="Data preprocessing" href="preprocessing.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ethicml.data" href="../ethicml.data.html" /><link rel="prev" title="Data preprocessing" href="preprocessing.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Utils - EthicML 1.0.0-beta.1 documentation</title>
+        <title>Utils - EthicML 1.0.0-beta.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -157,12 +157,8 @@
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
@@ -174,6 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.plot.html">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -206,7 +204,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -860,25 +858,25 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s_data</strong> (<em>pd.Series</em>) – Dataframe with the s-values.</p></li>
+<li><p><strong>s_data</strong> (<em>pandas.Series</em>) – Dataframe with the s-values.</p></li>
 <li><p><strong>s</strong> (<em>int</em>) – S-value to get the subset for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.Prediction">Prediction</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.utility.Prediction.hard">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hard</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pd.Series</span></em><a class="headerlink" href="#ethicml.utility.Prediction.hard" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hard</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pandas.Series</span></em><a class="headerlink" href="#ethicml.utility.Prediction.hard" title="Permalink to this definition">#</a></dt>
 <dd><p>Hard predictions (e.g. 0 and 1).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.utility.Prediction.info">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.utility.Prediction.info" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.utility.Prediction.info" title="Permalink to this definition">#</a></dt>
 <dd><p>Additional info about the prediction.</p>
 </dd></dl>
 
@@ -944,7 +942,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.utility.ResultsAggregator.results">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><span class="pre">Results</span></a></em><a class="headerlink" href="#ethicml.utility.ResultsAggregator.results" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><span class="pre">Results</span></a></em><a class="headerlink" href="#ethicml.utility.ResultsAggregator.results" title="Permalink to this definition">#</a></dt>
 <dd><p>Results object over which this class is aggregating.</p>
 </dd></dl>
 
@@ -1023,25 +1021,25 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s_data</strong> (<em>pd.Series</em>) – Dataframe with the s-values.</p></li>
+<li><p><strong>s_data</strong> (<em>pandas.Series</em>) – Dataframe with the s-values.</p></li>
 <li><p><strong>s</strong> (<em>int</em>) – S-value to get the subset for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.Prediction">Prediction</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.utility.SoftPrediction.hard">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hard</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pd.Series</span></em><a class="headerlink" href="#ethicml.utility.SoftPrediction.hard" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hard</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pandas.Series</span></em><a class="headerlink" href="#ethicml.utility.SoftPrediction.hard" title="Permalink to this definition">#</a></dt>
 <dd><p>Hard predictions (e.g. 0 and 1).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ethicml.utility.SoftPrediction.info">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.utility.SoftPrediction.info" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HyperParamType</span></em><a class="headerlink" href="#ethicml.utility.SoftPrediction.info" title="Permalink to this definition">#</a></dt>
 <dd><p>Additional info about the prediction.</p>
 </dd></dl>
 
@@ -1337,7 +1335,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object containing the results to aggregate.</p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object containing the results to aggregate.</p></li>
 <li><p><strong>metrics</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Metrics used for aggregation.</p></li>
 <li><p><strong>aggregator</strong> (<em>str</em><em> | </em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>...</em><em>]</em>) – Aggregator to use. The aggreators are the ones used in pandas.
 (Default: (“mean”, “std”))</p></li>
@@ -1373,12 +1371,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object to filter.</p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object to filter.</p></li>
 <li><p><strong>mapping</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Mapping from old index to new index.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1390,13 +1388,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object to filter.</p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – Results object to filter.</p></li>
 <li><p><strong>values</strong> (<em>Iterable</em>) – Values to filter on.</p></li>
 <li><p><strong>index</strong> (<em>str</em><em> | </em><em>ethicml.utility.data_structures.PandasIndex</em>) – Index to filter on. (Default: “model”)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1412,10 +1410,10 @@ function checks whether the columns are correct.</p>
 <dd class="field-odd"><p><strong>data_frame</strong> (<em>None</em><em> | </em><em>pd.DataFrame</em><em> | </em><em>Path</em>) – A dataframe to use for initialization. (Default: None)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An initialised <a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> object.</p>
+<dd class="field-even"><p>An initialised <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.Results">Results</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results">Results</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1427,12 +1425,12 @@ function checks whether the columns are correct.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – </p></li>
+<li><p><strong>results</strong> (<a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – </p></li>
 <li><p><strong>mapper</strong> (<em>Callable</em><em>[</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em><em>, </em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1471,13 +1469,40 @@ function checks whether the columns are correct.</p>
 </dl>
 </dd></dl>
 
+<section id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="ethicml.utility.Results">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.Results" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ethicml.utility.data_structures.Results">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.data_structures.Results" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases:</p>
-<p>Container for results from <a class="reference internal" href="evaluate.html#ethicml.evaluators.evaluate.evaluate_models" title="ethicml.evaluators.evaluate.evaluate_models"><code class="xref py py-func docutils literal notranslate"><span class="pre">ethicml.evaluators.evaluate.evaluate_models()</span></code></a>.</p>
+<p>Container for results from <code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_models()</span></code>.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.data_structures.TestTuple">
+<span class="sig-name descname"><span class="pre">TestTuple</span></span><a class="headerlink" href="#ethicml.utility.data_structures.TestTuple" title="Permalink to this definition">#</a></dt>
+<dd><p>Union of <a class="reference internal" href="#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubgroupTuple</span></code></a> and <a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataTuple</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.data_structures.EvalTuple">
+<span class="sig-name descname"><span class="pre">EvalTuple</span></span><a class="headerlink" href="#ethicml.utility.data_structures.EvalTuple" title="Permalink to this definition">#</a></dt>
+<dd><p>Union of <a class="reference internal" href="#ethicml.utility.LabelTuple" title="ethicml.utility.data_structures.LabelTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelTuple</span></code></a> and <a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataTuple</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.data_structures.HyperParamValue">
+<span class="sig-name descname"><span class="pre">HyperParamValue</span></span><a class="headerlink" href="#ethicml.utility.data_structures.HyperParamValue" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.data_structures.HyperParamType">
+<span class="sig-name descname"><span class="pre">HyperParamType</span></span><a class="headerlink" href="#ethicml.utility.data_structures.HyperParamType" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</p>
+</dd></dl>
+
+</section>
 </section>
 
         </article>
@@ -1485,12 +1510,12 @@ function checks whether the columns are correct.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="visualisation.html">
+          <a class="next-page" href="../ethicml.data.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Visualisation helpers</div>
+                <div class="title">ethicml.data</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1525,8 +1550,27 @@ function checks whether the columns are correct.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Utils</a><ul>
+<li><a class="reference internal" href="#aliases">Aliases</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

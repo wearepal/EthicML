@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Migration guide to 1.0" href="tutorials/migration_guide.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.run" href="ethicml.run.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml.metrics - EthicML 1.0.0-beta.1 documentation</title>
+        <title>ethicml.metrics - EthicML 1.0.0-beta.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -157,12 +157,8 @@
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="ethicml/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml/evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml/parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ethicml/utility.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ethicml/visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ethicml.data.html">ethicml.data</a></li>
@@ -174,6 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ethicml.plot.html">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -216,10 +214,9 @@
 <span id="ethicml-metrics"></span><h1>ethicml.metrics<a class="headerlink" href="#module-ethicml.metrics" title="Permalink to this heading">#</a></h1>
 <p>Module for metrics which can be applied to prediction results.</p>
 <p>Some example code</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
-<span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">metrics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">run</span>
 
-<span class="n">em</span><span class="o">.</span><span class="n">run_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">TPR</span><span class="p">()])</span>
+<span class="n">run</span><span class="o">.</span><span class="n">run_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">TPR</span><span class="p">()])</span>
 </pre></div>
 </div>
 <p><strong>Classes:</strong></p>
@@ -1475,68 +1472,47 @@ set self.__traceback__ to tb and return self.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PerSens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.PerSens" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Flag</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>Aggregation methods for metrics that are computed per sensitive attributes.</p>
-<p>The members of this class are <em>flags</em>, which means that they can be combined
-with bit-wise <em>or</em>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> – Turn a value into a <code class="docutils literal notranslate"><span class="pre">Flag</span></code> member.</p>
-</dd>
-<dt class="field-even">Example<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span> <span class="o">|</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">MAX</span>
-<span class="go">&lt;PerSens.MAX|DIFFS: 3&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span> <span class="o">|</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">RATIOS</span><span class="p">)</span> <span class="o">==</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS_RATIOS</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span> <span class="ow">in</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS_RATIOS</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span> <span class="ow">in</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">PerSens</span><span class="o">.</span><span class="n">DIFFS</span> <span class="ow">in</span> <span class="n">PerSens</span><span class="o">.</span><span class="n">MIN_MAX</span>
-<span class="go">False</span>
-</pre></div>
-</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.ALL">
-<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
 <dd><p>All aggregations.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.DIFFS">
-<span class="sig-name descname"><span class="pre">DIFFS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.DIFFS" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">DIFFS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.DIFFS" title="Permalink to this definition">#</a></dt>
 <dd><p>Differences of the per-group results.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.DIFFS_RATIOS">
-<span class="sig-name descname"><span class="pre">DIFFS_RATIOS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.DIFFS_RATIOS" title="Permalink to this definition">#</a></dt>
-<dd><p>Differences and ratios of the per-group results.</p>
+<span class="sig-name descname"><span class="pre">DIFFS_RATIOS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.DIFFS_RATIOS" title="Permalink to this definition">#</a></dt>
+<dd><p>Equivalent to <code class="docutils literal notranslate"><span class="pre">{DIFFS,</span> <span class="pre">RATIOS}</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.MAX">
-<span class="sig-name descname"><span class="pre">MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MAX" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MAX" title="Permalink to this definition">#</a></dt>
 <dd><p>Maximum of the per-group results.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.MIN">
-<span class="sig-name descname"><span class="pre">MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN" title="Permalink to this definition">#</a></dt>
 <dd><p>Minimum of the per-group results.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.MIN_MAX">
-<span class="sig-name descname"><span class="pre">MIN_MAX</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN_MAX" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum and maximum of the per-group results.</p>
+<span class="sig-name descname"><span class="pre">MIN_MAX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.MIN_MAX" title="Permalink to this definition">#</a></dt>
+<dd><p>Equivalent to <code class="docutils literal notranslate"><span class="pre">{MIN,</span> <span class="pre">MAX}</span></code>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.RATIOS">
-<span class="sig-name descname"><span class="pre">RATIOS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.RATIOS" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">RATIOS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.RATIOS" title="Permalink to this definition">#</a></dt>
 <dd><p>Ratios of the per-group results.</p>
 </dd></dl>
 
@@ -2261,12 +2237,12 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="tutorials/migration_guide.html">
+          <a class="next-page" href="ethicml.run.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Migration guide to 1.0</div>
+                <div class="title">ethicml.run</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

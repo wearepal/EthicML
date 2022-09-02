@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utils" href="utility.html" /><link rel="prev" title="Parallel evaluation" href="parallelism.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utils" href="utility.html" /><link rel="prev" title="ethicml" href="index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Data preprocessing - EthicML 1.0.0-beta.1 documentation</title>
+        <title>Data preprocessing - EthicML 1.0.0-beta.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -157,12 +157,8 @@
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">ethicml</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utility.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
@@ -174,6 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.plot.html">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -378,10 +376,10 @@
 <dd><p>Inverse of adjust but only for a DataFrame instead of a DataTuple.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>labels</strong> (<em>pd.Series</em>) – </p>
+<dd class="field-odd"><p><strong>labels</strong> (<em>pandas.Series</em>) – </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.Series</p>
+<dd class="field-even"><p>pandas.Series</p>
 </dd>
 </dl>
 </dd></dl>
@@ -649,9 +647,9 @@ factor is 0, the biased subset is maximally biased.</p></li>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference internal" href="../ethicml.data.html#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>Dataset</em></a>) – Dataset object. Used to find the continuous features.</p></li>
-<li><p><strong>datatuple</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – DataTuple on which to sclae the continuous features.</p></li>
-<li><p><strong>scaler</strong> (<a class="reference internal" href="#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.scaling.ScalerType"><em>ScalerType</em></a>) – Scaler object to scale the features. Must fit the SKLearn scaler API.</p></li>
+<li><p><strong>dataset</strong> (<a class="reference internal" href="../ethicml.data.html#ethicml.data.Dataset" title="ethicml.data.Dataset"><em>Dataset</em></a>) – Dataset object. Used to find the continuous features.</p></li>
+<li><p><strong>datatuple</strong> (<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><em>DataTuple</em></a>) – DataTuple on which to sclae the continuous features.</p></li>
+<li><p><strong>scaler</strong> (<a class="reference internal" href="#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.ScalerType"><em>ScalerType</em></a>) – Scaler object to scale the features. Must fit the SKLearn scaler API.</p></li>
 <li><p><strong>inverse</strong> (<em>bool</em>) – Should the scaling be reversed? (Default: False)</p></li>
 <li><p><strong>fit</strong> (<em>bool</em>) – If not <cite>inverse</cite>, should the scaler be fit to the data? If <cite>True</cite>, do
 <cite>fit_transform</cite> operation, else just <cite>transform</cite>. (Default: True)</p></li>
@@ -661,7 +659,7 @@ factor is 0, the biased subset is maximally biased.</p></li>
 <dd class="field-odd"><p>Tuple of (scaled) DataTuple, and the Scaler (which may have been fit to the data).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple">ethicml.utility.data_structures.DataTuple</a>, <a class="reference internal" href="#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.scaling.ScalerType">ethicml.preprocessing.scaling.ScalerType</a>]</p>
+<dd class="field-even"><p>tuple[<a class="reference internal" href="utility.html#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple">DataTuple</a>, <a class="reference internal" href="#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.ScalerType">ScalerType</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -704,14 +702,14 @@ factor is 0, the biased subset is maximally biased.</p></li>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="parallelism.html">
+          <a class="prev-page" href="index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Parallel evaluation</div>
+                <div class="title">ethicml</div>
                 
               </div>
             </a>

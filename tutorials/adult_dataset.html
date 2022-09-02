@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="Migration guide to 1.0" href="migration_guide.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Runnning experiments on the Adult dataset - EthicML 1.0.0-beta.1 documentation</title>
+        <title>Runnning experiments on the Adult dataset - EthicML 1.0.0-beta.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.1 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -157,12 +157,8 @@
   <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../ethicml/index.html">ethicml</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/cross_validator.html">Cross-validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/evaluate.html">Model evaluation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/parallelism.html">Parallel evaluation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/preprocessing.html">Data preprocessing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ethicml/utility.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ethicml/visualisation.html">Visualisation helpers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.data.html">ethicml.data</a></li>
@@ -174,6 +170,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../ethicml.metrics.html">ethicml.metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.run.html">ethicml.run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ethicml.plot.html">ethicml.plot</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -486,12 +484,13 @@ body[data-theme="dark"] {
 <h2>Loading the data<a class="headerlink" href="#Loading-the-data" title="Permalink to this heading">#</a></h2>
 <p>EthicML includes some often used datasets from fairness literature. First, we load one of these… in this example we load the UCI Adult dataset</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
+<span class="kn">import</span> <span class="nn">ethicml.data</span>
 
-<span class="n">adult</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">()</span>
+<span class="n">adult</span> <span class="o">=</span> <span class="n">ethicml</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">()</span>
 <span class="n">data</span><span class="p">:</span> <span class="n">em</span><span class="o">.</span><span class="n">DataTuple</span> <span class="o">=</span> <span class="n">adult</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="k">assert</span> <span class="p">(</span><span class="mi">45222</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
 <span class="k">assert</span> <span class="p">(</span><span class="mi">45222</span><span class="p">,)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span>
@@ -502,7 +501,7 @@ body[data-theme="dark"] {
 <p>This loads the dataset as a DataTuple, which comprises <span class="math notranslate nohighlight">\(x\)</span> (features), <span class="math notranslate nohighlight">\(s\)</span> (sensitive attribute and <span class="math notranslate nohighlight">\(y\)</span> (class label). Each member of the DataTuple is stored as a Pandas DataFrame.</p>
 <p>By default, the Adult dataset uses the binary attribute <code class="docutils literal notranslate"><span class="pre">sex_Male</span></code> as the sensitive feature.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -510,7 +509,7 @@ body[data-theme="dark"] {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -562,10 +561,10 @@ body[data-theme="dark"] {
 </div>
 <p>If we want to run experiments using race as the sensitive attribute we could change that manually, or, as this is a common task, EthicML can split the data for you.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">:</span> <span class="n">em</span><span class="o">.</span><span class="n">DataTuple</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="o">.</span><span class="n">Splits</span><span class="o">.</span><span class="n">RACE</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">:</span> <span class="n">em</span><span class="o">.</span><span class="n">DataTuple</span> <span class="o">=</span> <span class="n">ethicml</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="n">ethicml</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="o">.</span><span class="n">Splits</span><span class="o">.</span><span class="n">RACE</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="k">assert</span> <span class="p">(</span><span class="mi">45222</span><span class="p">,</span> <span class="mi">98</span><span class="p">)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
 <span class="k">assert</span> <span class="p">(</span><span class="mi">45222</span><span class="p">,)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span>
 <span class="k">assert</span> <span class="p">(</span><span class="mi">45222</span><span class="p">,)</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>
@@ -573,7 +572,7 @@ body[data-theme="dark"] {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -581,7 +580,7 @@ body[data-theme="dark"] {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -634,15 +633,15 @@ body[data-theme="dark"] {
 <p>However, we’re going to be repeating some of the experiments from FairGP. In that paper they do experiments with race as the sensitive attribute, but the value is binary. The value of race is White or Not_White.</p>
 <p>Fortunately, EthicML has a split for that: <code class="docutils literal notranslate"><span class="pre">RACE_BINARY</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="o">.</span><span class="n">Splits</span><span class="o">.</span><span class="n">RACE_BINARY</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">ethicml</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="n">ethicml</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="o">.</span><span class="n">Splits</span><span class="o">.</span><span class="n">RACE_BINARY</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -650,7 +649,7 @@ body[data-theme="dark"] {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -707,12 +706,13 @@ body[data-theme="dark"] {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">metrics</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml.run</span>
+<span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">metrics</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">evaluate_models</span><span class="p">(</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">ethicml</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">evaluate_models</span><span class="p">(</span>
     <span class="n">datasets</span><span class="o">=</span><span class="p">[</span><span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="n">em</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Adult</span><span class="o">.</span><span class="n">Splits</span><span class="o">.</span><span class="n">RACE_BINARY</span><span class="p">)],</span>
     <span class="n">preprocess_models</span><span class="o">=</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">Upsampler</span><span class="p">()],</span>
-    <span class="n">inprocess_models</span><span class="o">=</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">LR</span><span class="p">(),</span> <span class="n">models</span><span class="o">.</span><span class="n">SVM</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="n">em</span><span class="o">.</span><span class="n">KernelType</span><span class="o">.</span><span class="n">linear</span><span class="p">),</span> <span class="n">models</span><span class="o">.</span><span class="n">Kamiran</span><span class="p">()],</span>
+    <span class="n">inprocess_models</span><span class="o">=</span><span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">LR</span><span class="p">(),</span> <span class="n">models</span><span class="o">.</span><span class="n">SVM</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="n">em</span><span class="o">.</span><span class="n">KernelType</span><span class="o">.</span><span class="n">linear</span><span class="p">),</span> <span class="n">models</span><span class="o">.</span><span class="n">Reweighting</span><span class="p">()],</span>
     <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">CV</span><span class="p">()],</span>
     <span class="n">per_sens_metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">TPR</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">ProbPos</span><span class="p">()],</span>
     <span class="n">repeats</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -727,24 +727,48 @@ body[data-theme="dark"] {
 <div class="highlight"><pre>
 [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
 [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:    0.2s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.3s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   3 out of   3 | elapsed:    1.3s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:    1.8s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    2.1s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.3s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.3s finished
-[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-[Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:    0.3s remaining:    0.0s
 [Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.4s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.4s finished
+[Parallel(n_jobs=1)]: Done   3 out of   3 | elapsed:    1.4s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:    1.9s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    2.1s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.4s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.4s finished
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:    0.2s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.3s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.3s finished
 [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
 [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:    0.2s remaining:    0.0s
 [Parallel(n_jobs=1)]: Done   2 out of   2 | elapsed:    0.4s remaining:    0.0s
 [Parallel(n_jobs=1)]: Done   3 out of   3 | elapsed:    1.1s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:    1.6s remaining:    0.0s
-[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    1.8s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   4 out of   4 | elapsed:    1.7s remaining:    0.0s
+[Parallel(n_jobs=1)]: Done   5 out of   5 | elapsed:    1.9s remaining:    0.0s
 [Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.1s remaining:    0.0s
 [Parallel(n_jobs=1)]: Done   6 out of   6 | elapsed:    2.1s finished
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
+/home/tmk/dev/python/EthicML/ethicml/run/evaluate.py:325: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  results_df = results_df.append(df_row, ignore_index=True, sort=False)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -785,18 +809,18 @@ body[data-theme="dark"] {
       <th>Accuracy</th>
       <th>Accuracy_race_White_0</th>
       <th>Accuracy_race_White_0-race_White_1</th>
-      <th>Accuracy_race_White_0/race_White_1</th>
+      <th>Accuracy_race_White_0÷race_White_1</th>
       <th>Accuracy_race_White_1</th>
       <th>C</th>
       <th>CV</th>
       <th>TPR_race_White_0</th>
       <th>TPR_race_White_0-race_White_1</th>
-      <th>TPR_race_White_0/race_White_1</th>
+      <th>TPR_race_White_0÷race_White_1</th>
       <th>TPR_race_White_1</th>
       <th>model_seed</th>
       <th>prob_pos_race_White_0</th>
       <th>prob_pos_race_White_0-race_White_1</th>
-      <th>prob_pos_race_White_0/race_White_1</th>
+      <th>prob_pos_race_White_0÷race_White_1</th>
       <th>prob_pos_race_White_1</th>
       <th>seed</th>
       <th>kernel</th>
@@ -883,7 +907,7 @@ body[data-theme="dark"] {
       <td>0.050795</td>
       <td>0.943205</td>
       <td>0.843565</td>
-      <td>None</td>
+      <td>NaN</td>
       <td>0.931427</td>
       <td>0.621495</td>
       <td>0.009081</td>
@@ -949,7 +973,7 @@ body[data-theme="dark"] {
       <td>0.050472</td>
       <td>0.943138</td>
       <td>0.837150</td>
-      <td>None</td>
+      <td>NaN</td>
       <td>0.932603</td>
       <td>0.578431</td>
       <td>0.002572</td>
@@ -1016,7 +1040,7 @@ body[data-theme="dark"] {
       <td>0.051718</td>
       <td>0.942225</td>
       <td>0.843437</td>
-      <td>None</td>
+      <td>NaN</td>
       <td>0.925529</td>
       <td>0.612150</td>
       <td>0.003686</td>
@@ -1082,7 +1106,7 @@ body[data-theme="dark"] {
       <td>0.049309</td>
       <td>0.944295</td>
       <td>0.835871</td>
-      <td>None</td>
+      <td>NaN</td>
       <td>0.936138</td>
       <td>0.568627</td>
       <td>0.001768</td>
@@ -1101,15 +1125,24 @@ body[data-theme="dark"] {
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">])[[</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy_race_White_0/race_White_1&#39;</span><span class="p">,</span> <span class="s1">&#39;TPR_race_White_0/race_White_1&#39;</span><span class="p">,</span> <span class="s1">&#39;prob_pos_race_White_0/race_White_1&#39;</span><span class="p">]]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">])[[</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;Accuracy_race_White_0÷race_White_1&#39;</span><span class="p">,</span> <span class="s1">&#39;TPR_race_White_0÷race_White_1&#39;</span><span class="p">,</span> <span class="s1">&#39;prob_pos_race_White_0÷race_White_1&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/tmp/ipykernel_77604/1188678509.py:1: FutureWarning: [&#39;kernel&#39;] did not aggregate successfully. If any error is raised this will raise in a future version of pandas. Drop these columns/ops to avoid this warning.
+  results.groupby(level=[0, 1, 2]).agg([&#39;mean&#39;, &#39;std&#39;])[[&#39;Accuracy&#39;, &#39;Accuracy_race_White_0÷race_White_1&#39;, &#39;TPR_race_White_0÷race_White_1&#39;, &#39;prob_pos_race_White_0÷race_White_1&#39;]]
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1138,9 +1171,9 @@ body[data-theme="dark"] {
       <th></th>
       <th></th>
       <th colspan="2" halign="left">Accuracy</th>
-      <th colspan="2" halign="left">Accuracy_race_White_0/race_White_1</th>
-      <th colspan="2" halign="left">TPR_race_White_0/race_White_1</th>
-      <th colspan="2" halign="left">prob_pos_race_White_0/race_White_1</th>
+      <th colspan="2" halign="left">Accuracy_race_White_0÷race_White_1</th>
+      <th colspan="2" halign="left">TPR_race_White_0÷race_White_1</th>
+      <th colspan="2" halign="left">prob_pos_race_White_0÷race_White_1</th>
     </tr>
     <tr>
       <th></th>
@@ -1197,6 +1230,14 @@ body[data-theme="dark"] {
   </tbody>
 </table>
 </div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </section>
 </section>
