@@ -47,8 +47,8 @@ metrics = ["scikit-learn"]
 plot = ["matplotlib","seaborn"]
 data = ["folktables"]
 models = ["scipy","GitPython","pipenv","scikit-learn","fairlearn","cloudpickle","gitdb2","smmap2"]
-ci = ["fairlearn","cloudpickle","omegaconf"]
 all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2"]
+ci = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2","omegaconf"]
 
 [tool.poetry.dev-dependencies]
 black = "^22.6"
