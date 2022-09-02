@@ -25,23 +25,25 @@ class ResultTuple(NamedTuple):
 
 
 class CVResults:
-    """Stores the results of a cross validation experiment.
+    """Stores the results of a cross validation experiment (see :class:`CrossValidator`).
 
     This object isn't meant to be iterated over directly.
-    Instead, use the `raw_storage` property to access the results across all folds.
-    Or, use the `mean_storage` property to access the average results for each parameter setting.
+    Instead, use the ``raw_storage`` property to access the results across all folds.
+    Or, use the ``mean_storage`` property to access the average results for each parameter setting.
 
 
     .. code-block:: python
 
         import ethicml as em
+        from ethicml import data, metrics, models
+        from ethicml.run import CrossValidator
 
-        train, test = em.train_test_split(em.Compas().load())
+        train, test = em.train_test_split(data.Compas().load())
         hyperparams = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
-        cv = em.CrossValidator(em.LR, hyperparams, folds=3)
-        primary = em.Accuracy()
-        fair_measure = em.AbsCV()
+        cv = CrossValidator(models.LR, hyperparams, folds=3)
+        primary = metrics.Accuracy()
+        fair_measure = metrics.AbsCV()
         cv_results = cv.run(train, measures=[primary, fair_measure])
         best_result = cv_results.get_best_in_top_k(primary, fair_measure, top_k=3)
 
@@ -159,20 +161,22 @@ class _ResultsAccumulator:
 class CrossValidator:
     """A simple approach to Cross Validation.
 
-    The CrossValidator object is used to run cross-validation on a model.
-    Results are returned in a CVResults object.
+    The CrossValidator object is used to run cross-validation on a model. Results are returned in
+    a :class:`CVResults` object.
 
     .. code-block:: python
 
         import ethicml as em
+        from ethicml import data, metrics, models
+        from ethicml.run import CrossValidator
 
-        train, test = em.train_test_split(em.Compas().load())
+        train, test = em.train_test_split(data.Compas().load())
         hyperparams = {"C": [1, 1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]}
 
-        lr_cv = em.CrossValidator(em.LR, hyperparams, folds=3)
+        lr_cv = CrossValidator(models.LR, hyperparams, folds=3)
 
-        primary = em.Accuracy()
-        fair_measure = em.AbsCV()
+        primary = metrics.Accuracy()
+        fair_measure = metrics.AbsCV()
         cv_results = lr_cv.run(train, measures=[primary, fair_measure])
 
     :param model: the class (not an instance) of the model for cross validation
@@ -227,12 +231,7 @@ class CrossValidator:
         return CVResults(compute_scores_and_append.results, self.model)
 
     def run(self, train: DataTuple, measures: list[Metric] | None = None) -> CVResults:
-        """Run the cross validation experiments.
-
-        :param train: the training data
-        :param measures:  (Default: None)
-        :returns: CVResults
-        """
+        """Run the cross validation experiments."""
         compute_scores_and_append = _ResultsAccumulator(measures)
         for (i, (train_fold, val)), experiment in product(
             enumerate(fold_data(train, folds=self.folds)), self.experiments

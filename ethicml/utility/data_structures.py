@@ -566,7 +566,7 @@ class TrainValPair(NamedTuple):
 
 
 Results = NewType("Results", pd.DataFrame)
-"""Container for results from :func:`~ethicml.evaluators.evaluate.evaluate_models`."""
+"""Container for results from :func:`~ethicml.run.evaluate.evaluate_models`."""
 
 
 RESULTS_COLUMNS: Final = ["dataset", "scaler", "transform", "model", "split_id"]
