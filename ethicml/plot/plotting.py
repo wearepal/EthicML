@@ -8,7 +8,6 @@ from matplotlib import figure, legend
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from sklearn.manifold import TSNE  # type: ignore[attr-defined]
 
 from ethicml.metrics.metric import Metric
 from ethicml.utility import DataTuple, Results
@@ -31,6 +30,8 @@ def maybe_tsne(data: DataTuple) -> tuple[pd.DataFrame, str, str]:
     columns = data.x.columns
 
     if len(columns) > 2:
+        from sklearn.manifold import TSNE  # type: ignore[attr-defined]
+
         tsne_embeddings = TSNE(n_components=2, random_state=0).fit_transform(data.x)
         amalgamated = pd.concat(
             [pd.DataFrame(tsne_embeddings, columns=["tsne1", "tsne2"]), data.s, data.y],

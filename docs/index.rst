@@ -13,19 +13,17 @@ Example
 
 .. code:: python
 
-   import ethicml as em
-   import ethicml.data as emda
-   from ethicml import metrics, models
+   from ethicml import data, metrics, models, run, plot
 
-   results = em.evaluate_models(
-       datasets=[emda.Adult()],
+   results = run.evaluate_models(
+       datasets=[data.Adult()],
        inprocess_models=[models.SVM(), models.Kamiran()],
        preprocess_models=[models.Upsampler()],
        metrics=[metrics.Accuracy()],
        per_sens_metrics=[metrics.ProbPos(), metrics.TPR()],
        repeats=5,
    )
-   em.plot_results(results, "Accuracy", "prob_pos_Male_0÷Male_1")
+   plot.plot_results(results, "Accuracy", "prob_pos_Male_0÷Male_1")
 
 
 Table of contents
@@ -39,6 +37,8 @@ Table of contents
    ethicml.data
    ethicml.models/index
    ethicml.metrics
+   ethicml.run
+   ethicml.plot
 
 .. toctree::
    :caption: Tutorials

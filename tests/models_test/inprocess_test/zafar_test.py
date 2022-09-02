@@ -4,7 +4,8 @@ import numpy as np
 import pytest
 from pytest import approx
 
-from ethicml import CrossValidator, CVResults, Prediction, TrainTestPair
+from ethicml import Prediction, TrainTestPair
+from ethicml.run import CrossValidator, CVResults
 from ethicml.metrics import AbsCV, Accuracy
 from ethicml.models import (
     InAlgorithm,

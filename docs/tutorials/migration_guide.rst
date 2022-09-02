@@ -8,13 +8,9 @@ Modularization of imports
 =========================
 
 You can no longer import datasets, metrics or algorithms directrly from the top-level ``ethicml`` namespace.
-There are now 4 namespaces:
+There are now 6 namespaces:
 
 - ``ethicml``
-
-  * Evaluation helpers
-
-  * Visualization helpers
 
   * Data structures (DataTuple, etc.)
 
@@ -29,3 +25,11 @@ There are now 4 namespaces:
 - ``ethicml.data``
 
   * All the datasets
+
+- ``ethicml.run``
+
+  * Evaluation helpers
+
+- ``ethicml.plot``
+
+  * Visualization helpers

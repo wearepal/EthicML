@@ -4,10 +4,10 @@ from typing import Dict, List, NamedTuple, Sequence, Type, Union
 import numpy as np
 import pytest
 
-import ethicml as em
 from ethicml import KernelType, Prediction, TrainTestPair
 from ethicml.metrics import Accuracy
 from ethicml.models import InAlgorithm, LR, SVM
+from ethicml.run import CrossValidator, CVResults
 
 
 class CvParam(NamedTuple):
@@ -37,7 +37,7 @@ def test_cv(
 ):
     """Test cv svm."""
     train, test = toy_train_test
-    cross_validator = em.CrossValidator(model, hyperparams)
+    cross_validator = CrossValidator(model, hyperparams)
     assert cross_validator is not None
 
     cv_results = cross_validator.run(train)
@@ -60,8 +60,8 @@ def test_parallel_cv(
     train, test = toy_train_test
     measure = Accuracy()
 
-    cross_validator = em.CrossValidator(model, hyperparams, max_parallel=1)
-    cv_results: em.CVResults = cross_validator.run_async(train, measures=[measure])
+    cross_validator = CrossValidator(model, hyperparams, max_parallel=1)
+    cv_results: CVResults = cross_validator.run_async(train, measures=[measure])
     best_model = cv_results.best(measure)
     assert isinstance(best_model, InAlgorithm)
 

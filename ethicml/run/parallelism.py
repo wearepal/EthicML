@@ -1,6 +1,6 @@
 """Collection of functions that enable parallelism."""
 from __future__ import annotations
-from typing import List, Protocol, Sequence, Tuple, TypeVar, cast, overload
+from typing import TYPE_CHECKING, List, Protocol, Sequence, Tuple, TypeVar, cast, overload
 from typing_extensions import TypeAlias
 
 from joblib import Parallel, delayed
@@ -14,11 +14,12 @@ from ethicml.utility.data_structures import DataTuple, Prediction, SubgroupTuple
 __all__ = ["arrange_in_parallel", "run_in_parallel"]
 
 
-InSeq: TypeAlias = Sequence[InAlgorithm]
-PreSeq: TypeAlias = Sequence[PreAlgorithm]
-InResult: TypeAlias = List[List[Prediction]]
-PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
-DataSeq: TypeAlias = Sequence[TrainValPair]
+if TYPE_CHECKING:
+    InSeq: TypeAlias = Sequence[InAlgorithm]
+    PreSeq: TypeAlias = Sequence[PreAlgorithm]
+    InResult: TypeAlias = List[List[Prediction]]
+    PreResult: TypeAlias = List[List[Tuple[DataTuple, DataTuple]]]
+    DataSeq: TypeAlias = Sequence[TrainValPair]
 
 
 @overload

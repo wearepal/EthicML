@@ -27,7 +27,7 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 
     data0 = toy_train_val
     data1 = toy_train_val
-    result = em.run_in_parallel(
+    result = em.run.run_in_parallel(
         algos=[models.LR(), models.SVM(), models.Majority()],
         data=[em.TrainValPair(*data0), em.TrainValPair(*data1)],
         seeds=[0, 0],
@@ -54,7 +54,7 @@ def test_run_parallel(toy_train_val: em.TrainValPair):
 @pytest.mark.xdist_group("results_files")
 def test_empty_evaluate():
     """Test empty evaluate."""
-    empty_result = em.evaluate_models([emda.Toy()], repeats=3)
+    empty_result = em.run.evaluate_models([emda.Toy()], repeats=3)
     expected_result = pd.DataFrame(
         [], columns=["dataset", "scaler", "transform", "model", "split_id"]
     )
@@ -75,7 +75,7 @@ def test_run_alg_repeats_error(repeats: int):
     inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
-    results_no_scaler = em.evaluate_models(
+    results_no_scaler = em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -101,7 +101,7 @@ def test_run_repeats(repeats: int, on: Literal["data", "model", "both"]):
     inprocess_models: List[models.InAlgorithm] = [models.LR(), models.Reweighting()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
-    results_no_scaler = em.evaluate_models(
+    results_no_scaler = em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -134,7 +134,7 @@ def test_run_alg_suite_scaler():
     inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
-    results_no_scaler = em.evaluate_models(
+    results_no_scaler = em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -145,7 +145,7 @@ def test_run_alg_suite_scaler():
         delete_previous=True,
         topic="pytest",
     )
-    results_scaler = em.evaluate_models(
+    results_scaler = em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -171,7 +171,7 @@ def test_run_alg_suite():
     inprocess_models: List[models.InAlgorithm] = [models.LR(), models.SVM(kernel=KernelType.linear)]
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
-    em.evaluate_models(
+    em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -197,7 +197,7 @@ def test_run_alg_suite():
         assert (written_file["seed"][0], written_file["seed"][1]) == (0, 0)
         assert written_file.shape == (2, 19)
 
-    reloaded = em.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
+    reloaded = em.run.load_results("Adult Race-Binary", "Upsample uniform", "pytest")
     assert reloaded is not None
     read = pd.read_csv(Path(".") / "results" / "pytest_Adult Race-Binary_Upsample uniform.csv")
     read = read.set_index(["dataset", "scaler", "transform", "model", "split_id"])
@@ -214,7 +214,7 @@ def test_run_alg_suite_wrong_metrics():
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR(), metrics.CV()]
     with pytest.raises(metrics.MetricNotApplicable):
-        em.evaluate_models(
+        em.run.evaluate_models(
             datasets=datasets,
             preprocess_models=preprocess_models,
             inprocess_models=inprocess_models,
@@ -253,7 +253,7 @@ def test_run_alg_suite_err_handling():
     inprocess_models: List[models.InAlgorithm] = [models.LR(), ThrowErr()]
     metrics_: List[metrics.Metric] = [metrics.Accuracy()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy()]
-    results = em.evaluate_models(
+    results = em.run.evaluate_models(
         datasets=datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,
@@ -280,7 +280,7 @@ def test_run_alg_suite_no_pipeline():
     metrics_: List[metrics.Metric] = [metrics.Accuracy(), metrics.CV()]
     per_sens_metrics: List[metrics.Metric] = [metrics.Accuracy(), metrics.TPR()]
 
-    results = em.evaluate_models(
+    results = em.run.evaluate_models(
         datasets,
         preprocess_models=preprocess_models,
         inprocess_models=inprocess_models,

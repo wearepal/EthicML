@@ -4,22 +4,18 @@ from typing import List, Tuple
 from matplotlib import pyplot as plt
 import pytest
 
-from ethicml import (
-    DataTuple,
-    KernelType,
-    Results,
-    TrainTestPair,
-    evaluate_models,
+from ethicml import DataTuple, KernelType, Results, TrainTestPair, train_test_split
+from ethicml.data import Adult, Toy, load_data
+from ethicml.metrics import Accuracy, CV, NMI, ProbPos, TPR
+from ethicml.models import LR, Reweighting, SVM, UpsampleStrategy, Upsampler
+from ethicml.plot import (
     plot_results,
     save_2d_plot,
     save_jointplot,
     save_label_plot,
     save_multijointplot,
-    train_test_split,
 )
-from ethicml.data import Adult, Toy, load_data
-from ethicml.metrics import Accuracy, CV, NMI, ProbPos, TPR
-from ethicml.models import LR, Reweighting, SVM, Upsampler, UpsampleStrategy
+from ethicml.run import evaluate_models
 
 
 @pytest.mark.slow

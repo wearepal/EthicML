@@ -22,32 +22,33 @@ repository="https://github.com/wearepal/EthicML"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-GitPython = "^3.1.20"
-matplotlib = ">=3.0.2"
+cloudpickle = { version = "^2.0.0", optional= true }
+fairlearn = { version = "0.7.0", optional = true }
+folktables = { version = "^0.0.11", optional = true }
+gitdb2 = { version = "4.0.2", optional = true }
+GitPython = { version = "^3.1.20", optional = true }
+joblib = "^1.1.0"
+matplotlib = { version = ">=3.0.2", optional = true }
 numpy = ">=1.20.1"
+omegaconf = { version = ">=2.2.2", optional = true }
 pandas = "^1.0"
 # pipenv from 2022.8.5 is broken for python2
-pipenv = ">=2018.11.26,<2022.8.5"
-Pillow = "^9.0.1"
-scikit-learn = ">=0.20.1"
-seaborn = ">=0.9.0"
+pipenv = { version = ">=2018.11.26,<2022.8.5", optional = true }
+ranzen = ">=2.0.1,<3.0.0"
+scikit-learn = { version = ">=0.20.1", optional = true }
+scipy = { version = "^1.7.2", optional = true }
+seaborn = { version = ">=0.9.0", optional = true }
+smmap2 = { version = "3.0.1", optional = true }
 teext = "^0.1.3"
 typing-extensions = ">=4.0"
-fairlearn = { version = "0.7.0", optional = true }
-cloudpickle = { version = "^2.0.0", optional= true }
-pytest = { version = ">=6.2.2,<8.0.0", optional = true }
-pytest-cov = { version = ">=2.6,<4.0", optional = true }
-gitdb2 = "4.0.2"
-smmap2 = "3.0.1"
-folktables = "^0.0.11"
-ranzen = ">=2.0.1,<3.0.0"
-joblib = "^1.1.0"
-scipy = "^1.7.2"
-omegaconf = { version = ">=2.2.2", optional = true }
 
 [tool.poetry.extras]
-ci = ["fairlearn","pytest","pytest-cov","cloudpickle","omegaconf"]
-all = ["fairlearn","cloudpickle"]
+metrics = ["scikit-learn"]
+plot = ["matplotlib","seaborn"]
+data = ["folktables"]
+models = ["scipy","GitPython","pipenv","scikit-learn","fairlearn","cloudpickle","gitdb2","smmap2"]
+ci = ["fairlearn","cloudpickle","omegaconf"]
+all = ["fairlearn","cloudpickle","scikit-learn","matplotlib","seaborn","folktables","scipy","GitPython","pipenv","gitdb2","smmap2"]
 
 [tool.poetry.dev-dependencies]
 black = "^22.6"
@@ -60,7 +61,6 @@ pytest = ">=6.2.2,<8.0.0"
 pytest-cov = ">=2.6,<4.0"
 python-type-stubs = {git = "https://github.com/wearepal/python-type-stubs.git", rev = "2f140fb"}
 pandas-stubs = ">=1.4.2.220626"
-types-Pillow = "^9.2.1"
 omegaconf = ">=2.2.1"
 pytest-xdist = "^2.5.0"
 
@@ -136,7 +136,7 @@ mypy_path = "typings"
 
 # ===== the following modules in EthicML aren't ready to be type checked so strictly =====
 [[tool.mypy.overrides]]
-module = ["tests.*", "ethicml.implementations.*", "ethicml.models.inprocess.fair_gpyt"]
+module = ["tests.*", "ethicml.implementations.*"]
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 

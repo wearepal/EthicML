@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from ranzen import implements
 
-from ethicml.utility import DataTuple
+from ethicml.utility.data_structures import DataTuple
 from ethicml.utility.data_helpers import undo_one_hot
 
 from ..dataset import Dataset, DiscFeatureGroup, FeatureOrder, FeatureSplit
