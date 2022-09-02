@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING, Literal, NamedTuple, Sequence
 import pandas as pd
 
 from ethicml.data.load import load_data
-from ethicml.run.parallelism import run_in_parallel
 from ethicml.metrics.per_sensitive_attribute import MetricNotApplicable, PerSens, metric_per_sens
 from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
+from ethicml.run.parallelism import run_in_parallel
 from ethicml.utility.data_structures import (
     DataTuple,
     EvalTuple,

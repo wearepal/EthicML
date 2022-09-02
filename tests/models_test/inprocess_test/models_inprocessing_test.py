@@ -17,7 +17,6 @@ from ethicml import (
     TrainValPair,
     train_test_split,
 )
-from ethicml.run import CrossValidator, evaluate_models
 from ethicml.data import Adult, Compas, Toy, load_data
 from ethicml.metrics import AbsCV, Accuracy, MetricStaticName
 from ethicml.models import (
@@ -41,6 +40,7 @@ from ethicml.models import (
     SVM,
 )
 from ethicml.models.inprocess.in_algorithm import HyperParamType
+from ethicml.run import CrossValidator, evaluate_models
 
 TMPDIR: Final = Path("/tmp")
 

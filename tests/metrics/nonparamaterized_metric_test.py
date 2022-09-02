@@ -5,7 +5,6 @@ from typing import Tuple
 import pytest
 from pytest import approx
 
-from ethicml.run import run_metrics
 from ethicml import (
     BalancedTestSplit,
     DataTuple,
@@ -35,6 +34,7 @@ from ethicml.metrics import (
     ratio_per_sens,
 )
 from ethicml.models import InAlgorithm, LR, LRCV, SVM
+from ethicml.run import run_metrics
 
 
 def test_tpr_diff(toy_train_val: TrainValPair):
