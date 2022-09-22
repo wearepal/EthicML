@@ -6,13 +6,12 @@ from typing import TYPE_CHECKING, Literal, NamedTuple, Sequence
 import pandas as pd
 
 from ethicml.data.load import load_data
-from ethicml.metrics.per_sensitive_attribute import MetricNotApplicable, PerSens, metric_per_sens
+from ethicml.metrics.eval import per_sens_metrics_check, run_metrics
 from ethicml.preprocessing.scaling import ScalerType, scale_continuous
 from ethicml.preprocessing.splits import DataSplitter, RandomSplit
 from ethicml.run.parallelism import run_in_parallel
 from ethicml.utility.data_structures import (
     DataTuple,
-    EvalTuple,
     HyperParamValue,
     Prediction,
     Results,
@@ -22,72 +21,18 @@ from ethicml.utility.data_structures import (
 )
 
 if TYPE_CHECKING:  # the following imports are only needed for type checking
-    from collections.abc import Set as AbstractSet
-
     from ethicml.data.dataset import Dataset
     from ethicml.metrics.metric import Metric
     from ethicml.models.inprocess.in_algorithm import InAlgorithm
     from ethicml.models.preprocess.pre_algorithm import PreAlgorithm
 
-__all__ = ["evaluate_models", "run_metrics", "load_results"]
+__all__ = ["evaluate_models", "load_results"]
 
 
 def get_sensitive_combinations(metrics: list[Metric], train: DataTuple) -> list[str]:
     """Get all possible combinations of sensitive attribute and metrics."""
     poss_values = [f"{train.s.name}_{unique}" for unique in train.s.unique()]
     return [f"{s}_{m.name}" for s in poss_values for m in metrics]
-
-
-def per_sens_metrics_check(per_sens_metrics: Sequence[Metric]) -> None:
-    """Check if the given metrics allow application per sensitive attribute."""
-    for metric in per_sens_metrics:
-        if not metric.apply_per_sensitive:
-            raise MetricNotApplicable(
-                f"Metric {metric.name} is not applicable per sensitive "
-                f"attribute, apply to whole dataset instead"
-            )
-
-
-def run_metrics(
-    predictions: Prediction,
-    actual: EvalTuple,
-    metrics: Sequence[Metric] = (),
-    per_sens_metrics: Sequence[Metric] = (),
-    aggregation: PerSens | AbstractSet[PerSens] = PerSens.DIFFS_RATIOS,
-    use_sens_name: bool = True,
-) -> dict[str, float]:
-    """Run all the given metrics on the given predictions and return the results.
-
-    :param predictions: DataFrame with predictions
-    :param actual: EvalTuple with the labels
-    :param metrics: list of metrics (Default: ())
-    :param per_sens_metrics: list of metrics that are computed per sensitive attribute (Default: ())
-    :param aggregation: Optionally specify aggregations that are performed on the per-sens metrics.
-        (Default: ``DIFFS_RATIOS``)
-    :param use_sens_name: if True, use the name of the senisitive variable in the returned results.
-        If False, refer to the sensitive variable as "S". (Default: ``True``)
-    :returns: A dictionary of all the metric results.
-    """
-    result: dict[str, float] = {}
-    if predictions.hard.isna().any(axis=None):  # type: ignore[arg-type]
-        return {"algorithm_failed": 1.0}
-    for metric in metrics:
-        result[metric.name] = metric.score(predictions, actual)
-
-    for metric in per_sens_metrics:
-        per_sens = metric_per_sens(predictions, actual, metric, use_sens_name)
-        agg_funcs: AbstractSet[PerSens] = (
-            {aggregation} if isinstance(aggregation, PerSens) else aggregation
-        )
-        # we can't add the aggregations directly to ``per_sens`` because then
-        # we would create aggregations of aggregations
-        aggregations: dict[str, float] = {}
-        for agg in agg_funcs:
-            aggregations.update(agg.func(per_sens))
-        per_sens.update(aggregations)
-        for key, value in per_sens.items():
-            result[f"{metric.name}_{key}"] = value
-    return result  # SUGGESTION: we could return a DataFrame here instead of a dictionary
 
 
 def load_results(
