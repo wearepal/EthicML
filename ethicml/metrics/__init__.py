@@ -4,9 +4,9 @@ Some example code
 
 .. code:: python
 
-   from ethicml import metrics, run
+   from ethicml.metrics import Accuracy, TPR, run_metrics
 
-   run.run_metrics(predictions, test_data, metrics=[metrics.Accuracy(), metrics.TPR()])
+   run_metrics(predictions, test_data, metrics=[Accuracy(), TPR()])
 """
 from .accuracy import *
 from .anti_spur import *
@@ -16,6 +16,7 @@ from .bcr import *
 from .confusion_matrix import *
 from .cv import *
 from .dependence_measures import *
+from .eval import *
 from .fnr import *
 from .fpr import *
 from .hsic import *
