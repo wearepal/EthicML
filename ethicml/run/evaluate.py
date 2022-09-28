@@ -267,7 +267,9 @@ def _gather_metrics(
             df_row.update(run_metrics(predictions, data_info.test, metrics, per_sens_metrics))
             df_row.update(predictions.info)
 
-            results_df = results_df.append(df_row, ignore_index=True, sort=False)
+            results_df = pd.concat(
+                [results_df, pd.DataFrame(df_row)], ignore_index=True, sort=False
+            )
 
         # write results to CSV files and load previous results from the files if they already exist
         csv_file = _result_path(outdir, data_info.dataset_name, data_info.transform_name, topic)

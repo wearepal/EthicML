@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 
 from ethicml.utility import DataTuple, TestTuple
-from ethicml.utility.data_structures import ModelType
 
 try:
     import torch
@@ -21,7 +20,7 @@ except ImportError as e:
 
 def _get_info(data: TestTuple) -> tuple[np.ndarray, np.ndarray, int, int, pd.Index, str]:
     features = data.x.to_numpy(dtype=np.float32)
-    sens_labels = data.s.to_numpy(dtype=np.float32)  # type: ignore[type-var]
+    sens_labels = data.s.to_numpy(dtype=np.float32)
     num = data.s.shape[0]
     xdim = data.x.shape[1]
     x_names = data.x.columns
@@ -59,7 +58,7 @@ class CustomDataset(Dataset):
         test = data.remove_y()
         self.x, self.s, self.num, self.xdim, self.x_names, self.s_names = _get_info(test)
         self.sdim = 1
-        self.y = data.y.to_numpy(dtype=np.float32)  # type: ignore[type-var]
+        self.y = data.y.to_numpy(dtype=np.float32)
         self.ydim = data.y.nunique()
         self.y_names = str(data.y.name)
 

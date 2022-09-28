@@ -64,7 +64,7 @@ class FairDummies(InAlgorithmSubprocess):
             "second_moment_scaling": self.second_moment_scaling,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def hyperparameters(self) -> HyperParamType:
         return {
@@ -80,7 +80,7 @@ class FairDummies(InAlgorithmSubprocess):
             "second_moment_scaling": self.second_moment_scaling,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
         return f"Fair Dummies {self.model_type}_model"

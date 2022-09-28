@@ -52,12 +52,12 @@ class Zemel(PreAlgorithmSubprocess):
             "threshold": self.threshold,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(PreAlgorithmSubprocess)
     def name(self) -> str:
         return "Zemel"
 
-    @property  # type: ignore[misc]
+    @property
     @implements(PreAlgorithmSubprocess)
     def out_size(self) -> int:
         assert self._in_size is not None

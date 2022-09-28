@@ -1,6 +1,6 @@
 """Test the loading data capability."""
 from pathlib import Path
-from typing import Callable, Final, NamedTuple
+from typing import Callable, Final, Mapping, NamedTuple
 
 import pandas as pd
 import pytest
@@ -967,7 +967,8 @@ def test_expand_s():
         [[1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 1, 0], [1, 0, 0], [0, 0, 1], [0, 0, 1]],
         columns=["Blue", "Green", "Pink"],
     )
-    multilevel_df = pd.concat({"Race": race_expanded, "Gender": gender_expanded}, axis="columns")
+    levels: Mapping[str, pd.DataFrame] = {"Race": race_expanded, "Gender": gender_expanded}
+    multilevel_df = pd.concat(levels, axis="columns")
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_series_equal(

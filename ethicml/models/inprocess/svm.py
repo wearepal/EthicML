@@ -31,7 +31,7 @@ class SVM(InAlgorithmDC):
     C: float = field(default_factory=lambda: SVC().C)
     kernel: KernelType = field(default_factory=lambda: KernelType[SVC().kernel])
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmDC)
     def name(self) -> str:
         return f"SVM ({self.kernel})"
