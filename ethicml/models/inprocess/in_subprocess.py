@@ -52,7 +52,7 @@ InAlgoArgs: TypeAlias = Union[InAlgoFitArgs, InAlgoPredArgs, InAlgoRunArgs]
 _IS = TypeVar("_IS", bound="InAlgorithmSubprocess")
 
 
-@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+@dataclass
 class InAlgorithmSubprocess(SubprocessAlgorithmMixin, InAlgorithm, ABC):
     """In-Algorithm that uses a subprocess to run.
 

@@ -21,7 +21,7 @@ class Corels(InAlgorithmNoParams):
     From this paper: https://arxiv.org/abs/1704.01701
     """
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmNoParams)
     def name(self) -> str:
         return "CORELS"

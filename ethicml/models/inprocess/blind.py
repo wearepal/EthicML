@@ -23,7 +23,7 @@ class Blind(InAlgorithmNoParams):
 
     is_fairness_algo: ClassVar[bool] = False
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmNoParams)
     def name(self) -> str:
         return "Blind"
