@@ -268,7 +268,9 @@ def _gather_metrics(
             df_row.update(predictions.info)
 
             results_df = pd.concat(
-                [results_df, pd.DataFrame(df_row)], ignore_index=True, sort=False
+                [results_df, pd.DataFrame.from_dict({k: [v] for k, v in df_row.items()})],
+                ignore_index=True,
+                sort=False,
             )
 
         # write results to CSV files and load previous results from the files if they already exist
