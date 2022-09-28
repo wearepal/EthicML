@@ -65,7 +65,7 @@ class Agarwal(InAlgorithmSubprocess):
             "kernel": chosen_kernel if chosen_kernel is not None else "",
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def hyperparameters(self) -> HyperParamType:
         chosen_c, chosen_kernel = settings_for_svm_lr(self.classifier, self.C, self.kernel)
@@ -80,7 +80,7 @@ class Agarwal(InAlgorithmSubprocess):
             _hyperparameters["kernel"] = chosen_kernel
         return _hyperparameters
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
         return f"Agarwal, {self.classifier}, {self.fairness}, {self.eps}"

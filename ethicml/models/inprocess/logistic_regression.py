@@ -29,7 +29,7 @@ class LR(InAlgorithmDC):
     is_fairness_algo: ClassVar[bool] = False
     C: float = field(default_factory=lambda: LogisticRegression().C)
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmDC)
     def name(self) -> str:
         return f"Logistic Regression (C={self.C})"
@@ -67,7 +67,7 @@ class LRCV(InAlgorithmDC):
     is_fairness_algo: ClassVar[bool] = False
     n_splits: int = 3
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmDC)
     def name(self) -> str:
         return "LRCV"

@@ -50,7 +50,7 @@ class HGR(InAlgorithmSubprocess):
             "model_type": self.model_type,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def hyperparameters(self) -> HyperParamType:
         return {
@@ -61,7 +61,7 @@ class HGR(InAlgorithmSubprocess):
             "model_type": self.model_type,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
         return f"HGR {self.model_type}_model"

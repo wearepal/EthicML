@@ -48,7 +48,7 @@ class Adult(StaticCSVDataset):
     binarize_nationality: bool = False
     binarize_race: bool = False
 
-    @property  # type: ignore[misc]
+    @property
     @implements(StaticCSVDataset)
     def name(self) -> str:
         name = f"Adult {self.split.value}"
@@ -93,7 +93,7 @@ class Adult(StaticCSVDataset):
             raise NotImplementedError
         return LabelSpecsPair(s=sens_attr_spec, y=class_label_spec, to_remove=label_feature_groups)
 
-    @property  # type: ignore[misc]
+    @property
     @implements(StaticCSVDataset)
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         dfgs = DISC_FEATURE_GROUPS
@@ -128,7 +128,7 @@ class Adult(StaticCSVDataset):
                 assert len(flatten_dict(dfgs)) == 97  # 93 (discrete) features + 4 class labels
         return dfgs
 
-    @property  # type: ignore[misc]
+    @property
     @implements(StaticCSVDataset)
     def continuous_features(self) -> list[str]:
         feats = [

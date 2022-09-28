@@ -279,7 +279,7 @@ class CSVDataset(Dataset, ABC):
         mask = None  # the mask is needed when we have to discard samples
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(  # type: ignore[call-overload]
+        combination: pd.Series = pd.Series(
             0, index=range(len(attributes)), name=",".join(label_spec)
         )
 
@@ -351,7 +351,7 @@ class CSVDataset(Dataset, ABC):
         )
 
 
-@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+@dataclass
 class CSVDatasetDC(CSVDataset, ABC):
     """Dataset that uses the default load function."""
 
@@ -369,7 +369,7 @@ class CSVDatasetDC(CSVDataset, ABC):
         return self.invert_s
 
 
-@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+@dataclass
 class StaticCSVDataset(CSVDatasetDC, ABC):
     """Dataset whose size and file location does not depend on constructor arguments."""
 
@@ -421,17 +421,17 @@ class LegacyDataset(CSVDataset):
         self._raw_file_name_or_path = filename_or_path
         self._cont_features = list(cont_features)
 
-    @property  # type: ignore[misc]
+    @property
     @implements(CSVDataset)
     def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
         return self._unfiltered_disc_feat_groups
 
-    @property  # type: ignore[misc]
+    @property
     @implements(CSVDataset)
     def continuous_features(self) -> list[str]:
         return self._cont_features
 
-    @property  # type: ignore[misc]
+    @property
     @implements(CSVDataset)
     def name(self) -> str:
         return self._name

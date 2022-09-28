@@ -42,7 +42,7 @@ class Reweighting(InAlgorithm):
             self.classifier, self.C, self.kernel
         )
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithm)
     def hyperparameters(self) -> HyperParamType:
         _hyperparameters: dict[str, Any] = {"C": self.C}
@@ -51,7 +51,7 @@ class Reweighting(InAlgorithm):
             _hyperparameters["kernel"] = self.kernel
         return _hyperparameters
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithm)
     def name(self) -> str:
         lr_params = f" C={self.chosen_c}" if self.classifier is ClassifierType.lr else ""

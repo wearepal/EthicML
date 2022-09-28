@@ -37,12 +37,12 @@ class Upsampler(PreAlgorithm):
     def __post_init__(self) -> None:
         self._out_size: Optional[int] = None
 
-    @property  # type: ignore[misc]
+    @property
     @implements(PreAlgorithm)
     def name(self) -> str:
         return f"Upsample {self.strategy}"
 
-    @property  # type: ignore[misc]
+    @property
     @implements(PreAlgorithm)
     def out_size(self) -> int:
         assert self._out_size is not None

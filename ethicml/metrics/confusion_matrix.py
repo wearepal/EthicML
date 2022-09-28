@@ -13,7 +13,7 @@ from ethicml.utility.data_structures import EvalTuple, Prediction
 __all__ = ["CfmMetric", "LabelOutOfBounds"]
 
 
-@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+@dataclass
 class CfmMetric(MetricStaticName, ABC):
     """Confusion Matrix based metric."""
 
@@ -30,7 +30,7 @@ class CfmMetric(MetricStaticName, ABC):
         :param prediction: The predictions.
         :param actual: The actual labels.
         """
-        actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)  # type: ignore[type-var]
+        actual_y: np.ndarray = actual.y.to_numpy(dtype=np.int32)
         _labels: np.ndarray = np.unique(actual_y) if self.labels is None else np.array(self.labels)
         if _labels.size == 1:
             _labels = np.array([0, 1], dtype=np.int32)

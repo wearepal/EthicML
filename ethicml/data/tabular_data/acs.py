@@ -227,7 +227,7 @@ class AcsBase(Dataset):
             return attributes[label_mapping], mask
 
         # create a Series of zeroes with the same length as the dataframe
-        combination: pd.Series = pd.Series(  # type: ignore[call-overload]
+        combination: pd.Series = pd.Series(
             0, index=range(len(attributes)), name=",".join(label_mapping)
         )
 

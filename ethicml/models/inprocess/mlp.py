@@ -30,7 +30,7 @@ class MLP(InAlgorithmDC):
     batch_size: int = 32
     lr: float = 1e-3
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmDC)
     def name(self) -> str:
         return "MLP"

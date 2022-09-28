@@ -55,7 +55,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def hyperparameters(self) -> HyperParamType:
         return {
@@ -68,7 +68,7 @@ class AdvDebiasing(InAlgorithmSubprocess):
             "lambda_vec": self.lambda_vec,
         }
 
-    @property  # type: ignore[misc]
+    @property
     @implements(InAlgorithmSubprocess)
     def name(self) -> str:
         return "Adversarial Debiasing"

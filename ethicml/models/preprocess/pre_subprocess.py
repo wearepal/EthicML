@@ -52,7 +52,7 @@ PreAlgoArgs: TypeAlias = Union[PreAlgoFitArgs, PreAlgoTformArgs, PreAlgoRunArgs]
 _P = TypeVar("_P", bound="PreAlgorithmSubprocess")
 
 
-@dataclass  # type: ignore[misc]  # mypy doesn't allow abstract dataclasses because mypy is stupid
+@dataclass
 class PreAlgorithmSubprocess(SubprocessAlgorithmMixin, PreAlgorithm, ABC):
     """Pre-Algorithm that runs the method in a subprocess.
 
