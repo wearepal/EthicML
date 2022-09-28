@@ -106,3 +106,5 @@ results/*
 !/ethicml/data/csvs/health.csv.zip
 
 /darglint.out
+/docs/tutorials/results/
+/examples/results/
