@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.plot" href="ethicml.plot.html" /><link rel="prev" title="ethicml.metrics" href="ethicml.metrics.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml.run - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>ethicml.run - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -204,7 +204,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -218,7 +218,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.run.CVResults" title="ethicml.run.CVResults"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CVResults</span></code></a></p></td>
-<td><p>Stores the results of a cross validation experiment.</p></td>
+<td><p>Stores the results of a cross validation experiment (see <a class="reference internal" href="#ethicml.run.CrossValidator" title="ethicml.run.CrossValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossValidator</span></code></a>).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.run.CrossValidator" title="ethicml.run.CrossValidator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CrossValidator</span></code></a></p></td>
 <td><p>A simple approach to Cross Validation.</p></td>
@@ -242,9 +242,6 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.run.run_in_parallel" title="ethicml.run.run_in_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_in_parallel</span></code></a></p></td>
 <td><p>Run the given algorithms (embarrassingly) parallel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.run.run_metrics" title="ethicml.run.run_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_metrics</span></code></a></p></td>
-<td><p>Run all the given metrics on the given predictions and return the results.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -252,18 +249,20 @@
 <dt class="sig sig-object py" id="ethicml.run.CVResults">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CVResults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.run.CVResults" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Stores the results of a cross validation experiment.</p>
+<p>Stores the results of a cross validation experiment (see <a class="reference internal" href="#ethicml.run.CrossValidator" title="ethicml.run.CrossValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossValidator</span></code></a>).</p>
 <p>This object isn’t meant to be iterated over directly.
-Instead, use the <cite>raw_storage</cite> property to access the results across all folds.
-Or, use the <cite>mean_storage</cite> property to access the average results for each parameter setting.</p>
+Instead, use the <code class="docutils literal notranslate"><span class="pre">raw_storage</span></code> property to access the results across all folds.
+Or, use the <code class="docutils literal notranslate"><span class="pre">mean_storage</span></code> property to access the average results for each parameter setting.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
+<span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">ethicml.run</span> <span class="kn">import</span> <span class="n">CrossValidator</span>
 
-<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
 <span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
 
-<span class="n">cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">primary</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
-<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">CrossValidator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">primary</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
+<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">])</span>
 <span class="n">best_result</span> <span class="o">=</span> <span class="n">cv_results</span><span class="o">.</span><span class="n">get_best_in_top_k</span><span class="p">(</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
@@ -351,17 +350,19 @@ secondary metric from the top K.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CrossValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.run.CrossValidator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A simple approach to Cross Validation.</p>
-<p>The CrossValidator object is used to run cross-validation on a model.
-Results are returned in a CVResults object.</p>
+<p>The CrossValidator object is used to run cross-validation on a model. Results are returned in
+a <a class="reference internal" href="#ethicml.run.CVResults" title="ethicml.run.CVResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">CVResults</span></code></a> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ethicml</span> <span class="k">as</span> <span class="nn">em</span>
+<span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">data</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">ethicml.run</span> <span class="kn">import</span> <span class="n">CrossValidator</span>
 
-<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Compas</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
 <span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]}</span>
 
-<span class="n">lr_cv</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">CrossValidator</span><span class="p">(</span><span class="n">em</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">lr_cv</span> <span class="o">=</span> <span class="n">CrossValidator</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">LR</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
-<span class="n">primary</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
-<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
+<span class="n">primary</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">()</span>
+<span class="n">fair_measure</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">AbsCV</span><span class="p">()</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">lr_cv</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="n">primary</span><span class="p">,</span> <span class="n">fair_measure</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -384,15 +385,12 @@ which is the number of available CPUs</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>train</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – the training data</p></li>
-<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – (Default: None)</p></li>
+<li><p><strong>train</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – </p></li>
+<li><p><strong>measures</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>ethicml.metrics.metric.Metric</em></a><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>CVResults</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ethicml.run.CVResults" title="ethicml.run.cross_validator.CVResults"><em>CVResults</em></a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ethicml.run.CVResults" title="ethicml.run.cross_validator.CVResults"><em>CVResults</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -519,32 +517,6 @@ which is the number of available CPUs</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="ethicml.run.run_metrics">
-<span class="sig-name descname"><span class="pre">run_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation=frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)&gt;})</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.run.run_metrics" title="Permalink to this definition">#</a></dt>
-<dd><p>Run all the given metrics on the given predictions and return the results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>predictions</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.Prediction"><em>Prediction</em></a>) – DataFrame with predictions</p></li>
-<li><p><strong>actual</strong> (<em>EvalTuple</em>) – EvalTuple with the labels</p></li>
-<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><em>Metric</em></a><em>]</em>) – list of metrics (Default: ())</p></li>
-<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><em>Metric</em></a><em>]</em>) – list of metrics that are computed per sensitive attribute (Default: ())</p></li>
-<li><p><strong>aggregation</strong> (<a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.PerSens" title="ethicml.metrics.PerSens"><em>PerSens</em></a><em> | </em><em>AbstractSet</em><em>[</em><a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.PerSens" title="ethicml.metrics.PerSens"><em>PerSens</em></a><em>]</em>) – Optionally specify aggregations that are performed on the per-sens metrics.
-(Default: <code class="docutils literal notranslate"><span class="pre">DIFFS_RATIOS</span></code>)</p></li>
-<li><p><strong>use_sens_name</strong> (<em>bool</em>) – if True, use the name of the senisitive variable in the returned results.
-If False, refer to the sensitive variable as “S”. (Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary of all the metric results.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict[str, float]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
         </article>
@@ -559,10 +531,10 @@ If False, refer to the sensitive variable as “S”. (Default: <code class="doc
                 </div>
                 <div class="title">ethicml.plot</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="ethicml.metrics.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -592,8 +564,42 @@ If False, refer to the sensitive variable as “S”. (Default: <code class="doc
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">ethicml.run</a><ul>
+<li><a class="reference internal" href="#ethicml.run.CVResults"><code class="docutils literal notranslate"><span class="pre">CVResults</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.run.CVResults.best"><code class="docutils literal notranslate"><span class="pre">CVResults.best()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.CVResults.best_hyper_params"><code class="docutils literal notranslate"><span class="pre">CVResults.best_hyper_params()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.CVResults.get_best_in_top_k"><code class="docutils literal notranslate"><span class="pre">CVResults.get_best_in_top_k()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.CVResults.get_best_result"><code class="docutils literal notranslate"><span class="pre">CVResults.get_best_result()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.run.CrossValidator"><code class="docutils literal notranslate"><span class="pre">CrossValidator</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.run.CrossValidator.run"><code class="docutils literal notranslate"><span class="pre">CrossValidator.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.CrossValidator.run_async"><code class="docutils literal notranslate"><span class="pre">CrossValidator.run_async()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.run.arrange_in_parallel"><code class="docutils literal notranslate"><span class="pre">arrange_in_parallel()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.evaluate_models"><code class="docutils literal notranslate"><span class="pre">evaluate_models()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.load_results"><code class="docutils literal notranslate"><span class="pre">load_results()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.run.run_in_parallel"><code class="docutils literal notranslate"><span class="pre">run_in_parallel()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -603,6 +609,7 @@ If False, refer to the sensitive variable as “S”. (Default: <code class="doc
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Preprocess algorithms" href="preprocess.html" /><link rel="prev" title="Inprocess algorithms" href="inprocess.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Postprocess algorithms - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Postprocess algorithms - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -481,10 +481,10 @@
                 </div>
                 <div class="title">Preprocess algorithms</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="inprocess.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -520,16 +520,43 @@
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Postprocess algorithms</a><ul>
-<li><a class="reference internal" href="#module-ethicml.models.postprocess.post_algorithm">Postprocess base</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.postprocess.dp_flip">DP Flip</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.postprocess.hardt">Hardt</a></li>
+<li><a class="reference internal" href="#module-ethicml.models.postprocess.post_algorithm">Postprocess base</a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.fit"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.name"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.predict"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.predict()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.post_algorithm.PostAlgorithm.run"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.postprocess.dp_flip">DP Flip</a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.dp_flip.DPFlip"><code class="docutils literal notranslate"><span class="pre">DPFlip</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.dp_flip.DPFlip.fit"><code class="docutils literal notranslate"><span class="pre">DPFlip.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.dp_flip.DPFlip.name"><code class="docutils literal notranslate"><span class="pre">DPFlip.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.dp_flip.DPFlip.predict"><code class="docutils literal notranslate"><span class="pre">DPFlip.predict()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.dp_flip.DPFlip.run"><code class="docutils literal notranslate"><span class="pre">DPFlip.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.postprocess.hardt">Hardt</a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.hardt.Hardt"><code class="docutils literal notranslate"><span class="pre">Hardt</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.postprocess.hardt.Hardt.fit"><code class="docutils literal notranslate"><span class="pre">Hardt.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.hardt.Hardt.name"><code class="docutils literal notranslate"><span class="pre">Hardt.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.hardt.Hardt.predict"><code class="docutils literal notranslate"><span class="pre">Hardt.predict()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.postprocess.hardt.Hardt.run"><code class="docutils literal notranslate"><span class="pre">Hardt.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -546,6 +573,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

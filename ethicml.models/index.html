@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Algorithms base" href="base.html" /><link rel="prev" title="ethicml.data" href="../ethicml.data.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml.models - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>ethicml.models - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -215,36 +215,393 @@
 <p>Definitions of algorithms.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="base.html">Algorithms base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">Algorithms base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base.html#ethicml.models.algorithm_base.Algorithm"><code class="docutils literal notranslate"><span class="pre">Algorithm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html#ethicml.models.algorithm_base.Algorithm.name"><code class="docutils literal notranslate"><span class="pre">Algorithm.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="base.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin"><code class="docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.call_script"><code class="docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin.call_script()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html#ethicml.models.algorithm_base.SubprocessAlgorithmMixin.executable"><code class="docutils literal notranslate"><span class="pre">SubprocessAlgorithmMixin.executable</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="inprocess.html">Inprocess algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.in_algorithm">Inprocess base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.agarwal_reductions">Agarwal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.fairness_wo_demographics">Distributionally-robust optimization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.installed_model">Base for installed model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.kamiran">Kamiran</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.kamishima">Kamishima</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.logistic_regression">Logistic regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.majority">Majority</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.manual">Manual methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.mlp">MLP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.oracle">Oracle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.svm">SVM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.zafar">Zafar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.in_algorithm">Inprocess base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm"><code class="docutils literal notranslate"><span class="pre">InAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.fit"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.hyperparameters"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.name"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.predict"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.run"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithm.run_test"><code class="docutils literal notranslate"><span class="pre">InAlgorithm.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.fit"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.hyperparameters"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.name"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.predict"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmDC.run_test"><code class="docutils literal notranslate"><span class="pre">InAlgorithmDC.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.fit"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.hyperparameters"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.name"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.predict"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.in_algorithm.InAlgorithmNoParams.run_test"><code class="docutils literal notranslate"><span class="pre">InAlgorithmNoParams.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.agarwal_reductions">Agarwal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal"><code class="docutils literal notranslate"><span class="pre">Agarwal</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.call_script"><code class="docutils literal notranslate"><span class="pre">Agarwal.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.executable"><code class="docutils literal notranslate"><span class="pre">Agarwal.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.fit"><code class="docutils literal notranslate"><span class="pre">Agarwal.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Agarwal.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.model_path"><code class="docutils literal notranslate"><span class="pre">Agarwal.model_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.name"><code class="docutils literal notranslate"><span class="pre">Agarwal.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.predict"><code class="docutils literal notranslate"><span class="pre">Agarwal.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.run"><code class="docutils literal notranslate"><span class="pre">Agarwal.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.agarwal_reductions.Agarwal.run_test"><code class="docutils literal notranslate"><span class="pre">Agarwal.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.fairness_wo_demographics">Distributionally-robust optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO"><code class="docutils literal notranslate"><span class="pre">DRO</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.call_script"><code class="docutils literal notranslate"><span class="pre">DRO.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.executable"><code class="docutils literal notranslate"><span class="pre">DRO.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.fit"><code class="docutils literal notranslate"><span class="pre">DRO.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.hyperparameters"><code class="docutils literal notranslate"><span class="pre">DRO.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.model_path"><code class="docutils literal notranslate"><span class="pre">DRO.model_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.name"><code class="docutils literal notranslate"><span class="pre">DRO.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.predict"><code class="docutils literal notranslate"><span class="pre">DRO.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.run"><code class="docutils literal notranslate"><span class="pre">DRO.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.fairness_wo_demographics.DRO.run_test"><code class="docutils literal notranslate"><span class="pre">DRO.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.installed_model">Base for installed model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel"><code class="docutils literal notranslate"><span class="pre">InstalledModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.call_script"><code class="docutils literal notranslate"><span class="pre">InstalledModel.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.executable"><code class="docutils literal notranslate"><span class="pre">InstalledModel.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.fit"><code class="docutils literal notranslate"><span class="pre">InstalledModel.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.hyperparameters"><code class="docutils literal notranslate"><span class="pre">InstalledModel.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.name"><code class="docutils literal notranslate"><span class="pre">InstalledModel.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.predict"><code class="docutils literal notranslate"><span class="pre">InstalledModel.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.remove"><code class="docutils literal notranslate"><span class="pre">InstalledModel.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.run"><code class="docutils literal notranslate"><span class="pre">InstalledModel.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.installed_model.InstalledModel.run_test"><code class="docutils literal notranslate"><span class="pre">InstalledModel.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.kamiran">Kamiran</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting"><code class="docutils literal notranslate"><span class="pre">Reweighting</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.fit"><code class="docutils literal notranslate"><span class="pre">Reweighting.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Reweighting.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.name"><code class="docutils literal notranslate"><span class="pre">Reweighting.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.predict"><code class="docutils literal notranslate"><span class="pre">Reweighting.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.run"><code class="docutils literal notranslate"><span class="pre">Reweighting.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.Reweighting.run_test"><code class="docutils literal notranslate"><span class="pre">Reweighting.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamiran.compute_instance_weights"><code class="docutils literal notranslate"><span class="pre">compute_instance_weights()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.kamishima">Kamishima</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima"><code class="docutils literal notranslate"><span class="pre">Kamishima</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.call_script"><code class="docutils literal notranslate"><span class="pre">Kamishima.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.executable"><code class="docutils literal notranslate"><span class="pre">Kamishima.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.fit"><code class="docutils literal notranslate"><span class="pre">Kamishima.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Kamishima.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.name"><code class="docutils literal notranslate"><span class="pre">Kamishima.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.predict"><code class="docutils literal notranslate"><span class="pre">Kamishima.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.remove"><code class="docutils literal notranslate"><span class="pre">Kamishima.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.run"><code class="docutils literal notranslate"><span class="pre">Kamishima.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.kamishima.Kamishima.run_test"><code class="docutils literal notranslate"><span class="pre">Kamishima.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.logistic_regression">Logistic regression</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR"><code class="docutils literal notranslate"><span class="pre">LR</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.fit"><code class="docutils literal notranslate"><span class="pre">LR.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.hyperparameters"><code class="docutils literal notranslate"><span class="pre">LR.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.name"><code class="docutils literal notranslate"><span class="pre">LR.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.predict"><code class="docutils literal notranslate"><span class="pre">LR.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.run"><code class="docutils literal notranslate"><span class="pre">LR.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LR.run_test"><code class="docutils literal notranslate"><span class="pre">LR.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV"><code class="docutils literal notranslate"><span class="pre">LRCV</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.fit"><code class="docutils literal notranslate"><span class="pre">LRCV.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.hyperparameters"><code class="docutils literal notranslate"><span class="pre">LRCV.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.name"><code class="docutils literal notranslate"><span class="pre">LRCV.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.predict"><code class="docutils literal notranslate"><span class="pre">LRCV.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.run"><code class="docutils literal notranslate"><span class="pre">LRCV.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.logistic_regression.LRCV.run_test"><code class="docutils literal notranslate"><span class="pre">LRCV.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.majority">Majority</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority"><code class="docutils literal notranslate"><span class="pre">Majority</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.fit"><code class="docutils literal notranslate"><span class="pre">Majority.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Majority.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.name"><code class="docutils literal notranslate"><span class="pre">Majority.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.predict"><code class="docutils literal notranslate"><span class="pre">Majority.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.run"><code class="docutils literal notranslate"><span class="pre">Majority.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.majority.Majority.run_test"><code class="docutils literal notranslate"><span class="pre">Majority.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.manual">Manual methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels"><code class="docutils literal notranslate"><span class="pre">Corels</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.fit"><code class="docutils literal notranslate"><span class="pre">Corels.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Corels.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.name"><code class="docutils literal notranslate"><span class="pre">Corels.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.predict"><code class="docutils literal notranslate"><span class="pre">Corels.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.run"><code class="docutils literal notranslate"><span class="pre">Corels.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.manual.Corels.run_test"><code class="docutils literal notranslate"><span class="pre">Corels.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.mlp">MLP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP"><code class="docutils literal notranslate"><span class="pre">MLP</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.fit"><code class="docutils literal notranslate"><span class="pre">MLP.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.hyperparameters"><code class="docutils literal notranslate"><span class="pre">MLP.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.name"><code class="docutils literal notranslate"><span class="pre">MLP.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.predict"><code class="docutils literal notranslate"><span class="pre">MLP.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.run"><code class="docutils literal notranslate"><span class="pre">MLP.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.mlp.MLP.run_test"><code class="docutils literal notranslate"><span class="pre">MLP.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.oracle">Oracle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle"><code class="docutils literal notranslate"><span class="pre">DPOracle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.fit"><code class="docutils literal notranslate"><span class="pre">DPOracle.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.hyperparameters"><code class="docutils literal notranslate"><span class="pre">DPOracle.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.name"><code class="docutils literal notranslate"><span class="pre">DPOracle.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.predict"><code class="docutils literal notranslate"><span class="pre">DPOracle.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.run"><code class="docutils literal notranslate"><span class="pre">DPOracle.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.DPOracle.run_test"><code class="docutils literal notranslate"><span class="pre">DPOracle.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle"><code class="docutils literal notranslate"><span class="pre">Oracle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.fit"><code class="docutils literal notranslate"><span class="pre">Oracle.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.hyperparameters"><code class="docutils literal notranslate"><span class="pre">Oracle.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.name"><code class="docutils literal notranslate"><span class="pre">Oracle.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.predict"><code class="docutils literal notranslate"><span class="pre">Oracle.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.run"><code class="docutils literal notranslate"><span class="pre">Oracle.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.oracle.Oracle.run_test"><code class="docutils literal notranslate"><span class="pre">Oracle.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.svm">SVM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM"><code class="docutils literal notranslate"><span class="pre">SVM</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.fit"><code class="docutils literal notranslate"><span class="pre">SVM.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.hyperparameters"><code class="docutils literal notranslate"><span class="pre">SVM.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.name"><code class="docutils literal notranslate"><span class="pre">SVM.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.predict"><code class="docutils literal notranslate"><span class="pre">SVM.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.run"><code class="docutils literal notranslate"><span class="pre">SVM.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.svm.SVM.run_test"><code class="docutils literal notranslate"><span class="pre">SVM.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inprocess.html#module-ethicml.models.inprocess.zafar">Zafar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.call_script"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.executable"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.fit"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.hyperparameters"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.name"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.predict"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.remove"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.run"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarAccuracy.run_test"><code class="docutils literal notranslate"><span class="pre">ZafarAccuracy.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.call_script"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.executable"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.fit"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.hyperparameters"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.name"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.predict"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.remove"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.run"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarBaseline.run_test"><code class="docutils literal notranslate"><span class="pre">ZafarBaseline.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.call_script"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.executable"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.fit"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.hyperparameters"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.name"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.predict"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.remove"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.run"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOdds.run_test"><code class="docutils literal notranslate"><span class="pre">ZafarEqOdds.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.call_script"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.executable"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.fit"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.hyperparameters"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.name"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.predict"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.remove"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.run"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarEqOpp.run_test"><code class="docutils literal notranslate"><span class="pre">ZafarEqOpp.run_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness"><code class="docutils literal notranslate"><span class="pre">ZafarFairness</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.call_script"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.executable"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.fit"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.hyperparameters"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.hyperparameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.name"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.predict"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.remove"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.run"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="inprocess.html#ethicml.models.inprocess.zafar.ZafarFairness.run_test"><code class="docutils literal notranslate"><span class="pre">ZafarFairness.run_test()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="postprocess.html">Postprocess algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.post_algorithm">Postprocess base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.dp_flip">DP Flip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.hardt">Hardt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.post_algorithm">Postprocess base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.fit"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.name"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.predict"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.post_algorithm.PostAlgorithm.run"><code class="docutils literal notranslate"><span class="pre">PostAlgorithm.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.dp_flip">DP Flip</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip"><code class="docutils literal notranslate"><span class="pre">DPFlip</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip.fit"><code class="docutils literal notranslate"><span class="pre">DPFlip.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip.name"><code class="docutils literal notranslate"><span class="pre">DPFlip.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip.predict"><code class="docutils literal notranslate"><span class="pre">DPFlip.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.dp_flip.DPFlip.run"><code class="docutils literal notranslate"><span class="pre">DPFlip.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="postprocess.html#module-ethicml.models.postprocess.hardt">Hardt</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.hardt.Hardt"><code class="docutils literal notranslate"><span class="pre">Hardt</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.hardt.Hardt.fit"><code class="docutils literal notranslate"><span class="pre">Hardt.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.hardt.Hardt.name"><code class="docutils literal notranslate"><span class="pre">Hardt.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.hardt.Hardt.predict"><code class="docutils literal notranslate"><span class="pre">Hardt.predict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="postprocess.html#ethicml.models.postprocess.hardt.Hardt.run"><code class="docutils literal notranslate"><span class="pre">Hardt.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="preprocess.html">Preprocess algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.pre_algorithm">Preprocess base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.beutel">Beutel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.calders">Calders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.upsampler">Upsampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.vfae">VFAE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.zemel">Zemel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.pre_algorithm">Preprocess base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.fit"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.name"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.out_size"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run_test"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.transform"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.beutel">Beutel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel"><code class="docutils literal notranslate"><span class="pre">Beutel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.call_script"><code class="docutils literal notranslate"><span class="pre">Beutel.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.executable"><code class="docutils literal notranslate"><span class="pre">Beutel.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.fit"><code class="docutils literal notranslate"><span class="pre">Beutel.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.model_path"><code class="docutils literal notranslate"><span class="pre">Beutel.model_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.name"><code class="docutils literal notranslate"><span class="pre">Beutel.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.out_size"><code class="docutils literal notranslate"><span class="pre">Beutel.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.run"><code class="docutils literal notranslate"><span class="pre">Beutel.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.run_test"><code class="docutils literal notranslate"><span class="pre">Beutel.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.beutel.Beutel.transform"><code class="docutils literal notranslate"><span class="pre">Beutel.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.calders">Calders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders"><code class="docutils literal notranslate"><span class="pre">Calders</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.fit"><code class="docutils literal notranslate"><span class="pre">Calders.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.name"><code class="docutils literal notranslate"><span class="pre">Calders.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.out_size"><code class="docutils literal notranslate"><span class="pre">Calders.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.run"><code class="docutils literal notranslate"><span class="pre">Calders.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.run_test"><code class="docutils literal notranslate"><span class="pre">Calders.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.calders.Calders.transform"><code class="docutils literal notranslate"><span class="pre">Calders.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.upsampler">Upsampling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.UpsampleStrategy"><code class="docutils literal notranslate"><span class="pre">UpsampleStrategy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler"><code class="docutils literal notranslate"><span class="pre">Upsampler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.fit"><code class="docutils literal notranslate"><span class="pre">Upsampler.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.name"><code class="docutils literal notranslate"><span class="pre">Upsampler.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.out_size"><code class="docutils literal notranslate"><span class="pre">Upsampler.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.run"><code class="docutils literal notranslate"><span class="pre">Upsampler.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.run_test"><code class="docutils literal notranslate"><span class="pre">Upsampler.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.upsampler.Upsampler.transform"><code class="docutils literal notranslate"><span class="pre">Upsampler.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.vfae">VFAE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE"><code class="docutils literal notranslate"><span class="pre">VFAE</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.call_script"><code class="docutils literal notranslate"><span class="pre">VFAE.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.executable"><code class="docutils literal notranslate"><span class="pre">VFAE.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.fit"><code class="docutils literal notranslate"><span class="pre">VFAE.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.model_path"><code class="docutils literal notranslate"><span class="pre">VFAE.model_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.name"><code class="docutils literal notranslate"><span class="pre">VFAE.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.out_size"><code class="docutils literal notranslate"><span class="pre">VFAE.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.run"><code class="docutils literal notranslate"><span class="pre">VFAE.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.run_test"><code class="docutils literal notranslate"><span class="pre">VFAE.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.vfae.VFAE.transform"><code class="docutils literal notranslate"><span class="pre">VFAE.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocess.html#module-ethicml.models.preprocess.zemel">Zemel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel"><code class="docutils literal notranslate"><span class="pre">Zemel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.call_script"><code class="docutils literal notranslate"><span class="pre">Zemel.call_script()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.executable"><code class="docutils literal notranslate"><span class="pre">Zemel.executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.fit"><code class="docutils literal notranslate"><span class="pre">Zemel.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.model_path"><code class="docutils literal notranslate"><span class="pre">Zemel.model_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.name"><code class="docutils literal notranslate"><span class="pre">Zemel.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.out_size"><code class="docutils literal notranslate"><span class="pre">Zemel.out_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.run"><code class="docutils literal notranslate"><span class="pre">Zemel.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.run_test"><code class="docutils literal notranslate"><span class="pre">Zemel.run_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="preprocess.html#ethicml.models.preprocess.zemel.Zemel.transform"><code class="docutils literal notranslate"><span class="pre">Zemel.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -263,10 +620,10 @@
                 </div>
                 <div class="title">Algorithms base</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../ethicml.data.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -307,6 +664,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

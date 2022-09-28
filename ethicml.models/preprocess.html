@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ethicml.metrics" href="../ethicml.metrics.html" /><link rel="prev" title="Postprocess algorithms" href="postprocess.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Preprocess algorithms - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Preprocess algorithms - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -1022,10 +1022,10 @@ of samples.</p>
                 </div>
                 <div class="title">ethicml.metrics</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="postprocess.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -1061,19 +1061,95 @@ of samples.</p>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Preprocess algorithms</a><ul>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.pre_algorithm">Preprocess base</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.beutel">Beutel</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.calders">Calders</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.upsampler">Upsampling</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.vfae">VFAE</a></li>
-<li><a class="reference internal" href="#module-ethicml.models.preprocess.zemel">Zemel</a></li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.pre_algorithm">Preprocess base</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.fit"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.name"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.out_size"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.run_test"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.pre_algorithm.PreAlgorithm.transform"><code class="docutils literal notranslate"><span class="pre">PreAlgorithm.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.beutel">Beutel</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel"><code class="docutils literal notranslate"><span class="pre">Beutel</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.call_script"><code class="docutils literal notranslate"><span class="pre">Beutel.call_script()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.executable"><code class="docutils literal notranslate"><span class="pre">Beutel.executable</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.fit"><code class="docutils literal notranslate"><span class="pre">Beutel.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.model_path"><code class="docutils literal notranslate"><span class="pre">Beutel.model_path</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.name"><code class="docutils literal notranslate"><span class="pre">Beutel.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.out_size"><code class="docutils literal notranslate"><span class="pre">Beutel.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.run"><code class="docutils literal notranslate"><span class="pre">Beutel.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.run_test"><code class="docutils literal notranslate"><span class="pre">Beutel.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.beutel.Beutel.transform"><code class="docutils literal notranslate"><span class="pre">Beutel.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.calders">Calders</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders"><code class="docutils literal notranslate"><span class="pre">Calders</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.fit"><code class="docutils literal notranslate"><span class="pre">Calders.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.name"><code class="docutils literal notranslate"><span class="pre">Calders.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.out_size"><code class="docutils literal notranslate"><span class="pre">Calders.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.run"><code class="docutils literal notranslate"><span class="pre">Calders.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.run_test"><code class="docutils literal notranslate"><span class="pre">Calders.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.calders.Calders.transform"><code class="docutils literal notranslate"><span class="pre">Calders.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.upsampler">Upsampling</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.UpsampleStrategy"><code class="docutils literal notranslate"><span class="pre">UpsampleStrategy</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler"><code class="docutils literal notranslate"><span class="pre">Upsampler</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.fit"><code class="docutils literal notranslate"><span class="pre">Upsampler.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.name"><code class="docutils literal notranslate"><span class="pre">Upsampler.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.out_size"><code class="docutils literal notranslate"><span class="pre">Upsampler.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.run"><code class="docutils literal notranslate"><span class="pre">Upsampler.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.run_test"><code class="docutils literal notranslate"><span class="pre">Upsampler.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.upsampler.Upsampler.transform"><code class="docutils literal notranslate"><span class="pre">Upsampler.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.vfae">VFAE</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE"><code class="docutils literal notranslate"><span class="pre">VFAE</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.call_script"><code class="docutils literal notranslate"><span class="pre">VFAE.call_script()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.executable"><code class="docutils literal notranslate"><span class="pre">VFAE.executable</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.fit"><code class="docutils literal notranslate"><span class="pre">VFAE.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.model_path"><code class="docutils literal notranslate"><span class="pre">VFAE.model_path</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.name"><code class="docutils literal notranslate"><span class="pre">VFAE.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.out_size"><code class="docutils literal notranslate"><span class="pre">VFAE.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.run"><code class="docutils literal notranslate"><span class="pre">VFAE.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.run_test"><code class="docutils literal notranslate"><span class="pre">VFAE.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.vfae.VFAE.transform"><code class="docutils literal notranslate"><span class="pre">VFAE.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ethicml.models.preprocess.zemel">Zemel</a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel"><code class="docutils literal notranslate"><span class="pre">Zemel</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.call_script"><code class="docutils literal notranslate"><span class="pre">Zemel.call_script()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.executable"><code class="docutils literal notranslate"><span class="pre">Zemel.executable</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.fit"><code class="docutils literal notranslate"><span class="pre">Zemel.fit()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.model_path"><code class="docutils literal notranslate"><span class="pre">Zemel.model_path</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.name"><code class="docutils literal notranslate"><span class="pre">Zemel.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.out_size"><code class="docutils literal notranslate"><span class="pre">Zemel.out_size</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.run"><code class="docutils literal notranslate"><span class="pre">Zemel.run()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.run_test"><code class="docutils literal notranslate"><span class="pre">Zemel.run_test()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.models.preprocess.zemel.Zemel.transform"><code class="docutils literal notranslate"><span class="pre">Zemel.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1090,6 +1166,7 @@ of samples.</p>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

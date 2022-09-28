@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Data preprocessing" href="preprocessing.html" /><link rel="prev" title="Welcome to EthicML’s documentation!" href="../index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>ethicml - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -216,9 +216,156 @@
 <p>This namespace contains utilities and data structures.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Data preprocessing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.BalancedTestSplit"><code class="docutils literal notranslate"><span class="pre">BalancedTestSplit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.BiasedDebiasedSubsets"><code class="docutils literal notranslate"><span class="pre">BiasedDebiasedSubsets</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.BiasedSubset"><code class="docutils literal notranslate"><span class="pre">BiasedSubset</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.DataSplitter"><code class="docutils literal notranslate"><span class="pre">DataSplitter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.LabelBinarizer"><code class="docutils literal notranslate"><span class="pre">LabelBinarizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.LabelBinarizer.adjust"><code class="docutils literal notranslate"><span class="pre">LabelBinarizer.adjust()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.LabelBinarizer.post"><code class="docutils literal notranslate"><span class="pre">LabelBinarizer.post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.LabelBinarizer.post_only_labels"><code class="docutils literal notranslate"><span class="pre">LabelBinarizer.post_only_labels()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ProportionalSplit"><code class="docutils literal notranslate"><span class="pre">ProportionalSplit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.RandomSplit"><code class="docutils literal notranslate"><span class="pre">RandomSplit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType"><code class="docutils literal notranslate"><span class="pre">ScalerType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType.fit"><code class="docutils literal notranslate"><span class="pre">ScalerType.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType.fit_transform"><code class="docutils literal notranslate"><span class="pre">ScalerType.fit_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType.inverse_transform"><code class="docutils literal notranslate"><span class="pre">ScalerType.inverse_transform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.ScalerType.transform"><code class="docutils literal notranslate"><span class="pre">ScalerType.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.SequentialSplit"><code class="docutils literal notranslate"><span class="pre">SequentialSplit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.bin_cont_feats"><code class="docutils literal notranslate"><span class="pre">bin_cont_feats()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.dataset_from_cond"><code class="docutils literal notranslate"><span class="pre">dataset_from_cond()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.domain_split"><code class="docutils literal notranslate"><span class="pre">domain_split()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.get_biased_and_debiased_subsets"><code class="docutils literal notranslate"><span class="pre">get_biased_and_debiased_subsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.get_biased_subset"><code class="docutils literal notranslate"><span class="pre">get_biased_subset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.query_dt"><code class="docutils literal notranslate"><span class="pre">query_dt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.scale_continuous"><code class="docutils literal notranslate"><span class="pre">scale_continuous()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#ethicml.preprocessing.train_test_split"><code class="docutils literal notranslate"><span class="pre">train_test_split()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="utility.html">Utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utility.html#aliases">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.Activation"><code class="docutils literal notranslate"><span class="pre">Activation</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Activation.apply"><code class="docutils literal notranslate"><span class="pre">Activation.apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Activation.get_name"><code class="docutils literal notranslate"><span class="pre">Activation.get_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.ClassifierType"><code class="docutils literal notranslate"><span class="pre">ClassifierType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple"><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.__len__"><code class="docutils literal notranslate"><span class="pre">DataTuple.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.apply_to_joined_df"><code class="docutils literal notranslate"><span class="pre">DataTuple.apply_to_joined_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.from_df"><code class="docutils literal notranslate"><span class="pre">DataTuple.from_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.from_file"><code class="docutils literal notranslate"><span class="pre">DataTuple.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.get_n_samples"><code class="docutils literal notranslate"><span class="pre">DataTuple.get_n_samples()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.get_s_subset"><code class="docutils literal notranslate"><span class="pre">DataTuple.get_s_subset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.remove_y"><code class="docutils literal notranslate"><span class="pre">DataTuple.remove_y()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.rename"><code class="docutils literal notranslate"><span class="pre">DataTuple.rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.replace"><code class="docutils literal notranslate"><span class="pre">DataTuple.replace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.replace_data"><code class="docutils literal notranslate"><span class="pre">DataTuple.replace_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.s"><code class="docutils literal notranslate"><span class="pre">DataTuple.s</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.save_to_file"><code class="docutils literal notranslate"><span class="pre">DataTuple.save_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.x"><code class="docutils literal notranslate"><span class="pre">DataTuple.x</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.DataTuple.y"><code class="docutils literal notranslate"><span class="pre">DataTuple.y</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.FairnessType"><code class="docutils literal notranslate"><span class="pre">FairnessType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.Heaviside"><code class="docutils literal notranslate"><span class="pre">Heaviside</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Heaviside.apply"><code class="docutils literal notranslate"><span class="pre">Heaviside.apply()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Heaviside.get_name"><code class="docutils literal notranslate"><span class="pre">Heaviside.get_name()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.KernelType"><code class="docutils literal notranslate"><span class="pre">KernelType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple"><code class="docutils literal notranslate"><span class="pre">LabelTuple</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.__len__"><code class="docutils literal notranslate"><span class="pre">LabelTuple.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.from_df"><code class="docutils literal notranslate"><span class="pre">LabelTuple.from_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.from_np"><code class="docutils literal notranslate"><span class="pre">LabelTuple.from_np()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.get_n_samples"><code class="docutils literal notranslate"><span class="pre">LabelTuple.get_n_samples()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.get_s_subset"><code class="docutils literal notranslate"><span class="pre">LabelTuple.get_s_subset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.rename"><code class="docutils literal notranslate"><span class="pre">LabelTuple.rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.replace"><code class="docutils literal notranslate"><span class="pre">LabelTuple.replace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.replace_data"><code class="docutils literal notranslate"><span class="pre">LabelTuple.replace_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.s"><code class="docutils literal notranslate"><span class="pre">LabelTuple.s</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.LabelTuple.y"><code class="docutils literal notranslate"><span class="pre">LabelTuple.y</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.ModelType"><code class="docutils literal notranslate"><span class="pre">ModelType</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.Prediction"><code class="docutils literal notranslate"><span class="pre">Prediction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.__len__"><code class="docutils literal notranslate"><span class="pre">Prediction.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.from_file"><code class="docutils literal notranslate"><span class="pre">Prediction.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.from_np"><code class="docutils literal notranslate"><span class="pre">Prediction.from_np()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.get_s_subset"><code class="docutils literal notranslate"><span class="pre">Prediction.get_s_subset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.hard"><code class="docutils literal notranslate"><span class="pre">Prediction.hard</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.info"><code class="docutils literal notranslate"><span class="pre">Prediction.info</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.Prediction.save_to_file"><code class="docutils literal notranslate"><span class="pre">Prediction.save_to_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.ResultsAggregator"><code class="docutils literal notranslate"><span class="pre">ResultsAggregator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.ResultsAggregator.append_df"><code class="docutils literal notranslate"><span class="pre">ResultsAggregator.append_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.ResultsAggregator.append_from_csv"><code class="docutils literal notranslate"><span class="pre">ResultsAggregator.append_from_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.ResultsAggregator.results"><code class="docutils literal notranslate"><span class="pre">ResultsAggregator.results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.ResultsAggregator.save_as_csv"><code class="docutils literal notranslate"><span class="pre">ResultsAggregator.save_as_csv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction"><code class="docutils literal notranslate"><span class="pre">SoftPrediction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.__len__"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.from_file"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.from_np"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.from_np()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.get_s_subset"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.get_s_subset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.hard"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.hard</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.info"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.info</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.save_to_file"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.save_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SoftPrediction.soft"><code class="docutils literal notranslate"><span class="pre">SoftPrediction.soft</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.__len__"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.from_df"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.from_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.from_file"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.get_n_samples"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.get_n_samples()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.get_s_subset"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.get_s_subset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.rename"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.replace"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.replace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.replace_data"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.replace_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.s"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.s</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.save_to_file"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.save_to_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.SubgroupTuple.x"><code class="docutils literal notranslate"><span class="pre">SubgroupTuple.x</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair"><code class="docutils literal notranslate"><span class="pre">TrainTestPair</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair.__len__"><code class="docutils literal notranslate"><span class="pre">TrainTestPair.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair.count"><code class="docutils literal notranslate"><span class="pre">TrainTestPair.count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair.index"><code class="docutils literal notranslate"><span class="pre">TrainTestPair.index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair.test"><code class="docutils literal notranslate"><span class="pre">TrainTestPair.test</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainTestPair.train"><code class="docutils literal notranslate"><span class="pre">TrainTestPair.train</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair"><code class="docutils literal notranslate"><span class="pre">TrainValPair</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair.__len__"><code class="docutils literal notranslate"><span class="pre">TrainValPair.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair.count"><code class="docutils literal notranslate"><span class="pre">TrainValPair.count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair.index"><code class="docutils literal notranslate"><span class="pre">TrainValPair.index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair.test"><code class="docutils literal notranslate"><span class="pre">TrainValPair.test</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.TrainValPair.train"><code class="docutils literal notranslate"><span class="pre">TrainValPair.train</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.aggregate_results"><code class="docutils literal notranslate"><span class="pre">aggregate_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.concat"><code class="docutils literal notranslate"><span class="pre">concat()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.filter_and_map_results"><code class="docutils literal notranslate"><span class="pre">filter_and_map_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.filter_results"><code class="docutils literal notranslate"><span class="pre">filter_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.make_results"><code class="docutils literal notranslate"><span class="pre">make_results()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.map_over_results_index"><code class="docutils literal notranslate"><span class="pre">map_over_results_index()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.shuffle_df"><code class="docutils literal notranslate"><span class="pre">shuffle_df()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#ethicml.utility.undo_one_hot"><code class="docutils literal notranslate"><span class="pre">undo_one_hot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utility.html#aliases">Aliases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.data_structures.Results"><code class="docutils literal notranslate"><span class="pre">Results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.data_structures.TestTuple"><code class="docutils literal notranslate"><span class="pre">TestTuple</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.data_structures.EvalTuple"><code class="docutils literal notranslate"><span class="pre">EvalTuple</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.data_structures.HyperParamValue"><code class="docutils literal notranslate"><span class="pre">HyperParamValue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="utility.html#ethicml.utility.data_structures.HyperParamType"><code class="docutils literal notranslate"><span class="pre">HyperParamType</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -237,10 +384,10 @@
                 </div>
                 <div class="title">Data preprocessing</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -281,6 +428,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

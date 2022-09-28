@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.models" href="ethicml.models/index.html" /><link rel="prev" title="Utils" href="ethicml/utility.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml.data - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>ethicml.data - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -204,7 +204,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -4835,10 +4835,10 @@ removed features.</p></li>
                 </div>
                 <div class="title">ethicml.models</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="ethicml/utility.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -4868,8 +4868,548 @@ removed features.</p></li>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">ethicml.data</a><ul>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment"><code class="docutils literal notranslate"><span class="pre">AcsEmployment</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.__len__"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.cat_lookup"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.cat_lookup()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.class_labels"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.continuous_features"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.discrete_features"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.feature_split"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.features_to_remove"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.features_to_remove</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.load"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.name"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsEmployment.sens_attrs"><code class="docutils literal notranslate"><span class="pre">AcsEmployment.sens_attrs</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome"><code class="docutils literal notranslate"><span class="pre">AcsIncome</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.__len__"><code class="docutils literal notranslate"><span class="pre">AcsIncome.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.cat_lookup"><code class="docutils literal notranslate"><span class="pre">AcsIncome.cat_lookup()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.class_labels"><code class="docutils literal notranslate"><span class="pre">AcsIncome.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.continuous_features"><code class="docutils literal notranslate"><span class="pre">AcsIncome.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">AcsIncome.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.discrete_features"><code class="docutils literal notranslate"><span class="pre">AcsIncome.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.feature_split"><code class="docutils literal notranslate"><span class="pre">AcsIncome.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.features_to_remove"><code class="docutils literal notranslate"><span class="pre">AcsIncome.features_to_remove</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.load"><code class="docutils literal notranslate"><span class="pre">AcsIncome.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.name"><code class="docutils literal notranslate"><span class="pre">AcsIncome.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.AcsIncome.sens_attrs"><code class="docutils literal notranslate"><span class="pre">AcsIncome.sens_attrs</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Admissions"><code class="docutils literal notranslate"><span class="pre">Admissions</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Admissions.Splits"><code class="docutils literal notranslate"><span class="pre">Admissions.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.__len__"><code class="docutils literal notranslate"><span class="pre">Admissions.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.class_labels"><code class="docutils literal notranslate"><span class="pre">Admissions.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.continuous_features"><code class="docutils literal notranslate"><span class="pre">Admissions.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Admissions.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Admissions.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.discrete_features"><code class="docutils literal notranslate"><span class="pre">Admissions.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.expand_labels"><code class="docutils literal notranslate"><span class="pre">Admissions.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.feature_split"><code class="docutils literal notranslate"><span class="pre">Admissions.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.filepath"><code class="docutils literal notranslate"><span class="pre">Admissions.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Admissions.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Admissions.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Admissions.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Admissions.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.load"><code class="docutils literal notranslate"><span class="pre">Admissions.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.load_aif"><code class="docutils literal notranslate"><span class="pre">Admissions.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Admissions.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Admissions.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.name"><code class="docutils literal notranslate"><span class="pre">Admissions.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Admissions.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Admissions.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Admissions.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.AdmissionsSplits"><code class="docutils literal notranslate"><span class="pre">AdmissionsSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult"><code class="docutils literal notranslate"><span class="pre">Adult</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Adult.Splits"><code class="docutils literal notranslate"><span class="pre">Adult.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.__len__"><code class="docutils literal notranslate"><span class="pre">Adult.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.class_labels"><code class="docutils literal notranslate"><span class="pre">Adult.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.continuous_features"><code class="docutils literal notranslate"><span class="pre">Adult.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Adult.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Adult.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.discrete_features"><code class="docutils literal notranslate"><span class="pre">Adult.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.expand_labels"><code class="docutils literal notranslate"><span class="pre">Adult.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.feature_split"><code class="docutils literal notranslate"><span class="pre">Adult.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.filepath"><code class="docutils literal notranslate"><span class="pre">Adult.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Adult.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Adult.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Adult.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Adult.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.load"><code class="docutils literal notranslate"><span class="pre">Adult.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.load_aif"><code class="docutils literal notranslate"><span class="pre">Adult.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Adult.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Adult.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.name"><code class="docutils literal notranslate"><span class="pre">Adult.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Adult.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Adult.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Adult.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.AdultSplits"><code class="docutils literal notranslate"><span class="pre">AdultSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset"><code class="docutils literal notranslate"><span class="pre">CSVDataset</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.__len__"><code class="docutils literal notranslate"><span class="pre">CSVDataset.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.class_labels"><code class="docutils literal notranslate"><span class="pre">CSVDataset.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.continuous_features"><code class="docutils literal notranslate"><span class="pre">CSVDataset.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">CSVDataset.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">CSVDataset.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">CSVDataset.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">CSVDataset.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">CSVDataset.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.filepath"><code class="docutils literal notranslate"><span class="pre">CSVDataset.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">CSVDataset.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.get_label_specs"><code class="docutils literal notranslate"><span class="pre">CSVDataset.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.get_num_samples"><code class="docutils literal notranslate"><span class="pre">CSVDataset.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">CSVDataset.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.load"><code class="docutils literal notranslate"><span class="pre">CSVDataset.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.load_aif"><code class="docutils literal notranslate"><span class="pre">CSVDataset.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">CSVDataset.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.map_to_binary"><code class="docutils literal notranslate"><span class="pre">CSVDataset.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.name"><code class="docutils literal notranslate"><span class="pre">CSVDataset.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.sens_attrs"><code class="docutils literal notranslate"><span class="pre">CSVDataset.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDataset.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">CSVDataset.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.__len__"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.class_labels"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.continuous_features"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.discrete_features"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.expand_labels"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.feature_split"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.filepath"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.get_label_specs"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.get_num_samples"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.load"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.load_aif"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.map_to_binary"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.name"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.sens_attrs"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Compas"><code class="docutils literal notranslate"><span class="pre">Compas</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Compas.Splits"><code class="docutils literal notranslate"><span class="pre">Compas.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.__len__"><code class="docutils literal notranslate"><span class="pre">Compas.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.class_labels"><code class="docutils literal notranslate"><span class="pre">Compas.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.continuous_features"><code class="docutils literal notranslate"><span class="pre">Compas.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Compas.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Compas.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.discrete_features"><code class="docutils literal notranslate"><span class="pre">Compas.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.expand_labels"><code class="docutils literal notranslate"><span class="pre">Compas.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.feature_split"><code class="docutils literal notranslate"><span class="pre">Compas.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.filepath"><code class="docutils literal notranslate"><span class="pre">Compas.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Compas.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Compas.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Compas.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Compas.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.load"><code class="docutils literal notranslate"><span class="pre">Compas.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.load_aif"><code class="docutils literal notranslate"><span class="pre">Compas.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Compas.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Compas.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.name"><code class="docutils literal notranslate"><span class="pre">Compas.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Compas.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Compas.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Compas.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.CompasSplits"><code class="docutils literal notranslate"><span class="pre">CompasSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit"><code class="docutils literal notranslate"><span class="pre">Credit</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Credit.Splits"><code class="docutils literal notranslate"><span class="pre">Credit.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.__len__"><code class="docutils literal notranslate"><span class="pre">Credit.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.class_labels"><code class="docutils literal notranslate"><span class="pre">Credit.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.continuous_features"><code class="docutils literal notranslate"><span class="pre">Credit.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Credit.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Credit.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.discrete_features"><code class="docutils literal notranslate"><span class="pre">Credit.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.expand_labels"><code class="docutils literal notranslate"><span class="pre">Credit.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.feature_split"><code class="docutils literal notranslate"><span class="pre">Credit.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.filepath"><code class="docutils literal notranslate"><span class="pre">Credit.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Credit.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Credit.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Credit.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Credit.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.load"><code class="docutils literal notranslate"><span class="pre">Credit.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.load_aif"><code class="docutils literal notranslate"><span class="pre">Credit.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Credit.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Credit.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.name"><code class="docutils literal notranslate"><span class="pre">Credit.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Credit.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Credit.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Credit.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.CreditSplits"><code class="docutils literal notranslate"><span class="pre">CreditSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime"><code class="docutils literal notranslate"><span class="pre">Crime</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Crime.Splits"><code class="docutils literal notranslate"><span class="pre">Crime.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.__len__"><code class="docutils literal notranslate"><span class="pre">Crime.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.class_labels"><code class="docutils literal notranslate"><span class="pre">Crime.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.continuous_features"><code class="docutils literal notranslate"><span class="pre">Crime.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Crime.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Crime.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.discrete_features"><code class="docutils literal notranslate"><span class="pre">Crime.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.expand_labels"><code class="docutils literal notranslate"><span class="pre">Crime.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.feature_split"><code class="docutils literal notranslate"><span class="pre">Crime.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.filepath"><code class="docutils literal notranslate"><span class="pre">Crime.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Crime.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Crime.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Crime.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Crime.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.load"><code class="docutils literal notranslate"><span class="pre">Crime.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.load_aif"><code class="docutils literal notranslate"><span class="pre">Crime.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Crime.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Crime.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.name"><code class="docutils literal notranslate"><span class="pre">Crime.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Crime.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Crime.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Crime.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.CrimeSplits"><code class="docutils literal notranslate"><span class="pre">CrimeSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Dataset.__len__"><code class="docutils literal notranslate"><span class="pre">Dataset.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.continuous_features"><code class="docutils literal notranslate"><span class="pre">Dataset.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Dataset.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">Dataset.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.feature_split"><code class="docutils literal notranslate"><span class="pre">Dataset.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.load"><code class="docutils literal notranslate"><span class="pre">Dataset.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.FeatureOrder"><code class="docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit"><code class="docutils literal notranslate"><span class="pre">FeatureSplit</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.__len__"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.clear"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.clear()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.copy"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.copy()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.fromkeys"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.fromkeys()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.get"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.get()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.items"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.items()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.keys"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.keys()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.pop"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.pop()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.popitem"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.popitem()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.setdefault"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.setdefault()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.update"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.update()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureSplit.values"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.values()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.German"><code class="docutils literal notranslate"><span class="pre">German</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.German.Splits"><code class="docutils literal notranslate"><span class="pre">German.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.__len__"><code class="docutils literal notranslate"><span class="pre">German.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.class_labels"><code class="docutils literal notranslate"><span class="pre">German.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.continuous_features"><code class="docutils literal notranslate"><span class="pre">German.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">German.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">German.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.discrete_features"><code class="docutils literal notranslate"><span class="pre">German.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.expand_labels"><code class="docutils literal notranslate"><span class="pre">German.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.feature_split"><code class="docutils literal notranslate"><span class="pre">German.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.filepath"><code class="docutils literal notranslate"><span class="pre">German.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">German.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.get_label_specs"><code class="docutils literal notranslate"><span class="pre">German.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.get_num_samples"><code class="docutils literal notranslate"><span class="pre">German.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">German.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.load"><code class="docutils literal notranslate"><span class="pre">German.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.load_aif"><code class="docutils literal notranslate"><span class="pre">German.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">German.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.map_to_binary"><code class="docutils literal notranslate"><span class="pre">German.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.name"><code class="docutils literal notranslate"><span class="pre">German.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.sens_attrs"><code class="docutils literal notranslate"><span class="pre">German.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.German.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">German.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.GermanSplits"><code class="docutils literal notranslate"><span class="pre">GermanSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health"><code class="docutils literal notranslate"><span class="pre">Health</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Health.Splits"><code class="docutils literal notranslate"><span class="pre">Health.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.__len__"><code class="docutils literal notranslate"><span class="pre">Health.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.class_labels"><code class="docutils literal notranslate"><span class="pre">Health.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.continuous_features"><code class="docutils literal notranslate"><span class="pre">Health.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Health.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Health.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.discrete_features"><code class="docutils literal notranslate"><span class="pre">Health.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.expand_labels"><code class="docutils literal notranslate"><span class="pre">Health.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.feature_split"><code class="docutils literal notranslate"><span class="pre">Health.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.filepath"><code class="docutils literal notranslate"><span class="pre">Health.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Health.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Health.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Health.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Health.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.load"><code class="docutils literal notranslate"><span class="pre">Health.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.load_aif"><code class="docutils literal notranslate"><span class="pre">Health.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Health.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Health.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.name"><code class="docutils literal notranslate"><span class="pre">Health.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Health.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Health.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Health.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.HealthSplits"><code class="docutils literal notranslate"><span class="pre">HealthSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup"><code class="docutils literal notranslate"><span class="pre">LabelGroup</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup.__len__"><code class="docutils literal notranslate"><span class="pre">LabelGroup.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup.columns"><code class="docutils literal notranslate"><span class="pre">LabelGroup.columns</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup.count"><code class="docutils literal notranslate"><span class="pre">LabelGroup.count()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup.index"><code class="docutils literal notranslate"><span class="pre">LabelGroup.index()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelGroup.multiplier"><code class="docutils literal notranslate"><span class="pre">LabelGroup.multiplier</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.__len__"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.count"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.count()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.index"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.index()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.s"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.s</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.to_remove"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.to_remove</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.y"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.y</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Law"><code class="docutils literal notranslate"><span class="pre">Law</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Law.Splits"><code class="docutils literal notranslate"><span class="pre">Law.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.__len__"><code class="docutils literal notranslate"><span class="pre">Law.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.class_labels"><code class="docutils literal notranslate"><span class="pre">Law.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.continuous_features"><code class="docutils literal notranslate"><span class="pre">Law.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Law.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Law.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.discrete_features"><code class="docutils literal notranslate"><span class="pre">Law.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.expand_labels"><code class="docutils literal notranslate"><span class="pre">Law.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.feature_split"><code class="docutils literal notranslate"><span class="pre">Law.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.filepath"><code class="docutils literal notranslate"><span class="pre">Law.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Law.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Law.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Law.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Law.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.load"><code class="docutils literal notranslate"><span class="pre">Law.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.load_aif"><code class="docutils literal notranslate"><span class="pre">Law.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Law.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Law.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.name"><code class="docutils literal notranslate"><span class="pre">Law.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Law.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Law.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Law.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.LawSplits"><code class="docutils literal notranslate"><span class="pre">LawSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset"><code class="docutils literal notranslate"><span class="pre">LegacyDataset</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.__len__"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.class_labels"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.continuous_features"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.filepath"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.get_label_specs"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.get_num_samples"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.load"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.load_aif"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.map_to_binary"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.name"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.sens_attrs"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.LegacyDataset.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Lipton"><code class="docutils literal notranslate"><span class="pre">Lipton</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Lipton.__len__"><code class="docutils literal notranslate"><span class="pre">Lipton.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.class_labels"><code class="docutils literal notranslate"><span class="pre">Lipton.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.continuous_features"><code class="docutils literal notranslate"><span class="pre">Lipton.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Lipton.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Lipton.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.discrete_features"><code class="docutils literal notranslate"><span class="pre">Lipton.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.expand_labels"><code class="docutils literal notranslate"><span class="pre">Lipton.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.feature_split"><code class="docutils literal notranslate"><span class="pre">Lipton.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.filepath"><code class="docutils literal notranslate"><span class="pre">Lipton.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Lipton.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Lipton.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Lipton.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Lipton.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.load"><code class="docutils literal notranslate"><span class="pre">Lipton.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.load_aif"><code class="docutils literal notranslate"><span class="pre">Lipton.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Lipton.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Lipton.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.name"><code class="docutils literal notranslate"><span class="pre">Lipton.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Lipton.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Lipton.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Lipton.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.__len__"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.class_labels"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.continuous_features"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.discrete_features"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.expand_labels"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.feature_split"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.filepath"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.get_label_specs"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.get_num_samples"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.load"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.load_aif"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.map_to_binary"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.name"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.sens_attrs"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Nursery"><code class="docutils literal notranslate"><span class="pre">Nursery</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Nursery.Splits"><code class="docutils literal notranslate"><span class="pre">Nursery.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.__len__"><code class="docutils literal notranslate"><span class="pre">Nursery.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.class_labels"><code class="docutils literal notranslate"><span class="pre">Nursery.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.continuous_features"><code class="docutils literal notranslate"><span class="pre">Nursery.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Nursery.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Nursery.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.discrete_features"><code class="docutils literal notranslate"><span class="pre">Nursery.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.expand_labels"><code class="docutils literal notranslate"><span class="pre">Nursery.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.feature_split"><code class="docutils literal notranslate"><span class="pre">Nursery.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.filepath"><code class="docutils literal notranslate"><span class="pre">Nursery.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Nursery.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Nursery.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Nursery.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Nursery.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.load"><code class="docutils literal notranslate"><span class="pre">Nursery.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.load_aif"><code class="docutils literal notranslate"><span class="pre">Nursery.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Nursery.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Nursery.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.name"><code class="docutils literal notranslate"><span class="pre">Nursery.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Nursery.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Nursery.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Nursery.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.NurserySplits"><code class="docutils literal notranslate"><span class="pre">NurserySplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf"><code class="docutils literal notranslate"><span class="pre">Sqf</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Sqf.Splits"><code class="docutils literal notranslate"><span class="pre">Sqf.Splits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.__len__"><code class="docutils literal notranslate"><span class="pre">Sqf.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.class_labels"><code class="docutils literal notranslate"><span class="pre">Sqf.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.continuous_features"><code class="docutils literal notranslate"><span class="pre">Sqf.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Sqf.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Sqf.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.discrete_features"><code class="docutils literal notranslate"><span class="pre">Sqf.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.expand_labels"><code class="docutils literal notranslate"><span class="pre">Sqf.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.feature_split"><code class="docutils literal notranslate"><span class="pre">Sqf.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.filepath"><code class="docutils literal notranslate"><span class="pre">Sqf.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Sqf.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Sqf.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Sqf.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Sqf.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.load"><code class="docutils literal notranslate"><span class="pre">Sqf.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.load_aif"><code class="docutils literal notranslate"><span class="pre">Sqf.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Sqf.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Sqf.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.name"><code class="docutils literal notranslate"><span class="pre">Sqf.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Sqf.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Sqf.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Sqf.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.SqfSplits"><code class="docutils literal notranslate"><span class="pre">SqfSplits</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.__len__"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.class_labels"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.continuous_features"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.filepath"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.get_label_specs"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.get_num_samples"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.load"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.load_aif"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.map_to_binary"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.name"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.sens_attrs"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic"><code class="docutils literal notranslate"><span class="pre">Synthetic</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.Scenarios"><code class="docutils literal notranslate"><span class="pre">Synthetic.Scenarios</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.Targets"><code class="docutils literal notranslate"><span class="pre">Synthetic.Targets</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.__len__"><code class="docutils literal notranslate"><span class="pre">Synthetic.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.class_labels"><code class="docutils literal notranslate"><span class="pre">Synthetic.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.continuous_features"><code class="docutils literal notranslate"><span class="pre">Synthetic.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Synthetic.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Synthetic.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.discrete_features"><code class="docutils literal notranslate"><span class="pre">Synthetic.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.expand_labels"><code class="docutils literal notranslate"><span class="pre">Synthetic.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.feature_split"><code class="docutils literal notranslate"><span class="pre">Synthetic.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.filepath"><code class="docutils literal notranslate"><span class="pre">Synthetic.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Synthetic.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Synthetic.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Synthetic.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Synthetic.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.load"><code class="docutils literal notranslate"><span class="pre">Synthetic.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.load_aif"><code class="docutils literal notranslate"><span class="pre">Synthetic.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Synthetic.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Synthetic.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.name"><code class="docutils literal notranslate"><span class="pre">Synthetic.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Synthetic.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Synthetic.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Synthetic.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.SyntheticScenarios"><code class="docutils literal notranslate"><span class="pre">SyntheticScenarios</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.SyntheticTargets"><code class="docutils literal notranslate"><span class="pre">SyntheticTargets</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy"><code class="docutils literal notranslate"><span class="pre">Toy</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.Toy.__len__"><code class="docutils literal notranslate"><span class="pre">Toy.__len__()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.class_labels"><code class="docutils literal notranslate"><span class="pre">Toy.class_labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.continuous_features"><code class="docutils literal notranslate"><span class="pre">Toy.continuous_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Toy.disc_feature_groups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Toy.discard_non_one_hot</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.discrete_features"><code class="docutils literal notranslate"><span class="pre">Toy.discrete_features</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.expand_labels"><code class="docutils literal notranslate"><span class="pre">Toy.expand_labels()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.feature_split"><code class="docutils literal notranslate"><span class="pre">Toy.feature_split()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.filepath"><code class="docutils literal notranslate"><span class="pre">Toy.filepath</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Toy.get_filename_or_path()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.get_label_specs"><code class="docutils literal notranslate"><span class="pre">Toy.get_label_specs()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.get_num_samples"><code class="docutils literal notranslate"><span class="pre">Toy.get_num_samples()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.invert_sens_attr"><code class="docutils literal notranslate"><span class="pre">Toy.invert_sens_attr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.load"><code class="docutils literal notranslate"><span class="pre">Toy.load()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.load_aif"><code class="docutils literal notranslate"><span class="pre">Toy.load_aif()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.load_discrete_only"><code class="docutils literal notranslate"><span class="pre">Toy.load_discrete_only</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.map_to_binary"><code class="docutils literal notranslate"><span class="pre">Toy.map_to_binary</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.name"><code class="docutils literal notranslate"><span class="pre">Toy.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.sens_attrs"><code class="docutils literal notranslate"><span class="pre">Toy.sens_attrs</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.Toy.unfiltered_disc_feat_groups"><code class="docutils literal notranslate"><span class="pre">Toy.unfiltered_disc_feat_groups</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.data.available_tabular"><code class="docutils literal notranslate"><span class="pre">available_tabular()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.create_data_obj"><code class="docutils literal notranslate"><span class="pre">create_data_obj()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.filter_features_by_prefixes"><code class="docutils literal notranslate"><span class="pre">filter_features_by_prefixes()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.flatten_dict"><code class="docutils literal notranslate"><span class="pre">flatten_dict()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.from_dummies"><code class="docutils literal notranslate"><span class="pre">from_dummies()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.get_dataset_obj_by_name"><code class="docutils literal notranslate"><span class="pre">get_dataset_obj_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.get_discrete_features"><code class="docutils literal notranslate"><span class="pre">get_discrete_features()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.group_disc_feat_indices"><code class="docutils literal notranslate"><span class="pre">group_disc_feat_indices()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.label_spec_to_feature_list"><code class="docutils literal notranslate"><span class="pre">label_spec_to_feature_list()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.reduce_feature_group"><code class="docutils literal notranslate"><span class="pre">reduce_feature_group()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.single_col_spec"><code class="docutils literal notranslate"><span class="pre">single_col_spec()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.spec_from_binary_cols"><code class="docutils literal notranslate"><span class="pre">spec_from_binary_cols()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -4879,6 +5419,7 @@ removed features.</p></li>
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>

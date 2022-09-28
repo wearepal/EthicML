@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.run" href="ethicml.run.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>ethicml.metrics - EthicML 1.0.0-beta.2 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>ethicml.metrics - EthicML 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0-beta.2 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0-beta.2 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -204,7 +204,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -214,9 +214,9 @@
 <span id="ethicml-metrics"></span><h1>ethicml.metrics<a class="headerlink" href="#module-ethicml.metrics" title="Permalink to this heading">#</a></h1>
 <p>Module for metrics which can be applied to prediction results.</p>
 <p>Some example code</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethicml</span> <span class="kn">import</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">run</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethicml.metrics</span> <span class="kn">import</span> <span class="n">Accuracy</span><span class="p">,</span> <span class="n">TPR</span><span class="p">,</span> <span class="n">run_metrics</span>
 
-<span class="n">run</span><span class="o">.</span><span class="n">run_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">metrics</span><span class="o">.</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">.</span><span class="n">TPR</span><span class="p">()])</span>
+<span class="n">run_metrics</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">Accuracy</span><span class="p">(),</span> <span class="n">TPR</span><span class="p">()])</span>
 </pre></div>
 </div>
 <p><strong>Classes:</strong></p>
@@ -345,8 +345,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.min_per_sens" title="ethicml.metrics.min_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_per_sens</span></code></a></p></td>
 <td><p>Compute the minimum value of the metrics per sensitive attribute.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.ratio_per_sens" title="ethicml.metrics.ratio_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sens</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.per_sens_metrics_check" title="ethicml.metrics.per_sens_metrics_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">per_sens_metrics_check</span></code></a></p></td>
+<td><p>Check if the given metrics allow application per sensitive attribute.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.metrics.ratio_per_sens" title="ethicml.metrics.ratio_per_sens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ratio_per_sens</span></code></a></p></td>
 <td><p>Compute the ratios in the metrics per sensitive attribute.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.metrics.run_metrics" title="ethicml.metrics.run_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_metrics</span></code></a></p></td>
+<td><p>Run all the given metrics on the given predictions and return the results.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1476,7 +1482,7 @@ set self.__traceback__ to tb and return self.</p>
 <p>Aggregation methods for metrics that are computed per sensitive attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.ALL">
-<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
 <dd><p>All aggregations.</p>
 </dd></dl>
 
@@ -2214,6 +2220,20 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ethicml.metrics.per_sens_metrics_check">
+<span class="sig-name descname"><span class="pre">per_sens_metrics_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_metrics</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.per_sens_metrics_check" title="Permalink to this definition">#</a></dt>
+<dd><p>Check if the given metrics allow application per sensitive attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><em>Metric</em></a><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ethicml.metrics.ratio_per_sens">
 <span class="sig-name descname"><span class="pre">ratio_per_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">per_sens_res</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.ratio_per_sens" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the ratios in the metrics per sensitive attribute.</p>
@@ -2223,6 +2243,32 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dictionary of ratios</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.metrics.run_metrics">
+<span class="sig-name descname"><span class="pre">run_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predictions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_sens_metrics=()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation=frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">)&gt;})</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_sens_name=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.metrics.run_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>Run all the given metrics on the given predictions and return the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predictions</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.Prediction"><em>Prediction</em></a>) – DataFrame with predictions</p></li>
+<li><p><strong>actual</strong> (<em>EvalTuple</em>) – EvalTuple with the labels</p></li>
+<li><p><strong>metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><em>Metric</em></a><em>]</em>) – list of metrics (Default: ())</p></li>
+<li><p><strong>per_sens_metrics</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="#ethicml.metrics.Metric" title="ethicml.metrics.Metric"><em>Metric</em></a><em>]</em>) – list of metrics that are computed per sensitive attribute (Default: ())</p></li>
+<li><p><strong>aggregation</strong> (<a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.PerSens"><em>PerSens</em></a><em> | </em><em>AbstractSet</em><em>[</em><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.PerSens"><em>PerSens</em></a><em>]</em>) – Optionally specify aggregations that are performed on the per-sens metrics.
+(Default: <code class="docutils literal notranslate"><span class="pre">DIFFS_RATIOS</span></code>)</p></li>
+<li><p><strong>use_sens_name</strong> (<em>bool</em>) – if True, use the name of the senisitive variable in the returned results.
+If False, refer to the sensitive variable as “S”. (Default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary of all the metric results.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict[str, float]</p>
@@ -2244,10 +2290,10 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
                 </div>
                 <div class="title">ethicml.run</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="ethicml.models/preprocess.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -2277,8 +2323,270 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">ethicml.metrics</a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.AS"><code class="docutils literal notranslate"><span class="pre">AS</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.AS.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">AS.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AS.get_name"><code class="docutils literal notranslate"><span class="pre">AS.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AS.name"><code class="docutils literal notranslate"><span class="pre">AS.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AS.score"><code class="docutils literal notranslate"><span class="pre">AS.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV"><code class="docutils literal notranslate"><span class="pre">AbsCV</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">AbsCV.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.get_name"><code class="docutils literal notranslate"><span class="pre">AbsCV.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.labels"><code class="docutils literal notranslate"><span class="pre">AbsCV.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.name"><code class="docutils literal notranslate"><span class="pre">AbsCV.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.pos_class"><code class="docutils literal notranslate"><span class="pre">AbsCV.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AbsCV.score"><code class="docutils literal notranslate"><span class="pre">AbsCV.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.Accuracy"><code class="docutils literal notranslate"><span class="pre">Accuracy</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.Accuracy.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">Accuracy.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Accuracy.get_name"><code class="docutils literal notranslate"><span class="pre">Accuracy.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Accuracy.name"><code class="docutils literal notranslate"><span class="pre">Accuracy.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Accuracy.score"><code class="docutils literal notranslate"><span class="pre">Accuracy.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.get_name"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.labels"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.name"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.pos_class"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.AverageOddsDiff.score"><code class="docutils literal notranslate"><span class="pre">AverageOddsDiff.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR"><code class="docutils literal notranslate"><span class="pre">BCR</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">BCR.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.get_name"><code class="docutils literal notranslate"><span class="pre">BCR.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.labels"><code class="docutils literal notranslate"><span class="pre">BCR.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.name"><code class="docutils literal notranslate"><span class="pre">BCR.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.pos_class"><code class="docutils literal notranslate"><span class="pre">BCR.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BCR.score"><code class="docutils literal notranslate"><span class="pre">BCR.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.get_name"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.labels"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.name"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.pos_class"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.BalancedAccuracy.score"><code class="docutils literal notranslate"><span class="pre">BalancedAccuracy.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.CV"><code class="docutils literal notranslate"><span class="pre">CV</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.CV.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">CV.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CV.get_name"><code class="docutils literal notranslate"><span class="pre">CV.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CV.labels"><code class="docutils literal notranslate"><span class="pre">CV.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CV.name"><code class="docutils literal notranslate"><span class="pre">CV.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CV.pos_class"><code class="docutils literal notranslate"><span class="pre">CV.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CV.score"><code class="docutils literal notranslate"><span class="pre">CV.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric"><code class="docutils literal notranslate"><span class="pre">CfmMetric</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">CfmMetric.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.get_name"><code class="docutils literal notranslate"><span class="pre">CfmMetric.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.labels"><code class="docutils literal notranslate"><span class="pre">CfmMetric.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.name"><code class="docutils literal notranslate"><span class="pre">CfmMetric.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.pos_class"><code class="docutils literal notranslate"><span class="pre">CfmMetric.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.CfmMetric.score"><code class="docutils literal notranslate"><span class="pre">CfmMetric.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.DependencyTarget"><code class="docutils literal notranslate"><span class="pre">DependencyTarget</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.F1"><code class="docutils literal notranslate"><span class="pre">F1</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.F1.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">F1.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.F1.get_name"><code class="docutils literal notranslate"><span class="pre">F1.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.F1.name"><code class="docutils literal notranslate"><span class="pre">F1.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.F1.score"><code class="docutils literal notranslate"><span class="pre">F1.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR"><code class="docutils literal notranslate"><span class="pre">FNR</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">FNR.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.get_name"><code class="docutils literal notranslate"><span class="pre">FNR.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.labels"><code class="docutils literal notranslate"><span class="pre">FNR.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.name"><code class="docutils literal notranslate"><span class="pre">FNR.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.pos_class"><code class="docutils literal notranslate"><span class="pre">FNR.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FNR.score"><code class="docutils literal notranslate"><span class="pre">FNR.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR"><code class="docutils literal notranslate"><span class="pre">FPR</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">FPR.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.get_name"><code class="docutils literal notranslate"><span class="pre">FPR.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.labels"><code class="docutils literal notranslate"><span class="pre">FPR.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.name"><code class="docutils literal notranslate"><span class="pre">FPR.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.pos_class"><code class="docutils literal notranslate"><span class="pre">FPR.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.FPR.score"><code class="docutils literal notranslate"><span class="pre">FPR.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.Hsic"><code class="docutils literal notranslate"><span class="pre">Hsic</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.Hsic.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">Hsic.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Hsic.get_name"><code class="docutils literal notranslate"><span class="pre">Hsic.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Hsic.name"><code class="docutils literal notranslate"><span class="pre">Hsic.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Hsic.score"><code class="docutils literal notranslate"><span class="pre">Hsic.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBounds</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.LabelOutOfBounds.with_traceback"><code class="docutils literal notranslate"><span class="pre">LabelOutOfBounds.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.Metric.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">Metric.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Metric.get_name"><code class="docutils literal notranslate"><span class="pre">Metric.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Metric.name"><code class="docutils literal notranslate"><span class="pre">Metric.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Metric.score"><code class="docutils literal notranslate"><span class="pre">Metric.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicable</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.MetricNotApplicable.with_traceback"><code class="docutils literal notranslate"><span class="pre">MetricNotApplicable.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricStaticName"><code class="docutils literal notranslate"><span class="pre">MetricStaticName</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.MetricStaticName.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">MetricStaticName.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricStaticName.get_name"><code class="docutils literal notranslate"><span class="pre">MetricStaticName.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricStaticName.name"><code class="docutils literal notranslate"><span class="pre">MetricStaticName.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.MetricStaticName.score"><code class="docutils literal notranslate"><span class="pre">MetricStaticName.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.NMI"><code class="docutils literal notranslate"><span class="pre">NMI</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.NMI.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">NMI.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NMI.get_name"><code class="docutils literal notranslate"><span class="pre">NMI.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NMI.name"><code class="docutils literal notranslate"><span class="pre">NMI.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NMI.score"><code class="docutils literal notranslate"><span class="pre">NMI.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV"><code class="docutils literal notranslate"><span class="pre">NPV</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">NPV.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.get_name"><code class="docutils literal notranslate"><span class="pre">NPV.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.labels"><code class="docutils literal notranslate"><span class="pre">NPV.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.name"><code class="docutils literal notranslate"><span class="pre">NPV.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.pos_class"><code class="docutils literal notranslate"><span class="pre">NPV.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.NPV.score"><code class="docutils literal notranslate"><span class="pre">NPV.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV"><code class="docutils literal notranslate"><span class="pre">PPV</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">PPV.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.get_name"><code class="docutils literal notranslate"><span class="pre">PPV.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.labels"><code class="docutils literal notranslate"><span class="pre">PPV.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.name"><code class="docutils literal notranslate"><span class="pre">PPV.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.pos_class"><code class="docutils literal notranslate"><span class="pre">PPV.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PPV.score"><code class="docutils literal notranslate"><span class="pre">PPV.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens"><code class="docutils literal notranslate"><span class="pre">PerSens</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.ALL"><code class="docutils literal notranslate"><span class="pre">PerSens.ALL</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.DIFFS"><code class="docutils literal notranslate"><span class="pre">PerSens.DIFFS</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.DIFFS_RATIOS"><code class="docutils literal notranslate"><span class="pre">PerSens.DIFFS_RATIOS</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.MAX"><code class="docutils literal notranslate"><span class="pre">PerSens.MAX</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.MIN"><code class="docutils literal notranslate"><span class="pre">PerSens.MIN</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.MIN_MAX"><code class="docutils literal notranslate"><span class="pre">PerSens.MIN_MAX</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.PerSens.RATIOS"><code class="docutils literal notranslate"><span class="pre">PerSens.RATIOS</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg"><code class="docutils literal notranslate"><span class="pre">ProbNeg</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">ProbNeg.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.get_name"><code class="docutils literal notranslate"><span class="pre">ProbNeg.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.labels"><code class="docutils literal notranslate"><span class="pre">ProbNeg.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.name"><code class="docutils literal notranslate"><span class="pre">ProbNeg.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.pos_class"><code class="docutils literal notranslate"><span class="pre">ProbNeg.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbNeg.score"><code class="docutils literal notranslate"><span class="pre">ProbNeg.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbOutcome"><code class="docutils literal notranslate"><span class="pre">ProbOutcome</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.ProbOutcome.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">ProbOutcome.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbOutcome.get_name"><code class="docutils literal notranslate"><span class="pre">ProbOutcome.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbOutcome.name"><code class="docutils literal notranslate"><span class="pre">ProbOutcome.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbOutcome.score"><code class="docutils literal notranslate"><span class="pre">ProbOutcome.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos"><code class="docutils literal notranslate"><span class="pre">ProbPos</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">ProbPos.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.get_name"><code class="docutils literal notranslate"><span class="pre">ProbPos.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.labels"><code class="docutils literal notranslate"><span class="pre">ProbPos.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.name"><code class="docutils literal notranslate"><span class="pre">ProbPos.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.pos_class"><code class="docutils literal notranslate"><span class="pre">ProbPos.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ProbPos.score"><code class="docutils literal notranslate"><span class="pre">ProbPos.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation"><code class="docutils literal notranslate"><span class="pre">RenyiCorrelation</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">RenyiCorrelation.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation.get_name"><code class="docutils literal notranslate"><span class="pre">RenyiCorrelation.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation.name"><code class="docutils literal notranslate"><span class="pre">RenyiCorrelation.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RenyiCorrelation.score"><code class="docutils literal notranslate"><span class="pre">RenyiCorrelation.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.RobustAccuracy"><code class="docutils literal notranslate"><span class="pre">RobustAccuracy</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.RobustAccuracy.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">RobustAccuracy.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RobustAccuracy.get_name"><code class="docutils literal notranslate"><span class="pre">RobustAccuracy.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RobustAccuracy.name"><code class="docutils literal notranslate"><span class="pre">RobustAccuracy.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.RobustAccuracy.score"><code class="docutils literal notranslate"><span class="pre">RobustAccuracy.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.SklearnMetric"><code class="docutils literal notranslate"><span class="pre">SklearnMetric</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.SklearnMetric.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">SklearnMetric.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.SklearnMetric.get_name"><code class="docutils literal notranslate"><span class="pre">SklearnMetric.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.SklearnMetric.name"><code class="docutils literal notranslate"><span class="pre">SklearnMetric.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.SklearnMetric.score"><code class="docutils literal notranslate"><span class="pre">SklearnMetric.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR"><code class="docutils literal notranslate"><span class="pre">TNR</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">TNR.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.get_name"><code class="docutils literal notranslate"><span class="pre">TNR.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.labels"><code class="docutils literal notranslate"><span class="pre">TNR.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.name"><code class="docutils literal notranslate"><span class="pre">TNR.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.pos_class"><code class="docutils literal notranslate"><span class="pre">TNR.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TNR.score"><code class="docutils literal notranslate"><span class="pre">TNR.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR"><code class="docutils literal notranslate"><span class="pre">TPR</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">TPR.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.get_name"><code class="docutils literal notranslate"><span class="pre">TPR.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.labels"><code class="docutils literal notranslate"><span class="pre">TPR.labels</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.name"><code class="docutils literal notranslate"><span class="pre">TPR.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.pos_class"><code class="docutils literal notranslate"><span class="pre">TPR.pos_class</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.TPR.score"><code class="docutils literal notranslate"><span class="pre">TPR.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.Theil"><code class="docutils literal notranslate"><span class="pre">Theil</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.Theil.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">Theil.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Theil.get_name"><code class="docutils literal notranslate"><span class="pre">Theil.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Theil.name"><code class="docutils literal notranslate"><span class="pre">Theil.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Theil.score"><code class="docutils literal notranslate"><span class="pre">Theil.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.Yanovich"><code class="docutils literal notranslate"><span class="pre">Yanovich</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.metrics.Yanovich.apply_per_sensitive"><code class="docutils literal notranslate"><span class="pre">Yanovich.apply_per_sensitive</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Yanovich.get_name"><code class="docutils literal notranslate"><span class="pre">Yanovich.get_name()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Yanovich.name"><code class="docutils literal notranslate"><span class="pre">Yanovich.name</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.Yanovich.score"><code class="docutils literal notranslate"><span class="pre">Yanovich.score()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ethicml.metrics.aggregate_over_sens"><code class="docutils literal notranslate"><span class="pre">aggregate_over_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.diff_per_sens"><code class="docutils literal notranslate"><span class="pre">diff_per_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.max_per_sens"><code class="docutils literal notranslate"><span class="pre">max_per_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.metric_per_sens"><code class="docutils literal notranslate"><span class="pre">metric_per_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.min_per_sens"><code class="docutils literal notranslate"><span class="pre">min_per_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.per_sens_metrics_check"><code class="docutils literal notranslate"><span class="pre">per_sens_metrics_check()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.ratio_per_sens"><code class="docutils literal notranslate"><span class="pre">ratio_per_sens()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.metrics.run_metrics"><code class="docutils literal notranslate"><span class="pre">run_metrics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -2288,6 +2596,7 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
