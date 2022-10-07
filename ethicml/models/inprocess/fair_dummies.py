@@ -8,9 +8,8 @@ from typing import TypedDict
 
 from ranzen import implements
 
-from ethicml.models.inprocess.in_algorithm import HyperParamType
 from ethicml.models.inprocess.in_subprocess import InAlgorithmSubprocess
-from ethicml.utility.data_structures import ModelType
+from ethicml.utility.data_structures import HyperParamType, ModelType
 
 __all__ = ["FairDummies", "FairDummiesArgs"]
 

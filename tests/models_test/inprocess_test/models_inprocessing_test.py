@@ -10,6 +10,7 @@ from ethicml import (
     ClassifierType,
     DataTuple,
     FairnessType,
+    HyperParamType,
     KernelType,
     ModelType,
     Prediction,
@@ -39,7 +40,6 @@ from ethicml.models import (
     Reweighting,
     SVM,
 )
-from ethicml.models.inprocess.in_algorithm import HyperParamType
 from ethicml.run import CrossValidator, evaluate_models
 
 TMPDIR: Final = Path("/tmp")

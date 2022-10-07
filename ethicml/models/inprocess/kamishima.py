@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 from ranzen import implements
 
-from ethicml.models.inprocess.in_algorithm import HyperParamType, InAlgorithm
+from ethicml.models.inprocess.in_algorithm import InAlgorithm
 from ethicml.models.inprocess.installed_model import InstalledModel
-from ethicml.utility import DataTuple, Prediction, TestTuple
+from ethicml.utility import DataTuple, HyperParamType, Prediction, TestTuple
 
 __all__ = ["Kamishima"]
 

@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 
-import git
+import git.cmd
 from ranzen.decorators import implements
 
 from ethicml.models.inprocess.in_algorithm import InAlgorithm
@@ -86,7 +86,7 @@ class InstalledModel(SubprocessAlgorithmMixin, InAlgorithm, ABC):
         """
         if not self._store_dir.exists():
             self._store_dir.mkdir()
-            git.Git(self._store_dir).clone(url)
+            git.cmd.Git(self._store_dir).clone(url)
 
     def _create_venv(self, use_poetry: bool) -> None:
         """Create a venv based on the Pipfile in the repository.
