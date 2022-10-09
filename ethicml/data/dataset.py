@@ -48,7 +48,6 @@ class LabelSpecsPair:
     s: LabelSpec
     y: LabelSpec
     to_remove: list[str] = field(default_factory=list)
-    """"""
 
 
 class FeatureSplit(TypedDict):

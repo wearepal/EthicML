@@ -987,9 +987,7 @@ def test_expand_s():
     pd.testing.assert_series_equal(
         one_hot_encode_and_combine(raw_df, sens_attr_spec, False)[0], compact_df
     )
-    pd.testing.assert_frame_equal(
-        _expand_labels(compact_df).astype("int64"), multilevel_df
-    )
+    pd.testing.assert_frame_equal(_expand_labels(compact_df).astype("int64"), multilevel_df)
 
 
 def test_simple_spec():
