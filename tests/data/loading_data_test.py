@@ -32,6 +32,7 @@ from ethicml.data import (
     create_data_obj,
     flatten_dict,
     group_disc_feat_indices,
+    one_hot_encode_and_combine,
     spec_from_binary_cols,
 )
 
@@ -949,15 +950,27 @@ def test_expand_s():
         "Gender": LabelGroup(["Female", "Male"], multiplier=3),
         "Race": LabelGroup(["Blue", "Green", "Pink"], multiplier=1),
     }
-    data = LegacyDataset(
-        name="test",
-        filename_or_path="non-existent",
-        features=[],
-        cont_features=[],
-        sens_attr_spec=sens_attr_spec,
-        class_label_spec="label",
-        num_samples=7,
-    )
+
+    def _expand_labels(label: pd.Series) -> pd.DataFrame:
+        """Do the opposite of what :func:`one_hot_encode_and_combine` does."""
+        label_mapping = sens_attr_spec
+
+        # first order the multipliers; this is important for disentangling the values
+        names_ordered = sorted(label_mapping, key=lambda name: label_mapping[name].multiplier)
+
+        final_df = {}
+        for i, name in enumerate(names_ordered):
+            spec = label_mapping[name]
+            value = label
+            if i + 1 < len(names_ordered):
+                next_group = label_mapping[names_ordered[i + 1]]
+                value = label % next_group.multiplier
+            value = value // spec.multiplier
+            value.replace(list(range(len(spec.columns))), spec.columns, inplace=True)
+            restored = pd.get_dummies(value)
+            final_df[name] = restored  # for the multi-level column index
+
+        return pd.concat(final_df, axis=1)
 
     compact_df = pd.Series([0, 4, 3, 1, 3, 5, 2], name="Gender,Race")
     gender_expanded = pd.DataFrame(
@@ -972,10 +985,10 @@ def test_expand_s():
     raw_df = pd.concat([gender_expanded, race_expanded], axis="columns")
 
     pd.testing.assert_series_equal(
-        data._one_hot_encode_and_combine(raw_df, sens_attr_spec)[0], compact_df
+        one_hot_encode_and_combine(raw_df, sens_attr_spec, False)[0], compact_df
     )
     pd.testing.assert_frame_equal(
-        data.expand_labels(compact_df, "s").astype("int64"), multilevel_df
+        _expand_labels(compact_df).astype("int64"), multilevel_df
     )
 
 

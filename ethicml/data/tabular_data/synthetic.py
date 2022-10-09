@@ -8,7 +8,7 @@ from typing import ClassVar, Type
 from ranzen import implements
 
 from ethicml.data.dataset import CSVDatasetDC, LabelSpecsPair
-from ethicml.data.util import DiscFeatureGroup, single_col_spec
+from ethicml.data.util import DiscFeatureGroups, single_col_spec
 
 __all__ = ["SyntheticScenarios", "SyntheticTargets", "Synthetic"]
 
@@ -74,7 +74,7 @@ class Synthetic(CSVDatasetDC):
     @implements(CSVDatasetDC)
     def get_label_specs(self) -> LabelSpecsPair:
         y = single_col_spec(f"y{self.target.value}{'f' if self.fair else ''}")
-        return LabelSpecsPair(s=single_col_spec("s"), y=y, to_remove=[])
+        return LabelSpecsPair(s=single_col_spec("s"), y=y)
 
     @implements(CSVDatasetDC)
     def get_num_samples(self) -> int:
@@ -86,5 +86,5 @@ class Synthetic(CSVDatasetDC):
 
     @property
     @implements(CSVDatasetDC)
-    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroup:
+    def unfiltered_disc_feat_groups(self) -> DiscFeatureGroups:
         return {}

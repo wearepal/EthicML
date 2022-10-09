@@ -19,7 +19,6 @@ def load_data(dataset: Dataset) -> DataTuple:
     This function only exists for backwards compatibility. Use dataset.load() instead.
 
     :param dataset: dataset object
-    :param ordered: if True, return features such that discrete come first, then continuous (Default: False)
     :returns: DataTuple with dataframes of features, labels and sensitive attributes
     """
     return dataset.load()

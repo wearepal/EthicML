@@ -76,9 +76,10 @@ def arrange_in_parallel(
 ) -> list[list[_RT]]:
     """Arrange the given algorithms to run (embarrassingly) parallel.
 
-    :param algos: list of tuples consisting of a `run_async` function of an algorithm and a name
-    :param data: list of pairs of data tuples (train and test)
-    :param num_jobs: number of parallel jobs. `None` means as many as available CPUs.
+    :param algos: List of tuples consisting of a `run_async` function of an algorithm and a name.
+    :param data: List of pairs of data tuples (train and test).
+    :param seeds: List of random seeds.
+    :param num_jobs: Number of parallel jobs. `None` means as many as available CPUs.
         (Default: None)
     :returns: list of the results
     """

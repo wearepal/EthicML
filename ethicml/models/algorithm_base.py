@@ -33,11 +33,10 @@ class SubprocessAlgorithmMixin(ABC):  # pylint: disable=too-few-public-methods
     ) -> None:
         """Call a (Python) script as a separate process.
 
-        An exception is thrown if the called script failed.
-
         :param cmd_args: List of strings that are passed as commandline arguments to the executable.
         :param env: Environment variables specified as a dictionary; e.g. ``{"PATH": "/usr/bin"}``.
         :param cwd: If not None, change working directory to the given path before running command.
+        :raises RuntimeError: If the called script failed or timed out.
         """
         two_hours = 60 * 60 * 2  # 60secs * 60mins * 2 hours
         try:
