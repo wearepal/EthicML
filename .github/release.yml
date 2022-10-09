@@ -13,6 +13,9 @@ changelog:
     - title: Exciting New Features 🎉
       labels:
         - enhancement
+    - title: Documentation improvements ✍️
+      labels:
+        - documentation
     - title: Other Changes
       labels:
         - "*"
