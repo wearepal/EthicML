@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="ethicml.data" href="../ethicml.data.html" /><link rel="prev" title="Data preprocessing" href="preprocessing.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Utils - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>Utils - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -344,6 +345,24 @@
 <dd class="field-even"><p><em>Any</em></p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.ClassifierType.gbt">
+<span class="sig-name descname"><span class="pre">gbt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.ClassifierType.gbt" title="Permalink to this definition">#</a></dt>
+<dd><p>Gradient Boosting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.ClassifierType.lr">
+<span class="sig-name descname"><span class="pre">lr</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.ClassifierType.lr" title="Permalink to this definition">#</a></dt>
+<dd><p>Logistic Regression.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.ClassifierType.svm">
+<span class="sig-name descname"><span class="pre">svm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.ClassifierType.svm" title="Permalink to this definition">#</a></dt>
+<dd><p>Support Vector Machine.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -365,7 +384,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.utility.DataTuple.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.DataTuple.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Overwrite __len__ magic method.</p>
+<dd><p>Number of entries in the underlying data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -381,8 +400,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mapper</strong> (<em>Callable</em><em>[</em><em>[</em><em>pandas.DataFrame</em><em>]</em><em>, </em><em>pandas.DataFrame</em><em>]</em>) – A function that takes a dataframe and returns a dataframe.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed <a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataTuple</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -414,8 +436,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_path</strong> (<em>Path</em>) – Path to the npz file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.DataTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataTuple</span></code></a> with the loaded data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -567,6 +592,24 @@
 <dd class="field-even"><p><em>Any</em></p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.FairnessType.dp">
+<span class="sig-name descname"><span class="pre">dp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.FairnessType.dp" title="Permalink to this definition">#</a></dt>
+<dd><p>Demographic parity.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.FairnessType.eq_odds">
+<span class="sig-name descname"><span class="pre">eq_odds</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.FairnessType.eq_odds" title="Permalink to this definition">#</a></dt>
+<dd><p>Equalized Odds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.FairnessType.eq_opp">
+<span class="sig-name descname"><span class="pre">eq_opp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.FairnessType.eq_opp" title="Permalink to this definition">#</a></dt>
+<dd><p>Equality of Opportunity.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -582,8 +625,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>soft_output</strong> (<em>numpy.ndarray</em>) – Soft predictions.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>numpy.ndarray</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Hard predictions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -617,6 +663,30 @@
 <dd class="field-even"><p><em>Any</em></p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.KernelType.linear">
+<span class="sig-name descname"><span class="pre">linear</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.KernelType.linear" title="Permalink to this definition">#</a></dt>
+<dd><p>Linear kernel.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.KernelType.poly">
+<span class="sig-name descname"><span class="pre">poly</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.KernelType.poly" title="Permalink to this definition">#</a></dt>
+<dd><p>Polynomial kernel.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.KernelType.rbf">
+<span class="sig-name descname"><span class="pre">rbf</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.KernelType.rbf" title="Permalink to this definition">#</a></dt>
+<dd><p>Radial basis function kernel.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.KernelType.sigmoid">
+<span class="sig-name descname"><span class="pre">sigmoid</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.KernelType.sigmoid" title="Permalink to this definition">#</a></dt>
+<dd><p>Sigmoid kernel.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -637,7 +707,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.utility.LabelTuple.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.LabelTuple.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Overwrite __len__ magic method.</p>
+<dd><p>Number of entries in the underlying data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -797,6 +867,18 @@
 <dd class="field-even"><p><em>Any</em></p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.ModelType.deep">
+<span class="sig-name descname"><span class="pre">deep</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.ModelType.deep" title="Permalink to this definition">#</a></dt>
+<dd><p>Deep neural network.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.utility.ModelType.linear">
+<span class="sig-name descname"><span class="pre">linear</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.utility.ModelType.linear" title="Permalink to this definition">#</a></dt>
+<dd><p>Linear model.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -831,8 +913,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>npz_path</strong> (<em>Path</em>) – Path to the npz file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.Prediction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prediction</span></code></a> object with the loaded data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -862,8 +947,11 @@
 <li><p><strong>s</strong> (<em>int</em>) – S-value to get the subset for.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested subset as a new <code class="docutils literal notranslate"><span class="pre">Prediction</span></code> object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -934,8 +1022,11 @@
 <li><p><strong>prepend</strong> (<em>bool</em>) – (Default: False)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the file existed and was succesfully loaded; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -994,8 +1085,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>npz_path</strong> (<em>Path</em>) – Path to the npz file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.Prediction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prediction</span></code></a> object with the loaded data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1025,8 +1119,11 @@
 <li><p><strong>s</strong> (<em>int</em>) – S-value to get the subset for.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested subset as a new <code class="docutils literal notranslate"><span class="pre">Prediction</span></code> object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1083,7 +1180,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.utility.SubgroupTuple.__len__">
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.SubgroupTuple.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Overwrite __len__ magic method.</p>
+<dd><p>Number of entries in the underlying data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -1117,8 +1214,11 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data_path</strong> (<em>Path</em>) – Path to load the npz file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="#ethicml.utility.SubgroupTuple" title="ethicml.utility.SubgroupTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubgroupTuple</span></code></a> with the loaded data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1341,8 +1441,11 @@
 (Default: (“mean”, “std”))</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The aggregated results as a <code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1358,8 +1461,11 @@
 <li><p><strong>ignore_index</strong> (<em>bool</em>) – Ignore the index of the dataframes. (Default: False)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>T</em></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The concatenated data tuple.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>T</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1375,8 +1481,11 @@
 <li><p><strong>mapping</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Mapping from old index to new index.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered and mapped results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1393,8 +1502,11 @@
 <li><p><strong>index</strong> (<em>str</em><em> | </em><em>ethicml.utility.data_structures.PandasIndex</em>) – Index to filter on. (Default: “model”)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filtered results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1475,7 +1587,7 @@ function checks whether the columns are correct.</p>
 <dt class="sig sig-object py" id="ethicml.utility.data_structures.Results">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.utility.data_structures.Results" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases:</p>
-<p>Container for results from <code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_models()</span></code>.</p>
+<p>Container for results from <a class="reference internal" href="../ethicml.run.html#ethicml.run.evaluate_models" title="ethicml.run.evaluate_models"><code class="xref py py-func docutils literal notranslate"><span class="pre">evaluate_models()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1568,7 +1680,12 @@ function checks whether the columns are correct.</p>
 <li><a class="reference internal" href="#ethicml.utility.Activation.get_name"><code class="docutils literal notranslate"><span class="pre">Activation.get_name()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.utility.ClassifierType"><code class="docutils literal notranslate"><span class="pre">ClassifierType</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.ClassifierType"><code class="docutils literal notranslate"><span class="pre">ClassifierType</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.utility.ClassifierType.gbt"><code class="docutils literal notranslate"><span class="pre">ClassifierType.gbt</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.ClassifierType.lr"><code class="docutils literal notranslate"><span class="pre">ClassifierType.lr</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.ClassifierType.svm"><code class="docutils literal notranslate"><span class="pre">ClassifierType.svm</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ethicml.utility.DataTuple"><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.utility.DataTuple.__len__"><code class="docutils literal notranslate"><span class="pre">DataTuple.__len__()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.utility.DataTuple.apply_to_joined_df"><code class="docutils literal notranslate"><span class="pre">DataTuple.apply_to_joined_df()</span></code></a></li>
@@ -1586,13 +1703,24 @@ function checks whether the columns are correct.</p>
 <li><a class="reference internal" href="#ethicml.utility.DataTuple.y"><code class="docutils literal notranslate"><span class="pre">DataTuple.y</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.utility.FairnessType"><code class="docutils literal notranslate"><span class="pre">FairnessType</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.FairnessType"><code class="docutils literal notranslate"><span class="pre">FairnessType</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.utility.FairnessType.dp"><code class="docutils literal notranslate"><span class="pre">FairnessType.dp</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.FairnessType.eq_odds"><code class="docutils literal notranslate"><span class="pre">FairnessType.eq_odds</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.FairnessType.eq_opp"><code class="docutils literal notranslate"><span class="pre">FairnessType.eq_opp</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ethicml.utility.Heaviside"><code class="docutils literal notranslate"><span class="pre">Heaviside</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.utility.Heaviside.apply"><code class="docutils literal notranslate"><span class="pre">Heaviside.apply()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.utility.Heaviside.get_name"><code class="docutils literal notranslate"><span class="pre">Heaviside.get_name()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.utility.KernelType"><code class="docutils literal notranslate"><span class="pre">KernelType</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.KernelType"><code class="docutils literal notranslate"><span class="pre">KernelType</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.utility.KernelType.linear"><code class="docutils literal notranslate"><span class="pre">KernelType.linear</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.KernelType.poly"><code class="docutils literal notranslate"><span class="pre">KernelType.poly</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.KernelType.rbf"><code class="docutils literal notranslate"><span class="pre">KernelType.rbf</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.KernelType.sigmoid"><code class="docutils literal notranslate"><span class="pre">KernelType.sigmoid</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ethicml.utility.LabelTuple"><code class="docutils literal notranslate"><span class="pre">LabelTuple</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.utility.LabelTuple.__len__"><code class="docutils literal notranslate"><span class="pre">LabelTuple.__len__()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.utility.LabelTuple.from_df"><code class="docutils literal notranslate"><span class="pre">LabelTuple.from_df()</span></code></a></li>
@@ -1606,7 +1734,11 @@ function checks whether the columns are correct.</p>
 <li><a class="reference internal" href="#ethicml.utility.LabelTuple.y"><code class="docutils literal notranslate"><span class="pre">LabelTuple.y</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.utility.ModelType"><code class="docutils literal notranslate"><span class="pre">ModelType</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.ModelType"><code class="docutils literal notranslate"><span class="pre">ModelType</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.utility.ModelType.deep"><code class="docutils literal notranslate"><span class="pre">ModelType.deep</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.utility.ModelType.linear"><code class="docutils literal notranslate"><span class="pre">ModelType.linear</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ethicml.utility.Prediction"><code class="docutils literal notranslate"><span class="pre">Prediction</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.utility.Prediction.__len__"><code class="docutils literal notranslate"><span class="pre">Prediction.__len__()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.utility.Prediction.from_file"><code class="docutils literal notranslate"><span class="pre">Prediction.from_file()</span></code></a></li>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.models" href="ethicml.models/index.html" /><link rel="prev" title="Utils" href="ethicml/utility.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>ethicml.data - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>ethicml.data - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -293,7 +294,7 @@
 <td><p>Splits for the Law dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.LegacyDataset" title="ethicml.data.LegacyDataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LegacyDataset</span></code></a></p></td>
-<td><p>Dataset that uses the default load function.</p></td>
+<td><p>Dataset base class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.Lipton" title="ethicml.data.Lipton"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Lipton</span></code></a></p></td>
 <td><p>Synthetic dataset from the Lipton et al. 2018.</p></td>
@@ -365,13 +366,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.load_data" title="ethicml.data.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a></p></td>
 <td><p>Load dataset from its CSV file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.reduce_feature_group" title="ethicml.data.reduce_feature_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_feature_group</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.one_hot_encode_and_combine" title="ethicml.data.one_hot_encode_and_combine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_hot_encode_and_combine</span></code></a></p></td>
+<td><p>Construct a new label according to the given <a class="reference internal" href="#ethicml.data.util.LabelSpec" title="ethicml.data.util.LabelSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelSpec</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.reduce_feature_group" title="ethicml.data.reduce_feature_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_feature_group</span></code></a></p></td>
 <td><p>Drop all features in the given feature group except the ones in to_keep.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.single_col_spec" title="ethicml.data.single_col_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_col_spec</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.single_col_spec" title="ethicml.data.single_col_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_col_spec</span></code></a></p></td>
 <td><p>Create a label spec for the case where the label is defined by a single column.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ethicml.data.spec_from_binary_cols" title="ethicml.data.spec_from_binary_cols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec_from_binary_cols</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ethicml.data.spec_from_binary_cols" title="ethicml.data.spec_from_binary_cols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spec_from_binary_cols</span></code></a></p></td>
 <td><p>Create label specs for the most common case where columns contain 0s and 1s.</p></td>
 </tr>
 </tbody>
@@ -446,7 +450,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.AcsEmployment.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsEmployment.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsEmployment.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -469,17 +473,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.AcsEmployment.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsEmployment.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsEmployment.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -571,7 +576,7 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.AcsIncome.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsIncome.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsIncome.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -594,17 +599,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.AcsIncome.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsIncome.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.AcsIncome.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -688,25 +694,8 @@ then the continuous.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Admissions.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Admissions.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Admissions.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Admissions.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Admissions.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -768,17 +757,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Admissions.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Admissions.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Admissions.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -898,25 +888,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Adult.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Adult.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -978,17 +951,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Adult.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Adult.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -1091,25 +1065,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.CSVDataset.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDataset.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.CSVDataset.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDataset.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDataset.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1171,17 +1128,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.CSVDataset.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDataset.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDataset.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -1285,25 +1243,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.CSVDatasetDC.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDatasetDC.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.CSVDatasetDC.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDatasetDC.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDatasetDC.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1365,17 +1306,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.CSVDatasetDC.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDatasetDC.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.CSVDatasetDC.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -1486,25 +1428,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Compas.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Compas.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1566,17 +1491,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Compas.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Compas.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -1694,25 +1620,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Credit.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Credit.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1774,17 +1683,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Credit.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Credit.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -1902,25 +1812,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Crime.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Crime.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Crime.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Crime.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Crime.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -1982,17 +1875,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Crime.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Crime.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Crime.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -2084,7 +1978,7 @@ Requires the aif360 library.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Dataset.feature_split">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Dataset.feature_split" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Dataset.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2101,17 +1995,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Dataset.load">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Dataset.load" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Dataset.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -2129,9 +2024,32 @@ then the continuous.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.FeatureOrder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FeatureOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.FeatureOrder" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FeatureOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.FeatureOrder" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></p>
 <p>Order of features in the loaded datatuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>Any</em>) – </p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Any</em></p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.FeatureOrder.cont_first">
+<span class="sig-name descname"><span class="pre">cont_first</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.data.FeatureOrder.cont_first" title="Permalink to this definition">#</a></dt>
+<dd><p>Continuous features first.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.FeatureOrder.disc_first">
+<span class="sig-name descname"><span class="pre">disc_first</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;enum.auto</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ethicml.data.FeatureOrder.disc_first" title="Permalink to this definition">#</a></dt>
+<dd><p>Discrete features first.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -2276,25 +2194,8 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.German.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.German.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2356,17 +2257,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.German.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.German.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -2484,25 +2386,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Health.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Health.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Health.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Health.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Health.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2564,17 +2449,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Health.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Health.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Health.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -2678,55 +2564,19 @@ Requires the aif360 library.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelSpecsPair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_remove</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LabelSpecsPair" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">NamedTuple</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LabelSpecsPair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_remove=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LabelSpecsPair" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A pair of label specs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><em>LabelGroup</em></a><em>]</em>) – </p></li>
-<li><p><strong>y</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><em>LabelGroup</em></a><em>]</em>) – </p></li>
-<li><p><strong>to_remove</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>s</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><em>LabelGroup</em></a><em>]</em>) – Spec for building the <code class="docutils literal notranslate"><span class="pre">s</span></code> label.</p></li>
+<li><p><strong>y</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><em>LabelGroup</em></a><em>]</em>) – Spec for building the <code class="docutils literal notranslate"><span class="pre">y</span></code> label.</p></li>
+<li><p><strong>to_remove</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of feature groups that need to be removed because they are label building
+blocks. (Default: <code class="docutils literal notranslate"><span class="pre">[]</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LabelSpecsPair.__len__" title="Permalink to this definition">#</a></dt>
-<dd><p>Return len(self).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.count">
-<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LabelSpecsPair.count" title="Permalink to this definition">#</a></dt>
-<dd><p>Return number of occurrences of value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.index">
-<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LabelSpecsPair.index" title="Permalink to this definition">#</a></dt>
-<dd><p>Return first index of value.</p>
-<p>Raises ValueError if the value is not present.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.s">
-<span class="sig-name descname"><span class="pre">s</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><span class="pre">LabelGroup</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.LabelSpecsPair.s" title="Permalink to this definition">#</a></dt>
-<dd><p>Spec for building the s label.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.to_remove">
-<span class="sig-name descname"><span class="pre">to_remove</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.LabelSpecsPair.to_remove" title="Permalink to this definition">#</a></dt>
-<dd><p>List of feature groups that need to be removed because they are label building blocks.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ethicml.data.LabelSpecsPair.y">
-<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><span class="pre">LabelGroup</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ethicml.data.LabelSpecsPair.y" title="Permalink to this definition">#</a></dt>
-<dd><p>Spec for building the y label.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -2791,25 +2641,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Law.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Law.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Law.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Law.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Law.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -2871,17 +2704,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Law.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Law.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Law.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -2941,7 +2775,9 @@ Requires the aif360 library.</p>
 <dt class="sig sig-object py" id="ethicml.data.LegacyDataset">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LegacyDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename_or_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cont_features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sens_attr_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_label_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_feature_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_feature_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discrete_feature_groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.data.CSVDataset" title="ethicml.data.dataset.CSVDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDataset</span></code></a></p>
-<p>Dataset that uses the default load function.</p>
+<p>Dataset base class.</p>
+<p>This base class is considered legacy now. Please use <a class="reference internal" href="#ethicml.data.CSVDatasetDC" title="ethicml.data.CSVDatasetDC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDatasetDC</span></code></a> or
+<a class="reference internal" href="#ethicml.data.StaticCSVDataset" title="ethicml.data.StaticCSVDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">StaticCSVDataset</span></code></a> instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3000,25 +2836,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.LegacyDataset.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.LegacyDataset.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -3080,17 +2899,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.LegacyDataset.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.LegacyDataset.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -3205,25 +3025,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Lipton.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Lipton.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Lipton.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Lipton.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Lipton.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -3285,17 +3088,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Lipton.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Lipton.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Lipton.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -3399,25 +3203,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.NonBinaryToy.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.NonBinaryToy.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.NonBinaryToy.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.NonBinaryToy.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.NonBinaryToy.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -3479,17 +3266,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.NonBinaryToy.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.NonBinaryToy.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.NonBinaryToy.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -3602,25 +3390,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Nursery.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Nursery.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Nursery.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Nursery.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Nursery.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -3682,17 +3453,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Nursery.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Nursery.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Nursery.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -3811,25 +3583,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Sqf.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Sqf.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -3891,17 +3646,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Sqf.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Sqf.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -3962,9 +3718,37 @@ Requires the aif360 library.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StaticCSVDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethicml.data.CSVDatasetDC" title="ethicml.data.dataset.CSVDatasetDC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVDatasetDC</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Dataset whose size and file location does not depend on constructor arguments.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dl class="field-list">
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>How to subclass this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Toy</span><span class="p">(</span><span class="n">StaticCSVDataset</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Dataset with toy data for testing.&#39;&#39;&#39;</span>
+
+    <span class="n">num_samples</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">csv_file</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;toy.csv&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Toy&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_label_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LabelSpecsPair</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">LabelSpecsPair</span><span class="p">(</span>
+            <span class="n">s</span><span class="o">=</span><span class="n">single_col_spec</span><span class="p">(</span><span class="s2">&quot;sens&quot;</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">single_col_spec</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">unfiltered_disc_feat_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DiscFeatureGroups</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;disc_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a_1&quot;</span><span class="p">,</span> <span class="s2">&quot;a_2&quot;</span><span class="p">,</span> <span class="s2">&quot;a_3&quot;</span><span class="p">],</span> <span class="s2">&quot;disc_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;b_1&quot;</span><span class="p">,</span> <span class="s2">&quot;b_2&quot;</span><span class="p">]}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">continuous_features</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;c1&quot;</span><span class="p">,</span> <span class="s2">&quot;c2&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>discrete_only</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>invert_s</strong> (<em>bool</em>) – </p></li>
 </ul>
@@ -4012,25 +3796,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.StaticCSVDataset.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.StaticCSVDataset.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -4092,17 +3859,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.StaticCSVDataset.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.StaticCSVDataset.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -4242,25 +4010,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Synthetic.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Synthetic.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Synthetic.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Synthetic.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Synthetic.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -4322,17 +4073,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Synthetic.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Synthetic.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Synthetic.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -4450,25 +4202,8 @@ Requires the aif360 library.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ethicml.data.Toy.expand_labels">
-<span class="sig-name descname"><span class="pre">expand_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Toy.expand_labels" title="Permalink to this definition">#</a></dt>
-<dd><p>Expand a label in the form of an index into all the subfeatures.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>pandas.Series</em>) – DataFrame containing the labels.</p></li>
-<li><p><strong>label_type</strong> (<em>Literal</em><em>[</em><em>'s'</em><em>, </em><em>'y'</em><em>]</em>) – Type of label to expand.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Toy.feature_split">
-<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Toy.feature_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">feature_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Toy.feature_split" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an order features dictionary.</p>
 <p>This should have separate entries for the features, the labels and the
 sensitive attributes, but the x features are ordered so first are the discrete features,
@@ -4530,17 +4265,18 @@ then the continuous.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ethicml.data.Toy.load">
-<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">FeatureOrder.disc_first</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Toy.load" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels_as_features=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order=&lt;enum.auto</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.Toy.load" title="Permalink to this definition">#</a></dt>
 <dd><p>Load dataset from its CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels_as_features</strong> (<em>bool</em>) – if True, the s and y labels are included in the x features</p></li>
-<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – </p></li>
+<li><p><strong>labels_as_features</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the s and y labels are included in the x features.</p></li>
+<li><p><strong>order</strong> (<a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.dataset.FeatureOrder"><em>FeatureOrder</em></a>) – Order of the columns in the dataframes. Can be <code class="docutils literal notranslate"><span class="pre">disc_first</span></code> or
+<code class="docutils literal notranslate"><span class="pre">cont_first</span></code>. See <a class="reference internal" href="#ethicml.data.FeatureOrder" title="ethicml.data.FeatureOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">DataTuple</span></code> with dataframes of features, labels and sensitive attributes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
@@ -4681,6 +4417,12 @@ Requires the aif360 library.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Name of the dataset.</p>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A callable that can be used to construct the dataset object.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the given name does not correspond to a dataset.</p>
+</dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>Callable</em>[[], <a class="reference internal" href="#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>Dataset</em></a>]</p>
 </dd>
@@ -4737,8 +4479,11 @@ Requires the aif360 library.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>spec</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><em>LabelGroup</em></a><em>]</em>) – Dictionary of label specifications.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[str]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A flattend list of all the columns occuring in the label specs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4750,16 +4495,37 @@ Requires the aif360 library.</p>
 <p>This function only exists for backwards compatibility. Use dataset.load() instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference internal" href="#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>Dataset</em></a>) – dataset object</p></li>
-<li><p><strong>ordered</strong> – if True, return features such that discrete come first, then continuous (Default: False)</p></li>
-</ul>
+<dd class="field-odd"><p><strong>dataset</strong> (<a class="reference internal" href="#ethicml.data.Dataset" title="ethicml.data.dataset.Dataset"><em>Dataset</em></a>) – dataset object</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>DataTuple with dataframes of features, labels and sensitive attributes</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ethicml.data.one_hot_encode_and_combine">
+<span class="sig-name descname"><span class="pre">one_hot_encode_and_combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard_non_one_hot</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.data.one_hot_encode_and_combine" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a new label according to the given <a class="reference internal" href="#ethicml.data.util.LabelSpec" title="ethicml.data.util.LabelSpec"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelSpec</span></code></a>.</p>
+<p>This function is at the heart of the label spec API in EthicML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attributes</strong> (<em>pd.DataFrame</em>) – DataFrame containing the attributes.</p></li>
+<li><p><strong>label_spec</strong> (<em>LabelSpec</em>) – A label spec.</p></li>
+<li><p><strong>discard_non_one_hot</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, a mask is returned which masks out all rows which are
+not properly one-hot (i.e., either all classes are 0 or more than one is 1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of a Series with the new labels and – if <code class="docutils literal notranslate"><span class="pre">discard_non_one_hot</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>
+– a mask for filtering out the rows that were not properly one-hot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[pd.Series, pd.Series | None]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4821,6 +4587,21 @@ removed features.</p></li>
 </dl>
 </dd></dl>
 
+<section id="aliases">
+<h2>Aliases<a class="headerlink" href="#aliases" title="Permalink to this heading">#</a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.util.DiscFeatureGroups">
+<span class="sig-name descname"><span class="pre">DiscFeatureGroups</span></span><a class="headerlink" href="#ethicml.data.util.DiscFeatureGroups" title="Permalink to this definition">#</a></dt>
+<dd><p>A grouping of discrete features such that the result is one-hot encoded.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ethicml.data.util.LabelSpec">
+<span class="sig-name descname"><span class="pre">LabelSpec</span></span><a class="headerlink" href="#ethicml.data.util.LabelSpec" title="Permalink to this definition">#</a></dt>
+<dd><p>A label specification consisting of <a class="reference internal" href="#ethicml.data.LabelGroup" title="ethicml.data.util.LabelGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabelGroup</span></code></a> entries with names.</p>
+</dd></dl>
+
+</section>
 </section>
 
         </article>
@@ -4917,7 +4698,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Admissions.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Admissions.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.discrete_features"><code class="docutils literal notranslate"><span class="pre">Admissions.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Admissions.expand_labels"><code class="docutils literal notranslate"><span class="pre">Admissions.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.feature_split"><code class="docutils literal notranslate"><span class="pre">Admissions.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.filepath"><code class="docutils literal notranslate"><span class="pre">Admissions.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Admissions.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Admissions.get_filename_or_path()</span></code></a></li>
@@ -4942,7 +4722,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Adult.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Adult.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.discrete_features"><code class="docutils literal notranslate"><span class="pre">Adult.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Adult.expand_labels"><code class="docutils literal notranslate"><span class="pre">Adult.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.feature_split"><code class="docutils literal notranslate"><span class="pre">Adult.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.filepath"><code class="docutils literal notranslate"><span class="pre">Adult.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Adult.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Adult.get_filename_or_path()</span></code></a></li>
@@ -4966,7 +4745,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">CSVDataset.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">CSVDataset.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">CSVDataset.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.CSVDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">CSVDataset.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">CSVDataset.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.filepath"><code class="docutils literal notranslate"><span class="pre">CSVDataset.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">CSVDataset.get_filename_or_path()</span></code></a></li>
@@ -4989,7 +4767,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.discrete_features"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.expand_labels"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.feature_split"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.filepath"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.CSVDatasetDC.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">CSVDatasetDC.get_filename_or_path()</span></code></a></li>
@@ -5013,7 +4790,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Compas.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Compas.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.discrete_features"><code class="docutils literal notranslate"><span class="pre">Compas.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Compas.expand_labels"><code class="docutils literal notranslate"><span class="pre">Compas.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.feature_split"><code class="docutils literal notranslate"><span class="pre">Compas.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.filepath"><code class="docutils literal notranslate"><span class="pre">Compas.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Compas.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Compas.get_filename_or_path()</span></code></a></li>
@@ -5038,7 +4814,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Credit.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Credit.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.discrete_features"><code class="docutils literal notranslate"><span class="pre">Credit.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Credit.expand_labels"><code class="docutils literal notranslate"><span class="pre">Credit.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.feature_split"><code class="docutils literal notranslate"><span class="pre">Credit.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.filepath"><code class="docutils literal notranslate"><span class="pre">Credit.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Credit.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Credit.get_filename_or_path()</span></code></a></li>
@@ -5063,7 +4838,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Crime.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Crime.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.discrete_features"><code class="docutils literal notranslate"><span class="pre">Crime.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Crime.expand_labels"><code class="docutils literal notranslate"><span class="pre">Crime.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.feature_split"><code class="docutils literal notranslate"><span class="pre">Crime.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.filepath"><code class="docutils literal notranslate"><span class="pre">Crime.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Crime.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Crime.get_filename_or_path()</span></code></a></li>
@@ -5090,7 +4864,11 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Dataset.name"><code class="docutils literal notranslate"><span class="pre">Dataset.name</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.data.FeatureOrder"><code class="docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureOrder"><code class="docutils literal notranslate"><span class="pre">FeatureOrder</span></code></a><ul>
+<li><a class="reference internal" href="#ethicml.data.FeatureOrder.cont_first"><code class="docutils literal notranslate"><span class="pre">FeatureOrder.cont_first</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.FeatureOrder.disc_first"><code class="docutils literal notranslate"><span class="pre">FeatureOrder.disc_first</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ethicml.data.FeatureSplit"><code class="docutils literal notranslate"><span class="pre">FeatureSplit</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.data.FeatureSplit.__len__"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.__len__()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.FeatureSplit.clear"><code class="docutils literal notranslate"><span class="pre">FeatureSplit.clear()</span></code></a></li>
@@ -5114,7 +4892,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.German.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">German.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.German.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">German.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.German.discrete_features"><code class="docutils literal notranslate"><span class="pre">German.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.German.expand_labels"><code class="docutils literal notranslate"><span class="pre">German.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.German.feature_split"><code class="docutils literal notranslate"><span class="pre">German.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.German.filepath"><code class="docutils literal notranslate"><span class="pre">German.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.German.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">German.get_filename_or_path()</span></code></a></li>
@@ -5139,7 +4916,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Health.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Health.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Health.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Health.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Health.discrete_features"><code class="docutils literal notranslate"><span class="pre">Health.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Health.expand_labels"><code class="docutils literal notranslate"><span class="pre">Health.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Health.feature_split"><code class="docutils literal notranslate"><span class="pre">Health.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Health.filepath"><code class="docutils literal notranslate"><span class="pre">Health.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Health.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Health.get_filename_or_path()</span></code></a></li>
@@ -5164,15 +4940,7 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.LabelGroup.multiplier"><code class="docutils literal notranslate"><span class="pre">LabelGroup.multiplier</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair</span></code></a><ul>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.__len__"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.__len__()</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.count"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.count()</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.index"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.index()</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.s"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.s</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.to_remove"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.to_remove</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair.y"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair.y</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#ethicml.data.LabelSpecsPair"><code class="docutils literal notranslate"><span class="pre">LabelSpecsPair</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law"><code class="docutils literal notranslate"><span class="pre">Law</span></code></a><ul>
 <li><a class="reference internal" href="#ethicml.data.Law.Splits"><code class="docutils literal notranslate"><span class="pre">Law.Splits</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.__len__"><code class="docutils literal notranslate"><span class="pre">Law.__len__()</span></code></a></li>
@@ -5181,7 +4949,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Law.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Law.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Law.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.discrete_features"><code class="docutils literal notranslate"><span class="pre">Law.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Law.expand_labels"><code class="docutils literal notranslate"><span class="pre">Law.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.feature_split"><code class="docutils literal notranslate"><span class="pre">Law.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.filepath"><code class="docutils literal notranslate"><span class="pre">Law.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Law.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Law.get_filename_or_path()</span></code></a></li>
@@ -5205,7 +4972,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.LegacyDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.filepath"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.LegacyDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">LegacyDataset.get_filename_or_path()</span></code></a></li>
@@ -5228,7 +4994,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Lipton.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Lipton.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.discrete_features"><code class="docutils literal notranslate"><span class="pre">Lipton.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Lipton.expand_labels"><code class="docutils literal notranslate"><span class="pre">Lipton.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.feature_split"><code class="docutils literal notranslate"><span class="pre">Lipton.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.filepath"><code class="docutils literal notranslate"><span class="pre">Lipton.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Lipton.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Lipton.get_filename_or_path()</span></code></a></li>
@@ -5251,7 +5016,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.discrete_features"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.NonBinaryToy.expand_labels"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.feature_split"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.filepath"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.NonBinaryToy.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">NonBinaryToy.get_filename_or_path()</span></code></a></li>
@@ -5275,7 +5039,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Nursery.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Nursery.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.discrete_features"><code class="docutils literal notranslate"><span class="pre">Nursery.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Nursery.expand_labels"><code class="docutils literal notranslate"><span class="pre">Nursery.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.feature_split"><code class="docutils literal notranslate"><span class="pre">Nursery.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.filepath"><code class="docutils literal notranslate"><span class="pre">Nursery.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Nursery.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Nursery.get_filename_or_path()</span></code></a></li>
@@ -5300,7 +5063,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Sqf.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Sqf.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.discrete_features"><code class="docutils literal notranslate"><span class="pre">Sqf.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Sqf.expand_labels"><code class="docutils literal notranslate"><span class="pre">Sqf.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.feature_split"><code class="docutils literal notranslate"><span class="pre">Sqf.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.filepath"><code class="docutils literal notranslate"><span class="pre">Sqf.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Sqf.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Sqf.get_filename_or_path()</span></code></a></li>
@@ -5324,7 +5086,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.discrete_features"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.expand_labels"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.feature_split"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.filepath"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.StaticCSVDataset.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">StaticCSVDataset.get_filename_or_path()</span></code></a></li>
@@ -5349,7 +5110,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Synthetic.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Synthetic.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.discrete_features"><code class="docutils literal notranslate"><span class="pre">Synthetic.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Synthetic.expand_labels"><code class="docutils literal notranslate"><span class="pre">Synthetic.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.feature_split"><code class="docutils literal notranslate"><span class="pre">Synthetic.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.filepath"><code class="docutils literal notranslate"><span class="pre">Synthetic.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Synthetic.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Synthetic.get_filename_or_path()</span></code></a></li>
@@ -5374,7 +5134,6 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.disc_feature_groups"><code class="docutils literal notranslate"><span class="pre">Toy.disc_feature_groups</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.discard_non_one_hot"><code class="docutils literal notranslate"><span class="pre">Toy.discard_non_one_hot</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.discrete_features"><code class="docutils literal notranslate"><span class="pre">Toy.discrete_features</span></code></a></li>
-<li><a class="reference internal" href="#ethicml.data.Toy.expand_labels"><code class="docutils literal notranslate"><span class="pre">Toy.expand_labels()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.feature_split"><code class="docutils literal notranslate"><span class="pre">Toy.feature_split()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.filepath"><code class="docutils literal notranslate"><span class="pre">Toy.filepath</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.Toy.get_filename_or_path"><code class="docutils literal notranslate"><span class="pre">Toy.get_filename_or_path()</span></code></a></li>
@@ -5400,9 +5159,15 @@ removed features.</p></li>
 <li><a class="reference internal" href="#ethicml.data.group_disc_feat_indices"><code class="docutils literal notranslate"><span class="pre">group_disc_feat_indices()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.label_spec_to_feature_list"><code class="docutils literal notranslate"><span class="pre">label_spec_to_feature_list()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.load_data"><code class="docutils literal notranslate"><span class="pre">load_data()</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.one_hot_encode_and_combine"><code class="docutils literal notranslate"><span class="pre">one_hot_encode_and_combine()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.reduce_feature_group"><code class="docutils literal notranslate"><span class="pre">reduce_feature_group()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.single_col_spec"><code class="docutils literal notranslate"><span class="pre">single_col_spec()</span></code></a></li>
 <li><a class="reference internal" href="#ethicml.data.spec_from_binary_cols"><code class="docutils literal notranslate"><span class="pre">spec_from_binary_cols()</span></code></a></li>
+<li><a class="reference internal" href="#aliases">Aliases</a><ul>
+<li><a class="reference internal" href="#ethicml.data.util.DiscFeatureGroups"><code class="docutils literal notranslate"><span class="pre">DiscFeatureGroups</span></code></a></li>
+<li><a class="reference internal" href="#ethicml.data.util.LabelSpec"><code class="docutils literal notranslate"><span class="pre">LabelSpec</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

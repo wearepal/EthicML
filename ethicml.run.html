@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.plot" href="ethicml.plot.html" /><link rel="prev" title="ethicml.metrics" href="ethicml.metrics.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>ethicml.run - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>ethicml.run - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -319,12 +320,16 @@ secondary metric from the top K.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>primary</strong> (<a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – Metric to first sort by.</p></li>
-<li><p><strong>secondary</strong> (<a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – Metric to sort the top-K models by for a second time, the top will be selected.</p></li>
+<li><p><strong>secondary</strong> (<a class="reference internal" href="ethicml.metrics.html#ethicml.metrics.Metric" title="ethicml.metrics.metric.Metric"><em>Metric</em></a>) – Metric to sort the top-K models by for a second time, the top will be
+selected.</p></li>
 <li><p><strong>top_k</strong> (<em>int</em>) – Number of entries to consider.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>ResultTuple</em></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple with the parameters, the fold ID and the scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>ResultTuple</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -424,11 +429,11 @@ which is the number of available CPUs</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>algos</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.models/base.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><em>Algorithm</em></a><em>[</em><em>_RT</em><em>]</em><em>]</em>) – list of tuples consisting of a <cite>run_async</cite> function of an algorithm and a name</p></li>
-<li><p><strong>data</strong> (<em>DataSeq</em>) – list of pairs of data tuples (train and test)</p></li>
-<li><p><strong>num_jobs</strong> (<em>int</em><em> | </em><em>None</em>) – number of parallel jobs. <cite>None</cite> means as many as available CPUs.
+<li><p><strong>algos</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="ethicml.models/base.html#ethicml.models.algorithm_base.Algorithm" title="ethicml.models.algorithm_base.Algorithm"><em>Algorithm</em></a><em>[</em><em>_RT</em><em>]</em><em>]</em>) – List of tuples consisting of a <cite>run_async</cite> function of an algorithm and a name.</p></li>
+<li><p><strong>data</strong> (<em>DataSeq</em>) – List of pairs of data tuples (train and test).</p></li>
+<li><p><strong>seeds</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – List of random seeds.</p></li>
+<li><p><strong>num_jobs</strong> (<em>int</em><em> | </em><em>None</em>) – Number of parallel jobs. <cite>None</cite> means as many as available CPUs.
 (Default: None)</p></li>
-<li><p><strong>seeds</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -464,11 +469,15 @@ which is the number of available CPUs</p></li>
 (Default: True)</p></li>
 <li><p><strong>num_jobs</strong> (<em>int</em><em> | </em><em>None</em>) – Number of parallel jobs; if None, the number of CPUs is used. (Default: None)</p></li>
 <li><p><strong>scaler</strong> (<a class="reference internal" href="ethicml/preprocessing.html#ethicml.preprocessing.ScalerType" title="ethicml.preprocessing.ScalerType"><em>ScalerType</em></a><em> | </em><em>None</em>) – Sklearn-style scaler to be used on the continuous features. (Default: None)</p></li>
-<li><p><strong>repeat_on</strong> (<em>Literal</em><em>[</em><em>'data'</em><em>, </em><em>'model'</em><em>, </em><em>'both'</em><em>]</em>) – Should the <cite>data</cite> or <cite>model</cite> seed be varied for each run? Or should they <cite>both</cite> be the same? (Default: “both”)</p></li>
+<li><p><strong>repeat_on</strong> (<em>Literal</em><em>[</em><em>'data'</em><em>, </em><em>'model'</em><em>, </em><em>'both'</em><em>]</em>) – Should the <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">model</span></code> seed be varied for each run? Or should they
+<code class="docutils literal notranslate"><span class="pre">both</span></code> be the same? (Default: “both”)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results">Results</a></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code> object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ethicml/utility.html#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results">Results</a></p>
 </dd>
 </dl>
 </dd></dl>

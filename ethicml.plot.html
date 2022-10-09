@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Migration guide to 1.0" href="tutorials/migration_guide.html" /><link rel="prev" title="ethicml.run" href="ethicml.run.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>ethicml.plot - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>ethicml.plot - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -257,8 +258,11 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of all figures and plots</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[tuple[matplotlib.figure.Figure, matplotlib.pyplot.Axes]]</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If no columns matching <code class="docutils literal notranslate"><span class="pre">metric_y</span></code> and <code class="docutils literal notranslate"><span class="pre">metric_x</span></code> are found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[matplotlib.figure.Figure, matplotlib.pyplot.Axes]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -343,8 +347,8 @@ not generate a Figure object itself.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plot</strong> (<em>matplotlib.pyplot.Axes</em>) – Plot object</p></li>
 <li><p><strong>results</strong> (<a class="reference internal" href="ethicml/utility.html#ethicml.utility.data_structures.Results" title="ethicml.utility.data_structures.Results"><em>Results</em></a>) – DataFrame with the data</p></li>
-<li><p><strong>xaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the x-axis</p></li>
-<li><p><strong>yaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – name of column that’s plotted on the y-axis</p></li>
+<li><p><strong>xaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Name of column that’s plotted on the x-axis.</p></li>
+<li><p><strong>yaxis</strong> (<em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Name of column that’s plotted on the y-axis.</p></li>
 <li><p><strong>dataset</strong> (<em>str</em>) – string that identifies the dataset</p></li>
 <li><p><strong>transform</strong> (<em>str</em><em> | </em><em>None</em>) – string that identifies the preprocessing method, or None</p></li>
 <li><p><strong>ptype</strong> (<em>Literal</em><em>[</em><em>'box'</em><em>, </em><em>'cross'</em><em>, </em><em>'scatter'</em><em>, </em><em>'line'</em><em>]</em>) – plot type (Default: “box”)</p></li>
@@ -352,17 +356,20 @@ not generate a Figure object itself.</p>
 <li><p><strong>legend_yanchor</strong> (<em>float</em>) – position in the vertical direction where the legend should begin (Default
 value = 1.0)</p></li>
 <li><p><strong>markersize</strong> (<em>int</em>) – size of marker (Default: 6)</p></li>
-<li><p><strong>alternating_style</strong> (<em>bool</em>) – if True, entries for scatter plots are done in alternating style
+<li><p><strong>alternating_style</strong> (<em>bool</em>) – If True, entries for scatter plots are done in alternating style
 (Default: True)</p></li>
-<li><p><strong>include_nan_entries</strong> (<em>bool</em>) – if True, entries with NaNs still appear in the legend (Default value
+<li><p><strong>include_nan_entries</strong> (<em>bool</em>) – If True, entries with NaNs still appear in the legend (Default value
 = False)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the legend object if something was plotted; False otherwise</p>
+<dd class="field-even"><p>The legend object if something was plotted; False otherwise.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Union</em>[None, <em>Literal</em>[False], matplotlib.legend.Legend]</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">ptype</span></code> has an unsupported value.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Union</em>[None, <em>Literal</em>[False], matplotlib.legend.Legend]</p>
 </dd>
 </dl>
 </dd></dl>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="ethicml.run" href="ethicml.run.html" /><link rel="prev" title="Preprocess algorithms" href="ethicml.models/preprocess.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>ethicml.metrics - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>ethicml.metrics - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -1482,7 +1483,7 @@ set self.__traceback__ to tb and return self.</p>
 <p>Aggregation methods for metrics that are computed per sensitive attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ethicml.metrics.PerSens.ALL">
-<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ethicml.metrics.PerSens" title="ethicml.metrics.per_sensitive_attribute.PerSens"><span class="pre">ethicml.metrics.per_sensitive_attribute.PerSens</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({&lt;PerSens.MAX:</span> <span class="pre">(&lt;function</span> <span class="pre">max_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.DIFFS:</span> <span class="pre">(&lt;function</span> <span class="pre">diff_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.MIN:</span> <span class="pre">(&lt;function</span> <span class="pre">min_per_sens&gt;,)&gt;,</span> <span class="pre">&lt;PerSens.RATIOS:</span> <span class="pre">(&lt;function</span> <span class="pre">ratio_per_sens&gt;,)&gt;})</span></em><a class="headerlink" href="#ethicml.metrics.PerSens.ALL" title="Permalink to this definition">#</a></dt>
 <dd><p>All aggregations.</p>
 </dd></dl>
 
@@ -2135,9 +2136,10 @@ titled “On Measures of Dependence” by Alfréd Rényi.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>per_sens_res</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – Dictionary of the results.</p></li>
 <li><p><strong>aggregator</strong> (<em>Callable</em><em>[</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>float</em><em>]</em>) – A callable that is used to aggregate results.</p></li>
-<li><p><strong>infix</strong> (<em>str</em>) – </p></li>
-<li><p><strong>prefix</strong> (<em>str</em>) – </p></li>
-<li><p><strong>suffix</strong> (<em>str</em>) – </p></li>
+<li><p><strong>infix</strong> (<em>str</em>) – A string that will be displayed between the sensitive attributes in the final
+metric name.</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – A prefix for the final metric name.</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – A suffix for the final metric name.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

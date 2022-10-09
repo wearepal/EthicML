@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Preprocess algorithms" href="preprocess.html" /><link rel="prev" title="Inprocess algorithms" href="inprocess.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Postprocess algorithms - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>Postprocess algorithms - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -257,7 +258,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on a test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -280,7 +281,7 @@
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on the test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -340,7 +341,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on a test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -363,7 +364,7 @@
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on the test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -429,7 +430,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on a test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -452,7 +453,7 @@
 <li><p><strong>train</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a>) – The training set with the correct labels and sensitive attributes.</p></li>
 <li><p><strong>test_predictions</strong> (<a class="reference internal" href="../ethicml/utility.html#ethicml.utility.Prediction" title="ethicml.utility.data_structures.Prediction"><em>Prediction</em></a>) – Predictions on the test set.</p></li>
 <li><p><strong>test</strong> (<em>Union</em><em>[</em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.SubgroupTuple" title="ethicml.utility.data_structures.SubgroupTuple"><em>SubgroupTuple</em></a><em>, </em><a class="reference internal" href="../ethicml/utility.html#ethicml.utility.DataTuple" title="ethicml.utility.data_structures.DataTuple"><em>DataTuple</em></a><em>]</em>) – The test set with the sensitive attributes.</p></li>
-<li><p><strong>seed</strong> (<em>int</em>) – </p></li>
+<li><p><strong>seed</strong> (<em>int</em>) – The random seed.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

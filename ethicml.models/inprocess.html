@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Postprocess algorithms" href="postprocess.html" /><link rel="prev" title="Algorithms base" href="base.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Inprocess algorithms - EthicML 1.0.0 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>Inprocess algorithms - EthicML 1.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">EthicML 1.0.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">EthicML 1.0.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">EthicML 1.0.0 documentation</span>
+  <span class="sidebar-brand-text">EthicML 1.0.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -196,7 +196,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -541,7 +542,6 @@
 <dt class="sig sig-object py" id="ethicml.models.inprocess.agarwal_reductions.Agarwal.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.agarwal_reductions.Agarwal.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -550,8 +550,11 @@
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -687,7 +690,6 @@
 <dt class="sig sig-object py" id="ethicml.models.inprocess.fairness_wo_demographics.DRO.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.fairness_wo_demographics.DRO.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -696,8 +698,11 @@
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -840,7 +845,6 @@ simply the last part of the repository URL).</p></li>
 <dt class="sig sig-object py" id="ethicml.models.inprocess.installed_model.InstalledModel.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.installed_model.InstalledModel.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -849,8 +853,11 @@ simply the last part of the repository URL).</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1125,7 +1132,6 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <dt class="sig sig-object py" id="ethicml.models.inprocess.kamishima.Kamishima.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.kamishima.Kamishima.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1134,8 +1140,11 @@ is more numerically stable for small group sizes. (Default: False)</p></li>
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2126,7 +2135,6 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarAccuracy.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarAccuracy.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2135,8 +2143,11 @@ but can be useful if you want to either do a sanity check, or report potential v
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2262,7 +2273,6 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarBaseline.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarBaseline.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2271,8 +2281,11 @@ but can be useful if you want to either do a sanity check, or report potential v
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2405,7 +2418,6 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOdds.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOdds.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2414,8 +2426,11 @@ but can be useful if you want to either do a sanity check, or report potential v
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2548,7 +2563,6 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarEqOpp.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarEqOpp.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2557,8 +2571,11 @@ but can be useful if you want to either do a sanity check, or report potential v
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2687,7 +2704,6 @@ but can be useful if you want to either do a sanity check, or report potential v
 <dt class="sig sig-object py" id="ethicml.models.inprocess.zafar.ZafarFairness.call_script">
 <span class="sig-name descname"><span class="pre">call_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd_args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ethicml.models.inprocess.zafar.ZafarFairness.call_script" title="Permalink to this definition">#</a></dt>
 <dd><p>Call a (Python) script as a separate process.</p>
-<p>An exception is thrown if the called script failed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2696,8 +2712,11 @@ but can be useful if you want to either do a sanity check, or report potential v
 <li><p><strong>cwd</strong> (<em>Optional</em><em>[</em><em>Path</em><em>]</em>) – If not None, change working directory to the given path before running command.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the called script failed or timed out.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
