@@ -30,6 +30,7 @@ class PostAlgorithm(Algorithm, ABC):
 
         :param test_predictions: Predictions on a test set.
         :param test: The test set with the sensitive attributes.
+        :param seed: The random seed.
         :returns: Post-processed predictions on the test set.
         """
 
@@ -48,5 +49,6 @@ class PostAlgorithm(Algorithm, ABC):
         :param train: The training set with the correct labels and sensitive attributes.
         :param test_predictions: Predictions on the test set.
         :param test: The test set with the sensitive attributes.
+        :param seed: The random seed.
         :returns: Post-processed predictions on the test set.
         """

@@ -7,7 +7,7 @@ from typing_extensions import TypeAlias
 import pandas as pd
 
 __all__ = [
-    "DiscFeatureGroup",
+    "DiscFeatureGroups",
     "LabelGroup",
     "LabelSpec",
     "filter_features_by_prefixes",
@@ -21,7 +21,8 @@ __all__ = [
     "single_col_spec",
 ]
 
-DiscFeatureGroup: TypeAlias = Dict[str, List[str]]
+DiscFeatureGroups: TypeAlias = Dict[str, List[str]]
+"""A grouping of discrete features such that the result is one-hot encoded."""
 
 
 class LabelGroup(NamedTuple):
@@ -31,7 +32,8 @@ class LabelGroup(NamedTuple):
     multiplier: int = 1  # multiplier assigned to this group (needed when combining groups)
 
 
-LabelSpec = Mapping[str, LabelGroup]
+LabelSpec: TypeAlias = Mapping[str, LabelGroup]
+"""A label specification consisting of :class:`LabelGroup` entries with names."""
 
 
 def filter_features_by_prefixes(features: Sequence[str], prefixes: Sequence[str]) -> list[str]:
@@ -104,7 +106,7 @@ def reduce_feature_group(
     feature_group: str,
     to_keep: Sequence[str],
     remaining_feature_name: str,
-) -> DiscFeatureGroup:
+) -> DiscFeatureGroups:
     """Drop all features in the given feature group except the ones in to_keep.
 
     :param disc_feature_groups: Dictionary of feature groups.
@@ -150,6 +152,7 @@ def label_spec_to_feature_list(spec: LabelSpec) -> list[str]:
     """Extract all the feature column names from a dictionary of label specifications.
 
     :param spec: Dictionary of label specifications.
+    :returns: A flattend list of all the columns occuring in the label specs.
     """
     feature_list: list[str] = []
     for group in spec.values():

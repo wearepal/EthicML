@@ -93,6 +93,7 @@ def upsample(
     :param strategy: Strategy to use for upsampling.
     :param seed: Seed for the upsampling.
     :param name: Name of the upsampling strategy.
+    :returns: The upsampled train and test data.
     """
     s_vals: list[int] = list(map(int, dataset.s.unique()))
     y_vals: list[int] = list(map(int, dataset.y.unique()))

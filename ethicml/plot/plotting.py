@@ -244,8 +244,8 @@ def single_plot(
 
     :param plot: Plot object
     :param results: DataFrame with the data
-    :param xaxis: name of column that's plotted on the x-axis
-    :param yaxis: name of column that's plotted on the y-axis
+    :param xaxis: Name of column that's plotted on the x-axis.
+    :param yaxis: Name of column that's plotted on the y-axis.
     :param dataset: string that identifies the dataset
     :param transform: string that identifies the preprocessing method, or None
     :param ptype: plot type (Default: "box")
@@ -253,11 +253,12 @@ def single_plot(
     :param legend_yanchor: position in the vertical direction where the legend should begin (Default
         value = 1.0)
     :param markersize: size of marker (Default: 6)
-    :param alternating_style: if True, entries for scatter plots are done in alternating style
+    :param alternating_style: If True, entries for scatter plots are done in alternating style
         (Default: True)
-    :param include_nan_entries: if True, entries with NaNs still appear in the legend (Default value
+    :param include_nan_entries: If True, entries with NaNs still appear in the legend (Default value
         = False)
-    :returns: the legend object if something was plotted; False otherwise
+    :returns: The legend object if something was plotted; False otherwise.
+    :raises ValueError: If ``ptype`` has an unsupported value.
     """
     mask_for_dataset = results.index.get_level_values("dataset") == dataset
     if transform is not None:
@@ -317,6 +318,7 @@ def plot_results(
     :param dpi: DPI of the plots (Default: 300)
     :param transforms_separately: if True, each transform gets its own plot (Default: True)
     :returns: A list of all figures and plots
+    :raises ValueError: If no columns matching ``metric_y`` and ``metric_x`` are found.
     """
     directory = Path(".") / "plots"
     directory.mkdir(exist_ok=True)

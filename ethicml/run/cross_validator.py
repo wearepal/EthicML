@@ -123,8 +123,10 @@ class CVResults:
         secondary metric from the top K.
 
         :param primary: Metric to first sort by.
-        :param secondary: Metric to sort the top-K models by for a second time, the top will be selected.
+        :param secondary: Metric to sort the top-K models by for a second time, the top will be
+            selected.
         :param top_k: Number of entries to consider.
+        :returns: A tuple with the parameters, the fold ID and the scores.
         """
         mean_vals = self.mean_storage
 

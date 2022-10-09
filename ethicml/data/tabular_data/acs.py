@@ -21,7 +21,7 @@ from ethicml.utility.data_structures import DataTuple
 
 from ..dataset import Dataset, FeatureOrder, FeatureSplit
 from ..util import (
-    DiscFeatureGroup,
+    DiscFeatureGroups,
     LabelSpec,
     filter_features_by_prefixes,
     flatten_dict,
@@ -82,7 +82,7 @@ class AcsBase(Dataset):
         self._features: list[str] = []
         self._cont_features_unfiltered: list[str] = []
         self._map_to_binary = False
-        self._discrete_feature_groups: DiscFeatureGroup | None = None
+        self._discrete_feature_groups: DiscFeatureGroups | None = None
         self._num_samples = 0
 
     @property
@@ -142,7 +142,7 @@ class AcsBase(Dataset):
         )
 
     @property
-    def disc_feature_groups(self) -> DiscFeatureGroup:
+    def disc_feature_groups(self) -> DiscFeatureGroups:
         """Return Dictionary of feature groups."""
         dfgs = self._discrete_feature_groups
         assert dfgs is not None
@@ -200,32 +200,23 @@ class AcsBase(Dataset):
             s_data = 1 - s_data
 
         # the following operations remove rows if a label group is not properly one-hot encoded
-        s_data, s_mask = self._one_hot_encode_and_combine(s_data, label_type="s")
-        if s_mask is not None:
-            x_data = x_data.loc[s_mask].reset_index(drop=True)
-            s_data = s_data.loc[s_mask].reset_index(drop=True)
-            y_data = y_data.loc[s_mask].reset_index(drop=True)
-        y_data, y_mask = self._one_hot_encode_and_combine(y_data, label_type="y")
-        if y_mask is not None:
-            x_data = x_data.loc[y_mask].reset_index(drop=True)
-            s_data = s_data.loc[y_mask].reset_index(drop=True)
-            y_data = y_data.loc[y_mask].reset_index(drop=True)
+        s_data = self._one_hot_encode_and_combine(s_data, label_type="s")
+        y_data = self._one_hot_encode_and_combine(y_data, label_type="y")
 
         return DataTuple.from_df(x=x_data, s=s_data, y=y_data, name=self.name)
 
     def _one_hot_encode_and_combine(
         self, attributes: pd.DataFrame, label_type: Literal["s", "y"]
-    ) -> tuple[pd.Series, pd.Series | None]:
+    ) -> pd.Series:
         """Construct a new label according to the LabelSpecs.
 
         :param attributes: DataFrame containing the attributes.
         :param label_type: Type of label to construct.
+        :returns: A Series object with the new combined labels.
         """
-        mask = None  # the mask is needed when we have to discard samples
-
         label_mapping = self._sens_attr_spec if label_type == "s" else self._class_label_spec
         if isinstance(label_mapping, str):
-            return attributes[label_mapping], mask
+            return attributes[label_mapping]
 
         # create a Series of zeroes with the same length as the dataframe
         combination: pd.Series = pd.Series(
@@ -240,7 +231,7 @@ class AcsBase(Dataset):
             else:
                 values = attributes[spec.columns[0]]
             combination += spec.multiplier * values
-        return combination, mask
+        return combination
 
 
 class AcsIncome(AcsBase):
